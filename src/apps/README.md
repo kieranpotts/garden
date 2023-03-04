@@ -1,3 +1,3 @@
 # Apps and services
 
-**Application software, digital services and productivity tools.**
+This section lists useful application software, digital services and productivity tools.

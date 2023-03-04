@@ -1,34 +1,36 @@
-# Contents
+# Digital Garden
 
-- **[Software development](//github.com/kieranpotts/garden/tree/dev/src/development)** \
+My digital garden is organized into the following top-level sections.
+
+- **[Software development](./development)** \
   Tools and processes to support the development of software systems.
 
-- **[Software platforms](//github.com/kieranpotts/garden/tree/dev/src/platforms)** \
+- **[Software platforms](./platforms)** \
   Runtime environments for software systems.
 
-- **[Computer languages](//github.com/kieranpotts/garden/tree/dev/src/languages)** \
+- **[Computer languages](./languages)** \
   Programming, scripting, command, machine, assembly, query, and other computer languages.
 
-- **[Data and encoding](//github.com/kieranpotts/garden/tree/dev/src/data)** \
+- **[Data and encoding](./data)** \
   Database management systems, data interchange protocols, and data engineering.
 
-- **[Communication protocols](//github.com/kieranpotts/garden/tree/dev/src/protocols)** \
+- **[Communication protocols](./protocols)** \
   Systems for exchanging data between computing devices.
 
-- **[Infrastructure](//github.com/kieranpotts/garden/tree/dev/src/infrastructure)** \
+- **[Infrastructure](./infrastructure)** \
   The administration, configuration and upkeep of computer systems, including web servers and cloud services.
 
-- **[User interfaces](//github.com/kieranpotts/garden/tree/dev/src/ui)** \
+- **[User interfaces](./ui)** \
   Human-computer interface design, both graphical and textual.
 
-- **[Computer science](//github.com/kieranpotts/garden/tree/dev/src/cs)** \
+- **[Computer science](./cs)** \
   Algorithms, data structures, and other fields of study in information technology.
 
-- **[Software delivery](//github.com/kieranpotts/garden/tree/dev/src/delivery)** \
+- **[Software delivery](./delivery)** \
   Licensing and commercial delivery models for software systems.
 
-- **[Business and work](//github.com/kieranpotts/garden/tree/dev/src/business)** \
+- **[Business and work](./business)** \
   Industry trends, business regulations, startups, and financing.
 
-- **[Apps and services](//github.com/kieranpotts/garden/tree/dev/src/apps)** \
+- **[Apps and services](./apps)** \
   Application software, digital services and productivity tools.
