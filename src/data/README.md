@@ -1,3 +1,3 @@
 # Data and encoding
 
-**Database management systems, data interchange protocols, and data engineering.**
+This section covers database management systems, data interchange protocols, data engineering, and topics related to the encoding and decoding of data, including encryption.

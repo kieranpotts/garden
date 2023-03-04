@@ -1,3 +1,3 @@
 # Communication protocols
 
-**Systems for exchanging data between computing devices.**
+This section covers systems for the exchanging of data between different computing devices.

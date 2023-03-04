@@ -1,3 +1,3 @@
 # Infrastructure
 
-**The administration, configuration and upkeep of computer systems, including web servers and cloud services.**
+This section covers topics related to the administration, configuration and upkeep of computer systems – that's everything from "bare metal" servers to virtual cloud services.

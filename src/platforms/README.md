@@ -1,3 +1,3 @@
 # Software platforms
 
-**Runtime environments for software systems.**
+This section covers the various runtime environments that are available as targets for software systems.

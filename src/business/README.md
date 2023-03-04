@@ -1,6 +1,6 @@
 # Business and work
 
-**Industry trends, business regulations, startups, and financing.**
+This sections covers industry trends, business regulations, financing and other concerns of the IT industry and the people who work in it.
 
 ## Contents
 
