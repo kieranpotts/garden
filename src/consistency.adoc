@@ -1,0 +1,42 @@
+= Consistency
+
+Consistency is a key challenge in link:./distributed-systems.adoc[*distributed systems*].
+It is the property that all nodes in a distributed system agree on the state of
+the overall system.
+
+As soon as you replicate data across multiple nodes – which you do to improve
+link:./fault-tolerance.adoc[*resilience*] and link:./availability.adoc[*availability*] –
+you introduce the possibility that the data on different nodes will be out of
+sync. You have to deal with the problem of how to maintain consistency.
+
+A key idea is eventual consistency. The aim is for data across the whole system
+to eventually be consistent, but it is not guaranteed to be consistent at any
+particular point in time.
+
+For most systems, eventual consistency is good enough. The time that replicated
+data may be out of sync is often measured in milliseconds – the time is takes
+for messages to be relayed across a local network. But it is much harder when
+you have to deal with things like financial transactions, where consistency is
+critical for correct business operations. You have to factor *latency* (the time
+for network calls to be made) into your design, and think about potential issues
+like *race conditions*.
+
+There are several possible strategies to achieving eventual consistency, but an
+underlying principle is for all components of a system to agree on what is the
+*source of truth* for each type of data. The source of truth is the
+authoritative source for the data, and all other copies are eventually
+consistent with this source. This design constraint eliminates the need to
+resolve potentially conflicts between different copies of the same data,
+something that is incredibly difficult to do, especially in distributed systems
+where we can't rely on timestamps to represent the actual order of mutations.
+
+Supporting techniques include *chaos engineering* (testing how a system behaves
+under failure conditions) and using *idempotent operations* (allowing requests
+to be repeated multiple times without changing the resulting state).
+
+''''
+
+.Related links
+****
+* link:http://www.allthingsdistributed.com/2008/12/eventually_consistent.html[Eventually consistent - revisited], Werner Vogels
+****

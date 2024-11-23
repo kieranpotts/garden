@@ -30,5 +30,36 @@ link:./fault-tolerance.adoc[*fault tolerance*]. Better to start with a
 extract independent services incrementally as and when required.
 
 Reasoning about link:./concurrency.adoc[*concurrency*] and building for
-fault tolerance are probably the two hardest things in distributed
-link:./system-design.adoc[*systems design*].
+link:./fault-tolerance.adoc[fault tolerance] are probably the two hardest
+things in distributed link:./system-design.adoc[*systems design*].
+
+Distributed systems are inherently unreliable. They are subject to a wide range
+of failures, including network partitions, delayed messages, and node crashes.
+The principle of *designing for failure* means designing each service in a way
+that it can tolerate failures in dependent services. Fault tolerance is a key
+link:./quality-attributes.adoc[*quality attribute*] in distributed systems,
+and needs to be treated as a first-class concern in the
+link:./system-design.adoc[*system design*].
+
+And because distributed systems generally use asynchronous communication
+between services, managing concurrency and ensuring
+link:./consistency.adoc[*eventual consistency*] are also key design
+concerns.
+
+== Trade-offs in distributed systems
+
+link:./cap-theorem.adoc[*CAP theorem*] is a key concept in distributed systems.
+It states that in the presence of a network partition, you have to choose
+between link:./consistency.adoc[*consistency*] and link:availability.adoc[*availability*].
+You can't have both.
+
+''''
+
+.Related links
+****
+* link:https://www.researchgate.net/publication/322500050_Fallacies_of_Distributed_Computing_Explained[Fallacies of distributed computing explained], Arnon Rotem-Gal-Oz, Doctor Dobbs Journal (2008)
+
+* link:https://architecturenotes.co/fallacies-of-distributed-systems/[Fallacies of distributed systems], Architecture Notes (2022)
+
+* link:http://www.allthingsdistributed.com/2008/12/eventually_consistent.html[Eventually consistent - revisited], Werner Vogels
+****
