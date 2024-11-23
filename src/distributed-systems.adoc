@@ -13,3 +13,22 @@ studies them.
 Examples of distributed systems include service-oriented architecture (SOA)
 systems, massively multiplayer online games, and peer-to-peer applications.
 Message passing systems include HTTP, RPC-like connectors, and message queues.
+
+== Designing distributed systems
+
+Distributed computing is hard.
+
+As soon as you distribute processing and data, you add a huge amount of
+complexity and many more ways that things can go wrong. Distributed systems are
+inherently more complex than single-node systems (aka. monoliths) and they
+require a different set of design principles and systems thinking.
+
+Distributed computing should be avoided until it is required to solve specific
+problems, such as link:./scalability.adoc[scalability] or fault-tolerance.
+Better to start with a [modular monolith], with scalability planned into the
+design from the start, and extract independent services incrementally as and
+when required.
+
+Reasoning about link:./concurrency.adoc[concurrency] and building for
+fault-tolerance are probably the two hardest things in distributed
+link:./system-design.adoc[systems design].
