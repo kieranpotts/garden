@@ -1,2 +1,18 @@
 = Asynchronous communication
 
+*link:./synchronous-communication.adoc[Synchronous]* and asynchronous communication are two
+approaches to *interaction* in software design. Each approach has its own advantages and disadvantages,
+and each has different use cases.
+
+In asynchronous communication, the sender and receiver do not interact in real-time. The sender may
+or may not expect a response from the receiver. But if it does, the sender can continue with other
+tasks while waiting for the response. The interaction is therefore said to be *non-blocking*.
+
+Asynchronous communication is often used in *link:./distributed-systems.adoc[distributed systems]*,
+using *link:./message-driven-architecture.adoc[message-driven]* or
+*link:./event-driven-architecture.adoc[event-driven]* architectural patterns for asynchronous
+communication between services.
+
+_Within_ services and monolithic applications, too, asynchronous communication is widely used
+for *link:./performance.adoc[performance optimization]* by removing long-running or resource-intensive
+tasks from the main thread or process.
