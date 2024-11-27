@@ -1,67 +1,59 @@
 = Fault tolerance (aka. resilience)
 
-Designing for failure is a key [design principle] in IT system design, and
-especially in link:./distributed-systems.adoc[distributed systems] because
-distributed systems are inherently unreliable. They are subject to a wide range
-of failures, including network partitions, delayed messages, and node crashes.
+Designing for failure is a key *[design principle]* in IT system design, and especially in
+*link:./distributed-systems.adoc[distributed systems]* because distributed systems are inherently
+unreliable. They are subject to a wide range of failures, including network partitions, delayed
+messages, and node crashes.
 
-In the context of distributed systems, the principle of *designing for failure*
-means designing each service in a way that it can tolerate failures in dependent
-services.
+In the context of distributed systems, the principle of *[designing for failure]* means designing each
+service in a way that it can tolerate failures in dependent services.
 
-Bad stuff happens. And bad things can happen from seemingly innocuous events.
-The trick to creating reliable distributed systems is to _assume_ they will
-fail and to design for that. The aim is for a failure in one part of a system
-to have minimal impact on the rest of the system, so avoiding full outages. The
-job is not to stop anything from failing; the job is to stop failures from
-causing massive problems. A common analogy is the electrical grid, where a
-failure in one part of the system does not cause the whole grid to fail.
+Bad stuff happens. And bad things can happen from seemingly innocuous events. The trick to creating
+reliable distributed systems is to _assume_ they will fail and to design for that. The aim is for a
+failure in one part of a system to have minimal impact on the rest of the system, so avoiding full
+outages. The job is not to stop anything from failing; the job is to stop failures from causing
+massive problems. A common analogy is the electrical grid, where a failure in one part of the system
+does not cause the whole grid to fail.
 
-This is the opposite to the approach of trying to prevent failures and make
-complex systems run perfectly all the time. Such an approach produces inherently
-brittle systems. Rather than designing for perfection, we should design
-distributed systems for resilience.
+This is the opposite to the approach of trying to prevent failures and make complex systems run
+perfectly all the time. Such an approach produces inherently brittle systems. Rather than designing
+for perfection, we should design distributed systems for resilience.
 
-The concept of *graceful degradation* provides a useful way to think about
-designing for failure. It refers to any design strategy that allows a system to
-continue operating, albeit with reduced functionality, when some components fail.
-The idea is for a system to degrade gracefully, rather than failing
-catastrophically, when something goes wrong. This is the opposite of a _brittle_
-system, which fails completely when one part fails.
+The concept of *[graceful degradation]* provides a useful way to think about designing for failure. It
+refers to any design strategy that allows a system to continue operating, albeit with reduced
+functionality, when some components fail. The idea is for a system to degrade gracefully, rather
+than failing catastrophically, when something goes wrong. This is the opposite of a _brittle_ system,
+which fails completely when one part fails.
 
-An analogy for graceful degradation is an escalator that just becomes a regular
-set of stairs when it stops working. By comparison, a lift is a brittle system.
-When it stops working, it is not usable at all.
+An analogy for graceful degradation is an escalator that just becomes a regular set of stairs when
+it stops working. By comparison, a lift is a brittle system. When it stops working, it is not usable
+at all.
 
 Architectural patterns and visibility strategies to mitigate failures include, but are not limited to:
 
-* *Redundancy*: Running multiple instances of a service, so that if one fails,
-  another can take over. *Circuit breakers* and
-  *link:./load-balancing.adoc[load balancing]* are two common strategies for
-  achieving redundancy. Circuit breakers automatically fail over to a backup
-  system when a primary system fails. Load balancers distribute requests across
-  multiple instances of a service, and will redirect requests away from
-  failing instances.
+* *Redundancy*: Running multiple instances of a service, so that if one fails, another can take over.
+  *Circuit breakers* and *link:./load-balancing.adoc[load balancing]* are two common strategies for
+  achieving redundancy. Circuit breakers automatically fail over to a backup system when a primary
+  system fails. Load balancers distribute requests across multiple instances of a service, and will
+  redirect requests away from failing instances.
 
-* *Replication and caching*: These strategies involve storing copies of data in
-  multiple locations, and closer to the services that need the data. These
-  strategies trade-off data consistency for improved resilience and reliability.
+* *Replication and caching*: These strategies involve storing copies of data in multiple locations,
+  and closer to the services that need the data. These strategies trade-off data consistency for
+  improved resilience and reliability.
 
-* *Retries and timeouts*: Automatically retrying requests that fail (in case
-  the failure was transient), and automatically failing requests that take too
-  long (in case the system is slow or unresponsive).
+* *Retries and timeouts*: Automatically retrying requests that fail (in case the failure was
+  transient), and automatically failing requests that take too long (in case the system is slow or
+  unresponsive).
 
-* *Reduced dependencies*: Minimizing the number of dependencies between
-  services, so that if one fails, others are not affected.
+* *Reduced dependencies*: Minimizing the number of dependencies between services, so that if one
+  fails, others are not affected.
 
-* *Reduced distance*: Minimizing the physical distance between the location of
-   services, and make their connections as reliable as possible. A wide area
-   network is more likely to fail than a local area network, and a local area
-   network is still more risky than co-located data.
+* *Reduced distance*: Minimizing the physical distance between the location of services, and make
+  their connections as reliable as possible. A wide area network is more likely to fail than a local
+  area network, and a local area network is still more risky than co-located data.
 
-* *Monitoring*: Keeping an eye on the health of the system, so that operations
-  teams can respond to failures quickly.
+* *Monitoring*: Keeping an eye on the health of the system, so that operations teams can respond to
+  failures quickly.
 
-Assuming failure also puts emphasis on designing for changeability. A key aspect
-of designing for resilience is being able to quickly change software, so we can
-fix issues when they _do_ occur.
+Assuming failure also puts emphasis on designing for changeability. A key aspect of designing for
+resilience is being able to quickly change software, so we can fix issues when they _do_ occur.
