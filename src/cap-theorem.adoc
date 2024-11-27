@@ -1,7 +1,7 @@
 = CAP theorem
 
 The CAP theorem is a useful principle to help us think about some of the core
-trade-offs to be made in the design of link:./distributed-systems.adoc[*distributed systems*].
+trade-offs to be made in the design of *link:./distributed-systems.adoc[distributed systems]*.
 
 When dealing with distributed systems in which we need to share data between
 multiple nodes, we need to think about:
@@ -15,16 +15,16 @@ The reason is explained in the CAP theorem, which was devised by computer
 scientist *Eric Brewer* (CAP theorem is also known as *Brewer's theorem*). The
 CAP abbreviation describes the following characteristics of a distributed system:
 
-* *Consistency*: All nodes see the same data at the same time. When a write is
+* *link:./consistency.adoc[Consistency]*: All nodes see the same data at the same time. When a write is
   performed on one node, it is instantly reflected on all other nodes before
   the write is considered complete.
 
-* *Availability*: Each request received by a working node must receive a
+* *link:./availability.adoc[Availability]*: Each request received by a working node must receive a
   response. The system remains operational at all times, and can therefore
   always respond to requests.
 
-* *Partition tolerance*: The system continues to operate in the case of a
-  network partition (division into separate subnets).
+* *link:./partition-tolerance.adoc[Partition tolerance]*: The system continues to operate in the case of a
+  network partition that prevents messages from being delivered between nodes.
 
 The CAP theorem states that you can choose any combination of two of these
 characteristics, but you can never have all three.
