@@ -1,0 +1,37 @@
+= Visibility
+
+Visibility is a *link:./quality-attributes.adoc[quality attribute]* of a system. Broadly, visibility
+refers to the ability to understand and analyze a system's behavior, performance, and health when it
+is running in production.
+
+Visibility is implemented using *link:./monitoring.adoc[monitoring]* and
+*link:./observability.adoc[observability]* strategies. Monitoring and observability are closely
+related, but serve different purposes:
+
+* Monitoring is about tracking *link:./metrics.adoc[metrics]* against predefined thresholds, and
+  triggering *link:/.alerting.adoc[alerts]* when metrics fall outside of the acceptable ranges.
+
+* Observability is about using various *link:./telemetry.adoc[telemetry]* data sources to gain
+  insights into a system's behavior, typically to diagnose issues and respond to incidents.
+
+In simple terms, monitoring tells you when something is wrong, while observability is about
+diagnosing why something is wrong and learning how to fix it.
+
+In monitoring, telemetry data is used to continuously track system health by comparing metrics
+against predefined thresholds, with the report data fed into dashboards and alerting systems.
+Thresholds define acceptable operating ranges for the metrics, and if a metric falls outside that
+range, an alert is triggered.
+
+In observability, telemetry data is used to create ad-hoc queries and visualizations to help
+diagnose issues and incidents, or to better understand specific system behaviors, without the need
+for additional testing or coding.
+
+Thus, monitoring activities are more reactive, while observability activities are more proactive and
+exploratory.
+
+The same underlying telemetry data may feed both monitoring and observability tools. For this reason,
+many monitoring tools also provide observability capabilities, and vice versa. The distinction
+between monitoring and observability is not always clear-cut, and the terms are often used
+interchangeably. Since metrics are a one of the three pillars of observability, monitoring is
+commonly considered a subset of observability strategies; thus, the term observability has come to
+refer to the entire process of monitoring, alerting, and troubleshooting production systems.
