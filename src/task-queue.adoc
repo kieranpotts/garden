@@ -1,2 +1,19 @@
 = Task queue
 
+A task queue is a system that receives *tasks* with related data, runs those tasks, and delivers
+the results back to the application.
+
+Task queues are typically built on top of a *link:./message-queues.adoc[message queue]* system,
+and can therefore be seen as a higher-level abstraction of message-driven communication that
+specifically focuses on the processing of computational tasks.
+
+https://docs.celeryq.dev/[Celery] is a popular distributed task system. Though written in Python,
+Celery's communication protocol can be implemented in any language and there are libraries for
+JavaScript, TypeScript, and PHP. Celery is commonly used with https://www.rabbitmq.com/[RabbitMQ] as
+the message broker, but it can also be used with Amazon SQS, Redis, or even databases.
+
+Celery allows you to define tasks as Python functions and execute them either synchronously
+(in the foreground, for instant execution) or asynchronously (in the background). Tasks can also
+be scheduled for processing, thereby offering an alternative to system-level cron tasks. Celery
+handles the launching of workers to process tasks, and it stores the results for later retrieval
+by the application.
