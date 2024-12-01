@@ -1,3 +1,24 @@
 = Alerting
 
+Alerting is an extension of *link:./monitoring.adoc[monitoring]* activities. It is the process of
+notifying responsible parties when a system is not behaving as expected, as determined by
+pre-defined thresholds or conditions around system *link:./metrics.adoc[metrics]* or
+*link:./logging.adoc[logs]*.
 
+For example, alerts may be configured for sudden surges in traffic, high error rates, or lots of
+back-to-back failed login attempts.
+
+Alerts will typically be triggered by a monitoring system in near *[real-time]*.
+
+Alerting systems tend to be built into *link:./monitoring.adoc[monitoring]* and
+*link:./observability.adoc[observability]* systems. For example, Prometheus has
+https://prometheus.io/docs/alerting/latest/overview/[Alert Manager], while Elasticsearch
+has https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-getting-started.html[Watcher]
+But there are a few standalone alerting systems that are designed to feed off data produced by
+monitoring and observability tools like Prometheus and the Elastic stack. Examples include:
+
+* https://www.pagerduty.com/[PagerDuty] — Alerting and incident management services.
+
+* https://www.atlassian.com/software/opsgenie[OpsGenie] — Alerting and on-call management, part of the Atlassian suite.
+
+* VictorOps — Was an on-call management system and is now part of https://www.splunk.com/[Splunk].
