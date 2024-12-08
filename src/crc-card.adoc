@@ -1,0 +1,54 @@
+= Class-Responsibility-Collaboration (CRC) card
+
+A Class-Responsibility-Collaboration (CRC) card is a [modelling] tool used in
+[object-oriented software design].
+
+CRC cards are simple index cards that capture essential information about a class:
+
+* *Class*: The class's name.
+* *Responsibilities*: The main tasks or roles that the class performs.
+* *Collaborations*: Other classes that the class interacts with to fulfill its responsibilities.
+
+At the top of the index card is the name of the class. On the left side are listed the class's
+responsibilities, and on the right the names of other classes is collaborates with.
+
+.Example
+[source]
+----
+┌──────────────────────────────┬─────────────┐
+│ Order                        │ Customer    │
+| -----                        │ Payment     │
+│ Check if items in stock      │ Inventory   │
+│ Determine price              │             │
+│ Check for valid payment      │             │
+│ Dispatch to delivery address │             │
+│                              │             │
+└──────────────────────────────┴─────────────┘
+----
+
+CRC cards were originally proposed as a teaching aid by [Ward Cunningham] and [Kent Beck] in a
+https://dl.acm.org/doi/10.1145/74878.74879[1989 paper]. They subsequently became popular as a
+system design tool. [Martin Fowler] referenced them in his book "UML Distilled", and [Fred Brooks]
+mentioned them as a design tool in the 20th anniversary edition of
+*link:./mythical-man-month.adoc["The Myth Man-Month"]*.
+
+CRC cards are particularly handy for early brainstorming of the structure of an object-oriented
+system, between translating use-case descriptions into class diagrams.
+
+CRC cards are noted for their simplicity and flexibility. Using paper index cards makes it easy
+to create, update, and discard cards, and rearrange the index, as the design evolves. The cards
+can be laid out, or pinned to a board, to visualize the hierarchy of classes and their
+relationships.
+
+Using small cards helps to place useful constraints on the design. It minimizes the complexity
+of each class, by putting a physical limit on the number of responsibilities that can be listed,
+and on the number of collaborators that can be referenced.
+
+To create a CRC card:
+
+1. Write the name of the class at the top of a new index card.
+2. List the main responsibilities of the class on the left, without going into implementation
+   details.
+3. List the names of other classes that the class collaborates with on the right.
+4. Pull out the index cards for the collaborating classes, and reference the new class as a
+   collaborator on each of them (so creating bi-directional references between collaborators).
