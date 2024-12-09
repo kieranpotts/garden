@@ -3,13 +3,27 @@
 Concurrency refers to the ability of a computer system to handle multiple tasks at the same time.
 This is achieved by interleaving the execution of processes on a single processing unit (CPU)
 through context switching. This creates the illusion of parallelism, but in reality the tasks are
-not processes simultaneously. Instead, the CPU switches between tasks, giving each a slice of time
-to execute.
+not processed simultaneously. Instead, the CPU switches between tasks, giving each a slice of time
+to execute, but never executing more than one task at exactly the same time.
 
-A concurrent program uses a single CPU core but switches between tasks (ie. threads) to make the
-most efficient use of CPU time. This contrasts to a *link:./parallel-computing.adoc[parallel program]*,
-which uses multiple CPU cores, each performing a task independently. Programs may have both concurrent
-and parallel characteristics, or neither.
+In a computer, tasks are executed using a Central Processing Unit (CPU). A single CPU can execute
+only one task at a time. However, it can rapidly switch between tasks, giving the appearance that
+multiple things are happening at once. For example, modern computer can play music while the user
+is writing a Word document, and more, using just a single CPU. The CPU alternatives between these
+tasks so quickly that, to the user, it feels like both are happening at the same time.
+
+Concurrency is primarily achieved using *threads*, which are the smallest units of execution within
+a *process*. The CPU switches between threads to handle multiple tasks concurrently. When the CPU
+switches from one task to another, it saved the current task's state in memory. The CPU then loads
+the context of the next task, and continues executing it. The CPU repeats this pattern, switching
+between tasks so quickly that it seems like they are running simultaneously.
+
+Concurrency is distinguished from parallelism. In *link:./parallelism.adoc[parallel programming]*,
+a program uses multiple CPU cores, each performing a task entirely independently of the others.
+Parallel programming is true *multi-tasking*, meaning tasks are literally processed "at the same
+time". Concurrency gives the impression of multi-tasking, but really it is *multi-threading*,
+meaning that independent tasks share the same execution thread while appearing to be processed
+simultaneously.
 
 ----
 Parallelism
@@ -21,38 +35,84 @@ Concurrency
                   -------      -----> Task 2
 ----
 
-Parallel program is true "multi-tasking", meaning tasks are literally processed "at the same time".
-Concurrency is "multi-threading", meaning that independent tasks are sharing the same execution
-thread while appearing to be processed simultaneously.
+Programs may have both concurrent and parallel characteristics, or neither.
 
-Concurrency can be useful for improving the responsiveness of a system, by allowing it to handle
-multiple tasks without waiting for one to complete before starting another. It is commonly used in
-scenarios where tasks involve waiting for input/output operations, such as reading from a file or
-waiting for user output.
+The objective of concurrency is to maximize CPU utilization by minimizing idle time. When one
+thread or process is waiting for I/O operations, database transactions, or external program
+launches, the CPU can allocate resources to another thread. This ensures the CPU remains
+productive, even when individual tasks are stalled.
+
+But there is a cost to the benefits provided by concurrency. Every context switch requires saving
+and restoring task states, which itself consumes time and resources. Excessive context switching
+can degrade performance by increasing CPU overhead.
+
+Nevertheless, concurrency can be useful for improving the responsiveness of software applications,
+by allowing them to handle multiple tasks without waiting for one to complete before starting
+another. Concurrency is commonly used in scenarios where tasks involve waiting for input/output
+operations, such as reading from a file or waiting for user output.
 
 For example, consider a text editor where you can continue to type while the document is being
-saved. The document update and save operations are separate, and handled concurrently.
+saved. The document update and save operations are separate, and handled concurrently. Other
+real world examples of applications that make extensive use of concurrency include:
 
-.Asynchronous operations
+* *Client-side web applications*: The web platform implements concurrency to allow for user actions
+  such a clicks and scrolling, and the fetching of external resources like images and scripts, to
+  be "non-blocking" of HTML and CSS rendering and repaints.
+
+* *Web servers*: Web servers like the Apache HTTP Server and Nginx can handle multiple client
+  requests concurrently, processing each request independently using threads or asynchronous I/O.
+
+* *Chat applications*: Concurrent tasks include the processing of incoming messages, the updating
+  of the user interface with new messages, and the sending of outgoing messages. Managing these
+  tasks concurrently gives the impression of real-time communication by minimizing delays and
+  UI freezes.
+
+* *Video games*: Video games rely heavily on concurrency to deliver immersive user experiences.
+  Concurrent tasks including rendering graphics, processing user input, simulating physics, and
+  playground background music.
+
+.Example of a concurrent program written in Java
+
+[source,java]
+----
+class Task implements Runnable {
+    private String taskName;
+
+    public Task(String taskName) {
+        this.taskName = taskName;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println(taskName + " - Step " + i);
+            try {
+                /* Simulate I/O or computation. */
+                Thread.sleep(500);
+            } catch (InterruptedExecution e) {
+                System.out.println(taskName + " interrupted.");
+            }
+        }
+    }
+}
+
+public class ConcurrencyExample {
+    public static void main(String[] args) {
+        Thread task1 = new Thread(new Task("Task A"));
+        Thread task2 = new Thread(new Task("Task B"));
+        Thread task3 = new Thread(new Task("Task C"));
+
+        task1.start();
+        task2.start();
+        task3.start();
+    }
+}
+----
+
+''''
+
+.See also
 ****
-The term "asynchronous" can mean different things in different contexts. In general, in computer
-science the term "asynchronous" refers to two or more events that do not happen at the same time,
-ie. they are not synchronous.
-
-In computer programs, concurrency and parallelism are different solutions to achieving asynchronous
-operations. Sometimes, the operations are not truly asynchronous at all, but are really _deferred_
-operations – they are handled by the main thread but only after the program has returned its
-response to the user or client.
-
-In JavaScript, for example, `async` operations are concurrent ones that are implemented using
-promise-based APIs. They are ideal for waiting on input or responses from external systems or users,
-without blocking other processing on the main thread in the meantime.
-
-"Asynchronous communication" is a different concept, and it refers to any method of exchanging
-messages in which the sending, receiving, and processing of each message is not dependent upon the
-sending, receipt, or processing of other messages. For example, messages may be sent without waiting
-for a response or even acknowledgement, and receivers may process messages after they have been
-received, and perhaps in any order.
-
-Email is the classic example of asynchronous communication.
+* *link:./asynchronous-communication.adoc[Asynchronous communication]*
+* *link:./asynchronous-programming.adoc[Asynchronous programming]*
 ****
