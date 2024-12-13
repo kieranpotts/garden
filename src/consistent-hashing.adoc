@@ -1,12 +1,21 @@
 = Consistent hashing
 
-Consistent hashing is a special kind of *[hashing]* technique that allows for *efficient distribution*
-of data across a cluster of nodes.
+Consistent hashing is a special kind of *[hashing]* technique that allows for efficient
+*link:./sharding.adoc[sharding]* of data across a cluster of nodes.
 
-Consistent hashing ensures that only a small portion of the data needs to be reassigned when nodes
-are added or removed.
+The main benefit of consistent hashing over other hashing techniques when partitioning data is that,
+when shards are added or removed to the cluster, the amount of data that will need to be moved
+between shards is minimized.
 
 == How it works
+
+At a very high level, consistent hashing works by distributing data across an arbitrary number of
+nodes located around a hash range. Each data item is also hashed, using the same hash function,
+to give it a location on the same hash range. The node that is responsible for storing a data item
+is the nearest to it along the along hash range.
+
+Using this technique, when new nodes are added to the cluster, or when existing nodes are removed,
+the volume of data that will need to be moved between nodes will be minimized.
 
 image::./_/consistent-hashing.png[]
 
