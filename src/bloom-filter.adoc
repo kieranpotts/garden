@@ -1,0 +1,17 @@
+= Bloom filter
+
+A bloom filter is a *probabilistic data structure* that is primarily used to determine whether an
+element is definitely not in a set, or if it is possible not in the set.
+
+== How bloom filters work
+
+1.  *Setup*: Start with a bit array of length `m` and initialize all bits to `0`. Use `k` different
+    hash functions to map elements to positions in the bit array.
+
+2.  *Insertion*: To insert an element, hash it with each of the `k` hash functions to get `k`
+    positions in the bit array. Set the bits at all of these positions to `1`.
+
+3.  *Querying*: To query whether an element is in the set, hash it with each of the `k` hash
+    functions to get `k` positions in the bit array. If all of the bits at these positions are `1`,
+    the element is _probably_ in the set (but there's a chance it is a false positive). If any of
+    the bits are `0`, the element is _definitely not_ in the set.
