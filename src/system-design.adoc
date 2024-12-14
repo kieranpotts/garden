@@ -7,12 +7,120 @@ To meet the needs of an organization, system design requires a systematic approa
 engineering systems. A good system design requires us to think about everything, from infrastructure
 all the way down to the data and how it's stored.
 
+== System design trade-offs
+
 Much of system design is about making trade-offs between high-level goals and constraints. For
 example, we might need to prioritize a system being highly available but less consistent, or we
 might need to prioritize consistency over availability.
 
 These sorts of decisions are expensive to change later on. Iterative or evolutionary design is best
 avoided at the highest abstractions of a system.
+
+Examples of trade-offs in system design include:
+
+* *Monolithic vs microservices architecture*:
+
+* *Vertical vs horizontal scaling*: Vertical scaling involves boosting the power of existing nodes
+  (eg. CPI, RAM, storage). Horizontal scaling involves adding more nodes. Scaling vertically is
+  simpler but there's a physical limit to how much you can upgrade individual nodes, and it
+  maintains a single point of failure. Scaling horizontally is more complicated but it allows
+  for almost limitless scaling.
+
+* *Strong vs eventual consistency*: Strong consistency ensures that any read operation returns the
+  most recent write for a given piece of data. Eventual consistency ensures that, given enough time,
+  all nodes in a distributed system will converge to the same value (although there are usually no
+  guarantees how long this convergence will take ot occur). Strong consistency means that, once a
+  write is acknowledged, all subsequent reads will reflect the value of that write.
+
+* *Stateful vs stateless design*: In a stateful design, the system remembers client data from one
+  request to the next. The server maintains a record of the client's state, which may include
+  session information, transaction details, or any other data relevant to the ongoing interaction.
+  Stateless design treats each request as an independent transaction. The server does not store any
+  information about the client's state between requests. Therefore, each request must contain all
+  the information necessary for the server to fulfill it.
+
+* *Read-through vs write-through caching*: A read-through cache sits between an application and
+  its data store. When the application requests data, it first checks the cache. If the data is
+  found in the cache (ie. there is a *cache hit*), the cache returns the data to the application.
+  If the data is not found in the cache (ie. there is a *cache miss*), the cache itself is
+  responsible for loading the data from the data store, caching it, and then returning the data to
+  the application. In a write-through cache strategy, data is written into the cache and the
+  corresponding data store simultaneously. Every write operation write data to both the cache and
+  the data store. The write operation is considered complete only after the data is successfully
+  written to both the data store and its cache.
+
+* *SQL vs NoSQL databases*: SQL databases, aka. relational databases, store data with a predefined
+  schema and allow for complex queries using a structured query language. SQL databases are ideal
+  where complex queries are required to resolve complex relationship between datasets, where data
+  integrity/validity is required in high-stake transactions such as financial systems (ACID
+  compliance), and where the data is highly structured and that structure is unlikely to change
+  significantly over time. NoSQL databases are more flexible and scalable. They are best for
+  big data (the handling of large volumes of both structured and unstructured data), rapid
+  development (because their schema-less nature allows for quicker iterations in data design),
+  and scalability (they are easier to scale horizontally than relational databases).
+
+* *Normalization vs denormalization*: Normalization is the process of organizing a database to
+  reduce redundancy and improve data integrity. Normalization usually involves dividing a database
+  into two or more tables and defining relationships between the tables. Denormalization is the
+  process combining data back into fewer tables to improve read/query performance, even if this means
+  adding redundant data to the database. Denormalization is often used to optimize read-heavy
+  operations, where the cost of reading data is more important than the cost of writing and
+  storing it.
+
+* *Synchronous vs asynchronous communication*: In synchronous processing, tasks are executed
+  sequentially, making it easier to reason about the flow of control and handling dependencies.
+  Synchronous processing is used in scenarios where tasks must be completed in a particular order,
+  like reading a file line by line. In asynchronous processing, tasks are executed concurrently,
+  improving responsiveness and performance. This is used where you need to handle multiple tasks
+  simultaneously without blocking the main thread, like background processing jobs.
+
+* *REST vs RPC-style APIs*: When designing client-server APIs, two popular architectural styles
+  often come into consideration: REST (Representational State Transfer) and RPC (Remote Procedure
+  Call). The REST style is based on the semantics of HTTP, and is often implemented using HTTP.
+  Key characteristics of REST-style APIs include statelessness (each request contains all necessary
+  information for the server to fulfill it), resource-based (it uses URLs to represent resources),
+  using standards HTTP methods (GET, POST, PUT, DELETE), and it typically returns data in JSON or
+  XML format. RPC-style APIs are action-based, ie. they are focused on operations or actions.
+  RPC-style APIs tend to be implemented in a wider range of protocols, including HTTP but also
+  others like gRPC, Thrift, and SOAP, and others. RPC-style APIs often use custom methods and
+  custom data formats.
+
+* *Batch vs stream processing*: In batch processing, large volumes of data is processed at once,
+  typically at scheduled intervals. It is an efficient way to handle massive datasets, and ideal for
+  tasks like data aggregation, backups, reporting, and data warehousing. The main trade-off is
+  high latency; data is available only after the entire batch is processed. Stream processing
+  tends to be used to process data in real-time (as it arrives). It is ideal for real-time analytics,
+  monitoring, and alerting. Other common use cases for stream processing include fraud prevention,
+  live data feeds, and IoT applications. The main advantages of stream processing over batch
+  processing is its low latency, since data is processed within milliseconds (usually) of its
+  arrival.
+
+* *Long-polling vs WebSockets*: In a long polling connection, the client repeatedly requests updates
+  from the server ast regular intervals. If the server has new data, it sends a response immediately,
+  otherwise it hold the connection until data is available. This can lead to increased latency and
+  higher server load, due to frequent requests event when no data is available. WebSockets
+  is a protocol that establishes a persistent, full-duplex connection between the client and
+  server, allowing for real-time exchange without the overhead of HTTP requests. Unlike the
+  traditional HTTP protocol, where the client sends a request to the server and waits for a response,
+  WebSockets allow both the client and server to send messages ot each other independently and
+  continuously, once the connection is established.
+
+* *TCP vs UDP*: When it comes to data transmission over the internet, two key protocols are at the
+  forefront: TCP and UDP. TCP (Transmission Control Protocol) is the more reliable (it ensures all
+  data packets arrived in order and are error-free), connection-oriented (it establishes
+  a connection before data transfer, making it ideal for tasks where accuracy is crucial - eg.
+  web browsing, file transfers), but it is slower (due to the overhead of managing connections and
+  ensuring reliability can introduce latency). UDP (User Datagram Protocol) is faster (it has
+  minimal overhead, allowing for quick data transfer, making it perfect for time-sensitive
+  applications like video streaming, VoIP, and online gaming), connectionless (there is no formal
+  connection setup; data is sent without guarantees), but it is less reliable (there is no error
+  checking or ordering, so some data packets may be lost or arrive out of order).
+
+* *Push vs pull-based systems*: In a push-based system, the server sends data to the client without
+  the client requesting it. This is ideal for real-time applications, like chat applications or
+  stock tickers. In a pull-based system, the client requests data from the server when it needs it.
+  This is ideal for scenarios where the client needs to control over when its syncs its state
+  with the server.
 
 == Related topics
 
