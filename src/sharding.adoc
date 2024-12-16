@@ -2,23 +2,21 @@
 
 Database sharding is a *link:./horizontal-scaling.adoc[horizontal scaling]* technique in
 *[database management]* that involves *partitioning* (splitting) one large database into multiple
-smaller databases, called *shards*. The shards are then distributed across multiple nodes, each
+smaller databases, called *shards*. The shards are then distributed across multiple *[nodes]*, each
 responsible for handling a specific subset of the overall data.
 
 By distributing data across multiple nodes, sharding *link:./load-balancing.adoc[balances load]*
-across multiple nodes, reducing load on any single node. This improves system
-*link:./performance.adoc[performance]*, *link:./availability.adoc[availability]*, and
-*link:./scalability.adoc[scalability]*.
+across multiple nodes, reducing *[load]* and *link:./fault-tolerance.adoc[risk]* on any single node.
+This improves system *link:./performance.adoc[performance]*, *link:./availability.adoc[availability]*,
+and *link:./scalability.adoc[scalability]*.
 
-Trade-offs include include increased *:./complexity.adoc[complexity]* in the system design, new
-challenges for joining data across shards, and the potential for *hot spots* that can be solved
-only through tricky *data rebalancing*.
+Trade-offs include increased *:./complexity.adoc[complexity]* in the system design, new challenges
+for joining data across shards, and the potential for *hot spots* that can be solved only through
+tricky *data rebalancing*.
 
-Database sharding of commonly used in situations where a single database can no longer be
-sufficiently *link:./vertical-scaling.adoc[scaled vertically]*.
-
-Sharding is one of the two main methods for scaling databases. The other is
-*link:./replication.adoc[replication]*.
+Database sharding is commonly used in situations where a single database can no longer be
+sufficiently *link:./vertical-scaling.adoc[scaled vertically]*. Sharding is one of the two main
+methods for scaling databases. The other is *link:./replication.adoc[replication]*.
 
 == Database partitioning methods
 
