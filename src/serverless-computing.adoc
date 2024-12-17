@@ -1,2 +1,43 @@
 = Serverless computing
 
+Serverless computing, or just "serverless", is a cloud computing model that allows developers to
+build and run applications without having to operate the underlying servers. Instead, the
+*link:./cloud-service-providers.adoc[cloud service provider (CSP)]* manages every aspect of the
+infrastructure, including resource allocation, auto-scaling, and server maintenance.
+
+Serverless computing services are a further abstraction of the
+*link:./platform-as-a-service.adoc[Platform as a Service (PaaS)]* model. In PaaS, application
+developers are still responsible for managing the application environment, including system
+configuration and updates, and for implementing scaling and load balancing. The CSP is responsible
+only for managing the underlying infrastructure and for basic operational needs.
+
+The term "serverless" is a bit of a misnomer, as servers are still involved in running the code, but
+they are entirely abstracted away from the application developers.
+
+Serverless computing is *link:./event-driven-architecture.adoc[event-driven]*, meaning that
+functions are triggered by specific events or requests, such as HTTP requests, changes in a
+database, or messages from a queue. Developers write small, single-purpose functions that are
+executed in response to these events. Serverless computing is well-suited to applications that
+react to events, such as those that handle real-time data streams, and where rapid scalability is
+required.
+
+Serverless is not without its challenges. Potential issues include cold start times, where the
+platform takes time to initialize a function, and risks associated with vendor lock-in, as
+applications can be tightly coupled to the CSP's platform.
+
+Other features of serverless computing include:
+
+* *Auto-scaling*: Resources are automatically scale up or down based on application demand, without
+  any intervention from the developer.
+
+* *Pay-as-you-go*: Customers pay only for the compute resources they use, typically billed on a
+  per-invocation basis.
+
+* *Automated deployment*: Tools, integrated into the hosting platform, allow for quick and easy
+  deployments.
+
+Examples of serverless platforms include:
+
+* AWS Lambda
+* Azure Functions
+* Google Cloud Functions
