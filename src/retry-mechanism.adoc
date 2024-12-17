@@ -1,3 +1,29 @@
 = Retry mechanism
 
-// TODO: Exponential backoff
+A retry mechanism is a way to handle *transient failures* in *link:./distributed-systems.adoc[distributed systems]*.
+When requests to services fail, the retry mechanism will automatically retry the request until it
+either succeeds or a retry threshold is reached.
+
+Retry mechanisms are useful in situations where you expect transient failures to occur. Transient
+failures are failures that occur sporadically and are not indicative of a permanent problem with the
+system. Retry mechanisms should be used in conjunction with other *[error handling]* mechanisms,
+such as *[logging]* and *[monitoring]*.
+
+There are two main ways to implement a retry mechanism:
+
+* *Simple retry*: The simplest form of retry mechanism is to retry the operation a fixed number of
+  times, with a fixed delay (which may be zero) between each retry.
+
+* *Exponential backoff*: With  exponential backoff, the system will retry the operation with
+  increasing delays between each retry. The aim is to avoid overwhelming the target service with
+  retries, and to give the target service more time to *link:./disaster-recovery.adoc[recover]*
+  from its failure mode.
+
+Retry mechanisms are an alternative solution to a *link:./circuit-breaker.adoc[circuit breaker]*.
+A circuit breaker monitors requests to a service and, if the number of failures within a configured
+time period exceeds a configured threshold, the circuit breaker will "trip" the connection,
+preventing any further requests from being sent to the failing service for a period of time.
+This gives the failing service time to *link:./disaster-recovery.adoc[recover]* from its failure
+mode, without being overwhelmed by retries in the meantime. Both retry mechanisms and circuit
+breakers are solutions for improving *link:./fault-tolerance.adoc[fault tolerance]*, and the two
+solutions may be used in conjunction with each other.
