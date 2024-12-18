@@ -19,4 +19,45 @@ asking for a piece of data from whatever other component can provide it.
 Thus, *[event-driven architecture]* can be seen as a subset of message-driven architecture, where
 events are the primary type of message.
 
+== Message distribution patterns
 
+The following patterns are found in message-driven distributed systems:
+
+* *Fan out*: A message is sent to multiple consumers. This allows for parallel processing of
+  messages by different components or services. For example, a user action like placing an order
+  could trigger updates to inventory, billing, and shipping services. These updates may be handled
+  by separate services, and the order of processing may not be important and therefore the
+  processing can be done in parallel.
+
+* *Fan in*: Multiple sources send messages to a single consumer. This is used to aggregate data from
+  various producers into a single point for processing. For example, collecting logs from multiple
+  applications or servers into a central logging service.
+
+* *Broadcasting*: A message is sent to all consumers, regardless of whether they subscribed to it or
+  not. This is often used for system-wide notifications, for example sending out alerts or system
+  status updates to all connected clients.
+
+* *Multicasting*: Similar to broadcasting, but the message is sent only to a specific group of
+  consumers who have subscribed to a particular topic or channel. This is useful for sending updates
+  to a specific department or group of users.
+
+* *Point-to-point*: A single message is sent from one producer to one consumer. This ensures that
+  each message is processed by one and only one receiver. For example, processing tasks in a job
+  queue, where each task needs to be handled by one worker.
+
+* *Publish-subscribe (pubsub)*: Producers (publishers) send messages to a channel, and consumers
+  (subscribers) receive messages from that channel. Subscribers express interest in specific topics
+  and receive only messages related to those topics. This pattern is commonly used for real-time
+  data feeds, where users subscribe to topics of interest such as stock prices or news updates.
+  This pattern is also known as the *observer pattern* and it is the basis for *event-driven*
+  communication.
+
+* *Scatter-gather*: This pattern involves sending a request to multiple services (scatter),
+  collecting their responses (gather), and then aggregating the results. This is useful for
+  distributed search queries where results from multiple databases are combined into a single
+  response.
+
+* *Request-reply*: A message exchange pattern where a request is sent to a service, and a reply is
+  expected in return. It ensures a two-way communication between the client and the server. This
+  pattern is commonly used in microservices architectures, where one service needs a response from
+  another service.
