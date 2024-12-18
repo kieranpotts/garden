@@ -1,0 +1,52 @@
+= Single point of failure (SPOF)
+
+Planning to mitigate single points of failure is a critical aspect of *[system design]*. A single
+point of failure (SPOF) is any part of a system that, if it fails, stops the entire system from
+functioning correctly.
+
+An analogy for a single point of failure is a light switch that controls all the lights in a house.
+If the switch breaks, none of the lights will turn on. Similarly, a single point of failure in an
+IT system is something that can lead to system-wide outages or data loss.
+
+Single points of failure can have the following impacts:
+
+* Reduced *[reliability]* and *[availability]*. Increased *[downtime]*.
+* Data loss.
+* Financial losses (eg. due to lost revenue).
+* Reputation damage.
+
+Identifying and mitigating single points of failure increases the
+*link:./fault-tolerance.adoc[fault tolerance]* of a system.
+
+Common single points of failure include:
+
+* Databases: A single database instance with no replicas.
+* Load balancers: One load balancer managing all traffic.
+* Application servers: No redundancy in app servers.
+* Network devices: A single router or firewall.
+* Storage systems: A single disk or storage device.
+
+Common strategies to mitigate single points of failure include:
+
+* *Redundancy*: Adding backups and replicas for critical components, for example using
+  primary-replica databases or multi-region clusters.
+
+* *Geographic redundancy*: Deploying systems across multiple regions to handle regional outages.
+
+* *Load balancing*: Distributing traffic across multiple servers using tools like Nginx or AWS ELB.
+  This prevents bottlenecks by ensuring no single server handles all requests.
+
+* *High availability (HA)*: Designing systems to be highly available using active-active or
+  active-passive *[failover]* setups.
+
+* *Fault tolerance*: Using *[circuit breakers]* and *[retry mechanisms]* to prevent failures from
+  cascading.
+
+* *Disaster recovery*: Backing up data, and having recovery plans for system-wide failures.
+
+* *Monitoring and alerting*: Using tools like Prometheus, Datadog, or New Relic to identify failures
+  before they escalate.
+
+* *Chaos engineering/testing*: Running experiments to test system resilience and identify single
+  points of failure. For example, Netflix developed a tool called *Chaos Monkey* which would
+  randomly turn off production instances to test system resilience!
