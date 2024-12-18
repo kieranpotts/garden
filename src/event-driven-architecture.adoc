@@ -19,9 +19,74 @@ between services and to support *[scalability]* and *[resilience]*.
 
 Event-driven architecture is a specialized form of
 *link:./message-driven-architecture.adoc[message-driven architecture]*. Events are just a
-particular type of message, which particular semantics and use cases.
+particular type of *[message]*, with particular semantics and use cases. And the implementation
+of the systems to handle the transfer of messages between systems tends to differ between
+event-driven and message-driven systems. Typically, messages are delivered to specific consumers
+and then deleted from the message queue, while events tend to be broadcast to multiple consumers
+and subsequently retained in the event log. In practice, there is a lot of overlap between these
+two communication patterns and it is possible to support both with the same underlying messaging
+infrastructure.
+
+There are four parts to an event-driven system:
+
+* *Producers*, the components that generate events and publish them.
+* *Consumers*, the components that subscribe to events and process them.
+* Some kind of *channel* to transfer events between the two, usually an event bus.
+* And the *events* themselves.
+
+== Events
 
 An *event* is an immutable fact. It is a record of something that happened in the past, and which
 cannot be changed.
+
+There are lots of different types of events, the two most common being:
+
+* *Notification events*: These are lightweight events encapsulating small pieces of data, such as
+  and `OrderConfirmed` event that contains only an order ID.
+
+* *Event-carried state transfer*: These are events that carry the full state of the entity that has
+  changed. This is useful when the event should be treated by consumers as the *[single source of truth]*
+  for the entity.
+
+Events are typically represented as a structured data object, such as a JSON or XML document. Each
+event type has a specific *[schema]* that defines the fields and data types that the event can
+contain.
+
+In event-driven systems, the event schema effectively becomes the API *[contract]* between the
+services within the system. Individual services may be both producers and consumers of events,
+producing events of some types while consuming events of other types.
+
+== Channels
+
+The producers and consumers of events should have no direct communication with other. Instead, all
+communication in an event-driven system is done *link:./asynchronous-communication.adoc[asynchronously]*
+via some kind of message channel.
+
+The communication channel in an event-driven system is typically an *event bus*, but it could
+equally be a *queue*, *topic*, or *stream*. There are many different solutions for storing and
+transporting events.
+
+The primary integration pattern in the message channel system is the *[publish-subscribe]* pattern.
+In this pattern, *producers* publish events to a channel, and N-number of *consumers* subscribe, via
+the channel, to particular events they're interested in.
+
+== Publishers and consumers
+
+Producers and consumers have very different responsibilities.
+
+The primary responsibility of producers is to produce events to an agreed *[schema]*, and to try to
+avoid introducing *link:./backwards-compatibility.adoc[breaking changes]* to that schema.
+
+A producer is _not_ responsible for how other components use its events. This is a key difference
+with message-driven systems, in which producers of messages often do care that their messages get
+processed by consumers. In event-driven systems, producers are not concerned with the downstream
+consumers of their events. They just publish events and move on. Some events may not be consumed
+at all, and that's fine.
+
+This design constraint means a whole host of responsibilities are shifted out of the producers.
+For example, in synchronous communication patterns, producers need to be concerned with the
+*[health]* of consumers, and the *[throughput]* they can handle. In event-driven systems, these
+concerns are shifted to external infrastructure components. For example, typically, the event bus
+is responsible for planning and handling the *[ingestion rate]* of events delivered to subscribers.
 
 
