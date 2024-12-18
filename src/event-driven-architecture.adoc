@@ -1,2 +1,27 @@
 = Event-driven architecture (EDA)
 
+Event-driven architecture is a design pattern in which the components of a system communicate by
+publishing and subscribing to each other's events. Events are usually delivered asynchronously via
+centralized event queues. Events may be used to synchronize state between components, or to trigger
+actions in other components. A single event may be processed by multiple consumers, allowing for
+*[parallel processing]* of tasks.
+
+*Event-driven* systems are distinguished from *link:./event-based-systems.adoc[event-based]* systems.
+GUIs are event-based systems. The events in GUIs are *technical events*, such as button clicks
+or mouse movements. In contrast, in event-driven systems the events are *business events*, such as
+"order placed", "order packaged", "order shipped", and "order delivered". These events are
+meaningful in the context of the business *[domain]*.
+
+Event-driven architectures may be implemented in both *link:./monoliths.adoc[monolithic]* and
+*link:./distributed-systems.adoc[distributed]* systems. However, this architectural style is
+most commonly associated with distributed systems, where it is used to enable *[loose coupling]*
+between services and to support *[scalability]* and *[resilience]*.
+
+Event-driven architecture is a specialized form of
+*link:./message-driven-architecture.adoc[message-driven architecture]*. Events are just a
+particular type of message, which particular semantics and use cases.
+
+An *event* is an immutable fact. It is a record of something that happened in the past, and which
+cannot be changed.
+
+
