@@ -13,12 +13,20 @@ Much of system design is about making trade-offs between high-level goals and co
 example, we might need to prioritize a system being highly available but less consistent, or we
 might need to prioritize consistency over availability.
 
+[TIP]
+======
 These sorts of decisions are expensive to change later on. Iterative or evolutionary design is best
 avoided at the highest abstractions of a system.
+======
+
+image::./_/system-design-tradeoffs.webp[]
 
 Examples of trade-offs in system design include:
 
-* *Monolithic vs microservices architecture*:
+* *Monolithic vs distributed architecture*: Monolithic architectures are simpler to develop and
+  deploy, but they are harder to scale and maintain. Distributed architectures are more complex to
+  develop and deploy, but they are easier to scale and maintain. *[Modular monoliths]* provide
+  a middle ground and allow for the incremental transition of a monolith to a distributed system.
 
 * *Vertical vs horizontal scaling*: Vertical scaling involves boosting the power of existing nodes
   (eg. CPI, RAM, storage). Horizontal scaling involves adding more nodes. Scaling vertically is
