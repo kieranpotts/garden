@@ -1,0 +1,18 @@
+= Observer pattern
+
+The observer pattern is a *[behavioral design pattern]* that defines a one-to-many dependency
+between objects. In this pattern, there is a *subject* (also known as the *observable*) and 
+multiple *observers*. The subject maintains a list of observers and notifies them automatically
+when its state changes.
+
+The observer pattern is similar to the *link:./publish-subscribe-pattern.adoc[publish-subscribe pattern]*,
+with the key difference being that pubsub adds an intermediary message *broker* to further decouple
+subjects (the producers of messages/events) from observers (the consumers of the messages/events).
+In the observer pattern, subjects have knowledge of who their observers are. In pubsub, publishers
+to not have any knowledge of their consumers, they have only knowledge of the centralized broker.
+
+The observer and pubsub patterns tend to seen at different levels of abstraction. The pubsub pattern
+tends to be seen at a system design level, offering a solution to the problem of managing
+communication between lots of distributed components. The observer pattern tends to be seen at a
+program level. It is commonly talked about in the context of object-oriented programming,
+specifically; where objects observe other objects within the same program.

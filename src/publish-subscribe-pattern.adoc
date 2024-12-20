@@ -1,0 +1,21 @@
+= Publish-subscribe (pubsub) pattern
+
+Publish-subscribe is a *link:./design-patterns.adoc[design pattern]* in which a centralized
+components acts as an intermediary between two distinct groups of software components: *publishers* 
+and *subscribers*. Publishers send messages (typically in the form of events) to the central message 
+*broker*, and the broker is responsible for delivering the messages to the subscribers who are
+interested in them.
+
+Subscribers can subscribe to particular message channels or particular types of events or topics.
+Publishers have no knowledge of which components subscribe to their events, promoting 
+*[loose coupling]*.
+
+A software component may be both a publisher and consumer, publishing some kinds of messages while
+consuming others.
+
+The pubsub pattern is implemented in the brokers in 
+*link:./event-driven-architecture.adoc[event-driven systems]*. Event-driven architecture is a 
+a style of application design in which components or services communicate with each other by
+producing and consuming events.
+
+See also the *link:./observer-pattern.adoc[observer pattern]*, which is closely related.
