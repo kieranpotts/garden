@@ -1,37 +1,77 @@
 = Event-driven architecture (EDA)
 
 Event-driven architecture is a design pattern in which the components of a system communicate by
-publishing and subscribing to each other's events. Events are usually delivered asynchronously via
-centralized event queues. Events may be used to synchronize state between components, or to trigger
-actions in other components. A single event may be processed by multiple consumers, allowing for
-*[parallel processing]* of tasks.
-
-*Event-driven* systems are distinguished from *link:./event-based-systems.adoc[event-based]* systems.
-GUIs are event-based systems. The events in GUIs are *technical events*, such as button clicks
-or mouse movements. In contrast, in event-driven systems the events are *business events*, such as
-"order placed", "order packaged", "order shipped", and "order delivered". These events are
-meaningful in the context of the business *[domain]*.
+publishing and subscribing to each other's events. Events are usually delivered *[asynchronously]*
+via centralized *[event queues]*. Events may be used to synchronize *[replicated state]* between
+components, or to trigger processes in other components. A single event may be processed by multiple
+consumers, allowing for *[parallel processing]* of tasks.
 
 Event-driven architectures may be implemented in both *link:./monoliths.adoc[monolithic]* and
 *link:./distributed-systems.adoc[distributed]* systems. However, this architectural style is
-most commonly associated with distributed systems, where it is used to enable *[loose coupling]*
-between services and to support *[scalability]* and *[resilience]*.
+most commonly associated with distributed systems, and specifically
+*link:./service-oriented-architecture.adoc[service-oriented architecture]*,
+where it is used to enable *[loose coupling]* between services and to
+support *[scalability]* and *[resilience]*.
 
-Event-driven architecture is a specialized form of
-*link:./message-driven-architecture.adoc[message-driven architecture]*. Events are just a
-particular type of *[message]*, with particular semantics and use cases. And the implementation
-of the systems to handle the transfer of messages between systems tends to differ between
-event-driven and message-driven systems. Typically, messages are delivered to specific consumers
-and then deleted from the message queue, while events tend to be broadcast to multiple consumers
-and subsequently retained in the event log. In practice, there is a lot of overlap between these
-two communication patterns and it is possible to support both with the same underlying messaging
-infrastructure.
+== Event-driven vs. event-based
+
+*Event-driven* systems are distinguished from *link:./event-based-systems.adoc[event-based]* systems.
+GUIs are event-based systems. The events in GUIs are *technical events*, such as button clicks
+and mouse movements. In contrast, in event-driven systems the events are *business events*, such as
+"order placed", "order packaged", "order shipped", and "order delivered". These events are
+meaningful in the context of the business *[domain]*. Otherwise the principles of event-based
+and event-driven systems are the same.
+
+== Event-driven vs. message-driven
+
+The terms "event-driven" and "message-driven" are used interchangeably, but the two concepts
+are distinct in some important ways. Event-driven architecture is a really a subset of
+*link:./message-driven-architecture.adoc[message-driven architecture]*. An event is just a
+particular type of message, with particular semantics and use cases.
+
+The way that messages are handled varies, too. With messages, once a message has been processed,
+the message is deleted from the queue, allowing the next message to be processed. Events,
+by contrast, tend to be indefinitely persisted in logs. Events may be broadcast to multiple
+subscribers, and it would even be possible for new services, added to the system in the future, to
+subscribe to the event channels and further process all the historical events.
+
+Another difference is that producers of messages are more likely to care that their messages get
+successfully received and processed by the consumers of the messages. Producers of events,
+generally, do not care what happens to their events once they have been emitted. This is a key
+difference between message-driven and event-driven systems. In message-driven systems, messages
+that can't be processed due to failures in consumers must be *[retried]* until the system achieves
+*[eventual consistency]*. In event-driven systems, it may not always be necessary for all types of
+events to be processed for the system to achieve eventual consistency. There may be some kinds of
+events that can be safely dropped without risk of leaving the system in an invalid state.
+
+These differences reflect the different use cases. A message is usually a *command* to do something,
+often with the message scheme being designed to be understood by a particular service. Events are
+*notifications* that something interesting has happened, which may or may not be relevant to the
+rest of the system. An *event log* is an immutable, append-only log of things that have happened
+within a system. Event logs are particularly useful for things like auditing, where you need to
+audit every action taken by every user, but the application itself does not need to know about the
+audit trail. Events are also useful for triggered background asynchronous processes, which are not
+time-sensitive. An example would be triggering the sending of an order confirmation email after an
+order is placed. By comparison, a message (or even an RPC call) may be more appropriate to trigger
+a two-factor authentication notification to the user.
+
+Event-driven architecture tends to be preferred for real-time processing of streams of large data
+objects. Real-time analytics and machine learning are classic use cases for event-driven
+architectures.
+
+In general, services that communicate via events will be much more loosely coupled than services
+that communicate via messages. In practice, there is a lot of overlap between these two
+communication patterns and it is possible to support both message-style and event-style
+communication with the same underlying messaging infrastructure. Distributed, service-oriented
+systems may exhibit characteristics of both message-driven and event-driven designs.
+
+== Components of event-driven systems
 
 There are four parts to an event-driven system:
 
 * *Producers*, the components that generate events and publish them.
 * *Consumers*, the components that subscribe to events and process them.
-* Some kind of *channel* to transfer events between the two, usually an event bus.
+* Some kind of *channel* or *broker* to transfer events between the two.
 * And the *events* themselves.
 
 == Events
@@ -39,18 +79,25 @@ There are four parts to an event-driven system:
 An *event* is an immutable fact. It is a record of something that happened in the past, and which
 cannot be changed.
 
-There are lots of different types of events, the two most common being:
+Typically, events are sent when there is a significant change in state in the application. The
+event represents the change in state.
+
+Broadly, there are two ways that changes of states can be represented by events. Either a message
+_describes_ an event that took place, such as "order placed" or "order confirmed", and encapsulates
+a limited about of related data – just enough that consumers can query the relevant services to
+fetch more information, if they need to. Or a message can communicate the complete new state of
+entities that have changed. Or some combination of both. These two approaches are described as:
 
 * *Notification events*: These are lightweight events encapsulating small pieces of data, such as
   and `OrderConfirmed` event that contains only an order ID.
 
-* *Event-carried state transfer*: These are events that carry the full state of the entity that has
-  changed. This is useful when the event should be treated by consumers as the *[single source of truth]*
-  for the entity.
+* *Event-carried state transfer*: These are events that carry the full state of an *[entity]* that
+  has changed. This is useful when the event should be treated by consumers as the
+  *[single source of truth]* for the entity.
 
 Events are typically represented as a structured data object, such as a JSON or XML document. Each
-event type has a specific *[schema]* that defines the fields and data types that the event can
-contain.
+event has a *[type]* with a particular *[schema]*, which defines the fields and data types that the
+event can contain.
 
 In event-driven systems, the event schema effectively becomes the API *[contract]* between the
 services within the system. Individual services may be both producers and consumers of events,
@@ -59,16 +106,21 @@ producing events of some types while consuming events of other types.
 == Channels
 
 The producers and consumers of events should have no direct communication with other. Instead, all
-communication in an event-driven system is done *link:./asynchronous-communication.adoc[asynchronously]*
-via some kind of message channel.
+communication in an event-driven system should be done
+*link:./asynchronous-communication.adoc[asynchronously]* via some kind of message channel or
+broker.
 
 The communication channel in an event-driven system is typically an *event bus*, but it could
 equally be a *queue*, *topic*, or *stream*. There are many different solutions for storing and
 transporting events.
 
-The primary integration pattern in the message channel system is the *[publish-subscribe]* pattern.
-In this pattern, *producers* publish events to a channel, and N-number of *consumers* subscribe, via
-the channel, to particular events they're interested in.
+Whatever the underlying technology, the primary integration pattern in the message channel system
+is the *[publish-subscribe (pub-sub)]* pattern. In this pattern, *producers* publish events to a
+channel, and N-number of *consumers* subscribe, via the channel, to particular events they're
+interested in. The broker is responsible for receiving and storing events published by producers,
+and for pushing events out to subscribing consumers. It is the broker's responsibility to ensure
+that all consumers receive the events they have subscribed to. If necessary, the broker should
+*[retry]* event pushes.
 
 == Publishers and consumers
 
@@ -76,6 +128,8 @@ Producers and consumers have very different responsibilities.
 
 The primary responsibility of producers is to produce events to an agreed *[schema]*, and to try to
 avoid introducing *link:./backwards-compatibility.adoc[breaking changes]* to that schema.
+*[Versioning]* systems should be used used to manage the rollout of breaking changes to event
+schema in an incremental way.
 
 A producer is _not_ responsible for how other components use its events. This is a key difference
 with message-driven systems, in which producers of messages often do care that their messages get
@@ -86,7 +140,56 @@ at all, and that's fine.
 This design constraint means a whole host of responsibilities are shifted out of the producers.
 For example, in synchronous communication patterns, producers need to be concerned with the
 *[health]* of consumers, and the *[throughput]* they can handle. In event-driven systems, these
-concerns are shifted to external infrastructure components. For example, typically, the event bus
-is responsible for planning and handling the *[ingestion rate]* of events delivered to subscribers.
+concerns are shifted to external infrastructure components. Typically it is and *[event bus]* that
+is responsible for planning and handling the *[ingestion rate]* at which events are delivered to
+subscribers.
 
+== Trade-offs
+
+These constraints on the design of producers and consumers gives event-driven distributed systems
+a high degree of *link:./evolvability.adoc[evolvability]*. The *[loose coupling]* between services
+means that individual services can be developed, deployed, and scaled independently of other
+services.
+
+However, this loose coupling comes at a cost. It is harder to reason about the system as a whole,
+because the interactions between services are not explicit. This can make it harder to debug and
+monitor the system. For example, if a consumer is not processing events as expected, it can be
+difficult to determine where the problem lies.
+
+*[Observability]* strategies can mitigate some of these costs. In particular, distributed
+*[tracing]* can help to understand the flow of events through a distributed system, to understand
+cause-and-effect. This tools can also help to audit event systems, for example to understand who
+are the consumers of particular versions of particular event types, so as to manage the deprecation
+of old events.
+
+== Event schema
+
+A number of standards exist for defining the schema of events.
+
+The *[Cloud Events Specification]* is one such event schema specification. It's event objects
+include an *[idempotency key]*, and there's a specification for including *trace IDs*.
+
+*[OpenTelemetry]* also publishes a set of best practices, which is calls "semantic conventions", for
+event and message formats.
+
+See also *link:./api-first-design.adoc[API-first design]*.
+
+== Documentation
+
+Unlike traditional client-server APIs, there are fewer tools available for documenting event-driven
+systems.
+
+https://www.eventcatalog.dev/[Event Catalog] is an open source project that provides a rich GUI to
+explore and discover events and their relationships.
+
+Observability tools also provide a mechanism to discover and explore the events emitted within a
+system. As long as events get logged in the context of traces, then you can discover all the events
+in a system by analyzing the tracing data.
+
+[TIP]
+======
+As with all logging, you should be careful not to log sensitive information that is transported
+via events. For this reason, a best practice is to log the _schema_ of events rather than their
+actual data.
+======
 
