@@ -1,10 +1,28 @@
 = Database indexes
 
+image::./_/database-indexes.png[]
+
 A database index is a super-efficient *lookup table* that allows a database to find data much
 faster.
 
-It holds the indexed column values along with pointers to the corresponding rows in the table.
+Indexes work by creating a sorted list of the values in a specific column or set of columns. This
+allows the database to quickly fetch the rows that match a given value. By following the pointers
+in the index, the database system does not need to scan the entire table to find the matching rows.
 
-Without an index, the database might have to scan every single row in a massive table to find what
-you want – a painfully slow process. But with an index, the database can jump directly to the
-corresponding row using the index's pointers.
+There is a trade-off between the speed of read operations and the cost of maintaining indexes.
+Indexes speed up read operations but slow down write operations, as the database needs to update
+the index every time a row is inserted, updated, or deleted.
+
+The most common types of indexes are:
+
+* *Primary keys*: A unique identifier for each record.
+
+* *Secondary indexes*: Indexes on columns other than the primary key columns,
+  eg. to speed up searching for a user by email address.
+
+* *Composite indexes*: Indexes created on multiple columns, useful to optimize
+  queries that search those columns together, eg. finding a user by both first
+  name and last name.
+
+
+
