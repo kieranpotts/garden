@@ -1,0 +1,35 @@
+= Modular monolith
+
+A modular monolith is a *link:./monoliths.adoc[monolith]* that is designed to be broken down over
+time into independent services. A modular monolith maintains the simplicity and straightforward
+deployment models of a traditional monolith, while introducing a high degree of internal structure
+revolving around independent modules.
+
+Like a *link:./service-oriented-architecture.adoc[service-oriented architecture]*, the modules of a
+modular monolith are each designed to encapsulate a specific set of functionalities or subdomain
+areas, allowing for clearer boundaries within the application.
+
+Although all the modules may run in the same process, they will communicate with each other more
+indirectly than in a traditional monolith. For example, a system of
+*link:./ports-and-adapters.adoc[ports and adapters]* may be implemented at the interfaces between
+modules.
+
+A good degree of decoupling between modules allows for independent services to be _extracted_ from
+a monolith, thus supporting the evolution of monolithic systems to increasingly distributed ones.
+The process of separating out services from a monolith is known as *[decomposition]*.
+
+When *[modelled]* at the conceptual and logical levels, the architectural
+blueprint of a solution designed as a modular monolith would look identical to the same solution
+designed as a distributed system. Differences emerge only when you get down to level of the physical
+architecture and technical design. At this level of abstraction you see that inter-module
+communication happens over a network and – unless remote procedure calls are made – often via
+intermediary services such as message brokers.
+
+In summary, modular monoliths offer a mix of characteristics of single-node and distributed systems.
+Like monoliths, modular monoliths support rapid application development, only with a little more
+emphasis on big up-front design. Like service-oriented architectures, scalability is baked into the
+design of modular monoliths from the start.
+
+By aiming for a halfway point between monoliths and distributed systems, businesses can reduce the
+risks associated with both. With a modular monolith, you tend to get a good balance between
+time-to-market in the short-term, and scalability and maintainability over the long-term.
