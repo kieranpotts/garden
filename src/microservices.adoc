@@ -1,1 +1,40 @@
 = Microservices (aka. the microservices architecture)
+
+Microservices are a specific implementation of the
+*link:./service-oriented-architecture.adoc[service-oriented architecture (SOA)]* pattern. The terms
+microservices are SOA are often used interchangeably, but correctly microservices are a subset of
+SOA designs in which each service is very small and scoped only to a single business function.
+
+Other defining characteristics of microservices is that each service is very *[loosely coupled]*
+from other services. Each service has its own data stores which are not shared with other services
+(though data may be *[replicated]* between services). Services communicate with each other through
+simple, lightweight protocols such as HTTP, or else indirectly via messaging queues. Individual
+services are independently deployable, and may even be developed on differing technology stacks.
+
+The term *nanoservices* has also been used to describe services that are even smaller than
+microservices.
+
+If the scope of each microservice were to be the delivery of a discrete user-facing feature, then
+the architecture could be described as a cross between a service-oriented architecture and a
+*link:./vertical-slice-architecture.adoc[vertical-slice architecture]*.
+
+''''
+
+.References
+****
+* https://thenewstack.io/ten-commandments-microservices/[10 commandments of microservices], The New Stack (2016)
+
+* https://www.vinaysahni.com/best-practices-for-building-a-microservice-architecture[Best practices for building a microservice architecture], Vinay Sahni
+
+* https://medium.com/@qasimsoomro/building-microservices-using-node-js-with-ddd-cqrs-and-event-sourcing-part-1-of-2-52e0dc3d81df[Building microservices: using Node with DDD, CQRS, and event sourcing], Qasim Soomro (2019)
+
+* https://www.linkedin.com/pulse/designing-scalable-backend-infrastructures-from-scratch-chauhan[Designing scalable backend infrastructures from scratch], Anshul Chauhan
+
+* https://zepworks.com/posts/faster-better-cheaper-and-re-architecture/[Faster, cheaper and better: a story of breaking a monolith], Zep Dehpour (2019)
+
+* https://riak.com/posts/technical/microservices-please-dont/[Microservices - please, don't], Sean Kelly (2016)
+
+* https://www.nginx.com/resources/library/microservices-reference-architecture/[Microservices reference architecture], Chris Stetson (2017)
+
+* https://thenewstack.io/beauty-beast-justgivings-microservices-transformation/[Microservices: the good, the bad and the hype], Jennifer Riggins, The New Stack (2017)
+****
