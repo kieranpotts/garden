@@ -1,2 +1,68 @@
 = Service-oriented architecture (SOA)
 
+Service-oriented architecture is a *link:./distributed-systems.adoc[distributed system]* design
+pattern. It sees an application divided into multiple services, each of which can be developed
+and tested independently, and perhaps also deployed independently of other services within the
+system. Individual services will typically have distinct code repositories and production
+infrastructure, and perhaps also *[devops]* infrastructure such as *[deployment pipelines]*.
+
+The *link:./system-design.adoc[design]* of service-oriented architecture involves *[decomposing]*
+an application's functionality into separate, *[loosely coupled]* services that communicate with
+each via network APIs. Services will typically be scoped to *[bounded contexts]* or *[subdomains]*
+within the application's *[domain*].
+
+An important defining characteristic of service-oriented architecture is that each service is
+relatively *[loosely coupled]* from other services. This is achieved by each service having its
+own data stores and caches, which are not shared with other services (though data may be
+*[replicated]* between services). Services communicate with each other either directly through
+simple and lightweight protocols such as HTTP, or else indirectly via messaging queues or event
+buses.
+
+Common services found in many software-as-a-service systems include authentication, payment
+processing, and user management. Additional services will be domain-specific. For example, an
+e-commerce platform may have services for inventory management, order processing, and customer
+reviews.
+
+*link:./microservices.adoc[Microservice architecture]* is a subset of service-oriented architecture,
+with more specific design constraints. A microservices architecture emphasizes the design of
+small, independently deployable services. In SOA, services may be a mix of large and small services,
+depending on the domain, requirements and constraints of the system.
+
+== Advantages of SOA
+
+Advantages of service-oriented distributed system designs include, but are not limited to:
+
+* Services can be optimized for specific *[performance]* requirements.
+* Greater system *[resilience]*. If one service fails, the rest of the system can continue to function.
+* Different services can be written in different languages or technologies.
+* Different teams can work on different services in parallel.
+* Services can be *[scaled]* independently.
+* Services can be deployed independently.
+
+The main trade-offs are the operational overhead of managing many moving parts, and the inherent
+complexities of distributed system.
+
+See *link:./microservices.adoc[microservices]* for more notes on the pros and cons of
+service-oriented distributed system designs.
+
+== Service contracts and communication
+
+A key design decision in SOA is how services will communicate and share data with each other. SOA
+itself does not prescribe specific communication patterns, but common approaches include:
+
+* *[Synchronous communication]*
+* *[Asynchronous communication]*
+* *[Service mesh]*
+
+Service-oriented systems may use a mix of communication methods, as most appropriate for each use case.
+
+== SOA + vertical-slice architecture
+
+// TODO: Diagrams
+
+If each service in a service-oriented design were to deliver an end-to-end solution for a discrete
+user-facing function, then the architectural style could be said to be a cross between
+service-oriented and *link:./vertical-slice-architecture.adoc[vertical-slice architecture]*
+
+In practice, SOA tends to see a hierarchy of services, in which lower-level services (particularly
+stateless ones) are shared by the higher-level domain layer services.
