@@ -1,2 +1,23 @@
 = Messaging protocols
 
+Well known messaging protocols, which are typically associated with *[message queues]*, include:
+
+* *AMQP* (Advanced Message Queuing Protocol): An open standard *[application layer protocol]* for
+  message-oriented middleware. AMQP allow for complex message routing configuration, including
+  point-to-point, publish-subscribe, and store-and-forward patterns. AMQP is commonly used in
+  enterprise environments. *[RabbitMQ]* is probably the most well known implementation of AMQP.
+
+* *MQTT* (Message Queuing Telemetry Transport): A lightweight publish-subscribe messaging protocol
+  optimized for use in resource-constrained devices and low-bandwidth, high-latency, or unreliable
+  networks. MQTT is often used in *[Internet of Things (IoT)]* and home automation applications.
+  It is also used for some real-time data feeds, such as financial market data. A key feature is
+  a Quality of Service (QoS) setting that allows for different levels of delivery assurance, eg.
+  QoS 0 for "fire and forget" (deliver each message at most once), QoS 1 for acknowledged receipt,
+  and QoS 2 for ensured no duplicates. *[RabbitMQ]* support MQTT as an alternative messaging
+  protocol to AMQP via plugins. *Mosquitto* is an open source, lightweight MQTT broker, while
+  *HiveMQ* is a commercial MQTT broker. *[Apache Kafka]* can also integrate with MQTT through
+  connectors and proxies.
+
+* *STOMP* (Simple (or Streaming) Text Orientated Messaging Protocol): A lightweight text-based
+  messaging protocol. Unlike binary protocols, STOMP uses a text format for messages, which makes
+  it easier to read and debug.
