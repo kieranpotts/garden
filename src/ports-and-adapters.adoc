@@ -1,2 +1,33 @@
 = Ports-and-adapters
 
+Ports-and-adapters is a *[design pattern]* that is closely associated with *[hexagonal architecture]*.
+
+A *port* is an abstraction of something that gets _plugged into_ an application. An *adapter*
+is a concrete implementation of a port.
+
+A port is an abstraction of some external system. That external system may be a database, file system,
+a networked service, or even an *[API]* _into_ the system. The idea is that for every interface into
+or out from an application, a port is created. A port is a contract that defines how the application
+is allowed to interact with some system outside of it, without the application needing to know
+anything about that external system.
+
+For example, to interact with a database, you would create a port that has `read` and `write`
+methods. Your application calls these methods. But it has no knowledge of what it is writing to and
+reading from. The external system could be a database, a filesystem, or even a message queue. All
+the application cares about is having methods to read and write data.
+
+Ports are similar in concept to *[interfaces]*. The difference lies in the degree of abstraction.
+We tend to put a lot of context into interfaces. For example, a database interface would typically
+be distinct from a file system interface. They would each have different methods and properties.
+In the ports-and-adapters pattern, ports are intended to be even more generic. A port would represent
+some kind of persistent data store, for example, but not specifically a database or file system,
+for example.
+
+Instead, all implementation-specific logic is encapsulated in separate *adapters*. An adapter is
+responsible for mapping the methods of a port to the API of a particular external system. Thus, you
+might have different adapters for databases (even different types of databases), file systems, and
+message queues. Each adapter would be compatible ("pluggable") with the same port.
+
+You can change adapters without needing to refactor your application code. Thus, ports and adapters
+provide a far higher degree of decoupling than interfaces.
+
