@@ -1,2 +1,332 @@
 = Domain-driven design (DDD)
+:toc: macro
 
+toc::[]
+
+Domain-driven design was popularized by Eric Evans in his 2003 book of the same name, and which is
+colloquially referred to as "the blue book". The concepts behind DDD predate the book, but Evans
+brought them together into a coherent architectural pattern and design process.
+
+image::./_/domain-driven-design-book-cover.webp[]
+
+The central idea behind DDD is to design software to represent things in the real world, rather
+than as a series of functions or procedures. Domain-driven software designs are built around models
+of their *[business domains]* (the subject areas of the software). The
+*link:./ubiquitous-language.adoc[language]* used in the domain models are the same as those
+used in the real world.
+
+[quote, Melvin Conway (1967), Conway's Law]
+____
+Any organization that designs a system (defined broadly) will produce a design whose structure is a
+copy of the organization's communication structure.
+____
+
+The key principle of DDD is to base complex designs on a model of the business domain, and this is
+achieved by close collaboration between the technical experts and the domain or subject matter
+experts to iteratively refine the conceptual model of the solution.
+
+DDD is particularly beneficial in complex problem spaces, or where the business domain is not well
+understood. The domain-driven design process helps to clarify the business domain, to identify the
+key concepts and relationships within it, and build a shared understanding of the domain between the
+technical and business experts.
+
+DDD can be described as both an *architectural style*, built around a series of recurring
+design patterns, and a *design process*. DDD describes a two-stage process for designing software:
+
+* *Strategic design*: You work out what the subdomains are in the business, and the relationships
+  between the subdomains.
+
+* *Tactical design*: You refine the domain model, working out what domain objects you will need
+  inside each subdomain, and how the subdomain objects interact with each other.
+
+== Strategic design
+
+Although it's possible to apply DDD concepts to an existing application, it is much easier when an
+application is built from the ground-up with DDD principles in mind. That's because DDD cuts across
+the whole design of an application, forming its broad architectural structure. This is called the
+strategic design.
+
+The goal of the strategic design is to end up with a high-level model of the business domain. This
+is done by breaking down the business domain into a series of discrete subdomains.
+
+The strategic design is typically developed during a project's *[discovery phase]*. Domains,
+subdomains, and key parts are discovered through *[conversations]* with *[domain experts]*. This is
+pure business exploration. Methodologies used to discover the domain may include *Big Picture*,
+*Process-Level Event Sourcing*, and *Domain Storytelling*. The objective of DDD is that, if the
+domain experts had the technical expertise to design the system themselves, the resulting system
+would look similar to what the technical people produce under the DDD process.
+
+=== Step 1: Define the domain
+
+The first step in DDD is to define the application *domain*. The domain is the subject area of
+the software. It is a sphere of knowledge from the real world, processes within which the software
+is intended to automate. In the DDD process, domain experts (people who understand the business)
+work with developers to define the application domain. This is as much about defining what the
+software will _not_ do as what it will do.
+
+Examples of application domains include customer relationship management, financial loan application
+management, video subscription services, and so on.
+
+=== Step 2: Define the subdomains
+
+Once the scope and boundaries of the application are defined in its domain, the second step is to
+discover the *subdomains*. A subdomain is a smaller, more specialized area within a domain. Each
+subdomain has a specific purpose or represents a particular business capability. For example, in a
+video subscription service, the billing, video streaming, and user management areas might be
+subdomains.
+
+****
+A subdomain is something that exists in the real world and shows how the
+business operates in a given area.
+****
+
+Subdomains may overlap, and they may even be nested. Some processes in a subdomain may be part of
+larger processes in another subdomain, which itself touches several other subdomains.
+
+Some subdomains may be *core domains*. In a video subscription service, the core subdomain would
+probably be video streaming. DDD emphasizes that the core domain(s) should be the focus of the
+design, and the main focus of the project, while *secondary subdomains* should be as simple as
+possible and exist only to support the primary ones.
+
+=== Step 3: Define the key parts
+
+The third step in the strategic design is to work out what are the *key parts* within each subdomain.
+For example, if we look at the billing subdomain in our theoretical video subscription service, we
+might identify accounts, payment details, and subscription plans as the key parts of that subdomain.
+
+[plantuml]
+....
+@startuml
+left to right direction
+rectangle "video subscriptions" {
+  rectangle "billing" {
+    rectangle "accounts" {
+    }
+    rectangle "payment details" {
+    }
+    rectangle "subscription plans" {
+    }
+  }
+  rectangle "video streaming" {
+    rectangle "videos" {
+    }
+    rectangle "viewers" {
+    }
+  }
+  rectangle "user management" {
+    rectangle "subscribers" {
+    }
+  }
+}
+@enduml
+....
+
+Some key parts will be common across multiple subdomains. For example, subscribers will probably be
+a key part in most subdomains. But a sign of good strategic design is when each subdomain has a
+few key parts that are unique to it, and are not shared by other subdomains. For example, the
+billing subdomain might have a "payment details" part, which you would not expect to see in any
+of the other subdomains.
+
+=== Step 4: Define the ubiquitous language and bounded contexts
+
+Key parts that are shared between subdomains may not have the same name in each subdomain. For
+example, in the billing subdomain, subscribers might be referred to as "accounts", while the
+video streaming subdomain might refer to them as "viewers", and the user management subdomain
+might use the term "subscribers". Thus, the terms "account", "viewer", and "subscriber" all refer
+to the same thing, only the language used to describe them changes depending on the context.
+This is a reflection of the real world, where different parts of a business may use different
+terminology to describe essentially the same things.
+
+Clearly, there are significant benefits to having a single unified model covering the whole business
+domain. However, especially in complex problem spaces, this is often unrealistic. DDD recognizes
+that different subdomains may need to have different models, each with its own distinct terminology.
+
+DDD encourages developers and domain experts to collaborate together and develop a common
+*ubiquitous language* to describe the whole business domain, so the same business terms are used
+consistently by all the stakeholders. The ubiquitous language, taken from the real world business
+domain, will be used to specify requirements, to name things in the application code and tests, and
+in all forms of communication (both written and verbal) between the business and technical people.
+
+Where terminology varies, the stakeholders should agree *bounded contexts* within which terminology
+is consistent. A bounded context will typically span a single subdomain, but it may span several.
+Thus, in most cases, there will be a 1:1 mapping between subdomains and bounded contexts, and
+therefore the terms are synonymous. However, in some cases, it may make sense to combine multiple
+subdomains into a single bounded context. For example, when two or more subdomains use identical
+terminology and have significant interdependencies. Within each bounded context, the stakeholders
+should settle on a ubiquitous language for it, in which there is a single term for each concept.
+
+.Subdomains versus bounded contexts
+****
+* *Subdomains* help us to understand complex business domains by dividing them into smaller parts.
+  They represent real-world business capabilities wrapped into cohesive groups.
+
+* *Bounded contexts* represent independent, unified models, which allow us to transfer knowledge
+  from subdomains into our technical solutions.
+****
+
+What makes a system complex is not so much the number of subdomains, but rather the number of
+bounded contexts. Ideally, a complete system will have a single bounded context, with common
+vocabulary and domain objects used everywhere.
+
+But where terminology differs between subdomains (where there are multiple bounded contexts), the
+terminology should be translated between the bounded contexts. In code, this is done using
+*anti-corruption layers* at the interfaces between subdomains. Each module's user interface is
+responsible for ensuring that languages and terms from another context do not pollute the module's
+own context.
+
+Bounded contexts help to manage *[complexity]*, and are particularly beneficial for managing
+accidental complexity that arises through *[evolutionary design]*. For example, imagine that an
+insurance business acquires a competitor, and begins the process of integrating their disparate
+IT systems. Although the domain is the same (insurance), the two companies will likely have
+modeled their domain entirely differently. They will each have developed different business rules,
+terminology, and actors. Therefore, rather than try to integrate the two systems into the same
+subdomains, it may make sense to keep them separate – at least initially. So you would have a
+"Home Insurance" context and a "Health Insurance" context.
+
+Tools such as a https://github.com/ddd-crew/bounded-context-canvas[Bounded Context Canvas] may
+be used to help define the bounded contexts and the ubiquitous language of each.
+
+=== Step 5: Define context maps
+
+The final part of the strategic design is to learn how the various subdomains interact with each
+other. This is about defining the relationships between different parts of the business.
+
+In DDD, this is done by creating a *context map*. This is a visual representation of communication
+paths (and directions) between the subdomains.
+
+For example, the video streaming subdomain needs to know what quality of video to stream to the
+user, and since this is dependent upon the subscription plans encapsulated in the billing subdomain,
+the video streaming subdomain will need to communicate with the billing subdomain. Therefore,
+there will need to be a mapping between a viewer in the streaming domain and the subscriber in the
+billing domain.
+
+Tools such as the https://contextmapper.org/[Context Mapping DSL (CML)] may be used to model
+bounded contexts and to map the relationships between them.
+
+== Tactical design
+
+The strategic design phase of DDD is about mapping out the subdomains within the business domain,
+and the relationships between them. With this complete, the design process moves on to defining the
+domain objects within each subdomain. This is known as the tactical design.
+
+Whereas the strategic design is very much a _discovery_ process, the tactical design is more of a
+technical _design_ process. Another way of thinking about it is that the strategic design
+produces a *conceptual architecture* for the solution, while the tactical design fleshes this into
+a more detailed *logical architecture*.
+
+DDD provides a set of tactical patterns that can be used to define the domain objects within each
+subdomain. The two main tactical patterns are *entities* and *value objects*. Other tactical
+patterns are *aggregates*, *repositories*, and *services*.
+
+Like the ubiquitous language, tactical patterns are scoped to particular bounded contexts. Thus, if
+a bounded context is composed or more than one subdomain, the subdomains within that context will
+all share the same set of entities, values, and other domain objects. Many of these constructs will
+map to the key parts identified in the strategic design.
+
+=== Entities
+
+Entities are representations of things in the real world, such as subscribers.
+
+Each entity has a unique identifier. Even if two objects have identical properties, they are
+considered different entities if they have different IDs.
+
+Entities are mutable. We can change their properties over time (except for their ID). For example,
+a subscriber may change their email address, but it's still the same subscriber because its ID
+does not change.
+
+=== Value objects
+
+Value objects are objects that represent a value in a subdomain, such as a date or a price.
+
+Unlike entities, value objects are not unique. Two objects with the same value are considered to be
+equal.
+
+The values of value objects may be considered to be always "correct", since validation is done at
+construction of the objects.
+
+Value objects are also immutable. If you need to change a value object, you create a new one.
+
+Entities may be composed of one or more value objects. For example, a subscriber may have a name,
+email address, and date of birth – all of which could be implemented as value objects. You could use
+normal values, but by creating value objects you are explicitly stating that this value is an
+important part of the subdomain. By comparison, implementation details such as the "last modified
+date" of an entity may not be considered important enough to be a value object. If the values are
+not relevant to the business but are required only to implement the software, we may call these
+*technical values*.
+
+Whether a piece of data should be modeled as an entity or a value object is not always a clear-cut
+decision. For example, an address could be modeled as either (value objects do not have to be
+restricted to a single value). In general, if something is important to the business it should be
+modeled as an entity. For example, in a real estate application, addresses may be important enough
+to be modeled as entities. However, if the address is just a way to contact a customer, it may be
+more appropriate to model it as a value object.
+
+You should end up with lots more value objects than entities in your domain model.
+
+=== Aggregates
+
+Aggregates are groups of several entities and value objects. An example could be an order, which
+would be composed of a customer entity, the products ordered (also entities), and value objects
+such as the order total and the shipping address.
+
+An aggregate also forms a *transactional boundary*, which means that whenever changes are made to
+an aggregate they should either be committed to or rolled back from a database or other persistence
+mechanism. This ensures that aggregates are always in a consistent state.
+
+Like entities, aggregates have unique IDs.
+
+Aggregates are also responsible for maintaining *business invariance*. These are business rules
+that always remain true, no matter what you do to your system. For example, you might have a rule
+that an order's total must always be the sum of all the products ordered. You might have another
+rule that stops customers from buying more than what is in stock. This comes at a cost; the more
+rules that are encoded in aggregates, the more complex they become and they may get slower to
+update. So there is sometimes a a trade-off to be made between performance and consistency.
+Sometimes it might make sense to setup a *corrective policy*, which runs on a regular basis to
+either flag or automatically correct anything that might be wrong.
+
+=== Repositories
+
+Repositories are abstractions of the persistence layers of our system (usually databases).
+
+=== Services
+
+Services contain business logic that does not neatly fit into a single aggregate, or which spans
+multiple aggregates.
+
+''''
+
+.References
+****
+
+* https://www.amazon.co.uk/dp/0321125215[Domain-Driven Design: Tackling Complexity in the Heart of Software],
+  aka "the blue book", by Eric Evans, 2003
+
+* https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf[Domain-Driven Design Reference: Definitions and Pattern Summaries], Eric Evans (2015)
+  — Evans published this free PDF as a reference guide to the key DDD concepts.
+
+* https://www.infoq.com/minibooks/domain-driven-design-quickly/[Domain Driven Design Quickly]
+  — A free digital book from InfoQ, basically a condensed version of Eric Evans' book.
+
+* https://www.amazon.co.uk/dp/0321834577[Implementing Domain-Driven Design],
+  aka "the red book", by Vaughn Vernon, 2013
+
+* https://www.amazon.com/dp/1457501198[Domain-Driven Design Reference: Definitions and Pattern Summaries],
+  Eric Evans, 2014
+
+* https://www.amazon.com/dp/0134434420[Domain-Driven Design Distilled]
+  — Vaughn Vernon's 2016 follow-up to "Implementing Domain-Driven Design", this book gets straight
+  to the nitty gritty of implementing DDD principles in real code (ie. strategic design).
+
+* https://www.mirkosertic.de/blog/2013/04/domain-driven-design-example/[Domain-Driven Design Example]
+  — A 2013 blog post by Mirko Sertic which shows the application architecture, using UML, of a
+  software program built for an IT body leasing company.
+
+* https://www.methodsandtools.com/archive/archive.php?id=97[An Introduction to Domain-Driven Design]
+  — Encompasses model-driven design, hexagonal architecture, and more. Dan Haywood, year unknown.
+
+* https://leanpub.com/ddd-in-php[Domain-Driven Design in PHP]
+  — Real examples written in PHP showcasing DDD architectural styles. Written by Carlos Buenosvinos,
+  Christian Soronellas, and Keyvan Akbary. Extended examples, including fully-working applications,
+  are available from the https://github.com/dddinphp[book's Github page].
+
+****
