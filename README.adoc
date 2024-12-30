@@ -265,6 +265,81 @@ The following topics are "tent poles" that link out to most other topics.
 * *link:./src/websockets.adoc[WebSockets]* 🌱
 * *link:./src/wide-column-stores.adoc[Wide-column stores]* 🌱
 
+== Requirements
+
+Some documents in my Digital Garden embed PlantUML notation.
+
+To render PlantUML diagrams in AsciiDoc, you will need to have a PlantUML server running. It is
+RECOMMENDED to use https://kroki.io/[Kroki], a free web service that renders diagrams and charts
+from text representations, not only in the PlantUML DSL but also https://mermaid.js.org/[Mermaid],
+https://graphviz.org/[Graphviz] and many others.
+
+In VS Code, add the following setting to your `settings.json` file – either at the workspace or
+user level. This will enable the Kroki extension for AsciiDoc and use the free public Kroki server.
+
+[source,json]
+----
+{
+  "asciidoc.extensions.enableKroki": true,
+  "asciidoc.preview.asciidoctorAttributes": {
+    "kroki-server-url": "https://kroki.io",
+  },
+}
+----
+
+You can also run a local Kroki server. The full instructions are
+https://docs.kroki.io/kroki/setup/use-docker-or-podman/[here], but basically it involves
+pulling and running a Docker container based on the official Kroki image:
+
+[source,sh]
+----
+# If you haven't done this before, pull the Kroki server image from Docker Hub.
+# https://hub.docker.com/r/yuzutech/kroki
+docker pull yuzutech/kroki
+
+# Run a container based on this image. Run the container in detached mode (-d)
+# and map the container's port 8000 to your local machine's port 8080.
+docker run -d -p 8080:8000 yuzutech/kroki
+----
+
+Go to http://localhost:8080/ to verify that the Kroki server is running. Then change your
+`settings.json` to point to the local server instead.
+
+[source,json]
+----
+{
+  "asciidoc.extensions.enableKroki": true,
+  "asciidoc.preview.asciidoctorAttributes": {
+    "kroki-server-url": "http://localhost:8080",
+  },
+}
+----
+
+For AsciiDoc, the PlantUML DSL code needs to be embedded within
+https://docs.asciidoctor.org/asciidoc/latest/verbatim/literal-blocks/[literal blocks].
+If you have everything configured correctly, you should be able to see the rendered
+diagram below, when viewing this document in preview mode.
+
+[plantuml]
+....
+@startuml
+entity person {
+* id: INT <<FK>>
+* name: VARCHAR(128)
+---
+address: VARCHAR(256)
+email: VARCHAR(128)
+phone: VARCHAR(16)
+}
+@enduml
+....
+
+If you can see the Kroki landing page via http://localhost:8080 in you web browser, but the
+diagrams do not generate in AsciiDoc preview in VS Code, first try restarting VS Code. If
+that doesn't work, try adjusting the security settings. Open VS Code's command palette
+(Ctrl+Shift+P), select "AsciiDoc: Manage Preview Security Settings", and choose
+"Allow insecure local content".
+
 ''''
 
 Copyright © 2020-present Kieran Potts, link:./LICENSE.txt[CC0 license]
