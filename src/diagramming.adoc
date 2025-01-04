@@ -1,47 +1,102 @@
 = Diagramming
 
-Our industry's current bias towards "agile" software delivery practices has led to a preference for
-use of lightweight diagramming tools to create visual representations of *[system designs]*, rather
-over the production of detailed models (see *link:./modeling.adoc[Modeling]*).
+Our industry's current bias towards *[agile]* software delivery practices has led to a preference for use of lightweight diagramming tools to create visual representations of *[system designs]*, over the production of detailed *link:./modeling.adoc[models]*.
 
-Compared to modeling, the barriers to entry to diagramming is lower, and the tools are more
-accessible. Diagrams are often used to communicate ideas and concepts to a wider audience, including
-non-technical stakeholders, rather than as a pure development tool.
+Diagrams are often used to communicate ideas and concepts to a wider audience, including non-technical stakeholders, rather than as a pure development tool.
 
-The *[domain language]* of diagramming tools is "boxes and arrows". This makes diagraming tools
-relatively easy to use. The barriers to entry are much lower than for proper modeling tools like
-StarUML. But this simplicity has some trade-offs:
+The *[domain language]* of diagramming tools is "boxes and arrows". This makes diagraming tools relatively easy to use. The barriers to entry are much lower than for proper modeling tools like http://staruml.io/[StarUML]. But this simplicity has some trade-offs:
 
-* With diagrams, you can't enforce the same level of consistency in naming and relationships
-  between components as you can with proper models.
+* With diagrams, you can't enforce the same level of consistency in naming and relationships between components as you can with proper models.
 
-* You can't validate, in an automated way, that diagrams are a correct representation of the code
-  they document.
+* You can't validate, in an automated way, that diagrams are a correct representation of the code they document.
 
 * You can't query diagrams (eg. "show me all the dependencies of component X").
 
 * You can't auto-generate code from diagrams.
 
-* Maintaining diagrams as the code changes is a more manual, and therefore more error-prone, process
-  compared to maintaining models. For example, if you change the name of a class in the code, you
-  will probably have to change it in several places in the diagrams, too. With a proper model, you
-  should need to change it in only one place.
+* Maintaining diagrams as the code changes is a more manual, and therefore more error-prone, process compared to maintaining models. For example, if you change the name of a class in the code, you will probably have to change it in several places in the diagrams, too. In a model, you should need to change the names of things in only one place.
 
-* Diagrams tend to be stored in either binary formats (such as images) or heavyweight plain-text
-  formats that are difficult to diff. For these reasons, is is harder to maintain diagrams under
-  version control systems like Git.
+Diagrams tend to be stored in either binary formats (such as images) or heavyweight plain-text formats that are difficult to diff. For these reasons, is is harder to maintain diagrams under version control systems like Git. But this is true of many modeling tools, too.
+
+== Diagramming tools
+
+=== Drag-and-drop diagramming tools
 
 Drag-and-drop diagraming tools include:
 
-* [Lucidchart]
-* [Draw.io (aka diagrams.net)]
-* [Microsoft Visio]
+* https://www.conceptdraw.com/products/drawing-tool/[ConceptDraw Diagram] — Previously known as ConceptDraw Pro, this is a proprietary, general-purpose diagramming desktop application.
 
-*[Diagrams-as-code]* tools include:
+* http://dia-installer.de/[Dia] — Free and open source general-purpose diagramming tool, with a similar interface to GIMP and Inkscape.
 
-* [PlantUML]
-* [Mermaid]
-* [Graphviz]
+* https://app.diagrams.net/[Diagrams.net] (formerly Draw.io) — Popular free web app, that's also available as an Electron-based cross-platform desktop application. It is also available as a plugin for other applications including Atlassian Confluence and Jira, and Visual Studio Code.
 
-Diagrams-as-code solutions are becoming increasingly popular as the plain-text syntax can be version
-controlled and maintained alongside the source code they document.
+* https://www.gliffy.com/[Gliffy] — Easy-to-used web-based diagramming application, supporting collaborative editing and a large number of diagram types.
+
+* https://www.jetuml.org/[JetUML] — Free and open source UML diagramming tool. Supports a limited set of UML diagrams. Saves diagrams to a JSON schema, and exports to a variety of image formats.
+
+* https://www.lucidchart.com/[Lucidchart] — Popular diagramming software-as-a-service.
+
+* https://www.omnigroup.com/omnigraffle/[OmniGraffle] — Mac-only diagramming tool and lightweight general-purpose drawing tool.
+
+* https://app.smartdraw.com/[SmartDraw] — Another general-purpose diagramming and visualization software-as-a-service.
+
+* https://www.umlet.com/[UMLet] — A flyweight, free and open source UML drawing tool. Available as a standalone cross-platform application, or an Eclipse plugin, and more recently as an extension to VS Code. It's also available as a free-to-access web app called https://www.umletino.com/[UMLetino].
+
+* https://microsoft.com/en-ca/microsoft-365/visio[Visio] — Collaborative diagramming tool. Accessible via Microsoft 365 commercial subscriptions only (not available via personal subscriptions).
+
+* http://www.yworks.com/products/yed[yEd] — Free (but proprietary) cross-platform desktop and https://www.yworks.com/yed-live/[online] diagramming tool. Loads and saves diagrams from/to https://en.wikipedia.org/wiki/GraphML[GraphML]. Desktop version requires a local JRE.
+
+=== Diagrams-as-code solutions
+
+Diagrams-as-code solutions are becoming increasingly popular as the plain-text syntax can be version controlled and maintained alongside the source code they document.
+
+See *link:./diagrams-as-code.adoc[diagrams-as-code]* for a list of solutions.
+
+=== Other diagramming tools
+
+* https://www.avolutionsoftware.com/abacus/[Abacus] — Enterprise architecture tool that includes diagramming capabilities.
+
+* https://aplas.com/[Aplas] — Commercial "software mapping" tool.
+
+* https://arcentry.com/[Arcentry] — Cloud architecture diagramming tool.
+
+* https://nulab.com/cacoo/[Cacoo] by Nulab — Web-based collaborative whiteboards.
+
+* http://casecomplete.com/[CaseComplete] — Requirements management tool to create use case diagrams, GUI wireframes, and user journey flowcharts.
+
+* https://www.cloudcraft.co/[Cloudcraft] — Cloud architecture diagramming tool.
+
+* https://www.cloudockit.com/[Cloudockit] — Cloud architecture diagramming tool.
+
+* https://www.cloudskew.com/[CloudSkew] — Cloud architecture diagramming tool.
+
+* https://cloudviz.io/[Cloudviz] — Cloud architecture diagramming tool.
+
+* https://creately.com/[Creately] — General-purpose whiteboard tool that supports a wide range of standard diagram types.
+
+* https://excalidraw.com/[Excalidraw] — Free online lines-and-boxes drawing tool. Supports Mermaid, and also available as JavaScript libraries for integration into other applications.
+
+* https://www.figma.com/figjam/[Figma FigJam] — Brainstorming and collaboration tool that includes diagramming capabilities.
+
+* https://www.hava.io/[Hava] — Automatically creates visual representations of your cloud architecture, by dynamically integrating with your AWS, Azure, or GCP account.
+
+* https://holori.com/[Holori] — Cloud infrastructure planning tool, includes diagramming for AWS, Azure, and GCP.
+
+* https://www.hyperglance.com/[Hyperglance] — Cloud architecture diagramming tool.
+
+* https://isoflow.io/[Isoflow] — Network diagrams.
+
+* https://miro.com/[Miro] — Web-based whiteboard tool that includes diagramming capabilities.
+
+* https://mural.co/[Mural] — Web-based whiteboard tool that includes diagramming capabilities.
+
+* https://sketchboard.io/[Sketchboard] — Web-based collaborative whiteboards.
+
+* https://whimsical.com/[Whimsical] — Web-based collaborative whiteboards.
+
+=== Icon sets
+
+* https://aws.amazon.com/architecture/icons/[AWS architecture icons]
+* https://learn.microsoft.com/en-us/azure/architecture/icons/[Azure architecture icons]
+* https://cloud.google.com/icons[Google Cloud architecture icons]
+* https://github.com/kubernetes/community/tree/master/icons[Kubernetes icons]

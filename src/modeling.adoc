@@ -1,0 +1,95 @@
+= Modeling
+
+Modeling is the *[practice]* of creating abstract representations of an IT system to understand, analyze, and communicate its static structure and dynamic behavior.
+
+Modeling is distinct from *link:./diagramming.adoc[diagramming]*, which focuses on creating visual representations of *link:system-design.adoc[system designs]*, rather than defining models of a system's structure and the semantics of its component parts. Though the distinction between diagramming and modeling can get a little fuzzy, modeling involves using tools to create structured data (non-visual) representations of a system's components and the relationships between them, and then generating various "views" from those models – which will typically include diagram generation. Modeling tools typically offer other features that plain diagramming tools cannot, such as code generation, and model validation / consistency checking.
+
+*link:./diagrams-as-code.adoc[Diagrams-as-code]* solutions such as the https://docs.structurizr.com/dsl[Structurizr DSL] offer a middle ground between lightweight diagramming and heavyweight modeling solutions. The DSLs are used to create structured data models of a sort. Diagrams-as-code solutions also offer some of the benefits of modeling tools, such as improved portability and easier maintenance (eg. easier to diff and version control) compared to binary diagram files.
+
+Diagrams are particularly useful for up-front design, while the model is fluid, and for communicating ideas and concepts to a wider (non-technical) audience. Models tend to be more useful as a *[development tool]*. They are most useful as a form of *[technical documentation]* once a design has been finalized. They can also support *[development practices]* such as system analysis and validation.
+
+== Types of models
+
+Typically, a model will exist at a particular level of abstraction, leaving out details that are not relevant at that abstraction level. Common abstraction levels include:
+
+* *Business process models* — Describe the processes and workflows that are used to run an organization. May serve as a foundation for *[domain modeling]* as a first step in a *[domain-driven]* approach to software development.
+
+* *Conceptual models* — Describe a system's architecture at a conceptual level. This is the highest level of abstraction of a *[system design]* and it is typically used for *[domain modeling]*. At this level of abstraction, it is unclear how the system will be implemented. The same domain model could be implemented as a *[distributed]* system or a *[monolithic]* system, and the internal communication patterns could be *[synchronous]* or *[asynchronous]*, *[event-driven]* or *[message-driven]*, and so on.
+
+* *Structural models* — Describe a system's static aspects, such as the organization of components and their relationships. Examples include *[class diagrams]* and *[component diagrams]*.
+
+* *Behavioral models* — Represent the dynamic aspects of a system, such as interactions between components and changes in state. Examples include *[sequence diagrams]* and *[state machine diagrams]*.
+
+* *Functional models* — Abstract representations of a system's functionality and data flow. Examples include *[use case diagrams]* and *[data flow diagrams]*.
+
+* *Physical models* — While the structural, behavioral, and functional models define the *logical architecture* of a solution, physical models map that logical architecture to physical devices and infrastructure components such as application servers, databases, load balancers, caches, and message queues. Examples include *[deployment diagrams]* and *[network diagrams]*.
+
+* *Technical models* —  Detail the low-level technical aspects of a system, such as the programming languages, frameworks, and libraries used.
+
+See also the *link:./c4-model.adoc[C4 Model]*, which defines four level of abstractions for modeling: context (or system), container, component, and code.
+
+== Modeling languages
+
+* *link:./archimate.adoc[ArchiMate]* — Enterprise architecture modeling language, an open standard maintained by The Open Group. ArchiMate is supported by an increasing number of visual modeling tools, including https://www.modelio.org/[Modelio] and https://www.visual-paradigm.com/[Visual Paradigm], allowing for portability of models between tools and automation workflows.
+
+* *link:./bpmn.adoc[BPMN (Business Process Model and Notation)]* — A graphical representation for specifying business processes in a workflow.
+
+* *link:./c4-model.adoc[C4 model]* — A lightweight approach to visualizing the architecture of software at four levels of abstraction, from high to low: context, containers, components, and code.
+
+* *link:./entity-relationship-diagram.adoc[Entity-Relationship Diagrams (ERD)]* — A type of diagram used to model the structure of a *[relational database]*. ERDs represent entities (tables), attributes (columns), and relationships between entities.
+
+* *link:./raaml.adoc[Risk Analysis and Assessment Modeling language (RAAML)]*
+
+* *link:./sysml.adoc[Systems Modeling Language (SysML)]* — An extension of UML tailored for systems engineering, focusing on both software and hardware aspects.
+
+* *link:./togaf.adoc[TOGAF]* — TOGAF is a framework for the design, planning, implementation, and governing of enterprise application architecture. It is an open standard maintained by The Open Group, which also maintains the ArchiMate standard, and some effort has been made to create more alignment between the two standards.
+
+* *link:./uml.adoc[Unified Modeling Language (UML)]* — A widely-used standard for creating various types of software models, including class diagrams, sequence diagrams, and use case diagrams.
+
+== Modeling tools
+
+The following tools specialize in the logical and physical modeling of software systems. See also *link:./data-modeling.adoc[data modeling]* for tools that focus on database design and data schemas, and *link:./diagramming.adoc[diagramming]* and *link:./diagrams-as-code.adoc[diagrams-as-code]* for lighter-weight system design tools.
+
+* https://www.archimatetool.com/[Archi] — Open source conceptual and physical data modeling tool that uses the https://www.opengroup.org/archimate-forum[ArchiMate Modeling Language].
+
+* https://www.archipeg.com/[Archipeg] — Modeling tool with underlying metamodels for C4, domain-driven design, TOGAF, and Archipeg's own Enterprise Architect modeling framework.
+
+* ArgoUML – https://argouml-tigris-org.github.io/tigris/argouml/[landing page] and https://argouml-tigris-org.github.io/[project home page] (deprecated) — Open source UML modeling tool that supports all standard UML diagrams (as of UML v1.4). ArgoUML was originally developed by a PhD student in 1998, but is no longer actively maintained – the GitHub repositories are archives of prior releases. Requires a JRE.
+
+* https://www.bouml.fr/[BOUML]
+
+* https://github.com/bpmn-io/bpmn-js[bpmn-js] — JavaScript library for rendering BPMN 2.0 diagrams. BPMN (Business Process Model and Notation) specifies its own XML DSL, which this library parses and renders.
+
+* https://www.brainboard.co/[BrainBoard] — Visual designer for https://www.terraform.io/[Terraform] and https://opentofu.org/[OpenTofu] *[infrastructure-as-code]* configurations.
+
+* https://www.eclipse.org/downloads/packages/release/2024-12/r/eclipse-modeling-tools[Eclipse Modeling Tools] — Eclipse IDE package that includes a variety of modeling capabilities.
+
+* https://gaphor.org/[Gaphor] — Free and open source, cross-platform, lightweight modeling application written in Python. It implements a fully-compliant UML 2 data model, and also supports SysML, C4, and RAAML.
+
+* https://www.ibm.com/products/engineering-rhapsody[IBM Engineering Rhapsody] (previously Rational Rhapsody) — Supports UML, SysML, UAF, and AUTOSAR, and defensive framworks DoDAF, MODAF, and UPDM. Code generation (C, C++, Java) from UML. https://www.ibm.com/products/rhapsody-systems-engineering[IBM Rhapsody Systems Engineering] is a related tool dedicated to SysML V2. Both tools are part of IBM's suite of https://www.ibm.com/products/engineering-lifecycle-management[Engineering Lifecycle Management (ELM)] applications.
+
+* https://icepanel.io/[IcePanel] (https://docs.icepanel.io/[docs]) — Online architecture modeling tool that supports the *link:./c4-model.adoc[C4 model]*. Features include interactive diagrams that are zoomable into increasing levels of technical detail. Freemium SaaS.
+
+* https://www.3ds.com/products/catia/no-magic/magicdraw[MagicDraw] — Proprietary visual modeling tool that supports UML, SysML, BPMN, and UPDM. MagicDraw's internal *[domain-specific language]* for describing models can be customized, allowing authors to create their own modeling notations.
+
+* https://www.modelio.org/[Modelio] — Modeling tool supporting UML, SysML, BPMN, Archimate, TOGAF, etc. Diagrams can be interlinked, including diagrams of differing standards. Other features include model consistency checking. Free and open source, and cross-platform. Written in Java. The wiki includes some https://github.com/ModelioOpenSource/Modelio/wiki[sample projects] for download.
+
+* http://www.modelsphere.com/[ModelSphere] — Free and open source tool for business process modeling, data modeling, and UML modeling. Cross-platform compatible – but it requires a Java 7 Virtual Machine to be installed locally.
+
+* https://help.sap.com/docs/SAP_POWERDESIGNER?locale=en-US[SAP PowerDesigner] (deprecated?)
+
+* https://www.softwareideas.net/[Software Ideas Modeler]
+
+* http://www.sparxsystems.com/[Sparx Enterprise Architect] — Commercial and proprietary visual UML modeling tool.
+
+* http://staruml.io/[StarUML] — Open source UML-focused modeling tool that supports most of the diagram types specified in UML 2.0, and also SysML diagrams (requirement, block, and internal block diagrams), as well as a handful of deprecated/non-standard notations such as flowcharts and entity-relationship diagrams. StarUML is widely used in academia. The project was originally open source but has since become a commercial product distributed under a proprietary license. https://sourceforge.net/projects/whitestaruml/[WhiteStarUML] is a fork of the original project that remains open source, but it is no longer actively maintained.
+
+* https://structurizr.com/[Structurizr] — Developed by https://simonbrown.je/[Simon Brown], who also created the *link:./c4-model.adoc[C4 model]*, Structurizr is an online diagrams-as-code tool that generates C4 models from a plain-text language, the https://docs.structurizr.com/dsl[Structurizr DSL], which is a modeling language in its own right.
+
+* https://uml.sourceforge.io/[Umbrello] — Free and open source UML modeling tool that supports most standard UML diagrams. Umbrello is part of the KDE project and therefore ships with all Linux distributions. Builds for macOS and Windows are also available – but I couldn't get this to run on Windows 11.
+
+* https://www.umldesigner.org/[UML Designer]
+
+* https://www.altova.com/umodel[Umodel]
+
+* https://www.visual-paradigm.com/[Visual Paradigm] — Commercial *link:./case.adoc[CASE]* tool, supporting UML 2, SysML, and BPMN. There's a free-to-use community edition, and an https://online.visual-paradigm.com/diagrams/[online version]. Features include code generation capabilities.
