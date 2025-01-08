@@ -1,200 +1,112 @@
-= Microservices (aka. the microservices architecture)
+= Microservices (aka. microservices architecture)
 
-Microservices are a specific implementation of the
-*link:./service-oriented-architecture.adoc[service-oriented architecture (SOA)]* pattern. The terms
-microservices are SOA are often used interchangeably, but correctly microservices are a subset of
-SOA in which each service is very small, scoped only to a single business function, and
-independently deployable.
+Microservices are a subset of *link:./service-oriented-architecture.adoc[service-oriented architecture (SOA)]* pattern.
 
-The term "microservices" originated in the early 2010s and was popularized by thought leaders such
-as Martin Fowler and James Lewis. Subsequently, the term *[nanoservices]* has been used to describe
-services that are even smaller than microservices.
-
-There is no definitive list of features that distinguish microservices from more generic
-service-oriented architecture, but the following characteristics are widely acknowledged:
+The terms microservices and SOA are used interchangeably, but correctly microservices are a subset of SOA in which each service is very small, scoped only to a single business function, and independently deployable. There is no definitive list of features that distinguish microservices from more service-oriented designs, but the following characteristics are widely acknowledged:
 
 .Microservices vs. SOA
 [cols="1,2,2"]
 |===
-|Characteristic |Microservices |SOA
+| Characteristic | Microservices | SOA
 
-|*Granularity*
-|Fine-grained services, often with a single responsibility.
-|Mix of fine-grained and coarse-grained services; services may have multiple responsibilities.
+| *Granularity*
+| Fine-grained services, often each with only a single responsibility.
+| Mix of fine-grained and coarse-grained services. Some services may have multiple responsibilities.
 
-|*Communication*
-|Typically use lightweight protocols like HTTP, or asynchronous communication.
-|May use more complex communication protocols like SOAP.
+| *Communication*
+| Typically use lightweight protocols like HTTP.
+| May use more complex communication protocols like SOAP.
 
-|*Independence*
-|Services are independently deployable and scalable.
-|Services may be more interdependent and not always independently deployable.
+| *Coupling*
+| Typically use asynchronous communication patterns to reduce coupling between components.
+| May have higher use of direct synchronous communication between services. Higher risk of evolution into "distributed monolith".
 
-|*Technology*
-|Encourages use of different languages and technology stacks, to optimize individual services based on their use case.
-|May use a more uniform technology stack across services.
+| *Technology*
+| Encourages use of different languages and technology stacks to optimize individual services for their use cases.
+| More likely to use a uniform technology stack across services.
 
-|*Data*
-|Each service manages its own databases and has its own caching layers.
-|Services may share common data stores and caches.
+| *Data*
+| Each service manages its own data stores and caching layers.
+| Services may share common data stores and caches.
 
-|*DevOps*
-|Emphasizes continuous deployment and DevOps practices.
-|May follow more traditional deployment practices.
+| *Deployment*
+| Services are independently deployable. Emphasizes continuous deployment and DevOps practices.
+| There may be a higher degree of interdependence between services, limiting the "continuous" velocity of deployments.
 |===
 
-== Designing microservices
+The distinction between SOA and microservices is really one of granularity. Microservices are typically smaller and more narrowly scoped in their responsibilities than services in a service-oriented architecture. The term "microservices" originated in the early 2010s and was popularized by thought leaders such as Martin Fowler and James Lewis. Subsequently, the term *[nanoservices]* has been used to describe services that are even more granular than microservices.
+
+== Design trade-offs
+
+A microservices architecture makes the same trade-offs as *link:./service-oriented-architecture.adoc[service-oriented architecture]* and any *link:./distributed-system.adoc[distributed system]* design. In addition, due to the increased number of services and the increased granularity of their individual responsibilities, the following trade-offs are common:
+
+* Microservices tend to require a high degree of data replication between services, increasing *[accidental complexity]* associated with achieving data *[consistency]*.
+
+* Microservices tend to be modeled with greater use of indirect, asynchronous communication, using message queues or event buses to handle message passing between services, rather than direct service-to-service calls, which would otherwise proliferate and greatly increase the complexity of the overall system design.
+
+* Microservices require a higher degree of coordination between teams to deploy system-wide changes. If a change is made to one service's API, all dependent services will need to be updated. Well-defined *[service contracts]*, with versioning, are essential to managing this complexity. But cross-team communication and collaboration cannot be avoided entirely when it is necessary to incrementally migrate system-wide changes in a non-breaking way. The more services you have, the more complex this coordination becomes.
+
+* Microservices are more complex to operate than systems built from coarser-grained services. Microservices tend to require more sophisticated deployment and monitoring tools, and more complex testing strategies – potentially including advanced techniques like *[chaos engineering (aka. chaos testing)]*. Debugging production issues can be challenging. You can't just attach a debugger to a running process if the source of a problem could be in any one of a number of downstream services. *[Observability]* tools, and especially *[distributed tracing]*, are specifically designed to solve the problem of debugging highly distributed systems like microservices.
+
+* Infrastructure costs can actually be higher in a microservices system, due to the increased number of services and the need for additional technical services like *[service discovery]* and *[API gateways]*.
+
+A well-regarded approach to implementing microservices in greenfield projects is to start with a *link:./modular-monolith.adoc[modular monolith]* and incrementally extract services from it as *[load]* on the system increases over time.
 
 [quote, Martin Fowler]
 ____
 Don't design microservices, extract them.
 ____
 
-A well-regarded approach to implementing microservices in greenfield projects is to start with a
-*[modular monolith]* and extract services from it as demands on the system increase over time.
+However, there is one scenario in which you should probably start with microservices, or some other distributed system design, and that's when you know the system will have large amounts of load as soon as production traffic is routed to it – for example, if you are replacing an existing system, or hooking into existing processes, the traffic patterns for which are already known.
 
-****
-Monoliths and microservices are not necessarily distinct, but can be seen as opposite ends of a
-spectrum of architectural styles. You can have semi-monoliths that already have key subsystems
-extracted out into separate services. You can incrementally transition from a monolith to a
-full microservices architecture, by incrementally extracting modules (encapsulating subdomains)
-as services.
-****
-
-If you're starting out with a brand new application that isn't going to be deployed into any
-existing infrastructure, then you might as well start with a monolith. It's much quicker to get to
-market. Don't prematurely optimize for scalability problems that you don't have yet. But have a
-rough plan in place for how you might handle that when the time comes.
-
-There is, however, one scenario in which you should probably start with microservices (or some
-other distributed system design). And that's when you know your application will have large
-amount of traffic or throughput from day one. For example, if it is replacing an existing system
-or hooking into existing processes.
-
-See also the *link:./stranger-fig-pattern.adoc[strangler fig pattern]*, which is an architectural
-pattern to help with evolving legacy systems into modern architectures and technology stacks.
-
-== Advantages of microservices
-
-A well-designed microservices system would be composed of services where each has only a
-*[single responsibility]*. Some would be general purpose services such as authentication, user
-management, payment processing, and email delivery. These services would rarely change and therefore
-require minimal maintenance. Some such services may be entirely outsourced to *external service*
-providers. Others would be *[domain-specific]* services, such as inventory management, order
-processing, customer reviews, and so on. These services would be the focus of development efforts.
-
-In large systems, different teams would be responsible for different services. Different services
-could be developed and deployed independently of each other, allowing for faster development and
-deployment cycles. This requires well-defined *contracts* between services.
-
-A well-designed microservices system would be more *[reliable]*. When something goes wrong with one
-service, the issue will not cascade to the entire system. For example, if the email service goes
-offline, emails would still be queued for delivery and would be sent when the email service comes
-back online. Individual services could be designed to auto-recover from failure.
-
-Microservices also allow for better *[scalability]*. Each service can be scaled independently of the
-others. For example, the email service might be scaled in one way to handle more throughput, while
-the payment service might be scaled in a different way to reduce latency or increase reliability,
-for example. Some services may be designed to auto-scale in dynamic response to changes in demand.
-
-Optionally, teams may pick different technology stacks for the services they maintain. This allows
-the optimum tools to be chosen for each use case, but with trade-offs at the organization level such
-as the increased friction involved in moving people between teams. For this reason, most
-organizations will define a set of approved technologies that can be used, finding a pragmatic
-balance between standardization and flexibility. For example, Python might be used for a machine
-learning service while the rest of the system used Java.
-
-== Disadvantages of microservices
-
-One common difficulty in microservice design is the managing the overheads associated with
-coordinating system-wide changes. For example, if a change is made to a service's API, all services
-that depend on that API must be updated. Well-defined service contracts, with versioning, is
-essential – but still managing the migration of these changes requires cross-team coordination.
-In addition, mocks of dependent services are often needed for local development, else you need
-resource-intensive development environments capable of running all services.
-
-All of this is added overhead, which doesn't directly contribute to the development or operations
-of the system. These overheads tend to be much lower in *[monolithic systems]*, by comparison.
-
-Microservices are also harder to debug when you have production *[incidents]*. Unlike a monolith,
-you can't just attach a *[debugger]* to a running process, if the source of the bug could be in
-any part of the system, because there are many running processes, usually distributed across
-multiple servers. So, you have a higher dependence on *[logging]* and *[monitoring]*.
-
-*[Observability]* tools, and especially *[distributed tracing]*, are specifically designed to
-solve the problem of debugging distributed systems like microservices.
-
-Microservices can sometimes be expensive in terms of infrastructure running costs. This can be
-especially true while transitioning from a monolith to a cloud-based microservices system. It is
-common to have a big (but temporary) uptick in infrastructure costs during such transitions.
-Infrastructure costs may decrease again once you have the freedom to optimize services based on
-their individual traffic patterns.
-
-See also *link:./distributed-systems.adoc[distributed systems]*.
+See also the *link:./stranger-fig-pattern.adoc[strangler fig pattern]*, which is an architectural pattern to help with evolving legacy systems into modern architectures and technology stacks.
 
 == Related links
 
-* https://microservices.io/[Microservices.io] — Articles, a glossary of microservice-related
-  terminology and design patterns, and many more resources, curated by Chris Richardson. An
-  excellent starting point to learn about microservice architecture.
+* https://microservices.io/[Microservices.io] — Articles, a glossary of microservice-related terminology and design patterns, and many more resources, curated by Chris Richardson. An excellent starting point to learn about microservices architecture.
 
-* https://martinfowler.com/articles/microservices.html[Microservices: A definition of this new architectural term] —
-  By Martin Fowler and James Lewis. See also https://martinfowler.com/articles/microservice-trade-offs.html[Microservice trade-offs]
-  for a concise summary of the pros and cons of microservice architecture. See also Fowler's
-  https://www.youtube.com/watch?v=wgdBVIX9ifA[talk at GOTO 2014].
+* https://martinfowler.com/articles/microservices.html[Microservices: A definition of this new architectural term] — By Martin Fowler and James Lewis. See also https://martinfowler.com/articles/microservice-trade-offs.html[Microservice trade-offs] for a concise summary of the pros and cons of microservices architecture, and Fowler's https://www.youtube.com/watch?v=wgdBVIX9ifA[GOTO 2014 talk] on this subject.
 
 * https://www.nginx.com/resources/library/microservices-reference-architecture/[Microservices reference architecture], Chris Stetson (2017)
 
 * https://thenewstack.io/ten-commandments-microservices/[10 commandments of microservices], The New Stack (2016)
 
-* https://www.vinaysahni.com/best-practices-for-building-a-microservice-architecture[Best practices for building a microservice architecture], Vinay Sahni
+* https://www.vinaysahni.com/best-practices-for-building-a-microservice-architecture[Best practices for building a microservices architecture], Vinay Sahni
 
 * https://medium.com/@qasimsoomro/building-microservices-using-node-js-with-ddd-cqrs-and-event-sourcing-part-1-of-2-52e0dc3d81df[Building microservices: using Node with DDD, CQRS, and event sourcing], Qasim Soomro (2019)
 
 * https://www.linkedin.com/pulse/designing-scalable-backend-infrastructures-from-scratch-chauhan[Designing scalable backend infrastructures from scratch], Anshul Chauhan
 
-* https://blog.appdynamics.com/engineering/microservices-monoliths-and-self-contained-systems-time-to-break-it-down/[Microservices, Monoliths, and Self-Contained Systems] —
-  Appydynamics Engineering
+* https://blog.appdynamics.com/engineering/microservices-monoliths-and-self-contained-systems-time-to-break-it-down/[Microservices, monoliths, and self-contained systems] — Appydynamics Engineering
 
-* https://www.sam-solutions.com/blog/microservices-vs-monolithic-real-business-examples/[Microservices vs. Monolithic: Real Business Examples] —
-  Sam Solutions
+* https://www.sam-solutions.com/blog/microservices-vs-monolithic-real-business-examples/[Microservices vs. monolithic: real business examples] — Sam Solutions
 
-* https://blog.buzachis-aris.com/2014/12/microservices-vs-monolithic-architectures/[Microservices vs Monolithic architectures] —
-  Buzachis Aris, 2014
+* https://blog.buzachis-aris.com/2014/12/microservices-vs-monolithic-architectures/[Microservices vs monolithic architectures] — Buzachis Aris (2014)
 
 === Critiques
 
 * https://riak.com/posts/technical/microservices-please-dont/[Microservices - please, don't], Sean Kelly (2016)
 
-* https://www.dwmkerr.com/the-death-of-microservice-madness-in-2018/[The Death of Microservice Madness in 2018], Dave Kerr (2018) —
-  A strong case made why microservices is not a suitable architecture for all but a few very large organizations.
+* https://www.dwmkerr.com/the-death-of-microservice-madness-in-2018/[The death of microservice madness in 2018], Dave Kerr (2018) — A strong case made why microservices is not a suitable architecture for all but a few very large organizations.
 
 * https://thenewstack.io/beauty-beast-justgivings-microservices-transformation/[Microservices: the good, the bad and the hype], Jennifer Riggins, The New Stack (2017)
 
-* https://blog.philipphauer.de/microservices-nutshell-pros-cons/[Microservices in a Nutshell. Pros and Cons] —
-  Philipp Hauer (2015)
+* https://blog.philipphauer.de/microservices-nutshell-pros-cons/[Microservices in a nutshell – pros and cons] — Philipp Hauer (2015)
 
-* https://insights.sei.cmu.edu/saturn/2015/11/microservices-beyond-the-hype-what-you-gain-and-what-you-lose.html[Microservices Beyond the Hype: What You Gain and What You Lose] —
-  Paulo Merson, SEI Insights, 2015
+* https://insights.sei.cmu.edu/saturn/2015/11/microservices-beyond-the-hype-what-you-gain-and-what-you-lose.html[Microservices beyond the hype: what you gain and what you lose] — Paulo Merson, SEI Insights (2015)
 
 === Case studies
 
 * https://zepworks.com/posts/faster-better-cheaper-and-re-architecture/[Faster, cheaper and better: a story of breaking a monolith], Zep Dehpour (2019)
 
-* https://www.youtube.com/watch?v=N1BWMW9NEQc[Airbnb, from monolith to microservices: how to scale your architecture] —
-  Hear from Melanie Cebula, Software Engineer at Airbnb, on how they utilize microservices to scale their architecture.
+* https://www.youtube.com/watch?v=N1BWMW9NEQc[Airbnb, from monolith to microservices: how to scale your architecture] — Hear from Melanie Cebula, Software Engineer at Airbnb, on how they utilize microservices to scale their architecture.
 
-* https://www.youtube.com/watch?v=57UK46qfBLY[Microservices at Netflix scale: principles, tradeoffs and lessons learned] —
-  A talk by R. Meshenberg given at GOTO 2016.
+* https://www.youtube.com/watch?v=57UK46qfBLY[Microservices at Netflix scale: principles, tradeoffs and lessons learned] — A talk by R. Meshenberg given at GOTO 2016.
 
 === Books
 
-* https://www.amazon.com/gp/product/1491950358[Building Microservices: Designing Fine-Grained Systems] —
-  Sam Newman (2015, 1st edition)
+* https://www.amazon.com/gp/product/1491950358[Building Microservices: Designing Fine-Grained Systems] — Sam Newman (2015)
 
-* https://www.nginx.com/resources/library/designing-deploying-microservices/[Designing and Deploying Microservices] —
-  A free ebook, written by Chris Richardson and Floyd Smith on behalf of Nginx. An excellent
-  resource for all involved in building and maintaining microservice-based systems.
+* https://www.nginx.com/resources/library/designing-deploying-microservices/[Designing and Deploying Microservices] — A free ebook, written by Chris Richardson and Floyd Smith on behalf of Nginx. An excellent resource for all involved in building and maintaining microservice-based systems.
 
-* https://www.amazon.com/gp/product/1491965975/[Production-Ready Microservices: Building Standardized Systems Across an Engineering Organization] —
-  Susan J. Fowler (2016, 1st edition)
+* https://www.amazon.com/gp/product/1491965975/[Production-Ready Microservices: Building Standardized Systems Across an Engineering Organization] — Susan J. Fowler (2016)

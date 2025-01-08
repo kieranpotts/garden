@@ -4,63 +4,74 @@
 
 toc::[]
 
-Domain-driven design was popularized by Eric Evans in his 2003 book of the same name, and which is colloquially referred to as "the blue book". The concepts behind DDD predate the book, but Evans brought them together into a coherent architectural pattern and design process.
+Domain-driven design (DDD) was popularized by Eric Evans in his 2003 book of the same name, and which is colloquially referred to as "the blue book". The concepts behind DDD predate the book, but Evans brought them together into a coherent architectural pattern and design process.
 
 image::./_/domain-driven-design-book-cover.webp[]
 
-Evans observed that good software tends to closely model the human processes that it automates or the real-world problems that it solves. It follows that the first job of a software developer is not to code, but to understand the domain of the software. Domain-driven design enforces this by putting a model of the domain at the center of the software design.
+Evans observed that good software tends to closely model the human processes that it automates or the real-world problems that it solves. It follows that the first job of a software developer should not be to write computer code, but to understand the *link:./domain.adoc[domain]* of the software. Domain-driven design enforces this by putting a *link:./domain-model.adoc[model]* of the domain at the center of the software design.
 
-Domain-driven software designs are built around models of their *[business domains]* or problem spaces – the subject areas of the software.
+Domain-driven software designs are built around *link:./domain-model.adoc[models]* of their *link:./domain.adoc[business domains]* or problem spaces – the subject areas of the software.
 
-DDD is analogous to physical architecture. Architects design buildings to serve specific functions. The blueprints for a public library and a private home will therefore look very different. Domain-driven design takes this principle and applies it to software. Thus, the blueprint for a banking application should look like the process flows of a bank.
+DDD is analogous to physical architecture. Architects design buildings to serve specific functions. The blueprints for a public library and a private home will therefore look very different. Domain-driven design takes this principle and applies it to software. Thus, the blueprint for a banking application should look like the departments and procedures of a high street bank, while the blueprint for an e-commerce application should resemble the operating model of a bricks-and-mortar shop. Likewise, bespoke *[enterprise application software]* should model the very businesses that own it.
 
-DDD rejects the process of reusing generic architectural patterns like *[model-view-controller]* and forcing entirely different applications to fit a the same ready-made designs. Instead, a domain-driven design approach to software involves creating a unique architecture for each application that is tailored to the specific business domain it serves. So, rather than a system being composed from a series of functions and procedures, it is built around representations of things in the real-world problem space.
+DDD rejects the process of reusing generic architectural patterns like *[model-view-controller]* and forcing entirely different applications to fit the same ready-made floor plans. Instead, a domain-driven design approach to software involves creating a unique architecture for each application, one that is tailored to the specific business domain it serves by constructing the system around representations of objects and events that exist in the real world.
 
-To design and build high quality domain models, close collaboration is required between the *technical experts* (who implement the software) and the *domain experts* (aka. subject matter experts). DDD requires the software delivery teams to work closely with business stakeholders. The two parties are jointly responsible for iteratively refining the conceptual model of the solution.
+To design and build high quality domain models, close collaboration is required between the *technical experts* (who implement the software and hardware) and the *[domain experts]* (aka. subject matter experts or business stakeholders). The two parties are jointly responsible for iteratively refining the conceptual model of the solution. This is one of the most powerful aspects of domain-driven design: that development of software is equally driven by software developers and the customers/users (or representatives of them, such as a product manager).
 
-DDD is particularly beneficial in complex problem spaces – things like banking applications and air traffic control systems – or where the business domain is not well understood. The domain-driven design process helps to clarify the business domain, to identify the key concepts and relationships within it, and to build a shared understanding of the domain between the technical and business people.
+DDD is particularly beneficial in complex problem spaces – things like banking applications and air traffic control systems – or where the business domain is not well understood. Domain-driven design emphasizes the design of a system's *[essential complexity]*, the stuff that is essential to the business itself. This process helps to clarify the business domain, to identify the key concepts and relationships within it, and to build a shared understanding of the domain between the technical and business people.
 
-However, DDD may introduce unnecessary *[accidental complexity]* for small, simple software systems.
+DDD may introduce unnecessary *[accidental complexity]* for small, simple software systems. Also, it is often difficult to retrofit domain-driven design patterns to existing systems. That's because domain-driven design cuts across the whole design of a software system, informing the underlying structure of the codebase and the communication patterns between components.
 
-DDD can be described as both an *architectural style*, built around a series of recurring object-oriented design patterns used for domain modeling , and also a *design process*.
+DDD can be described as an *architectural style*, a *design philosophy*, and a *design process*. As an architectural style, DDD is a set of recommended design patterns for composing software systems. As a design philosophy, DDD is about building software that closely models the business domain it serves, and creating a shared understanding of the domain between technical and non-technical stakeholders.
 
-As a software design process, Evans described DDD as having two distinct stages:
+But DDD is (perhaps) most useful as a software design process. Evans described the _process_ of DDD as having two distinct stages:
 
-* *Strategic design*: You work out what the subdomains are in the business, and the relationships between the subdomains.
+* *Strategic design*, in which the domain is modelled.
 
-* *Tactical design*: You refine the domain model, working out what domain objects you will need inside each subdomain, and how the subdomain objects interact with each other.
+* *Tactical design*, in which the domain model is implemented in code using a variety of object-oriented design patterns.
 
 == Strategic design
 
-Although it's possible to apply DDD concepts to an existing application, it is much easier when an application is built from the ground-up with DDD principles in mind. That's because DDD cuts across the whole design of an application, forming its broad architectural structure. This is called the strategic design.
+The first phase of a domain-driven approach to software design is called the strategic design. The strategic design is typically undertaken during a project's *[discovery phase]*.
 
-Fundamentally, DDD is all about good *[domain modeling]*. The goal of the strategic design is to end up with a high-level model, written in computer code, of the business domain. The model is created by the technical experts but its design is driven by the people who know most about the domain – the domain experts.
-
-The strategic design is typically developed during a project's *[discovery phase]*. Domains, subdomains, and key parts are discovered through *[conversations]* with *[domain experts]*. The technical experts collaborate with the domain experts through continuous conversation and feedback to create a model of the problem domain that makes sense to all the project's stakeholders. The goal is for the resulting software to closely map how the business itself thinks and operates.
+Fundamentally, DDD is all about good *[domain modeling]*. The goal of the strategic design is to end up with a high-level model of the business domain. The model is created by the technical experts but its design is driven by the people who know most about the domain – the *[domain experts]*. The model is discovered through *conversations* with the domain experts. The technical experts collaborate with the domain experts through continuous conversation and feedback to create a model of the problem space that makes sense to all the project's stakeholders.
 
 This is pure business exploration. Methodologies used to discover the domain may include *Big Picture*, *Process-Level Event Sourcing*, and *Domain Storytelling*. The strategic design is normally an *[iterative and incremental]* process, because it is normally difficult to create from the start a complete model that covers all of a business's needs.
 
 The objective of DDD is to produce software that the domain experts would make if they had the technical know-how to do it themselves.
 
-The emphasis on continuous conversation and close collaboration between technical and non-technical stakeholders brings other advantages. Often the process of automating business processes through software development can yield new insights into the business itself. The constant delivery process brings more insights over time. And it serves the purpose of pooling knowledge within an organization, such that knowledge of certain aspects of a business and its IT systems are not restricted to particular tribes within the organization. Instead, knowledge is dissipated throughout the organization.
+.Continuous integration
+****
+Eric Evans promotes *[continuous integration]* as a *[practice]* that enforces an iterative and incremental design process. Without continuous integration, Evans argues, there is a strong tendency for models to fragment, especially when multiple teams are working on different parts of the domain.
+****
+
+The emphasis on continuous conversation and close collaboration between technical and non-technical stakeholders brings other advantages. Often the process of automating business processes through software development can yield new insights into the business itself. The process of continuous integration brings a continuous *[feedback loop]* of fresh insights. And domain modeling also serves the purpose of pooling knowledge within an organization, such that knowledge of certain aspects of a business and its IT systems are not restricted to particular tribes within the organization. Instead, knowledge is dissipated throughout the organization.
+
+The outcome of the strategic design phase is a comprehensive *link:./domain-model.adoc[model]* of the software's *link:./domain.adoc[domain]* or *[problem space]*. Domain models may be expressed in documentation, code, tests, or visually (eg. using UML or similar graphical notations), or a combination of all these. DDD is not prescriptive about the choice of modeling artifacts. The only criteria is that a consistent language – an *[ontology]* – is used throughout throughout the model.
+
+Ultimately, the domain model will be implemented in code. So a good modeling process needs to consider not only the domain but also its implementation in software. It is important that models can be translated into working code. It is possible that a model that is truthful to its domain could have serious problems in its implementation, such as unacceptable *[performance]*. For this reason, domain modeling and *[system design]* should run concurrently.
+
+Throughout the *[construction phase]*, the software developers should make frequent references to the model. The software system should map the model in a very literal way, going as far as using the same language to name things like classes and methods.
+
+Developers should have ownership of the model, and responsibility for its integrity. Changes to the model should be reflected in code, and vice versa.
 
 === Domain
 
-The first step in DDD is to define the *domain*. The domain is the subject area of the software. It is a sphere of knowledge from the real world, processes within which the software is intended to automate. In the DDD process, domain experts (people who understand the business) work with developers to define the application's domain.
+The first step to creating a domain model is to define the *link:./domain.adoc[domain]*. The domain is the subject area of the software. The domain is taken from a sphere of knowledge in the real world, or a set of business processes that the software is intended to automate.
 
-Examples of application domains include customer relationship management, financial loan application management, video subscription services, and so on.
+Examples of domains include customer relationship management, financial loan application management, video subscription services, and so on.
 
 Defining the domain is as much about defining what the software will _not_ do as what it _will_ do. The domain is the boundary within which the software will operate, or the context in which the software will be used.
 
 === Subdomains
 
-Once the scope and boundaries of the application are defined in its domain, the second step is to discover the *subdomains*. A subdomain is a smaller, more specialized area within a domain. Each subdomain has a specific purpose or represents a particular business capability. For example, in a video subscription service, the billing, video streaming, and user management areas might be subdomains.
+Once the scope and boundaries of the application are defined, the second step is to discover the *subdomains*. A subdomain is a smaller, more specialized area within a domain. Each subdomain has a specific purpose or represents a particular business capability. For example, in a video subscription service, the billing, video streaming, and user management areas might be subdomains.
 
 A subdomain is something that exists in the real world and shows how the business operates in a given area.
 
-Subdomains may overlap, and they may even be nested. Some processes in a subdomain may be part of larger processes in another subdomain, which itself touches several other subdomains.
+Subdomains may overlap, and they may even be nested. Some processes in a subdomain may be part of larger processes in another subdomain, which itself might touch several other subdomains. However, as we shall see, different subdomains may need to have their own models (including their own ontologies), and therefore the strategic design should prioritize simplifying the domain. Having fewer subdomains, and a simple hierarchy of subdomains, means there will be fewer dependencies between subdomains, and the *[essential complexity]* of the eventual system will be minimized.
 
-Some subdomains may be *core domains*. In a video subscription service, the core subdomain would probably be video streaming. DDD emphasizes that the core domain(s) should be the focus of the design, and the main focus of the project, while *secondary subdomains* should be as simple as possible and exist only to support the primary ones.
+Some subdomains will be *core subdomains*. In a video subscription service, the core subdomain would probably be video streaming. DDD emphasizes that the core subdomain(s) should be the focus of the design, while *secondary subdomains* should be as simple as possible and exist only to support the primary ones.
 
 === Key parts
 
@@ -69,8 +80,23 @@ The third step in the strategic design is to work out what are the *key parts* w
 [plantuml]
 ....
 @startuml
-left to right direction
+
+top to bottom direction
+
 rectangle "video subscriptions" {
+
+  rectangle "user management" {
+    rectangle "subscribers" {
+    }
+  }
+
+  rectangle "video streaming" {
+    rectangle "videos" {
+    }
+    rectangle "viewers" {
+    }
+  }
+
   rectangle "billing" {
     rectangle "accounts" {
     }
@@ -79,41 +105,31 @@ rectangle "video subscriptions" {
     rectangle "subscription plans" {
     }
   }
-  rectangle "video streaming" {
-    rectangle "videos" {
-    }
-    rectangle "viewers" {
-    }
-  }
-  rectangle "user management" {
-    rectangle "subscribers" {
-    }
-  }
+
 }
+
 @enduml
 ....
 
-Some key parts will be common across multiple subdomains. For example, subscribers will probably be a key part in most subdomains. But a sign of good strategic design is when each subdomain has a few key parts that are unique to it, and are not shared by other subdomains. For example, the billing subdomain might have a "payment details" part, which you would not expect to see in any of the other subdomains.
+Some key parts will be common across multiple subdomains. For example, subscribers will probably be a key part in most subdomains. But a sign of good strategic design is when each subdomain has at least one key part that is unique to it, and not shared by other subdomains. For example, the billing subdomain might have a "payment details" part, which you would not expect to see in any of the other subdomains.
 
 === Bounded contexts and their ubiquitous languages
 
-DDD encourages developers and domain experts to collaborate together and develop a common *link:./ubiquitous-language.adoc[language]* to describe the whole business domain, so the same business terms are used consistently by all the stakeholders. The ubiquitous language, taken from the real world business domain, will be used to specify requirements and to name things in the application code and its tests. Indeed, the ubiquitous language should be used in all forms of communication (both written and verbal) between the business and technical people.
+DDD encourages developers and domain experts to collaborate together and develop a common *link:./ubiquitous-language.adoc[language]* to describe the whole business domain. The objective is for domain terminology to be understood and used consistently by all stakeholders in a software project – both technical and non-technical.
 
-Clearly, there are significant benefits to having a single unified model, with consistent entities defined with a consistent language, covering the whole business domain. However, especially in complex problem spaces, this is often unrealistic. DDD recognizes that different subdomains may need to have different models, each with its own distinct terminology.
+DDD calls this common language the *ubiquitous language*. It is similar in concept to an *link:./ontology.adoc[ontology]*. The language is taken from the real world business domain, and it should be used to specify software requirements and to name things in the application code and its tests. Indeed, the domain language should be used in all forms of communication (both written and verbal) between the technical teams and the *[domain experts]*.
 
-Variations in terminology are most likely to appear in the names for key parts that are shared between subdomains. For example, in the billing subdomain, subscribers might be referred to as "accounts", while the video streaming subdomain might refer to them as "viewers", and the user management subdomain might use the term "subscribers". Thus, the terms "account", "viewer", and "subscriber" all refer to the same thing and only the language changes depending on the context.
+Ideally, there would be a single unified model covering the whole business domain. However, in complex problem spaces, this is often unrealistic. Different subdomains may need to have different models, each with its own distinct language. For example, in the billing subdomain, subscribers might be referred to as "accounts", while the video streaming subdomain might refer to them as "viewers", and the user management subdomain might use the term "subscribers". Thus, the terms "account", "viewer", and "subscriber" all refer to the same thing and only the language changes depending on the context. (Variations in language are most likely to appear in the key parts of subdomains.)
 
-Similarly, the representations of real-world entities, events, and  other concepts may differ between subdomains. For example, in an e-commerce domain, a "customer" entity within the "support" subdomain might encapsulate a user's order history and support tickets, while the same entity in the "finance" subdomain might encapsulate the same user's payment history, invoices, and method of payment.
+Similarly, the representations of real-world entities, events, and other concepts may differ between subdomains. For example, in an e-commerce domain, a "customer" entity within the "support" subdomain might encapsulate a user's order history and support tickets, while the equivalent entity in the "finance" subdomain might encapsulate the same user's payment history, invoices, and method of payment. Thus, the same entities might have different attributes and methods depending on the subdomain.
 
-In such cases, it is better to have different models for each subdomain, each with its own terminology and attributes. Although such variations increase complexity, domain-driven design advocates that domain models are accurate representations of the real-world business domain. Where different parts of a business use different terminology to describe essentially the same things, the software should reflect this.
+DDD recognizes that different subdomains may need to have different models, each using different terminology for its key parts and different representations of the same real-world objects (entities).
 
-Domain-driven design introduces the concept of *bounded contexts* to manage this complexity. A bounded context is a specific part of the business domain, with its own unique domain model. Within a bounded context, all domain objects and use of language is consistent. There is only one term per concept. Thus, within a bounded context there is a *ubiquitous language*.
+Although variations in the domain model increase the complexity of a system's design, domain-driven design advocates that domain models should be accurate representations of their real-world counterparts.
 
-Bounded contexts, and their domain models, must be agreed and understood by all stakeholders, on both the technical and business sides. The aim is for all stakeholders – domain experts, product managers, developers, testers, and so on – to be able to communicate effectively using the same language to describe the same concepts.
+Domain-driven design introduces the concept of *bounded contexts* to manage this complexity. A bounded context is a specific part of a business domain that has its own domain model. Within a bounded context, the domain objects are consistent. And the language is consistent too. There is only one term per concept; thus, within a bounded context there is a ubiquitous language.
 
-A bounded context may span a single subdomain, or it may span several. In most cases there will be a 1:1 mapping between subdomains and bounded contexts, and therefore the terms are synonymous. However, in some cases it may make sense to combine multiple subdomains into a single bounded context. This is particularly beneficial where two or more subdomains use identical terminology and have significant interdependencies.
-
-What makes a system complex is not so much the number of subdomains, but rather the number of bounded contexts. Ideally, a complete system will have a single bounded context, with common vocabulary and domain objects used everywhere. But where terminology differs between subdomains – where there are multiple bounded contexts – the terminology should be translated between the bounded contexts. In code, this is done using *anti-corruption layers* at the interfaces between subdomains. Each module's user interface is responsible for ensuring that languages and terms from another context do not pollute the module's own context.
+A bounded context may span a single subdomain, or it may span several. In most cases, there will be a 1:1 mapping between subdomains and bounded contexts, and therefore the two terms are synonymous. However, in some cases it may make sense to combine multiple subdomains into a single bounded context. This tends to be particularly beneficial where two or more subdomains have significant interdependencies.
 
 .Subdomains versus bounded contexts
 ****
@@ -124,83 +140,131 @@ What makes a system complex is not so much the number of subdomains, but rather 
 
 ****
 
-Bounded contexts help to manage *[complexity]*, and are particularly beneficial for managing accidental complexity that arises through *[evolutionary design]*. For example, imagine that an insurance business acquires a competitor, and begins the process of integrating their disparate IT systems. Although the domain is the same (insurance), the two companies will likely have modeled their domain entirely differently. They will each have developed different business rules, terminology, and actors. Therefore, rather than try to integrate the two systems into the same subdomains, it may make sense to keep them separate – at least initially. So you would have a "Home Insurance" context and a "Health Insurance" context, each with its own ubiquitous language.
+So, bounded contexts explicitly define the context within which a discrete domain model applies. They should also be used to define the scope of responsibilities of teams. Bounded contexts should also be used to set boundaries for team responsibilities, and physical manifestations of that included codebases and their repositories, development and testing infrastructure, and deployment pipelines. Ideally, each team will be responsible for, and have a high degree of autonomy over, a single bounded context – which may span multiple subdomains, but which will have a consistent domain model throughout.
 
-Tools such as a https://github.com/ddd-crew/bounded-context-canvas[Bounded Context Canvas] may be used to help define the bounded contexts and their ubiquitous languages.
+Each bounded context should have a name (which may be reflected in team names), which should be part of the domain's ubiquitous language. Tools such as a https://github.com/ddd-crew/bounded-context-canvas[Bounded Context Canvas] may be used to help define the bounded contexts and their ubiquitous languages.
 
 === Context maps
 
-The final part of the strategic design is to learn how the various subdomains interact with each other. This is about defining the relationships between different parts of the business.
+The final part of the strategic design is to learn how the various bounded contexts interact with each. This is about defining the relationships between different parts of the business domain, and it is done by creating a *context map*. This is a visual representation of communication paths (and directions) between the bounded context and the subdomains they encapsulate.
 
-In DDD, this is done by creating a *context map*. This is a visual representation of communication paths (and directions) between the subdomains.
+It is through the context maps that teams understand how their parts of the system fit into the bigger picture. The context maps also define how the different models of each of the bounded contexts relate to each other.
 
-For example, the video streaming subdomain needs to know what quality of video to stream to the user, and since this is dependent upon the subscription plans encapsulated in the billing subdomain, the video streaming subdomain will need to communicate with the billing subdomain. Therefore, there will need to be a mapping between a viewer in the streaming domain and the subscriber in the billing domain.
+For example, imagine that a video streaming context needs to know what quality of video to stream to a user, and since this is dependent upon the subscription plans encapsulated in the billing context, the video streaming context will need to communicate with the billing context. Therefore, there will need to be a mapping between a viewer in the streaming context and the subscriber in the billing context. In code, this transformation of models between contexts is done using some sort of *anti-corruption layer* at the interfaces between subdomains. Each subdomain's user interface is responsible for ensuring that nomenclature from other contexts do not pollute its own bounded context.
 
-Tools such as the https://contextmapper.org/[Context Mapping DSL (CML)] may be used to model bounded contexts and to map the relationships between them.
+Bounded contexts and contexts maps help to make sense of the *[essential complexity]* that is inherited from a system's business domain. Tools such as the https://contextmapper.org/[Context Mapping DSL (CML)] may be document the models of bounded contexts and to map the relationships between them.
+
+Usage of bounded contexts and context maps is particularly beneficial for moderating *[accidental complexity]* that would otherwise arise through *[evolutionary design]* over time. For example, imagine that an insurance business acquires a competitor, and begins the process of integrating their disparate IT systems. Although the domain is the same (insurance), the two companies will likely have modeled their domain entirely differently. They will each have developed different business rules, terminology, and actors. Therefore, rather than try to integrate the two systems into the same domain model, it may make sense to keep them separate – at least initially. Wrapping each model in a bounded context and using a mapping system to translate between the two models is a great solution for managing this sort of emergent complexity.
+
+What makes a system is complex is not so much the number of subdomains, but rather the number of bounded contexts, and the complexity of the mappings between the contexts. Ideally, a system will have as few bounded contexts as possible, and the mappings between them will be simple, such that domain objects are largely consistent throughout the whole system.
 
 == Tactical design
 
-The strategic design phase of DDD is about mapping out the subdomains within the business domain, and the relationships between them. With this complete, the design process moves on to defining the domain objects within each subdomain. This is known as the tactical design.
+With the domain model complete, the domain-driven approach to software design moves on to implementing the domain model in code. A variety of object-oriented design patterns are used for this purpose. This second phase of domain-driven design is called the tactical design.
 
-Whereas the strategic design is very much a _discovery_ process, the tactical design is more of a technical _design_ process. Another way of thinking about it is that the strategic design produces a *conceptual architecture* for the solution, while the tactical design fleshes this into a more detailed *logical architecture*.
+Whereas the strategic design is very much a business _discovery_ process, the tactical design is more of a technical _design_ process. Another way of thinking about it is that the strategic design produces a *[conceptual architecture]* for the solution, while the tactical design fleshes this out into a more detailed *[logical architecture]*.
 
-DDD provides a set of tactical patterns that can be used to define the domain objects within each subdomain. The two main tactical patterns are *entities* and *value objects*. Other tactical patterns in domain-driven design include *aggregates*, *repositories*, and *services*.
+DDD provides a set of object-oriented design patterns that can be used to create a set of *[domain objects]* within each bounded context. *[Object-oriented programming]* is particularly well suited to *[model-driven design]*, much more so than *[procedural]* and other *[programming paradigms]* that do not tend to provide sufficient *[programming constructs]* to reflect complex models.
 
-Like the ubiquitous language, tactical patterns are scoped to particular bounded contexts. Thus, if a bounded context is composed or more than one subdomain, the subdomains within that context will all share the same set of entities, values, and other domain objects.
+The domain objects will typically be used to represent the *key parts* of the strategic design. The two main design patterns recommended for creating domain objects are *[entities]* and *[value objects]*. Other tactical patterns include *[aggregates]*, *[repositories]*, and *[services]*.
 
-Many of these constructs will map to the key parts identified in the strategic design.
+Domain objects are scoped to bounded contexts. Thus, if a bounded context is composed or more than one subdomain, the subdomains within that context will all share the same set of entities, values, and other domain objects.
+
+The tactical design patterns recommended for domain-driven design are entirely optional. Ultimately, as long as a clean domain model sits at the centre of an application's architecture, the application can be said to follow a domain-driven design. DDD is most powerful as a conceptual framework for _thinking about_ the process of designing software. DDD also proposes a series of architectural design patterns, but other patterns may be more appropriate, depending on the problem being solved by the software.
 
 === Design patterns
 
-==== Aggregates, entities, and value objects
+DDD provides *building blocks* for implementing a domain-based architecture in code. The building blocks are a suite of recurring design patterns that exist in different conceptual layers of an application's code structure.
 
-The domain is modeled using a variety of object-oriented design patterns, notably entities and value objects, and aggregates of both. Collectively these are known as the *domain objects*.
+DDD design patterns include:
 
-Domain objects are units of code that encapsulate business rules and data structures that are taken from the real-world business domain the the software application models. For example, in an domain with users and teams, the software would probably have a `User` entity and a `Team` entity, and a `JoinTeam` service which would encapsulate the logic that encodes policies about which users are allowed to join which teams.
+* *[Aggregates]*
+* *[Commands]*
+* *[Domain events]*
+* *[Entities]*
+* *[Factories]*
+* *[Modules]*
+* *[Repositories]*
+* *[Services]*
+* *[Value objects]*
 
-*Entities* are representations of things in the real world, such as subscribers. Each entity has a unique identifier. Even if two objects have identical properties, they are considered different entities if they have different IDs.
+==== Commands
 
-Entities are mutable. We can change their properties over time – except for their ID. For example, a subscriber may change their email address, but it's still the same subscriber because its ID does not change.
+Commands represent a system's *[use cases]*. These are the things that the system can do. Commands are typically implemented as classes or methods that encapsulate the logic for a particular operation.
 
-*Value objects* are objects that represent a value in a subdomain, such as a date or a price. Unlike entities, value objects are not unique. Two objects with the same value are considered to be equal. Value objects are also immutable. If you need to change a value object, you create a new one.
+The commands act on domain objects, which implement the business rules and data structures required to fulfill application operations.
 
-The values of value objects may be considered to be always "correct", since validation is done at construction of the objects.
+==== Domain objects
 
-Entities may be composed of one or more value objects. For example, a subscriber may have a name, email address, and date of birth – all of which could be implemented as value objects. You could use the native types of the programming language to model these values, but by creating value objects you are explicitly stating that a value is an important part fot he subdomain. By comparison, implementation details such as the "last modified date" of an entity may not be considered important enough to be a value object. If the values are not relevant to the business but are required only to implement the software, we may call these *technical values*.
+In domain-driven software, the domain is modeled using *[domain objects]* and *[domain events]*. The domain objects are implemented using a variety of object-oriented design patterns, notably entities and value objects, and aggregates of both.
+
+Domain objects are units of code that encapsulate business rules and data structures that are taken from the real-world business domain. For example, in a domain with users and teams, the software would probably have a `User` entity and a `Team` entity, and perhaps a `JoinTeam` service that would encapsulate the logic that encodes policies about which users are allowed to join which teams.
+
+*Entities* are representations of things in the real world, such as users, teams, videos, and channels. Entities tend to persist after their destruction in memory, and the identity of each entity remains consistent throughout the lifetime of the system, even if instances of an entity are created and destroyed, and even it its attributes change. This is achieved by giving each entity a unique, immutable identifier. Thus, even if two objects have identical properties, they are considered to be different entities if they have different IDs.
+
+Entities are mutable. Their attributes can be changed – except for their IDs. For example, a subscriber may change their email address, but it's still the same subscriber because its ID does not change.
+
+Ideally, the unique identifier for an entity type would be a business concept, such as a bank account number for bank account entities, or a customer number for customer entities. If no such permanent identifier exists in the real world, a unique identifier should be generated by the system. Technical identifiers are often used in practice, such as UUIDs or auto-incrementing integers.
+
+Entities are typically generated at runtime from external input – end users, databases, etc. – and therefore entity classes should not assume that the data provided to construct them is valid. Therefore , entities will often have built-in runtime validation checking to ensure that all instances are always in a valid state. Modeling using these design constraints can help to enforce data integrity, not only of the application's dynamic state, but also of the static data that is stored in persistence systems (eg. databases).
+
+Not all domain objects need to be modeled as entities, because not all domain objects will need a unique identity or need to be persisted. If all we are interested in is the values or attributes of something, then *value objects* can be used.
+
+*Value objects* are objects that represent a simple value in a domain model, such as a date or a price. A value object has attributes like an entity, but unlike an entity a value object does not have a conceptual identity. Two value objects with the same internal attributes are considered to be equal, and therefore value objects (unlike entities) cannot be considered to be unique.
+
+As with entities, the values of value objects may be considered to be always "correct", since validation should be done at construction of the objects. But unlike entities, value objects should be modeled to be immutable. Thus, if you need to change a value object, you create a new one.
+
+Entities may be composed from one or more value objects. For example, a subscriber may have a name, email address, and date of birth – all of which could be implemented as value objects. You could use the native types of the programming language to model these values, but by creating value objects you are explicitly stating that a value is an important part of the domain model. By comparison, implementation details such as the "last modified date" of an entity may not be considered important enough to be a value object. If the values are not relevant to the domain but are required only to implement the software, we may call these *technical values*.
 
 Whether a piece of data should be modeled as an entity or a value object is not always a clear-cut decision. For example, an address could be modeled as either (value objects do not have to be restricted to a single value). In general, if something is important to the business it should be modeled as an entity. For example, in a real estate application, addresses may be important enough to be modeled as entities. However, if the address is just a way to contact a customer, it may be more appropriate to model it as a value object.
 
-You should end up with lots more value objects than entities in your domain model.
+A complete domain model is made up of a mix of entities and value objects. Typically, you will end up with a lot more value objects than entities, but this will vary between domain models.
 
-The final domain object pattern is the aggregate. *Aggregates* are groups of several entities and value objects. An example could be an order, which would be composed of a customer entity, the products ordered (also entities), and value objects such as the order total and the shipping address.
+Some domain models may required that related entities and value objects (and perhaps other structures, too) be grouped together. This is where the *aggregate* pattern comes in. An aggregate is an object that encapsulates multiple related domain objects. Each aggregate will have exactly one root entity, which provides a single point of entry to the whole group of objects. The root entity guarantees the consistency of changes made to all domain objects within the aggregate, and restricts external objects from holding references to its member objects.
+
+An example of an aggregate would be a `Customer` entity that internally references lots of other entities and values objects that represent things like a `PhoneNumber`, `PostalAddress`, `EmailAddress`, and so on. From an external point of view, the `Customer` entity is a single unit of code, and all the other objects are hidden from view.
 
 Like entities, aggregates have unique IDs.
 
-An aggregate also forms a *transactional boundary*, which means that whenever changes are made to an aggregate they should either be committed to or rolled back from a database or other persistence mechanism. This ensures that aggregates are always in a consistent state.
+Finally, *[collections]* may be used to group together multiple instances of the same domain object types, and *[factories]* may be used to encapsulate the initialization logic for any domain objects or domain collections.
 
-Aggregates are also responsible for maintaining *business invariance*. These are business rules that always remain true, no matter what you do to your system. For example, you might have a rule that an order's total must always be the sum of all the products ordered. You might have another rule that stops customers from buying more than what is in stock. This comes at a cost; the more rules that are encoded in aggregates, the more complex they become and they may get slower to update. So there is sometimes a trade-off to be made between performance and consistency. Sometimes it might make sense to setup a *corrective policy*, which runs on a regular basis to either flag or automatically correct anything that might be wrong.
+==== Domain events
 
-==== Factories
+Domain events are a way of representing things that happen in the domain. They are used to model things that happen in the real world, such as a customer placing an order, a product being shipped, or a payment being made.
 
-The factory pattern MAY be used to encapsulate the initialization logic for domain objects – entities and aggregates.
+Domain events are distinct from *technical events*, which are used to represent things that happen in the software itself, such as a user clicking a button, a database query being executed, or a message being sent over a network. Technical events are important; they often need to be logged and monitored. But they should not be part of the domain model.
 
 ==== Services
 
-Services contain business logic that does not neatly fit into a single aggregate, or which spans multiple aggregates.
+Where business logic does not have an obvious home in any particular type of domain object, or if the logic is required to act on multiple domain objects, then a *domain service* may be used to encapsulate that logic. For example, consider the task of transferring money from one bank account to another. Putting such behavior in the entities for either the sending or receiving account feels misplaced. This is a business process that does not, conceptually, belong to any particular bank account. Moving this functionality to a separate service that acts upon both the entities for the sending and receiving account makes more logical sense, and it removes the need for circular dependencies between the entities.
+
+Services are stateless (they do not have attributes of their own, so they have no internal state). They are used only to facilitate processes and tasks that act on domain objects. Domain services may also emit *domain events*.
+
+Other types of services may exist in other (non-domain) layers of an application's architecture. *Infrastructure services* may be used to interact with external systems such as message queues, and *application services* may prove beneficial to remove complex business logic from *commands*. For example, if a use case requires the orchestration of multiple tasks, this logic should be extracted to an application service, which becomes a dependency of the command that implements the use case.
 
 ==== Repositories
 
-Repositories are abstractions of the persistence layers of a system – usually databases. The purpose of this design pattern is to hide the implementation details of the underlying persistence technologies from the high-level application and domain logic.
+While factories are responsible for creating new domain objects, repositories are responsible for fetching and persisting existing domain objects.
 
-The values returned from repository objects are normally treated as *[collections]*.
+A *[repository]* is an abstraction of a persistent container or storage layer – usually a database system and any attached caching systems.
 
-=== Architecture
+The repository pattern hides the implementation details of the underlying persistence infrastructure from the high-level application code and domain logic, and also encapsulates things like security credentials and transaction management. The repository pattern gives the illusion of simple in-memory collections. Different repositories (for different types of domain objects) will have similar APIs, but internally they may use entirely different strategies for fetching and persisting objects.
 
-Systems built around domain-driven design principles have a *[layered architecture*]. Domain-driven software tends to have four main conceptual layers:
+*Data wrappers* ma be used to pull entity data from persistence, while *identity maps* may be used to cache entities in memory (so there can be only one instance of an entity in memory at a time).
+
+==== Modules
+
+Groups of related aggregates, entities, value objects, factories, repositories, and services may be packaged into *modules*. A module exposes a single interface through which other modules can interact with all the objects within it, simplifying the overall system design where there is a lot of complexity in the interactions between domain objects.
+
+=== Layered architecture
+
+Systems built around domain-driven design principles have a *[layered architecture*] consisting of four main *[conceptual layers]*:
 
 image::./_/ddd-layers.png[The domain driven design layers are: interface, application, domain, and infrastructure]
 
-The idea is that within each layer are components that change for the same reasons. Thus, components within the interface layer SHOULD change only when there is a *[change request]* for how clients – users or other programs – interact with the application, while components within the infrastructure layer SHOULD change only when there is a change in some external system on which the application depends.
+The idea is that within each layer are components that change for the same reasons. Thus, components within the interface layer should change only when there is a *[change request]* for how clients – users or other programs – interact with the application, while components within the infrastructure layer should change only when there is a change in some external system on which the application depends.
+
+The most important design principle here is to try to keep the domain logic isolated from all other other concerns of the other layers. The objective is to avoid business logic getting scattered throughout a codebase, eg. embedded into UI widgets and database scripts. This sort of *[technical debt]* makes a system hard to change and to test.
 
 ==== The interface layer
 
@@ -208,7 +272,7 @@ The outermost *interface*, *presentation*, or *UI* layer deals with input and ou
 
 This layer is responsible for interpreting user input commands and presenting the system's response to the client. This layer defines all the entry points to an application, and typically includes routing rules, view templates, UI controllers, and middleware.
 
-The interface layer SHOULD NOT have any knowledge of business rules, use cases, persistence technologies, etc. It should only receive client input (eg. URL parameters) and pass these to the relevant use case in the application layer.
+The interface layer should not have any knowledge of business rules, use cases, persistence technologies, etc. It should only receive client input (eg. URL parameters) and pass these to the relevant commands or event handlers in the application layer.
 
 ==== The application layer
 
@@ -216,19 +280,21 @@ The interface layer interacts with the lower *application*, *services*, or *comm
 
 This layer defines everything that the application does as a series of commands, and message or event handlers. Overall, the application layer defines all of the *[use cases]* for the application.
 
-The use cases will act on the domain objects and business rules in the domain layer below. The application layer does not do any processing directly, and it does not hold any state. Rather, the application layer is a thin layer that delegates to the domain layer below. It is a *[mediator]* between the interface and domain layers.
+The use cases will act on the domain objects and domain services in the domain layer below. The application layer should not do any processing directly, and it should not hold any state. Rather, the application layer is merely a thin *[mediator]* between the interface and domain layers. It is responsible only for delegating the processing of input to the appropriate domain objects or domain services, and for returning the output of those objects and services to the interface layer.
 
 ==== The domain layer
 
-The *domain* or *business* layer is the foundation of domain-based architecture. It encapsulates domain objects and services, which together model the business domain. The command and event handlers in the application layer above tend to map to services in the domain layer, which in turn act on domain objects – aggregates, entities, value objects.
+The *domain* or *business* layer is the foundation of domain-based architecture. It encapsulates domain objects, domain events, and domain services, which together model the business domain.
+
+The command and event handlers in the application layer above tend to map to domain services in the domain layer, which in turn act on domain objects – aggregates, entities, and value objects.
 
 The domain layer is the most important layer in a domain-based architecture.
 
 ==== The infrastructure layer
 
-Where domain objects and services need to fetch data and state from external systems – such as databases, local file systems, third-party web services, and also system software dependencies – access to these things is provided via abstractions sitting in the *infrastructure* or *framework* layer.
+Where domain objects and services need to fetch data and state from external systems – such as databases, local file systems, third-party web services, and also system software dependencies – access to these things should be provided via abstractions sitting in the *infrastructure* or *framework* layer.
 
-This is the lowermost layer of the application architecture, and it's the boundary to all the external systems on which the application depends. Objects here provide abstract interfaces to vendor libraries, system software, databases, email transport agents, and so on.
+This is the lowermost layer of the application architecture, and it's the boundary to all the external systems on which the application depends. Objects here provide abstract interfaces to vendor libraries, system software, databases, email transport agents, message queues, and so on.
 
 A common feature of this layer is the existence of the *repository* pattern, which is used to query and persist state stored in external systems such as databases.
 
@@ -236,30 +302,19 @@ A common feature of this layer is the existence of the *repository* pattern, whi
 
 The interface, application, domain, and infrastructure layers are the four main layers of a domain-based architecture. But additional layers may be added as required.
 
-For example, it is not unusual for applications to require some amount of generic bootstrapping code, environment-specific configuration, and access to general-purpose "utility" functions. These sorts of concerns may be encapsulated in their own layers, and may be used by all other layers.
+For example, it is not unusual for applications to require some amount of generic bootstrapping code, environment-specific configuration, and access to general-purpose utility functions. These sorts of concerns may be encapsulated in their own layers, and may be used by all other layers.
 
 image::./_/ddd-extra-layers.png[]
 
 ==== Boundaries between layers
 
-A key design constraint of domain-driven architecture is that each layer SHOULD only have knowledge of the layers below it in the hierarchy. Or, to explain it another way software components within a layer SHOULD be accessed only by components in a layer above it.
+A key design constraint of domain-driven architecture is that each layer should only have knowledge of the layers below it in the hierarchy. Or, to explain it another way, software components within a layer should be accessed only by components in a layer above it. (Dependencies may skip layers. For example, components in the application layer may interact with both domain objects and abstractions of the infrastructure. For example, an application service for sending a user an email message may have dependencies on both a `UserEntity` domain object and an `EmailTransportService`.)
 
-The purpose of this constraint is to enforce good *[separation of concerns]*. In particular, it is important that domain logic does not get scattered throughout a codebase, coupled to parts of the UI or database queries, for example.
+The domain layer should be isolated further by not having any direct dependencies on the infrastructure layer below it. This can be achieved by implementing *inversion of control* patterns at the boundary between the domain and infrastructure layers. *[Interfaces]* and *[adapters]* are commonly used for this purpose. The interfaces belong to the layer above (the domain layer), and the adapters to the layer below (the infrastructure layer). The interfaces define the dependencies required of the domain objects, domain events, and domain services. The adapters implement those interfaces. (And the responsibility for mapping interfaces to adapters may be delegated to a *link:./dependency-injection.adoc[dependency injection container]*.)
 
-Dependencies MAY skip layers. For example, components in the application layer MAY interact with both domain objects and abstractions of the infrastructure and other application dependencies. For example, a command to send a user an email SHOULD exist in the application layer and it MAY have dependencies on both a `UserEntity` object (from the domain layer) and an `EmailService` (from the infrastructure layer).
+Commonly, domain objects will interact with repository instances from the infrastructure later. Thus, the interfaces of repositories should belong to the domain layer, while the implementation of repositories belongs to the infrastructure layer. The domain therefore defines the methods and parameters that it accepts for repository access, but the implementation details of the persistence technologies are kept out of the domain layer.
 
-Commonly, domain objects will act on repository instances. Thus, the _interfaces_ of repositories belong to the domain layer, while the _implementation_ of repositories belongs to the infrastructure layer. The domain therefore knows only about the methods and parameters accepted by the repositories, but otherwise the implementation details of the repositories are hidden from the domain model.
-
-Coupling between adjacent layers MAY be further reduced by implementing *inversion of control* at the boundaries between layers. Interfaces and adapters are commonly used at the boundaries for this purpose. The interfaces belong to the layer above, and the adapters to the layer below. The interfaces define the dependencies required of an object, while the adapters implement those interfaces.
-
-For example, if the domain layer has a `UserEntity` object that requires instances to be persisted in a `UserRepository` (defined in the infrastructure layer), the domain layer SHOULD also define a `UserRepositoryInterface`. It is the interface that gets swapped for a concrete implementation, in the form of an adapter. The responsibility for mapping interfaces to adapters may be delegated to an *link:./dependency-injection.adoc[dependency injection container]*.
-
-== Tools
-
-* https://github.com/ddd-crew/bounded-context-canvas[Bounded Context Canvas]
-
-* https://contextmapper.org/[Context Mapper]
-
+The purpose of this design constraint is to enforce good *[separation of concerns]*, which in turn promotes *[loose coupling]*. In particular, it is important that domain logic does not get scattered throughout a codebase – coupled to parts of the UI or database queries, for example.
 
 == References
 
@@ -267,9 +322,9 @@ For example, if the domain layer has a `UserEntity` object that requires instanc
 
 * https://www.amazon.co.uk/dp/0321125215[Domain-Driven Design: Tackling Complexity in the Heart of Software], Eric Evans, 2003 — aka. "the blue book", the original book on domain-driven design, and which remains the canonical reference resource for it.
 
-* https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf[Domain-Driven Design Reference: Definitions and Pattern Summaries], Eric Evans (2015) — Evans published this free PDF as a reference guide to the key DDD concepts.
+* https://www.infoq.com/minibooks/domain-driven-design-quickly/[Domain-Driven Design Quickly], Abel Avram and Floyd Marinescu, 2006 — A free digital book from InfoQ – basically a condensed version of Eric Evans' original book, which helped to accelerate the early adoption of DDD.
 
-* https://www.infoq.com/minibooks/domain-driven-design-quickly/[Domain Driven Design Quickly], InfoQ — A free digital book from InfoQ – basically a condensed version of Eric Evans' book.
+* https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf[Domain-Driven Design Reference: Definitions and Pattern Summaries], Eric Evans (2015) — Evans published this free PDF as a reference guide to the key DDD concepts.
 
 * https://www.amazon.co.uk/dp/0321834577[Implementing Domain-Driven Design], Vaughn Vernon, 2013 — aka. "the red book".
 
@@ -294,7 +349,7 @@ For example, if the domain layer has a `UserEntity` object that requires instanc
 
 * https://www.mirkosertic.de/blog/2013/04/domain-driven-design-example/[Domain-driven design example], Mirko Sertic, 2013
 
-=== Other resources
+=== Other references
 
 * https://dddcommunity.org/[DDD community] — A website and community forum overseen by Eric Evans and Vladimir Gitlevich.
 

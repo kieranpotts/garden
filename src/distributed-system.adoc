@@ -1,0 +1,31 @@
+= Distributed systems
+
+A *distributed system* is a network of computers working as one coherent system. A computer program that runs within a distributed system is called a *distributed program* or *distributed software*. Components of a distributed program are located on multiple networked computers, and the components coordinate their actions by passing messages between themselves over the network. *Distributed programming* is the process of developing and maintaining such programs.
+
+*Distributed computing* is the field of computer science that studies distributed systems.
+
+Examples of distributed system designs include *link:./service-oriented-architecture.adoc[service-oriented architecture (SOA)*], *link:./microservices.adoc[microservices]*, massive multiplayer online games, and *[peer-to-peer]* applications.
+
+== Designing distributed systems
+
+Distributed computing is hard.
+
+As soon as you distribute processing and data, you add a huge amount of *[accidental complexity]* and many more ways that things can go wrong. Distributed systems are inherently more complex than single-node systems (aka. *link:./monolith.adoc[monoliths]*) and they require a different set of *[design principles]* and *[systems thinking]*.
+
+Distributed computing should be avoided until it is required to solve specific problems, such as *link:./scalability.adoc[scalability]* or *link:./fault-tolerance.adoc[fault tolerance]*. Better to start with a *link:./modular-monolith.adoc[modular monolith]*, with scalability planned into the design from the start, and extract independent services incrementally.
+
+Reasoning about *link:./concurrency.adoc[concurrency]* and building for *link:./fault-tolerance.adoc[fault tolerance]* are probably the two hardest things in distributed *link:./system-design.adoc[systems design]*.
+
+Distributed systems are inherently more brittle than single-node applications. They are subject to a wide range of potential failure modes, including network failures, delayed messages, and node crashes. The principle of *[designing for failure]* means designing each service in a way that it can tolerate failures in dependent services. For example, if an email service goes offline, emails should be queued for delivery and sent later when the email service comes back online. Asynchronous communication patterns, and design patterns such as *[circuit breakers]* and *[bulkheads]* help to improve the fault tolerance of distributed systems by isolating failures, preventing failures in one component from cascading into other components. And *[disaster recovery]* planning can ensure that services quickly recover (in an automated way) from failures.
+
+Fault tolerance is a key *link:./quality-attributes.adoc[quality attribute]* in distributed systems, and needs to be treated as a first-class concern in the *link:./system-design.adoc[system design]*.
+
+And because distributed systems generally use asynchronous communication between services, managing concurrency and ensuring *link:./consistency.adoc[eventual consistency]* are also key design concerns. *link:./cap-theorem.adoc[CAP theorem]* is relevant in distributed systems that *[replicate]* data between nodes.
+
+== Related links
+
+* https://www.researchgate.net/publication/322500050_Fallacies_of_Distributed_Computing_Explained[Fallacies of distributed computing explained], Arnon Rotem-Gal-Oz, Doctor Dobbs Journal (2008)
+
+* https://architecturenotes.co/fallacies-of-distributed-systems/[Fallacies of distributed systems], Architecture Notes (2022)
+
+* http://www.allthingsdistributed.com/2008/12/eventually_consistent.html[Eventually consistent - revisited], Werner Vogels

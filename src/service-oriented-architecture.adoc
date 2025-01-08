@@ -1,50 +1,29 @@
 = Service-oriented architecture (SOA)
 
-Service-oriented architecture is a *link:./distributed-systems.adoc[distributed system]* design
-pattern. It sees an application divided into multiple services, each of which can be developed
-and tested independently of other services within the system. Individual services will typically
-have distinct code repositories and production infrastructure.
+Service-oriented architecture is a *link:./distributed-system.adoc[distributed system]* design pattern. It sees an application divided into multiple services, each of which can be developed and tested independently of other services within the system. Individual services will typically have distinct code repositories and production infrastructure.
 
-The *link:./system-design.adoc[system design]* of service-oriented architecture involves *[decomposing]*
-an application's functionality into separate, *[loosely coupled]* services, each managing its own
-data stores and caches, and which communicate with each via network APIs or message brokers.
-Services will typically be scoped to *[bounded contexts]* or *[subdomains]* within the
-application's *[domain*].
+The *link:./system-design.adoc[system design]* of service-oriented architecture involves *[decomposing]* an application's functionality into separate, *[loosely coupled]* services, each managing its own data stores and caches, and which communicate with each other via network APIs or message brokers.
 
-Common services found in many service-oriented systems include general-purpose services such as
-authentication, user management, and payment processing. Other services will be domain-specific.
-For example, an e-commerce platform may have services for inventory management, order processing,
-and customer reviews.
+In a service-oriented design, there tends to be a hierarchy of services, in which lower-level services are shared by the higher-level domain and application services. Low-level, general-purpose services may include things like authentication, user management, and payment processing. These services would rarely change and would therefore require minimal maintenance. Higher-level services will tend to be domain-specific. For example, an e-commerce platform may have services for inventory management, order processing, and customer reviews – each a *[subdomain]* of the *[domain model]*.
+
+Domain services are more likely to be *[stateful]*, due to requirements to maintain state across multiple requests, while utility services are more likely to be optimized using a *[stateless]* design.
 
 == Comparisons to other architectural styles
 
-*link:./microservices.adoc[Microservices architecture]* is a subset of service-oriented architecture
-with further design constraints. A microservices architecture emphasizes the design of
-small, independently deployable services.
+*link:./microservices.adoc[Microservices architecture]* is a subset of service-oriented architecture with further design constraints. A microservices architecture emphasizes the design of very small, independently deployable services. The distinction between service-oriented and microservices architectures is mostly a matter of granularity, which is subjective. The two terms are often used interchangeably.
 
-*link:./message-driven-architecture.adoc[message-driven]* and *link:./event-driven-architecture.adoc[event-driven]*
-architectures help to enforce the loose coupling between services that is a key principle of SOA.
-However, SOA itself does not prescribe particular communication patterns for service contrcts, and
-a service-oriented system may even implement a mix of communication styles, including
-*[synchronous]* and *[asynchronous]* styles.
+*link:./message-driven-architecture.adoc[message-driven]* and *link:./event-driven-architecture.adoc[event-driven]* architectures help to enforce the loose coupling between services that is a key principle of SOA. However, SOA itself does not prescribe particular communication patterns for service contracts, and a service-oriented system may even implement a mix of communication styles, including *[synchronous]* and *[asynchronous]* styles.
 
-If each service in a service-oriented design were to deliver an end-to-end solution for a discrete
-user-facing function, then the architectural style could be said to be a cross between
-service-oriented and *link:./vertical-slice-architecture.adoc[vertical-slice architecture]*
-In practice, SOA tends to see a hierarchy of services, in which lower-level services (particularly
-stateless ones) are shared by the higher-level domain layer services.
+If each service in a service-oriented design were to deliver an end-to-end solution for a discrete user-facing function, then the architectural style could be said to be a cross between service-oriented and *link:./vertical-slice-architecture.adoc[vertical-slice architecture]*. More commonly, service-oriented designs tend to involve a hierarchy of services, in which lower-level cross-cutting services are reused by multiple higher-level user-facing or domain-oriented services.
 
 // TODO: Diagrams
 
-== Trade-offs
+== Design trade-offs
 
-Advantages of service-oriented architecture include increased flexibility to optimize software
-components in different ways for performance and scalability (potentially even using different
-programming languages and tech stacks for different services), and greater system *[resilience]*
-(when one service fails, the rest of the system can continue to function).
+Service-oriented architectures share the same trade-offs as all distributed systems. The main trade-off is that greater *[scalability]* is achieved at a cost of increased *[complexity]*. Common difficulties in service-oriented designs include planning for *link:./fault-tolerance.adoc[fault tolerance]*, reasoning about *link:./concurrency.adoc[concurrency]*, and achieving *link:./consistency.adoc[consistency]* in *link:./replication.adoc[replicated data]*.
 
-Service-oriented architecture tends to work best where *[bounded contexts]* map directly to team
-topologies, allowing teams to work independently on different services.
+A widely-promoted advantage of service-oriented architecture is that it allows for *[flexibility]* in optimizing software components in different ways for performance optimization and scalability. Each service in a service-oriented system can be scaled independently, and optimized in different ways as appropriate for their respective use cases and load patterns. This can include using different programming languages for different services. The trade-off for a higher degree of micro-optimization is the increased complexity at the macro level. For example, within an organization thee may be increased friction involved in moving people between teams, if different teams use different technology stacks for the services they maintain. For this reason, many organizations define a set of approved technologies that can be used, finding a pragmatic balance between standardization and flexibility. For example, Python might be used for a machine learning service while the rest of a system uses Java.
 
-See *link:./microservices.adoc[microservices]* for more notes on the pros and cons of
-service-oriented distributed system designs.
+Service-oriented architecture tends to work best where service boundaries clearly map to *bounded contexts* in the *domain model*, and where the bounded contexts in turn map directly to *[team topologies]*, allowing teams to each work independently on a discrete group of services.
+
+A critical design consideration in service-oriented architectures is the granularity of services. If services are too fine-grained, the system can become overly complex (due to the operating overheads of managing lots of services) and slow (due to the overhead of higher network communication) – see *link:./microservices.adoc[microservices]* for more on these trade-offs. On the other hand, if services are too coarse-grained, the system keeps more of the limitations of *link:./monolith.adoc[monolithic architectures]*.

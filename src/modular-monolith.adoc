@@ -1,35 +1,19 @@
 = Modular monolith
 
-A modular monolith is a *link:./monoliths.adoc[monolith]* that is designed to be broken down over
-time into independent services. A modular monolith maintains the simplicity and straightforward
-deployment models of a traditional monolith, while introducing a high degree of internal structure
-revolving around independent modules.
+A modular monolith is a *link:./monolith.adoc[monolith]* that is designed to be broken down over time into independent services.
 
-Like a *link:./service-oriented-architecture.adoc[service-oriented architecture]*, the modules of a
-modular monolith are each designed to encapsulate a specific set of functionalities or subdomain
-areas, allowing for clearer boundaries within the application.
+A modular monolith maintains the simplicity and straightforward deployment models of single-node systems, while introducing a high degree of internal structure revolving around independent modules. Like a *link:./service-oriented-architecture.adoc[service-oriented architecture]*, the modules of a modular monolith are designed to each encapsulate a specific set of functionalities or *link:./domain.adoc[subdomain]* areas, allowing for clear boundaries within the application.
 
-Although all the modules may run in the same process, they will communicate with each other more
-indirectly than in a traditional monolith. For example, a system of
-*link:./ports-and-adapters.adoc[ports and adapters]* may be implemented at the interfaces between
-modules.
+Although all the modules may run in the same process, they will typically communicate with each other more indirectly than in a traditional monolith, for example using *[events]*.
 
-A good degree of decoupling between modules allows for independent services to be _extracted_ from
-a monolith, thus supporting the evolution of monolithic systems to increasingly distributed ones.
-The process of separating out services from a monolith is known as *[decomposition]*.
+When *[modeled]* at the *[conceptual]* and *[logical]* levels, the architectural blueprint of a modular monolith would look identical to the same solution designed as a distributed system. Differences emerge only when you get down to level of the *[physical architecture]* and *[technical design]*; not until this level of abstraction is the network seen.
 
-When *[modelled]* at the conceptual and logical levels, the architectural
-blueprint of a solution designed as a modular monolith would look identical to the same solution
-designed as a distributed system. Differences emerge only when you get down to level of the physical
-architecture and technical design. At this level of abstraction you see that inter-module
-communication happens over a network and – unless remote procedure calls are made – often via
-intermediary services such as message brokers.
+Such as degree of *[decoupling]* between modules allows for independent services to be more easily _extracted_, thus supporting the *[incremental]* *[evolution]* of monolithic systems into increasingly *link:./distributed systems[distributed]* ones.The process of separating out services from a monolith is known as *[decomposition]*. A *semi-monolith* is a monolithic system that has already had some key subsystems extracted into separate services.
 
-In summary, modular monoliths offer a mix of characteristics of single-node and distributed systems.
-Like monoliths, modular monoliths support rapid application development, only with a little more
-emphasis on big up-front design. Like service-oriented architectures, scalability is baked into the
-design of modular monoliths from the start.
+Achieving a high degree of modularity in an otherwise monolithic system requires more emphasis on *[big up-front design]*, perhaps revolving around *[domain modeling]*. Modules within a modular monolith need to have clearly-defined public interfaces, and to hide their internal logic and data behind their interfaces. Taken to extremes, the modules of a modular monolith would be designed as standalone applications, each with their own configuration and bootstrapping code.
 
-By aiming for a halfway point between monoliths and distributed systems, businesses can reduce the
-risks associated with both. With a modular monolith, you tend to get a good balance between
-time-to-market in the short-term, and scalability and maintainability over the long-term.
+The trade-off for this added investment cost is that you will likely find a more optimal balance between the rapid development and deployment (time-to-market) of a monolith, and the scalability and maintainability of a distributed system. In particular, a plan for scalability is baked into the design from the start, even if the system is not yet distributed. But there is a risk associated with *[prematurely optimizing]* for scalability problems that aren't yet known.
+
+Modular monoliths capture some of the benefits of both single-node and distributed systems, but also some of their downsides. Modular monoliths have the same low latency and high developer productivity as monoliths, but they also have some of the same scaling and fault tolerance issues. Modular monoliths inherit some of the added complexity of distributed systems, but also similarly *[high cohesion]* in their design.
+
+ar monoliths are a good starting point for many applications, especially when the system is small and the team is small. They can be a good way to validate the domain model and the product-market fit before investing in a more complex distributed system.

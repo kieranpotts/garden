@@ -2,22 +2,17 @@
 
 https://alistair.cockburn.us/hexagonal-architecture/[Hexagonal architecture] is a software *[architectural design pattern]* devised by Alistair Cockburn in 2005.
 
-[NOTE]
-======
-Conceptually, hexagonal architecture is similar to Jeffrey Palermo's *[onion architecture]* (2008) and Robert C Martin's *[clean architecture]* (2012). All these architectural concepts share the same fundamental objective: the separation of concerns, achieved by slicing systems into discrete layers and applying the *[dependency inversion principle]* at the boundaries between the layers.
-======
+Conceptually, hexagonal architecture is similar to Jeffrey Palermo's *[onion architecture]* (2008) and Robert C Martin's *[clean architecture]* (2012). All these architectural concepts share the same fundamental objective: the *[separation of concerns]*, achieved by slicing systems into discrete *[layers]* and applying the *[dependency inversion principle]* at the boundaries between the layers.
 
-Hexagonal architecture is defined as a system that uses *link:./ports-and-adapters.adoc[ports and adapters]* to model _all_ inputs to, and _all_ outputs from, _all_ the components of a system. The ports-and-adapters pattern is thus used for _every_ interface that a discrete application, module, service or other software component has with the outside world – both its inputs and outputs.
+Hexagonal architecture is defined as a system that uses the *link:./ports-and-adapters.adoc[ports and adapters]* pattern to model _all_ inputs to, and _all_ outputs from, _all_ the components of a system. The ports-and-adapters pattern is thus used for _every_ interface that a software component has with the outside world.
 
 An application will typically have many different inputs and outputs.
 
 image::./_/hexagonal-architecture.svg[Hexagonal architecture]
 
-The choice of a hexagonal shape to represent this architectural concept is arbitrary. It's just a nice shape to represent you've got lots of different types of inputs on the "driving" side of the application, and lots of different types of outputs on the other "driven" side. In the context of distributed systems or modular monoliths, multiple services or components may interface with each other through connections made via their ports (using adapters), so the whole system forms a honeycomb pattern.
+The choice of a hexagonal shape to represent this architectural concept is arbitrary. It suggests there are typically multiple inputs on the "driving" side of an application and multiple outputs on its "driven" side. In the context of *[distributed systems]* or *[modular monoliths]*, multiple services or components may interface with each other through connections made via their ports (using adapters), so the whole system – from a *[conceptual]* view – forms a honeycomb pattern.
 
 image::./_/honeycomb-pattern.svg[Honeycomb pattern]
-
-The *conceptual design* of a software system as a pattern of interlocking hexagons dovetails nicely with *[service-oriented architecture]* (each hexagon could map to a service) and *[domain-driven design]* (each hexagon could map to a subdomain).
 
 == Pros and cons of hexagonal architecture
 
@@ -26,18 +21,15 @@ ____
 Allow an application to equally be driven by users, programs, automated test or batch scripts, and to be developed and tested in isolation from its eventual run-time devices and databases.
 ____
 
-One of the main advantages of hexagonal architecture is *testability*. Because all dependencies are hidden behind abstractions by design, it makes it very easy to mock external systems, including GUIs and other input interfaces. All you need to do is create special mock adapters that fit the same ports as the real adapters.
+One of the main advantages of hexagonal architecture is *[testability]*. Because all dependencies are hidden behind abstractions by design, it makes it easy to mock external systems, including GUIs and other input interfaces. All you need to do is create special mock adapters that fit the same ports as the real adapters.
 
-Another benefit is *evolvability* (aka changeability). For example, it becomes possible to change from a human-driven use of an application to batch-driven use. You just plugin different adapters to the existing ports. Likewise, it is relatively easy to change implementations. For example, you can migrate from MySQL to PostgreSQL by changing the database adapter.
+Another benefit is *[evolvability]*. It becomes possible, for example, to change from a human-driven use of an application to batch-driven use. You just plug in different adapters to the existing ports. Likewise, it is relatively easy to change dependencies. For example, you can migrate from MySQL to PostgreSQL by changing the database adapter.
 
-For the same reason, applications become less tightly coupled to any particular infrastructure or host environment. Thus, applications are more *portable.*
+For the same reason, applications become less tightly coupled to any particular infrastructure or host environment. Thus, applications are more *[portable].*
 
-[IMPORTANT]
-======
-For the ports-and-adapters pattern to effectively deliver these promised benefits, it is important that business logic does not leak into the ports-and-adapters layer. This is the same constraint as for n-tier architecture, in which business logic should not leak into either the uppermost UI/presentation layer or the bottommost persistence layer.
-======
+For the ports-and-adapters pattern to effectively deliver these promised benefits, it is important that business logic does not leak into the ports-and-adapters layer. This is the same constraint as for *[n-tier architecture]*, in which business logic should not leak into either the uppermost UI/presentation layer or the bottommost persistence layer.
 
-The main trade-off is that hexagonal architecture adds a lot of *accidental complexity*. There is more code to maintain, and potentially more effort involved in running applications in development and other environments. This additional complexity may not be worthwhile for small, trivial applications.
+The main trade-off is that hexagonal architecture adds a lot of *[accidental complexity]*. There is more code to maintain, and potentially more effort involved in running applications in development and other environments. This additional complexity may not be worthwhile for small, trivial applications.
 
 == References
 
@@ -47,7 +39,7 @@ The main trade-off is that hexagonal architecture adds a lot of *accidental comp
 
 * https://jmgarridopaz.github.io/content/articles.html[Hexagonal Me] — A series of articles by Juan Manuel Garrido de Paz that delves much deeper into this architectural pattern. This is well-researched and includes full interview transcripts with Alistair Cockburn.
 
-* https://carlosbuenosvinos.com/hexagonal-architecture-with-php-was-published-in-phparch-magazine/[Hexagonal Architecture with PHP], by Carlos Buenosvinos, published https://www.phparch.com/2014/07/july-2014-phparchitect-magazine-released-navigating-the-business/[in php[arch] in June 2014].
+* https://carlosbuenosvinos.com/hexagonal-architecture-with-php-was-published-in-phparch-magazine/[Hexagonal Architecture with PHP], by Carlos Buenosvinos, published https://www.phparch.com/2014/07/july-2014-phparchitect-magazine-released-navigating-the-business/[in php[arch\] in June 2014].
 
 * https://www.thoughtworks.com/en-gb/insights/blog/architecture/demystify-software-architecture-patterns[Demystifying software architecture patterns] —  Thoughtworks article that explains the differences between clean, onion, and hexagonal architecture.
 
