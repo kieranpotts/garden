@@ -1,13 +1,11 @@
 = Latency
 
-Latency refers to the time it takes for a single operation or request to complete.
+Latency refers to the time it takes for a single operation or request to complete, or to move data from one place to another.
 
-Low latency means faster response times and a more responsive system.
+Low latency means faster response times and a more responsive system. High latency can lead to lag and poor user experience.
 
-High latency can lead to lag and poor user experience.
-
-As a *link:./quality-attributes.adoc[quality attribute]*, latency is often paired with
-*link:./throughput.adoc[throughput]*, which refers to the number of operations a system can handle
-in a given amount of time.
+Latency is an important *link:./quality-attributes.adoc[quality attribute]* of IT systems, and required careful consideration in the *link:./system-design.adoc[design]* of *link:./distributed-system.adoc[distributed systems]* especially. In high-volume systems, latency may need to be traded for higher *link:./throughput.adoc[throughput (aka. bandwidth)]*, ie. increasing the amount of data that can be processed over a period of time. For example, to increase throughput you might *[batch]* requests together, process data in *[parallel]*, or *[spread load]* across multiple servers. But these strategies can have the effect of increasing the time individual requests spend waiting in queues, thereby increasing latency.
 
 image::./_/latency-vs-throughput.svg[]
+
+In general, in distributed system design, latency is often more problematic than bandwidth, which tends to be fairly easy to solve (by adding more resources - processing or network capacity). In addition, network bandwidth capacities have increased exponentially over the years, but the inherent latency of network communications has not improved at the same rate.

@@ -1,11 +1,7 @@
-= Throughput
+= Throughput (aka. bandwidth)
 
-Throughput is a measure of the amount of work done, or the amount of data processed, in a given
-amount of time.
+Throughput is a measure of the amount of work done, or the amount of data processed, in a given amount of time. It is also known as *bandwidth*. and is typically expressed in terms of *requests per second (RPS)* or *transactions per second (TPS)*.
 
-It is typically expressed in terms of *requests per second (RPS)* or *transactions per second (TPS)*.
-
-As a *link:./quality-attributes.adoc[quality attribute]*, throughput is often paired with
-*link:./latency.adoc[latency]*, which refers to the time it takes for an operation to complete.
+As a *link:./quality-attributes.adoc[quality attribute]* of *link:./distributed-system.adoc[distributed system]*, trade-offs may be made with *link:./latency.adoc[latency]*. For example, to increase throughput you might *[batch]* requests together, process data in *[parallel]*, or *[spread load]* across multiple servers. But these strategies can have the effect of increasing the time individual requests spend waiting in queues, thereby increasing latency.
 
 image::./_/latency-vs-throughput.svg[]
