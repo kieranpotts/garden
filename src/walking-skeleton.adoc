@@ -1,0 +1,22 @@
+= Walking skeleton
+
+https://web.archive.org/web/20081016063214/http://alistair.cockburn.us:80/Walking+skeleton[Alistair Cockburn] coined the term "walking skeleton" to refer to "a tiny implementation of the system that performs a small end-to-end function. It need not use the final architecture, but it should link together the main architectural components. The architecture and the functionality can then evolve in parallel."
+
+Cockburn explains that he formed this strategy in the 1990s, and found that it paired well with *[incremental rearchitecture]* In a project that was scheduled to deliver a small set of user-facing functionality within the first three months, the result was a system whose design and code were "not pretty, but we had connected the server-side software to the database system and could write functions on top of that architecture. Having the architectural elements connected and a sample piece of function running on it, we were able to develop more functionality in parallel with revising the architecture to be more robust (the incremental rearchitecture strategy)."
+
+Cockburn concluded:
+
+[quote]
+____
+Our sponsors were happy with this early victory. We tested the team, the process, the technologies, and the architecture at a very early point in the project.
+____
+
+A walking skeleton is a form of *[proof of concept]*. It sees the basic structure for a system being designed and implemented, and a single, very thin slice of functionality integrated to verify the design.
+
+Cockburn writes that what constitutes a walking skeleton will vary depending on the system being design. "For a client-server system, it would be a single screen-to-database-and-back capability. For a multi-tier or multi-platform system, it is a working connection between the tiers or platforms. For a compiler, it consists of compilation of the simplest element of the language, possibly just a single token. For a business process, it is walking through a single and simple business transaction."
+
+The walking skeleton *[strategy]* has seen renewed interest in recent years as a way to bootstrap software projects. In *[devops]* practices, creating a basic shell of a system, with some piece of very small functionality implemented as a demonstration, allows for faster early feedback on architectural decisions and earlier implementation of the required operational infrastructure, including *[deployment pipelines]*.
+
+The aim of the walking skeleton strategy is to ship working, testable code to production  very early in a project. A walking skeleton is something much less than an *[MVP]*, which is defined from the perspective of the users, but it could be thought of as a minimum viable system from a technical perspective. From the skeleton, production-grade builds deployments to production-like environments can begin, and the full functionality of the application can be fleshed out incrementally.
+
+Cockburn differentiates a walking skeleton from a *[spike]*, which is not necessarily production-grade and is intended to be discarded once the experiment answers some predefined questions. A walking skeleton is permanent code, "built with production coding habits, regression tests, and is intended to grow with the system".
