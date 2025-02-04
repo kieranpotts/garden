@@ -1,39 +1,25 @@
 = CAP theorem, aka Brewer's theorem
 
-The CAP theorem is a useful principle to help us think about some of the core trade-offs to be made
-in the design of *link:./distributed-system.adoc[distributed systems]*.
+The CAP theorem is a useful principle to help us think about some of the core trade-offs to be made in the design of *link:./distributed-system.adoc[distributed systems]*.
 
-The CAP theorem was originally formulated with respect to distributed databases, but it has since
-been generalized to apply to stateful distributed systems more broadly.
+The CAP theorem was originally formulated with respect to distributed databases, but it has since been generalized to apply to stateful distributed systems more broadly.
 
-When dealing with distributed systems, in which we need to share data between multiple nodes, we
-need to think about:
+When dealing with distributed systems, in which we need to share data between multiple nodes, we need to think about:
 
 * How to keep the data consistent between the nodes.
 * How to make sure data is always available.
 
-In practice, we can't always have both in a distributed system. We must prioritize one over the
-other: availability or consistency.
+In practice, we can't always have both in a distributed system with replicated data. We must prioritize one over the other: availability or consistency.
 
-The reason is explained in the CAP theorem, which was devised by computer scientist *Eric Brewer*.
-The CAP abbreviation describes the following characteristics of a distributed system:
+The reason is explained in the CAP theorem, which was devised by computer scientist *Eric Brewer*. The CAP abbreviation describes the following characteristics of a distributed system:
 
-* *link:./consistency.adoc[Consistency]*: Every read receives the most recent write or an error.
-  When a write is performed on one node, it is instantly reflected on all other nodes before the
-  write is considered complete. If other requests come in while the write is being replicated, they
-  are throttled until the write is complete, or an error is returned.
+* *link:./consistency.adoc[Consistency]*: Every read receives the most recent write or an error. When a write is performed on one node, it is instantly reflected on all other nodes before the write is considered complete. If other requests come in while the write is being replicated, they are either throttled until the write is complete, or an error is returned.
 
-* *link:./availability.adoc[Availability]*: Each request (read or write) received by a working node
-  is guaranteed to receive a non-error response, but it is not guaranteed that the operation will
-  use the most recently written data. The system remains operational at all times, and can therefore
-  always respond to requests.
+* *link:./availability.adoc[Availability]*: Each request (read or write) received by a working node is guaranteed to receive a non-error response, but it is not guaranteed that the operation will use the most recently written data. The system remains operational at all times, and can therefore always respond to requests.
 
-* *link:./partition-tolerance.adoc[Partition tolerance]*: The system continues to operate in the
-  case of a network partition that prevents messages from being delivered between nodes,
-  for the purpose of synchronizing data updates.
+* *link:./partition-tolerance.adoc[Partition tolerance]*: The system continues to operate in the case of a network partition that prevents messages from being delivered between nodes, for the purpose of synchronizing data updates.
 
-The CAP theorem states that you can choose any combination of two of these characteristics, but you
-can never have all three in a distributed system.
+The CAP theorem states that you can choose any combination of two of these characteristics, but you can never have all three in a distributed system.
 
 * *CP*: Consistency + Partition Tolerance
 * *AP*: Availability + Partition Tolerance
@@ -41,43 +27,16 @@ can never have all three in a distributed system.
 
 image::./_/cap-theorem-1.svg[]
 
-In distributed data designs, we have chosen to have "partitions" in data, which means network calls
-are required to synchronize data between nodes. There will always be failures in network calls.
-Therefore, most distributed system designs will prioritize partition tolerance, which means
-designing for *link:./fault-tolerance.adoc[fault tolerance]* so the system continues to operate
-even when nodes are unavailable.
+In distributed data designs, we have chosen to have "partitions" in data, which means network calls are required to synchronize data between nodes. There will always be failures in network calls. Therefore, most distributed system designs will prioritize partition tolerance, which means designing for *link:./fault-tolerance.adoc[fault tolerance]* so the system continues to operate even when nodes are unavailable.
 
-So, we are left to make a choice between consistency and availability. When communication between
-some nodes fails, we can either guarantee availability of our services, or we can guarantee data
-consistency, but not both.
+So, we are left to make a choice between consistency and availability. When communication between some nodes fails, we can either guarantee availability of our services, or we can guarantee data consistency, but not both.
 
 image::./_/cap-theorem-2.svg[]
 
-Which one of these two characteristics we prioritize – consistency or availability – depends largely
-on the *[domain]* of the software. Consider for example a product review system. One of the modules
-in this distributed system is the review module, which is responsible for storing and retrieving
-reviews. The data for this module is replicated across multiple nodes. In this case, we will
-probably choose to prioritize *availability over consistency (AP)* since it is probably not
-a requirement that all users always see the very latest reviews.
+Which one of these two characteristics we prioritize – consistency or availability – depends largely on the *[domain]* of the software. Consider for example a product review system. One of the modules in this distributed system is the review module, which is responsible for storing and retrieving reviews. The data for this module is replicated across multiple nodes. In this case, we will probably choose to prioritize *availability over consistency (AP)* since it is probably not a requirement that all users always see the very latest reviews.
 
-On the other hand, consider a stock keeping module within an ecommerce system. In this case, we will
-probably choose to prioritize *consistency over availability (CP)* since it is more important that
-the data is always correct than it is for the system to always be available. Better for a user to
-not be able to place an order because the product they are trying to order is out of stock, than to
-place an order and subsequently be told it can't be fulfilled. We would design this system such that
-all successful requests see the most up-to-date inventory, preventing overselling but at the cost of
-potential temporary unavailability for some users while a stock update is being replicated across
-the nodes.
+On the other hand, consider a stock keeping module within an ecommerce system. In this case, we will probably choose to prioritize *consistency over availability (CP)* since it is more important that the data is always correct than it is for the system to always be available. Better for a user to not be able to place an order because the product they are trying to order is out of stock, than to place an order and subsequently be told it can't be fulfilled. We would design this system such that all successful requests see the most up-to-date inventory, preventing overselling but at the cost of potential temporary unavailability for some users while a stock update is being replicated across the nodes.
 
-So, at the heart of the CAP theorem lies the trade-off between consistency and availability. When
-faced with replicated data across multiple nodes, you can either prioritize consistency by ensuring
-that all nodes have the most up-to-date data (a write operation is not considered to be complete
-until it is replicated across all nodes, and read operations are locked out during this time); or
-you can prioritize availability by allowing all nodes to respond to user requests, even if some have
-stale data (eg. using cache data).
+So, at the heart of the CAP theorem lies the trade-off between consistency and availability. When faced with replicated data across multiple nodes, you can either prioritize consistency by ensuring that all nodes have the most up-to-date data (a write operation is not considered to be complete until it is replicated across all nodes, and read operations are locked out during this time); or you can prioritize availability by allowing all nodes to respond to user requests, even if some have stale data (eg. using cache data).
 
-The CAP theorem is a useful mental model for thinking about the trade-offs between availability and
-consistency in replicated data. But there are other characteristics, notably *link:./latency.adoc[latency]*,
-to consider, too. For example, you may able to achieve a high level of both consistency _and_
-availability, but at the cost of high latency (you would allow for some read operations to be slow
-while corresponding write operations are being replicated).
+The CAP theorem is a useful mental model for thinking about the trade-offs between availability and consistency in replicated data. But there are other characteristics, notably *link:./latency.adoc[latency]*, to consider, too. For example, you may able to achieve a high level of both consistency _and_ availability, but at the cost of high latency (you would allow for some read operations to be slow while corresponding write operations are being replicated).
