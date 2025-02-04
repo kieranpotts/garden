@@ -1,22 +1,12 @@
 = Sharding
 
-Database sharding is a *link:./horizontal-scaling.adoc[horizontal scaling]* technique in
-*[database management]* that involves *partitioning* (splitting) one large database into multiple
-smaller databases, called *shards*. The shards are then distributed across multiple *[nodes]*, each
-responsible for handling a specific subset of the overall data.
+Database sharding is a *link:./horizontal-scaling.adoc[horizontal scaling]* technique in *[database management]* that involves *partitioning* (splitting) one large database into multiple smaller databases, called *shards*. The shards are then distributed across multiple *[nodes]*, each responsible for handling a specific subset of the overall data.
 
-By distributing data across multiple nodes, sharding *link:./load-balancing.adoc[balances load]*
-across multiple nodes, reducing *[load]* and *link:./fault-tolerance.adoc[risk]* on any single node.
-This improves system *link:./performance.adoc[performance]*, *link:./availability.adoc[availability]*,
-and *link:./scalability.adoc[scalability]*.
+By distributing data across multiple nodes, sharding *link:./load-balancing.adoc[balances load]* across multiple nodes, reducing *[load]* and *link:./fault-tolerance.adoc[risk]* on any single node. This improves system *link:./performance.adoc[performance]*, *link:./availability.adoc[availability]*, and *link:./scalability.adoc[scalability]*.
 
-Trade-offs include increased *:./complexity.adoc[complexity]* in the system design, new challenges
-for joining data across shards, and the potential for *hot spots* that can be solved only through
-tricky *data rebalancing*.
+Trade-offs include increased *:./complexity.adoc[complexity]* in the system design, new challenges for joining data across shards, and the potential for *hot spots* that can be solved only through tricky *data rebalancing*.
 
-Database sharding is commonly used in situations where a single database can no longer be
-sufficiently *link:./vertical-scaling.adoc[scaled vertically]*. Sharding is one of the two main
-methods for scaling databases. The other is *link:./replication.adoc[replication]*.
+Database sharding is commonly used in situations where a single database can no longer be sufficiently *link:./vertical-scaling.adoc[scaled vertically]*. Sharding is one of the two main methods for scaling databases. The other is *link:./replication.adoc[replication]*.
 
 == Database partitioning methods
 
@@ -24,26 +14,18 @@ There are three main partitioning methods:
 
 * *Horizontal sharding*, which partitions rows of a table across multiple databases.
 
-* *Vertical sharding*, which partitions columns of a table across multiple databases. Columns that
-  are closely related and frequently accessed together tend to be stored in the same shard, so
-  reducing the need for cross-shard joins, and helping to categorize shards by the features they
-  represent.
+* *Vertical sharding*, which partitions columns of a table across multiple databases. Columns that are closely related and frequently accessed together tend to be stored in the same shard, so reducing the need for cross-shard joins, and helping to categorize shards by the features they represent.
 
-* *Directory-based partitioning*, which uses a lookup service or lookup table to determine where
-  data is stored, so abstracting the partitioning scheme.
+* *Directory-based partitioning*, which uses a lookup service or lookup table to determine where data is stored, so abstracting the partitioning scheme.
 
 == Partitioning techniques
 
 Partitioning can be done on various criteria:
 
-* *Hash partitioning*, which applies a hash function to a key or attribute to determine which
-  partition the data is stored in. *link:./consistent-hashing.adoc[consistent hashing]* is a
-  common implementation technique.
+* *Hash partitioning*, which applies a hash function to a key or attribute to determine which partition the data is stored in. *link:./consistent-hashing.adoc[consistent hashing]* is a common implementation technique.
 
-* *List partitioning*, in which each partition is assigned a list of values, storing data based on
-  which list its key belongs to.
+* *List partitioning*, in which each partition is assigned a list of values, storing data based on which list its key belongs to.
 
-* *Round robin partitioning*, in which data is distributed evenly across partitions in a circular
-  order.
+* *Round robin partitioning*, in which data is distributed evenly across partitions in a circular order.
 
 * *Composite partitioning* combines two or more partitioning methods.

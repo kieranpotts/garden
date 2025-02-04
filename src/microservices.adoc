@@ -1,6 +1,12 @@
 = Microservices (aka. microservice architecture)
 
-Microservices are a subset of the *link:./service-oriented-architecture.adoc[service-oriented architecture (SOA)]* pattern. There is no definitive list of features that distinguish microservices from more general service-oriented designs, but it is widely accepted that the difference is one of granularity. Microservices are typically very small, scoped to a single business function, and independently deployable thanks to maximized decoupling between services. These constraints do not necessarily apply to service-oriented architecture.
+Microservices are a subset of the *link:./service-oriented-architecture.adoc[service-oriented architecture (SOA)]* pattern.
+
+There is no definitive list of features that distinguish microservices from more general service-oriented designs, but it is widely accepted that the difference is one of granularity. Microservices are typically very small, scoped to a single business function, and independently deployable thanks to maximized decoupling between services.
+
+There also tends to be a bias toward *[asynchronous communication]* between services, and a preference for indirect *[message-driven]* and especially *[event-driven]* communication patterns, rather than direct service-to-service calls.
+
+These constraints do not necessarily apply to service-oriented architecture.
 
 .Microservices vs. SOA
 [cols="1,2,2"]
@@ -12,8 +18,8 @@ Microservices are a subset of the *link:./service-oriented-architecture.adoc[ser
 | Mix of fine-grained and coarse-grained services. Some services may have multiple responsibilities.
 
 | *Communication*
-| Preference for asynchronous messages and events, else lightweight request-response protocols like HTTP.
-| May have a higher proportion of direct service-to-service calls, and may use more heavyweight communication protocols like SOAP.
+| Preference for asynchronous *[messages]* and *[events]*, else lightweight request-response protocols like *[HTTP]*, *[TCP]*, *[UDP]* or even *[WebSockets]*.
+| May have a higher proportion of direct service-to-service calls, and may use more heavyweight communication protocols like *[SOAP]*.
 
 | *Data*
 | Each service manages its own data stores and caching layers.
@@ -28,8 +34,8 @@ Microservices are a subset of the *link:./service-oriented-architecture.adoc[ser
 | May use a uniform technology stack across all services.
 
 | *Deployment*
-| Services are independently deployable. Emphasizes continuous deployment and DevOps practices.
-| There may be a higher degree of interdependence between services, limiting the "continuous" velocity of deployments.
+| Services are independently deployable. Emphasizes continuous deployment and DevOps practices. Different services have independent release schedules; minimal dependencies.
+| There may be a higher degree of interdependence between services, limiting the "continuous" velocity of deployments. More traditional deployment patterns, around scheduled *release trains*.
 
 | *Isolation*
 | Greater fault tolerance of overall system, due to high degree of isolation of individual services.
@@ -70,13 +76,23 @@ image::./_/simple-vs-complex-distributed-systems.svg[]
 
 There are more ways that a microservices system can fail. Each service, and each network call between services, is a potential *[point of failure]*. Therefore, more effort is required in the system design to build in *[fault tolerance]* mechanisms, such as *[retries]* and *[circuit breakers]*. This responsibility tends to be offloaded to dedicated infrastructure such as *[message queues]*, reducing the *[accidental complexity]* of individual services but increasing the *[accidental complexity]* of the overall system.
 
-Microservices tend to go hand-in-hand with *[asynchronous communication patterns]*, with a particular emphasis on *[message-driven]* and especially *[event-driven]* communication. The aim is to reduce, or eliminate entirely, direct service-to-service calls, which would otherwise be prolific due to the high number of services. This reduces the risk of *[evolutionary]* microservice designs degrading into "API hell", where the number of direct service-to-service calls becomes unmanageable and (worse) anti-patterns like circular service calls emerge. Message-driven communication has benefits for maintainability, fault tolerance, and scalability, but with additional costs associated with the management and monitoring of asynchronous communication.
+Microservices tend to go hand-in-hand with *[asynchronous communication patterns]*, with a particular emphasis on *[message-driven]* and especially *[event-driven]* communication. The aim is to reduce, or eliminate entirely, direct service-to-service calls, which would otherwise be prolific due to the high number of services. This also reduces the risk of *[evolutionary]* microservice designs degrading into "API hell", where the number of direct service-to-service calls becomes unmanageable and (worse) anti-patterns like circular service calls emerge. Message-driven communication has benefits for maintainability, fault tolerance, and scalability, but with additional costs associated with the management and monitoring of asynchronous communication.
 
 A best practice in microservice design is for each service to be able to be able to process every request within needing to call any other service. This design constraint improves *[fault tolerance*], because all requests can be fulfilled even if one or more dependency services are *[unavailable/offline]*. Points of failure are minimized.
 
 An extreme implementation sees application-level services being able to process requests without _ever_ calling any other lower-level service. Besides improved fault tolerance, this design constraint minimizes *latency* in the end-to-end request-response cycle. It is achieved by implementing the *service dependency inversion* principle. Where one service depends on another, rather than *[pulling]* data from the dependency service, the dependency service instead *[pushes]* data to the dependent services, which caches the *[replica data]* ahead of time. *[Temporal coupling]* is reduced and application-level services need only interact with their own data stores to fulfil requests.
 
 In general, microservices tend to have a high degree of *[data replication]* between services. The higher the granularity of components in a system design, the more likely it is that state will need to be shared between components. Microservice architecture emphasizes services owning their own data stores, to maintain *[conceptual integrity]* of the microservice design and to reduce some of the otherwise inherent costs of distributed systems such as *[latency]* and *link:./fault-tolerance.adoc[brittleness]*. Therefore, shared state must be replicated. With data synchronization constrained to asynchronous communication, there are particular challenges associated with achieving *[eventual consistency]*. Often, this is a significant source of accidental complexity in microservice systems.
+
+Placing *[load balancers]* and *[failover]* systems in front of individual microservices allows for *[horizontal scaling]* and increased *[fault tolerance]* (the trade off being that the load balancer becomes a *[single point of failure]*, which in turn can be solved by *[clustering]* primary and failover load balancers).
+
+Load balancing works particularly well with *stateless microservices*, which are small services that do not persist state between requests, and which may be deployed to *[function-as-a-service (FaaS)*] platforms like AWS Lambda. Otherwise, each microservice instance needs to share the same state, which means all instances must share the same data store. If the data store also needs to be replicated to handle the load, there are additional challenges to ensure *[consistency]*.
+
+Load balancing of microservices that are designed to be *disposable* opens up many other opportunities for things like the design of *[deployment pipelines]*. If we can easily destroy microservice instances, and add new instances to the load balancer, then it becomes much easier to do things like *[rolling deployments]* (ie. *[continuous delivery]* of lots of *[micro releases]*) and *[auto-recovery]*. See *link:./load-balancing.adoc[load balancing]* for more on this.
+
+****
+A event-driven, stateless microservice architecture gives us a very scalable, very extensible, and very resilient application platform. Add in a continuous *deployment pipeline* and you can do thousands of releases, to hundreds of microservices, without a moment of downtime.
+****
 
 A key objective of microservice architecture is to allow for individual services to be independently developed, deployed, and operated. Nevertheless, the delivery of changes to user-facing functionality inevitably requires coordination of development and deployment across services. Due to the high granularity of microservices, the communication overhead associated with managing system-wide changes can be significant. Business planning and prioritization can also be more challenging if input such as delivery *[estimations]* need to be gathered from multiple teams.
 
@@ -94,7 +110,12 @@ In addition to the technical trade-offs of the microservice architecture, there 
 
 To realize the full benefits of a microservice architecture, microservice teams require a high degree of *[autonomy]*, for example over their *[ways of working]* and *[technology choices]*. This autonomy is necessary to allow individual services to change quickly, but it also requires a high degree of *trust* from the organization. Microservices tend not to work so well in command-and-control organizations, where *[top-down design]* and decision-making is the norm.
 
-Greater flexibility over technical choices within individual services is a benefit at the team level, but *technical sprawl* becomes a risk at the organization level. Additional effort needs to be made on *technical standardization*, eg. through organization-level *technical standards* and *documentation*, development of shared code libraries, and additional organizational structures such as *guilds* and *communities of practice*. Organization-level policies such as *[service-level agreements]* and *API versioning* standards will be necessary to ensure that services are built and operated to a consistent standard. These added requirements increase the range of skills required within an organization, particularly for things like *architecture*, *modeling*, and *technical writing*.
+Greater flexibility over technical choices within individual services is a benefit at the team level, but *technical sprawl* becomes a risk at the organization level. Additional effort needs to be made on *technical standardization* to maintain component *[cohesion]*, eg. through organization-level *technical standards* and *documentation*, development of shared code libraries, and additional organizational structures such as *guilds* and *communities of practice*. Organization-level policies such as *[service-level agreements]* and *API versioning* standards will be necessary to ensure that services are built and operated to a consistent standard. These added requirements increase the range of skills required within an organization, particularly for things like *architecture*, *modeling*, and *technical writing*.
+
+.Libraries and microservices
+****
+Shared libraries are not incompatible with service-oriented designs. They can be useful to encapsulate much of the common boilerplate and cross-cutting concerns that are shared by all services in a system, things like logging, monitoring, security, etc.
+****
 
 All of this is additional overhead – work that does not directly contribute to delivering *[value]* to users.
 
@@ -110,9 +131,9 @@ Microservices were popularized by companies like Amazon, Netflix, and Uber, who 
 
 == Best practices in microservice design
 
-Most of the decisions to be made in the implementation of a microservice architecture involve trade-offs between Local standardization and global standardization, and choosing the boundaries between services (and therefore determining the granularity of the overall system design).
+Most of the decisions to be made in the implementation of a microservice architecture involve trade-offs between local standardization and global standardization, and choosing the boundaries between services (and therefore determining the granularity of the overall system design).
 
-A best practice that has emerged in microservice design is for microservice teams to work in a very thin application layer that is globally-standardized. Hardware (servers, operating systems, databases), communication infrastructure (service registry and discovery, message and event handling, load balancing), operations infrastructure (configuration management, monitoring and logging, deployment pipelines), and even the application runtime platform (self-service tools, dev and test environments) are all abstracted away and centrally managed. Microservice teams have autonomy over a well-defined range of local standards, such as the implementation of business logic and choices of data storage technologies for their services.
+A best practice that has emerged in microservice design is for microservice teams to work in a very thin application layer that is globally-standardized. Hardware (servers, operating systems, databases), communication infrastructure (*[service registry]* and *[service discovery]*, *[message]* and *[event]* handling, *[load balancing]*), operations infrastructure (*[configuration management]*, *[monitoring]* and *[logging]*, *[deployment pipelines]*), and even the application runtime platform (self-service tools, dev and test environments) are all abstracted away and centrally managed. Microservice teams have autonomy over a well-defined range of local standards, such as the implementation of business logic and choices of data storage technologies for their services.
 
 Deep global standardization of a microservice system allows for new microservices to be easily added and quickly scaled. Cross-cutting concerns such as performance benchmarking and security testing can be managed centrally, and shared *[quality gates]* can help to enforce service level agreements and promote a high level of consistency in design and implementation across the whole system.
 
@@ -129,7 +150,7 @@ ____
 Don't design microservices, extract them.
 ____
 
-This approach to microservice design means you do not risk *[prematurely optimizing]* the system design for problems that you may not ever have. Also, because it is much easier to change the internal structure of a *[monolith]* than it is to change the structure of a distributed system, you can more rapidly iterate a system's domain model and functionality in the early stages of development – exactly the time in a product's life cycle when requirements are at their most volatile. Development effort can focus on optimization once functional requirements are more stable.
+This approach to microservice design means you do not risk *[prematurely optimizing]* the system design for problems that you may not ever have. Also, because it is much easier to *[refactor]* the internal structure of a *[monolith]* than it is to change the structure of a distributed system, you can more rapidly iterate a system's domain model and functionality in the early stages of development – exactly the time in a product's life cycle when requirements are at their most volatile. Development effort can focus on optimization once functional requirements are more stable.
 
 The key principle in this approach is to delay extracting services until the communication patterns between them have already been optimized in the monolith. The danger in hurrying to a microservice design is ending up with a distributed *[ball of mud]*, where services are tightly coupled and have complex communication patterns between them. Monolithic balls of bud can be refactored more easily than distributed ones. If your organization does not have the *[capability maturity]* to build a decent monolith, it will only fail quicker with microservices.
 

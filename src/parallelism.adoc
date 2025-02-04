@@ -1,16 +1,10 @@
 = Parallelism
 
-Parallelism, aka. parallel computing, refers to computations that are performed simultaneously by
-multiple processing units. Parallelism is achieved by distributing the computation across multiple
-CPUs, CPU cores, or GPU cores in a single machine, or by distributing the computation across
-multiple machines (and therefore multiple processing units) in a *[cluster]* or *[grid]*.
+Parallelism, aka. parallel computing, refers to computations that are performed simultaneously by multiple processing units. Parallelism is achieved by distributing the computation across multiple CPUs, CPU cores, or GPU cores in a single machine, or by distributing the computation across multiple machines (and therefore multiple processing units) in a *[cluster]* or *[grid]*.
 
-Parallelism increases the throughput and computational speed of a system by using multiple
-processors.
+Parallelism increases the throughput and computational speed of a system by using multiple processors.
 
-In the current era of multi-core processors, parallel computing has become the dominant computer
-architecture. Meanwhile, computer clusters, massively parallel computing, and grid computing are
-widely used for big data processing.
+In the current era of multi-core processors, parallel computing has become the dominant computer architecture. Meanwhile, computer clusters, massively parallel computing, and grid computing are widely used for big data processing.
 
 To implement parallelism in an application, the application must:
 
@@ -35,38 +29,23 @@ To implement parallelism in an application, the application must:
 +-----------+ +-----------+ +-----------+
 ----
 
-Parallel computing systems are significantly more difficult to design than sequential ones, because
-several new classes of potential bugs are introduced, of which *[race conditions]* are the most
-common. Requirements to communicate and synchronize data between parallel processes also make
-program designs more complex.
+Parallel computing systems are significantly more difficult to design than sequential ones, because several new classes of potential bugs are introduced, of which *[race conditions]* are the most common. Requirements to communicate and synchronize data between parallel processes also make program designs more complex.
 
-A commonly cited example of parallel computing is *distributed data processing* systems like
-*[Hadoop]* and *[Spark]*, in which large-scale data processing is performed across multiple
-clusters. Each cluster processes a portion of the data in parallel, significantly reducing the
-overall processing time. Thus it is possible to gain fast insights from large datasets, including
-real-time data from millions of users.
+A commonly cited example of parallel computing is *distributed data processing* systems like *[Hadoop]* and *[Spark]*, in which large-scale data processing is performed across multiple clusters. Each cluster processes a portion of the data in parallel, significantly reducing the overall processing time. Thus it is possible to gain fast insights from large datasets, including real-time data from millions of users.
 
 Other real world examples of parallel computing include:
 
-* *Machine learning*: Training deep learning models involves dividing large datasets into smaller
-  batches, which are each processed simultaneously across multiple GPUs or CPU cores.
+* *Machine learning*: Training deep learning models involves dividing large datasets into smaller batches, which are each processed simultaneously across multiple GPUs or CPU cores.
 
-* *Video rendering*: Video frames are rendered independently, making it possible to process multiple
-  frames simultaneously. For example, rendering a 3D animation becomes much faster when using
-  multiple cores to handle different frames in parallel.
+* *Video rendering*: Video frames are rendered independently, making it possible to process multiple frames simultaneously. For example, rendering a 3D animation becomes much faster when using multiple cores to handle different frames in parallel.
 
-* *Web crawlers*: Web crawlers like Googlebot break a list of URLs into small batches and process
-  them in parallel.
+* *Web crawlers*: Web crawlers like Googlebot break a list of URLs into small batches and process them in parallel.
 
-* *Scientific simulations*: Simulations like weather modeling or molecular interactions require
-  heavy computations.
+* *Scientific simulations*: Simulations like weather modeling or molecular interactions require heavy computations.
 
 .Parallelism versus concurrency
 ****
-Parallelism is a separate concept to *link:./concurrency.adoc[concurrency]*. A parallel program uses
-multiple CPU cores, each performing a task independently. A concurrent program uses a single CPU
-core but switches between tasks (usually represented by threads) to make the most efficient use of
-CPU time.
+Parallelism is a separate concept to *link:./concurrency.adoc[concurrency]*. A parallel program uses multiple CPU cores, each performing a task independently. A concurrent program uses a single CPU core but switches between tasks (usually represented by threads) to make the most efficient use of CPU time.
 
 ----
 Parallelism
@@ -78,8 +57,7 @@ Concurrency
                   -------      -----> Task 2
 ----
 
-Parallelism is true multi-tasking – it means multiple tasks are executed simultaneously, literally.
-Concurrency is multi-threading.
+Parallelism is true multi-tasking – it means multiple tasks are executed simultaneously, literally. Concurrency is multi-threading.
 
 Programs may have both concurrent and parallel characteristics, or neither.
 ****

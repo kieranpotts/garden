@@ -1,48 +1,25 @@
 = Reactive programming
 
-Reactive programming is a *[declarative programming]* paradigm that first emerged in the earliest
-implementation of graphical user interfaces, but has since been applied to many other types of
-software systems, including *link:./distributed-system.adoc[distributed systems]*.
+Reactive programming is a *[declarative programming]* paradigm that first emerged in the earliest implementation of graphical user interfaces, but has since been applied to many other types of software systems, including *link:./distributed-system.adoc[distributed systems]*.
 
-Reactive programming is based on the *link:./asynchronous-processing.adoc[asynchronous processing]*
-of *link:./event-stream.adoc[event streams]*. In a reactive system, the program reacts to changes
-in its environment, such as user input, messages from other systems, or changes in the state of
-the system itself. These changes are represented as events, which are processed by the system
-asynchronously.
+Reactive programming is based on the *link:./asynchronous-processing.adoc[asynchronous processing]* of *link:./event-stream.adoc[event streams]*. In a reactive system, the program reacts to changes in its environment, such as user input, messages from other systems, or changes in the state of the system itself. These changes are represented as events, which are processed by the system asynchronously.
 
 == Origins of reactive programming
 
-The origins of reactive programming can be traced back to the first GUI applications. Even today,
-GUIs are implemented using an endlessly-running *[event loop]*, which is responsible for listening
-for user input (or other events) and updating the UI in response. But in the earliest GUIs this
-process was synchronous. When a user input triggered a UI update, nothing else could happen until
-the update was complete. This led to unresponsive user interfaces. The UI would "hang" – not respond
-to new user input – while prior events were being processed.
+The origins of reactive programming can be traced back to the first GUI applications. Even today, GUIs are implemented using an endlessly-running *[event loop]*, which is responsible for listening for user input (or other events) and updating the UI in response. But in the earliest GUIs this process was synchronous. When a user input triggered a UI update, nothing else could happen until the update was complete. This led to unresponsive user interfaces. The UI would "hang" – not respond to new user input – while prior events were being processed.
 
-The solution was to decouple the event handling from the GUI update. This is done by introducing
-an *[event queue]*, which is processed asynchronously. A *producer* thread handling user input
-pushes events to the queue, and a *consumer* thread takes those events and processes them. This
-is an implementation of the *[observer pattern]*.
+The solution was to decouple the event handling from the GUI update. This is done by introducing an *[event queue]*, which is processed asynchronously. A *producer* thread handling user input pushes events to the queue, and a *consumer* thread takes those events and processes them. This is an implementation of the *[observer pattern]*.
 
 == The Reactive Manifesto
 
-Today, the reactive programming paradigm has been extended to many other types of software systems,
-notably distributed cloud systems. In these systems, the events are not just user input, but
-messages from other systems, changes in the state of the system, or other environmental changes.
+Today, the reactive programming paradigm has been extended to many other types of software systems, notably distributed cloud systems. In these systems, the events are not just user input, but messages from other systems, changes in the state of the system, or other environmental changes.
 
-The Reactive Manifesto is an https://www.reactivemanifesto.org/[online document] that outlines the
-principles of reactive programming as applied to highly scalable
-*link:./distributed-system.adoc[distributed systems]*. The document was authored
-in 2014 by Jonas Bonér, Dave Farley, Roland Kuhn, and Martin Thompson.
+The Reactive Manifesto is an https://www.reactivemanifesto.org/[online document] that outlines the principles of reactive programming as applied to highly scalable *link:./distributed-system.adoc[distributed systems]*. The document was authored in 2014 by Jonas Bonér, Dave Farley, Roland Kuhn, and Martin Thompson.
 
 == Reactive programming libraries and standards
 
-In Java, https://github.com/ReactiveX/RxJava[RxJava] – Reactive Extensions (Rx) in Java – was one
-of the first open source libraries to implement the reactive programming model. Its API is similar
-to Java 8 Streams, but is designed to be more fluent and expressive. RxJava is part of the larger
-https://reactivex.io/intro.html[ReactiveX] project, which provides equivalent libraries for many
-other languages, all sharing a common API.
+In Java, https://github.com/ReactiveX/RxJava[RxJava] – Reactive Extensions (Rx) in Java – was one of the first open source libraries to implement the reactive programming model. Its API is similar to Java 8 Streams, but is designed to be more fluent and expressive.
 
-ReactiveX has become something of a _de facto_ standard for implementing reactive programming.
-There's a separate initiative to standardize the API of the event streams themselves, called
-https://www.reactive-streams.org/[Reactive Streams].
+RxJava is part of the larger https://reactivex.io/intro.html[ReactiveX] project, which provides equivalent libraries for many other languages, all sharing a common API.
+
+ReactiveX has become something of a _de facto_ standard for implementing reactive programming. There's a separate initiative to standardize the API of the event streams themselves, called https://www.reactive-streams.org/[Reactive Streams].

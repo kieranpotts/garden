@@ -1,47 +1,31 @@
 = Message queues
 
-A message queue is a communication mechanism that enables different parts of a system to send and
-receive messages *[asynchronously]*.
+A message queue is a communication mechanism that enables different parts of a system to send and receive messages *[asynchronously]*.
 
-*Producers* send messages to the queue and move on to other tasks, without waiting for *consumers*
-(aka. *processors*) to process the messages. Multiple consumers can pull messages from the queue,
-allowing work to be distributed and balanced across multiple nodes – supporting *[horizontal scaling]*.
+*Producers* send messages to the queue and move on to other tasks, without waiting for *consumers* (aka. *processors*) to process the messages. Multiple consumers can pull messages from the queue, allowing work to be distributed and balanced across multiple nodes – supporting *[horizontal scaling]*.
 
-Traditional message queues are designed to take in messages, queue them until they are ready to be
-processed, and then route them to the consumers (who do the processing) when they are ready to
-receive the messages. (Messages queues, like databases, therefore require durable storage.)
+Traditional message queues are designed to take in messages, queue them until they are ready to be processed, and then route them to the consumers (who do the processing) when they are ready to receive the messages. (Messages queues, like databases, therefore require durable storage.)
 
-Message queues can be *[replicated]* for *[redundancy]*. In addition, most message queues will
-support replication of consumers. Thus, even if messages of a particular type are destined for one
-consumer, you can have multiple consumers of that type, and the message queue will distributed
-the messages between them, effectively *[load balancing]* the processing of messages.
+Message queues can be *[replicated]* for *[redundancy]*. In addition, most message queues will support replication of consumers. Thus, even if messages of a particular type are destined for one consumer, you can have multiple consumers of that type, and the message queue will distributed the messages between them, effectively *[load balancing]* the processing of messages.
 
-Message queues can also be configured to handle quite complex *message routing*. For example, you
-might want to route messages to different queues based on the content of the message.
+Message queues can also be configured to handle quite complex *message routing*. For example, you might want to route messages to different queues based on the content of the message.
 
-Well known examples of message queues include *[RabbitMQ]* and *ActiveMQ*. Hosted solutions include
-*[Amazon SQS]*.
+Well known examples of message queues include *[RabbitMQ]* and *ActiveMQ*. Hosted solutions include *[Amazon SQS]*.
 
-Traditional message queues are distinct from *link:./event-bus.adoc[event buses]* and
-*link:./stream-processing-systems.adoc[stream processing systems]* like *[Kafka]*. Although
-event stream processing systems can be used as message queues, they are really designed for
-different use cases. Event-based systems tend to *fan out* messages to multiple consumers, whereas
-message queues tend to treat individual messages as being destined for one processor. Conventionally,
-traditional message queues will delete messages from the queue once they have been received by a
-consumer, whereas event stream processing systems will retain messages for a period of time,
-allowing multiple consumers to process the same message.
+Traditional message queues are distinct from *link:./event-bus.adoc[event buses]* and *link:./stream-processing-systems.adoc[stream processing systems]* like *[Kafka]*. Although event stream processing systems can be used as message queues, they are really designed for different use cases. Event-based systems tend to *fan out* messages to multiple consumers, whereas message queues tend to treat individual messages as being destined for one processor. Conventionally, traditional message queues will delete messages from the queue once they have been received by a consumer, whereas event stream processing systems will retain messages for a period of time, allowing multiple consumers to process the same message.
 
-Traditional message queues are also designed for relatively moderate data volumes, compared to
-modern event stream processing systems which are designed for high throughput and low latency.
-Message queues are still very fast, but they don't tend to handle the same amount of throughput as
-some modern stream processing systems, such as Kafka.
+Traditional message queues are also designed for relatively moderate data volumes, compared to modern event stream processing systems which are designed for high throughput and low latency. Message queues are still very fast, but they don't tend to handle the same amount of throughput as some modern stream processing systems, such as Kafka.
 
 == Message queue use cases
 
-Common use cases for message queues include sending emails, processing payments, and handling
-notifications. It is not usually important that producers get a response to these types of
-requests, so it is acceptable for the service calls to be asynchronous. For example, it will often
-be sufficient for a producer to know that an email has been queued for delivery, and not need to
-wait for confirmation that it has been sent.
+Common use cases for message queues include sending emails, processing payments, and handling notifications. It is not usually important that producers get a response to these types of requests, so it is acceptable for the service calls to be asynchronous. For example, it will often be sufficient for a producer to know that an email has been queued for delivery, and not need to wait for confirmation that it has been sent.
 
 Anything that could be treated as a background *job* is a good candidate for a message queue.
+
+////
+
+Well-known message queue systems include: Apache Kafka, Apache ActiveMQ, Amazon Simple Queue Service (SQS), and RabbitMQ.
+
+RabbitMQ is the most widely deployed open source message broker. It supports multiple messaging protocols, buts its primary one is the Advanced Message Queuing Protocol (AMQP).
+
+////

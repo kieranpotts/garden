@@ -2,51 +2,36 @@
 
 image::./_/load-balancing.svg[]
 
-A load balancer is a network device or software application that distributes incoming network
-traffic across multiple servers, or other resources, to optimize performance and ensure high
-availability.
+A load balancer is a network device or software application that distributes incoming network traffic across multiple servers, or other resources, to optimize performance and ensure high availability.
 
-Load balancers are widely used in *link:./distributed-system.adoc[distributed systems]* to increase
-*[capacity]* and *[reliability]* of applications. They also improve overall *[performance]* by
-decreasing the burden on individual servers.
+Load balancers are widely used in *link:./distributed-system.adoc[distributed systems]* to increase *[capacity]* and *[reliability]* of individual nodes or services. They also improve overall *[performance]* by decreasing the burden on individual servers.
 
-One of the trade-offs of using a load balancer is that it introduces a *[single point of failure]*.
-If the load balancer fails, then the entire system becomes unavailable. To mitigate this risk, load
-balancers are often deployed in clusters, with one or more standby load balancers ready to take
-over if the primary load balancer fails.
+One of the trade-offs of using a load balancer is that it introduces a *[single point of failure]*. If the load balancer fails, then the entire system becomes unavailable. To mitigate this risk, load balancers are often deployed in clusters, with one or more standby load balancers ready to take over if the primary load balancer fails.
 
 In a distributed system, load balancers may exist at various layers, such as:
 
 * In front of web servers.
-* In front of application servers.
+* In front of application servers (eg. services in a service-oriented system).
 * In front of database servers.
 
 Load balancing can also operate a different layers of the network stack. The most common are:
 
-* *Layer 4*: Operates at the *[transport layer]* (TCP/UDP), forwarding traffic based on network
-  information such as IP address and port number.
+* *Layer 4*: Operates at the *[transport layer]* (TCP/UDP), forwarding traffic based on network information such as IP address and port number.
 
-* *Layer 7*: Operates at the *[application layer]*, making routing decisions based on
-  application-level data, such as HTTP headers, cookies, or message content.
+* *Layer 7*: Operates at the *[application layer]*, making routing decisions based on application-level data, such as HTTP headers, cookies, or message content.
 
 == Load balancing algorithms
 
-There are several algorithms that load balancers use to determine how to distribute incoming
-requests. The optimum choice of algorithm depends on various factors, such as the nature of the
-requests, the type of workload, and the desired performance characteristics.
+There are several algorithms that load balancers use to determine how to distribute incoming requests. The optimum choice of algorithm depends on various factors, such as the nature of the requests, the type of workload, and the desired performance characteristics.
 
 The most common algorithms are:
 
-* *Round robin*: Cycles through a list of servers sequentially, so rotating requests evenly across
-  all servers.
+* *Round robin*: Cycles through a list of servers sequentially, so rotating requests evenly across all servers.
 
-* *Weighted round robin*: Round robin with the ability to assign a weight to each server, so some
-  servers receive more requests than others, based on their capacity.
+* *Weighted round robin*: Round robin with the ability to assign a weight to each server, so some servers receive more requests than others, based on their capacity.
 
 * *Least connections*: Sends new requests to the server with the fewest active connections.
 
 * *Least response time*: Routes requests to the server with the fastest response.
 
-* *IP hash*: Hashes the IP address of the client to determine which server receives the request.
-  This strategy ensures the same client is always directed to the same server for each request,
-  which is useful for session persistence, persistent connections, and stateful operations.
+* *IP hash*: Hashes the IP address of the client to determine which server receives the request. This strategy ensures the same client is always directed to the same server for each request, which is useful for session persistence, persistent connections, and stateful operations.

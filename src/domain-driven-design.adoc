@@ -32,7 +32,7 @@ But DDD is (perhaps) most useful as a software design process. Evans described t
 
 == Strategic design
 
-The first phase of a domain-driven approach to software design is called the strategic design. The strategic design is typically undertaken during a project's *[discovery phase]*.
+Implementing domain-driven design in software projects requires a deep understanding of business needs and a clear strategy to effectively model the domain. This work is carried out as part of the *strategic design*, which is the first phase of a domain-driven approach to software design and which will typically be undertaken during a project's *[discovery phase]*.
 
 Fundamentally, DDD is all about good *[domain modeling]*. The goal of the strategic design is to end up with a high-level model of the business domain. The model is created by the technical experts but its design is driven by the people who know most about the domain – the *[domain experts]*. The model is discovered through *conversations* with the domain experts. The technical experts collaborate with the domain experts through continuous conversation and feedback to create a model of the problem space that makes sense to all the project's stakeholders.
 
@@ -214,13 +214,13 @@ Not all domain objects need to be modeled as entities, because not all domain ob
 
 As with entities, the values of value objects may be considered to be always "correct", since validation should be done at construction of the objects. But unlike entities, value objects should be modeled to be immutable. Thus, if you need to change a value object, you create a new one.
 
-Entities may be composed from one or more value objects. For example, a subscriber may have a name, email address, and date of birth – all of which could be implemented as value objects. You could use the native types of the programming language to model these values, but by creating value objects you are explicitly stating that a value is an important part of the domain model. By comparison, implementation details such as the "last modified date" of an entity may not be considered important enough to be a value object. If the values are not relevant to the domain but are required only to implement the software, we may call these *technical values*.
+Entities may be *[composed]* from one or more value objects. For example, a subscriber may have a name, email address, and date of birth – all of which could be implemented as value objects. You could use the native types of the programming language to model these values, but by creating value objects you are explicitly stating that a value is an important part of the domain model. By comparison, implementation details such as the "last modified date" of an entity may not be considered important enough to be a value object. If the values are not relevant to the domain but are required only to implement the software, we may call these *technical values*.
 
 Whether a piece of data should be modeled as an entity or a value object is not always a clear-cut decision. For example, an address could be modeled as either (value objects do not have to be restricted to a single value). In general, if something is important to the business it should be modeled as an entity. For example, in a real estate application, addresses may be important enough to be modeled as entities. However, if the address is just a way to contact a customer, it may be more appropriate to model it as a value object.
 
 A complete domain model is made up of a mix of entities and value objects. Typically, you will end up with a lot more value objects than entities, but this will vary between domain models.
 
-Some domain models may required that related entities and value objects (and perhaps other structures, too) be grouped together. This is where the *aggregate* pattern comes in. An aggregate is an object that encapsulates multiple related domain objects. Each aggregate will have exactly one root entity, which provides a single point of entry to the whole group of objects. The root entity guarantees the consistency of changes made to all domain objects within the aggregate, and restricts external objects from holding references to its member objects.
+Some domain models may required that related entities and value objects (and perhaps other structures, too) be grouped together. This is where the *aggregate* pattern comes in. An aggregate is an object that encapsulates multiple related domain objects (*[composition]*). Each aggregate will have exactly one root entity, which provides a single point of entry to the whole group of objects. The root entity guarantees the consistency of changes made to all domain objects within the aggregate, and restricts external objects from holding references to its member objects.
 
 An example of an aggregate would be a `Customer` entity that internally references lots of other entities and values objects that represent things like a `PhoneNumber`, `PostalAddress`, `EmailAddress`, and so on. From an external point of view, the `Customer` entity is a single unit of code, and all the other objects are hidden from view.
 
@@ -359,5 +359,6 @@ The purpose of this design constraint is to enforce good *[separation of concern
 
 * *link:./clean-architecture.adoc[Clean architecture]*
 * *link:./conways-law.adoc[Conway's Law]*
+* *link:./event-sourcing.adoc[Event sourcing]*
 * *link:./hexagonal-architecture.adoc[Hexagonal architecture]*
 * *link:./onion-architecture.adoc[Onion architecture]*

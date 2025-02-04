@@ -2,76 +2,28 @@
 
 :link-hexagonal-arch: https://alistair.cockburn.us/hexagonal-architecture/
 
-Ports-and-adapters is a *link:./design-patterns.adoc[design pattern]* that is closely associated
-with *link:./hexagonal-architecture.adoc[hexagonal architecture]*.
+Ports-and-adapters is a *link:./design-patterns.adoc[design pattern]* that is closely associated with *link:./hexagonal-architecture.adoc[hexagonal architecture]*.
 
-When Alistair Cockburn {link-hexagonal-arch}[defined] hexagonal architecture, he proposed
-"ports-and-adapters" as an alternative name for the pattern. Therefore, hexagonal architecture and
-ports-and-adapters are synonyms.
+When Alistair Cockburn {link-hexagonal-arch}[defined] hexagonal architecture, he proposed "ports-and-adapters" as an alternative name for the pattern. Therefore, hexagonal architecture and ports-and-adapters are synonyms.
 
-But I prefer to think of ports-and-adapters as a low-level design pattern, while hexagonal
-architecture describes a conceptual view of a system in which the ports-and-adapters pattern is
-implemented universally throughout the whole system.
+But I prefer to think of ports-and-adapters as a low-level design pattern, while hexagonal architecture describes a conceptual view of a system in which the ports-and-adapters pattern is implemented universally throughout the whole system.
 
-In the ports-and-adapters pattern, *ports* are used to define interfaces for inputs into an
-application, and also outputs from the application. Generally, a port will be used for either
-input or output, but not both.
+In the ports-and-adapters pattern, *ports* are used to define interfaces for inputs into an application, and also outputs from the application. Generally, a port will be used for either input or output, but not both.
 
-*Adapters* get plugged into ports. While ports are abstractions of the inputs and outputs of an
-application, the adapters that get plugged into those ports are implementations of the code
-necessary to connect some external system with the ports of application.
+*Adapters* get plugged into ports. While ports are abstractions of the inputs and outputs of an application, the adapters that get plugged into those ports are implementations of the code necessary to connect some external system with the ports of application.
 
-Some ports-and-adapters will be on the "driving" side of an application (for its inputs) while
-others will be on the "driven" side (for its outputs. *Drivers*, therefore, a subset of adapters
-that are used to control an application. Input drivers may exist for *[GUIs]*, external programs,
-automated tests, batch scripts, or any other client of the application. Output drivers may
-exist for databases, file systems, message queues, and also GUIs or other user interfaces.
+Some ports-and-adapters will be on the "driving" side of an application (for its inputs) while others will be on the "driven" side (for its outputs. *Drivers*, therefore, a subset of adapters that are used to control an application. Input drivers may exist for *[GUIs]*, external programs, automated tests, batch scripts, or any other client of the application. Output drivers may exist for databases, file systems, message queues, and also GUIs or other user interfaces.
 
-Via adapters, the output ports of applications may be connected to the input ports of other
-applications. Thus, within a software system composed of multiple independent applications,
-applications drive one another by connecting up their ports using adapters – similar to how the
-components of a hi-fi system are connected.
+Via adapters, the output ports of applications may be connected to the input ports of other applications. Thus, within a software system composed of multiple independent applications, applications drive one another by connecting up their ports using adapters – similar to how the components of a hi-fi system are connected.
 
-Different adapters can be used in different environments. Thus, you might have different adapters
-for databases, file systems, and message queues – but each adapter would be compatible with
-("pluggable") with the same port.
+Different adapters can be used in different environments. Thus, you might have different adapters for databases, file systems, and message queues – but each adapter would be compatible with ("pluggable") with the same port.
 
-A key benefit of the ports-and-adapters pattern is *Testability*. Mock adapters can be used as
-doubles for dependencies in test environments. Because both inputs and outputs can be mocked,
-applications could be run in fully "headless" mode, so only their API need be exposed to
-fast-running unit and integration tests.
+A key benefit of the ports-and-adapters pattern is *Testability*. Mock adapters can be used as doubles for dependencies in test environments. Because both inputs and outputs can be mocked, applications could be run in fully "headless" mode, so only their API need be exposed to fast-running unit and integration tests.
 
-The ports-and-adapters pattern serves a similar purpose to *[interfaces]*, but the implementation
-is very different. In the ports-and-adapters pattern, ports are more like *[API]* schema for
-their components, while adapters are concrete implementations of code to wire systems like databases
-and file systems to particular ports. Ports are intended to be a much higher level of abstraction
-than your typical interface, in which we tend to put a lot of context; for example, a database
-interface would typically be distinct from a file system database, each having different methods
-and properties. And adapters don't map to the concept of interfaces, either. Unlike interfaces,
-adapters are concrete implementations, rather than abstractions, of external systems. So, the
-implementation is different, but the end result is the same: greater decoupling between dependent
-components.
+The ports-and-adapters pattern serves a similar purpose to *[interfaces]*, but the implementation is very different. In the ports-and-adapters pattern, ports are more like *[API]* schema for their components, while adapters are concrete implementations of code to wire systems like databases and file systems to particular ports. Ports are intended to be a much higher level of abstraction than your typical interface, in which we tend to put a lot of context; for example, a database interface would typically be distinct from a file system database, each having different methods and properties. And adapters don't map to the concept of interfaces, either. Unlike interfaces, adapters are concrete implementations, rather than abstractions, of external systems. So, the implementation is different, but the end result is the same: greater decoupling between dependent components.
 
-The idea of *link:./hexagonal-architecture.adoc[hexagonal architecture]* is that, for _every_
-interface into or out from _every_ component of a system, including things like databases and
-file systems, a port is created. All the independent components of a system are this connected by
-plugging in various adapters to all the ports of the individual components. This architectural style
-could be applied to both *[distributed systems]* and *[modular monoliths]*, or anything in between.
-Nonetheless, the ideas behind the ports-and-adapters pattern certainly make more sense in the
-context of cloud-native distributed systems. After all, if an application is interacting with an
-AWS database service such as DynamoDB, even if the connection code is hardwired into the application,
-it will actually be calling DynamoDB's service API rather than interacting directly with the
-database system itself. Therefore, the concept of adapters maps nicely to the concept of services in
-public cloud infrastructure.
+The idea of *link:./hexagonal-architecture.adoc[hexagonal architecture]* is that, for _every_ interface into or out from _every_ component of a system, including things like databases and file systems, a port is created. All the independent components of a system are this connected by plugging in various adapters to all the ports of the individual components. This architectural style could be applied to both *[distributed systems]* and *[modular monoliths]*, or anything in between. Nonetheless, the ideas behind the ports-and-adapters pattern certainly make more sense in the context of cloud-native distributed systems. After all, if an application is interacting with an AWS database services such as DynamoDB, even if the connection code is hardwired into the application, it will actually be calling DynamoDB's service API rather than interacting directly with the database system itself. Therefore, the concept of adapters maps nicely to the concept of services in public cloud infrastructure.
 
-A system that only partially implements the ports-and-adapters pattern may not meet the description
-of a fully hexagonal architecture. Indeed, the ports-and-adapters pattern could be used in the
-context of other architectural styles. For example, in an *n-tier architecture*, ports-and-adapters
-could be used exclusively in the UI or presentational layer, while more traditional abstractions are
-used in the persistence layer.
+A system that only partially implements the ports-and-adapters pattern may not meet the description of a fully hexagonal architecture. Indeed, the ports-and-adapters pattern could be used in the context of other architectural styles. For example, in an *n-tier architecture*, ports-and-adapters could be used exclusively in the UI or presentational layer, while more traditional abstractions are used in the persistence layer.
 
-There is some synergy between hexagonal architecture and *[domain-driven design]*. The hexagons
-– which could represent services in a distributed system or modules in a monolith - could model
-subdomains. And the *input ports* of the ports-and-adapters pattern map quite nicely to the concept
-of *commands* in DDD. However, DDD tends to emphasize the modeling of data and persistence layers
-(entities, repositories) whereas ports-and-adapters emphasizes stateless outputs.
+There is some synergy between hexagonal architecture and *[domain-driven design]*. The hexagons – which could represent services in a distributed system or modules in a monolith - could model subdomains. And the *input ports* of the ports-and-adapters pattern map quite nicely to the concept of *commands* in DDD. However, DDD tends to emphasize the modeling of data and persistence layers (entities, repositories) whereas ports-and-adapters emphasizes stateless outputs.

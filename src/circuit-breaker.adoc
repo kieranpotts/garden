@@ -1,19 +1,7 @@
 = Circuit breaker
 
-The circuit breaker pattern is a way to handle *transient failures* in a
-*link:./distributed-system.adoc[distributed system]*.
+The circuit breaker *[pattern]* is a way to handle *transient failures* in a *link:./distributed-system.adoc[distributed system]*.
 
-When requests to services fail, a circuit breaker will automatically open, preventing any further
-requests from being sent to the failing service. The circuit breaker will remain open for a
-configurable amount of time, after which it will automatically close, so allowing further requests
-to be sent again to the service.
+When requests to services fail, a circuit breaker will automatically open, preventing any further requests from being sent to the failing service. The circuit breaker will remain open for a configurable amount of time, after which it will automatically close, so allowing further requests to be sent again to the service.
 
-The aim of the circuit breaker pattern is to prevent a system from becoming overwhelmed by retries.
-If a service is failing, it is likely that it will continue to fail for a period of time, until its
-failure mode is resolved through *link:./disaster-recovery.adoc[disaster recovery]* mechanisms.
-
-A circuit breaker is an alternative solution to a *link:./retry-mechanism.adoc[retry mechanism]*.
-Whereas a retry mechanism will keep retrying a failing service until it succeeds, a circuit breaker
-will prevent any further requests from being sent to the failing service for a period of time. Both
-are solutions for improving *link:./fault-tolerance.adoc[fault tolerance]*, and the two solutions
-may be used in conjunction with each other.
+Circuit breakers complement *link:./retry-mechanism.adoc[retry mechanism]*. Whereas a retry mechanism will keep retrying a failing service until it succeeds, a circuit breaker will prevent any further requests from being sent to the failing service for a period of time. Both are solutions for improving *link:./fault-tolerance.adoc[fault tolerance]*, and the two solutions work particularly well in combination. If a service is failing, it is likely that it will continue to fail for a period of time, until its failure mode is resolved through *link:./disaster-recovery.adoc[disaster recovery]* mechanisms. While disaster recovery is ongoing, a circuit breaker will help to prevent the recovering system from being overwhelmed by retries.

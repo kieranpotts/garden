@@ -2,27 +2,18 @@
 
 image::./_/database-indexes.svg[]
 
-A database index is a super-efficient *lookup table* that allows a database to find data much
-faster.
+A database index is a super-efficient *lookup table* that allows a database to find data much faster.
 
-Indexes work by creating a sorted list of the values in a specific column or set of columns. This
-allows the database to quickly fetch the rows that match a given value. By following the pointers
-in the index, the database system does not need to scan the entire table to find the matching rows.
+Indexes work by creating a sorted list of the values in a specific column or set of columns. This allows the database to quickly fetch the rows that match a given value. By following the pointers in the index, the database system does not need to scan the entire table to find the matching rows.
 
-There is a trade-off between the speed of read operations and the cost of maintaining indexes.
-Indexes speed up read operations but slow down write operations, as the database needs to update
-the index every time a row is inserted, updated, or deleted.
+// TODO: Diagram
+
+There is a trade-off between the speed of read operations and the cost of maintaining indexes. Indexes speed up read operations but slow down write operations, as the database needs to update the index every time a row is inserted, updated, or deleted.
 
 The most common types of indexes are:
 
 * *Primary keys*: A unique identifier for each record.
 
-* *Secondary indexes*: Indexes on columns other than the primary key columns,
-  eg. to speed up searching for a user by email address.
+* *Secondary indexes*: Indexes on columns other than the primary key columns, eg. to speed up searching for a user by email address.
 
-* *Composite indexes*: Indexes created on multiple columns, useful to optimize
-  queries that search those columns together, eg. finding a user by both first
-  name and last name.
-
-
-
+* *Composite indexes*: Indexes created on multiple columns, useful to optimize queries that search those columns together, eg. finding a user by both first name and last name.

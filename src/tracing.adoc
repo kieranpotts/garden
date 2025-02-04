@@ -2,15 +2,9 @@
 
 The third pillar of *link:./observability.adoc[observability]* is tracing.
 
-A *trace* is like a breadcrumb that follows a single request, and its returning response, as it
-travels through a system.
+A *trace* is like a breadcrumb that follows a single request, and its returning response, as it travels through a system.
 
-In *link:./distributed-system.adoc[distributed systems]*, a trace connects the dots between
-services, tracking the full path of a request as it hops between services to complete an operation.
-To achieve this, unique request identifiers must be generated for each request to the system, and
-these identifiers must be propagated through the system as the request passes between service
-boundaries. The request IDs are captured in the trace logs and used to aggregate trace data from
-disparate services.
+In *link:./distributed-system.adoc[distributed systems]*, a trace connects the dots between services, tracking the full path of a request as it hops between services to complete an operation. To achieve this, unique request identifiers must be generated for each request to the system, and these identifiers must be propagated through the system as the request passes between service boundaries. The request IDs are captured in the trace logs and used to aggregate trace data from disparate services.
 
 Traces help to:
 
@@ -18,26 +12,10 @@ Traces help to:
 * Determine the specific point of failure for a failed request.
 * Spot potential bottlenecks in inter-service communication, guiding optimization work.
 
-Traces may be more selective that *link:./logging.adoc[logs]*. Not every event may be scrutinized
-in a trace – logs can be cross-referenced for that purpose – but rather a selective approach
-tends to be taken to focus on key events that are critical to understanding the flow of a request.
+Traces may be more selective that *link:./logging.adoc[logs]*. Not every event may be scrutinized in a trace – logs can be cross-referenced for that purpose – but rather a selective approach tends to be taken to focus on key events that are critical to understanding the flow of a request.
 
-Some tracing policies also record a subset of transactions, thus sampling only a fraction of all
-the requests made to a system. The aim here would be to achieve a representative sample of all
-requests, enough to provide a good overview of system performance and behavior, but without the
-ability of being able to diagnose issues that occur in any single request.
+Some tracing policies also record a subset of transactions, thus sampling only a fraction of all the requests made to a system. The aim here would be to achieve a representative sample of all requests, enough to provide a good overview of system performance and behavior, but without the ability of being able to diagnose issues that occur in any single request.
 
-Thus, use cases for tracing systems vary. Sometimes the business requires that customer support
-teams be able to replay any request made by a customer, and to understand all the state changes
-that resulted in a particular outcome. This may be necessary for *link:./compliance.adoc[compliance]*
-reasons, for example. In other cases, the business may be more interested in understanding the
-overall performance of the system, and how different services interact with each other. In this
-case, a sampling approach to tracing may be more appropriate.
+Thus, use cases for tracing systems vary. Sometimes the business requires that customer support teams be able to replay any request made by a customer, and to understand all the state changes that resulted in a particular outcome. This may be necessary for *link:./compliance.adoc[compliance]* reasons, for example. In other cases, the business may be more interested in understanding the overall performance of the system, and how different services interact with each other. In this case, a sampling approach to tracing may be more appropriate.
 
-Tracing is incredibly useful for understanding and optimizing complex software systems. It can be
-particularly useful to retrofit tracing into legacy systems that are inherited by new teams.
-Selective tracing can provide valuable insights into the operational dynamics of an application,
-without needing to gather large volumes of data. Developers can use traces to understand how a
-system behaves in the messy real world of production environments, including interactions with
-databases, caches, and external services, and how these things impact the overall performance of
-the system.
+Tracing is incredibly useful for understanding and optimizing complex software systems. It can be particularly useful to retrofit tracing into legacy systems that are inherited by new teams. Selective tracing can provide valuable insights into the operational dynamics of an application, without needing to gather large volumes of data. Developers can use traces to understand how a system behaves in the messy real world of production environments, including interactions with databases, caches, and external services, and how these things impact the overall performance of the system.

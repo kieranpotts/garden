@@ -1,6 +1,6 @@
 = Service-oriented architecture (SOA)
 
-Service-oriented architecture is a *link:./distributed-system.adoc[distributed system]* design pattern. It sees an application divided into multiple services, each of which can be developed and tested independently of other services within the system. Individual services will typically have distinct code repositories and production infrastructure.
+Service-oriented architecture is a *link:./distributed-system.adoc[distributed system]* design pattern. It sees an application divided into multiple services, each of which can be developed and tested independently of other services within the system. The defining feature of a *[service]* is that is runs in its own *[process]* and communicated with other services within the system via network calls / *[inter-process communication]*. Optionally, individual services may have distinct code repositories and production infrastructure.
 
 The *link:./system-design.adoc[system design]* of service-oriented architecture involves *[decomposing]* an application's functionality into separate, *[loosely coupled]* services, each managing its own data stores and caches, and which communicate with each other via network APIs or message brokers.
 
@@ -11,6 +11,8 @@ Domain services are more likely to be *[stateful]*, due to requirements to maint
 == Comparisons to other architectural styles
 
 *link:./microservices.adoc[Microservices architecture]* is a subset of service-oriented architecture with further design constraints. A microservices architecture emphasizes the design of very small, independently deployable services. The distinction between service-oriented and microservices architectures is mostly a matter of granularity, which is subjective. The two terms are often used interchangeably.
+
+*link:./web-oriented-architecture.adoc[Web-oriented]* and *link:./resource-oriented-architecture.adoc[resource-oriented]* architects are other variations on SOA.
 
 *link:./message-driven-architecture.adoc[message-driven]* and *link:./event-driven-architecture.adoc[event-driven]* architectures help to enforce the loose coupling between services that is a key principle of SOA. However, SOA itself does not prescribe particular communication patterns for service contracts, and a service-oriented system may even implement a mix of communication styles, including *[synchronous]* and *[asynchronous]* styles.
 
@@ -27,6 +29,9 @@ A widely-promoted advantage of service-oriented architecture is that it allows f
 Service-oriented architecture tends to work best where service boundaries clearly map to *bounded contexts* in the *domain model*, and where the bounded contexts in turn map directly to *[team topologies]*, allowing teams to each work independently on a discrete group of services.
 
 A critical design consideration in service-oriented architectures is the granularity of services. If services are too fine-grained, the system can become overly complex (due to the operating overheads of managing lots of services) and slow (due to the overhead of higher network communication) – see *link:./microservices.adoc[microservices]* for more on these trade-offs. On the other hand, if services are too coarse-grained, the system keeps more of the limitations of *link:./monolith.adoc[monolithic architectures]*.
+
+// TODO: https://en.wikipedia.org/wiki/Service-oriented_architecture
+// TODO: https://insights.sei.cmu.edu/documents/147/2007_019_001_29275.pdf
 
 ''''
 

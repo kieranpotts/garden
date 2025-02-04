@@ -1,29 +1,12 @@
 = Concurrency
 
-Concurrency refers to the ability of a computer system to handle multiple tasks at the same time.
-This is achieved by interleaving the execution of processes on a single processing unit (CPU)
-through context switching. This creates the illusion of parallelism, but in reality the tasks are
-not processed simultaneously. Instead, the CPU switches between tasks, giving each a slice of time
-to execute, but never executing more than one task at exactly the same time.
+Concurrency refers to the ability of a computer system to handle multiple tasks at the same time. This is achieved by interleaving the execution of processes on a single processing unit (CPU) through *context switching*. This creates the _illusion_ of *link:./parallelism.adoc[parallelism]*, but in reality the tasks are not processed simultaneously. Instead, the CPU switches between tasks, giving each a slice of time to execute, but never executing more than one task at exactly the same time.
 
-In a computer, tasks are executed using a Central Processing Unit (CPU). A single CPU can execute
-only one task at a time. However, it can rapidly switch between tasks, giving the appearance that
-multiple things are happening at once. For example, modern computer can play music while the user
-is writing a Word document, and more, using just a single CPU. The CPU alternatives between these
-tasks so quickly that, to the user, it feels like both are happening at the same time.
+In a computer, tasks are executed using a Central Processing Unit (CPU). A single CPU can execute only one task at a time. However, it can rapidly switch between tasks, giving the appearance that multiple things are happening at once. For example, modern computer can play music while the user is writing a Word document, and more, using just a single CPU. The CPU alternatives between these tasks so quickly that, to the user, it feels like both are happening at the same time.
 
-Concurrency is primarily achieved using *threads*, which are the smallest units of execution within
-a *process*. The CPU switches between threads to handle multiple tasks concurrently. When the CPU
-switches from one task to another, it saved the current task's state in memory. The CPU then loads
-the context of the next task, and continues executing it. The CPU repeats this pattern, switching
-between tasks so quickly that it seems like they are running simultaneously.
+Concurrency is primarily achieved using *threads*, which are the smallest units of execution within a *process*. The CPU switches between threads to handle multiple tasks concurrently. When the CPU switches from one task to another, it saves the current task's state in memory. The CPU then loads the context of the next task, and continues executing it. The CPU repeats this pattern, switching between tasks so quickly that it seems like they are running simultaneously.
 
-Concurrency is distinguished from parallelism. In *link:./parallelism.adoc[parallel programming]*,
-a program uses multiple CPU cores, each performing a task entirely independently of the others.
-Parallel programming is true *multi-tasking*, meaning tasks are literally processed "at the same
-time". Concurrency gives the impression of multi-tasking, but really it is *multi-threading*,
-meaning that independent tasks share the same execution thread while appearing to be processed
-simultaneously.
+Concurrency is distinguished from parallelism. In *link:./parallelism.adoc[parallel programming]*, a program uses multiple CPU cores, each performing a task entirely independently of the others. Parallel programming is true *multi-tasking*, meaning tasks are literally processed "at the same time". Concurrency gives the impression of multi-tasking, but really it is *multi-threading*, meaning that independent tasks share the same execution thread while appearing to be processed simultaneously.
 
 ----
 Parallelism
@@ -37,42 +20,23 @@ Concurrency
 
 Programs may have both concurrent and parallel characteristics, or neither.
 
-The objective of concurrency is to maximize CPU utilization by minimizing idle time. When one
-thread or process is waiting for I/O operations, database transactions, or external program
-launches, the CPU can allocate resources to another thread. This ensures the CPU remains
-productive, even when individual tasks are stalled.
+The objective of concurrency is to maximize CPU utilization by minimizing idle time. When one thread or process is waiting for I/O operations, database transactions, or external program launches, the CPU can allocate resources to another thread. This ensures the CPU remains productive, even when individual tasks are stalled.
 
-But there is a cost to the benefits provided by concurrency. Every context switch requires saving
-and restoring task states, which itself consumes time and resources. Excessive context switching
-can degrade performance by increasing CPU overhead.
+But there is a cost to the benefits provided by concurrency. Every context switch requires saving and restoring task states, which itself consumes time and resources. Excessive context switching can degrade performance by increasing CPU overhead.
 
-Nevertheless, concurrency can be useful for improving the responsiveness of software applications,
-by allowing them to handle multiple tasks without waiting for one to complete before starting
-another. Concurrency is commonly used in scenarios where tasks involve waiting for input/output
-operations, such as reading from a file or waiting for user output.
+Nevertheless, concurrency can be useful for improving the responsiveness of software applications, by allowing them to handle multiple tasks without waiting for one to complete before starting another. Concurrency is commonly used in scenarios where tasks involve waiting for input/output operations, such as reading from a file or waiting for user output.
 
-For example, consider a text editor where you can continue to type while the document is being
-saved. The document update and save operations are separate, and handled concurrently. Other
-real world examples of applications that make extensive use of concurrency include:
+For example, consider a text editor where you can continue to type while the document is being saved. The document update and save operations are separate, and handled concurrently. Other real world examples of applications that make extensive use of concurrency include:
 
-* *Client-side web applications*: The web platform implements concurrency to allow for user actions
-  such a clicks and scrolling, and the fetching of external resources like images and scripts, to
-  be "non-blocking" of HTML and CSS rendering and repaints.
+* *Client-side web applications*: The web platform implements concurrency to allow for user actions such a clicks and scrolling, and the fetching of external resources like images and scripts, to be "non-blocking" of HTML and CSS rendering and repaints.
 
-* *Web servers*: Web servers like the Apache HTTP Server and Nginx can handle multiple client
-  requests concurrently, processing each request independently using threads or asynchronous I/O.
+* *Web servers*: Web servers like the Apache HTTP Server and Nginx can handle multiple client   requests concurrently, processing each request independently using threads or asynchronous I/O.
 
-* *Chat applications*: Concurrent tasks include the processing of incoming messages, the updating
-  of the user interface with new messages, and the sending of outgoing messages. Managing these
-  tasks concurrently gives the impression of real-time communication by minimizing delays and
-  UI freezes.
+* *Chat applications*: Concurrent tasks include the processing of incoming messages, the updating of the user interface with new messages, and the sending of outgoing messages. Managing these tasks concurrently gives the impression of real-time communication by minimizing delays and UI freezes.
 
-* *Video games*: Video games rely heavily on concurrency to deliver immersive user experiences.
-  Concurrent tasks including rendering graphics, processing user input, simulating physics, and
-  playground background music.
+* *Video games*: Video games rely heavily on concurrency to deliver immersive user experiences. Concurrent tasks including rendering graphics, processing user input, simulating physics, and playground background music.
 
 .Example of a concurrent program written in Java
-
 [source,java]
 ----
 class Task implements Runnable {
