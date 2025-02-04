@@ -24,11 +24,17 @@ Caching can be implemented at multiple levels of a system, and using different t
 
 Caching comes with its own sets of challenges. The main difficulty is maintaining data *link:./consistency.adoc[consistency]*. When data changes in the source-of-truth, the cached copies become stale. There are various strategies that can be implemented to maintain consistency between sources and caches. Caching strategies include:
 
-* *Read-through*: Automatically fetches and caches missing data from the source-of-truth when it is requested and the cache is empty or stale.
+* *Read-through*: Automatically fetches and caches missing data from the source-of-truth when it is requested and the cache is empty or stale. +
++
+image:./_/read-through-cache.png[]
 
 * *Write-through*: Data is written to the cache and the source-of-truth at the same time. This ensures that the cache is always up-to-date, but it can introduce latency in write operations.
 
+// TODO: Add diagram for write-through cache
+
 * *Write-back*: Data is written to the cache first, and then asynchronously written to the source-of-truth storage. This reduces write latency, but it can introduce the risk of data loss if the cache fails before the data is written to the source-of-truth.
+
+// TODO: Add diagram for write-back cache.
 
 * *Write-around*: Data is written directly to the source-of-truth, bypassing the cache. This increases read latency for new data, but it avoids filling the cache with data that may not be accessed again. This is a good technique for infrequently-accessed data.
 
