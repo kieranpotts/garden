@@ -1,0 +1,13 @@
+= Rolling deployments
+
+Rolling deployments are a strategy for updating a running server application without *[downtime]*.
+
+Rolling updates are achieved by having multiple instances of the application and updating the instances incrementally – a few at a time, not all at once.
+
+This way, the application remains *[available]* throughout the deployment process.
+
+A *[load balancer]* is commonly used to implement rolling deployments. The load balancer is configured to remove instances from the pool of available servers, update them, and then add them back to the pool.
+
+Rolling deployment allows for *[continuous deployment]* of lots of *micro releases*, each of which never implements any *breaking changes*. By releasing small changes often, we can mitigate many of the risks associated with shipping large changesets.
+
+However, because each release requires multiple steps, it becomes impractical to do rolling deployments manually. Thus, a high degree of automation is required, using a *[deployment pipeline]*.
