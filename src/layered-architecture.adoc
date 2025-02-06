@@ -1,1 +1,27 @@
-= Layered architecture (aka. multi-tiered or n-tier architecture)
+= Layered architecture (aka. tiered or n-tier architecture)
+
+A _layered architecture_ describes any software system in which discrete concerns are logically separated along lines of responsibility, such that objects with similar roles form imaginary horizontal layers.
+
+The concepts of _layers_ and _tiers_ are often used interchangeably, but they are not the same thing. A _layer_ describes the logical separation of concerns, while a _tier_ describes their physical separation. A layered architecture may also be a tiered architecture, if each of its logical layers runs on separate infrastructure (physical or virtual). However, a layered architecture may also be monolithic, if all layers exist on the same infrastructure.
+
+The most common tiered architecture is the traditional *three-tier* architecture. This describes three conceptual layers, each of which runs on separate bits of hardware:
+
+* *Presentation* or *UI* layer: The front-end or user interface to the application. This could be a GUI or API, for example.
+
+* *Business* or *logic* layer: Encapsulates the application's core functionality, including the majority of the business logic for processing and manipulating data received from both the presentation and data layers.
+
+* *Data* or *persistence* layer: Controls how data is stored, and the allocation of data to the business layer.
+
+This architectural pattern is widespread in *[client-server]* applications such as web applications. Presentation gets delegated to the client while server-side components handle separately application processing and data management.
+
+Three-tier architecture aligns with the traditional software development roles of front-end, back-end, and database engineering. Each layer is dependent only on the layer immediately below it, and further decoupling is possible using patterns such as *[abstraction]* and *[dependency injection]*. This means that each layer can be developed with a reasonable degree of independence from the other layers, allowing for developers to specialize in a particular layer.
+
+Another common convention is to divide the middle layer into application processes (a service layer) and business logic (a domain layer), so creating four conceptual layers. (The number of physical tiers may be fewer, if the code for two or more layers share the same host environment.)
+
+In fact, a software system may exhibit any number of logical gradations. For example, in a *[Model-View-Presenter]* architecture the presenter layer may be implemented as an additional layer sat between the user interface and application (represented by the model).
+
+Whatever the degree and placement of subdivision, a layered or tiered architecture is created by reducing the coupling between components that have different responsibilities, such that components form natural layers. Components in one layer "know" only a minimal amount about components in other layers.
+
+== References
+
+* https://wiki.c2.com/?FourLayerArchitecture[WikiWikiWeb: FourLayerArchitecture]
