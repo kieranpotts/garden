@@ -1,3 +1,53 @@
 = Containerization
 
-// TODO
+Containerization is a type of *link:./virtualization.adoc[virtualization]* that is implemented at the level of the operating system, using features of the OS to allow for multiple user-space applications to be run entirely independently of one another.
+
+With the industry's rapid adoption of *link:./docker.adoc[Docker]* since its release in 2013, containerization has become the dominant paradigm for running applications in virtualized environments, especially in cloud computing. Docker continues to dominate in this space, but alternative container systems include *Podman*, *containerd*, *rkt*, and *LXC*.
+
+A running *link:./container.adoc[container]* is a lot like a *link:./virtual-machine.adoc[virtual machine]* in terms of the isolation it provides applications running inside it. But container technology is quite different to virtualization technology. For this reason, the two are often compared and contrasted as distinct solutions to essentially the same problem: how to isolate multiple applications running on the same physical hardware?
+
+Virtualization and containerization differ in how they interact with the underlying hardware and how they create isolated operating environments for applications. The defining distinction is that containers share the real kernel of their host operating system, whereas virtual machines each have their own virtualized kernel, which is provided and managed by the hypervisor (not by the underlying OS, if there is one).
+
+image::./_/virtualization-vs-containerization.drawio.svg[]
+
+Virtual machines depend on a *link:./hypervisor.adoc[hypervisor]*, which is either *[firmware]* (running directly on the chip) or application software (running on a regular operating system). A hypervisor is responsible for sharing the CPU between multiple live operating systems. In containerization, the equivalent of the hypervisor is the *container engine*.
+
+A container engine works differently to a hypervisor. The main difference is that all the containers managed by a container engine will run on a shared OS kernel. Processes running in each container are highly isolated from each other, as they would be if they were running in separate *link:./virtual-machines.adoc[virtual machines]*. But, in container systems, a different set of technologies are used to implement this isolation.
+
+Isolation is achieved in containers using features of the host OS's kernel. What makes container technology possible is mostly attributed to control groups (cgroups) and namespaces. These are features of the Linux kernel. Windows also provides similar functionality via its jobs object.
+
+Control groups allow you to allocate resources, like CPU time, system memory, and network bandwidth, among user-defined groups of tasks running on the system. Cgroups are how you set resource limits and controls on running processes, similar to how an organization sets budgets and operating constraints on departments.
+
+Namespaces are used to partition kernel resources in such a way that different running processes see different sets of resources – things like the filesystem, process ID space, network interfaces, mount points, and the user ID space. This means that processes running in different namespaces cannot interact with – and don't even have knowledge of – each other.
+
+Container systems use cgroups to manage the resources that containers can use, while namespaces restrict what containers can see and do. The end result is that the kernel, though shared, appears to each containerized application as though the application is the sole occupant of the operating system.
+
+So, the underlying technology of container systems is simple. You can implement container-like environments manually, using readily-available Linux kernel commands. All that container systems do is abstract this native functionality into a convenient utility program.
+
+This design makes containers highly efficient. Containerization achieves a similar level of isolation as virtual machines, but with much less overhead. You don't need to load a whole new kernel for each container that you run. Docker containers don't even have an init system by default.
+
+Because they're not booting a whole new operating system from scratch, containers start very quickly. Really, when you start a container, all you're doing is starting a new isolated filesystem and running a particular process in the context of that filesystem.
+
+The low memory footprint and fast startup and shutdown times make containers ideal for recurring lightweight tasks, such as those run in *[CI/CD]* systems, and for rapid *[horizontal scalability]* of *[microservices]*. Container systems have become the _de facto_ standard for isolation in cloud environments, where the technology helps to optimize usage of the underlying hardware resources, and to achieve a higher density of applications per unit of infrastructure.
+
+By comparison, when you run an application in a VM, the VM will include the application and all its dependencies (binaries and libraries), plus an entire operating system running on a virtualized kernel provided by the hypervisor. This design provides highly isolated and highly secure application runtime environments, but it is also resource heavy, and startup and shutdown times are much slower. VMs can also be more wasteful of resources. Typically, you must allocate a certain amount of RAM to each VM, whether they are making active use of it or not. Containers can have RAM limitations imposed upon them, too, but they don't require you do allocate RAM from the host OS in advance; container systems will dynamically allocated resources as-and-when container processes need them.
+
+****
+A common analogy to explain the conceptual differences between containerization and virtualization is that a virtual machine is a bit like a house whereas a container is an apartment in a larger building of apartments. A house has its own infrastructure: plumbing, heating, electrical, and so on. An apartment shares infrastructure with other apartments in the same building.
+****
+
+Another important difference is that containers are *[stateless]* and VMs are *[stateful]*. When a container is shut down, the internal state of the containerized application is lost. VMs use virtual disk images to store data, which may include user-generated data as well as the operating system and application. This data is persisted between reboots of the VM.
+
+To create stateful containerized applications, the container must be linked to persistent external storage systems (eg. using volumes). Containers themselves are designed to be ephemeral – created, started, stopped, and destroyed, and quickly recreated again if needed. By contrast, VMs are more like fully-fledged application runtime environments. VMs tend to have much longer life spans and their use cases tend to favour stateful applications. See *link:./virtual-machines.adoc[virtual machines]* for more notes on the common use cases for VMs.
+
+Containers are suited to applications where OS-level configuration is minimal and the focus is on setting up the application.
+
+The trade-off is that you have much less scope and flexibility over what you can containerize. Most container systems are based on Linux kernel technology, and running applications in Linux environments is still the dominant use case for containers. Because containers running on the same machine share a kernel with the host operating system, it is not possible to run a Windows containers alongside a BSD container, as you can with virtual machines.
+
+Also, you can't fake an entire Linux operating system, and you can't run different distros that use different versions of the Linux kernel. With containers, you're using the same underlying kernel for every container, and all you're really doing in the container itself is mounting a particular file system.
+
+Another trade-off is that adopting containers requires a steeper learning curve than VMs. With a VM, you just shell into the virtual machine, configure it with software as you normally would any server, and when it's ready you take a snapshot – that's your image. You can use that image to recreate and reproduce the system exactly as it was at the time of the snapshot. Containers require additional knowledge (of the containerization system itself) and more manual configuration. For example, the configuration of Docker containers are defined using a Dockerfile, a *[domain-specific language]* that has a specialized syntax for declaring instructions for the Docker engine to build container images.
+
+Containers and VMs both provide solutions for replicating environments and for running multiple applications on the same physical hardware with a high degree of isolation. The choice between the two largely depends on the specifics of the use case. Containers are ideal for stateless applications and microservices that are designed to be deployed rapidly and scaled horizontally. Configuration is focused on the application code and its dependencies, rather than on the operating system and the application's wider runtime environment. Containers are designed to be lightweight and ephemeral, and their fast life cycle (from startup to destruction) makes them well-suited to *[CI/CD]* pipelines.
+
+See also *link:./container-orchestration.adoc[container orchestration]*.

@@ -1,3 +1,13 @@
 = Virtualization
 
-// TODO
+In computing, virtualization – sometimes abbreviated *v12n* – refers to a collection of software technologies that allows multiple applications to run on a single physical machine with such a high degree of isolation from one another that they might as well be running on separate physical machines.
+
+The earliest forms of virtualization existed in research computing systems in the late 1960s. Virtualization first appeared commercially in the IBM System/370 in 1972. Virtualization lost some attention by the late 1970s as *[microcomputers]* became commoditized and innovation moved away from *[mainframes]* and toward *[distributed computing]*. Interest in virtualization returned with the rise of *[cloud computing]* data centres, solving requirements for more efficient use of hardware resources, and for fast and highly scalable deployments of applications.
+
+Virtualization depends on a technology called a *link:./hypervisor.adoc[hypervisor]*. A hypervisor manages the access of multiple operating systems to the same physical hardware. Each operating system runs in its own *link:./virtual-machine.adoc[virtual machine]*, supplied by the hypervisor, and is unaware of neighboring operating systems running on the same hardware.
+
+Virtualization may be implemented using applications like https://www.vmware.com/[VMWare] and https://www.virtualbox.org/[VirtualBox], which run in a standard OS like any other regular application. Alternatively, virtualization may be implemented at the hardware level, using features built-in to modern CPUs. Hypervisors that utilize native virtualization include https://www.proxmox.com/[Proxmox] and https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/hyper-v-overview[Hyper-V].
+
+Application code running in a virtual machine provided by a native hypervisor runs at the native speed of the real CPU – so, fast. Code running in a native hypervisor will typically run within 2% of the speed it would without the virtualization layer.
+
+Containers offer even more impressive performance. *link:./containerization.adoc[Containerization]* is a lightweight form of virtualization that relies on features of the host operating system to create an equivalent degree of isolation between running processes. Containerization can be thought of as a third type of virtualization, one that is implemented at the operating system level and in which the kernel of the host OS is shared by the guest OSes. However, because the two technologies are quite distinct, containerization and virtualization are more commonly discussed as separate concepts. See *link:./containerization.adoc[containerization]* for more discussion on the differences between the two.
