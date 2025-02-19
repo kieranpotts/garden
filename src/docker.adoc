@@ -7,11 +7,21 @@ There are two parts to Docker:
 * The Docker client application (Docker.exe on Windows).
 * The Docker daemon (dockerd.exe on Windows).
 
-The Docker client has a command-line interface (CLI) that allows users to interact with the Docker daemon. A GUI client is also available. The Docker daemon serves a REST API for communication with these and other clients.
+The Docker client has a command-line interface (CLI) that allows users to interact with the Docker daemon. A GUI client is also available, called *Docker Desktop*. The Docker daemon serves a REST API for communication with these and other clients.
 
 The Docker daemon runs the *container engine*, which creates, runs, and manages containers.
 
-https://hub.docker.com/[Docker Hub] is a registry of Docker container images. It gives access to thousands of container images that you can download and run on demand. Other registries are available such as https://www.linuxserver.io/[linuxserver.io] (formerly lscr.io).
+Docker was originally written and built for Linux, but it has since been ported to Windows and macOS. Since Linux container images require a Linux kernel to run, Docker Desktop integrates a hypervisor layer (eg. Hyper-V) with a lightweight Linux distro on top of it.
+
+The license agreement for *Docker Desktop* requires a subscription for commercial use. Alternative Docker-compatible container management systems include Podman Desktop, Rancher Desktop by SUSE, and OrbStack (Mac only). There's also a command line tool called Colima.
+
+== Container registries
+
+https://hub.docker.com/[Docker Hub] is a registry of Docker container images. It gives access to thousands of container images that you can download and run on demand, including "official images" that are maintained by the authors of applications like Redis, Mongo, Postgres, etc., and which are usually synchronized with the latest stable releases of those applications.
+
+Other registries are available such as https://www.linuxserver.io/[linuxserver.io] (formerly lscr.io).
+
+You can also create your own private registry, and all of the big cloud providers offer private registries (Amazon ECR, Google Container Registry, etc.). Docker Hub also offer private registries for organizations.
 
 == Union filesystem
 
