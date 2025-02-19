@@ -2,6 +2,8 @@
 
 Event sourcing is an *[architectural pattern*] in which every change in application state is captured as an *immutable event*. The state of an entity is determined by a sequence of events that are applied to it.
 
+// Event Sourcing is a technique where changes in application state are stored as a sequence of events. Instead of just storing the final state of an entity, the system keeps an immutable record of events that have changed the state of that entity. This not only facilitates auditing and historical tracking of changes but also allows for reconstructing the past state of an entity at any point.
+
 This contrasts with the traditional approach of storing the current state of an entity in a database table, and updating that state with each change. Each change in state simply overwrites the previous state, and the history of changes is not captured.
 
 Event sourcing allows to query the event log, to *replay* past events, and to *reconstruct* past application states. We can even *time travel* back and forth through a system's history to understand how and when things changed.
@@ -67,3 +69,8 @@ Historical data can also reveal business insights, such as peak order times and 
 Combined with AI and machine learning, event sourcing can also be used to predict future trends based on past events. A system can use the record of "what happened" to predict what might happen next. This sort of combination of technologies could provide benefits in all sorts of areas. It could potentially help to improve fraud detection algorithms, to predict future behavior of customers (eg. predict which customers are most likely to close their accounts), and to optimize stock inventory levels, and so on.
 
 Event sourcing comes with some costs and challenges. Storage and computation costs tend to be higher than conventional CRUD-based systems. There is added complexity in system design, and higher maintenance costs, for example in terms of managing event schemas and versioning. And event sourcing tends to lead to *eventual consistency* across replicated data, so additional mechanisms may be required where data consistency is required.
+
+== See also
+
+* *link:./domain-driven-design.adoc[Domain-driven design]*
+* *link:./command-query-responsibility-segregation.adoc[Command Query Responsibility Segregation (CQRS)]*
