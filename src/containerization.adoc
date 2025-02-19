@@ -14,7 +14,11 @@ Virtual machines depend on a *link:./hypervisor.adoc[hypervisor]*, which is eith
 
 A container engine works differently to a hypervisor. The main difference is that all the containers managed by a container engine will run on a shared OS kernel. Processes running in each container are highly isolated from each other, as they would be if they were running in separate *link:./virtual-machines.adoc[virtual machines]*. But, in container systems, a different set of technologies are used to implement this isolation.
 
-Isolation is achieved in containers using features of the host OS's kernel. What makes container technology possible is mostly attributed to control groups (cgroups) and namespaces. These are features of the Linux kernel. Windows also provides similar functionality via its jobs object.
+Isolation is achieved in containers using features of the host OS's kernel. An OS kernel is the part of an OS that is responsible for interacting with the hardware – CPU, memory, storage, etc.
+
+image::./_/operating-system-layers.drawio.svg[]
+
+What makes container technology possible is mostly attributed to control groups (cgroups) and namespaces. These are features of the Linux kernel. Windows also provides similar functionality via its jobs object.
 
 Control groups allow you to allocate resources, like CPU time, system memory, and network bandwidth, among user-defined groups of tasks running on the system. Cgroups are how you set resource limits and controls on running processes, similar to how an organization sets budgets and operating constraints on departments.
 
@@ -28,9 +32,15 @@ This design makes containers highly efficient. Containerization achieves a simil
 
 Because they're not booting a whole new operating system from scratch, containers start very quickly. Really, when you start a container, all you're doing is starting a new isolated filesystem and running a particular process in the context of that filesystem.
 
-The low memory footprint and fast startup and shutdown times make containers ideal for recurring lightweight tasks, such as those run in *[CI/CD]* systems, and for rapid *[horizontal scalability]* of *[microservices]*. Container systems have become the _de facto_ standard for isolation in cloud environments, where the technology helps to optimize usage of the underlying hardware resources, and to achieve a higher density of applications per unit of infrastructure.
+The small image size, low memory footprint, and fast startup and shutdown times make containers ideal for recurring lightweight tasks, such as those run in *[CI/CD]* systems, and for rapid *[horizontal scalability]* of *[microservices]*. Container systems have become the _de facto_ standard for isolation in cloud environments, where the technology helps to optimize usage of the underlying hardware resources, and to achieve a higher density of applications per unit of infrastructure.
 
-By comparison, when you run an application in a VM, the VM will include the application and all its dependencies (binaries and libraries), plus an entire operating system running on a virtualized kernel provided by the hypervisor. This design provides highly isolated and highly secure application runtime environments, but it is also resource heavy, and startup and shutdown times are much slower. VMs can also be more wasteful of resources. Typically, you must allocate a certain amount of RAM to each VM, whether they are making active use of it or not. Containers can have RAM limitations imposed upon them, too, but they don't require you do allocate RAM from the host OS in advance; container systems will dynamically allocated resources as-and-when container processes need them.
+By comparison, when you run an application in a VM, the VM will include the application and all its dependencies (binaries and libraries), plus an entire operating system running on a virtualized kernel provided by the hypervisor. While a container engine virtualizes only the applications layer of the OS, a VM virtualizes the complete operating system – both the applications layer and the kernel of the OS.
+
+image::./_/vm-versus-container-virtualization.drawio.svg[]
+
+This design provides highly isolated and highly secure application runtime environments, but it is also resource heavy, and startup and shutdown times are much slower. VMs can also be more wasteful of resources. Typically, you must allocate a certain amount of RAM to each VM, whether they are making active use of it or not. Containers can have RAM limitations imposed upon them, too, but they don't require you do allocate RAM from the host OS in advance; container systems will dynamically allocated resources as-and-when container processes need them.
+
+Historically, a trade-off of container systems was that you could only run containers that were compatible with the host OS kernel. For example, Docker was originally written and built for Linux, and you could use it only to run Linux containers on Linux hosts. But Docker has since been ported to Windows and macOS. This was achieved by integrating a hypervisor layer (eg. Hyper-V) with a lightweight Linux distro on top of it, which provides the shared kernel that Linux containers run on.
 
 ****
 A common analogy to explain the conceptual differences between containerization and virtualization is that a virtual machine is a bit like a house whereas a container is an apartment in a larger building of apartments. A house has its own infrastructure: plumbing, heating, electrical, and so on. An apartment shares infrastructure with other apartments in the same building.
