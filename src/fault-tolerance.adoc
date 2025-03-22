@@ -1,9 +1,8 @@
 = Fault tolerance (aka. resilience)
 
-// TODO: Closely related to *[availability]*
-// (when one service fails, the rest of the system can continue to function)
-
 Designing for failure is a key *[design principle]* in IT system design, and especially in *link:./distributed-system.adoc[distributed systems]* because distributed systems are inherently unreliable. They are subject to a wide range of failures, including network partitions, delayed messages, and node crashes.
+
+Fault tolerance is closely related to *link:./availability.adoc[availability]*. The goal of fault tolerance is to ensure that a system can continue to operate in the presence of failures. The goal of availability is to ensure that a system is always available to users. Fault tolerance helps to achieve availability.
 
 In the context of distributed systems, the principle of *[designing for failure]* means designing each service in a way that it can tolerate failures in dependent services.
 
@@ -31,3 +30,4 @@ Architectural patterns and visibility strategies to mitigate failures include, b
 
 Assuming failure also puts emphasis on designing for changeability. A key aspect of designing for resilience is being able to quickly change software, so we can fix issues when they _do_ occur.
 
+Testing strategies like *chaos engineering* can also support the building of highly resilient systems.
