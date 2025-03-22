@@ -1,39 +1,23 @@
 = Vertical-slice architecture
 
-Vertical-slice architecture is a software design pattern where the application is divided into thin slices that encompass all *link:./layered-architecture.adoc[layers]* of the system, from the user interface to the data storage.
-
-Each slice represents a complete function or feature of the application.
-
-The distinguishing features of vertical-slice architecture:
-
-* Emphasizes delivery end-to-end functionality for specific features or use cases.
-
-* Decomposes code around features or user stories, rather than technical layers.
-
-* Each slice contains all the layers – UI, business logic, data access – needed to implement a feature.
-
 // TODO: Add diagrams
 
-A *link:./service-oriented-architecture.adoc[service-oriented architecture]* or *link:./microservices.adoc[microservices architecture]* may also use vertical feature slices to define the scope and boundaries of each service. However, vertical slice architecture may be used in monolithic applications as well. Code for each feature would reside in its namespace or directory, or some other module or component system for organizing related code.
+Vertical-slice architecture is a software *[design pattern]* in which an application is divided into thin slices that encompass all *link:./layered-architecture.adoc[layers]* of the system, from the user interface, via the business logic, to data access. Each slice represents a complete business function or use case of the application.
 
-Benefits of vertical slice architecture include:
+Vertical-slice architecture emphasizes the delivery of the end-to-end functionality required to implement a discrete feature or user story. This is achieved by *[decomposing]* code around business domains and subdomains, rather than by technical layers. This is in contrast with a traditional horizontally *link:./layered-architecture.adoc[layered architecture]*, in which the decomposition of code is based on logical layers such as presentation, business logic, and data access.
 
-* Independent development, testing, and deployment of individual features.
-* Rapid feature delivery, and therefore faster user feedback.
-* Better alignment between delivery and business requirements.
-* Reduced need for abstractions (eg. services, repositories) within each slice.
-* Promotes cross-functional collaboration on individual features.
+A *link:./service-oriented-architecture.adoc[service-oriented architecture]* or *link:./microservices.adoc[microservices architecture]* may also exhibit vertical slice characteristics, if each service is designed to be a complete, self-contained feature. But we tend to talk about vertical and horizontal slices (or layers) in the context of a single-node application (which may or may not be a component of a wider distributed system). Therefore, this architectural style is one possible approach to *[monolithic architecture]*.
 
-Disadvantages may include:
+Compared to a horizontally layered architecture, vertical slicing tends to reduce the need for abstractions such as services and repositories within each slide. The focus is on producing the least amount of code necessary to deliver a feature, rather than on creating reusable components that will be shared across multiple features. This can lead to a more direct mapping between business requirements and the code, and so make it easier to define, estimate, and plan the delivery of individual units of business functionality. The potential for faster delivery of features can also lead to faster feedback from users, and so to a greater degree of agility in the context of emerging/changing requirements.
 
-* Fragmentation of codebase by features increases duplication of logic and inconsistency in implementation patterns between features.
-* Increased complexity in managing dependencies between features.
-* Architecture emphasizes feature delivery over cross-cutting concerns like performance, scalability, and maintainability.
+On the other hand, the fragmentation of a codebase by features will tend to increase the duplication of logic and result in wider variability in design patterns and coding conventions. Consequently, vertical-slice applications may be more complex to manage in terms of dependencies between features, and may be more difficult to refactor or maintain over time.
 
+In addition, this architectural style tends to emphasize feature delivery over cross-cutting concerns such as performance, scalability, and maintainability.
+
+However, application may have characteristics of both vertical and horizontal slicing, to achieve a balance between the benefits of rapid feature delivery and the need for consistency, maintainability, and scalability.
 
 ''''
 
-.References
-****
+== References
+
 * https://jimmybogard.com/vertical-slice-architecture/[Vertical slice architecture], Jimmy Bogard (2018)
-****
