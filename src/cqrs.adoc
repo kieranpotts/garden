@@ -1,0 +1,9 @@
+= Command Query Responsibility Segregation (CQRS)
+
+Command Query Responsibility Segregation (CQRS) is a *[design principle]* and *[pattern]* that proposes the separation of command handling (write) logic from query (read) logic. This allows for the independent optimization of both aspects, enhancing performance and scalability.
+
+CQRS works well with *link:./event-sourcing.adoc[event sourcing]*, as queries can be constructed from events, allowing for:
+
+* *Horizontal scalability*: Read and write operations can be scaled independently.
+
+* *Eventual consistency*: Although read views may not immediately reflect changes in state (as is typical in distributed systems), they will eventually synchronize.
