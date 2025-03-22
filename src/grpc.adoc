@@ -1,10 +1,9 @@
 = gRPC
 
-gRPC – Google Remote Procedure Call – is an open source RPC framework that helps services to communicate with each other efficiently. The technology is commonly used for synchronous inter-service communication in service-oriented architectures, as an alternative to conventional HTTP-based APIs where performance is critical.
+gRPC – Google Remote Procedure Call – is an open source *[RPC]* framework that helps services to communicate with each other efficiently. The technology is commonly used for *[synchronous]* *[inter-service communication]* in *[service-oriented architectures]*, as an alternative to conventional HTTP-based APIs where performance is more critical.
 
-Instead of JSON over HTTP, gRPC uses *[Protocol Buffers]* to encode data, and sends it over HTTP/2 streams. Protobufs are compressed, binary-encoded, type-safe messages. The HTTP/2 streams can support bidirectional streaming and handle multiple request-response cycles in parallel through a single TCP connection. The combination of both technologies greatly increases throughput and reduces latency.
+Instead of JSON over HTTP, gRPC uses *[Protocol Buffers]* to encode data, and sends it over HTTP/2 streams. Protobufs are compressed, binary-encoded, type-safe messages. The binary data can be sent over the wire at high speeds, and rapidly serialized and deserialized at each end. The HTTP/2 streams can support bidirectional streaming and handle multiple request-response cycles in parallel through a single TCP connection. The combination of both technologies greatly increases throughput and reduces latency.
 
 API methods are defined in a `*.proto` file, from which client and server code is automatically generated.
 
-With lots of SDKs available, gRPC is a great choice for building microservices and other distributed systems where different services are written in different programming languages.
-
+gRPC is the main *[inter-process communication]* mechanism used by Google in the distributed systems that back its public web services. With lots of SDKs available, gRPC is a great choice for building *[microservices]* and other *[distributed systems]* where different services are written in different programming languages, and where speed and efficiency are critical requirements.
