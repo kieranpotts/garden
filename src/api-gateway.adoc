@@ -1,6 +1,17 @@
 = API gateway
 
-In a *link:./service-oriented-architecture.adoc[service-oriented architecture]* and other back-end distributed systems, an API gateway is a server that acts as single-entry point for API clients. The API gateway receives all incoming client requests, handles *[cross-cutting concerns]* such as authentication and authorization, and routes the request to the appropriate back-end service to process.
+In a *link:./service-oriented-architecture.adoc[service-oriented architecture]* and other back-end *[distributed systems]*, an API gateway is a server that acts as single-entry point for API clients. The API gateway receives all incoming client requests, and routes the requests to the appropriate back-end services to process.
+
+API gateways also provide a convenient centralized point for implementing *[cross-cutting concerns]* such as:
+
+* Authentication and authorization.
+* Input validation.
+* Logging and monitoring.
+* Rate limiting.
+* Firewalling (eg. allow-listing/deny-listing).
+* Service discovery and dynamic routing.
+* Protocol conversion (eg. transforming input for backing services).
+* Circuit breaking (on backing services).
+* Error handling.
 
 Since an API gateway is a potential *[single point of failure]*, it is often deployed in a *link:./load-balancing.adoc[load-balanced]* configuration, with traffic evenly distributed between multiple instances of the API gateway, ensuring high *link:./availability.adoc[availability]* and *link:./fault-tolerance.adoc[resilience]*. Additional load balancers may also sit behind the API gateway to further distribute traffic between multiple instances of the back-end services.
-
