@@ -1,0 +1,31 @@
+= Remote procedure call (RPC)
+
+Remote Procedure Call (RPC) is a category of protocols for *[inter-process communication]*.
+
+It is not a single specific protocol, but rather a category of protocols and techniques. The common feature of RPC protocols is that they allow programs to execute procedures (or subroutines) in another address space (typically another computer on a shared network) as if it were a local procedure call, without the programmer explicitly coding te details for the remote connection.
+
+There are multiple implementations and protocols that fall under the RPC umbrella. Some notable examples include:
+
+* *gRPC*: A modern, high-performance RPC framework developed by Google, based on HTTP/2 and Protocol Buffers.
+
+* *XML-RPC*: An older RPC protocol that uses XML for encoding messages and HTTP as a transport protocol.
+
+* *JSON-RPC*: A lightweight RPC protocol similar to XML-RPC, but it uses JSON for message encoding.
+
+* *CORBA (Common Object Request Broker Architecture)*: An RPC mechanism that enables communication between objects in different programming languages.
+
+* *DCE/RPC*: The Distributed Computing Environment's RPC protocol, which forms the basis for Microsoft's Remote Procedure Call.
+
+Each of these implementations comes with specific features and trade-offs, but they all adhere to the overarching concept of RPC.
+
+RPC makes distributed systems feel more like monolithic systems from the perspective of application programmers, by allowing programmers to call methods on other services in the system as though they were methods on a local object.
+
+This can make it easier to build distributed systems, as it abstracts away the complexities of network communication. But it can also introduce challenges, such as:
+
+* Tight coupling between services, making it harder to evolve the system over time.
+
+* Performance issues. RPC calls are usually synchronous, and are therefore blocking. And they will typically be slower than equivalent in-process calls, due to the overhead of marshalling and unmarshalling data.
+
+* Increased difficulties in handling failures, for example when the network is slow or unreliable.
+
+* Difficulty in managing exceptions that are thrown on the remote server.
