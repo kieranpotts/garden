@@ -1,4 +1,4 @@
-= Service discovery
+= Service discovery (aka. dynamic routing)
 
 Service discovery is a mechanism that allows services in a *[distributed system]* to find and communicate with each other dynamically.
 
@@ -6,3 +6,6 @@ It hides the complex details of where services are located, so they can interact
 
 A *service registry* is used to maintain a record of all services available in a network. A service registry will typically act as the *[source of truth]* for service locations. When a service is added or removed, the registry is updated accordingly.
 
+Service discovery can be particular beneficial in large-scale *[microservice]* systems, in which services are added and removed from the system frequently. All that a team needs to do to make its service discoverable by other services is to register it in the service registry. This pattern supports the independent development and deployment of services, which is a key design principle of the microservice architecture.
+
+There are numerous ways to implement service discovery, including DNS-based solutions and URL-based routing.
