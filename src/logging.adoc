@@ -1,2 +1,72 @@
 = Logging
 
+Logs are chronologically-ordered records of events that occur within a software application, system, or network. An event can be anything that is deemed important to record. Examples of common events are:
+
+* Receiving an incoming HTTP request.
+* Returning an HTTP response.
+* Making an HTTP request to an external API.
+* Other network traffic.
+* Database transactions like creating, updating, or deleting records.
+* Writing data to a file.
+* Initiating or terminating a background process.
+* Completing a batch processing job.
+* Triggering scheduled tasks or cron jobs.
+* Registering or authenticating a user.
+* Changes in user permissions or roles.
+* User interactions with the system.
+* Other changes in state.
+* Application and system errors.
+* Security breaches.
+* Performance metrics.
+* Software updates.
+* Service statuses.
+
+Each event carries additional contextual information, such as the execution time for database queries, and client device identifiers for user authentication requests. You can capture as much contextual information as you want. Sometimes there are trade-offs to be made with performance (capturing data consumes additional resources) and security (capturing sensitive data increases the surface area through which that data may leak).
+
+Historically, log data has tended to be unstructured, which means entries do not follow a specific format or schema.
+
+----
+2021-01-01 12:00:00 [INFO] User 'john.doe' logged in from IP address
+----
+
+Logging has become more sophisticated and today structured data formats like JSON are preferred:
+
+----
+{
+  "timestamp": "2021-01-01 12:00:00",
+  "level": "INFO",
+  "message": "User 'john.doe' logged in from IP address"
+}
+----
+
+Applications generate a variety of logs, each serving a distinct purpose. Examples include, but are not limited to:
+
+* *Audit logs*: The purpose of audit logs is to provide a transparent trail of important events such as user actions, system changes, and data access, for compliance needs.
+
+* *Security logs*: Similar to audit logs, but these are more focused on recording events that may help to detect, understand and respond to security incidents. This type of log will record events such as login attempts and access control changes.
+
+* *Application logs*: These are records of significant events at the application level. Examples include state changes, transactions, and the outcomes of logical operations. Their purpose is to understand an application's behavior in the context of business operations.
+
+* *Error logs*: These are records of unexpected events within an application's runtime. The purpose of capturing these events is to improve the reliability and correctness of the application. Error logs are used to troubleshoot incidents and they may spawn bug tickets. Contextual information captured in error logs typically includes stack traces and error types/codes.
+
+* *Debug logs*: These compliment error logs, providing much more extensive detail to troubleshoot issues that have been isolated to specific parts of an application. Due to their voluminous nature, debug logs are typically generated in specific scenarios and for limited time, and maybe only in specific environments (usually non-production ones). Contextual information in debug logs can include variable values, function calls, and other internal state information.
+
+Logs should not all be treated the same way. For example, audit and security logs may be subject to regulatory requirements dictating how long they must be retained. In contrast, debug logs are purged more frequently to conserve storage resources.
+
+== Log levels
+
+RFC 5424 defines eight levels of log messages. However, in reality we use three of them for most things:
+
+[source,php]
+----
+Log::critical('Indicates that a service is down and will affect customer experience');
+Log::error('Means the application has uncovered an unexpected error');
+Log::info('Information for developers, perhaps explaining why a particular scenario occurred');
+----
+
+== Logging systems
+
+TODO
+
+// TODO: ELK Stack: Elasticsearch (stores logs), Logstash (processes logs), Kibana
+// (visual interface for analysis)
