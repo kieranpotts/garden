@@ -1,0 +1,37 @@
+= Load balancer
+
+A load balancer is a network device or software application that distributes network traffic across multiple servers, or other resources — known as *[load balancing]*, which is a *[horizontal scaling]* technique.
+
+Load balancers are widely used in *link:./distributed-system.adoc[distributed systems]* to increase *[capacity]* and *[reliability]*. Load balancers work particularly well in front of services that are inherently *[stateless]*. This is because the load balancer can distribute requests to any instance of the service, without needing to consider the state of the service. If a database also needs to be replicated to handle the load, there are additional challenges to ensure *[consistency]*.
+
+One of the trade-offs of using a load balancer is that it introduces a *[single point of failure]*. If the load balancer fails, then the entire system becomes unavailable. To mitigate this risk, load balancers are often deployed in clusters, with one or more standby load balancers ready to take over if the primary load balancer fails.
+
+Load balancers open up other opportunities. For example, we can destroy instances and create brand new ones, and remove/add instances to the load balancer, one instance at a time, when deploying changes. Thus, services become disposable, so we can more easily deploy service updates (and also recover from failures). This is how you can do thousands of releases, to hundreds of microservices, without a moment of downtime.
+
+In a distributed system, load balancers may exist at various layers, such as:
+
+* In front of web servers.
+* In front of application servers (eg. services in a service-oriented system).
+* In front of database servers.
+
+Load balancing can also operate a different layers of the network stack. The most common are:
+
+* *Layer 4*: Operates at the *[transport layer]* (TCP/UDP), forwarding traffic based on network information such as IP address and port number.
+
+* *Layer 7*: Operates at the *[application layer]*, making routing decisions based on application-level data, such as HTTP headers, cookies, or message content.
+
+== Load balancing algorithms
+
+There are several algorithms that load balancers use to determine how to distribute incoming requests. The optimum choice of algorithm depends on various factors, such as the nature of the requests, the type of workload, and the desired performance characteristics.
+
+The most common algorithms are:
+
+* *Round robin*: Cycles through a list of servers sequentially, so rotating requests evenly across all servers.
+
+* *Weighted round robin*: Round robin with the ability to assign a weight to each server, so some servers receive more requests than others, based on their capacity.
+
+* *Least connections*: Sends new requests to the server with the fewest active connections.
+
+* *Least response time*: Routes requests to the server with the fastest response.
+
+* *IP hash*: Hashes the IP address of the client to determine which server receives the request. This strategy ensures the same client is always directed to the same server for each request, which is useful for session persistence, persistent connections, and stateful operations.
