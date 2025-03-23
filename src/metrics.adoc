@@ -1,2 +1,29 @@
 = Metrics
 
+Metrics focus on aggregating numerical data over time, intentionally omitting detailed contextual information.
+
+Examples of metrics include:
+
+* The number of HTTP requests processed.
+* The total time spent processing requests.
+* The number of requests being handled concurrently.
+* The number of errors encountered.
+* CPU, memory, and disk usage.
+
+Metrics tend to be captured in *[time-series databases]*, with data typically aggregated into time intervals, such as 1-minute, 5-minute, or 1-hour intervals, to reduce the volume of data stored and to make querying more efficient.
+
+Low-cardinality data, such as boolean values and response times, is the most suitable for metrics.
+
+Metrics are particularly useful for pinpointing performance bottlenecks within an application's subsystems, for example by tracking latency (response times), throughput, and resource utilization. *[Logs]* can often be used for the same purpose, but given their detailed and context-rich nature, they are less efficient for this use case. Nevertheless, once a potential issue is identified through metrics, logs can then provide the detailed context needed to drill down into specific problematic requests or events.
+
+Metrics also offer a more efficient means of generating alerts compared to logs, because querying a time-series database is typically much faster than querying log data. Metrics can also be useful during incidents, helping to quickly identify the scope and impact of an issue. On the other hand, due to metrics being aggregated and reported in intervals, there is a lag in time between incidents occurring and them being detected in metrics. Logs, which provide real-time data, are often better suited for early warning alerting.
+
+Thus, logs and metrics (and *[traces]* too) are complementary. Metrics offer a high-level overview with limited context, ideal for monitoring and performance analysis across broad system components, while logs provide deep, contextual details for observability of specific events.
+
+Finally, there are other use cases for metrics in business intelligence and decision-making. Numbers related to user engagement, feature usage, and transaction volumes offer valuable insights into customer behavior and preferences, and this information can help to shape product roadmaps.
+
+A significant challenge of metrics is the selection and definition of meaningful metrics. Identifying which metrics are truly indicative of system health and performance can be difficult, and there's often a risk of focusing on easy-to-measure metrics that do not accurately reflect the system's state.
+
+OpenTelemetry publish some best practices ("semantic conventions") about what metrics you should care about in event-driven or message-driven system. Examples include queue depth (to identify bottlenecks in queues), published/consumed counts and sizes (to understand the volume of messages being processed), message age (to identify bottlenecks if the age of messages increases), event type counts (a useful business metric, eg. how many `orderPlaced` instances), processing error counts, and in-flight latency (to identify if the message channel is fast enough).
+
+OpenTelemetry also recommend setting up alerts for these metrics, to be notified when they fall outside of expected ranges. For example, if a message-driven system typically processes ten messages of a specific type per minute, but this falls to zero for an extended period of time, you might not get errors from any other part of the system, but nevertheless you will want to be alerted to this sudden drop-off. Therefore it is important to set up alerts for when things fall outside of _success metrics_, as well as set up alerts for conventional errors and warnings.
