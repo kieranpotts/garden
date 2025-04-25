@@ -22,6 +22,11 @@ Caching can be implemented at multiple levels of a system, and using different t
 
 == Caching strategies (aka. cache invalidation strategies)
 
+[quote, Phil Karlton]
+____
+There are only two hard things in Computer Science: cache invalidation and naming things.
+____
+
 Caching comes with its own sets of challenges. The main difficulty is maintaining data *link:./consistency.adoc[consistency]*. When data changes in the source-of-truth, the cached copies become stale. There are various strategies that can be implemented to maintain consistency between sources and caches. Caching strategies include:
 
 * *Read-through*: Automatically fetches and caches missing data from the source-of-truth when it is requested and the cache is empty or stale. +
