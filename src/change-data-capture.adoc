@@ -1,3 +1,47 @@
 = Change data capture (CDC)
 
-// TODO
+*Change data capture (CDC)* is a technical pattern for detecting and capturing changes and sending them to other systems.
+
+The main characteristics of CDC are:
+
+* They are based on database changes (not business logic).
+
+* They are implemented using transaction logs (eg. Debezium with MySQL/PostgreSQL).
+
+* They typically emit INSERT, UPDATE, or DELETE events.
+
+* Their purpose is to replicate data, to keep subsystems synchronized.
+
+For example, imagine you have a service that stores user data in a database. An SQL instruction issued to this database might look like this:
+
+----
+UPDATE users
+   SET email = 'silvia.456@example.com'
+ WHERE id = 123456789;
+----
+
+Once that SQL instruction is executed, the CDC is shipped:
+
+----
+{
+  "op": "update",
+  "before": {
+    "id": 123456789,
+    "name": "Silvia",
+    "email": "silvia.123@example.com"
+  },
+  "after": {
+    "id": 123456789,
+    "name": "Silvia",
+    "email": "silvia.456@example.com"
+  }
+}
+----
+
+The CDC defines the operation and the state before and after it occurred. The CDC data structure can be adapted for each use case.
+
+CDCs are particularly helpful for *data replication*, *auditing*, and *system integration*.
+
+The main downside is that the CDC pattern introduces *tight coupling* to the internal database schema; if the schema changes, consumers need to be updated. For this reason, CDC should be avoided as a public integration layer (eg. inter-service communication in microservices). Use it only for internal data synchronization or read model updates.
+
+See also *link:./domain-driven-design.adoc[Domain-driven design]*. CDC is similar in concept to *domain events*, but is more focused on _technical_ events rather than business-oriented events. Domain events are more abstract, and are therefore more appropriate for public APIs, including those between microservices within a private network.
