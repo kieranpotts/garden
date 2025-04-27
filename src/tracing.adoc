@@ -1,10 +1,44 @@
 = Tracing
 
-The third pillar of *link:./observability.adoc[observability]* is tracing.
+Tracing is the third pillar of *link:./observability.adoc[observability]*.
 
 A *trace* is like a breadcrumb that follows a single request, and its returning response, as it travels through a system.
 
-In *link:./distributed-system.adoc[distributed systems]*, a trace connects the dots between services, tracking the full path of a request as it hops between services to complete an operation. To achieve this, unique request identifiers must be generated for each request to the system, and these identifiers must be propagated through the system as the request passes between service boundaries. The request IDs are captured in the trace logs and used to aggregate trace data from disparate services.
+In *link:./distributed-system.adoc[distributed systems]*, a trace connects the dots between services, tracking the full path of a request as it hops between services to complete an operation. To achieve this, unique request identifiers must be generated for each request to the system, and these identifiers must be propagated through the system as the request passes across service boundaries. The request IDs are captured in the trace logs and used to aggregate trace data from disparate services.
+
+A single trace ID typically tracks the end-to-end flow of a complete *[request-response cycle]*. But it doesn't have to be this way. A trace represents a *discrete unit of work*, or a discrete business process, which may or may not correlate to a single, complete request-response cycle.
+
+A trace is composed of one or more *spans*. Each span represents the time taken to complete a single, specific operation within the trace. Each span has a unique identifier. A span may cover multiple services/components, but more commonly each span is associated with an operation within a single service.
+
+____
+┌─────────────────────────┐
+└─────────────────────────┘
+        ┌─────────────────┐
+        └─────────────────┘
+                           ┌───────────────────────────┐
+                           └───────────────────────────┘
+                                                        ┌───────┐
+                                                        └───────┘
+                                                        ┌────┐┌──┐
+                                                        └────┘└──┘
+                                                          ┌────────────┐
+                                                          └────────────┘
+                                                          ┌──┐┌──┐
+                                                          └──┘└──┘
+____
+
+Spans can also have *attributes* or *tags*, which add *context* to the span. These attributes are
+what allow you to ask questions of the system.
+
+____
+order_id = 123
+customer_id = 456
+http_method = "POST"
+route = "/orders"
+response_code = 200
+____
+
+*Span linking* is a method of linking a span in one trace to another span in another trace. This solves a problem where you want traces to represent *discrete business processes* that you want to observe, rather than the full end-to-end flow of a request. Consider for example a request at 9am in the morning, which adds something to a queue at 9.01am, but that queue is batch processed at 1am the next day. You don't want a span that lasts 16 hours in the middle of the trace, but rather you want one trace for the main request-response cycle, and another trace for the end-of-day batch processing. But to fully understand cause-and-effect, you also want to create connections between spans in each of those traces.
 
 Traces help to:
 
@@ -14,7 +48,7 @@ Traces help to:
 
 Traces may be more selective that *link:./logging.adoc[logs]*. Not every event may be scrutinized in a trace – logs can be cross-referenced for that purpose – but rather a selective approach tends to be taken to focus on key events that are critical to understanding the flow of a request.
 
-Some tracing policies also record a subset of transactions, thus sampling only a fraction of all the requests made to a system. The aim here would be to achieve a representative sample of all requests, enough to provide a good overview of system performance and behavior, but without the ability of being able to diagnose issues that occur in any single request.
+Some tracing policies also record a subset of transactions, thus *sampling* only a fraction of all the requests made to a system. The aim here would be to achieve a representative sample of all requests, enough to provide a good overview of system performance and behavior, but without the ability of being able to diagnose issues that occur in any single request.
 
 Thus, use cases for tracing systems vary. Sometimes the business requires that customer support teams be able to replay any request made by a customer, and to understand all the state changes that resulted in a particular outcome. This may be necessary for *link:./compliance.adoc[compliance]* reasons, for example. In other cases, the business may be more interested in understanding the overall performance of the system, and how different services interact with each other. In this case, a sampling approach to tracing may be more appropriate.
 
