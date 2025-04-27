@@ -1,17 +1,16 @@
 = Observability
 
-Observability is both a *link:./quality-attributes.adoc[quality attribute]* or property of complex systems, and a set of strategies and tools for understanding and managing complex IT systems.
+Observability is both a *link:./quality-attributes.adoc[quality attribute]* or property of complex systems, and also it is a set of strategies and tools for understanding and managing complex IT systems. Observability is a subset of *link:./visibility.adoc[visibility]* and complements traditional *link:./monitoring.adoc[monitoring]* strategies.
 
-Observability is a subset of *link:./visibility.adoc[visibility]* and complements traditional *link:./monitoring.adoc[monitoring]* strategies.
+As a quality attribute, the observability of a system can be improved in many ways. If you add more logs and metrics, you will improve observability. And if you train your team in using monitoring tools, you will improve observability that way, too.
 
-Observability is about using *link:./telemetry.adoc[telemetry data]* to understand how the internal state of a system changes, and to diagnose unexpected behaviors of all kinds. The goal is to gain insights into how and why a system behaves in certain ways, enabling deeper analysis and supporting troubleshooting activities.
+More commonly, we talk about observability as a set of tools and strategies that provide data and capabilities for us to be able to _ask questions_ about our systems — questions that, perhaps, we didn't know we needed to ask from _outside_ the system. With observability tools, you can _discover_ the questions you want to ask about your system by _exploring_ your system's telemetry data.
 
-Observability strategies originated in *link:./distributed-systems.adoc[distributed system]* design.
-In complex systems like distributed ones, failures often result from complex interactions rather
-than isolated events. In such systems, it is necessary to collect and analyze data from multiple
-sources to gain a complete view of system behavior, and to diagnose issues.
+In this regard, observability is the process of using *link:./telemetry.adoc[telemetry data]* to understand how the internal state of a system changes over time, and to diagnose unexpected behaviors. The goal is to gain insights into how and why a system behaves in certain ways, enabling deeper analysis and supporting troubleshooting activities.
 
-Observability encompasses three strategies, which are known as the *three pillars of observability*:
+Observability strategies originated in *link:./distributed-system.adoc[distributed system]* design. In complex systems like distributed ones, failures often result from complex interactions between components rather than from isolated events. In such systems, it is necessary to collect and analyze data from multiple sources to gain a complete view of system behavior, and to diagnose issues. 
+
+Observability has been described as the _business intelligence of developer tools_. Specifically, observability encompasses three types of tools — known as the *three pillars of observability*:
 
 * *link:./logging.adoc[Logging]*: Recording discrete events or states.
 
@@ -23,12 +22,11 @@ Observability strategies may emphasize one or more of these pillars, depending o
 
 In a well-understood system, it may be sufficient to prioritize high quality metrics over detailed (and expensive) logs and complete traces. But the more complex the system, the more difficult it is to anticipate all the information you will need, and therefore to define the required metrics up-front. Therefore, visibility of such systems is going to lean more heavily on logs and traces, and less on monitoring and metrics.
 
-In most use cases, some combination of all three strategies – metrics, logging, and tracing – will be required. Add in traditional *link:./monitoring.adoc[monitoring]* strategies such as *link:./application-performance-management.adoc[application performance management]*, and you will have comprehensive *link:./visibility.adoc[visibility]* of the internal workings of a system. For example, you should be able to detect problems through metrics, diagnose them through logs, and use traces to understand the flow of requests that led to the issue. Without a combination of all three strategies, you may miss important context or details that help you to understand the underlying causes of issues.
+In most use cases, some combination of all three strategies — metrics, logging, and tracing — will be required. Add in traditional *link:./monitoring.adoc[monitoring]* strategies such as *link:./application-performance-management.adoc[application performance management]*, and you will have comprehensive *link:./visibility.adoc[visibility]* of the internal workings of a system. For example, you should be able to detect problems through metrics, diagnose them through logs, and use traces to understand the flow of requests that led to the issue. Without a combination of all three strategies, you may miss important context or details that help you to understand the underlying causes of issues.
 
-Besides the trade-offs between the three pillars of observability, there are also trade-offs to be made in the depth and breadth of the telemetry data collected. More data will provide greater insights, but with additional cost for storage and processing. In large scale system, you may not be able to afford capturing every piece of available data, else you may end up with a https://newsletter.pragmaticengineer.com/p/datadogs-65myear-customer-mystery[US$65m Datadog bill]. It may be necessary to strike a reasonable balance between the cost of collecting and analyzing some kinds of telemetry data, and the value it provides.
+Besides the trade-offs between the three pillars of observability, there are also trade-offs to be made in the depth and breadth of the telemetry data collected. More data will provide greater insights, but with additional cost for storage and processing. In large-scale system, you may not be able to afford capturing every piece of available data, else you could end up with a https://newsletter.pragmaticengineer.com/p/datadogs-65myear-customer-mystery[US$65m bill]. It may be necessary to strike a reasonable balance between the cost of collecting and analyzing some kinds of telemetry data, and the value it provides.
 
 The best approach, usually, is to start with a basic set of metrics, logs, and traces, and then iterate as you learn more about your system and its behavior. This *[iterative]* approach to monitoring and observability will help you to refine your strategy over time, and to ensure that you are collecting the most valuable data to understand and optimize your system.
-
 
 == Observability tools
 
