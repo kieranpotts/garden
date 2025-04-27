@@ -6,6 +6,10 @@ Horizontal scaling is a *link:./scalability.adoc[scalability]* technique that in
 
 The aim is to increase *[throughput]* by distributing the load across multiple servers, rather than relying on a single server to handle all requests.
 
+Horizontal scaling is often used in cloud computing environments, where it is easy to add or remove servers as needed, often dynamically ("auto-scaling").
+
+To allow for horizontal scaling of applications themselves — so allowing traffic to be load balanced between multiple replicas of the essentially the same application — it is necessary to _externalize_ as much state as possible. In practical terms, this means moving data from the local file system to external (shared) file systems, and the same for databases. Thus the compute resources are left stateless — pure compute, with no state management.
+
 ''''
 
 .See also
