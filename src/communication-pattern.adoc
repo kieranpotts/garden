@@ -1,0 +1,39 @@
+= Communication pattern
+
+Communication patterns are a subset of *[design patterns]* that deal with the interaction – the transfer of data and commands – between software components.
+
+Communication patterns are generalized, abstract patterns, rather than specific implementation details such as choices of protocols and message encoding formats. Broadly, there are two types of communication patterns:
+
+* *link:./synchronous-communication.adoc[Synchronous communication]*: Sender and receiver interact in real-time. The sender waits for the receiver to respond before proceeding further.
+
+* *link:./asynchronous-communication.adoc[Asynchronous communication]*: Sender and receiver do not interact in real-time. The sender may or may not expect a response from the receiver, and can continue with other tasks while waiting for the response.
+
+When designing the communication patterns within a system, consider how components will need to interact with one another:
+
+* One-to-one or one-to-many? Is each client request processed by exactly one service, or multiple?
+
+* Asynchronous or synchronous? Does the client need an immediate response, or can it wait? Are there costs or risks associated with waiting (eg. blocking the thread, timeouts, etc.)? Do the messages or commands need to be sent immediately?
+
+Distributed systems will typically use a combination of communication patterns. For some services, a single IPC mechanism may be sufficient, while others may require a mix of IPC mechanisms to meet different requirements. For example, an API gateway may make synchronous request-response calls to a user authentication service, and the user authentication services may subsequently use an asynchronous pubsub mechanism to broadcast to the rest of the system data about the authentication event.
+
+.Communication patterns in distributed systems
+|===
+| - | One-to-one | One-to-many
+
+| Synchronous
+| Request-response (client waits for response, blocking in thread-based apps)
+| -
+
+| Asynchronous message-passing
+| Notification (one-way request)
+| Publish-subscribe (a notification but not to any specific service)
+
+| Asynchronous request-response
+| Request / async response (client sends a request to a service, which replies asynchronously; the client does not block while waiting, and is designed with the assumption that the response might not arrive for a while)
+| Publish / async response (client sends a notification, a response is delivery asynchronously)
+|===
+
+== See also
+
+* *[API-first design]*
+* *link:./inter-process-communication.adoc[Inter-process communication]*
