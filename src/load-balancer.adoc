@@ -2,13 +2,13 @@
 
 A load balancer is a network device or software application that distributes network traffic across multiple servers, or other resources — known as *[load balancing]*, which is a *[horizontal scaling]* technique.
 
-Load balancers are widely used in *link:./distributed-system.adoc[distributed systems]* to increase *[capacity]* and *[reliability]*. Load balancers work particularly well in front of services that are inherently *[stateless]*. This is because the load balancer can distribute requests to any instance of the service, without needing to consider the state of the service. If a database also needs to be replicated to handle the load, there are additional challenges to ensure *[consistency]*.
+Load balancers are widely used in *link:./distributed-system.adoc[distributed software]* to increase *[capacity]* and *[reliability]*. Load balancers work particularly well in front of services that are inherently *[stateless]*. This is because the load balancer can distribute requests to any instance of the service, without needing to consider the state of the service. If a database also needs to be replicated to handle the load, there are additional challenges to ensure *[consistency]*.
 
 One of the trade-offs of using a load balancer is that it introduces a *[single point of failure]*. If the load balancer fails, then the entire system becomes unavailable. To mitigate this risk, load balancers are often deployed in clusters, with one or more standby load balancers ready to take over if the primary load balancer fails.
 
 Load balancers open up other opportunities. For example, we can destroy instances and create brand new ones, and remove/add instances to the load balancer, one instance at a time, when deploying changes. Thus, services become disposable, so we can more easily deploy service updates (and also recover from failures). This is how you can do thousands of releases, to hundreds of microservices, without a moment of downtime.
 
-In a distributed system, load balancers may exist at various layers, such as:
+In distributed software, load balancers may exist at various layers, such as:
 
 * In front of web servers.
 * In front of application servers (eg. services in a service-oriented system).

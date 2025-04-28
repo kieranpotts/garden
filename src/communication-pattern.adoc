@@ -14,9 +14,9 @@ When designing the communication patterns within a system, consider how componen
 
 * Asynchronous or synchronous? Does the client need an immediate response, or can it wait? Are there costs or risks associated with waiting (eg. blocking the thread, timeouts, etc.)? Do the messages or commands need to be sent immediately?
 
-Distributed systems will typically use a combination of communication patterns. For some services, a single IPC mechanism may be sufficient, while others may require a mix of IPC mechanisms to meet different requirements. For example, an API gateway may make synchronous request-response calls to a user authentication service, and the user authentication services may subsequently use an asynchronous pubsub mechanism to broadcast to the rest of the system data about the authentication event.
+Distributed software will typically use a combination of communication patterns. For some services, a single IPC mechanism may be sufficient, while others may require a mix of IPC mechanisms to meet different requirements. For example, an API gateway may make synchronous request-response calls to a user authentication service, and the user authentication services may subsequently use an asynchronous pubsub mechanism to broadcast to the rest of the system data about the authentication event.
 
-.Communication patterns in distributed systems
+.Communication patterns in distributed software
 |===
 | - | One-to-one | One-to-many
 

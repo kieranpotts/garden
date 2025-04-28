@@ -1,14 +1,14 @@
 = Fault tolerance (aka. resilience)
 
-Designing for failure is a key *[design principle]* in IT system design, and especially in *link:./distributed-system.adoc[distributed systems]* because distributed systems are inherently unreliable. They are subject to a wide range of failures, including network partitions, delayed messages, and node crashes.
+Designing for failure is a key *[design principle]* in IT system design, and especially in *link:./distributed-system.adoc[distributed software]* because distributed programs are inherently unreliable. They are subject to a wide range of failures, including network partitions, delayed messages, and node crashes.
 
 Fault tolerance is closely related to *link:./availability.adoc[availability]*. The goal of fault tolerance is to ensure that a system can continue to operate in the presence of failures. The goal of availability is to ensure that a system is always available to users. Fault tolerance helps to achieve availability.
 
-In the context of distributed systems, the principle of *[designing for failure]* means designing each service in a way that it can tolerate failures in dependent services.
+In the context of distributed software, the principle of *[designing for failure]* means designing each service in a way that it can tolerate failures in dependent services.
 
-Bad stuff happens. And bad things can happen from seemingly innocuous events. The trick to creating reliable distributed systems is to _assume_ they will fail and to design for that. The aim is for a failure in one part of a system to have minimal impact on the rest of the system, so avoiding full outages. The job is not to stop anything from failing; the job is to stop failures from causing massive problems. A common analogy is the electrical grid, where a failure in one part of the system does not cause the whole grid to fail.
+Bad stuff happens. And bad things can happen from seemingly innocuous events. The trick to creating reliable distributed programs is to _assume_ they will fail and to design for that. The aim is for a failure in one part of a system to have minimal impact on the rest of the system, so avoiding full outages. The job is not to stop anything from failing; the job is to stop failures from causing massive problems. A common analogy is the electrical grid, where a failure in one part of the system does not cause the whole grid to fail.
 
-This is the opposite to the approach of trying to prevent failures and make complex systems run perfectly all the time. Such an approach produces inherently brittle systems. Rather than designing for perfection, we should design distributed systems for resilience.
+This is the opposite to the approach of trying to prevent failures and make complex systems run perfectly all the time. Such an approach produces inherently brittle systems. Rather than designing for perfection, we should design distributed software for resilience.
 
 The concept of *[graceful degradation]* provides a useful way to think about designing for failure. It refers to any design strategy that allows a system to continue operating, albeit with reduced functionality, when some components fail. The idea is for a system to degrade gracefully, rather than failing catastrophically, when something goes wrong. This is the opposite of a _brittle_ system, which fails completely when one part fails.
 

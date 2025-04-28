@@ -2,7 +2,7 @@
 
 Event-driven architecture is a design pattern in which the components of a system communicate by publishing and subscribing to each other's events. Events are delivered *[asynchronously]* via centralized *[event queues]*. Events may be used to synchronize *[replicated state]* between components, or to trigger processes in other components. A single event may be processed by multiple consumers, allowing for *[parallel processing]* of tasks.
 
-Event-driven architectures may be implemented in both *link:./monolith.adoc[monolithic]* and *link:./distributed-system.adoc[distributed]* systems. However, this architectural style is most commonly associated with distributed systems, and specifically *link:./service-oriented-architecture.adoc[service-oriented architecture]*, where it is used to enable *[loose coupling]* between services and to support *[scalability]* and *[resilience]*.
+Event-driven architectures may be implemented in both *link:./monolith.adoc[monolithic]* and *link:./distributed-system.adoc[distributed]* systems. However, this architectural style is most commonly associated with distributed software, and specifically *link:./service-oriented-architecture.adoc[service-oriented architecture]*, where it is used to enable *[loose coupling]* between services and to support *[scalability]* and *[resilience]*.
 
 == Event-driven vs. event-based
 
@@ -94,7 +94,7 @@ Individual services may be both producers and consumers of events, producing eve
 
 === Advantages fo event-driven architecture
 
-These constraints on the design of event-driven distributed systems gives those systems a high degree of *link:./evolvability.adoc[evolvability]*. The *[loose coupling]* between services means that individual services can be developed, deployed, and scaled independently of other services. You can also add more functionality – such as auditing or data processing – without slowing down the publishing services. If we model our system's communication mechanisms as a series of events, then it is trivially simple to add more behavior in the future. We simply build and deploy new services into the system, which implement new business cases for processing of existing data. Event-driven systems can be scaled in _unplanned_ ways. An event-driven system is almost designed to _expect_ new functionality to be plugged in to it in the future.
+These constraints on the design of event-driven distributed software gives those systems a high degree of *link:./evolvability.adoc[evolvability]*. The *[loose coupling]* between services means that individual services can be developed, deployed, and scaled independently of other services. You can also add more functionality – such as auditing or data processing – without slowing down the publishing services. If we model our system's communication mechanisms as a series of events, then it is trivially simple to add more behavior in the future. We simply build and deploy new services into the system, which implement new business cases for processing of existing data. Event-driven systems can be scaled in _unplanned_ ways. An event-driven system is almost designed to _expect_ new functionality to be plugged in to it in the future.
 
 ****
 Event-driven system designs support *[evolutionary architecture]*.

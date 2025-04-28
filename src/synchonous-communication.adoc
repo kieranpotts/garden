@@ -4,10 +4,10 @@ Synchronous and *link:./asynchronous-communication.adoc[asynchronous]* communica
 
 Synchronous communication is when sender and receiver components interact in real-time. This is the default mode of interaction for most components _within_ a monolithic software system. In most programming languages, function calls are synchronous by default, meaning that the caller waits for the callee to return a value before it proceeds further with its own execution.
 
-Synchronous communication is more commonly discussed in the context of *link:./distributed-system.adoc[distributed systems]*, where it is implemented using *link:./request-response.adoc[request-response]* communication protocols such as *link:./http.adoc[HTTP]* or *link:./grpc.adoc[gRPC]*.
+Synchronous communication is more commonly discussed in the context of *link:./distributed-system.adoc[distributed software]*, where it is implemented using *link:./request-response.adoc[request-response]* communication protocols such as *link:./http.adoc[HTTP]* or *link:./grpc.adoc[gRPC]*.
 
-Synchronous communication in distributed systems requires individual services within the network to expose their own *[APIs]*, rather than relying on a *[message broker]*, *[event bus]*, or other intermediary system to manage communication between services.
+Synchronous communication in distributed software requires individual services within the network to expose their own *[APIs]*, rather than relying on a *[message broker]*, *[event bus]*, or other intermediary system to manage communication between services.
 
-Synchronous communication in distributed systems can lead to tight coupling between services, making it difficult to change services independently of each other. However, it is often necessary when low *[latency]* or *[real-time data]* processing is a requirement, or when data *link:./consistency.adoc[consistency]* is a primary *[constraint]*.
+Synchronous communication in distributed software can lead to tight coupling between services, making it difficult to change services independently of each other. However, it is often necessary when low *[latency]* or *[real-time data]* processing is a requirement, or when data *link:./consistency.adoc[consistency]* is a primary *[constraint]*.
 
 It is best practices for services that depend on synchronous communication to serve a *[health check]* endpoint. This allows clients to check the availability of the services on which they depend. Alternatively, load balancers can monitor the health check endpoints and route traffic to healthy services.

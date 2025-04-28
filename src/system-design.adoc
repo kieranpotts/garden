@@ -21,13 +21,13 @@ image::./_/system-design-tradeoffs.webp[]
 Examples of trade-offs in system design include:
 
 * *Monolithic vs distributed architecture*: +
-*[Monolithic systems]* are simpler to develop and deploy, but they can be harder to maintain and they are limited to *[vertical scalability]*. *[Distributed systems]* are more complex to develop and deploy, but individual parts are easier to maintain and there is greater scope for scalability using *[horizontal scaling]* techniques. *[Modular monoliths]* provide a middle ground and allow for the incremental transition of a monolith to a distributed system.
+*[Monolithic systems]* are simpler to develop and deploy, but they can be harder to maintain and they are limited to *[vertical scalability]*. *[Distributed software]* is more complex to develop and deploy, but individual parts are easier to maintain and there is greater scope for scalability using *[horizontal scaling]* techniques. *[Modular monoliths]* provide a middle ground and allow for the incremental transition of a monolith to distributed software.
 
 * *Vertical vs horizontal scaling*: +
 *[Vertical scaling]* involves boosting the power of existing nodes (eg. CPI, RAM, storage). *[Horizontal scaling]* involves adding more nodes. Scaling vertically is simpler but there's a physical limit to how much you can upgrade individual nodes, and it maintains a single point of failure. Scaling horizontally is more complicated, and it adds whole new categories of complexity such as those related to achieving *[consistency]*, but it allows for almost limitless scaling.
 
 * *Strong vs eventual consistency*: +
-*[Strong consistency]* ensures that any read operation returns the most recent write for a given piece of data. *[Eventual consistency]* ensures that, given enough time, all nodes in a distributed system will converge to the same value (although there are usually no guarantees how long this convergence will take to occur). Strong consistency means that, once a write is acknowledged, all subsequent reads will reflect the value of that write.
+*[Strong consistency]* ensures that any read operation returns the most recent write for a given piece of data. *[Eventual consistency]* ensures that, given enough time, all nodes in a distributed program will converge to the same value (although there are usually no guarantees how long this convergence will take to occur). Strong consistency means that, once a write is acknowledged, all subsequent reads will reflect the value of that write.
 
 * *Stateful vs stateless design*: +
 In a *[stateful]* design, the system remembers client data from one request to the next. The server maintains a record of the client's state, which may include session information, transaction details, or any other data relevant to the ongoing interaction. *[Stateless]* design treats each request as an independent transaction. The server does not store any information about the client's state between requests. Therefore, each request must contain all the information necessary for the server to fulfill it.

@@ -2,7 +2,7 @@
 
 Replication, also known as *link:./redundancy.adoc[data redundancy]*, is the process of creating and maintaining identical copies of data across multiple servers or nodes.
 
-Together with *link:./sharding.adoc[sharding]*, replication is a key technique for scaling databases and distributed systems. Sharding splits data across multiple servers, while replication duplicates data across multiple servers.
+Together with *link:./sharding.adoc[sharding]*, replication is a key technique for scaling databases. Sharding splits data across multiple servers, while replication duplicates data across multiple servers.
 
 Data replication becomes necessary the more that data is distributed across multiple servers, for example in *link:./service-oriented-architecture.adoc[service-oriented]* or *link:./microservices.adoc[microservices]* architectures.
 
@@ -10,7 +10,7 @@ In a *link:./monolith.adoc[monolithic]* architecture, data is typically stored i
 
 image::./_/monolith-with-cross-table-joins.svg[]
 
-But in a *link:./distributed-system.adoc[distributed system]*, those joins turn into network calls. This increases *[latency]*, decreasing *link:./performance.adoc[performance]* and having implications for the *link:./fault-tolerance.adoc[resilience]* of the system.
+But in a *link:./distributed-system.adoc[distributed software]*, those joins turn into network calls. This increases *[latency]*, decreasing *link:./performance.adoc[performance]* and having implications for the *link:./fault-tolerance.adoc[resilience]* of the system.
 
 image::./_/microservices-with-cross-service-calls.svg[]
 
@@ -18,7 +18,7 @@ Data replication is one possible solution to these problems. Simply, data is rep
 
 image::./_/microservices-with-data-replication.svg[]
 
-Besides the *link:./performance.adoc[performance]* benefits of reducing network calls, data replication also improves the *link:./fault-tolerance.adoc[fault tolerance]* and *link:./availability.adoc[availability]* of *link:./distributed-system.adoc[distributed systems]*, due to reduced dependencies between services.
+Besides the *link:./performance.adoc[performance]* benefits of reducing network calls, data replication also improves the *link:./fault-tolerance.adoc[fault tolerance]* and *link:./availability.adoc[availability]* of *link:./distributed-system.adoc[distributed software]*, due to reduced dependencies between services.
 
 Data replication is a useful strategy to support the *[re-architecture]* of system designs. For example, in the transition from monolithic services to more microservices, data replication can help to reduce the need for *[scheduled downtime]* while *[data migrations]* are run.
 
