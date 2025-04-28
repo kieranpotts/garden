@@ -1,31 +1,39 @@
-= Distributed systems
+= Distributed system
 
-A *distributed system* is a network of computers working as one coherent system. A computer program that runs within a distributed system is called a *distributed program* or *distributed software*. Components of a distributed program are located on multiple networked computers, and the components coordinate their actions by passing messages between themselves over the network. *Distributed programming* is the process of developing and maintaining such programs.
+A *distributed system* is a general term for any network of computers working as one coherent system. Distributed systems include *[cloud computing]* services and *[peer-to-peer networks]*.
 
-*Distributed computing* is the field of *[computer science]* that studies distributed systems.
+A computer program that is partitioned across multiple nodes in a distributed system is called a *distributed program* or *distributed software*. Components of a distributed program are located on multiple networked computers, and the components coordinate their actions by passing messages between themselves over the network. Examples of distributed software include applications like *Hadoop* (for *[big data]* processing), *Kubernetes* (for *[container orchestration]*), and *Cassandra* (a *[distributed database]*). Most *[web applications]* are also distributed programs. At the very least, web applications partition their processing between a *[client and server]*. The server-side application may be further partitioned into a *[service-oriented architecture]* such as *[microservices]*.
 
-Examples of distributed system designs include *link:./service-oriented-architecture.adoc[service-oriented architecture (SOA)*], *link:./microservices.adoc[microservices]* and nanoservices, massive multiplayer online games, and *[peer-to-peer]* applications.
+*Distributed programming* is the process of developing and maintaining distributed programs. *Distributed computing* is the field of *[computer science]* that studies distributed systems.
 
 == Designing distributed systems
 
-Distributed computing is hard.
+Most large-scale systems are naturally distributed. That's because *link:./monolith.adoc[monoliths]*, as they grow in scope and load, become more *link:./fault-tolerance.adoc[brittle]* and harder to *[maintain]* and *[scale]*, so the natural tendency is towards breaking them down into lots of smaller and simpler applications that can each be developed, deployed, scaled, and optimized independently — a process known as *[decomposition]*.
 
-As soon as you distribute processing and data, you add a huge amount of *[accidental complexity]* and many more ways that things can go wrong. Distributed systems are inherently more complex than single-node systems (aka. *link:./monolith.adoc[monoliths]*) and they require a different set of *[design principles]* and *[systems thinking]*.
+But distribution of processing and data has significant *[trade-offs]* in *[system design]*.
 
-Distributed computing should be avoided until it is required to solve specific problems, such as *link:./scalability.adoc[scalability]* or *link:./fault-tolerance.adoc[fault tolerance]*. Better to start with a *link:./modular-monolith.adoc[modular monolith]*, with scalability planned into the design from the start, and extract independent services incrementally.
+Although individual units within a distributed system may be simpler and more *[resilient]* due to increased *[isolation]*, overall a distributed system will always have a higher degree of *[accidental complexity]* and more *[points of failure]* than a comparable single-node system. Distributed software is inherently *[brittle]* because you're introducing internal network calls, which are subject to *link:./fault-tolerance.adoc[network failures]* and greater operational constraints like *[latency]* and *[bandwidth]*. Reasoning about *link:./concurrency.adoc[concurrency]*, managing *link:./consistency.adoc[data consistency]*, and designing *link:./monitoring.adoc[monitoring]* solutions are other concerns that are particularly challenging in distributed software design.
 
-Reasoning about *link:./concurrency.adoc[concurrency]* and building for *link:./fault-tolerance.adoc[fault tolerance]* are probably the two hardest things in distributed *link:./system-design.adoc[systems design]*.
+Distributed programming is hard.
 
-Distributed systems are inherently more brittle than single-node applications. They are subject to a wide range of potential failure modes, including network failures, delayed messages, and node crashes. The principle of *[designing for failure]* means designing each service in a way that it can tolerate failures in dependent services. For example, if an email service goes offline, emails should be queued for delivery and sent later when the email service comes back online. Asynchronous communication patterns, and design patterns such as *[circuit breakers]* and *[bulkheads]* help to improve the fault tolerance of distributed systems by isolating failures, preventing failures in one component from cascading into other components. And *[disaster recovery]* planning can ensure that services quickly recover (in an automated way) from failures.
+The main challenges in designing distributed software are:
 
-Fault tolerance is a key *link:./quality-attributes.adoc[quality attribute]* in distributed systems, and needs to be treated as a first-class concern in the *link:./system-design.adoc[system design]*.
+* *Fault tolerance*: *[Fault tolerance]* is a key *link:./quality-attributes.adoc[quality attribute]* in distributed systems, and needs to be treated as a first-class concern in the *link:./system-design.adoc[system design]*. Distributed software is subject to a wide range of potential failure modes, including network failures, delayed messages, and node crashes. The principle of *[designing for failure]* means designing each service in a way that it can tolerate failures in dependent services. For example, if an email service goes offline, emails should be queued for delivery and sent later when the email service comes back online. Asynchronous communication patterns, and design patterns such as *[circuit breakers]* and *[bulkheads]*, help to improve the fault tolerance of distributed systems by isolating failures, and so preventing failures in one component from cascading into other components. And *[disaster recovery]* planning can ensure that services quickly recover (in an automated way) from failures.
 
-And because distributed systems generally use asynchronous communication between services, managing concurrency and ensuring *link:./consistency.adoc[eventual consistency]* are also key design concerns. *link:./cap-theorem.adoc[CAP theorem]* is relevant in distributed systems that *[replicate]* data between nodes.
+* *Latency and bandwidth*: *[Latency]* and *[bandwidth]* are two key performance metrics in distributed systems. Latency is the time it takes for a message to travel from one node to another, while bandwidth is the amount of data that can be transmitted over a network in a given time period. In distributed systems, latency and bandwidth are affected by network congestion, distance between nodes, and the number of hops a message must take to reach its destination. These are not considerations in single-node systems, where all components run in the same process.
+
+* *Concurrency and consistency*: Because distributed systems generally use asynchronous communication between services, managing *[concurrency]* and ensuring *link:./consistency.adoc[eventual consistency]* are also key design concerns. *link:./cap-theorem.adoc[CAP theorem]* is relevant in distributed systems that *[replicate]* data between nodes.
+
+* *Observability*: *[Monitoring]*, *[logging]*, and *[debugging]* all become much more complex in distributed systems. *[Observability]* and especially *[distributed tracing]* tools are specifically designed to address these challenges.
+
+* *[Testing]*, too, is much more challenging in distributed systems. It is harder, for example, to do proper integration tests to validate a whole system, compared to monolithic systems where all the components run in the same process. There tends to be increased reliance upon service mocks, which reduces confidence in correctness of the tests.
+
+For these reasons, distributed computing should be avoided until it is required to solve specific problems, such as *link:./scalability.adoc[scalability]* or *link:./fault-tolerance.adoc[fault tolerance]*. Better to start with a *link:./modular-monolith.adoc[modular monolith]*, with scalability planned into the design from the start, and extract independent services incrementally – see *link:./microservices.adoc[microservices]* for more detailed notes on the topic of *[decomposition]* of a system to a distributed design.
 
 == Related links
 
-* https://www.researchgate.net/publication/322500050_Fallacies_of_Distributed_Computing_Explained[Fallacies of distributed computing explained], Arnon Rotem-Gal-Oz, Doctor Dobbs Journal (2008)
+* https://www.researchgate.net/publication/322500050_Fallacies_of_Distributed_Computing_Explained[Fallacies of distributed computing explained], Arnon Rotem-Gal-Oz, 2008
 
-* https://architecturenotes.co/fallacies-of-distributed-systems/[Fallacies of distributed systems], Architecture Notes (2022)
+* https://web.archive.org/web/20070811082651/http://java.sys-con.com/read/38665.htm[Deutsch's Fallacies, 10 Years After], Ingrid Van Den Hoogen, 2007 (archived)
 
-* http://www.allthingsdistributed.com/2008/12/eventually_consistent.html[Eventually consistent - revisited], Werner Vogels
+* http://www.allthingsdistributed.com/2008/12/eventually_consistent.html[Eventually consistent - revisited], Werner Vogels, 2008
