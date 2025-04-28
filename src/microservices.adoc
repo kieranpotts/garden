@@ -1,68 +1,64 @@
 = Microservices (aka. microservice architecture)
 
-Microservices are a subset of the *link:./service-oriented-architecture.adoc[service-oriented architecture (SOA)]* pattern.
+The microservice pattern is a subset of *link:./service-oriented-architecture.adoc[service-oriented architecture (SOA)]*. There is no definitive list of features that distinguish microservices from more general service-oriented designs, but it is widely accepted that the difference is one of granularity. Microservices are typically very small, scoped to a single business function, and independently deployable thanks to maximized decoupling between services.
 
-There is no definitive list of features that distinguish microservices from more general service-oriented designs, but it is widely accepted that the difference is one of granularity. Microservices are typically very small, scoped to a single business function, and independently deployable thanks to maximized decoupling between services.
-
-There also tends to be a bias toward *[asynchronous communication]* between services, and a preference for indirect *[message-driven]* and especially *[event-driven]* communication patterns, rather than direct service-to-service calls.
-
-These constraints do not necessarily apply to service-oriented architecture.
+There also tends to be a bias toward *[asynchronous communication]* between services, and a preference for lightweight, indirect *[message-driven]* communication patterns, rather than direct service-to-service calls. These constraints do not necessarily apply to service-oriented architecture.
 
 .Microservices vs. SOA
 [cols="1,2,2"]
 |===
-| Characteristic | Microservices | SOA
+|Characteristic |Microservices |SOA
 
-| *Granularity*
-| Fine-grained services, often each with only a single responsibility.
-| Mix of fine-grained and coarse-grained services. Some services may have multiple responsibilities.
+|*Granularity*
+|Fine-grained services, often each with only a single responsibility.
+|Mix of fine-grained and coarse-grained services. Some services may have multiple responsibilities.
 
-| *Communication*
-| Preference for asynchronous *[messages]* and *[events]*, else lightweight request-response protocols like *[HTTP]*, *[TCP]*, *[UDP]* or even *[WebSockets]*.
-| May have a higher proportion of direct service-to-service calls, and may use more heavyweight communication protocols like *[SOAP]*.
+|*Communication*
+|Preference for asynchronous *[messages]* and *[events]*, else lightweight request-response protocols like *[HTTP]*, *[TCP]*, *[UDP]* or *[WebSockets]*.
+|May have a higher proportion of direct service-to-service calls, and may use more heavyweight communication protocols like *[SOAP]*.
 
-| *Data*
-| Each service manages its own data stores and caching layers.
-| Services may share common data stores and caches.
+|*Data*
+|Each service manages its own data stores and caching layers.
+|Services may share common data stores and caches.
 
-| *Coupling*
-| Services are very loosely coupled, with minimal direct dependencies between them. Ideally, individual services will be able to process requests without needing to call any other service.
-| Higher use of direct synchronous communication between services, and possible shared data stores, increases coupling and risks evolution into "distributed monolith".
+|*Coupling*
+|Services are very loosely coupled, with minimal direct dependencies between them. Ideally, individual services will be able to process requests without needing to call any other service.
+|Higher use of direct synchronous communication between services, and possible shared data stores, increases coupling and risks evolution into "distributed monolith".
 
-| *Technology*
-| Encourages use of different languages and technology stacks to optimize individual services for their use cases.
-| May use a uniform technology stack across all services.
+|*Technology*
+|Encourages use of different languages and technology stacks to optimize individual services for their use cases.
+|May use a uniform technology stack across all services.
 
-| *Deployment*
-| Services are independently deployable. Emphasizes continuous deployment and DevOps practices. Different services have independent release schedules; minimal dependencies.
-| There may be a higher degree of interdependence between services, limiting the "continuous" velocity of deployments. More traditional deployment patterns, around scheduled *release trains*.
+|*Deployment*
+|Services are independently deployable. Emphasizes continuous deployment and DevOps practices. Services have independent release schedules.
+|There may be a higher degree of interdependence between services, limiting the "continuous" velocity of deployments. More traditional deployment patterns, eg. scheduled *[release trains]*.
 
-| *Isolation*
-| Greater fault tolerance of overall system, due to high degree of isolation of individual services.
-| Greater degree of coupling between services reduces fault tolerance of the overall system.
+|*Isolation*
+|Greater fault tolerance of overall system, due to high degree of isolation of individual services.
+|Greater degree of coupling between services reduces fault tolerance of the overall system.
 
-| *Scalability*
-| Individual services have considerable scope for scalability, especially horizontal scaling.
-| Larger, more coupled services tend to have more restricted scalability.
+|*Scalability*
+|Individual services have considerable scope for scalability, especially horizontally.
+|Larger, more coupled services tend to have more restricted scalability.
 
-| *Operations*
-| Services are operated by the team that built them.
-| May be operated by a central operations team.
+|*Operations*
+|Services are operated by the team that built them.
+|May be run by a central operations teams.
 
-| *Team topologies*
-| Each service is likely to be fully developed and operated by a single team.
-| Multiple teams may be responsible for developing and operating some services.
+|*Team topologies*
+|Each service is likely to be fully developed and operated by a single team.
+|Multiple teams may be responsible for developing and operating some services.
 |===
 
-That final differentiating characteristic – the correlation between microservice architecture and *[team topologies]* – is particularly important. The functional boundaries between microservices tend to map directly to the responsibility boundaries between teams.
+That final differentiating characteristic — the correlation between microservice architecture and *[team topologies]* — is particularly important. The functional boundaries between microservices tend to map directly to the responsibility boundaries between teams.
 
-Microservice architecture allows for extreme scalability of computer systems. It also allows for extreme scalability of organizations. Microservice architecture is designed to solve the problem of how to scale the development and operation of a large, complex system across a very large organization. Traditional organization structures – for example, where there are separate development and operations teams – tend to buckle under the weight of the communication overhead that comes with managing a large number of subsystems.
+Microservice architecture allows for extreme scalability of computer systems. It also allows for extreme scalability of organizations. Microservice architecture is designed to solve the problem of how to scale the development and operation of a large, complex system across a very large organization. Traditional organizational structures — for example, where there are separate development and operations teams — tend to buckle under the weight of the communication overhead that comes with managing a large number of subsystems.
 
-The ultimate goal of microservice architecture is to maintain the software delivery velocity of a start-up at enterprise scale.
+The ultimate goal of microservice architecture is to achieve the software delivery velocity of a start-up at enterprise scale.
 
-Microservice architecture, when closely aligned with _team_ architecture, makes it possible for _thousands_ of people – spread across hundreds of small, independent teams – to contribute to the development and operation of a single large-scale system. This is achieved by composing a system from lots of very small components, each with a single narrowly-scoped responsibility, and with coupling between components all but eliminated. Crucially, each component is the exclusive responsibility of a single team. Individual services can be changed quickly, not only due to limited coupling between services but also due to limited coupling (in the form of communication overhead) between teams. *[Extreme programming]* practices like *[continuous deployment]* become possible even at huge scale.
+Microservice architecture, when closely aligned with _team_ architecture, makes it possible for _thousands_ of people — spread across hundreds of small, independent teams — to contribute to the development and operation of a single large-scale system. This is achieved by composing a system from lots of very small components, each with a single narrowly-scoped responsibility, and with coupling between components all but eliminated. Crucially, each component is the exclusive responsibility of a single team. Individual services can be changed quickly, not only due to low coupling with other services but also due to limited requirements for coordination of changes between teams. *[Extreme programming]* practices like *[continuous deployment]* become possible even at huge scale.
 
-Microservice architecture is a natural fit for the *[DevOps]* model of software development, where development and operations are closely aligned, and where the same team is responsible for the end-to-end development, testing, deployment, operation, maintenance, and support of a service – – the "you build it, you run it" model. (See also *link:./cross-functional-teams.adoc[cross-functional teams]*.)
+Microservice architecture is a natural fit for the *[DevOps]* model of software development, where development and operations are closely aligned, and where the same team is responsible for the end-to-end development, testing, deployment, operation, maintenance, and support of a service — the "you build it, you run it" model. (See also *link:./cross-functional-teams.adoc[cross-functional teams]*.)
 
 The term "microservices" originated in the early 2010s and was popularized by thought leaders such as Martin Fowler and James Lewis. Subsequently, the term *[nanoservices]* has been used to describe services that are even more granular than microservices.
 
@@ -70,15 +66,17 @@ The term "microservices" originated in the early 2010s and was popularized by th
 
 A microservice architecture makes the same trade-offs as *link:./service-oriented-architecture.adoc[service-oriented architecture]* and any other *link:./distributed-system.adoc[distributed system]* design. In addition, due to the increased number of services and the increased granularity of the services' individual responsibilities, the following trade-offs are made.
 
-Finer-grained distributed systems like microservices are inherently more *[complex]* than coarser-grained ones. Complexity in software systems is derived primarily from the communication patterns between software components, more so than the overall system size. A system composed from lots of small services is in principle more complex than an equivalent system of the same overall size but composed of fewer, larger services. The more granular system design has a higher theoretical limit of interdependencies between its components, and therefore it has a higher potential for complex communication patterns.
+Finer-grained distributed systems like microservices are inherently more *link:./complexity.adoc[complex]* than coarser-grained ones. Complexity in software systems is derived primarily from the communication patterns between software components, more so than the overall system size. A system composed from lots of small services is in principle more complex than an equivalent system of the same overall size but composed of fewer, larger services. The more granular system design has a higher theoretical limit of interdependencies between its components, and therefore it has a higher potential for complex communication patterns.
 
 image::./_/simple-vs-complex-distributed-systems.svg[]
 
-There are more ways that a microservices system can fail. Each service, and each network call between services, is a potential *[point of failure]*. Therefore, more effort is required in the system design to build in *[fault tolerance]* mechanisms, such as *[retries]* and *[circuit breakers]*. This responsibility tends to be offloaded to dedicated infrastructure such as *[message queues]*, reducing the *[accidental complexity]* of individual services but increasing the *[accidental complexity]* of the overall system.
+There are more ways that a microservices system can fail. Each service, and each network call between services, is a potential *[point of failure]*. Therefore, more effort is required in the system design to build in *[fault tolerance]* mechanisms, such as *[retries]* and *[circuit breakers]*. This responsibility tends to be offloaded to dedicated infrastructure such as *[message queues]*, reducing the *[accidental complexity]* of individual services but increasing it for the overall system.
 
-Microservices tend to go hand-in-hand with *[asynchronous communication patterns]*, with a particular emphasis on *[message-driven]* and especially *[event-driven]* communication. The aim is to reduce, or eliminate entirely, direct service-to-service calls, which would otherwise be prolific due to the high number of services. This also reduces the risk of *[evolutionary]* microservice designs degrading into "API hell", where the number of direct service-to-service calls becomes unmanageable and (worse) anti-patterns like circular service calls emerge. Message-driven communication has benefits for maintainability, fault tolerance, and scalability, but with additional costs associated with the management and monitoring of asynchronous communication.
+The choice of *[communication patterns]* and *[inter-process communication]* mechanisms is a critical design decision in microservices, and distributed systems more generally. In what form will inter-process communication be implemented, eg. RPC vs. message bus? And how will contracts between services be defined, enforced, and evolved?
 
-A best practice in microservice design is for each service to be able to be able to process every request within needing to call any other service. This design constraint improves *[fault tolerance*], because all requests can be fulfilled even if one or more dependency services are *[unavailable/offline]*. Points of failure are minimized.
+Microservices tend to go hand-in-hand with *[asynchronous communication patterns]*, with a particular emphasis on *[message-driven]* (and especially *[event-driven]*) communication. The aim is to reduce, or eliminate entirely, direct service-to-service calls, which would otherwise be prolific due to the high number of services. This also reduces the risk of *[evolutionary]* microservice designs degrading into "API hell", where the number of direct service-to-service calls becomes unmanageable and (worse still) anti-patterns like circular service calls emerge. Message-driven communication has benefits for maintainability, fault tolerance, and scalability, but with additional costs associated with the management and monitoring of asynchronous communication.
+
+A best practice in microservice design is for each service to be able to be able to process every request without needing to call any other service. This design constraint improves *[fault tolerance*], because all requests can be fulfilled even if one or more dependency services are *[unavailable/offline]*. Points of failure are minimized.
 
 An extreme implementation sees application-level services being able to process requests without _ever_ calling any other lower-level service. Besides improved fault tolerance, this design constraint minimizes *latency* in the end-to-end request-response cycle. It is achieved by implementing the *service dependency inversion* principle. Where one service depends on another, rather than *[pulling]* data from the dependency service, the dependency service instead *[pushes]* data to the dependent services, which caches the *[replica data]* ahead of time. *[Temporal coupling]* is reduced and application-level services need only interact with their own data stores to fulfil requests.
 
@@ -170,6 +168,8 @@ See also the *link:./strangler-fig-pattern.adoc[strangler fig pattern]*, which i
 * https://microservices.io/[Microservices.io] — Articles, a glossary of microservice-related terminology and design patterns, and many more resources, curated by Chris Richardson. An excellent starting point to learn about microservice architecture.
 
 * https://martinfowler.com/articles/microservices.html[Microservices: A definition of this new architectural term] — By Martin Fowler and James Lewis. See also https://martinfowler.com/articles/microservice-trade-offs.html[Microservice trade-offs] for a concise summary of the pros and cons of microservice architecture, and Fowler's https://www.youtube.com/watch?v=wgdBVIX9ifA[GOTO 2014 talk] on this subject.
+
+* https://smartbear.com/learn/api-design/microservices/[What are microservices], SmartBear
 
 * https://www.nginx.com/resources/library/microservices-reference-architecture/[Microservices reference architecture], Chris Stetson (2017)
 
