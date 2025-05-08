@@ -47,7 +47,7 @@ Eric Evans promotes *[continuous integration]* as a *[practice]* that enforces a
 
 The emphasis on continuous conversation and close collaboration between technical and non-technical stakeholders brings other advantages. Often the process of automating business processes through software development can yield new insights into the business itself. The process of continuous integration brings a continuous *[feedback loop]* of fresh insights. And domain modeling also serves the purpose of pooling knowledge within an organization, such that knowledge of certain aspects of a business and its IT systems are not restricted to particular tribes within the organization. Instead, knowledge is dissipated throughout the organization.
 
-The outcome of the strategic design phase is a comprehensive *link:./domain-model.adoc[model]* of the software's *link:./domain.adoc[domain]* or *[problem space]*. Domain models may be expressed in documentation, code, tests, or visually (eg. using UML or similar graphical notations), or a combination of all these. DDD is not prescriptive about the choice of modeling artifacts. The only criteria is that a consistent language – an *[ontology]* – is used throughout throughout the model.
+The outcome of the strategic design phase is a comprehensive *link:./domain-model.adoc[model]* of the software's *link:./domain.adoc[domain]* or *[problem space]*. Domain models may be expressed in documentation, code, tests, or visually (eg. using UML or similar graphical notations), or a combination of all these. DDD is not prescriptive about the choice of modeling artifacts. The only criteria is that a consistent language – an *[ontology]* – is used throughout the model.
 
 Ultimately, the domain model will be implemented in code. So a good modeling process needs to consider not only the domain but also its implementation in software. It is important that models can be translated into working code. It is possible that a model that is truthful to its domain could have serious problems in its implementation, such as unacceptable *[performance]*. For this reason, domain modeling and *[system design]* should run concurrently.
 
@@ -115,15 +115,15 @@ Some key parts will be common across multiple subdomains. For example, subscribe
 
 === Bounded contexts and their ubiquitous languages
 
-DDD encourages developers and domain experts to collaborate together and develop a common *link:./ubiquitous-language.adoc[language]* to describe the whole business domain. The objective is for domain terminology to be understood and used consistently by all stakeholders in a software project – both technical and non-technical.
+DDD encourages developers and domain experts to collaborate together and develop a common *link:./ubiquitous-language.adoc[language]* to describe the whole business domain. The objective is for domain terminology to be understood and used consistently by all stakeholders in a software project – both technical and non-technical stakeholders.
 
 DDD calls this common language the *ubiquitous language*. It is similar in concept to an *link:./ontology.adoc[ontology]*. The language is taken from the real world business domain, and it should be used to specify software requirements and to name things in the application code and its tests. Indeed, the domain language should be used in all forms of communication (both written and verbal) between the technical teams and the *[domain experts]*.
 
-Ideally, there would be a single unified model covering the whole business domain. However, in complex problem spaces, this is often unrealistic. Different subdomains may need to have different models, each with its own distinct language. For example, in the billing subdomain, subscribers might be referred to as "accounts", while the video streaming subdomain might refer to them as "viewers", and the user management subdomain might use the term "subscribers". Thus, the terms "account", "viewer", and "subscriber" all refer to the same thing and only the language changes depending on the context. (Variations in language are most likely to appear in the key parts of subdomains.)
+Ideally, there would be a single unified model covering the whole business domain. However, in complex problem spaces, this is often unrealistic. Different subdomains may need to have different models, each with its own distinct language. For example, in the billing subdomain, subscribers might be referred to as "accounts", while the video streaming subdomain might refer to them as "viewers", and the user management subdomain might use the term "subscribers". Thus, the terms "account", "viewer", and "subscriber" all refer to the same type of entity, and only the language changes depending on the context. (Variations in language are most likely to appear in the key parts of subdomains.)
 
 Similarly, the representations of real-world entities, events, and other concepts may differ between subdomains. For example, in an e-commerce domain, a "customer" entity within the "support" subdomain might encapsulate a user's order history and support tickets, while the equivalent entity in the "finance" subdomain might encapsulate the same user's payment history, invoices, and method of payment. Thus, the same entities might have different attributes and methods depending on the subdomain.
 
-DDD recognizes that different subdomains may need to have different models, each using different terminology for its key parts and different representations of the same real-world objects (entities).
+DDD recognizes that different subdomains may need to have different models, each using different terminology for its key parts and different representations of the same real-world objects.
 
 Although variations in the domain model increase the complexity of a system's design, domain-driven design advocates that domain models should be accurate representations of their real-world counterparts.
 
@@ -133,11 +133,9 @@ A bounded context may span a single subdomain, or it may span several. In most c
 
 .Subdomains versus bounded contexts
 ****
-
 * *Subdomains* help us to understand complex business domains by dividing them into smaller parts. They represent real-world business capabilities wrapped into cohesive groups.
 
 * *Bounded contexts* represent independent, unified models, which allow us to transfer knowledge from subdomains into our technical solutions.
-
 ****
 
 So, bounded contexts explicitly define the context within which a discrete domain model applies. They should also be used to define the scope of responsibilities of teams. Bounded contexts should also be used to set boundaries for team responsibilities, and physical manifestations of that included codebases and their repositories, development and testing infrastructure, and deployment pipelines. Ideally, each team will be responsible for, and have a high degree of autonomy over, a single bounded context – which may span multiple subdomains, but which will have a consistent domain model throughout.
@@ -150,7 +148,12 @@ The final part of the strategic design is to learn how the various bounded conte
 
 It is through the context maps that teams understand how their parts of the system fit into the bigger picture. The context maps also define how the different models of each of the bounded contexts relate to each other.
 
-For example, imagine that a video streaming context needs to know what quality of video to stream to a user, and since this is dependent upon the subscription plans encapsulated in the billing context, the video streaming context will need to communicate with the billing context. Therefore, there will need to be a mapping between a viewer in the streaming context and the subscriber in the billing context. In code, this transformation of models between contexts is done using some sort of *anti-corruption layer* at the interfaces between subdomains. Each subdomain's user interface is responsible for ensuring that nomenclature from other contexts do not pollute its own bounded context.
+For example, imagine that a video streaming context needs to know what quality of video to stream to a user, and since this is dependent upon the subscription plans encapsulated in the billing context, the video streaming context will need to communicate with the billing context. Therefore, there will need to be a mapping between a viewer in the streaming context and the subscriber in the billing context. In code, this transformation of models between contexts is done using some sort of *anti-corruption layer (ACL)* at the interfaces between subdomains. Each subdomain's user interface is responsible for ensuring that nomenclature from other contexts do not pollute its own bounded context.
+
+.Interfaces between bounded contexts
+****
+The interfaces between bounded contexts are responsible for translating the different domain models of each context. An *anti-corruption layer (ACL)* is any pattern that serves as an adapter between two domain models. The implementation of the ACL will depend on the communication patterns and protocols used between services in different contexts. Classical client-server network calls may require an explicit adapter layer on the server-side. However, in an *[event-driven]* architecture, changes in one context are communicated with other contexts through the publication of events, eliminating direct coupling and reducing the need for explicit mapping logic.
+****
 
 Bounded contexts and contexts maps help to make sense of the *[essential complexity]* that is inherited from a system's business domain. Tools such as the https://contextmapper.org/[Context Mapping DSL (CML)] may be document the models of bounded contexts and to map the relationships between them.
 
@@ -232,7 +235,30 @@ Finally, *[collections]* may be used to group together multiple instances of the
 
 Domain events are a way of representing things that happen in the domain. They are used to model things that happen in the real world, such as a customer placing an order, a product being shipped, or a payment being made.
 
+Domain events are emitted by a component as a message that is somehow communicated with the rest of the application. Other components of an application may or may not handle the events when they receive them. Commonly, domain events will trigger additional domain events being generated by other components; for example, a domain event for a user being assigned to a department may trigger a domain event for the department's payroll system to be updated. Other domain events may trigger processes such as invoicing, notifications, or inventory updates. Thus, complex business functionality is composed by having lots of independent services handle specific domain events.
+
+.Domain event example
+----
+// Headers
+{
+  "eventName": "UserPlaced",
+  "id": "123456789",
+  "datetime": "2025-03-10T12:00:000Z"
+}
+
+// Payload
+{
+  "departmentID": "6789"
+}
+----
+
+Domain events are not emitted _because_ of database changes. Rather, they are emitted _before_ or _during_ them, reflecting business decisions.
+
 Domain events are distinct from *technical events*, which are used to represent things that happen in the software itself, such as a user clicking a button, a database query being executed, or a message being sent over a network. Technical events are important; they often need to be logged and monitored. But they should not be part of the domain model.
+
+****
+See also *link:./change-data-capture.adoc[Change data capture (CDC)]*, which is a similar but distinct concept to domain events, but are focused on capturing data changes in databases, rather than data changes in business logic.
+****
 
 ==== Services
 
@@ -246,7 +272,7 @@ Other types of services may exist in other (non-domain) layers of an application
 
 While factories are responsible for creating new domain objects, repositories are responsible for fetching and persisting existing domain objects.
 
-A *[repository]* is an abstraction of a persistent container or storage layer – usually a database system and any attached caching systems.
+A *[repository]* is an abstraction of a persistent container or storage layer – usually a database system and any attached caching systems. The repository pattern acts as a mediator between the domain and the data mapping layer, providing an abstraction that allows handling the collection of entities as if it were a collection in memory. It enables operations such as searching, inserting, and deleting entities without exposing details of the persistence implementation.
 
 The repository pattern hides the implementation details of the underlying persistence infrastructure from the high-level application code and domain logic, and also encapsulates things like security credentials and transaction management. The repository pattern gives the illusion of simple in-memory collections. Different repositories (for different types of domain objects) will have similar APIs, but internally they may use entirely different strategies for fetching and persisting objects.
 

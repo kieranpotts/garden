@@ -4,6 +4,8 @@ Designing for failure is a key *[design principle]* in IT system design, and esp
 
 Fault tolerance is closely related to *link:./availability.adoc[availability]*. The goal of fault tolerance is to ensure that a system can continue to operate in the presence of failures. The goal of availability is to ensure that a system is always available to users. Fault tolerance helps to achieve availability.
 
+A _failure_ is any event that stops a service from working as expected. A failure is not necessarily a complete outage of a service. Failures include intermitted availability, higher than expected latency, and errors returned from dependency services. Handling _partial failures_ is just as important as handling complete failures. For example, clients should not wait indefinitely for a response from a service.
+
 In the context of distributed software, the principle of *[designing for failure]* means designing each service in a way that it can tolerate failures in dependent services.
 
 Bad stuff happens. And bad things can happen from seemingly innocuous events. The trick to creating reliable distributed programs is to _assume_ they will fail and to design for that. The aim is for a failure in one part of a system to have minimal impact on the rest of the system, so avoiding full outages. The job is not to stop anything from failing; the job is to stop failures from causing massive problems. A common analogy is the electrical grid, where a failure in one part of the system does not cause the whole grid to fail.
@@ -20,7 +22,9 @@ Architectural patterns and visibility strategies to mitigate failures include, b
 
 * *Replication and caching*: These strategies involve storing copies of data in multiple locations, and closer to the services that need the data. These strategies trade-off data consistency for improved resilience and reliability.
 
-* *Retries and timeouts*: Automatically retrying requests that fail (in case the failure was transient), and automatically failing requests that take too long (in case the system is slow or unresponsive).
+* *Fallback logic and default values*: Providing a default value or cached data when a request fails.
+
+* *Retries and timeouts*: Automatically retrying requests that fail (in case the failure was transient), and automatically fail requests that take too long (ie. use timeouts so that network failures do not block the main thread of execution). A related strategy is to limit the number of pending requests: impose an upper bound on the number of oustanding requests that a client can have with a particular service, and don't make additional requests once that limit is breached.
 
 * *Reduced dependencies*: Minimizing the number of dependencies between services, so that if one fails, others are not affected.
 
