@@ -1,0 +1,15 @@
+= Trunk-based development
+
+Trunk-based development (TBD) is a *[source control]* branching model that encourages small increments of work to be integrated regularly into a shared mainline branch – commonly called `trunk`, `master`, or `main`.
+
+Trunk-based development attempts to avoid *[big-bang]* merges, and the increased risks of merge conflicts that come with those. This is done by adhering to the following principles:
+
+* Keep all work-in-progress close to the trunk branch.
+* Integrate small, stable changes into the trunk branch as quickly as possible.
+* *Never break the build* (the golden rule of TBD): keep the trunk branch in a deployable state at all times, by running automated tests prior to commits being added to the trunk (either locally or via pull request pipelines).
+
+Trunk-based development enables *[continuous integration]* and (by extension) *[continuous delivery]*. It is supported by techniques such as *[feature flags]*, which replace the need for long-lived side branches to support feature development. Instead of keeping unfinished features isolated from other developers using side branches, you keep unfinished features isolated from your end users by disabling the code in production behind feature toggles.
+
+In internal research, Microsoft found that trunk-based development was the most effective way to scale its development process. This branching model was used the most effectively across all its sub-organizations and internal teams.
+
+https://github.com/paul-hammant[Paul Hammant], a Thoughtworks consultant, https://trunkbaseddevelopment.com/[maintains an excellent website] dedicated to the topic of trunk-based development. 
