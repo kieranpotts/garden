@@ -1,0 +1,64 @@
+= Feature flags
+
+*Feature flags*, also known as *feature switches* and *feature toggles*, are a software development and *[deployment]* *[methodology]* that involves toggling features on or off at runtime.
+
+The main objective of feature flags is to separate the process of software *[release]* from *[deployment]*. Without a feature flag system being integrated into a software system, new builds and deployments of that software will have all new and changed functionality released to users immediately at the time of deployment. With feature flags, features can be released to users independently of code deployments to production or other environments.
+
+Once the release of functionality is decoupled from the deployment of the code and configuration that enables the functionality, more sophisticated software release workflows become possible. For example, *[phased rollouts]* can be supported, in which new features are initially enabled for a small subset of users (*[canary testing]*) and then gradually rolled out to all users as confidence in the stability of the features increases. This technique reduces the risk of introducing bugs or performance issues into production environments.
+
+Feature flags are an essential component of the technical *[architecture]* of a software system where advanced *[agile development methodologies]* and *[DevOps]* practices are desirable. Feature flags support *[trunk-based development]*, *[continuous delivery]* and *[continuous deployment]* (which depend on trunk-based development), *[canary releases]* and *[phased rollouts]*, and *[A/B testing]*.
+
+Feature flag systems are commonly implemented as *user-based* system, in which there is a mapping of users to features. This affords the maximum flexibility, allowing feature flags to be used in a wide variety of ways, including phased roll-outs and A/B testing.
+
+Feature flag systems are typically backed by databases, which store the user-feature mappings. This allows feature releases to be controlled manually, for example via an admin interface. Operations teams can use this interface to control the visibility of feature in production (and other environments) without needing to deploy new code and configuration. The same mechanism can also be used to rollback features – a powerful capability that can help to resolve production incidents rapidly. *[Software-as-a-service]* applications such as LaunchDarkly, ConfigCat, and FlagFox provide convenient back-ends for managing feature releases this way.
+
+Besides features flags, there are many other techniques for toggling functionality in software, independent of deployments of code and configuration. These techniques include but are not limited to:
+
+* *Environment variables* can be checked in conditional logic to toggle features on or off based on the environment in which the software is running (eg. development, staging, production).
+
+* *Authorization* systems can be used to restrict access to certain features based on user roles or permissions.
+
+* *User preferences*, including settings enabled on client devices, can be used to toggle features based on criteria such as language preferences, color scheme preferences, and other user choices.
+
+* *Feature detection* systems can be used to determine the capabilities of a client device, and toggle features in the application that depend on those capabilities.
+
+* *Locale detection* systems can be used to determine the geographic location of a user, and toggle locale-specific feature, for example for conformance with local legal or regulatory requirements.
+
+* And custom *business logic* can be used to toggle features based on any other parameters. For example, date and time conditions may be used to toggle seasonal features such as promotions or holiday themes.
+
+Complex feature toggling logic can be composed from any combination of these techniques. For example, a feature may be enabled for a subset of users based on the following conditions:
+
+* The host environment is named "staging" (environment variable check).
+* The user is authenticated (authentication check).
+* The user has opted-in to beta testing (authorization system check).
+* There is a 50:50 chance of the feature being enabled (feature flag configured based on a percentage rollout).
+
+Feature flag systems should not conflate these different concerns. The following is an example of an *[anti-pattern]* in which feature flag logic is used in place of an authorization system to restrict access to certain features based on user roles or permissions. This design can lead to *[technical debt]* and reduced *[evolvability]* of the software system.
+
+[source,php]
+----
+namespace App\Features;
+
+class MyFeature {
+  public function resolve(User $user) {
+    return $user->isAdmin();
+  }
+}
+----
+
+Nevertheless, feature flags may piggyback on authorization systems as a solution for *[phased roll-outs]*. For example, new features may be initially released to a small subset of internal users with the "admin" role, then to "support" staff, before being enabled to all other users with the "customer" role.
+
+But feature flag systems themselves should have the *[single responsibility]* of decoupling releases from deployments, and for phasing releases (gradually making releases available to more and more users, rather than releasing in a *[big bang]*). Feature flag systems should not be overloaded with other responsibilities such as authorization, feature detection, or locale detection.
+
+Another way to think about feature flags is that the code added to application logic to enable or disable features should be considered transient. Once a feature has been fully released, the relevant feature flag code should be removed from the codebase in a subsequent deployment. 
+
+Feature flags add complexity to the code. In the following example, there are two possible code paths, increasing the complexity of both the application code and the automated tests needed to cover it. Once a feature flag is no longer needed, both the application code and test code needs to be refactored to remove it from the codebase.
+
+[source,php]
+----
+if (Feature::active('telecommunications')) {
+  // Telecommunications is enabled...
+} else {
+  // Telecommunications is disabled...
+}
+----
