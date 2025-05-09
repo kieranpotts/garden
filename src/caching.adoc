@@ -29,7 +29,7 @@ ____
 
 Caching comes with its own sets of challenges. The main difficulty is maintaining data *link:./consistency.adoc[consistency]*. When data changes in the source-of-truth, the cached copies become stale. There are various strategies that can be implemented to maintain consistency between sources and caches. Caching strategies include:
 
-* *Read-through*: Automatically fetches and caches missing data from the source-of-truth when it is requested and the cache is empty or stale. +
+* *Read-through*: Automatically fetches data from the source-of-truth when it is requested and when the cache is empty or stale (a "cache miss"), backfilling the cache. +
 +
 image:./_/read-through-cache.png[]
 
