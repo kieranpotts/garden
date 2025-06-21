@@ -1,0 +1,9 @@
+= Distributed transaction
+
+A *distributed transaction* is a single logical operation that spans multiple databases or data sources – which are typically located on different servers within a network – guaranteeing *[atomicity]* in distributed systems.
+
+A distributed transaction is a type of *link:./transaction.adoc]* that ensures that all operations across a *[distributed system]*, such as *[microservices]*, are completed successfully, or none at all, maintaining the *[data integrity]* of the overall system.
+
+For example, in a distributed system, placing an order might involve charging the customer's payment method, reserving stock, updating the inventory, scheduling delivery, and sending a confirmation email. If any of these operations fail, the entire transaction should be rolled back to prevent inconsistent state.
+
+Some databases support distributed transactions natively, but otherwise implementation requires additional tools. *link:./phased-commit.adoc[Phased commits]*, such as the two-phase commit (2PC) protocol or three-phase commit (3PC) protocol, are commonly used to manage distributed transactions. *link:./saga.adoc[Sagas]* are another approach that can be used to manage long-running distributed transactions without relying on traditional locking or phased commit protocols.

@@ -1,0 +1,31 @@
+= Saga
+
+In distributed systems, a saga is a design pattern used to manage long-running, multi-step *./distributed-transaction.adoc[distributed transactions]*. It is an alternative approach to *link:./phased-commits.adoc[two-phase or three-phase commit (2PC, 3PC)]* protocols.
+
+Instead of there being one big transaction, a saga breaks it into a sequence of local *link:./transaction.adoc[transactions]*. Each step updates its own service and then triggers the next step via an event or message. If something fails along the way, the saga runs compensating transactions to undo the previous steps, so eventually reverting the system to a *[consistent]* state.
+
+Like phased commits, the saga pattern depends on a central coordinator, called the *orchestrator*, to define and manage the order of local transactions. Example:
+
+1. Service A: `PlacedOrder`
+2. Service B: `ReserveStock`
+3. Service C: `ChargePayment`
+4. Service D: `SendOrderConfirmation`
+5. Service E: `ShipOrder`
+
+The orchestrator explicitly calls each step. If any step fails, the saga runs compensating transactions:
+
+* Service E: `CancelOrder`
+* Service D: `SendOrderCancellationNotice`
+* Service C: `RefundPayment`
+* Service B: `ReleaseStock`
+* Service A: `CancelOrder`
+
+The orchestrator offers centralized logic and good visibility of the control flow. Trade-offs include the coordinator becoming a *[single point of failure]* and a potential performance bottleneck.
+
+An alternative to orchestration is *choreography*. There is no central coordinator, and instead each service listens for events and reacts independently, emitting further events for other services to progress the flow. This is more decentralized and can scale better, but it can lead to complex interactions and harder-to-manage workflows.
+
+Choreographed sagas offer looser coupling between services, and therefore they better support the implementation of business processes that span multiple independent teams Orchestrated sagas tend to be a better choice in scenarios where one team owns the entire process. The two patterns can be combined, for example by using orchestration for critical paths (eg. payment processing) and choreography for less critical paths (eg. sending notifications).
+
+The saga pattern – whether choreographed or coordinated – offers higher *[resilience]* and *[scalability]* compared to traditional phased-commit transactions, as it avoids blocking issues which are associated with two-phase commit protocols especially. However, the trade-off is that sagas can be more complex to implement and manage, and *[consistency]* is traded for *[availability]*.
+
+When you're dealing with distributed sagas, especially choreographed ones, *[observability]* – and *[distributed tracing]* in particular – becomes crucial.
