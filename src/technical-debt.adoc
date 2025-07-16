@@ -1,3 +1,323 @@
 = Technical debt
 
-// TODO
+////
+
+TODO:
+
+Ward Cunningham – one of the seventeen signaturies of the 2001 agile
+manifesto – came up with the "debt metaphor" as a means of explaining to
+non-technical stakeholders the importance of investing in refactoring.
+
+[There's an excellent video on YouTube](https://www.youtube.com/watch?v=pqeJFYwnkjE) where
+Cunningham explains the origins of the debt metaphor and what he meant
+by it. It's just a few minutes long and is well worth watching.
+
+By Cunningham's definition, technical debt is a consequence of an agile
+design system. In a more waterfall or big-design-up-front process, you
+would – theoretically, at least – gather all the requirements and design
+a solution fully from the start. Therefore, you would not need to adjust
+the design of the system as you built it.
+
+But if you incrementally build out the functionality of a system,
+without cmplete knowledge of the final solution, then you must also
+iterate the system's design as you go along, adjusting the solution as
+you progresively learn more about the project's requirements and
+constraints.
+
+In iterative and incremental development – a software development life
+cycle model – it is the process of **refactoring** to **iterate the
+design** of a solution for which Cunningham used the debt metaphor
+originally.
+
+Over time, technical debt has come to colloquially mean all the other
+cruft and shortcuts taken to deliver a solution with too-limited
+resources (time and/or people). But by Cunningham's definition,
+technical debt is a perfectly normal and natural consequence of an agile
+methodology. Any healthy and fully-resourced project should, by this
+definition, have a steady flow of technical debt passing through its
+ticketing system.
+
+To put it another way, technical debt is not bad, but shortcuts are.
+
+------------------------------------------------------------------------
+
+Managing technical debt is an important part of the software development process.
+
+There is nothing wrong with it—it's all about taking shortcuts that allow us to achieve faster results in a given moment. We consciously take risks with the idea of fixing it as soon as possible. That's it. When we pay it off regularly, it's fine.
+
+Taking on technical debt is like purchasing with a credit card. You are borrowing against productivity to get something done quicker or with less effort now. Just like a credit card, this can provide short-term benefits, but it also incurs interest in the form of additional work needed to fix or improve the quick solution in the future.
+
+Tech debt is a useful resource, but it must be carefully logged and monitored.
+
+Technical debt is only worth taking on when teams have high degrees of autonomy. When the development team has complete control over what is included in the scope of work, you work in a great environment. You can continuously plan to rework it, but do it wisely—you can ensure there is always 1 technical debt that someone works on while others work on current tasks and features. Often, we like to fall into the trap of gold-plating the technical part of the solution. In the end, the most important thing is the business value!
+
+------------------------------------------------------------------------
+
+Every now and then and idea becomes very sticky... as soon as you hear
+the idea for the first time, it's kind of obvious what it means, and the
+idea takes hold. The idea of techdebt is an idea in that category.
+
+Technical debt is the implied cost of additional rework caused by
+choosing an easy (but limited) solution now, instead of using a better
+approach that would take longer. It used financial debt as a metaphor.
+The idea being that if technical dent is not repaid, it can accumulate
+"interest", making it harder to implement changes.
+
+It's become a widely used metaphor because it stretches to be analogous
+to lots of concepts from finance:
+
+-   Debt = bad code that requires us to revisit it later (eg because of
+    its low quality) then that's a debt we'll have to repay eventually.
+    In the meantime it will accrue interest the longer we leave it, so
+    the eventual repayment will be higher.
+
+-   Bankruptcy = when so much debt has been accumulated, the codebase is
+    so difficult to change that further change grinds to a halt (or at
+    least you're spending more time and money on fixing things than you
+    are on anything else)
+
+Disappointingly, this happens a lot, and there are plenty of maintained
+software systems in the world -- especially in the enterprise space --
+that are only kept running but cannot be otherwise changed or
+extended... until they are fully replaced.
+
+So, the analogy with financial debt is good and useful in a variety of
+ways. For example, not all debt is necessarily bad. We might take a loan
+to make an investment in a house or a car. In the same way, we may
+release incomplete features early to solicit early feedback from users,
+and we may not bother to refine the implementation at this stage if we
+know it will most likely rapidly change as a result of that feedback
+anyway. As long as we are in a position to pay off that debt, this can
+be a worthwhile thing to do.
+
+The problem with the debt metaphor is that in the context of software we
+are taking out loans from our future selves. There is no third party
+lending us the money who will make sure we repay it in a timely manner.
+This means that the slope into technical debt is slippier and steeper
+than for financial debt.
+
+And with financial debt you are more likely to repay the debt in small
+amounts at regular intervals over extended periods of time. By contrast,
+in order to pay down technical debt, it is more likely to be the case
+that the principle of the loan (the whole outstanding amount) needs to
+be repaid in one go. This makes it harder to repay, and so repayment is
+likely to be put back again and again while there are more pressing
+requirements to deal with.
+
+------------------------------------------------------------------------
+
+(Actually, this is not what Cunningham was referring to originally. His
+point was that refactoring is necessary in an incremental build model,
+and he was not advocating we ever write bad code.)
+
+Our view: we do not use the term "tech debt". We refer only to
+"refactoring", which is basically what tech debt is a metaphor for. Tech
+debt is a useful metaphor for explaining the necessity of doing
+refactoring work to non-technical people. But as technicians, we don't
+need to use metaphors to understand the significant part that
+refactoring plays in our work.
+
+------------------------------------------------------------------------
+
+This is often true of software systems. Even if a system is generally
+very well made, there will often be little corners of code that the
+programmers will not be proud of. Those software components may work and
+they may pass their tests. And they may not actually acrrue any
+cost/interest at all, if they are discrete components that no other part
+of the system is dependent upon and which rarely need to change.
+
+So, it is actually okay for their to be a little bit of sub-standard
+code here and there. But it SHOULD be documented and recorded in the
+task tracking system, so at least we don't forget to sort it out when
+resources allow.
+
+How we prioritise refactoring work (paying down techdebt) is really
+driven by urgency and utility, more than it is by time and resources.
+For this reason, it is useful to categorize techdebt by its severity, so
+we can more easily make decisions about which bits to improve first. To
+stretch the metaphor with monetary debt, there are three types of such
+debt:
+
+-   Friendly debt: money borrowed from friends and family. There is not
+    likely to be severe consequences if this debt doesn't get repaid,
+    and there may not even be any interest on the loan.
+
+-   Bank loans: will be stricter with the repayments, and there will be
+    interest but we can perhaps lower that by paying back more quickly
+
+-   Loan sharks: the interest will be extreme, the total debt will grow
+    very fast indeed, and if we don't repay at all the consequences
+    could be very severe
+
+In the case of software:
+
+-   Friendly debt is not-great code in discrete components that work and
+    are not likely to need changing
+
+-   Bank loan is something like relying on manual over automated testing
+    to ensure ongoing correctness of some scenarios (real tangible costs
+    in terms of time taken for manual testing)
+
+-   Loan shark where there are so many shortcuts taken that you struggle
+    to do regular releases... big ball of mud. This is ultimately the
+    output from feature factories, where the rate of feature production
+    is prioritized above all else. Also in legacy software where the
+    debt is so high that no one is even trying to pay it off anymore,
+    except perhaps to do a "big bang" replacement of the whole system...
+
+... these sorts of organizations are also those that tend to think the
+best way to scale up is to add more people, so there are teams of
+hundreds of people working in big-balls-of-mud systems and are afraid to
+change anything significant. They don't really think about the design of
+the system (there probably isn't one, really) and they don't really
+worry about improving the maintainability of the system if it is already
+a mess anyway. This is a death spiral approach, and ultimately these
+software systems fail.
+
+------------------------------------------------------------------------
+
+There are lots of causes of technical debt - the Wikipedia page lists
+15+. But in our view technical debt is an inevitable result of any
+failure to start and maintain a sense of design throughout the life of
+the system.
+
+------------------------------------------------------------------------
+
+Technical debt is also an outcome of business pressures, and especially
+how businesses construct and organize their engineering teams. For
+example, if teams are made up of distributed contractors who are hired
+on a day rate, those contractors have no real emotional investment in
+the long term success of the system.
+
+Software is never really finished. It is developed through an
+evolutionary process, and then it is maintained through an evolutionary
+process. In fact, if a software system is successful, it will spend more
+of its life span in maintenance than it will in its initial development.
+Some research has found 80% of the lifetime cost of software to be in
+its maintenance... but this is hard to define because there is not a
+clear distinction between development and maintenance, rather both of
+these things tend to be going on all the time, but there might be a bit
+more emphasis place on development of features in particular phases of a
+product's lifetime.
+
+Software development is more like gardening. If we treat our software as
+an organic thing, tending it and reshaping it over time. This means that
+we start with the assumption that our guesses today will probably be
+wrong for the requirements of the future, and so will need correction
+and refinement in the future.
+
+So, the aim is really to maintain our code as a "habitable space" in
+which can change code with confidence (ie being able to reasonably
+predict the consequences of doing so, and therfore predict how long a
+change will take).
+
+The code now is just a snapshot in the history of the system's
+continuing evolution.
+
+So it is critical that the engineering teams see themselves as the
+guardians or stewards of the software system. Their real job is to
+maintain the code as a habitable space, a place where changes can be
+made...
+
+Teams that have this attitude -- and the necessary autonomy to make
+technical decisions -- tend to have a very low tolerance for technical
+debt. They prefer to live debt free, on the whole.
+
+------------------------------------------------------------------------
+
+We SHOULD try to design as much as we can upfront, but we MUST also
+accept the limitations of this approach. Rather, design should be
+evolutionary.
+
+Coding is design, and design is architecture.
+
+The initial design just needs to be a rough cut. We want to aim for
+modularity, of course, and so we need to come up with some organizing
+principles that set the boundaries between modules (encapsulation of
+logic and data).
+
+Then we refine the design as we go long, as necessary to best
+accommodate new features and NFRs.
+
+It is important to maintain this sense of design in the team as an
+ongoing thing. There must be agreement between everyone about where
+stuff should exist in the code. This means maintaining an architectural
+model -- a sort of tourist map of our system -- all of the time.
+
+This will mitigate against the tactical creep that old codebases would
+otherwise face.
+
+------------------------------------------------------------------------
+
+Business pressures:
+
+In the real world, how do we avoid falling into debt in the first place?
+We invest in things. We invest in skills and our careers, and we also
+invest now, saving our money (eg in pensions) so we benefit from those
+assets later.
+
+This analogy stands up in software too.
+
+If your boss says "we want you to get this feature done by this
+deadline", then what does that really mean? Do they mean what they
+*literally* say? Or do they mean "we want you to produce software as
+efficiently as possible and maintain our ability to continue to do
+that".
+
+If it's the second one, so then working our code in to a high-quality,
+easy-to-maintain shape, is the most efficient way to deliver features -
+in the medium and long term definitely, but often it is necessary to
+deliver stuff tomorrow, too. (There is not always a trade-off between
+deliverying the next features quickly and the next release taking
+longer - write crap today and fix it later.)
+
+Only technical teams can make these decisions, and we should not take
+business pressures too literally. If businesses want the next release
+delivered more quickly, that's fine, they can always reduce scope to
+achieve that. But the overall speed of delivery is *our* decision.
+
+We borrow from our own future when we allow technical debt to grow.
+Conversely, we invest in our own future productivity if we continuously
+work to minimise technical debt.
+
+But even then we will still make mistakes and make unintended debt, but
+then we only borrowed from a friend.
+
+## External links
+
+- [Technical debt](https://ronjeffries.com/articles/019-01ff/tech-debt-from-twitter/) – 2019 blog post by Ron Jeffries
+
+## See also
+
+-   <a href="Anti-patterns_and_code_smells"
+    data-linked-resource-id="44498949" data-linked-resource-version="5"
+    data-linked-resource-type="page">Anti-patterns and code smells</a>
+
+-   <a href="Spaghetti_code_Big_ball_of_mud"
+    data-linked-resource-id="44531713" data-linked-resource-version="5"
+    data-linked-resource-type="page">Spaghetti code / Big ball of mud</a>
+
+-   <a href="Software_rot_Software_entropy"
+    data-linked-resource-id="44302343" data-linked-resource-version="2"
+    data-linked-resource-type="page">Software rot / Software entropy</a>
+
+'''''''''''''''''''''
+
+The term "technical debt" is widely used colloquially to refer to bad code, legacy code, or any kind of cruft.
+
+But technical debt is actually a useful metaphor for explaining the need to refactor our code at intervals. A better description is that technical debt is a mismatch between the design as it is now, and the design you now realize you want to have, given what you have learned through recent iterations and given your current need to further change the code.
+
+So technical debt is not a property of the code itself, but rather it is a property of the current design and the current requirements - and how those two align with each other.
+
+Static analysis tools can be useful to identify bad code, but they are can't really identify technical debt - as per this definition - without an understanding of our target design.
+
+Refactoring is a process that deals with both bad code and technical debt.
+
+////
+
+''''
+
+.Related links
+****
+* https://agilealliance.org/introduction-to-the-technical-debt-concept/[Introduction to the technical debt concept], Agile Alliance
+****
