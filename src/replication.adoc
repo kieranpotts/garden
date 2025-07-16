@@ -1,5 +1,7 @@
 = Replication
 
+// TODO: https://redis.io/blog/what-is-data-replication/
+
 Replication, also known as *link:./redundancy.adoc[data redundancy]*, is the process of creating and maintaining identical copies of data across multiple servers or nodes.
 
 Together with *link:./sharding.adoc[sharding]*, replication is a key technique for scaling databases. Sharding splits data across multiple servers, while replication duplicates data across multiple servers.
@@ -27,3 +29,87 @@ Trade-offs are made in terms of *link:./consistency.adoc[data consistency]*, and
 Data synchronization can be achieved using either *[batch processes]* or *[event streams]*. Some database systems also provide built-in support for data replication across multiple nodes.
 
 Data need not be replicated in the form of its *[source of truth]*. *[Materialized views]* can be used to store pre-processed data that's optimized for specific use cases, such as reporting.
+
+////
+
+== Redundancy patterns
+
+Availability = failover + redundancy
+
+To keep your data available and consistent, you need replication, too.
+
+Failover helps you survive infrastructure failure. Replication helps you survive data loss and scale reads.
+
+Or:
+
+* Failover absorbs failure.
+* Replication protects data.
+
+Replication means keeping multiple copies of your data in sync across nodes. If one copy is lost, another can take over. If your read traffic spikes, replicas can help offload the pressure.
+
+There are two primary replication strategies:
+
+* Single-leader replication: one node handles all writes.
+* Multi-leader replication: multiple nodes accept writes.
+
+=== Single-leader replication
+
+In this pattern, only one node accepts writes (the leader). One or more read replicas sync from it asynchronously.
+
+Client can read from the leader or any replica, but all writes must go to the leader.
+
+Pros:
+
+* Simple to conceptualize.
+* Strong write consistency.
+* Works well with read-heavy workloads.
+
+Cons:
+
+* Single point of failure (without external failover logic).
+* Replication lag → stale reads.
+* Leader can become a write bottleneck under heavy load.
+* Failover requires promotion and reconfiguration.
+
+Use when you care about data consistency, simplicity, and read scalability. Common in OLTP systems, dashboards, and APIs where write throughput is moderate.
+
+=== Multi-leader replication
+
+In a multi-leader setup, multiple nodes can accept writes. Each node replicates its changes to the others.
+
+_Write locally, sync globally._
+
+Multi-leader setups are *eventually consistent* by default.
+
+You'll need logic to resolve conflicts, like "last write wins", version vectors, or CRTDs.
+
+Pros:
+
+* High availability across regions.
+* Local write performance (reduced latency for global users).
+* Avoids a single point of failure.
+
+Cons:
+
+* Complex conflict resolution.
+* Increased write latency due to cross-node sync.
+* Harder to figure out the data state.
+* Greater operational overhead.
+
+Use when you need multi-region write availability, or your system must remain writeable even during partial outages.
+
+Used in collaborative tools, messaging platforms, and edge-aware databases.
+
+=== Leaderless replication
+
+Some systems, eg. Cassandra and Dynamo, use leaderless replication. This is where clients write to multiple nodes directly, and consistency is managed via *quorum reads/writes*.
+
+Trade-offs vary, but typically:
+
+* Very high availability.
+* Eventual consistency unless tuned carefully.
+* Complex consistency guarantees.
+
+You'
+
+////

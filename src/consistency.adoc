@@ -1,5 +1,9 @@
 = Consistency
 
+// TODO: https://hackernoon.com/eventual-vs-strong-consistency-in-distributed-databases-282fdad37cf7
+// TODO: https://systemdesign.one/consistency-patterns/
+// TODO: https://blog.algomaster.io/p/7d9da525-fe25-4e16-94e8-8056e7c57934
+
 .Consistency
 ****
 All nodes display identical data, guaranteeing that reads always reflect the ost recent write.
@@ -9,7 +13,7 @@ Consistency is a key challenge in *link:./distributed-system.adoc[distributed so
 
 As soon as you *[replicate]* data across multiple nodes – which you do to improve *link:./fault-tolerance.adoc[resilience]* and *link:./availability.adoc[availability]* – you introduce the possibility that the data on different nodes will be out of sync. You have to deal with the problem of how to maintain consistency.
 
-A key idea is *eventual consistency*. The aim is for data across the whole system to eventually be consistent, but it is not guaranteed to be consistent at any particular point in time.
+A key idea is *[eventual consistency]*. The aim is for data across the whole system to eventually be consistent, but it is not guaranteed to be consistent at any particular point in time.
 
 // Eventual conditions, also known as *optimistic replication*, in distributed software, ... to achieve high availability. Eventually all access to a resource will return the most recently-written data.
 

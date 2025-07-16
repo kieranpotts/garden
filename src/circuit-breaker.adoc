@@ -1,5 +1,7 @@
 = Circuit breaker
 
+// TODO: https://medium.com/geekculture/design-patterns-for-microservices-circuit-breaker-pattern-276249ffab33
+
 The circuit breaker *[pattern]* is a way to handle *transient failures* in *link:./distributed-system.adoc[distributed software]*.
 
 When requests to services fail, a circuit breaker will automatically open, preventing any further requests from being sent to the failing service. The circuit breaker will remain open for a configurable amount of time, after which it will automatically close, so allowing further requests to be sent again to the service.
@@ -7,3 +9,149 @@ When requests to services fail, a circuit breaker will automatically open, preve
 Circuit breakers complement *link:./retry-mechanism.adoc[retry mechanism]*. Whereas a retry mechanism will keep retrying a failing service until it succeeds, a circuit breaker will trip when the error rate exceeds a configured threshold and it will prevent any further requests from being sent to the failing service for a configured period of time.
 
 Both are solutions for improving *link:./fault-tolerance.adoc[fault tolerance]*, and the two solutions work particularly well in combination. If a service is failing, it is likely that it will continue to fail for a period of time, until its failure mode is resolved through *link:./disaster-recovery.adoc[disaster recovery]* mechanisms. While disaster recovery is ongoing, a circuit breaker will help to prevent the recovering system from being overwhelmed by retries.
+
+////
+
+Scenario: OrderService and PaymentService
+
+Imagine you have an e-commerce application with two services:
+
+1. OrderService: Handles customer orders.
+2. PaymentService: Processes payments for these orders.
+
+Problems Without Circuit Breaker
+
+• Service Overload:
+
+If the PaymentService starts to fail (e.g., due to a high load or a bug), every request to the OrderService that tries to call the PaymentService will also fail.
+
+This can lead to a cascading failure where the OrderService is overwhelmed by failed requests and cannot serve other customers effectively.
+
+• Slow Responses:
+
+If the PaymentService is slow to respond, the OrderService might wait for a long time before timing out, leading to a poor user experience.
+
+• Resource Waste:
+
+Repeatedly trying to call a failing PaymentService wastes resources and can slow down the entire system.
+
+How the Circuit Breaker Pattern Helps
+
+The Circuit Breaker pattern solves these problems by wrapping the calls to the PaymentService in a "circuit breaker."
+
+Here's how it works:
+
+• Closed State: Initially, the circuit breaker is in a closed state, allowing requests to pass through to the PaymentService.
+
+• Open State: If the PaymentService fails too often within a specified period, the circuit breaker "trips" and moves to an open state.
+
+In this state, calls to the PaymentService immediately failed without trying to make a real request. This prevents the PaymentService from being overwhelmed and allows it time to recover.
+
+• Half-Open State:
+
+After a timeout period, the circuit breaker moves to a half-open state. It allows a few test requests to see if the PaymentService has recovered.
+
+If the test requests are successful, the circuit breaker returns to the closed state. If they fail, it goes back to the open state.
+
+////
+
+== Example implementation (pseudo-code)
+
+[source,java]
+----
+public class CircuitBreaker
+{
+  private int failureCount = 0;
+
+  /**
+   * Number of failures before tripping.
+   */
+  private int failureThreshold = 5;
+
+  /**
+   * Time to wait before allowing requests again.
+   */
+  private TimeSpan timeout = TimeSpan.FromSeconds(30);
+
+  private DateTime lastFailureTime;
+
+  public bool execute(Func<bool> action)
+  {
+    if (isOpen())
+    {
+      /* Short-circuit the request. */
+      return false;
+    }
+
+    try
+    {
+      bool result = action();
+      reset();
+
+      return result;
+    }
+    catch (Exception)
+    {
+      failureCount++;
+      lastFailureTime = DateTime.Now;
+
+      return false;
+    }
+  }
+
+  private bool isOpen()
+  {
+    if (failureCount >= failureThreshold)
+    {
+      if (DateTime.Now - lastFailureTime > timeout)
+      {
+        /* Move to half-open state. */
+        failureCount = 0;
+
+        return false;
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
+  private void reset() => failureCount = 0;
+}
+----
+
+[source,java]
+----
+
+----
+
+[source,java]
+----
+
+----
+
+[source,java]
+----
+public class OrderService
+{
+  private CircuitBreaker circuitBreaker = new CircuitBreaker();
+
+  public void placeOrder(Order order)
+  {
+    // Logic to handle order placement...
+
+    bool paymentSuccessful = circuitBreaker.execute(() =>
+        paymentService.processPayment(order.paymentDetails));
+
+    if (!paymentSuccessful)
+    {
+      // Handle payment failure, eg., notify user, log error, etc.
+    }
+    else
+    {
+      // Continue handling the order...
+    }
+  }
+}
+----

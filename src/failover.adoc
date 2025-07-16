@@ -1,5 +1,115 @@
 = Failover
 
+// TODO: https://www.druva.com/glossary/what-is-a-failover-definition-and-related-faqs
+
 A failover is the process of automatically or manually switching to a redundant or standby system, component, or network upon the failure or abnormal termination of the previously active system, component, or network.
 
 Failover improves the availability and *link:./scalability.adoc[scalability]* of a system. It can help to remove *single points of failure* and ensure that a system remains operational even if some of its components fail.
+
+////
+
+Failover is the answer to failure.
+
+When a node crashes or a zone goes dark, what takes over? This is the essence of failover.
+
+Failover is your solution to the problem: *how to keep the service running when a critical component fails?*
+
+Failover requires *[redundancy]*, which is about having backup instances that can step in without user impact. To avoid downtime, you keep standby services online.
+
+Failover + redundancy = availability.
+
+Failover strategies are not about preventing failure, rather they are about preemptively preparing for failure.
+
+== Failover patterns
+
+There are two main patterns for implementing failover:
+
+* *Active-Active Failover*: All instances are live and share the load.
+* *Active-Passive Failover*: One instance handles traffic, but others are on standby.
+
+The choice between the two effects everything: *latency*, *cost*, *availability*, and *operational complexity*.
+
+=== Active-Active Failover
+
+In an *active-active failover* setup, all nodes are live and actively serve requests. They share traffic through a load balancer or service mesh. If one node fails, the others continue operating – no warm-up, no hand-off.
+
+This pattern gives you *high availability* and *high throughput*, but comes at the cost of *complex coordination*:
+
+* You need *consistent state* across nodes, or *idempotent operations* if state sync lags.
+* Your load balancer must detect unhealthy nodes and remove them from rotation fast.
+* If nodes write to shared resources (like a DB), ensure *concurrency safety* and *conflict handling*.
+
+Pros:
+
+* No downtime on node failure.
+* Scales horizontally under load.
+* Better resource utilization.
+
+Cons:
+
+* Requires robust load balancing.
+* Harder to manage stateful workloads.
+* Can mask underlying issues due to redundancy.
+
+USe when you need *zero-downtime* failover and your service can tolerate or handle *eventual consistency* between nodes. Ideal for stateless APIs, edge services, and front-door layers.
+
+Take into account this pattern maximizes uptime and capacity, but you’re also paying for that uptime 24/7.
+
+=== Active-Passive Failover
+
+In an active-passive setup, only one node serves requests. (There may actually be multiple actives, but to simplify the illustration we'll assume there's just one.) One or more standby nodes remain idle until the active fails, then a failover mechanism promotes a standby to become the new active.
+
+This pattern favors simplicity and consistency over speed of recovery.
+
+But failover isn't instant. Depending on the detection and promotion logic (manual, TNS TTL, heartneat monitoring, etc.) recovery can take seconds to minutes. During that time, the service is unavailable.
+
+Pros:
+
+* Simple to wrap your head around.
+* Easier to implement for stateful systems.
+* Reduced risk of data conflicts.
+
+Cons:
+
+* Downtime during failover.
+* Backup node is underutilized.
+* Potential for data loss if replication lags.
+
+Use when failover speed is less critical than data correctness and operational simplicity. Common in primary-standby databases, DR setups, and tightly-coupled monoliths.
+
+=== Hybrid active-passive failover
+
+You don't always have to choose between *fully active* or *fully idle* systems.
+
+A hybrid model combines multiple active nodes with one or more passive backups. For example, two nodes actively serve traffic, and a third is passive, reduce to takeover if either fails.
+
+This setup gives you the throughout and fault tolerance of active-active, but with lowe cost and simpler coordination, because not every node is participating at all times.
+
+You've got:
+
+* Redundancy from the passive instance.
+* Load distribution across the active ones.
+* Faster failover than cold standby.
+* Lower cost than scaling all nodes equally.
+
+Pros:
+
+* Load is shared across fewer active nodes → less infra cost.
+* Passive node offers quick recovery without full duplication.
+* Easier to understand than full active-active with N nodes.
+
+Cons:
+
+* Still requires sync between active and passive.
+* Uneven load may bottleneck if one active fails.
+* Failover logic must detect and rebalance.
+
+Cost consideration:
+
+* Lower than full active-active.
+* Better utilization than pure passive.
+* Scales better as demand grows.
+
+Use when you want to reduce infra spend while maintaining high availability and good performance. Ideal for medium-scale services where failover speed matters, but cost discipline is required.
+
+////
