@@ -1,0 +1,47 @@
+= Test-driven development (TDD)
+
+Test-driven development (TDD) is a software development *[practice]* in which automated tests are written before the application or library code that needs to be tested. TDD flips the traditional development workflow and uses testing as a design tool as well as a validation tool.
+
+A TDD workflow typically follows these steps:
+
+1. From a stable revision, with the build and all automated tests passing, write one or more new tests for a small piece of new functionality, or modify existing tests to reflect a change in requirements in existing behavior.
+
+2. Run all the tests. The new or modified tests are expected to fail, because the system-under-test has not yet been implemented or modified to meet the new requirements. This is often referred to as the "red" phase of TDD.
+
+3. Update the application logic and configuration, just enough so the tests pass. Don't add any extra functionality at this stage.
+
+4. Optionally, refactor to improve the internal quality of the program, while maintaining a green build (compilation and tests passing).
+
+5. Commit the changes in a single atomic, stable commit.
+
+Repeat with the next, small incremental change.
+
+In TDD, it is common to write tests that cover edge cases and error conditions, in addition to the expected behavior. Variations on TDD include *test-driven debugging*, which is an approach to resolving bugs in which defects are identified by writing tests that assert expected behavior but which initially fail due to the defect in the actual behavior.
+
+TDD is not synonymous with automated testing, but rather it is a specific approach to implementing and maintaining automated tests. TDD *[shifts left]* the testing phase to _before_ the coding phase. Tests _drive_ the development, rather than being an afterthought or a separate phase that occurs long after the code is written. It deliberately creates just enough friction to make the design, development, and testing process more thoughtful and deliberate.
+
+Writing tests firsts requires programmers to think about how to implement changes in a testable way. Testable code tends to be inherently more modular and easier to maintain than code that is not designed for automated testing.
+
+Advocates of TDD argue that it leads to:
+
+* Better design and higher code quality, due to enforcement of *[modularity]* and well-defined *[interfaces]*
+
+* Fewer defects, because testing is *[shifted left]*, meaning errors are caught early in the development lifecycle.
+
+* Confident refactoring, as you end up with comprehensive test coverage that makes it much easier to make changes with minimized risk of breaking existing functionality.
+
+However, TDD is not universally practiced or accepted. Criticisms of TDD include that it is not suitable for all types of development tasks, such as the rapid development of prototypes and proofs-of-concept, or other disposable code. It can also be challenging to retrofit tests into legacy systems that were not designed for automated testing. 
+
+Many times it's easier to experiment with code structure, data structures, and interfaces, perhaps using temporary branches in source control, rather than using tests to drive the design. It's not always necessary or desirable to write failing tests before writing or changing code.
+
+TDD can also over-emphasize *[bottom-up design]*. It puts focus on small increments of isolated units of code, rather than on the *[high-level design]* and maintaining *[conceptual integrity]* of the *[system design]* as a whole. This can lead to situations where individual components are well-made but which do not integrate well into a cohesive whole. 
+
+In addition, TDD tends to produce lots of low-level unit tests, which can make large-scale refactoring harder, not easier. Refactoring is easier, generally, when you err on the side of integration and system/e2e tests.
+
+Some argue that TDD can lead to poor design decisions. For example, TDD encourages the creation of interfaces that are easy to test, rather than interfaces that are easy to use by client program code. Real-world use cases ought to drive the design of interfaces, not automated tests.
+
+There is *[no silver bullet]* in software development. TDD is a *[practice]* that can be useful in many situations, but programming style is a personal thing.
+
+== References
+
+* https://martinfowler.com/bliki/TestDrivenDevelopment.html[Test-driven development], Martin Fowler
