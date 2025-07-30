@@ -1,0 +1,22 @@
+= Safety-critical system
+
+A safety-critical system, also known as a *life-critical system* and historically a *man-rated system*, is a system whose failure or malfunction may result in death or serious injury to people, loss or severe damage to property or equipment, or environmental harm.
+
+https://www.his-conference.co.uk/[High-integrity software] is software that is used in safety-critical systems. It is developed to a higher standard than normal software, with a extreme focus on reliability and safety. See also *link:./software-quality.adoc[software quality]* and *link:./software-assurance.adoc[software assurance]*.
+
+The https://cwe.mitre.org/about/index.html[Common Weakness Enumeration (CWE) is a community-maintained list and categorization system of common software and hardware weaknesses, where a "weakness" is defined as any condition that could, under certain circumstances, contribute to vulnerabilities. The first release of the list and associated classification taxonomy was in 2006. CWE is maintained by the https://www.mitre.org/[MITRE Corporation], a not-for-profit organization that operates federally-funded research and development centers in the United States, such as the U.S. Department of Homeland Security's (DHS) Cybersecurity and Infrastructure Security Agency (CISA).
+
+https://misra.org.uk/publications/[MISRA C] is a set of software development guidelines for the C programming language and which aims are to facilitate code safety, security, and reliability in the context of embedded systems. The NASA Jet Propulsion Laboratory's https://web.archive.org/web/20111015064908/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf[C Coding Standards (2009)] are based on MISRA-C:2004.
+
+https://web.eecs.umich.edu/~imarkov/10rules.pdf[The Power of 10] is a set of 10 coding rules for the C programming language, which complement the MISRA C guidelines. The Power of 10 was devised by Gerard J. Holzmann of the NASA Jet Propulsion Laboratory for Reliable Software and published by IEEE Computer Society in 2006. The rules are intended to avoid certain anti-patterns in programs written in C, which make it difficult to statically analyze the code. The rules are:
+
+1. Avoid complex flow constructs, such as goto and recursion.
+2. All loops must have fixed bounds. This prevents runaway code.
+3. Avoid heap memory allocation after initialization.
+4. Restrict functions to a single printed page.
+5. Use a minimum of two runtime assertions per function.
+6. Restrict the scope of data to the smallest possible.
+7. Check the return value of all non-void functions, or cast to void to indicate the return value is useless.
+8. Use the preprocessor only for header files and simple macros.
+9. Limit pointer use to a single dereference, and do not use function pointers.
+10. Compile with all possible warnings active; all warnings should then be addressed before release of the software.
