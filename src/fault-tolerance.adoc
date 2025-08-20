@@ -35,6 +35,8 @@ Architectural patterns and visibility strategies to mitigate failures include, b
 
 * *Monitoring*: Keeping an eye on the health of the system, so that operations teams can respond to failures quickly.
 
+A failure event can also be a software bug that slips into production and causes an outage or some kind of incident. In fact, this is a common cause of failure in modern cloud-based, distributed systems, in which resilience of the hardware and network is often very high. To mitigate software failures, deployment strategies such as *canary releases* and *blue-green deployments* with automated *rollbacks* may be used. Another strategy to mitigating software failures is to deploy a *link:./stand-in.adoc[Stand-in]* system, rather than a copy of the primary system, to failover infrastructure.
+
 Assuming failure also puts emphasis on designing for changeability. A key aspect of designing for resilience is being able to quickly change software, so we can fix issues when they _do_ occur.
 
 Testing strategies like *chaos engineering* can also support the building of highly resilient systems.

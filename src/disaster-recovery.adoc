@@ -1,3 +1,17 @@
 = Disaster recovery
 
 // TODO: https://cloud.google.com/learn/what-is-disaster-recovery?hl=en
+
+// Traditional disaster recovery methodologies do a good job of mitigating the impact of individual servers, and even whole data centers going down.
+
+== Software bugs
+
+DR strategies also need to include deployment strategies, such as blue-green deployments and canary releases, to minimize downtime caused by software failures (eg. bugs, shipped to production, that leak memory).
+
+Software bugs are one of the most common causes of incidents and outages in cloud-based software services. They can be difficult to recover from if not included in disaster recovery planning.
+
+Consider, for example, the case study of the outage in August 2023 of the UK's National Air Traffic Service (NATS). A critical exception occurred when the primary system tried to process a particular flight plan, and was unable to generate a valid route for that plan. The secondary system kicked in and took over from the failing primary system within 20 seconds. But because the failover system runs an identical copy of the software, the same critical exception occurred, taking down the secondary system too.
+
+The outage was three hours long – that's the time it took to ship a bug fix – but the knock-on impact lasted three days and impacted over 700,000 passengers and cost the industry an estimated £100 million.
+
+A *link:./stand-in.adoc[Stand-in]* is a disaster recovery strategy devised by Monzo that aims to avoid the scenario of failures cascading through all redundant systems due to software errors.
