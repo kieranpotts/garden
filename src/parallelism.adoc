@@ -29,9 +29,13 @@ To implement parallelism in an application, the application must:
 +-----------+ +-----------+ +-----------+
 ----
 
+Due to the requirement to aggregate results from parallel threads, and due to the additional overhead associated with coordinating parallel tasks, introducing parallelism to a process does not always speed it up.
+
 Parallel computing systems are significantly more difficult to design than sequential ones, because several new classes of potential bugs are introduced, of which *[race conditions]* are the most common. Requirements to communicate and synchronize data between parallel processes also make program designs more complex.
 
-A commonly cited example of parallel computing is *distributed data processing* systems like *[Hadoop]* and *[Spark]*, in which large-scale data processing is performed across multiple clusters. Each cluster processes a portion of the data in parallel, significantly reducing the overall processing time. Thus it is possible to gain fast insights from large datasets, including real-time data from millions of users.
+There are also risks associated with parallelism, such as the risk that simultaneous changes to the same data may corrupt it. Techniques such as *[locking]* can be used to mitigate these risks.
+
+A commonly cited example of parallel computing is *distributed data processing* systems like *[Hadoop]* and *[Spark]*, in which large-scale data processing is performed across multiple clusters. Each cluster processes a portion of the data, in parallel to the processing done on other clusters, significantly reducing the overall processing time. Thus it is possible to gain fast insights from very large datasets, eg. real-time analytics data from millions of users.
 
 Other real world examples of parallel computing include:
 
@@ -57,7 +61,9 @@ Concurrency
                   -------      -----> Task 2
 ----
 
-Parallelism is true multi-tasking – it means multiple tasks are executed simultaneously, literally. Concurrency is multi-threading.
+Parallelism is true *multi-tasking* – it means multiple tasks are executed simultaneously, literally. Concurrency is *multi-threading*.
 
-Programs may have both concurrent and parallel characteristics, or neither.
+Concurrency and parallelism offer performance gains for different use cases. CPU-intensive tasks run efficiently with parallelism, but you don't tend to get performance gains from parallel processing of I/O-bound tasks – concurrency is better for this use case.
+
+Programs may have both concurrent and parallel characteristics, or neither. Combining both parallelism and concurrency can optimize performance in complex applications where there is a mix of CPU-intensive and I/O-bound tasks.
 ****

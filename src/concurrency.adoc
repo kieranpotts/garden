@@ -1,12 +1,16 @@
 = Concurrency
 
-Concurrency refers to the ability of a computer system to handle multiple tasks at the same time. This is achieved by interleaving the execution of processes on a single processing unit (CPU) through *context switching*. This creates the _illusion_ of *link:./parallelism.adoc[parallelism]*, but in reality the tasks are not processed simultaneously. Instead, the CPU switches between tasks, giving each a slice of time to execute, but never executing more than one task at exactly the same time.
+In a computer, tasks are executed using a Central Processing Unit (CPU). A single CPU can execute only one task at a time. However, it can rapidly switch between tasks, giving the appearance that multiple things are happening at once. This is known as *concurrency*.
 
-In a computer, tasks are executed using a Central Processing Unit (CPU). A single CPU can execute only one task at a time. However, it can rapidly switch between tasks, giving the appearance that multiple things are happening at once. For example, modern computer can play music while the user is writing a Word document, and more, using just a single CPU. The CPU alternatives between these tasks so quickly that, to the user, it feels like both are happening at the same time.
+For example, a modern computer can play music while the user is writing a Word document, using just a single CPU. The CPU alternates between these tasks so quickly that, to the user, it feels like both are happening at the same time.
 
-Concurrency is primarily achieved using *threads*, which are the smallest units of execution within a *process*. The CPU switches between threads to handle multiple tasks concurrently. When the CPU switches from one task to another, it saves the current task's state in memory. The CPU then loads the context of the next task, and continues executing it. The CPU repeats this pattern, switching between tasks so quickly that it seems like they are running simultaneously.
+The process of switching between tasks is known as *context switching*. When the CPU switches from one task to another, it saves the current task's state in memory. The CPU then loads the context of the next task, and continues executing it.
 
-Concurrency is distinguished from parallelism. In *link:./parallelism.adoc[parallel programming]*, a program uses multiple CPU cores, each performing a task entirely independently of the others. Parallel programming is true *multi-tasking*, meaning tasks are literally processed "at the same time". Concurrency gives the impression of multi-tasking, but really it is *multi-threading*, meaning that independent tasks share the same execution thread while appearing to be processed simultaneously.
+A *scheduler* is responsible for managing the execution of multiple tasks, which it does by allocating CPU time to each tasks.
+
+Using *threads* is a common way to implement concurrency. A thread is the smallest unit of execution within a *process*. It is a sequence of executable instructions that can be managed independently by a scheduler. Multiple threads can exist within the same process, sharing resources such as memory. Concurrency is implemented by using a scheduler to interleave the execution of threads within a process running on a CPU.
+
+Concurrency gives the _illusion_ of *link:./parallelism.adoc[parallelism]*, but it is not the same thing. In *link:./parallelism.adoc[parallel programming]*, a program uses multiple CPU cores, each performing a task entirely independently of the others. Parallel programming is true *multi-tasking*, meaning tasks are literally processed "at the same time". Concurrency gives the impression of multi-tasking, but really it is *multi-threading*.
 
 ----
 Parallelism
@@ -18,11 +22,11 @@ Concurrency
                   -------      -----> Task 2
 ----
 
-Programs may have both concurrent and parallel characteristics, or neither.
+Programs may have both concurrent and parallel characteristics, or neither. The two concepts can be combined to optimize programs in different ways.
 
 The objective of concurrency is to maximize CPU utilization by minimizing idle time. When one thread or process is waiting for I/O operations, database transactions, or external program launches, the CPU can allocate resources to another thread. This ensures the CPU remains productive, even when individual tasks are stalled.
 
-But there is a cost to the benefits provided by concurrency. Every context switch requires saving and restoring task states, which itself consumes time and resources. Excessive context switching can degrade performance by increasing CPU overhead.
+But there is a cost to the benefits provided by concurrency. Every context switch requires saving and restoring task states, which itself consumes time and resources. Excessive context switching can degrade performance by increasing CPU overhead. Thus, performance tends to degrade when the number of concurrently-running tasks increases.
 
 Nevertheless, concurrency can be useful for improving the responsiveness of software applications, by allowing them to handle multiple tasks without waiting for one to complete before starting another. Concurrency is commonly used in scenarios where tasks involve waiting for input/output operations, such as reading from a file or waiting for user output.
 
