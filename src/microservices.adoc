@@ -7,9 +7,11 @@
 // TODO: https://medium.com/hashmapinc/the-what-why-and-how-of-a-microservices-architecture-4179579423a9
 // TODO: https://newsletter.systemdesign.one/p/netflix-microservices
 
-The microservice pattern is a subset of *link:./service-oriented-architecture.adoc[service-oriented architecture (SOA)]*.
+The microservice pattern is a subset of *link:./service-oriented-architecture.adoc[service-oriented architecture (SOA)]*. The microservice architecture can be thought of as an extreme form of service-oriented design, in which principles like *[separation of concerns]*, *[modularity]*, and *[decoupling]* are applied to their fullest extent.
 
-There is no definitive list of features that distinguish microservices from more general service-oriented designs, but it is widely accepted that the difference is one of granularity. Microservices are typically very small, scoped to a single business function, and independently deployable thanks to maximized *[decoupling]* between services. There also tends to be a bias toward *link:./asynchronous-communication.adoc[asynchronous communication]* between services, particularly indirect *[message-driven]* communication using lightweight messaging protocols, rather than direct service-to-service calls. These constraints do not necessarily apply to service-oriented architecture.
+There is no definitive list of features that distinguish microservices from more general service-oriented designs, but it is widely accepted that the difference is one of granularity. Individual microservices are typically very small, scoped to a single business function, and independently deployable thanks to maximized *[decoupling]* between services. There also tends to be a bias toward *link:./asynchronous-communication.adoc[asynchronous communication]* between services, particularly indirect *[message-driven]* communication using lightweight messaging protocols, rather than direct service-to-service calls. These constraints do not necessarily apply to service-oriented architecture.
+
+In the following table, the characteristics of microservices are contrasted with those of more general service-oriented architecture. These are generalizations, and in the real-world there is a continuum of designs between the two.
 
 .Microservices vs. SOA
 [cols="1,2,2"]
@@ -30,11 +32,11 @@ There is no definitive list of features that distinguish microservices from more
 
 |*State*
 |Emphasis on stateless service design.
-|Some services may be stateful.
+|Services may be stateful.
 
 |*Coupling*
 |Services are very loosely coupled, with minimal direct dependencies between them. Ideally, individual services will be able to fully process their requests, without needing to call any other service.
-|Higher use of direct synchronous communication between services, and possible shared data stores, increases coupling and risks evolution into "distributed monolith".
+|Higher use of direct synchronous communication between services, and possibly shared data stores, increases coupling and risks evolution into "distributed monolith".
 
 |*Technology*
 |Encourages use of different languages and technology stacks to optimize individual services for their use cases.
@@ -54,7 +56,7 @@ There is no definitive list of features that distinguish microservices from more
 
 |*Operations*
 |Services are operated by the team that built them.
-|May be run by a central operations teams.
+|Services may be run by a central operations teams.
 
 |*Team topologies*
 |Each service is likely to be fully developed and operated by a single team.
@@ -63,9 +65,9 @@ There is no definitive list of features that distinguish microservices from more
 
 That final differentiating characteristic – the correlation between microservice architecture and *[team topologies]* – is particularly important. Microservice architecture is designed to solve the problem of how to scale the development and operation of a large, complex system across a very large organization. Traditional organizational structures – for example, where there are separate development and operations teams – tend to buckle under the weight of the communication overhead that comes with managing a large number of subsystems. In the microservices approach, the functional boundaries of microservices map directly to the responsibility boundaries between teams. Because the technical architecture is reflected in the organizational structure, and because each team is responsible for the full lifecycle of the services they own – design, development, testing, deployment, operation, maintenance, and support – then the communication overhead is significantly reduced.
 
-Microservices architecture has been proven to make possible the extreme scalability of software organizations to thousands of people, across hundreds of teams, all while maintaining the delivery speed and agility of a small start-up. This is achieved by composing a system from lots of very small, highly isolated components, each with a single narrowly-scoped responsibility, and with coupling between components all but eliminated. Crucially, each component is the exclusive responsibility of a single team that operates with a high degree of autonomy. Thus, individual services can be changed quickly, not only due to low coupling with other services, but also due to limited requirements for coordination of changes between teams.
+Microservices architecture has been proven to make possible the extreme scalability of software organizations to thousands of people, across hundreds of teams, all while maintaining the delivery speed and agility of a small start-up. This is achieved by composing a system from lots of small, highly isolated components, each with a single narrowly-scoped responsibility, and with coupling between components all but eliminated. Crucially, each component is the exclusive responsibility of a single team that operates with a high degree of autonomy. Thus, individual services can be changed quickly, not only due to low coupling with other services, but also due to limited requirements for coordination of changes between teams.
 
-With a microservice architecture, *[extreme programming]* practices like *[continuous deployment]* become possible even at enterprise scale. Microservices are a natural fit for the *[DevOps]* model of software development, where development and operations are closely aligned, where a single *link:./cross-functional-teams.adoc[cross-functional team]* is responsible for the end-to-end design, development, testing, deployment, operation, maintenance, and support of a single service – the "you build it, you run it" model.
+With a microservice architecture, *[extreme programming]* practices like *[continuous deployment]* become possible even at enterprise scale. Microservices are a natural fit for the *[DevOps]* model of software development, where development and operations are closely aligned, where a single *link:./cross-functional-teams.adoc[cross-functional team]* is responsible for the end-to-end design, development, testing, deployment, operation, maintenance, and support of a single service – the *[you build it, you run it]* model.
 
 The term "microservices" originated in the early 2010s and was popularized by thought leaders such as Martin Fowler and James Lewis. Subsequently, the term *[nanoservices]* has been used to describe services that are even more granular than microservices.
 
@@ -95,11 +97,13 @@ In extreme implementations, microservices become *disposable*, meaning that indi
 
 An event-driven, stateless microservice architecture gives us a very scalable, very extensible, and very resilient application platform. Add in a continuous *[deployment pipeline]* and you can do thousands of releases, to hundreds of microservices, without a moment of downtime.
 
+But the microservice architecture is really a solution to scaling _teams_ rather than _applications_. The microservice architecture is one of the best approaches for scaling very large teams. Conversely, it is a poor choice for small teams, due to the significant operational overheads associated with managing a large number of services. If microservices are used to horizontally scale an application that's managed by a small team, you will likely need a much larger team to develop and operate the resulting system, and a lot of organizational maturity to be able to manage all the additional complexity, too. 
+
 == Challenges in microservices implementation
 
 Microservices have become regarded as a sort of paragon of distributed software design, and a *link:./silver-bullet.adoc[silver bullet]* for solving the problems of large-scale *[software-as-a-service]* development. Microservices were popularized by companies like Amazon, Netflix, and Uber, who adopted this architectural style to solve their unique challenges of delivering planet-scale software-as-a-service solutions. But few organizations have the scalability challenges that microservice architecture is designed to solve. For most organizations, the costs of implementing microservices will likely outweigh the benefits.
 
-The costs of implementing microservices are not trivial – even in the context of cloud infrastructure, which is well-suited to microservices. The costs arise from the additional *[accidental complexity]* associated with the monitoring, orchestration, and operation of a large number of services. The operational overhead of microservices can be significant.
+The costs of implementing microservices are not trivial – even in the context of cloud infrastructure, which is well-suited to microservices. The costs arise from the additional *[accidental complexity]* associated with the monitoring, orchestration, and operation of a large number of services. The operational overhead of microservices can be significant, and for this reason this architectural pattern is rarely suitable for small teams and small applications; the operational overheads of microservices are only justified in large-scale systems developed and maintained by large IT departments.
 
 Infrastructure costs can be very high for microservice systems. Although services can be individually *[optimized]* for their specific use cases and traffic patterns, there are many additional technical services to run in production like *[service discovery]*, *[load balancers]*, *[API gateways]*, and *[monitoring]* and *[observability]* tools – which depend on the gathering and real-time processing of large-volume of *[telemetry]* data. In addition, non-production infrastructure to automate testing and deployment can become extensive. *[Cloud infrastructure]* systems, and especially *[public clouds]* which provide many of these features as *[managed services]*, can reduce the costs associated with transitioning to microservice architecture in the short term, while tool such as *[infrastructure as code]* can further reduce the cost of managing such complex infrastructure over the longer term.
 
@@ -144,7 +148,7 @@ ____
 Don't design microservices, extract them.
 ____
 
-You start with a modular monolith, decomposed around business verticals. Module boundaries map to business units or capabilities, so the system design is based around a *[model of the business domain]*. From that starting point, you can rapidly refactor the modular monolith to optimize the internal communication patterns between modules. The focus here should be on simplifying the system's internal communicaiton patterns, not on decomposing the system into the smallest possible components. Indeed, it may even be desirable for some modules to remain quite large, potentially even spanning multiple subdomains (or a single bounded context).
+You start with a modular monolith, decomposed around business verticals. Module boundaries map to business units or capabilities, so the system design is based around a *[model of the business domain]*. From that starting point, you can rapidly refactor the modular monolith to optimize the internal communication patterns between modules. The focus here should be on simplifying the system's internal communication patterns, not on decomposing the system into the smallest possible components. Indeed, it may even be desirable for some modules to remain quite large, potentially even spanning multiple subdomains (or a single bounded context or business capability).
 
 Once the system design is relatively stable, you can start to extract out services from the modules of the monolith. The *[refactoring]* process of extracting out microservices from a monolith, service-by-service (or, for that matter, refactoring a monolith into clearly-delineated modules), is known as *[functional decomposition]*. This is a much more gradual and less risky approach than starting with microservices from the outset. It means you do not risk *[prematurely optimizing]* the system design for problems that you may not ever have. Also, because it is much easier to *[refactor]* the internal structure of a *[monolith]* than it is to change the structure of distributed software, you can more rapidly iterate a system's domain model and functionality in the early stages of development – exactly the time in a product's lifecycle when requirements are at their most volatile. Development effort can focus on optimization once functional requirements are more stable.
 
