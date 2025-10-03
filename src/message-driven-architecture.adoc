@@ -4,9 +4,11 @@ Message-driven architecture (MDA) is a *[software architecture pattern]* that pr
 
 Messages are an abstraction of a piece of data that typically represents one of the following:
 
-* A *command*.
-* An *event*.
-* A *query*.
+* A command
+* An event
+* A query
+
+*Events* represent things that have happened in the service emitting the event (eg., `user.created`, `order.placed`). *Commands* represent requests for operations to be performed by other services (eg. `sendEmail`, `refundOrder`). *Queries* are requests for data (eg., `getUserDetails`, `listOrders`).
 
 Commands and events are very similar. The difference is mostly just in the statement of intent that underpins their semantics, whether the message is telling another component to do something (a command), or informing other components that something has happened (an event). And queries are just one component asking for a piece of data from whatever other component can provide it.
 
