@@ -1,0 +1,41 @@
+= Behavior-driven development
+
+Behavior-driven development (BDD) is a software development approach devised by Dan North. It is an extension of link:./test-driven-development.adoc[test-driven development] in which tests are focused on the behavior of the system from the user's perspective, rather than technical implementation details.
+
+The core idea is that tests are written in a way that describes the desired behavior of the software in plain language, making them understandable to all stakeholders, including non-technical ones.
+
+[quote, Dan North]
+____
+BDD is a second generation, outside-in, pull-based, multiple-stakeholder, multiple-scale, high-automation, agile methodology. It describes a cycle of interactions with well-defined outputs, resulting in the delivery of working, tested software that matters.
+____
+
+The typical format is a given-when-then structure:
+
+----
+Given <some context or initial state>
+When <an action or event occurs>
+Then <an outcome _should_ occur>
+----
+
+Example:
+
+----
+Given a user has items in their cart
+When they proceed to checkout
+Then they should see a payment form
+----
+
+There exist a number of testing tools that are optimized for the BDD style of testing. Well known BDD frameworks include Cucumber, SpecFlow, and Behave. All these are based on the original BDD tool, https://jbehave.org/[jBehave], created by Dan North. Most BDD tools allow you to write tests in plain text formats, though this is not a requirement to implement BDD.
+
+Benefits of BDD include:
+
+* Improved shared understanding of software requirements specifications between developers, testers, product owners, and business stakeholders.
+* Tests serve as a form of [living documentation] that stays synchronized with the codebase.
+* Focus on user value rather than technical implementation details.
+* Clearer requirements that reduce ambiguity before coding begins.
+
+BDD shifts the conversation from "how do we test this function?" to "what should this feature do for the user?" As such, BDD is as much a communication strategy as a testing methodology. It works best when the whole team collaborates on defining behaviors up-front.
+
+== Related links
+
+* https://www.youtube.com/watch?v=_k8OHEXoe9k[Behavior-driven development: embrace change], Liz Keogh, Agile on the Beach (2018)
