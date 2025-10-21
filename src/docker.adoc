@@ -2,7 +2,7 @@
 
 // TODO: https://aws.amazon.com/docker/?trk=faq_card
 
-Docker is a *link:./container.adoc[container]* technology.
+Docker is a *link:./container.adoc[container]* technology released in 2013.
 
 There are two parts to Docker:
 
@@ -64,3 +64,31 @@ CMD /bin/bash
 ----
 docker build -t voltdb/voltdb .
 ----
+
+== Alternatives to Docker
+
+While Docker is by far the most popular containerization technology, there are alternatives available. These include *Podman*, *containerd*, *rkt*, and *LXC*.
+
+=== Podman
+
+Podman addresses a key criticism of Docker: that the Docker daemon runs as a privileged root process. This is a security risk, because if an attacker is able to compromise the Docker daemon, they can gain root access to the host system.
+
+Podman threw this execution model out the window. Podman is a daemon-less container engine. It runs containers as child processes of the Podman CLI, which means when you run `podman run my-app`, the container becomes a direct child of your command, running under your user privileges. This simple architectural change has significant implications:
+
+* *Daemon-less execution* means no single point of failure. If the Podman CLI crashes, your containers keep running. With Docker, if the daemon crashes, it will take down all running containers. With Podman when one container crashes, the others keep running like nothing happened.
+
+* *Rootless containers*: Podman allows users to run containers without root privileges. This enhances security by reducing the attack surface and limiting potential damage from compromised containers. Even if someone somehow escalates privileges inside a container to root level, they're still just an unprivileged user on the actual host.
+
+* *Light resource footprint*: Podman's design uses fewer system resources compared to traditional container engines like Docker. No constantly running daemon means less memory usage. This makes it an attractive option for running containers on resource-constrained environments.
+
+Podman's secure, lightweight runtime design makes it a good choice for multi-tenant environments, and low-resource systems.
+
+Other advantages of Podman include:
+
+* *Systemd integration*: Podman can generate systemd unit files – with the command `podman generate systemd --name my-app` – for your containers, making it easy to manage them as system services. This means you can take advantage of all the features systemd offers, like automatic restarts and resource limits. You can enable, start, stop, and monitor your containers using standard `systemctl` commands.
+
+* *Kubernetes integration*: Podman has excellent support for Kubernetes. Red Hat, the company behind Podman, is also a major contributor to Kubernetes, so Podman was designed with Kubernetes in mind from the start. Podman was really to designed to work _with_ Kubernetes, rather than k8s being a bolt-on feature. For example, you can generate Kubernetes YAML files directly from Podman using the `podman generate kube` command. And if your Docker Compose is overly complex, just convert it to Kubernetes YAML! This makes it easy to transition from local development to deployment on a Kubernetes cluster, keeping the two environments consistent.
+
+* *Compatibility with Docker CLI*: Podman is designed to be a drop-in replacement for Docker. This means you can use the same commands and workflows you're already familiar with. In fact, you can alias `docker` to `podman` in your shell (`docker=podman`) and continue working without missing a beat. `podman run`, `podman build`, `podman ps` – they all behave exactly like their Docker counterparts. Your existing Dockerfiles will work without modification, too.
+
+* *Unix philosophy*: Podman adheres to the Unix philosophy of doing one thing well. It focuses on container management and delegates other tasks, like image building and registry management, to specialized tools like Buildah (to build images with fine-grained controls) and Skopeo (to inspect images, and copy them between registries). This modular approach allows users to choose the best tool for each task, rather than relying on a monolithic solution.
