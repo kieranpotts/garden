@@ -42,6 +42,18 @@ The https://kernel.org/[Linux kernel] is a free and open-source Unix-like OS ker
 
 *Oracle Linux* is a free and open-source distribution that is based on RHEL. It is optimized for Oracle software and hardware, but it can be used for general-purpose computing as well.
 
+=== Specialized distributions
+
+*Alpine Linux* is an independent Linux distribution, built from scratch rather than being based on an existing distribution like Debian. The most notable characteristic of Alpine is its size. Base images are typically around 5MB, compared to Debian's 100MB+. This has made Alpine extremely popular for Docker containers where minimizing image size matters. The distribution was originally created for security-focused use cases like routers and firewalls, which explains its minimal approach.
+
+Alpine uses *musl libc* instead of the more common *glibc* that Debian uses. This makes Alpine significantly lighter but can occasionally cause compatibility issues with software expecting glibc.
+
+For package management, Alpine has apk (Alpine Package Keeper), while Debian uses apt/dpkg. Alpine's packages are generally smaller and more minimal.
+
+Alpine uses *OpenRC* as its init system, whereas Debian-based systems use *systemd* by default.
+
+Alpine also uses *BusyBox* for many core utilities instead of GNU *coreutils*, which contributes to its small footprint but means some commands may have slightly different options or behaviors than you'd expect on Debian or other mainstream distributions.
+
 == Linux package managers
 
 * APT (Ubuntu/Debian)
