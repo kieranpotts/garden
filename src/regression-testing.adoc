@@ -1,3 +1,9 @@
 = Regression testing
 
-// TODO
+Regression testing is one of the most important and widely practiced forms of software testing, designed to verify that changes made to an application — whether bug fixes, new features, or refactoring — have not inadvertently broken functionality that was previously working correctly.
+
+The core concern is that a seemingly small or localized change in one component of a system can have unexpected ripple effects on other, ostensibly unrelated components. Regression testing guards against this by re-executing test cases that were passing against earlier versions of the application, confirming that they continue to pass against the current version.
+
+In practice, regression testing typically involves maintaining a suite of tests accumulated over the history of a project, which grows over time as new functionality is added and new bugs are discovered and fixed. Automation is particularly valuable here, since manually re-running a large test suite after every change would be prohibitively time-consuming. *[Continuous integration pipelines]* commonly trigger automated regression suites on each new build, providing rapid feedback to developers.
+
+While full regression testing can be resource-intensive, the cost of not performing it — shipping a release that silently breaks existing behavior — is generally far greater.
