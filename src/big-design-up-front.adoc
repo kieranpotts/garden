@@ -6,31 +6,45 @@ Synonyms for big design up-front (BDUF) are big modeling up-front (BMUF) and big
 
 Big design up-front emerged from traditional engineering disciplines – civil, mechanical, electrical – where making changes to designs after construction begins can be extremely expensive. The approach is often associated with the *[waterfall model]* of software development, though the concepts differ. In waterfall approaches, the objective is to eliminate the need for incremental development within each phase of the software development life cycle. In big design up-front, only the early phases of analysis and design are done in big sequential steps. Construction, testing, and subsequent phases may be broken down into incremental cycles.
 
-In *[agile software development]*, big design up-front is considered an *[anti-pattern]*. Practitioners of agile development have used big design up-front to pejoratively describe the practice of trying to design entire systems comprehensively before writing any code. The term is deliberately intended to evoke the image document-heavy, bureaucratic planning processes – commonplace in the 1980s and 1990s – and contrasting this with agile's preference for just-in-time design decisions and product roadmaps being driven by customer feedback.
+In *[agile software development]*, big design up-front is considered an *[anti-pattern]*. Practitioners of agile development have used big design up-front to pejoratively describe the practice of trying to design entire systems comprehensively before writing any code. The term is deliberately intended to evoke the image of document-heavy, bureaucratic planning processes – commonplace in the 1980s and 1990s – and contrasting this with agile's preference for just-in-time design decisions and product roadmaps driven by customer feedback.
 
-Critics of big design up-front say that is leads to:
+Critics of big design up-front say that it leads to:
 
 * *[Analysis paralysis]*.
-* *High cost*: Wasted effort on features that are not needed. Designs that don't survive contact with reality. Assumptions made early prove to be incorrect.
-* *Inflexibility* in the face of changing requirements. Late discovery of design flaws.
-* Long *time to market*. Extended planning phases delay value delivery. No working software until late in the process. Difficult to validate assumptions without implementation.
-* Risk of *[over-engineering]*. Designing for requirements that may never materialize. Overly complex solutions to simple problems. *[Software bloat]*.
+* High cost: wasted effort on features that are not needed; designs that don't survive contact with reality; assumptions made early prove to be incorrect.
+* Inflexibility in the face of changing requirements. Late discovery of design flaws.
+* Long time-to-market. Extended planning phases delay value delivery. No working software until late in the process. Difficult to validate assumptions without implementation.
+* Risk of *[over-engineering]*. Designing for requirements that may never materialize. Overly complex solutions to simple problems. (See also *[software bloat]*.)
 * Poor *[feedback loops]*. Users don't see working software until late. Integration issues discovered late. Performance problems identified after implementation.
 
-However, big design up-front does has a number of advantages, including:
+However, big design up-front has a number of advantages, including:
 
 * Early clarity on project scope and timelines.
 * Comprehensive risk analysis before commitment. Early compliance with regulatory requirements.
 * Early identification of major technical challenges.
-* More accurate cost estimates. 
-* Reduced scope creep.
+* More accurate cost estimates.
+* Reduced risk of scope creep.
 * Better coordination of work between multiple teams. Reduced communication overhead.
 * Clear dependencies and integration points.
 * Extensive documentation and audit trails.
 
-Big up-front design isn't inherently good or bad. It's a method that works well in certain contexts but can be counterproductive when applied inappropriately to dynamic, uncertain, or innovative projects. Almost all software projects will benefit from some degree of up-front planning. How "big" that up-front planning is will vary significantly from project to project.
+Joel Spolsky, a widely-read commentator on software development, argued strongly in favor of big design up-front:
 
-A good balance is often found with up-front planning of the high-level architecture and perhaps well-defined contracts for the system interfaces – perhaps with the support of *[prototypes]* – but with implementation details discovered and refined through *[incremental and iterative]* build and testing phases.
+[quote, Joel Spolsky]
+____
+Many times, thinking things out in advance saved us serious development headaches later on. ... I can't tell you how strongly I believe in Big Design Up-Front, which the proponents of Extreme Programming consider anathema. I have consistently saved time and made better products by using BDUF and I'm proud to use it, no matter what the XP fanatics claim. They're just wrong on this point and I can't be any clearer than that.
+____
+
+However, several commentators have argued that what Spolsky describes as big design up-front does not resemble the BDUF criticized by agile advocates, noting that his own process was neither a complete program design nor finished entirely up-front:
+
+[quote, Joel Spolsky]
+____
+This specification is simply a starting point for the design of Aardvark 1.0, not a final blueprint. As we start to build the product, we'll discover a lot of things that won't work exactly as planned. We'll invent new features, we'll change things, we'll refine the wording, etc. We'll try to keep the spec up to date as things change. By no means should you consider this spec to be some kind of holy, cast-in-stone law.
+____
+
+More broadly, critics argue that BDUF assumes designers can foresee problem areas without extensive prototyping or implementation experience. For substantial projects, user requirements often need refinement in light of initial deliverables, and business needs can evolve faster than large projects are completed – leaving the design outdated before the system ships.
+
+Big design up-front isn't inherently good or bad. It's a method that works well in certain contexts but can be counterproductive when applied inappropriately to dynamic, uncertain, or innovative projects. Almost all software projects will benefit from some degree of up-front planning. How "big" that up-front planning should be will vary significantly from project to project.
 
 The optimal amount of up-front design will depend on factors like:
 
@@ -40,14 +54,4 @@ The optimal amount of up-front design will depend on factors like:
 * Regulatory and compliance requirements.
 * Time constraints and market dynamics.
 
-
-
-Synonyms for big design up front (BDUF) are big modeling up front (BMUF) and big requirements up front (BRUF). These are viewed as anti-patterns within agile software development.[1]
-
-BDUF emerged from traditional engineering disciplines (civil, mechanical, electrical) where changes after construction begins are extremely expensive. It was formalized in software through methodologies like:
-
-* Waterfall Model - The classic sequential development approach
-* DoD-STD-2167 - U.S. Department of Defense software development standard
-* IEEE 12207 - Software lifecycle processes standard
-
-////
+A good balance is often found with up-front planning of the high-level architecture and well-defined contracts for the system interfaces – supported by *[prototypes]* where appropriate – with implementation details discovered and refined through *[incremental and iterative]* build and testing phases.
