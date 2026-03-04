@@ -1,3 +1,13 @@
 = DRY
 
-// TODO: https://injulkarnilesh.github.io/design-principles/DRY/
+*DRY* — *Don't Repeat Yourself* — is a software design principle, coined by Andy Hunt and Dave Thomas in _The Pragmatic Programmer_ (1999), which states that every piece of knowledge should have a single, unambiguous, authoritative representation within a system.
+
+Violations of DRY are sometimes called *WET* code — "Write Everything Twice" or "We Enjoy Typing".
+
+DRY is widely cited as one of the most fundamental principles in software engineering, and its scope extends beyond code to encompass configuration, documentation, data schemas, and build processes – anywhere that the same piece of knowledge is expressed in more than one place, a change to that knowledge requires multiple coordinated updates, creating opportunities for inconsistency and bugs.
+
+A common misconception is that DRY is simply about avoiding copy-pasted code. Its actual concern is the duplication of _knowledge_ or _logic_, not superficial textual similarity. Two pieces of code that happen to look alike but represent genuinely different concepts, or which belong to distinctly different parts of a system, should not necessarily be unified under a shared abstraction.
+
+Taking DRY to the extreme can lead to *[over-engineering]*, introducing inappropriate coupling and obscure intent. This tension is sometimes captured in the heuristic that duplication should be tolerated until a pattern is well understood, avoiding premature abstraction.
+
+In testing, deliberate repetition is often preferred for the sake of readability and isolation, and is considered an acceptable exception to the principle.
