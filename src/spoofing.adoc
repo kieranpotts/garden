@@ -1,0 +1,28 @@
+= Spoofing
+
+*Spoofing* is a class of cyber attack in which an attacker disguises themselves, a device, or a communication as a trusted source in order to deceive a victim or bypass security controls.
+
+Spoofing is the "S" in the *[STRIDE]* threat model.
+
+The impersonation can target many layers of a system:
+
+* *IP spoofing* forges the source address in network packets to impersonate a trusted host or obscure the attacker's origin;
+
+* *email spoofing* falsifies the sender address to make a message appear to originate from a legitimate contact or organization, a technique central to *[phishing]* attacks;
+
+* *DNS spoofing* (or cache poisoning) corrupts DNS records to redirect traffic intended for a legitimate domain to a malicious server;
+
+* and *ARP spoofing* links an attacker's MAC address to a legitimate IP address on a local network, enabling *[man-in-the-middle]* interception.
+
+* *Website spoofing* — creating convincing replicas of legitimate sites — is commonly used to harvest credentials from unsuspecting users.
+
+Spoofing attacks are typically a means to an end rather than an end in themselves, serving as a precursor to data theft, session hijacking, malware delivery, or unauthorized access.
+
+Defenses are correspondingly varied and layer-specific:
+
+* email authentication standards such as SPF, DKIM, and DMARC make sender forgery detectable and rejectable;
+* DNSSEC adds cryptographic validation to DNS responses;
+* TLS certificates allow clients to verify the identity of web servers;
+* and network-level ingress and egress filtering can block packets with forged source addresses from entering or leaving a network.
+
+At the application level, strong *[authentication]* mechanisms — particularly those that do not rely solely on network-level identity signals such as IP addresses — are the primary mitigation.
