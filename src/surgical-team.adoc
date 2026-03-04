@@ -1,0 +1,47 @@
+= Surgical team
+
+The *surgical team* — more formally, the *chief programmer team* — is a model for organizing software development work, proposed by Harlan Mills in 1971 and popularized by Fred Brooks in _The Mythical Man-Month_. It draws an analogy with a surgical operating team: just as a surgeon performs the critical work of an operation while specialist support staff handle everything else, a small group of highly skilled programmers does the actual design and coding while a larger group of supporting roles removes every possible obstacle from their path.
+
+The model was motivated by a well-documented dilemma in large software projects. Empirical studies had shown that the most productive programmers could outperform the least productive by an order of magnitude — not only in throughput but in the speed and compactness of their output – an idea now known as the *[10x programmer]*. This suggested that a small team of exceptional people would produce better software than a large team of average ones.
+
+But for projects of significant scale — Brooks cited IBM's OS/360, which consumed some 5,000 man-years of effort — even a small team of superstars faces a ceiling: the communication and coordination costs of a large group compound the problem, but a tiny group simply cannot deliver in any reasonable timeframe.
+
+The surgical team was Mills's proposed resolution to this tension: preserve conceptual integrity and efficiency by concentrating actual design and coding in a very few hands, while using a broader support structure to multiply their effectiveness.
+
+In Mills's original formulation, the team comprised nine roles:
+
+* *Surgeon* (chief programmer): Defines the architecture, writes all critical code, and produces the core documentation. The single source of conceptual integrity for the component.
+
+* *Copilot*: The surgeon's backup — equally capable in principle, but less experienced. Participates in design discussions, offers feedback, and can take over if needed.
+
+* *Administrator*: Handles personnel, budget, space, and equipment, freeing the surgeon from managerial overhead. A single administrator can serve multiple teams.
+
+* *Editor*: Takes documentation drafted or dictated by the surgeon and refines, structures, and maintains it.
+
+* *Program clerk*: Maintains all machine-readable and human-readable records produced by the team — code, test runs, change logs.
+
+* *Toolsmith*: Builds the specialised utilities, scripts, and environments the surgeon needs.
+
+* *Tester*: Designs and maintains test cases, generates test data, and runs tests continuously as the code develops.
+
+* *Language lawyer*: A specialist in the programming language and operating system who can be consulted for efficient, idiomatic solutions. Shared across multiple teams.
+
+* *Secretaries*: Handle correspondence and administrative files for both the editor and the administrator.
+
+In this arrangement only the surgeon and copilot actively work on the problem itself; all other roles exist to provide all the support they need.
+
+To scale the model to a large system, the program is divided into sub-components, a surgical team is assigned to each, and coordination is managed solely between the chief programmers — keeping the communication structure lean.
+
+Many of the original roles have since been absorbed into other job titles or have disappeared as tooling has improved: the program clerk's function was largely made redundant by version control systems, the toolsmith's by standardized build infrastructure, and documentation has increasingly become the programmer's own responsibility.
+
+But the underlying insight — that concentrating design authority in a small number of highly capable individuals, supported by a structure that shields them from distraction, produces better outcomes than distributing it widely — remains influential in thinking about team organization and the relationship between individual productivity and project scale.
+
+''''
+
+== References
+
+* "Exploratory experimental studies comparing online and offline programming performance" — Sackman _et al_, CACM January 1968
+
+* "Chief programmer teams, principles, and procedures" — Mills, IBM Federal Systems Division Report 1971
+
+* Baker, F. T., "Chief programmer team management of production programming" — Baker, IBM Systems Journal 1972
