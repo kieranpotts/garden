@@ -1,0 +1,13 @@
+= Linting
+
+*Linting* is the automated checking of source code for stylistic inconsistencies, suspicious patterns, and straightforward programming errors.
+
+A linter analyses code statically — without executing it — applying a set of configurable rules to flag issues such as unused variables, unreachable statements, inconsistent indentation, violations of naming conventions, and the use of deprecated or error-prone language features.
+
+The term originates from `lint`, a Unix utility written in the late 1970s to catch non-portable C constructs, and has since been generalized to tooling for almost every programming language in common use.
+
+Linting is a form of *link:./static-analysis.adoc[static analysis]*, but occupies a specific position within that broader category. Whereas static analysis encompasses a spectrum of techniques — from lightweight heuristics through to type checking, *[SAST]*, and formal verification — linting sits at the lighter end. A linter's rules are typically fast to evaluate, require no knowledge of the full program graph, and are designed to be applied continuously during development with minimal configuration overhead.
+
+The trade-off is depth. A linter will not, in general, trace data flows across module boundaries, verify type safety, or detect subtle security vulnerabilities that require whole-program reasoning. For those concerns, heavier-weight static analysis tools are more appropriate.
+
+In practice, linting and deeper static analysis are complementary and are often run together as part of a *[CI/CD]* pipeline.
