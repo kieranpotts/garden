@@ -13,6 +13,18 @@ Named after Jon Postel, one of the early pioneers of the internet, it suggests t
 
 * Servers should adhere strictly to protocols and standards when sending data. Ensuring that the data sent is accurate, well-formed, and compliant with interface definitions helps to maintain compatibility.
 
-Applying Postel's Law can lead to more robust and interoperable systems.
+Applying Postel's Law can lead to more robust and interoperable systems. It is particularly relevant in the context of *[distributed systems]* and network APIs, where components may be developed independently and may evolve over time, and in *[network protocols]*, where different implementations may have varying levels of compliance with specifications. But it can be relevant in any context where systems interact with each other, such as file formats, data serialization, and user interfaces.
+
+The principle encourages developers to create systems that are strict in their own behavior while being tolerant of variations and imperfections in the behavior of other systems. In practical terms, this means that programs that send messages to other programs should strictly adhere to the interface specifications of the target programs, but programs that receive messages should accept non-conformant input (as long as the meaning of that input is clear).
+
+In other words, programs should be contravariant in the input type, and covariant in the output type.
+
+For example, a program should attempt to process messages received from clients that use an older version of its API (rather than forcing clients to upgrade immediately that a new API version is released), or fill-in missing attributes with default values and  ignore unrecognized input attributes.
+
+The principle is often summarized as "being conservative in what you do, but liberal in what you accept from others".
+
+The robustness principle supports *[iterative and incremental development]* of individual components of *[distributed systems]*. It allows for the gradual evolution of APIs and protocols, enabling developers to introduce new features and improvements without breaking existing functionality. This is particularly important in large-scale systems such as *[microservices]* where services may be developed and maintained by different teams or even different organizations.
 
 However, this principle needs to be balanced against security considerations. Servers should avoid unintentionally accepting harmful or malicious input, for example.
+
+See also *[backwards compatibility]*.
