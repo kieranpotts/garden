@@ -1,5 +1,13 @@
 = Replay attack
 
-A replay attack is a security attack in which a malicious actor intercepts a valid message, stores it, and replays it later to gain unauthorized access to a system or to perform fraudulent actions.
+A replay attack is a network security exploit in which a malicious actor intercepts a valid message and replays it later, impersonating the original sender, to gain unauthorized access to a system or to perform fraudulent actions.
 
-Replay attacks can be mitigated using *link:./nonce.adoc[nonces]*.
+The attack requires no ability to decrypt the intercepted data – the attacker simply captures and reuses it verbatim. A classic example is intercepting an authentication exchange and replaying it to gain access to a system without knowing the underlying password; another is replaying a captured financial transaction message to cause a duplicate payment.
+
+Replay attacks can be mitigated using:
+
+* *link:./nonce.adoc[nonces (numbers used once)]*, unique random values embedded in each request that the server validates and discards after use;
+* *timestamps*, allowing servers to reject requests that fall outside a narrow acceptable time window;
+* and *sequence numbers*, which ensure each message in a session is processed exactly once.
+
+Modern protocols such as TLS incorporate replay protection through session-specific keys and sequence tracking, and short-lived tokens (such as *[JWTs]* with tight expiry times) limit the window of opportunity for a captured credential to be reused.
