@@ -1,2 +1,79 @@
 = Large language model (LLM)
 
+A large language model (LLM) is a neural network trained on very large text datasets to predict and generate language. Modern LLMs can perform many tasks, including answering questions, document summarization, translation, and code generation.
+
+toc::[]
+
+== Training
+
+In the development of LLMs, training is the computationally-enormous process of adjusting a model's weights by exposing the model to vast amounts of data, calculating how wrong the model's outputs are, and nudging the parameters in the right direction… billions of times over.
+
+Training a frontier model like Llama or Qwen requires data centres full of specialized hardware running for weeks or months.
+
+Training demands maximum compute throughput and benefits enormously from features like high-bandwidth inter-GPU connections.
+
+== Inference
+
+In the context of LLMs, inference simply means using a trained model to generate output. It is distinct from training, which is the process of creating the model in the first place.
+
+The term comes from logic and statistics, where "inference" means drawing a conclusion from available information. In LLMs, inference is the process of calculating the next token, based on past learning.
+
+When you type a prompt into an LLM and get a response back, that entire process – loading the model, processing your input, generating each token of the reply – is inference. The model's weights – the billions of numerical parameters that encode everything it learned during training – are fixed. Inference is the process of running data through those fixed weights to produce an output.
+
+Compared to training, inference is relatively cheap. It can be done on a single workstation GPU, with available VRAM being the primary constraint on performance and the size of the model you can use.
+
+== Choosing LLMs
+
+In choosing an LLM, you need to appreciate the tradeoffs to be made between:
+
+* Capability
+* Size
+* Speed
+* Cost
+
+The bigger the AI model, the more capable it is. But the trade-off is that the big, advanced "frontier" models are also slow and costly to run.
+
+At the other end of the spectrum are small models that are optimized for speed rather than capability. Some of these small models may also specialize in particular domains, rather than being capable of lots of different tasks.
+
+Somewhere in the middle are the general-purpose models that find a good balance between these factors, and can do most tasks well.
+
+=== Rankings
+
+A number of websites maintain rankings of LLMs based on various factors:
+
+* https://openrouter.ai/rankings[OpenRouter's rankings] are based on model usage on the OpenRouter platform (which provides a single API to access models from multiple providers).
+* https://artificialanalysis.ai/leaderboards/models[LLM Leaderboard] by Artifical Analysis
+* https://llm-stats.com/[llm-stats.com]
+* https://lmarena.ai/[LMArena]
+
+=== Frontier models
+
+Examples of frontier model families include:
+
+* OpenAI's GPT models.
+* Anthropic's Claude models.
+* Google's Gemini models.
+
+=== Open-weight models
+
+As of 2026, some notable open-weight model families include:
+
+* The *Llama* models from Meta.
+* The *Qwen* models from Alibaba.
+* The *Kimi* models from Moonshot AI.
+* The *GLM* models from Z.ai.
+* The *DeepSeek* models from DeepSeek AI.
+
+== Model managers
+
+The easiest way to use open source models is through a model manager, which provides a simple interface to download and use the models. Some popular model managers include:
+
+* https://ollama.com/[Ollama]
+* https://lmstudio.ai/[LM Studio]
+
+''''
+
+== See also
+
+* *link:./ai-agent.adoc[AI agent]*
+* *link:./ai-coding-assistant.adoc[AI coding assistant]*
