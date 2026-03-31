@@ -12,6 +12,14 @@ Training a frontier model like Llama or Qwen requires data centres full of speci
 
 Training demands maximum compute throughput and benefits enormously from features like high-bandwidth inter-GPU connections.
 
+== Fine-tuning
+
+Fine-tuning is the process of taking a pre-trained model and continuing to train it on a smaller, task-specific dataset to adapt its behaviour for a particular domain or use case. Rather than training from scratch — which requires enormous compute and data — fine-tuning starts from an existing model's weights and adjusts them incrementally.
+
+Fine-tuning is how general-purpose base models are turned into specialised assistants: a model fine-tuned on medical literature will perform better on clinical tasks than the same base model used out of the box.
+
+A lighter-weight alternative is *prompt-based adaptation* — crafting system prompts and few-shot examples to steer model behaviour without changing its weights at all. This is simpler but less powerful than fine-tuning.
+
 == Inference
 
 In the context of LLMs, inference simply means using a trained model to generate output. It is distinct from training, which is the process of creating the model in the first place.
