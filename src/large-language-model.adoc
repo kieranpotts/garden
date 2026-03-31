@@ -22,6 +22,18 @@ When you type a prompt into an LLM and get a response back, that entire process 
 
 Compared to training, inference is relatively cheap. It can be done on a single workstation GPU, with available VRAM being the primary constraint on performance and the size of the model you can use.
 
+== Compute
+
+Both training and inference are computationally intensive and rely heavily on GPUs, which excel at the massively parallel matrix operations that underpin neural networks.
+
+The dominant frameworks for programming GPUs are:
+
+* https://developer.nvidia.com/cuda-toolkit[CUDA] — NVIDIA's proprietary parallel computing platform, dominant in AI/ML workloads due to its maturity and deep integration with frameworks like PyTorch and TensorFlow. Requires NVIDIA hardware.
+
+* https://www.amd.com/en/products/software/rocm.html[ROCm] — AMD's open-source GPU computing platform, their equivalent of CUDA for AMD hardware. Growing PyTorch and TensorFlow support, but still lags behind CUDA in ecosystem maturity.
+
+* https://www.khronos.org/opencl/[OpenCL] — An open standard for parallel computing across heterogeneous hardware (CPUs, GPUs, FPGAs) from any vendor. More portable than CUDA but less widely adopted in the AI ecosystem.
+
 == Choosing LLMs
 
 In choosing an LLM, you need to appreciate the tradeoffs to be made between:
