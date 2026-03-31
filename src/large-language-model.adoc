@@ -106,7 +106,7 @@ RAG is widely used to build knowledge-aware applications — internal document Q
 
 Both training and inference are computationally intensive and rely heavily on GPUs, which excel at the massively parallel matrix operations that underpin neural networks.
 
-The dominant frameworks for programming GPUs are:
+The dominant frameworks for programming GPUs are listed below. These are the software stacks that allow programs like llama.cpp or vLLM (see below) to access GPUs for general compute, rather than graphics workloads.
 
 * https://developer.nvidia.com/cuda-toolkit[CUDA] — NVIDIA's proprietary parallel computing platform, dominant in AI/ML workloads due to its maturity and deep integration with frameworks like PyTorch and TensorFlow. Requires NVIDIA hardware.
 
@@ -120,9 +120,9 @@ Inference engines are the low-level runtimes that actually execute a model — l
 
 The two most widely used inference engines for open-weight models are:
 
-* https://github.com/ggml-org/llama.cpp[llama.cpp] — A C/C++ inference engine optimised for running quantised models on consumer hardware, including CPU-only machines, Apple Silicon, and devices with limited VRAM. Uses the GGUF model format. It is the engine that powers Ollama and LM Studio. Prioritises broad hardware compatibility over maximum throughput.
+* https://github.com/ggml-org/llama.cpp[llama.cpp] — A C/C++ inference engine optimised for running quantised models on consumer hardware, including CPU-only machines, Apple Silicon, and devices with limited VRAM. Uses the GGUF model format. It is the engine that powers Ollama and LM Studio. Prioritises broad hardware compatibility over maximum throughput. Llama.cpp can be made to use multiple GPUs, but it does not support tensor parallelism in the same way that vLLM does...
 
-* https://github.com/vllm-project/vllm[vLLM] — A Python-based inference engine designed for high-throughput production serving on GPU servers. Its key innovation is _PagedAttention_, which manages the KV cache more efficiently, enabling higher request concurrency. Supports multi-GPU tensor parallelism and exposes an OpenAI-compatible API. This is a good choice when serving many users concurrently, rather than running models locally for a single user.
+* https://github.com/vllm-project/vllm[vLLM] — A Python-based inference engine designed for high-throughput via one or more GPUs. The key differentiating feature is that vLLM supports multi-GPU tensor parallelism, which means (in plain English) workloads are more evenly distributed across multiple GPUs. This efficiency shows up in better throughput metrics. vLLM is really intended for optimizing multi-GPU workloads that serve multiple users. Its key innovation is _PagedAttention_, which manages the KV cache more efficiently, enabling higher request concurrency. This is a good choice when serving many users concurrently, rather than running models locally for a single user – though you can use it for that purpose too.
 
 == Choosing LLMs
 
