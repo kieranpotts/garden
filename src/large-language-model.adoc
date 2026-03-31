@@ -10,7 +10,7 @@ toc::[]
 
 In the development of LLMs, training is the computationally-enormous process of adjusting a model's weights by exposing the model to vast amounts of data, calculating how wrong the model's outputs are, and nudging the parameters in the right direction… billions of times over.
 
-Training a frontier model like Llama or Qwen requires data centres full of specialized hardware running for weeks or months.
+Training a frontier model like Llama or Qwen requires data centers full of specialized hardware running for weeks or months.
 
 Training demands maximum compute throughput and benefits enormously from features like high-bandwidth inter-GPU connections.
 
@@ -24,17 +24,17 @@ Understanding the Transformer in detail is not necessary for most LLM users, but
 
 === Fine-tuning
 
-Fine-tuning is the process of taking a pre-trained model and continuing to train it on a smaller, task-specific dataset to adapt its behaviour for a particular domain or use case. Rather than training from scratch — which requires enormous compute and data — fine-tuning starts from an existing model's weights and adjusts them incrementally.
+Fine-tuning is the process of taking a pre-trained model and continuing to train it on a smaller, task-specific dataset to adapt its behavior for a particular domain or use case. Rather than training from scratch – which requires enormous compute and data – fine-tuning starts from an existing model's weights and adjusts them incrementally.
 
-Fine-tuning is how general-purpose base models are turned into specialised assistants. A model fine-tuned on medical literature will perform better on clinical tasks than the same base model used out of the box.
+Fine-tuning is how general-purpose base models are turned into specialized assistants. A model fine-tuned on medical literature will perform better on clinical tasks than the same base model used out of the box.
 
-A specialised form of fine-tuning is *instruction tuning* — training a base model on examples of instructions paired with desired responses. Most frontier models also undergo *reinforcement learning from human feedback* (RLHF), where human raters score model outputs and the model is trained to produce higher-rated responses. These steps are what transform a raw next-token predictor into a helpful, conversational assistant.
+A specialized form of fine-tuning is *instruction tuning* – training a base model on examples of instructions paired with desired responses. Most frontier models also undergo *reinforcement learning from human feedback* (RLHF), where human raters score model outputs and the model is trained to produce higher-rated responses. These steps are what transform a raw next-token predictor into a helpful, conversational assistant.
 
-A lighter-weight alternative is *prompt-based adaptation*. This is the process of crafting system prompts and few-shot examples to steer model behaviour without changing its weights at all. This is simpler but less powerful than fine-tuning. Ollama's Modelfiles are an example of prompt-based adaptation.
+A lighter-weight alternative is *prompt-based adaptation*. This is the process of crafting system prompts and few-shot examples to steer model behavior without changing its weights at all. This is simpler but less powerful than fine-tuning. Ollama's Modelfiles are an example of prompt-based adaptation.
 
 === Tokens
 
-LLMs do not process text character by character or word by word — they work in tokens.
+LLMs do not process text character by character or word by word – they work in tokens.
 
 A token is a chunk of text, typically a word, part of a word, or a punctuation character. Common words are usually a single token; rarer or longer words may be split into multiple tokens. As a rough guide, one token is approximately four characters or three-quarters of a word in English.
 
@@ -44,15 +44,15 @@ Each token is also the unit that gets converted into an embedding (see below) as
 
 === Embeddings
 
-An embedding is a numerical representation of a token as a vector — a list of floating-point numbers. This is the first thing the model does with each token: it looks up the token's embedding from a learned embedding matrix, transforming the raw token ID into a dense vector that the rest of the network can process. Tokens with similar meanings produce vectors that are close together in the embedding space, which is how the model captures semantic and syntactic relationships between words.
+An embedding is a numerical representation of a token as a vector – a list of floating-point numbers. This is the first thing the model does with each token: it looks up the token's embedding from a learned embedding matrix, transforming the raw token ID into a dense vector that the rest of the network can process. Tokens with similar meanings produce vectors that are close together in the embedding space, which is how the model captures semantic and syntactic relationships between words.
 
 Embeddings are also used externally, as the foundation of many LLM-based applications. In a RAG system (see below), documents are converted into embeddings and stored in a vector database. At query time, the user's input is also embedded and the most semantically similar documents are retrieved. Embeddings are also used for search, clustering, and deduplication.
 
-=== Quantisation
+=== Quantization
 
-Quantisation is a technique for reducing the numerical precision of a model's weights — for example, representing values with 4-bit integers instead of 16-bit or 32-bit floats. This reduces memory footprint and speeds up inference at the cost of a small reduction in output quality.
+Quantization is a technique for reducing the numerical precision of a model's weights – for example, representing values with 4-bit integers instead of 16-bit or 32-bit floats. This reduces memory footprint and speeds up inference at the cost of a small reduction in output quality.
 
-Quantisation is what makes it practical to run large models on consumer hardware with limited VRAM.
+Quantization is what makes it practical to run large models on consumer hardware with limited VRAM.
 
 === Inference
 
@@ -66,15 +66,15 @@ Compared to training, inference is relatively cheap. It can be done on a single 
 
 === Temperature and sampling
 
-When generating a response, an LLM does not simply pick the most probable next token at every step — that would produce repetitive, deterministic output. Instead, the model samples from a probability distribution over possible next tokens.
+When generating a response, an LLM does not simply pick the most probable next token at every step – that would produce repetitive, deterministic output. Instead, the model samples from a probability distribution over possible next tokens.
 
-*Temperature* is the parameter that controls how sharp or flat this distribution is. At low temperatures (close to 0), the model almost always picks the highest-probability token, producing focused and predictable output. At higher temperatures, lower-probability tokens become more likely to be chosen, producing more varied and creative — but also less reliable — output.
+*Temperature* is the parameter that controls how sharp or flat this distribution is. At low temperatures (close to 0), the model almost always picks the highest-probability token, producing focused and predictable output. At higher temperatures, lower-probability tokens become more likely to be chosen, producing more varied and creative – but also less reliable – output.
 
 Most LLM APIs expose temperature as a configurable parameter. For factual or code-generation tasks, a low temperature is usually preferable; for creative writing, a higher temperature produces more interesting results.
 
 === Hallucinations
 
-LLMs generate text by predicting the most statistically plausible next token, not by reasoning from facts. As a result, they can produce outputs that are fluent and confident but factually incorrect — a phenomenon known as *hallucination*.
+LLMs generate text by predicting the most statistically plausible next token, not by reasoning from facts. As a result, they can produce outputs that are fluent and confident but factually incorrect – a phenomenon known as *hallucination*.
 
 A model may fabricate citations, invent plausible-sounding names, or state incorrect information as though it were certain. These are all examples of hallucinations.
 
@@ -88,7 +88,7 @@ The practical mitigations are:
 
 === Context window
 
-The context window is the maximum number of tokens an LLM can process in a single interaction — the combined total of the system prompt, conversation history, and the current input and output. Text outside the context window is not visible to the model. The *system prompt* is a set of instructions provided to the model before the conversation begins, typically by the application developer rather than the end user.
+The context window is the maximum number of tokens an LLM can process in a single interaction – the combined total of the system prompt, conversation history, and the current input and output. Text outside the context window is not visible to the model. The *system prompt* is a set of instructions provided to the model before the conversation begins, typically by the application developer rather than the end user.
 
 Context window size is one of the most practically important model characteristics. A larger context window allows the model to consider more of a document, a longer conversation history, or a larger codebase at once.
 
@@ -100,7 +100,7 @@ A core limitation of LLMs is that their knowledge is frozen at the point of trai
 
 In a RAG system, a user's query is used to search a knowledge base (a vector database, a search index, or live web results). The most relevant results are fetched and injected into the model's context alongside the original query. The model then generates a response grounded in that retrieved content, rather than relying solely on what it learned during training.
 
-RAG is widely used to build knowledge-aware applications — internal document Q&A systems, customer support bots, and AI search engines. https://www.perplexity.ai/[Perplexity] is a prominent consumer example. It uses RAG over live web search to answer questions with cited sources in real time. See *link:./ai-assistant.adoc[AI assistants]* for other examples.
+RAG is widely used to build knowledge-aware applications – internal document Q&A systems, customer support bots, and AI search engines. https://www.perplexity.ai/[Perplexity] is a prominent consumer example. It uses RAG over live web search to answer questions with cited sources in real time. See *link:./ai-assistant.adoc[AI assistants]* for other examples.
 
 === Compute
 
@@ -108,21 +108,21 @@ Both training and inference are computationally intensive and rely heavily on GP
 
 The dominant frameworks for programming GPUs are listed below. These are the software stacks that allow programs like llama.cpp or vLLM (see below) to access GPUs for general compute, rather than graphics workloads.
 
-* https://developer.nvidia.com/cuda-toolkit[CUDA] — NVIDIA's proprietary parallel computing platform, dominant in AI/ML workloads due to its maturity and deep integration with frameworks like PyTorch and TensorFlow. Requires NVIDIA hardware.
+* https://developer.nvidia.com/cuda-toolkit[CUDA] – NVIDIA's proprietary parallel computing platform, dominant in AI/ML workloads due to its maturity and deep integration with frameworks like PyTorch and TensorFlow. Requires NVIDIA hardware.
 
-* https://www.amd.com/en/products/software/rocm.html[ROCm] — AMD's open-source GPU computing platform, their equivalent of CUDA for AMD hardware. Growing PyTorch and TensorFlow support, but still lags behind CUDA in ecosystem maturity.
+* https://www.amd.com/en/products/software/rocm.html[ROCm] – AMD's open-source GPU computing platform, their equivalent of CUDA for AMD hardware. Growing PyTorch and TensorFlow support, but still lags behind CUDA in ecosystem maturity.
 
-* https://www.khronos.org/opencl/[OpenCL] — An open standard for parallel computing across heterogeneous hardware (CPUs, GPUs, FPGAs) from any vendor. More portable than CUDA but less widely adopted in the AI ecosystem.
+* https://www.khronos.org/opencl/[OpenCL] – An open standard for parallel computing across heterogeneous hardware (CPUs, GPUs, FPGAs) from any vendor. More portable than CUDA but less widely adopted in the AI ecosystem.
 
 === Inference engines
 
-Inference engines are the low-level runtimes that actually execute a model — loading weights into memory and running the computations that produce each token. Model managers like Ollama and LM Studio (see below) are built on top of them.
+Inference engines are the low-level runtimes that actually execute a model – loading weights into memory and running the computations that produce each token. Model managers like Ollama and LM Studio (see below) are built on top of them.
 
 The two most widely used inference engines for open-weight models are:
 
-* https://github.com/ggml-org/llama.cpp[llama.cpp] — A C/C++ inference engine optimised for running quantised models on consumer hardware, including CPU-only machines, Apple Silicon, and devices with limited VRAM. Uses the GGUF model format. It is the engine that powers Ollama and LM Studio. Prioritises broad hardware compatibility over maximum throughput. Llama.cpp can be made to use multiple GPUs, but it does not support tensor parallelism in the same way that vLLM does...
+* https://github.com/ggml-org/llama.cpp[llama.cpp] – A C/C++ inference engine optimized for running quantized models on consumer hardware, including CPU-only machines, Apple Silicon, and devices with limited VRAM. Uses the GGUF model format. It is the engine that powers Ollama and LM Studio. Prioritizes broad hardware compatibility over maximum throughput. Llama.cpp can be made to use multiple GPUs, but it does not support tensor parallelism in the same way that vLLM does...
 
-* https://github.com/vllm-project/vllm[vLLM] — A Python-based inference engine designed for high-throughput via one or more GPUs. The key differentiating feature is that vLLM supports multi-GPU tensor parallelism, which means (in plain English) workloads are more evenly distributed across multiple GPUs. This efficiency shows up in better throughput metrics. vLLM is really intended for optimizing multi-GPU workloads that serve multiple users. Its key innovation is _PagedAttention_, which manages the KV cache more efficiently, enabling higher request concurrency. This is a good choice when serving many users concurrently, rather than running models locally for a single user – though you can use it for that purpose too.
+* https://github.com/vllm-project/vllm[vLLM] – A Python-based inference engine designed for high-throughput via one or more GPUs. The key differentiating feature is that vLLM supports multi-GPU tensor parallelism, which means (in plain English) workloads are more evenly distributed across multiple GPUs. This efficiency shows up in better throughput metrics. vLLM is really intended for optimizing multi-GPU workloads that serve multiple users. Its key innovation is _PagedAttention_, which manages the KV cache more efficiently, enabling higher request concurrency. This is a good choice when serving many users concurrently, rather than running models locally for a single user – though you can use it for that purpose too.
 
 == Choosing LLMs
 
@@ -132,7 +132,7 @@ At the other end of the spectrum are small models that are optimized for speed r
 
 Somewhere in the middle are the general-purpose models that find a good balance between these factors, and can do most tasks well.
 
-Model size is commonly expressed as the number of trainable parameters, in billions — for example, a 7B model has 7 billion parameters. More parameters generally means greater capability but higher memory and compute requirements. A 7B model can run comfortably on a consumer GPU; a 70B model requires a high-end workstation or server; a 405B model requires multiple high-end GPUs.
+Model size is commonly expressed as the number of trainable parameters, in billions – for example, a 7B model has 7 billion parameters. More parameters generally means greater capability but higher memory and compute requirements. A 7B model can run comfortably on a consumer GPU; a 70B model requires a high-end workstation or server; a 405B model requires multiple high-end GPUs.
 
 === Rankings
 
@@ -142,7 +142,7 @@ A number of websites maintain rankings of LLMs based on various factors:
 * https://artificialanalysis.ai/leaderboards/models[LLM Leaderboard] by Artificial Analysis
 * https://llm-stats.com/[llm-stats.com]
 * https://lmarena.ai/[LMArena]
-* https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard[Open LLM Leaderboard] on Hugging Face — benchmarks open-weight models across standardised tasks.
+* https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard[Open LLM Leaderboard] on Hugging Face – benchmarks open-weight models across standardized tasks.
 
 === Frontier models
 
@@ -150,9 +150,9 @@ A frontier model is a model – or, more commonly, a _family_ of models – that
 
 Frontier models are typically the largest models, trained on the most data, with the best performance across a broad range of tasks. They are developed by well-resourced AI labs and accessed via paid APIs rather than downloaded and run locally.
 
-Frontier models are usually proprietary — which means their weights are not publicly released. The companies that develop them invest heavily in safety evaluation and alignment — the process of steering model behaviour to be helpful, honest, and to avoid harmful outputs.
+Frontier models are usually proprietary – which means their weights are not publicly released. The companies that develop them invest heavily in safety evaluation and alignment – the process of steering model behavior to be helpful, honest, and to avoid harmful outputs.
 
-Modern frontier models are increasingly *multimodal* — capable of processing not just text but also images, audio, and video as inputs, and in some cases generating them as outputs.
+Modern frontier models are increasingly *multimodal* – capable of processing not just text but also images, audio, and video as inputs, and in some cases generating them as outputs.
 
 Examples of frontier model families include:
 
@@ -307,7 +307,7 @@ Examples include:
 
 === Light models
 
-Light models are faster and cheaper, but less capable than the frontier/flagship models. Yet some of these are still incredibly capable. Gemini 3 Flash, for example, maintains most of the capabilties of the flagship Gemini 3 Pro model. This is achieved by a process called *knowledge distillation*, whereby knowledge from a larger model is distilled into a smaller knowledge graph to make a lighter model, which is a lot smaller in size but still maintains a lot of the capabilities of the larger model.
+Light models are faster and cheaper, but less capable than the frontier/flagship models. Yet some of these are still incredibly capable. Gemini 3 Flash, for example, maintains most of the capabilties of the flagship Gemini 3 Pro model. This is achieved by a process called *knowledge distillation*, whereby knowledge from a larger model is distilled into a smaller knowledge graph to make a lighter model, which is smaller in size but still maintains a lot of the capabilities of the larger model.
 
 .Example light models as of March 2026
 |===
@@ -346,15 +346,13 @@ Light models are faster and cheaper, but less capable than the frontier/flagship
 
 === Reasoning models
 
-Reasoning models are a category of LLM that spend additional compute "thinking" through a problem before producing a final response. Rather than generating an answer immediately, they produce an internal chain-of-thought — working through steps, checking logic, and reconsidering — before arriving at a conclusion. This makes them substantially better at complex mathematical, logical, and multi-step problems, at the cost of higher latency and token usage.
+Reasoning models are a category of LLM that spend additional compute "thinking" through a problem before producing a final response. Rather than generating an answer immediately, they produce an internal chain-of-thought – working through steps, checking logic, and reconsidering – before arriving at a conclusion. This makes them substantially better at complex mathematical, logical, and multi-step problems, at the cost of higher latency and token usage.
 
 Notable reasoning models include OpenAI's o1 and o3 series and the open-weight https://huggingface.co/deepseek-ai[DeepSeek-R1].
 
 === Specialist models
 
-These are LLMs that are specifically made to be good at particular things, like analyzing MRI scans, healthcare data, or legal documents.
-
-An example of a model in this category would be the *Sonar* model from Perplexity.
+Specialist models are fine-tuned for a narrow domain or task, rather than general-purpose use. Perplexity's *Sonar* model is an example.
 
 .Sonar
 |===
@@ -384,7 +382,7 @@ An example of a model in this category would be the *Sonar* model from Perplexit
 
 === Open-weight models
 
-*Open-weight* models have publicly released weights, meaning anyone can download and run them. This is distinct from *open-source*, which would also require the training data and code to be public — most open-weight models do not meet that bar.
+*Open-weight* models have publicly released weights, meaning anyone can download and run them. This is distinct from *open-source*, which would also require the training data and code to be public – most open-weight models do not meet that bar.
 
 Licensing terms vary: some permit commercial use, others restrict it.
 
@@ -392,7 +390,7 @@ Open-weight models – which can be downloaded to your computer and operated loc
 
 Open-weight models can also be customized through further fine-tuning and through RAG. Perplexity's Sonar model is an example of an open-weight model that has been fine-tuned for specific use cases.
 
-https://huggingface.co/[Hugging Face] is the primary hub for discovering and downloading open-weight models, hosting over two million models contributed by individuals, research labs, and major organisations.
+https://huggingface.co/[Hugging Face] is the primary hub for discovering and downloading open-weight models, hosting over two million models contributed by individuals, research labs, and major organizations.
 
 As of 2026, some notable open-weight model families include:
 
@@ -402,7 +400,7 @@ As of 2026, some notable open-weight model families include:
 * The https://huggingface.co/THUDM[GLM] models from Z.ai.
 * The https://www.deepseek.com/[DeepSeek] models from DeepSeek AI.
 
-Some of the open-weight models are capable of many of the things that the frontier models can do. *Kimi 2.5* is a good example of this.
+Some open-weight models compete with frontier models in capability. *Kimi K2.5* is a good example of this.
 
 .Kimi K2.5
 |===
@@ -434,15 +432,15 @@ Some of the open-weight models are capable of many of the things that the fronti
 
 === Model gateways
 
-Model gateways provide a single, unified API endpoint, and/or a GUI or other user interface, to access models from multiple hosted LLM providers. Rather than integrating directly with each provider's SDK and managing separate authentication, response formats, and failover logic, developers integrate once with the gateway, which handles routing, fallback, cost optimisation, and observability across providers.
+Model gateways provide a single, unified API endpoint, and/or a GUI or other user interface, to access models from multiple hosted LLM providers. Rather than integrating directly with each provider's SDK and managing separate authentication, response formats, and failover logic, developers integrate once with the gateway, which handles routing, fallback, cost optimization, and observability across providers.
 
-* https://openrouter.ai/[OpenRouter] — Unified API for 300+ models across multiple providers, with per-request routing, cost tracking, and usage rankings.
+* https://openrouter.ai/[OpenRouter] – Unified API for 300+ models across multiple providers, with per-request routing, cost tracking, and usage rankings.
 
-* https://anannas.ai/[Anannas] — OpenAI-compatible API gateway with intelligent routing, automatic failover, and real-time cost dashboards.
+* https://anannas.ai/[Anannas] – OpenAI-compatible API gateway with intelligent routing, automatic failover, and real-time cost dashboards.
 
-* https://huggingface.co/inference-api[Hugging Face Inference API] — Managed inference endpoints for models hosted on Hugging Face, with serverless and dedicated deployment options.
+* https://huggingface.co/inference-api[Hugging Face Inference API] – Managed inference endpoints for models hosted on Hugging Face, with serverless and dedicated deployment options.
 
-* https://www.perplexity.ai/[Perplexity] — AI-native search engine and general-purpose *link:./ai-assistant.adoc[AI assistant]. Provides access to a large number of models, and you can even experiment with multiple models simultaneously, feeding them the same inputs.
+* https://www.perplexity.ai/[Perplexity] – AI-native search engine and general-purpose *link:./ai-assistant.adoc[AI assistant]. Provides access to a large number of models, and you can even experiment with multiple models simultaneously, feeding them the same inputs.
 
 [TIP]
 ======
@@ -451,7 +449,7 @@ A single subscription to a gateway service like Perplexity Pro or OpenRouter can
 
 === Model managers
 
-Model managers are primarily designed for running open-weight models locally. They handle downloading of models, managing hardware resources, and serving a local inference endpoint — typically an OpenAI-compatible API on localhost.
+Model managers are primarily designed for running open-weight models locally. They handle downloading of models, managing hardware resources, and serving a local inference endpoint – typically an OpenAI-compatible API on localhost.
 
 By contrast, *model API gateways* (above) are middleware for routing requests to remote, hosted models across multiple cloud providers.
 
@@ -464,9 +462,9 @@ Some popular model managers include:
 
 == See also
 
-* *link:./machine-learning.adoc[Machine learning]* — The broader field of which LLMs are a part.
-* *link:./generative-ai.adoc[Generative AI]* — Covers broader AI product categories including diffusion models for image generation.
-* *link:./ai-assistant.adoc[AI assistant]* — General-purpose conversational interfaces to LLMs, such as ChatGPT, Claude, and Perplexity.
+* *link:./machine-learning.adoc[Machine learning]* – The broader field of which LLMs are a part.
+* *link:./generative-ai.adoc[Generative AI]* – Covers broader AI product categories including diffusion models for image generation.
+* *link:./ai-assistant.adoc[AI assistant]* – General-purpose conversational interfaces to LLMs, such as ChatGPT, Claude, and Perplexity.
 * *link:./prompt-engineering.adoc[Prompt engineering]*
 * *link:./ai-agent.adoc[AI agent]*
 * *link:./ai-coding-assistant.adoc[AI coding assistant]*
