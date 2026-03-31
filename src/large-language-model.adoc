@@ -42,6 +42,14 @@ The context window is the maximum number of tokens an LLM can process in a singl
 
 Context window size is one of the most practically important model characteristics. A larger context window allows the model to consider more of a document, a longer conversation history, or a larger codebase at once. Modern frontier models support context windows of 128K tokens or more; some extend to 1M tokens or beyond.
 
+== Retrieval-augmented generation (RAG)
+
+A core limitation of LLMs is that their knowledge is frozen at the point of training — they cannot access new information or browse the web. Retrieval-augmented generation (RAG) is a technique that addresses this by combining an LLM with an external knowledge source, retrieved at inference time.
+
+In a RAG system, a user's query is used to search a knowledge base (a vector database, a search index, or live web results). The most relevant results are fetched and injected into the model's context alongside the original query. The model then generates a response grounded in that retrieved content, rather than relying solely on what it learned during training.
+
+RAG is widely used to build knowledge-aware applications — internal document Q&A systems, customer support bots, and AI search engines. https://www.perplexity.ai/[Perplexity] is a prominent consumer example: it uses RAG over live web search to answer questions with cited sources in real time. See also *link:./ai-assistant.adoc[AI assistants]* for other examples.
+
 == Compute
 
 Both training and inference are computationally intensive and rely heavily on GPUs, which excel at the massively parallel matrix operations that underpin neural networks.
