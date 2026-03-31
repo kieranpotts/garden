@@ -30,6 +30,12 @@ When you type a prompt into an LLM and get a response back, that entire process 
 
 Compared to training, inference is relatively cheap. It can be done on a single workstation GPU, with available VRAM being the primary constraint on performance and the size of the model you can use.
 
+== Tokens
+
+LLMs do not process text character by character or word by word — they work in *tokens*. A token is a chunk of text, typically a word, part of a word, or a punctuation character. Common words are usually a single token; rarer or longer words may be split into multiple tokens. As a rough guide, one token is approximately four characters or three-quarters of a word in English.
+
+Tokens are the unit of measurement for both input (the prompt) and output (the response). LLM pricing is typically quoted per million tokens, and model capabilities such as context window size are measured in tokens.
+
 == Compute
 
 Both training and inference are computationally intensive and rely heavily on GPUs, which excel at the massively parallel matrix operations that underpin neural networks.
