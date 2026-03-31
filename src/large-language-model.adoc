@@ -74,6 +74,16 @@ The dominant frameworks for programming GPUs are:
 
 * https://www.khronos.org/opencl/[OpenCL] — An open standard for parallel computing across heterogeneous hardware (CPUs, GPUs, FPGAs) from any vendor. More portable than CUDA but less widely adopted in the AI ecosystem.
 
+=== Inference engines
+
+Inference engines are the low-level runtimes that actually execute a model — loading weights into memory and running the computations that produce each token. Model managers like Ollama and LM Studio (see above) are built on top of them.
+
+The two most widely used inference engines for open-weight models are:
+
+* https://github.com/ggml-org/llama.cpp[llama.cpp] — A C/C++ inference engine optimised for running quantised models on consumer hardware, including CPU-only machines, Apple Silicon, and devices with limited VRAM. Uses the GGUF model format. It is the engine that powers Ollama and LM Studio. Prioritises broad hardware compatibility over maximum throughput.
+
+* https://github.com/vllm-project/vllm[vLLM] — A Python-based inference engine designed for high-throughput production serving on GPU servers. Its key innovation is _PagedAttention_, which manages the KV cache more efficiently, enabling higher request concurrency. Supports multi-GPU tensor parallelism and exposes an OpenAI-compatible API. This is a good choice when serving many users concurrently, rather than running models locally for a single user.
+
 == Choosing LLMs
 
 In choosing an LLM, you need to appreciate the tradeoffs to be made between capability, size, speed, and cost. The bigger the AI model, the more capable it is. But the trade-off is that the big, advanced "frontier" models are also slow and costly to run.
@@ -126,9 +136,9 @@ As of 2026, some notable open-weight model families include:
 
 == Model access layers
 
-=== Model API gateways
+=== Model gateways
 
-Model API gateways provide a single, unified API endpoint to access models from multiple hosted LLM providers. Rather than integrating directly with each provider's SDK and managing separate authentication, response formats, and failover logic, developers integrate once with the gateway, which handles routing, fallback, cost optimisation, and observability across providers.
+Model gateways provide a single, unified API endpoint, and/or a GUI or other user interface, to access models from multiple hosted LLM providers. Rather than integrating directly with each provider's SDK and managing separate authentication, response formats, and failover logic, developers integrate once with the gateway, which handles routing, fallback, cost optimisation, and observability across providers.
 
 * https://openrouter.ai/[OpenRouter] — Unified API for 300+ models across multiple providers, with per-request routing, cost tracking, and usage rankings.
 
