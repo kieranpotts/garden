@@ -112,15 +112,26 @@ As of 2026, some notable open-weight model families include:
 * The https://huggingface.co/THUDM[*GLM*] models from Z.ai.
 * The https://www.deepseek.com/[*DeepSeek*] models from DeepSeek AI.
 
-== Model API gateways
+== Model access layers
+
+=== Model API gateways
 
 Model API gateways provide a single, unified API endpoint to access models from multiple hosted LLM providers. Rather than integrating directly with each provider's SDK and managing separate authentication, response formats, and failover logic, developers integrate once with the gateway, which handles routing, fallback, cost optimisation, and observability across providers.
 
 * https://openrouter.ai/[OpenRouter] — Unified API for 300+ models across multiple providers, with per-request routing, cost tracking, and usage rankings.
+
 * https://anannas.ai/[Anannas] — OpenAI-compatible API gateway with intelligent routing, automatic failover, and real-time cost dashboards.
+
 * https://huggingface.co/inference-api[Hugging Face Inference API] — Managed inference endpoints for models hosted on Hugging Face, with serverless and dedicated deployment options.
 
-== Model managers
+* https://www.perplexity.ai/[Perplexity] — AI-native search engine and general-purpose *link:./ai-assistant.adoc[AI assistant]. Provides access to a large number of models.
+
+[TIP]
+======
+A single subscription to a gateway service like Perplexity Pro or OpenRouter can be more economical than maintaining separate subscriptions with multiple AI labs. These services give you access to models from OpenAI, Anthropic, Google, and others through one account, letting you switch between them based on the task at hand.
+======
+
+=== Model managers
 
 Model managers are primarily designed for running open-weight models locally. They handle downloading model weights, managing hardware resources, and serving a local inference endpoint — typically an OpenAI-compatible API on localhost. This makes them a good choice for privacy-sensitive use cases, offline environments, or experimenting with open-weight models without incurring API costs.
 
@@ -136,5 +147,6 @@ Some popular model managers include:
 == See also
 
 * *link:./generative-ai.adoc[Generative AI]* — Covers broader AI product categories including diffusion models for image generation.
+* *link:./ai-assistant.adoc[AI assistant]* — General-purpose conversational interfaces to LLMs, such as ChatGPT, Claude, and Perplexity.
 * *link:./ai-agent.adoc[AI agent]*
 * *link:./ai-coding-assistant.adoc[AI coding assistant]*
