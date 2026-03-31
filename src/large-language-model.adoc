@@ -146,7 +146,7 @@ A number of websites maintain rankings of LLMs based on various factors:
 
 === Frontier models
 
-A frontier model is a model that represents the current state of the art — the most capable models available at a given point in time.
+A frontier model is a model – or, more commonly, a _family_ of models – that represents the current state of the art.
 
 Frontier models are typically the largest models, trained on the most data, with the best performance across a broad range of tasks. They are developed by well-resourced AI labs and accessed via paid APIs rather than downloaded and run locally.
 
@@ -160,17 +160,237 @@ Examples of frontier model families include:
 * https://www.anthropic.com/claude[Anthropic's Claude models].
 * https://deepmind.google/technologies/gemini/[Google's Gemini models].
 
+As of March 2026, *OpenAI GPT 5.2* is the flagship model in OpenAI's GPT lineup. It's a very well-rounded model – it can do a bit of everything (multimodality) and is good at chaining together multiple actions. (The following stats are sourced from https://artificialanalysis.ai/[Artificial Analysis].)
+
+.OpenAI GPT 5.2
+|===
+|Category |Details
+
+|Architecture
+|Advanced Transformer variant (proprietary)
+
+|Model size
+|~150B-300B parameters (estimate, exact size not publicly disclosed)
+
+|Price
+|$1.75/1M input tokens • $14/1M output tokens • $0.175/1M cached input
+
+|Speed
+|~150-300 TPS (tokens per second)
+
+|Context window
+|256K tokens
+
+|Benchmarks
+|GDPval (knowledge work) 70.9%) • SWE-Bench Verified (real-world coding) 80% • GPQA Diamond (graduate-level science reasoning) 92.4% • ARC-AGI-2 (abstract reasoning) 52.9%
+
+|Multimodality
+|Text • Code • Image
+|===
+
+For Anthropic, as of March 2025 its *Claude Opus 4.6* is its flagship model. It's another all-rounder, but specializes in text and code generation, rather than aiming for multimodality. Unlike GPT 5.2, it cannot do image generation directly. It is also currently the most expensive and slowest of the frontier models, but it is highly regarded for its coding abilities.
+
+.Claude Opus 4.6
+|===
+|Category |Details
+
+|Architecture
+|Advanced Transformer variant (proprietary)
+
+|Model size
+|Not publicly disclosed
+
+|Price
+|$5/1M input tokens • $25/1M output tokens • $0.5/1M cached input
+
+|Speed
+|~72 TPS
+
+|Context window
+|200K tokens (standard) • 1M tokens (beta)
+
+|Benchmarks
+|GDPval-AA (knowledge work) Elo 1606 • SWE-Bench Verified (real-world coding) 80.8% • GPQA Diamond (graduate-level science reasoning) 91.3% • ARC-AGI-2 (abstract reasoning) 68.8%
+
+|Multimodality
+|Text • Code
+|===
+
+But, as of March 2026, it is *Grok 4.1* that is widely considered to be the most capable of the frontier models. It is fast, has a large context window, and is cheap relative to other frontier models. It's popular for its empathetic conversational abilities.
+
+.Grok 4.1
+|===
+|Category |Details
+
+|Architecture
+|Advanced Transformer variant (proprietary)
+
+|Model size
+|~1.5T-2T (estimate, exact size not publicly disclosed)
+
+|Price
+|$0.20/1M input tokens • $0.50/1M output tokens
+
+|Speed
+|~170 TPS
+
+|Context window
+|2M tokens
+
+|Benchmarks
+|LMArena Text Arena 1843 Elo (#1) • GPQA Diamond (graduate-level science reasoning) 85.7-89.4% • AIME 2025 (math) 92-94% • ARC-AGI-2 (abstract reasoning) 52.9% in thinking mode
+
+|Multimodality
+|Text • Code • Image
+|===
+
+In Google's Gemini series, *Gemini 3 Pro* is the current flagship. It's performance is pretty on par with the rival flagship models, but it has two things going for it: a large context window, and (what really makes it stand out) multimodality capabilities. It can analyze _and_ generate all kinds of media, not only text.
+
+.Gemini 3 Pro
+|===
+|Category |Details
+
+|Architecture
+|Advanced Transformer variant (proprietary)
+
+|Model size
+|~2T (estimate, exact size not publicly disclosed)
+
+|Price
+|$2/1M input tokens • $12/1M output tokens (standard)
+
+|Speed
+|~90-120 TPS
+
+|Context window
+|1M-2M tokens
+
+|Benchmarks
+|LMArena Text Arena 1501 Elo (#1) • GPQA Diamond (graduate-level science reasoning) 91.9% • Humanity's Last Exam (HLE) 37.5% • ARC-AGI-2 (abstract reasoning) 84.6% in deep thinking mode
+
+|Multimodality
+|Text • Code • Image • Video • Audio
+|===
+
+=== Mid-tier models
+
+The mid-tier models are the workhorses that you will probably use 80% of the time for general tasks. They offer a good balance between capability, size, speed, and cost. These are the defaults for a lot of *link:./ai-agents.adoc[agentic workflows]*.
+
+Examples include:
+
+.Example mid-tier models as of March 2026
+|===
+|Model |Developer |Cost |Comments
+
+|Claude Sonnet 4.5
+|Anthropic
+|$3 input / $15 output per 1M tokens
+|Best-in-class coding performance (77.2% SWE-bench) • 1M context window • Extented thinking capabilities
+
+|GPT-4.1
+|OpenAI
+|$2 input / $8 output per 1M tokens
+|Reliable generalist with strong instruction following • 1M context window • 103 TPS throughput
+
+|Llama 3.3 70B
+|Meta
+|$0.10 input / $0.32 output per 1M tokens
+|Open-weight workhorse approaching 405B performance for text tasks • 131K context • Wide provider availability
+
+|Qwen3 8B
+|Alibaba
+|$0.05 input / $0.40 output per 1M tokens
+|Compact, high-performance model • Excellent price-to-capability ratio • 32K context window
+|===
+
+*Claude Sonnet 4.5* is a mid-tier model from Anthropic that is particularly strong at coding tasks. It's cheaper than Opus 4.6, the flagship model, but still perfectly capable at advanced programming tasks, including building greenfield projects from scratch.
+
+=== Light models
+
+Light models are faster and cheaper, but less capable than the frontier/flagship models. Yet some of these are still incredibly capable. Gemini 3 Flash, for example, maintains most of the capabilties of the flagship Gemini 3 Pro model. This is achieved by a process called *knowledge distillation*, whereby knowledge from a larger model is distilled into a smaller knowledge graph to make a lighter model, which is a lot smaller in size but still maintains a lot of the capabilities of the larger model.
+
+.Example light models as of March 2026
+|===
+|Model |Developer |Speed |Comments
+
+|Gemini 3 Flash
+|Google
+|180-250 TPS
+|Pro-grade reasoning at Flash latency • 3x faster than 2.5 Pro with 30% better token efficiency
+
+|GPT-5 mini
+|OpenAI
+|80-130 TPS
+|Latest mini model • Optimized for high-throughput tasks and API chaining
+
+|Claude Haiku 4.5
+|Anthropic
+|86-150 TPS
+|Matches Sonnet 4 coding performance at 1/3 cost and 2x speed • 200K context window
+
+|Gemini 2.5 Flash-Lite
+|Google
+|350-400 TPS
+|Fastest proprietary model • 50% fewer output tokens for extreme cost efficiency
+
+|Ministral 8B
+|Mistral AI
+|250-300 TPS
+|Edge-optimized with 128K context • Outperforms Llmama 3.1 8B at $0.10/1M tokens
+
+|Liquid LFM 2.5
+|Liquid AI
+|300-370 TPS
+|Non-Transformer architecture • Constant speed regardless of context length
+|===
+
 === Reasoning models
 
 Reasoning models are a category of LLM that spend additional compute "thinking" through a problem before producing a final response. Rather than generating an answer immediately, they produce an internal chain-of-thought — working through steps, checking logic, and reconsidering — before arriving at a conclusion. This makes them substantially better at complex mathematical, logical, and multi-step problems, at the cost of higher latency and token usage.
 
 Notable reasoning models include OpenAI's o1 and o3 series and the open-weight https://huggingface.co/deepseek-ai[DeepSeek-R1].
 
+=== Specialist models
+
+These are LLMs that are specifically made to be good at particular things, like analyzing MRI scans, healthcare data, or legal documents.
+
+An example of a model in this category would be the *Sonar* model from Perplexity.
+
+.Sonar
+|===
+|Category |Details
+
+|Architecture
+|Built on Llama 3.3 70B • Search-optimized with web retrieval and citation generation
+
+|Model size
+|70 billion parameters
+
+|Price
+|Sonar: ~$1/1M input tokens, ~$1/1M output tokens • Sonar Pro: ~$3/1M input tokens, ~$15/1M output tokens • Additional request fees based on search context size
+
+|Speed
+|Ultra-high througput: 1,200 TPS on Cerebras infrastructure • ~10x faster than comparable models like Gemini 2.0 Flash
+
+|Context window
+|Sonar: 128K tokens • Sonar Pro: 200K tokens • Sonar Pro Reasoning: 128K tokens
+
+|Benchmarks
+|Simple QA: Sonar 77.3% Sonar Pro 85.8% • Outperforms Llama 3.3 70B Instruct and GPT-4o in answer factuality and readability
+
+|Multimodality
+|Text only • Specialized for web search with real-time information retrieval, grounded citations, and source customization
+|===
+
 === Open-weight models
 
 *Open-weight* models have publicly released weights, meaning anyone can download and run them. This is distinct from *open-source*, which would also require the training data and code to be public — most open-weight models do not meet that bar.
 
 Licensing terms vary: some permit commercial use, others restrict it.
+
+Open-weight models – which can be downloaded to your computer and operated locally, usually through a model manager like Ollama (see below) – are a good choice for privacy-sensitive use cases, offline environments, or experimenting with open models without incurring API costs.
+
+Open-weight models can also be customized through further fine-tuning and through RAG. Perplexity's Sonar model is an example of an open source model that has been fine-tuned for specific use cases.
 
 https://huggingface.co/[Hugging Face] is the primary hub for discovering and downloading open-weight models, hosting over two million models contributed by individuals, research labs, and major organisations.
 
@@ -181,6 +401,34 @@ As of 2026, some notable open-weight model families include:
 * The https://huggingface.co/moonshotai[Kimi] models from Moonshot AI.
 * The https://huggingface.co/THUDM[GLM] models from Z.ai.
 * The https://www.deepseek.com/[DeepSeek] models from DeepSeek AI.
+
+Some of the open weight models are capable of many of the things that the frontier models can do. *Kimi 2.5* is a good exmaple of this.
+
+.Kimi K2.5
+|===
+|Category |Details
+
+|Architecture
+|Open source Mixture-of-Experts (MoE) • 1.04T total parameters with 32B activated per token
+
+|Model size
+|1.04 trillion parameters (32B active)
+
+|Price (as-a-service)
+|~$0.60/1M input tokens • ~$2.50/1M output tokens
+
+|Speed
+|High throughout (exact TPS varies per provider; reported ~23% faster than K2)
+
+|Context window
+|256K tokens (standard)
+
+|Benchmarks
+|SWE-Bench Verified (real-world coding) 76.8% • Humanity's Last Exam (HLE) 50.2% • MMMU Pro 78.5% • videoMMMU 86.6%
+
+|Multimodality
+|Text • Code • Image (understanding, no generation) • Video (understanding, no generation)
+|===
 
 == Model access layers
 
@@ -194,7 +442,7 @@ Model gateways provide a single, unified API endpoint, and/or a GUI or other use
 
 * https://huggingface.co/inference-api[Hugging Face Inference API] — Managed inference endpoints for models hosted on Hugging Face, with serverless and dedicated deployment options.
 
-* https://www.perplexity.ai/[Perplexity] — AI-native search engine and general-purpose *link:./ai-assistant.adoc[AI assistant]. Provides access to a large number of models.
+* https://www.perplexity.ai/[Perplexity] — AI-native search engine and general-purpose *link:./ai-assistant.adoc[AI assistant]. Provides access to a large number of models, and you can even experiment with multiple models simultaneously, feeding them the same inputs.
 
 [TIP]
 ======
@@ -204,8 +452,6 @@ A single subscription to a gateway service like Perplexity Pro or OpenRouter can
 === Model managers
 
 Model managers are primarily designed for running open-weight models locally. They handle downloading of models, managing hardware resources, and serving a local inference endpoint — typically an OpenAI-compatible API on localhost.
-
-Open-weight models, operated through local model managers, are a good choice for privacy-sensitive use cases, offline environments, or experimenting with open models without incurring API costs.
 
 By contrast, *model API gateways* (above) are middleware for routing requests to remote, hosted models across multiple cloud providers.
 
