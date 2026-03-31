@@ -64,6 +64,14 @@ When you type a prompt into an LLM and get a response back, that entire process 
 
 Compared to training, inference is relatively cheap. It can be done on a single workstation GPU, with available VRAM being the primary constraint on performance and the size of the model you can use.
 
+=== Temperature and sampling
+
+When generating a response, an LLM does not simply pick the most probable next token at every step — that would produce repetitive, deterministic output. Instead, the model samples from a probability distribution over possible next tokens.
+
+*Temperature* is the parameter that controls how sharp or flat this distribution is. At low temperatures (close to 0), the model almost always picks the highest-probability token, producing focused and predictable output. At higher temperatures, lower-probability tokens become more likely to be chosen, producing more varied and creative — but also less reliable — output.
+
+Most LLM APIs expose temperature as a configurable parameter. For factual or code-generation tasks, a low temperature is usually preferable; for creative writing, a higher temperature produces more interesting results.
+
 === Hallucinations
 
 LLMs generate text by predicting the most statistically plausible next token, not by reasoning from facts. As a result, they can produce outputs that are fluent and confident but factually incorrect — a phenomenon known as *hallucination*.
@@ -72,15 +80,15 @@ A model may fabricate citations, invent plausible-sounding names, or state incor
 
 Hallucinations are an inherent limitation of how LLMs work, not a bug that can be fully fixed.
 
-The practical mitigations are: 
+The practical mitigations are:
 
 * Grounding model outputs in retrieved facts (RAG – see below).
 * Verifying outputs independently.
-* Choosing models with stronger factual accuracy.
+* Using models that provide citations or built-in grounding.
 
 === Context window
 
-The context window is the maximum number of tokens an LLM can process in a single interaction — the combined total of the system prompt, conversation history, and the current input and output. Text outside the context window is not visible to the model.
+The context window is the maximum number of tokens an LLM can process in a single interaction — the combined total of the system prompt, conversation history, and the current input and output. Text outside the context window is not visible to the model. The *system prompt* is a set of instructions provided to the model before the conversation begins, typically by the application developer rather than the end user.
 
 Context window size is one of the most practically important model characteristics. A larger context window allows the model to consider more of a document, a longer conversation history, or a larger codebase at once.
 
@@ -108,7 +116,7 @@ The dominant frameworks for programming GPUs are:
 
 === Inference engines
 
-Inference engines are the low-level runtimes that actually execute a model — loading weights into memory and running the computations that produce each token. Model managers like Ollama and LM Studio (see above) are built on top of them.
+Inference engines are the low-level runtimes that actually execute a model — loading weights into memory and running the computations that produce each token. Model managers like Ollama and LM Studio (see below) are built on top of them.
 
 The two most widely used inference engines for open-weight models are:
 
@@ -131,7 +139,7 @@ Model size is commonly expressed as the number of trainable parameters, in billi
 A number of websites maintain rankings of LLMs based on various factors:
 
 * https://openrouter.ai/rankings[OpenRouter's rankings] are based on model usage on the OpenRouter platform (which provides a single API to access models from multiple providers).
-* https://artificialanalysis.ai/leaderboards/models[LLM Leaderboard] by Artifical Analysis
+* https://artificialanalysis.ai/leaderboards/models[LLM Leaderboard] by Artificial Analysis
 * https://llm-stats.com/[llm-stats.com]
 * https://lmarena.ai/[LMArena]
 * https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard[Open LLM Leaderboard] on Hugging Face — benchmarks open-weight models across standardised tasks.
