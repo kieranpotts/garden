@@ -36,6 +36,12 @@ LLMs do not process text character by character or word by word — they work in
 
 Tokens are the unit of measurement for both input (the prompt) and output (the response). LLM pricing is typically quoted per million tokens, and model capabilities such as context window size are measured in tokens.
 
+== Context window
+
+The context window is the maximum number of tokens an LLM can process in a single interaction — the combined total of the system prompt, conversation history, and the current input and output. Text outside the context window is not visible to the model.
+
+Context window size is one of the most practically important model characteristics. A larger context window allows the model to consider more of a document, a longer conversation history, or a larger codebase at once. Modern frontier models support context windows of 128K tokens or more; some extend to 1M tokens or beyond.
+
 == Compute
 
 Both training and inference are computationally intensive and rely heavily on GPUs, which excel at the massively parallel matrix operations that underpin neural networks.
