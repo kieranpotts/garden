@@ -1,6 +1,6 @@
 = Large language model (LLM)
 
-A large language model (LLM) is a neural network trained on very large text datasets to predict and generate language. Modern LLMs can perform many tasks, including answering questions, document summarization, translation, and code generation.
+A large language model (LLM) is a neural network trained on very large text datasets to predict the next token in a sequence. This simple mechanism, repeated at scale, is the foundation of all language generation. Modern LLMs can perform many tasks, including answering questions, document summarization, translation, and code generation.
 
 toc::[]
 
@@ -15,6 +15,12 @@ Training a frontier model like Llama or Qwen requires data centres full of speci
 Training demands maximum compute throughput and benefits enormously from features like high-bandwidth inter-GPU connections.
 
 Because training is a one-time process, a model's knowledge is frozen at the date its training data was collected. The model has no awareness of events, publications, or changes that occurred after that date. This is known as the *knowledge cutoff*. It is one of the core limitations of LLMs, and the primary motivation for retrieval-augmented generation (RAG – see below).
+
+=== Transformer architecture
+
+Modern LLMs are built on the *Transformer* architecture, introduced in the 2017 paper _Attention Is All You Need_. Its core innovation is the *attention mechanism*, which allows the model to weigh the relevance of every token in the context against every other token when predicting the next one. This enables Transformers to capture long-range dependencies in text far more effectively than earlier architectures.
+
+Understanding the Transformer in detail is not necessary for most LLM users, but it is the reason why terms like "attention", "KV cache", and "context window" appear throughout the literature.
 
 === Fine-tuning
 
