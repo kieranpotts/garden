@@ -48,6 +48,20 @@ A token is a chunk of text, typically a word, part of a word, or a punctuation c
 
 Tokens are the unit of measurement for both input (the prompt) and output (the response). LLM pricing is typically quoted per million tokens, and model capabilities such as context window size are measured in tokens.
 
+=== Hallucinations
+
+LLMs generate text by predicting the most statistically plausible next token, not by reasoning from facts. As a result, they can produce outputs that are fluent and confident but factually incorrect — a phenomenon known as *hallucination*.
+
+A model may fabricate citations, invent plausible-sounding names, or state incorrect information as though it were certain. These are all examples of hallucinations.
+
+Hallucinations are an inherent limitation of how LLMs work, not a bug that can be fully fixed.
+
+The practical mitigations are: 
+
+* Grounding model outputs in retrieved facts (RAG – see below).
+* Verifying outputs independently.
+* Choosing models with stronger factual accuracy.
+
 === Context window
 
 The context window is the maximum number of tokens an LLM can process in a single interaction — the combined total of the system prompt, conversation history, and the current input and output. Text outside the context window is not visible to the model.
