@@ -15,6 +15,7 @@ Training a frontier model like Llama or Qwen requires data centres full of speci
 Training demands maximum compute throughput and benefits enormously from features like high-bandwidth inter-GPU connections.
 
 Because training is a one-time process, a model's knowledge is frozen at the date its training data was collected. The model has no awareness of events, publications, or changes that occurred after that date. This is known as the *knowledge cutoff*. It is one of the core limitations of LLMs, and the primary motivation for retrieval-augmented generation (RAG – see below).
+
 === Fine-tuning
 
 Fine-tuning is the process of taking a pre-trained model and continuing to train it on a smaller, task-specific dataset to adapt its behaviour for a particular domain or use case. Rather than training from scratch — which requires enormous compute and data — fine-tuning starts from an existing model's weights and adjusts them incrementally.
@@ -92,6 +93,8 @@ In choosing an LLM, you need to appreciate the tradeoffs to be made between capa
 At the other end of the spectrum are small models that are optimized for speed rather than capability. Some of these small models may also specialize in particular domains, rather than being capable of lots of different tasks.
 
 Somewhere in the middle are the general-purpose models that find a good balance between these factors, and can do most tasks well.
+
+Model size is commonly expressed as the number of trainable parameters, in billions — for example, a 7B model has 7 billion parameters. More parameters generally means greater capability but higher memory and compute requirements. A 7B model can run comfortably on a consumer GPU; a 70B model requires a high-end workstation or server; a 405B model requires multiple high-end GPUs.
 
 === Rankings
 
