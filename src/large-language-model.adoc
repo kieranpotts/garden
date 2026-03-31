@@ -24,6 +24,12 @@ Fine-tuning is how general-purpose base models are turned into specialised assis
 
 A lighter-weight alternative is *prompt-based adaptation*. This is the process of crafting system prompts and few-shot examples to steer model behaviour without changing its weights at all. This is simpler but less powerful than fine-tuning. Ollama's Modelfiles are an example of prompt-based adaptation.
 
+=== Embeddings
+
+Embeddings are fundamental to how LLMs work. An embedding is a numerical representation of a word or a piece of text as a vector — a list of floating-point numbers. Embeddings capture both semantic and syntactic relationships beteeen words. Semantically similar text produces vectors that are close together in the vector space, allowing similarity to be measured mathematically. This is what enables LLMs to understand and process natural language effectively.
+
+Embeddings are the foundation of many LLM-based applications. In a RAG system (see below), documents are converted into embeddings and stored in a vector database. At query time, the user's input is also embedded and the most semantically similar documents are retrieved. Embeddings are also used for search, clustering, and deduplication.
+
 === Quantisation
 
 Quantisation is a technique for reducing the numerical precision of a model's weights — for example, representing values with 4-bit integers instead of 16-bit or 32-bit floats. This reduces memory footprint and speeds up inference at the cost of a small reduction in output quality.
