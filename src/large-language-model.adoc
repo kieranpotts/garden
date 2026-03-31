@@ -4,7 +4,9 @@ A large language model (LLM) is a neural network trained on very large text data
 
 toc::[]
 
-== Training
+== How LLMs work
+
+=== Training
 
 In the development of LLMs, training is the computationally-enormous process of adjusting a model's weights by exposing the model to vast amounts of data, calculating how wrong the model's outputs are, and nudging the parameters in the right direction… billions of times over.
 
@@ -12,15 +14,21 @@ Training a frontier model like Llama or Qwen requires data centres full of speci
 
 Training demands maximum compute throughput and benefits enormously from features like high-bandwidth inter-GPU connections.
 
-== Fine-tuning
+=== Fine-tuning
 
 Fine-tuning is the process of taking a pre-trained model and continuing to train it on a smaller, task-specific dataset to adapt its behaviour for a particular domain or use case. Rather than training from scratch — which requires enormous compute and data — fine-tuning starts from an existing model's weights and adjusts them incrementally.
 
-Fine-tuning is how general-purpose base models are turned into specialised assistants: a model fine-tuned on medical literature will perform better on clinical tasks than the same base model used out of the box.
+Fine-tuning is how general-purpose base models are turned into specialised assistants. A model fine-tuned on medical literature will perform better on clinical tasks than the same base model used out of the box.
 
-A lighter-weight alternative is *prompt-based adaptation* — crafting system prompts and few-shot examples to steer model behaviour without changing its weights at all. This is simpler but less powerful than fine-tuning.
+A lighter-weight alternative is *prompt-based adaptation*. This is the process of crafting system prompts and few-shot examples to steer model behaviour without changing its weights at all. This is simpler but less powerful than fine-tuning. Ollama's Modelfiles are an example of prompt-based adaptation.
 
-== Inference
+=== Quantisation
+
+Quantisation is a technique for reducing the numerical precision of a model's weights — for example, representing values with 4-bit integers instead of 16-bit or 32-bit floats. This reduces memory footprint and speeds up inference at the cost of a small reduction in output quality.
+
+Quantisation is what makes it practical to run large models on consumer hardware with limited VRAM.
+
+=== Inference
 
 In the context of LLMs, inference simply means using a trained model to generate output. It is distinct from training, which is the process of creating the model in the first place.
 
@@ -30,27 +38,31 @@ When you type a prompt into an LLM and get a response back, that entire process 
 
 Compared to training, inference is relatively cheap. It can be done on a single workstation GPU, with available VRAM being the primary constraint on performance and the size of the model you can use.
 
-== Tokens
+=== Tokens
 
-LLMs do not process text character by character or word by word — they work in *tokens*. A token is a chunk of text, typically a word, part of a word, or a punctuation character. Common words are usually a single token; rarer or longer words may be split into multiple tokens. As a rough guide, one token is approximately four characters or three-quarters of a word in English.
+LLMs do not process text character by character or word by word — they work in tokens.
+
+A token is a chunk of text, typically a word, part of a word, or a punctuation character. Common words are usually a single token; rarer or longer words may be split into multiple tokens. As a rough guide, one token is approximately four characters or three-quarters of a word in English.
 
 Tokens are the unit of measurement for both input (the prompt) and output (the response). LLM pricing is typically quoted per million tokens, and model capabilities such as context window size are measured in tokens.
 
-== Context window
+=== Context window
 
 The context window is the maximum number of tokens an LLM can process in a single interaction — the combined total of the system prompt, conversation history, and the current input and output. Text outside the context window is not visible to the model.
 
-Context window size is one of the most practically important model characteristics. A larger context window allows the model to consider more of a document, a longer conversation history, or a larger codebase at once. Modern frontier models support context windows of 128K tokens or more; some extend to 1M tokens or beyond.
+Context window size is one of the most practically important model characteristics. A larger context window allows the model to consider more of a document, a longer conversation history, or a larger codebase at once.
 
-== Retrieval-augmented generation (RAG)
+Modern frontier models support context windows of 128K tokens or more. Some extend to 1M tokens or beyond.
 
-A core limitation of LLMs is that their knowledge is frozen at the point of training — they cannot access new information or browse the web. Retrieval-augmented generation (RAG) is a technique that addresses this by combining an LLM with an external knowledge source, retrieved at inference time.
+=== Retrieval-augmented generation (RAG)
+
+A core limitation of LLMs is that their knowledge is frozen at the point of training. By default, models cannot access new information or browse the web. Retrieval-augmented generation (RAG) is a technique that addresses this by combining an LLM with an external knowledge source, retrieved at inference time.
 
 In a RAG system, a user's query is used to search a knowledge base (a vector database, a search index, or live web results). The most relevant results are fetched and injected into the model's context alongside the original query. The model then generates a response grounded in that retrieved content, rather than relying solely on what it learned during training.
 
-RAG is widely used to build knowledge-aware applications — internal document Q&A systems, customer support bots, and AI search engines. https://www.perplexity.ai/[Perplexity] is a prominent consumer example: it uses RAG over live web search to answer questions with cited sources in real time. See also *link:./ai-assistant.adoc[AI assistants]* for other examples.
+RAG is widely used to build knowledge-aware applications — internal document Q&A systems, customer support bots, and AI search engines. https://www.perplexity.ai/[Perplexity] is a prominent consumer example. It uses RAG over live web search to answer questions with cited sources in real time. See *link:./ai-assistant.adoc[AI assistants]* for other examples.
 
-== Compute
+=== Compute
 
 Both training and inference are computationally intensive and rely heavily on GPUs, which excel at the massively parallel matrix operations that underpin neural networks.
 
@@ -61,10 +73,6 @@ The dominant frameworks for programming GPUs are:
 * https://www.amd.com/en/products/software/rocm.html[ROCm] — AMD's open-source GPU computing platform, their equivalent of CUDA for AMD hardware. Growing PyTorch and TensorFlow support, but still lags behind CUDA in ecosystem maturity.
 
 * https://www.khronos.org/opencl/[OpenCL] — An open standard for parallel computing across heterogeneous hardware (CPUs, GPUs, FPGAs) from any vendor. More portable than CUDA but less widely adopted in the AI ecosystem.
-
-=== Quantisation
-
-Quantisation is a technique for reducing the numerical precision of a model's weights — for example, representing values with 4-bit integers instead of 16-bit or 32-bit floats. This reduces memory footprint and speeds up inference at the cost of a small reduction in output quality. Quantisation is what makes it practical to run large models on consumer hardware with limited VRAM.
 
 == Choosing LLMs
 
@@ -86,9 +94,11 @@ A number of websites maintain rankings of LLMs based on various factors:
 
 === Frontier models
 
-A frontier model is a model that represents the current state of the art — the most capable models available at a given point in time. They are typically the largest models, trained on the most data, with the best performance across a broad range of tasks. They are developed by well-resourced AI labs and accessed via paid APIs rather than downloaded and run locally.
+A frontier model is a model that represents the current state of the art — the most capable models available at a given point in time.
 
-Frontier models are proprietary: their weights are not publicly released. The companies that develop them invest heavily in safety evaluation and alignment — the process of steering model behaviour to be helpful, honest, and to avoid harmful outputs.
+Frontier models are typically the largest models, trained on the most data, with the best performance across a broad range of tasks. They are developed by well-resourced AI labs and accessed via paid APIs rather than downloaded and run locally.
+
+Frontier models are usually proprietary — which means their weights are not publicly released. The companies that develop them invest heavily in safety evaluation and alignment — the process of steering model behaviour to be helpful, honest, and to avoid harmful outputs.
 
 Modern frontier models are increasingly *multimodal* — capable of processing not just text but also images, audio, and video as inputs, and in some cases generating them as outputs.
 
@@ -100,17 +110,19 @@ Examples of frontier model families include:
 
 === Open-weight models
 
-*Open-weight* models have publicly released weights, meaning anyone can download and run them. This is distinct from *open-source*, which would also require the training data and code to be public — most open-weight models do not meet that bar. Licensing terms vary: some permit commercial use, others restrict it.
+*Open-weight* models have publicly released weights, meaning anyone can download and run them. This is distinct from *open-source*, which would also require the training data and code to be public — most open-weight models do not meet that bar.
+
+Licensing terms vary: some permit commercial use, others restrict it.
 
 https://huggingface.co/[Hugging Face] is the primary hub for discovering and downloading open-weight models, hosting over two million models contributed by individuals, research labs, and major organisations.
 
 As of 2026, some notable open-weight model families include:
 
-* The https://llama.meta.com/[*Llama*] models from Meta.
-* The https://qwenlm.github.io/[*Qwen*] models from Alibaba.
-* The https://huggingface.co/moonshotai[*Kimi*] models from Moonshot AI.
-* The https://huggingface.co/THUDM[*GLM*] models from Z.ai.
-* The https://www.deepseek.com/[*DeepSeek*] models from DeepSeek AI.
+* The https://llama.meta.com/[Llama] models from Meta.
+* The https://qwenlm.github.io/[Qwen] models from Alibaba.
+* The https://huggingface.co/moonshotai[Kimi] models from Moonshot AI.
+* The https://huggingface.co/THUDM[GLM] models from Z.ai.
+* The https://www.deepseek.com/[DeepSeek] models from DeepSeek AI.
 
 == Model access layers
 
@@ -133,7 +145,9 @@ A single subscription to a gateway service like Perplexity Pro or OpenRouter can
 
 === Model managers
 
-Model managers are primarily designed for running open-weight models locally. They handle downloading model weights, managing hardware resources, and serving a local inference endpoint — typically an OpenAI-compatible API on localhost. This makes them a good choice for privacy-sensitive use cases, offline environments, or experimenting with open-weight models without incurring API costs.
+Model managers are primarily designed for running open-weight models locally. They handle downloading of models, managing hardware resources, and serving a local inference endpoint — typically an OpenAI-compatible API on localhost.
+
+Open-weight models, operated through local model managers, are a good choice for privacy-sensitive use cases, offline environments, or experimenting with open models without incurring API costs.
 
 By contrast, *model API gateways* (above) are middleware for routing requests to remote, hosted models across multiple cloud providers.
 
