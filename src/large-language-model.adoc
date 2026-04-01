@@ -1,26 +1,28 @@
 = Large language model (LLM)
 
-A large language model (LLM) is a neural network trained on very large text datasets to predict the next token in a sequence. This simple mechanism, repeated at scale, is the foundation of all language generation. Modern LLMs can perform many tasks, including answering questions, document summarization, translation, and code generation.
+A large language model (LLM) is a deep learning model trained on vast amounts of text. At a fundamental level, LLMs work by predicting the most probable next token in a sequence. But from this simple objective they develop the ability to reason, summarize, translate, write code, and hold conversation.
+
+This document covers how LLMs work — from training and inference to context windows and hallucinations — as well as how to navigate the current model landscape, from frontier models to open-weight alternatives, and the access layers used to run them.
 
 toc::[]
 
 == How LLMs work
 
+=== Transformer architecture
+
+Modern LLMs are built on the https://en.wikipedia.org/wiki/Transformer_(deep_learning)[transformer architecture], which was introduced in the 2017 paper "https://research.google/pubs/attention-is-all-you-need/[Attention Is All You Need]", published by Google researchers.
+
+The core innovation of the transformer architecture is the *attention mechanism*. This is what allows a model to weigh the relevance of every token in the current context against every other token when predicting the next one. This enables transformers to capture long-range dependencies in text far more effectively than earlier architectures.
+
 === Training
 
 In the development of LLMs, training is the computationally-enormous process of adjusting a model's weights by exposing the model to vast amounts of data, calculating how wrong the model's outputs are, and nudging the parameters in the right direction… billions of times over.
 
-Training a frontier model like Llama or Qwen requires data centers full of specialized hardware running for weeks or months.
+Training a frontier model requires data centers full of specialized hardware running for weeks, or even months.
 
-Training demands maximum compute throughput and benefits enormously from features like high-bandwidth inter-GPU connections.
+Training demands maximum compute throughput, and so benefits enormously from features like high-bandwidth inter-GPU connections.
 
-Because training is a one-time process, a model's knowledge is frozen at the date its training data was collected. The model has no awareness of events, publications, or changes that occurred after that date. This is known as the *knowledge cutoff*. It is one of the core limitations of LLMs, and the primary motivation for retrieval-augmented generation (RAG – see below).
-
-=== Transformer architecture
-
-Modern LLMs are built on the *Transformer* architecture, introduced in the 2017 paper _Attention Is All You Need_. Its core innovation is the *attention mechanism*, which allows the model to weigh the relevance of every token in the context against every other token when predicting the next one. This enables Transformers to capture long-range dependencies in text far more effectively than earlier architectures.
-
-Understanding the Transformer in detail is not necessary for most LLM users, but it is the reason why terms like "attention", "KV cache", and "context window" appear throughout the literature.
+Because training is a one-time process, a model's knowledge is frozen at the date its training data was collected. The model has no awareness of events, publications, or other changes in the world that occurred after that date. This is known as the *knowledge cutoff*. It is one of the core limitations of LLMs, and the primary motivation for augmenting LLMS with techniques such as retrieval-augmented generation (RAG) – which is covered in this document.
 
 === Fine-tuning
 
@@ -28,9 +30,9 @@ Fine-tuning is the process of taking a pre-trained model and continuing to train
 
 Fine-tuning is how general-purpose base models are turned into specialized assistants. A model fine-tuned on medical literature will perform better on clinical tasks than the same base model used out of the box.
 
-A specialized form of fine-tuning is *instruction tuning* – training a base model on examples of instructions paired with desired responses. Most frontier models also undergo *reinforcement learning from human feedback* (RLHF), where human raters score model outputs and the model is trained to produce higher-rated responses. These steps are what transform a raw next-token predictor into a helpful, conversational assistant.
+A specialized form of fine-tuning is *instruction tuning*, which is training a base model on examples of instructions paired with desired responses. Most frontier models also undergo *reinforcement learning from human feedback* (RLHF), where human raters score model outputs, so training the model to produce higher-rated responses. These refinement steps are what transform a raw next-token predictor into a helpful, conversational assistant.
 
-A lighter-weight alternative is *prompt-based adaptation*. This is the process of crafting system prompts and few-shot examples to steer model behavior without changing its weights at all. This is simpler but less powerful than fine-tuning. Ollama's Modelfiles are an example of prompt-based adaptation.
+A lighter-weight alternative to refinement is *prompt-based adaptation*. This is the process of crafting system prompts to steer model behavior without changing its weights at all. This is simpler but less powerful than fine-tuning. Ollama's Modelfiles are an example of prompt-based adaptation.
 
 === Tokens
 
@@ -38,11 +40,11 @@ LLMs do not process text character by character or word by word – they work in
 
 A token is a chunk of text, typically a word, part of a word, or a punctuation character. Common words are usually a single token; rarer or longer words may be split into multiple tokens. As a rough guide, one token is approximately four characters or three-quarters of a word in English.
 
-Tokens are the unit of measurement for both input (the prompt) and output (the response). LLM pricing is typically quoted per million tokens, and model capabilities such as context window size are measured in tokens.
-
-Each token is also the unit that gets converted into an embedding (see below) as the first step in processing by the model.
+Tokens are the unit of measurement for both input (the prompt) and output (the response). LLM pricing is typically quoted per million tokens (eg. $1.50/1M input, $3.25/1M output). A model's context window (see below) and other capabilities are also measured in tokens.
 
 === Embeddings
+
+Each token is also the unit that gets converted into an embedding as the first step in processing a piece of text.
 
 An embedding is a numerical representation of a token as a vector – a list of floating-point numbers. This is the first thing the model does with each token: it looks up the token's embedding from a learned embedding matrix, transforming the raw token ID into a dense vector that the rest of the network can process. Tokens with similar meanings produce vectors that are close together in the embedding space, which is how the model captures semantic and syntactic relationships between words.
 
@@ -56,53 +58,62 @@ Quantization is what makes it practical to run large models on consumer hardware
 
 === Inference
 
-In the context of LLMs, inference simply means using a trained model to generate output. It is distinct from training, which is the process of creating the model in the first place.
+Inference is what an LLM does to generate output. This process is entirely distinct from training, fine-tuning, and quantization, which are processes to create a model in the first place. Inference is how a model, once made, works.
 
 The term comes from logic and statistics, where "inference" means drawing a conclusion from available information. In LLMs, inference is the process of calculating the next token, based on past learning.
 
 When you type a prompt into an LLM and get a response back, that entire process – loading the model, processing your input, generating each token of the reply – is inference. The model's weights – the billions of numerical parameters that encode everything it learned during training – are fixed. Inference is the process of running data through those fixed weights to produce an output.
 
-Compared to training, inference is relatively cheap. It can be done on a single workstation GPU, with available VRAM being the primary constraint on performance and the size of the model you can use.
-
-=== Temperature and sampling
-
-When generating a response, an LLM does not simply pick the most probable next token at every step – that would produce repetitive, deterministic output. Instead, the model samples from a probability distribution over possible next tokens.
-
-*Temperature* is the parameter that controls how sharp or flat this distribution is. At low temperatures (close to 0), the model almost always picks the highest-probability token, producing focused and predictable output. At higher temperatures, lower-probability tokens become more likely to be chosen, producing more varied and creative – but also less reliable – output.
-
-Most LLM APIs expose temperature as a configurable parameter. For factual or code-generation tasks, a low temperature is usually preferable; for creative writing, a higher temperature produces more interesting results.
-
-=== Hallucinations
-
-LLMs generate text by predicting the most statistically plausible next token, not by reasoning from facts. As a result, they can produce outputs that are fluent and confident but factually incorrect – a phenomenon known as *hallucination*.
-
-A model may fabricate citations, invent plausible-sounding names, or state incorrect information as though it were certain. These are all examples of hallucinations.
-
-Hallucinations are an inherent limitation of how LLMs work, not a bug that can be fully fixed.
-
-The practical mitigations are:
-
-* Grounding model outputs in retrieved facts (RAG – see below).
-* Verifying outputs independently.
-* Using models that provide citations or built-in grounding.
+Compared to training, inference is relatively cheap. It can be done on a single workstation GPU, with available VRAM being the primary constraint on the size of the model you can use and the performance (throughput, in tokens per second) of that model.
 
 === Context window
 
-The context window is the maximum number of tokens an LLM can process in a single interaction – the combined total of the system prompt, conversation history, and the current input and output. Text outside the context window is not visible to the model. The *system prompt* is a set of instructions provided to the model before the conversation begins, typically by the application developer rather than the end user.
+The context window is the maximum number of tokens an LLM can process in a single interaction. It is the combined total of the system prompt, conversation history, and the current input and output. (The *system prompt* is a set of instructions provided to the model before the conversation begins, typically by the application developer rather than the end user.) Text outside the context window is not visible to the model.
 
-Context window size is one of the most practically important model characteristics. A larger context window allows the model to consider more of a document, a longer conversation history, or a larger codebase at once.
+Context window size is one of the most important characteristics that for the user experience of working with LLMs. A larger context window allows a model to consider more of a document, a longer conversation history, or a larger codebase at once.
 
 Modern frontier models support context windows of 128K tokens or more. Some extend to 1M tokens or beyond.
 
+=== KV cache
+
+During inference, the attention mechanism requires each token to be compared against every other token in the context. Doing this from scratch for every new token generated would be enormously wasteful: the keys and values for all previously processed tokens would be recomputed identically at each step.
+
+A key-value cache solves this by storing the computed key and value vectors for every token already processed, so they only need to be calculated once and can be reused as each subsequent token is generated. This trades memory for compute, and is what makes token-by-token generation practical at interactive speeds.
+
+The cost is that KV caches grow linearly with context length and model depth. A large context window requires proportionally more VRAM to hold its KV cache, which is one reason why large-context inference is memory-intensive even when the model itself fits comfortably in VRAM. 
+
+This is also the problem that vLLM's _PagedAttention_ addresses (see the section on inference engines, below). It manages KV cache memory more efficiently to support higher request concurrency.
+
+=== Temperature and sampling
+
+When generating a response, an LLM does not simply pick the most probable next token at every step. That would produce repetitive, deterministic output. Instead, the model samples from a probability distribution over possible next tokens.
+
+*Temperature* is the parameter that controls how sharp or flat this distribution is. At low temperatures (close to 0), the model almost always picks the highest-probability token, producing focused and predictable output. At higher temperatures, lower-probability tokens become more likely to be chosen, producing more varied and creative – but also less reliable – output.
+
+Most LLM APIs expose temperature as a configurable parameter. For factual or code-generation tasks, a low temperature is usually preferable. For creative writing, a higher temperature produces more interesting results.
+
+=== Hallucinations
+
+LLMs generate text by predicting the most statistically plausible next token, not by reasoning from facts. As a result, they can produce outputs that are fluent and confident but factually incorrect – a phenomenon known as hallucination.
+
+A model may fabricate citations, invent plausible-sounding names, or state incorrect information as though it were certain. These are all examples of hallucinations.
+
+Hallucinations are an inherent limitation of how LLMs work, not a bug that can be fully fixed. The practical mitigations are:
+
+* Grounding model outputs in retrieved facts (RAG – see below).
+* Verifying outputs independently.
+
 === Retrieval-augmented generation (RAG)
 
-A core limitation of LLMs is that their knowledge is frozen at the point of training. By default, models cannot access new information or browse the web. Retrieval-augmented generation (RAG) is a technique that addresses this by combining an LLM with an external knowledge source, retrieved at inference time.
+A core limitation of LLMs is that their knowledge is frozen at the point of training. By default, models cannot access new information or browse the web. In addition, LLMs are prone to hallucination — generating fluent, confident-sounding responses that are factually incorrect — particularly when asked about topics outside their training data or at the edges of their knowledge.
+
+Retrieval-augmented generation (RAG) is a technique that addresses these issues. It combines an LLM with an external knowledge source, which is retrieved at inference time and loaded into the context window.
 
 In a RAG system, a user's query is used to search a knowledge base (a vector database, a search index, or live web results). The most relevant results are fetched and injected into the model's context alongside the original query. The model then generates a response grounded in that retrieved content, rather than relying solely on what it learned during training.
 
 RAG is widely used to build knowledge-aware applications – internal document Q&A systems, customer support bots, and AI search engines. https://www.perplexity.ai/[Perplexity] is a prominent consumer example. It uses RAG over live web search to answer questions with cited sources in real time. See *link:./ai-assistant.adoc[AI assistants]* for other examples.
 
-=== Compute
+=== GPU compute
 
 Both training and inference are computationally intensive and rely heavily on GPUs, which excel at the massively parallel matrix operations that underpin neural networks.
 
@@ -167,7 +178,7 @@ As of March 2026, *OpenAI GPT 5.2* is the flagship model in OpenAI's GPT lineup.
 |Category |Details
 
 |Architecture
-|Advanced Transformer variant (proprietary)
+|Advanced transformer variant (proprietary)
 
 |Model size
 |~150B-300B parameters (estimate, exact size not publicly disclosed)
@@ -195,7 +206,7 @@ For Anthropic, as of March 2026 its *Claude Opus 4.6* is its flagship model. It'
 |Category |Details
 
 |Architecture
-|Advanced Transformer variant (proprietary)
+|Advanced transformer variant (proprietary)
 
 |Model size
 |Not publicly disclosed
@@ -223,7 +234,7 @@ But, as of March 2026, it is *Grok 4.1* that is widely considered to be the most
 |Category |Details
 
 |Architecture
-|Advanced Transformer variant (proprietary)
+|Advanced transformer variant (proprietary)
 
 |Model size
 |~1.5T-2T (estimate, exact size not publicly disclosed)
@@ -251,7 +262,7 @@ In Google's Gemini series, *Gemini 3 Pro* is the current flagship. Its performan
 |Category |Details
 
 |Architecture
-|Advanced Transformer variant (proprietary)
+|Advanced transformer variant (proprietary)
 
 |Model size
 |~2T (estimate, exact size not publicly disclosed)
@@ -341,7 +352,7 @@ Light models are faster and cheaper, but less capable than the frontier/flagship
 |Liquid LFM 2.5
 |Liquid AI
 |300-370 TPS
-|Non-Transformer architecture • Constant speed regardless of context length
+|Non-transformer architecture • Constant speed regardless of context length
 |===
 
 === Reasoning models
