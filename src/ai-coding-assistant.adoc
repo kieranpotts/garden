@@ -2,35 +2,33 @@
 
 An AI coding assistant is an *link:./ai-assistant.adoc[AI assistant]* specialized in helping developers write, understand, test, and refactor computer program code using large language models.
 
-An AI code assistant is typically a _front-end_ to one or more *link:./large-language-model.adoc[LLM]* services. The front-end provides the user experience (for example, editor integration, chat, patch application, and tool execution), while the underlying model service provides the language and reasoning capabilities.
+An AI code assistant is typically a _front-end_ to one or more *link:./large-language-model.adoc[large language model]* services. The front-end provides the user experience (for example, editor integration, chat, patch application, and tool execution), while the back-end model provides the language and reasoning capabilities.
 
-The front-ends may be implemented via terminal-based interfaces (TUIs), standalone GUI applications, or via integrations into existing IDEs and other applications and services.
+Coding assistant front-ends may be implemented via terminal-based interfaces (TUIs), standalone GUI applications, or via integrations into existing *link:./integrated-development-environments.adoc[IDEs]* and other software applications and services.
 
-Some coding assistant vendors develop and host their own fine-tuned models, rather than relying entirely on third-party providers. Anthropic is an example. Its Claude models are fine-tuned for coding tasks, and the company provides its own first-party front-ends, such as Claude Code, which offers both terminal-based and GUI interfaces (including via IDE integrations).
+Some vendors of coding assistants develop and host their own models, fine-tuned for coding tasks, rather than relying entirely on third-party providers. Anthropic is an example. Its Claude models are optimized for coding tasks and the company provides its own first-party front-ends, such as Claude Code, which offers both terminal-based and GUI interfaces (including via IDE integrations).
 
-At the simplest end, code assistants provide autocomplete and inline suggestions. More advanced assistants can explain unfamiliar code, generate tests, propose patches, and analyse a codebase and answer questions about it.
+At the simplest end, coding assistants provide autocomplete and inline suggestions. More advanced assistants can explain unfamiliar code, generate tests, propose patches, and analyse a codebase and answer questions about it.
 
-Some code assistants also have *link:./ai-agent.adoc[agentic]* properties. They can plan multi-step tasks, use tools such as terminal commands and test runners, and iteratively revise changes based on results and feedback – all with a high degree of autonomy.
+Some coding assistants also have *link:./ai-agent.adoc[agentic]* properties. They can plan multi-step tasks, use tools such as terminal commands and test runners, and iteratively revise changes based on results and feedback – all with a high degree of autonomy.
 
-Examples of AI coding assistant front-ends include the following TUI tools:
+== TUIs
 
 * https://aider.chat/[Aider] — Open-source terminal coding assistant that supports multiple model providers.
-* https://github.com/yetone/avante.nvim[avante.nvim] — Integrates various GenAI services into Neovim.
-* https://claude.ai/code[Claude Code] — Anthropic's first-party terminal-based agentic coding assistant.
+* https://github.com/yetone/avante.nvim[avante.nvim] — Integrates various generative AI services into Neovim.
+* https://claude.ai/code[Claude Code] — Anthropic's first-party terminal-based agentic coding assistant. Also available as a standalone GUI application, and via IDE integrations.
 * https://opencode.ai/[OpenCode] — Open-source terminal-based agentic coding assistant supporting 75+ LLM providers.
 
-And the following GUI tools:
+== GUIs
 
-* https://www.augmentcode.com/[Augment Code] — Premium code generation services, VS Code and JetBrains integrations.
+* https://www.augmentcode.com/[Augment Code] — Premium code generation service. VS Code and JetBrains integrations.
 * https://bolt.new/[Bolt] — Build and deploy full-stack web applications using only prompt engineering.
-* https://github.com/cline/cline[Cline] — VS Code coding assistant with tool use and support for multiple LLM providers.
-* https://codeium.com/[Codeium] — Coding assistance-as-a-service, extensions for many IDEs and text editors.
-* https://sourcegraph.com/cody[Cody] — Coding assistant for IDE integration.
+* https://github.com/cline/cline[Cline] — VS Code extensions with support for multiple LLM providers.
+* https://codeium.com/[Codeium] — Coding assistant-as-a-service. Extensions for many IDEs and text editors.
+* https://sourcegraph.com/cody[Cody] — Coding assistant with IDE integration.
 * https://www.continue.dev/[Continue] — Coding assistant for VS Code and JetBrains.
 * https://cursor.com/[Cursor] — AI-native code editor, widely adopted for agentic coding workflows.
-* https://github.com/features/copilot[GitHub Copilot] — Currently the most widely adopted coding assistant.
+* https://github.com/features/copilot[GitHub Copilot] — Currently the most widely adopted coding assistant. Deeply integrated into GitHub and VS Code. Powered by OpenAI's models but supports other providers, including locally-running models.
 * https://supermaven.com/[Supermaven] — Code assistance for VS Code and JetBrains, and also Neovim. Acquired by Cursor in 2024 and likely to be discontinued as a standalone product.
 * https://replit.com/ai[Replit Agent] — AI coding assistant for Replit.
 * https://v0.dev/[V0] — Text-to-design for React and Next.js front-ends, from Vercel.
-
-Tools like Cursor are blurring the boundaries between AI coding assistants and *link:./integrated-development-environments.adoc[Integrated development environments]*.
