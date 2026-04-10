@@ -96,7 +96,7 @@ During inference, the attention mechanism requires each token to be compared aga
 
 A key-value cache solves this by storing the computed key and value vectors for every token already processed, so they only need to be calculated once and can be reused as each subsequent token is generated. This trades memory for compute, and is what makes token-by-token generation practical at interactive speeds.
 
-The cost is that KV caches grow linearly with context length and model depth. A large context window requires proportionally more VRAM to hold its KV cache. This is one reason why large context inference is memory-intensive even when the model itself fits comfortably in VRAM. 
+The cost is that KV caches grow linearly with context length and model depth. A large context window requires proportionally more VRAM to hold its KV cache. This is one reason why large context inference is memory-intensive even when the model itself fits comfortably in VRAM.
 
 This is also the problem that vLLM's _PagedAttention_ addresses (see the section on inference engines, below). It manages KV cache memory more efficiently to support higher request concurrency.
 
@@ -174,6 +174,8 @@ A number of websites maintain rankings of LLMs based on various factors:
 * https://llm-stats.com/[llm-stats.com]
 * https://lmarena.ai/[LMArena]
 * https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard[Open LLM Leaderboard] on Hugging Face – benchmarks open-weight models across standardized tasks.
+
+See also https://www.tbench.ai/[Terminal Bench], which specifically benchmarks *link:./ai-agent.adoc[agentic front-ends]* backed by various models.
 
 === Frontier models
 
