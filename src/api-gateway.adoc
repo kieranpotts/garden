@@ -3,22 +3,38 @@
 // TODO: https://www.f5.com/glossary/api-gateway
 // TODO: https://blog.algomaster.io/p/what-is-an-api-gateway
 
-In a *link:./service-oriented-architecture.adoc[service-oriented architecture]* and other back-end *link:./distributed-system.adoc[distributed software]*, an API gateway is a server that acts as single-entry point for API clients. The API gateway receives all incoming client requests, and routes the requests to the appropriate back-end services to process.
+In a *link:./service-oriented-architecture.adoc[service-oriented architecture]* and other back-end *link:./distributed-system.adoc[distributed software]*, an API gateway is a server that acts as a single-entry point for API clients. Rather than exposing every service endpoint directly, all incoming client requests go through the gateway, which routes them to the appropriate back-end services.
 
-API gateways also provide a convenient centralized point for implementing *[cross-cutting concerns]* such as:
+API gateways are especially valuable in microservices architectures, where many services exist and requests need to be managed, secured, routed, and orchestrated efficiently. They provide a unified interface to the outside world while keeping internal service complexity hidden.
 
-* Authentication and authorization.
-* Input validation.
-* Logging and monitoring.
-* Rate limiting.
-* Firewalling (eg. allow-listing/deny-listing).
-* Service discovery and dynamic routing.
-* Protocol conversion (eg. transforming input for backing services).
-* Circuit breaking (on backing services).
-* Error handling.
+== Key features
 
-Since an API gateway is a potential *[single point of failure]*, it is often deployed in a *link:./load-balancing.adoc[load-balanced]* configuration, with traffic evenly distributed between multiple instances of the API gateway, ensuring high *link:./availability.adoc[availability]* and *link:./fault-tolerance.adoc[resilience]*. Additional load balancers may also sit behind the API gateway to further distribute traffic between multiple instances of the back-end services.
+API gateways provide a convenient centralised point for implementing cross-cutting concerns across all API traffic:
+
+* *Request routing*: Routes requests to the correct back-end service based on URL path, HTTP method, headers, query parameters, or service discovery metadata.
+* *Authentication and authorisation*: Integrates with identity providers (OAuth 2.0, OpenID Connect), validates tokens (e.g. *link:./jwt.adoc[JWT]*), and enforces role-based or scope-based access controls — centralising security policy enforcement across all services.
+* *Rate limiting and throttling*: Restricts the number of requests a client can make per unit of time, protecting back-end services from overuse or abuse.
+* *Request and response transformation*: Modifies requests or responses in transit — adding or removing headers, converting between formats (e.g. XML ↔ JSON), filtering or reshaping response payloads, or modifying query parameters.
+* *API composition and aggregation*: Aggregates responses from multiple microservices into a single response, reducing the number of round-trips the client needs to make. For example, a `/user-dashboard` endpoint might fetch user profile, orders, and notifications from three different services and return them as one payload.
+* *Caching*: Caches frequently requested data (product listings, slowly-changing API responses, token validations) to reduce back-end load and improve latency.
+* *Logging, monitoring, and analytics*: Provides centralised logging and metrics for all API traffic — request counts, response times, error rates, status codes, and latency bottlenecks — supporting observability and debugging.
+* *Protocol translation*: Translates between protocols (e.g. HTTP ↔ gRPC, WebSocket ↔ REST, SOAP ↔ REST), allowing clients to use simpler protocols while internal services use more efficient ones.
+* *Input validation*, *link:./circuit-breaker.adoc[circuit breaking]*, *link:./firewalls.adoc[firewalling]* (allow-listing/deny-listing), and service discovery.
+
+== Relationship to load balancers and reverse proxies
+
+An API gateway is a specialised *link:./reverse-proxy.adoc[reverse proxy]* designed specifically for API management. While a *link:./reverse-proxy.adoc[reverse proxy]* focuses on forwarding HTTP traffic, abstracting back-end infrastructure, and providing caching and SSL termination, an API gateway adds API-specific capabilities: authentication, rate limiting, request transformation, aggregation, and API lifecycle management (versioning, developer portals).
+
+Since an API gateway is a potential *[single point of failure]*, it is typically deployed in a *link:./load-balancing.adoc[load-balanced]* configuration, with traffic distributed between multiple instances. Additional *link:./load-balancer.adoc[load balancers]* may sit behind the API gateway to further distribute traffic between multiple instances of the back-end services.
+
+In large-scale architectures, all three may be used together: an edge load balancer distributes traffic across regions, a reverse proxy handles SSL termination and static content caching, and an API gateway manages API security, routing, and transformation before passing requests to internal service load balancers.
 
 == API gateway systems
 
-* https://konghq.com/products/kong-gateway[Kong Gateway] - open-source API gateway built on top of Nginx.
+* https://konghq.com/products/kong-gateway[Kong Gateway] — open-source API gateway built on top of Nginx.
+* Amazon API Gateway, Apigee (Google Cloud), Zuul (Netflix).
+
+== See Also
+
+* *link:./load-balancer.adoc[Load balancer]*
+* *link:./reverse-proxy.adoc[Reverse proxy]*

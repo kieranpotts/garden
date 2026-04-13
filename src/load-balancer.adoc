@@ -3,40 +3,70 @@
 // TODO: https://github.com/arpitbbhayani/system-design-questions/blob/master/load-balancer.md
 // TODO: https://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html
 
-A load balancer is a network device or software application that distributes network traffic across multiple servers or other resources. This is known as *[load balancing]*, and it is a technique for *[horizontal scaling]*.
+A load balancer is a network device or software application that distributes incoming network traffic across multiple backend servers or other resources. This is a technique for *[horizontal scaling]*, and is widely used in *link:./distributed-system.adoc[distributed software]* to improve capacity, availability, and *link:./fault-tolerance.adoc[fault tolerance]*.
 
-Load balancers are widely used in *link:./distributed-system.adoc[distributed software]* to increase *[capacity]* and *[reliability]*. Load balancers work particularly well in front of services that are inherently *[stateless]*. This is because the load balancer can distribute requests to any instance of the service, without needing to consider the state of the service. If a database also needs to be replicated to handle the load, there are additional challenges to ensure *[consistency]*.
+Load balancers work particularly well in front of stateless services, where any instance can handle any request without needing to consider session state. If a database also needs to be replicated to handle the load, there are additional challenges to ensure *[consistency]*.
 
-Load balancers also function as *[failover]* systems. Load balancers can be configured to monitor the health of the servers they are distributing traffic to. If a server becomes unavailable, the load balancer can automatically redirect traffic to other available instances.
+Load balancers also enable *link:./rolling-deployments.adoc[rolling deployments]*: instances can be added and removed one at a time while deploying changes, making it possible to do thousands of releases to hundreds of microservices without any downtime.
 
-One of the trade-offs of using a load balancer is that it introduces a *[single point of failure]*. If the load balancer fails, then the entire system becomes unavailable. To mitigate this risk, load balancers are often deployed in *[clusters]*, with one or more standby load balancers ready to take over if the primary load balancer fails.
+== Network layers
 
-Load balancers open up other opportunities. For example, we can destroy instances and create brand new ones, and remove/add instances to the load balancer, one instance at a time, when deploying changes. Thus, services become *[disposable]*, so we can more easily deploy service updates (and also recover from failures). This is how you can do thousands of releases, to hundreds of microservices, without a moment of downtime.
+Load balancers can operate at different layers of the OSI model:
 
-In distributed software, load balancers may exist at various layers, such as:
+* *Layer 4 (transport layer)*: Makes routing decisions based on network information only — source and destination IP addresses and TCP/UDP port numbers. The load balancer forwards packets without inspecting their content. This is faster and more efficient, but less flexible.
 
-* In front of web servers.
-* In front of application servers (eg. services in a service-oriented system).
-* In front of database servers.
+* *Layer 7 (application layer)*: Makes routing decisions based on the content of the request — HTTP methods, URLs, headers, cookies, or query strings. This allows for intelligent routing, such as sending requests for `/api` to one server group and `/static` to another.
 
-Load balancing can also operate a different layers of the network stack. The most common are:
+== Key features
 
-* *Layer 4*: Operates at the *[transport layer]* (TCP/UDP), forwarding traffic based on network information such as IP address and port number.
+=== Health checks
 
-* *Layer 7*: Operates at the *[application layer]*, making routing decisions based on application-level data, such as HTTP headers, cookies, or message content.
+Load balancers continuously monitor the health of backend servers. If a server becomes unresponsive, slow, or returns errors, the load balancer removes it from rotation and stops sending it traffic. This is how load balancers provide automatic *link:./failover.adoc[failover]*: when a server fails, requests are rerouted to the remaining healthy instances with no visible impact on users.
+
+=== Session persistence
+
+Some applications require all requests from a particular user to be routed to the same backend server for the duration of a session — for example, applications that store session state in local memory rather than a shared store. Load balancers can achieve this using IP-based affinity (routing based on client IP address) or cookie-based tracking.
+
+=== SSL termination
+
+Handling SSL/TLS encryption and decryption is computationally expensive. A load balancer can offload this by decrypting incoming HTTPS traffic and forwarding unencrypted requests to the backend servers, reducing the burden on application code.
+
+=== Single point of failure
+
+A load balancer itself introduces a potential *[single point of failure]*. To mitigate this, load balancers are typically deployed in redundant pairs or clusters — with standby instances ready to take over — often spread across multiple availability zones.
 
 == Load balancing algorithms
 
-There are several algorithms that load balancers use to determine how to distribute incoming requests. The optimum choice of algorithm depends on various factors, such as the nature of the requests, the type of workload, and the desired performance characteristics.
+The choice of algorithm significantly affects performance, particularly when server capabilities and request costs vary.
 
-The most common algorithms are:
+=== Round robin
 
-* *Round robin*: Cycles through a list of servers sequentially, so rotating requests evenly across all servers.
+The simplest algorithm: requests are sent to each server in turn, cycling through the list. This works well when all servers are equally powerful and all requests are equally expensive. However, because it ignores the current state of each server, round robin can send requests to servers that are already overloaded, leading to poor tail latency (high 95th/99th percentile response times) even when the median is acceptable.
 
-* *Weighted round robin*: Round robin with the ability to assign a weight to each server, so some servers receive more requests than others, based on their capacity.
+Round robin is still the default HTTP load balancing algorithm for Nginx.
 
-* *Least connections*: Sends new requests to the server with the fewest active connections.
+=== Weighted round robin
 
-* *Least response time*: Routes requests to the server with the fastest response.
+An extension of round robin where each server is assigned a weight proportional to its capacity. More powerful servers receive more requests. Weights can be configured statically (by a human, based on known server specifications) or computed dynamically using a proxy metric such as observed response latency — if one server serves requests three times faster than another, it is assigned three times the weight. Dynamic weighting adapts to changes in server performance over time without manual configuration.
 
-* *IP hash*: Hashes the IP address of the client to determine which server receives the request. This strategy ensures the same client is always directed to the same server for each request, which is useful for session persistence, persistent connections, and stateful operations.
+=== Least connections
+
+Rather than cycling through servers blindly, the load balancer tracks the number of active connections on each server and always sends the next request to the server with fewest. Because the load balancer sits between clients and servers, it has accurate real-time visibility into each server's workload. This cuts through variance in both server power and request cost, and performs very well under overload — it only drops requests when there is literally no more queue space available. It is a great default choice for most workloads.
+
+=== Least response time
+
+A variant that routes each request to the server with the lowest current response time. Similar in intent to least connections, but uses latency rather than connection count as the metric.
+
+=== IP hash
+
+Hashes the client's IP address to select a server, ensuring the same client is always directed to the same server. Useful for session persistence and stateful operations, though it can produce uneven distribution if client IP addresses are not uniformly distributed.
+
+=== Peak Exponentially Weighted Moving Average (PEWMA)
+
+A more sophisticated algorithm that combines ideas from dynamic weighted round robin and least connections. For each server, it maintains a running weighted average of recent request latencies — where older measurements contribute exponentially less to the score — and multiplies this by the number of open connections. Lower scores are preferred. PEWMA can identify and stop sending requests to chronically slow servers entirely. It achieves better latency percentiles than least connections across the board, but at the cost of additional complexity and tuning parameters.
+
+== See Also
+
+* *link:./load-balancing.adoc[Load balancing]*
+* *link:./reverse-proxy.adoc[Reverse proxy]*
+* *link:./api-gateway.adoc[API gateway]*
