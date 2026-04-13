@@ -1,3 +1,22 @@
 = Model Context Protocol
 
-// TODO: https://nshipster.com/model-context-protocol/
+The Model Context Protocol (MCP) is an open standard, introduced by Anthropic in late 2024, that defines how AI models communicate with external tools and data sources.
+
+Before MCP, developers had to write custom integration code for each tool or data source they wanted to connect to a model. MCP solves this by providing a single, standardized protocol. Any tool that implements the MCP server specification can be connected to any MCP-compatible model client, without bespoke integration work.
+
+MCP enables AI models to interact with external systems — reading from and writing to calendars, CRMs, databases, code repositories, communication tools such as Slack, and more. The model can also use these integrations to take actions: scheduling meetings, committing code, querying databases, sending messages.
+
+MCP is a client-server protocol. An *MCP server* exposes a set of tools and resources. An *MCP client* (typically the AI application or agent) connects to one or more MCP servers and uses their tools to fulfil tasks. A single agent can connect to many MCP servers simultaneously, giving it access to a large and composable set of capabilities.
+
+MCP is particularly relevant for *link:./ai-agent.adoc[agentic]* use cases, where a model needs to plan and execute multi-step tasks using a variety of tools.
+
+It is still early in the development of AI integration standards. Competing or complementary proposals include Google's A2A (Agent-to-Agent) protocol and IBM/BeeAI's ACP (Agent Communication Protocol).
+
+''''
+
+== See also
+
+* *link:./large-language-model.adoc[Large language model (LLM)]*
+* *link:./ai-agent.adoc[AI agent]*
+* *link:./ai-coding-assistant.adoc[AI coding assistant]*
+* *link:./src/ai-agent.adoc[AI agent]*

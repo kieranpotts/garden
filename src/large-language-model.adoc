@@ -24,19 +24,31 @@ In the development of LLMs, training is the computationally enormous process of 
 
 Training a frontier model requires data centers full of specialized hardware running for weeks, or even months. Training demands maximum compute throughput, and so benefits enormously from features like high-bandwidth inter-GPU connections.
 
+=== Post-training
+
+Post-training refers to all the additional steps applied to a model after pre-training is complete, to make it more useful, safe, and aligned with human intentions. Key post-training techniques include fine-tuning and RLHF, both described below.
+
 === Fine-tuning
 
 Fine-tuning is the process of taking a pre-trained model and continuing to train it on a smaller, task-specific dataset to adapt its behavior for a particular domain or use case. Rather than training from scratch – which requires enormous compute and data – fine-tuning starts from an existing model's weights and adjusts them incrementally.
 
 Fine-tuning is how general-purpose base models are turned into specialized assistants. A model fine-tuned on medical literature will perform better on clinical tasks than the same base model used out-of-the-box.
 
-A specialized form of fine-tuning is *instruction tuning*, which is training a base model on examples of instructions paired with desired responses. Most frontier models also undergo *reinforcement learning from human feedback* (RLHF), where human raters score model outputs, so training the model to produce higher-rated responses.
+A specialized form of fine-tuning is *instruction tuning*, which is training a base model on examples of instructions paired with desired responses. Most frontier models also undergo RLHF as part of their post-training pipeline – see below.
 
 A lightweight alternative to fine-tuning is *prompt-based adaptation*. This is the process of crafting system prompts to steer model behavior without changing its weights. This is simpler but less powerful than fine-tuning. (The *system prompt* is a set of instructions provided to the model before a conversation begins. The system prompt is typically hard-coded by application developers, rather than being something the end user inputs. Ollama's Modelfiles are an example of prompt-based adaptation.)
 
 // The resulting model will still be limited by the quality and breadth of its training data - including data used in fine-tuning. It's because a model's knowledge of semantic associations is learnt from its training data. This is fundamental to how the transformer architecture works.
 
 Because training is a one-time process, a model's knowledge is frozen at the date its training data was collected. The model has no awareness of events, publications, or other changes in the world that occurred after that date. This is known as the *knowledge cutoff*. It is one of the core limitations of LLMs, and the primary motivation for augmenting LLMS with techniques such as retrieval-augmented generation (RAG) – see below.
+
+=== RLHF
+
+Reinforcement learning from human feedback (RLHF) is a post-training technique that aligns a model's behavior with human preferences — making it safer, more helpful, and less likely to produce harmful outputs.
+
+The process works in two stages. First, human evaluators compare pairs of model outputs and select which is better. This data is used to train a separate *reward model* that learns to predict human preferences. Second, the main model is trained via reinforcement learning to maximize scores from the reward model. Because the second stage optimizes against the reward model rather than humans directly, it scales without requiring continuous human input.
+
+RLHF is how base models — which simply predict the next token — are transformed into helpful assistants that follow instructions. Most frontier models use RLHF or a close variant (such as constitutional AI, RLAIF, or DPO) as part of their post-training pipeline.
 
 === Tokens
 
@@ -122,6 +134,14 @@ Hallucinations are an inherent limitation of how LLMs work, not a bug that can b
 
 * Grounding model outputs in retrieved facts (RAG – see below).
 * Verifying outputs independently.
+
+=== Evals
+
+Evals (short for evaluations) are structured tests used to measure how well an LLM or LLM-powered application performs on specific tasks. They are the AI equivalent of unit tests and regression tests.
+
+An eval runs the model through a predefined set of inputs and compares its responses against expected outputs or criteria — such as factual correctness, safety, helpfulness, tone, or task completion. This allows developers to quantify progress, catch regressions when switching models or changing prompts, and guide improvements over time.
+
+Evals are particularly important in production applications, where the quality of model outputs directly affects user experience. They are often cited as the most critical, yet most overlooked, practice in building reliable AI products.
 
 === Retrieval-augmented generation (RAG)
 
