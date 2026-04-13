@@ -1,6 +1,10 @@
 = Test-driven development (TDD)
 
-Test-driven development (TDD) is a software development *[practice]* in which automated tests are written before the application or library code that needs to be tested. TDD flips the traditional development workflow and uses testing as a design tool as well as a validation tool.
+Test-driven development (TDD) is a software development *[practice]* in which automated tests are written _before_ the application or library code that needs to be tested. TDD flips the traditional development workflow and uses testing as a design tool as well as a validation tool.
+
+TDD is attributed to Kent Beck, who describes it as a rediscovery rather than an invention: an ancient book on programming described a method of writing expected output before programming until the actual output matched. Beck formalized the practice while building the first xUnit framework in Smalltalk, then popularized it as a core discipline of eXtreme Programming (XP) in the late 1990s. His book _Test Driven Development: By Example_ (2002) remains the canonical reference.
+
+== The red-green-refactor cycle
 
 A TDD workflow typically follows these steps:
 
@@ -16,25 +20,47 @@ A TDD workflow typically follows these steps:
 
 Repeat with the next, small incremental change.
 
-In TDD, it is common to write tests that cover edge cases and error conditions, in addition to the expected behavior. Variations on TDD include *test-driven debugging*, which is an approach to resolving bugs in which defects are identified by writing tests that assert expected behavior but which initially fail due to the defect in the actual behavior.
+This loop is known as the _red-green-refactor cycle_. The colors correspond to typical test-runner output: failing tests are shown in red, passing tests in green. In TDD, it is common to write tests that cover edge cases and error conditions in addition to the happy path. A useful variation is _test-driven debugging_, in which defects are resolved by first writing a failing test that reproduces the bug, then fixing the code until the test passes.
+
+=== Test isolation
+
+Unit tests in a TDD cycle are designed to run fast and in isolation from external dependencies such as databases, file systems, and network services. When the code under test has such dependencies, TDD practitioners use _test doubles_ — stubs, fakes, and mocks — to replace them. This keeps the unit test suite independently executable without environmental setup, and ensures failures are localized to the unit being tested rather than a downstream dependency.
+
+Because test doubles do not prove the connection to real external components, unit tests are supplemented with integration and end-to-end tests at appropriate levels. The convention is to maximize coverage at the unit level while keeping the slower, more expensive higher-level tests to a minimum.
+
+=== Test structure
+
+Well-structured unit tests follow a consistent pattern: _setup_, _execution_, _validation_, and _cleanup_. In the setup phase the system-under-test is initialized to a known state. The execution phase triggers the behavior being tested and captures outputs. The validation phase asserts that the outputs or state changes are correct. The cleanup phase, when necessary, restores the pre-test state so other tests can run independently. This pattern is also described by the mnemonic _Arrange, Act, Assert_ (AAA).
+
+=== Anti-patterns
+
+Common test anti-patterns to avoid:
+
+* Tests that depend on the state left by previously executed tests. Tests should always start from a known, pre-configured state.
+* Interdependent tests that cause cascading failures: if one test fails, subsequent tests fail even if there is no actual defect in the code under test.
+* Testing implementation details rather than observable behavior, which makes tests fragile and expensive to maintain during refactoring.
+* Slow-running tests, which discourage frequent execution and undermine the fast-feedback principle of TDD.
+* "All-knowing oracles": assertions that inspect far more state than is necessary to validate the behavior under test.
+
+== Benefits
 
 TDD is not synonymous with automated testing, but rather it is a specific approach to implementing and maintaining automated tests. TDD *[shifts left]* the testing phase to _before_ the coding phase. Tests _drive_ the development, rather than being an afterthought or a separate phase that occurs long after the code is written. It deliberately creates just enough friction to make the design, development, and testing process more thoughtful and deliberate.
 
-Writing tests firsts requires programmers to think about how to implement changes in a testable way. Testable code tends to be inherently more modular and easier to maintain than code that is not designed for automated testing.
+Writing tests first requires programmers to think about how to implement changes in a testable way. Testable code tends to be inherently more modular and easier to maintain than code that is not designed for automated testing.
 
 Advocates of TDD argue that it leads to:
 
-* Better design and higher code quality, due to enforcement of *[modularity]* and well-defined *[interfaces]*
-
+* Better design and higher code quality, due to enforcement of *[modularity]* and well-defined *[interfaces]*.
 * Fewer defects, because testing is *[shifted left]*, meaning errors are caught early in the development lifecycle.
-
 * Confident refactoring, as you end up with comprehensive test coverage that makes it much easier to make changes with minimized risk of breaking existing functionality.
 
-However, TDD is not universally practiced or accepted. Criticisms of TDD include that it is not suitable for all types of development tasks, such as the rapid development of prototypes and proofs-of-concept, or other disposable code. It can also be challenging to retrofit tests into legacy systems that were not designed for automated testing. 
+== Criticisms
 
-Many times it's easier to experiment with code structure, data structures, and interfaces, perhaps using temporary branches in source control, rather than using tests to drive the design. It's not always necessary or desirable to write failing tests before writing or changing code.
+However, TDD is not universally practiced or accepted. Criticisms of TDD include that it is not suitable for all types of development tasks, such as the rapid development of prototypes and proofs-of-concept, or other disposable code. It can also be challenging to retrofit tests into legacy systems that were not designed for automated testing.
 
-TDD can also over-emphasize *[bottom-up design]*. It puts focus on small increments of isolated units of code, rather than on the *[high-level design]* and maintaining *[conceptual integrity]* of the *[system design]* as a whole. This can lead to situations where individual components are well-made but which do not integrate well into a cohesive whole. 
+Many times it is easier to experiment with code structure, data structures, and interfaces, perhaps using temporary branches in source control, rather than using tests to drive the design. It is not always necessary or desirable to write failing tests before writing or changing code.
+
+TDD can also over-emphasize *[bottom-up design]*. It puts focus on small increments of isolated units of code, rather than on the *[high-level design]* and maintaining *[conceptual integrity]* of the *[system design]* as a whole. This can lead to situations where individual components are well-made but which do not integrate well into a cohesive whole.
 
 In addition, TDD tends to produce lots of low-level unit tests, which can make large-scale refactoring harder, not easier. Refactoring is easier, generally, when you err on the side of integration and system/e2e tests.
 
@@ -42,6 +68,27 @@ Some argue that TDD can lead to poor design decisions. For example, TDD encourag
 
 There is *[no silver bullet]* in software development. TDD is a *[practice]* that can be useful in many situations, but programming style is a personal thing.
 
+== Acceptance test-driven development (ATDD)
+
+Acceptance test–driven development (ATDD) scales the test-first discipline up to the requirements level. Where TDD uses unit tests to drive the implementation of small units of code, ATDD uses _acceptance tests_ — written in business domain terms — to drive the development of whole features or user stories.
+
+Acceptance tests are created collaboratively by the requirement requester (product owner, business analyst, or customer representative), the developer, and the tester _before_ coding begins. This collaboration is sometimes called a _specification workshop_, or the _three amigos_ meeting. The practice is closely related to *[behavior-driven development (BDD)]*: both ATDD and BDD emphasize shared, structured specifications; BDD focuses specifically on the behavioral language of the tests. Tests and requirements are tightly interrelated: a requirement without an acceptance test may not be implemented correctly, and a test without a corresponding requirement is unnecessary.
+
+Acceptance tests are written using a structured format that mirrors the Given-When-Then pattern used in *[Gherkin]* and BDD tools:
+
+* *Given* — the initial state of the system.
+* *When* — the action or event that occurs.
+* *Then* — the expected resulting state or output.
+
+The tests operate at the external, visible-behavior level of the system, independently of implementation. Failing acceptance tests provide rapid feedback that a requirement is not being met.
+
+== See also
+
+* *link:./acceptance-testing.adoc[Acceptance testing]*
+* *link:./behavior-driven-development.adoc[Behavior-driven development (BDD)]*
+* *link:./shift-left.adoc[Shift-left testing]*
+
 == References
 
 * https://martinfowler.com/bliki/TestDrivenDevelopment.html[Test-driven development], Martin Fowler
+* https://tidyfirst.substack.com/p/canon-tdd[Canon TDD], Kent Beck
