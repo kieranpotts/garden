@@ -1,47 +1,89 @@
 = OSI model
 
-The *Open Systems Interconnection (OSI) model* is a conceptual reference model developed by the International Organization for Standardization (ISO) that is used to understand the implementation of network protocols.
+The *Open Systems Interconnection (OSI) model* is a conceptual framework developed by the International Organization for Standardization (ISO) that describes how data communication between networked systems should be structured. It divides the communication process into seven distinct layers, each with a specific responsibility. The model is used to reason about network protocols, diagnose problems, and design systems — even though real-world networking does not follow it exactly.
 
-The OSI model is divided into seven layers, each of which serves a specific purpose in the process of data communication and interacts with the layers above and below it. The layers are:
+The OSI model exists to promote interoperability: by standardising what each layer does and how adjacent layers communicate, different vendors' hardware and software can work together over a shared network.
 
-* *Layer 1: Physical layer*
+== Encapsulation
 
-  ** Responsible for the physical connection between devices.
-  ** Deals with the transmission of raw data over a physical medium (eg., cables, radio waves).
-  ** Examples: Ethernet, USB, Bluetooth.
+As data travels down the stack from Layer 7 to Layer 1 on the sending side, each layer wraps the data with its own header (and sometimes a trailer). This is called *encapsulation*. On the receiving side, each layer strips its header as data travels back up the stack — a process called *decapsulation*. This means each layer only needs to understand the headers added by its peer layer on the other machine; it treats everything below as opaque payload.
 
-* *Layer 2: Data link layer*
+== The seven layers
 
-  ** Responsible for node-to-node data transfer and error detection/correction.
-  ** Ensures reliable communication between directly connected devices.
-  ** Examples: Ethernet (IEEE 802.3), Wi-Fi (IEEE 802.11).
+[cols="^1,^2,3,3", options="header"]
+|===
+| Layer | Name | Responsibility | Examples
 
-* *Layer 3: Network layer*
+| 7
+| Application
+| Provides network services directly to user applications. Defines the protocols applications use to communicate.
+| HTTP, HTTPS, FTP, SMTP, DNS, WebSocket
 
-  ** Responsible for routing data packets between devices across different networks.
-  ** Determines the best path for data to travel from source to destination.
+| 6
+| Presentation
+| Translates data between application format and network format. Handles encoding, encryption, and compression.
+| TLS/SSL, JPEG, ASCII, UTF-8
 
-* *Layer 4: Transport layer*
+| 5
+| Session
+| Establishes, manages, and terminates communication sessions between applications. Handles synchronisation and session recovery.
+| NetBIOS, RPC session management
 
-  ** Responsible for end-to-end communication and data flow control.
-  ** Ensures complete data transfer and error recovery.
-  ** Examples: Transmission Control Protocol (TCP), User Datagram Protocol (UDP).
+| 4
+| Transport
+| Provides end-to-end communication between processes on different hosts. Handles segmentation, flow control, error recovery, and multiplexing via port numbers.
+| TCP, UDP
 
-* *Layer 5: Session layer*
+| 3
+| Network
+| Routes packets across multiple networks from source to destination. Handles logical addressing.
+| IP (IPv4, IPv6), ICMP, routers
 
-  ** Responsible for establishing, managing, and terminating sessions between applications.
-  ** Ensures that data is properly synchronized and organized.
+| 2
+| Data link
+| Provides reliable node-to-node data transfer between directly connected devices. Handles framing, MAC addressing, and error detection within a single network segment.
+| Ethernet (IEEE 802.3), Wi-Fi (IEEE 802.11), switches
 
-* *Layer 6: Presentation layer*
+| 1
+| Physical
+| Transmits raw bits over a physical medium. Defines electrical, optical, or radio signals, cable types, and connector specifications.
+| Ethernet cable, fiber optic, USB, Bluetooth radio
+|===
 
-  ** Responsible for data translation, encryption, and compression.
-  ** Ensures that data is in a format that can be understood by the application layer.
-  ** Examples: Secure Sockets Layer (SSL), Transport Layer Security (TLS).
+Layers 4 (transport) and 7 (application) are the most relevant for software developers. Layer 4 determines whether data is delivered reliably (TCP) or with minimal overhead (UDP), and is the layer at which *link:./load-balancer.adoc[Layer 4 load balancers]* operate. Layer 7 is where application protocols live and where *link:./load-balancer.adoc[Layer 7 load balancers]*, *link:./reverse-proxy.adoc[reverse proxies]*, and *link:./api-gateway.adoc[API gateways]* make routing decisions based on request content.
 
-* *Layer 7: Application layer*
+Layer 6 is where TLS encryption and decryption formally belongs in the model, though in practice TLS is implemented as part of the application stack rather than a standalone layer.
 
-  ** Responsible for providing network services to end-user applications.
-  ** Interfaces directly with user applications and provides network services.
-  ** Examples: Hypertext Transfer Protocol (HTTP), File Transfer Protocol (FTP), Simple Mail Transfer Protocol (SMTP).
+== The TCP/IP model
 
-Of these, layers 4 (network transport) and 7 (application) are the most important for network application development. Layer 4 is responsible for ensuring that data is transmitted reliably and securely, while layer 7 is responsible for providing network services to end-user applications.
+The OSI model is a theoretical reference. The protocol suite that actually underpins the internet is the *TCP/IP model* (also called the Internet model), which collapses the seven OSI layers into four:
+
+[cols="^1,3,3", options="header"]
+|===
+| TCP/IP layer | Corresponds to OSI layers | Examples
+
+| Application
+| Layers 5, 6, 7
+| HTTP, DNS, TLS, FTP, SMTP
+
+| Transport
+| Layer 4
+| TCP, UDP
+
+| Internet
+| Layer 3
+| IP, ICMP
+
+| Network access (link)
+| Layers 1, 2
+| Ethernet, Wi-Fi
+|===
+
+The OSI model is taught because of its analytical clarity — seven discrete concerns make it easier to isolate problems ("is this a Layer 3 routing issue or a Layer 4 connection issue?"). The TCP/IP model reflects how networking is actually implemented.
+
+== See Also
+
+* *link:./tcp.adoc[Transmission Control Protocol (TCP)]*
+* *link:./load-balancer.adoc[Load balancer]*
+* *link:./reverse-proxy.adoc[Reverse proxy]*
+* *link:./api-gateway.adoc[API gateway]*
