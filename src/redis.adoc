@@ -1,3 +1,66 @@
 = Redis
 
 // TODO: https://newsletter.systemdesign.one/p/redis-use-cases
+
+Redis (Remote Dictionary Server) is an open-source, *link:./in-memory-databases.adoc[in-memory]* key-value store, widely used as a cache, session store, message broker, and real-time data structure server. A single Redis server can handle over 100,000 requests per second. Despite being single-threaded, it consistently delivers sub-millisecond latency at high throughput.
+
+== Why Redis is fast
+
+Redis's performance comes from five key design decisions:
+
+=== 1. In-memory storage
+
+All data in Redis lives in RAM. Unlike traditional databases that store data on disk and read it into memory on demand, Redis keeps the entire dataset in memory at all times. Even with a fast SSD, disk reads are thousands of times slower than RAM access. When Redis performs a `GET`, it follows a pointer in memory — an operation that completes in nanoseconds rather than milliseconds.
+
+Redis also stores data efficiently: small values are packed into compact memory formats (`ziplist`, `intset`, `listpack`) that improve CPU cache locality and reduce the number of memory locations touched per command.
+
+The trade-offs of in-memory storage are capacity and durability. Dataset size is bounded by available RAM, and RAM is volatile — it loses data on process restart or crash. Redis addresses both:
+
+* *Eviction policies*: When memory is full, Redis can evict keys using configurable policies (Least Recently Used, Least Frequently Used, random, or TTL-based). Datasets can also be spread across a Redis Cluster.
+* *Persistence*: Two optional mechanisms allow data to be written to disk without blocking the main thread. *RDB (Redis Database Snapshot)* takes point-in-time snapshots in a forked child process — good for backups or systems tolerant of some data loss. *AOF (Append-Only File)* logs every write operation to disk with configurable `fsync` behaviour (every write, every second, or never), offering a finer durability/performance trade-off.
+
+=== 2. Single-threaded event loop
+
+Redis processes commands on a single thread using an event loop (based on `epoll`/`kqueue`). This eliminates the overhead of mutex locks, context switching, and race conditions that plague multi-threaded architectures. Because only one command executes at a time, every operation is inherently atomic — no locking is needed.
+
+This is safe because Redis's bottleneck is almost never CPU: it is network I/O. A single core is typically sufficient to saturate a network interface. For CPU-bound workloads, Redis Cluster can spread data across multiple independent nodes, each running its own event loop.
+
+=== 3. Optimised data structures
+
+Redis provides native, purpose-built data structures rather than storing everything as raw strings or blobs:
+
+* *Strings*: Binary-safe values up to 512 MB.
+* *Hashes*: Field-value maps, stored as compact arrays for small sizes.
+* *Lists*: Linked lists supporting O(1) push/pop operations from either end.
+* *Sets*: Unordered collections with O(1) add, remove, and membership tests.
+* *Sorted sets*: Sets ordered by a floating-point score, backed by a skip list for O(log n) range queries.
+* *Bitmaps and HyperLogLog*: Space-efficient structures for bit operations and probabilistic cardinality counting.
+* *Streams*: Append-only log structures for event sourcing and message queuing.
+
+Each data type is implemented with memory efficiency in mind — small collections use compact encodings that are upgraded to full structures only when they grow beyond a threshold. This means Redis is often faster and uses less memory than a general-purpose database performing equivalent operations.
+
+=== 4. I/O efficiency
+
+Redis uses non-blocking, event-driven networking: a single thread handles thousands of simultaneous client connections without creating a thread per connection. This avoids the memory and scheduling overhead of thread-per-connection servers.
+
+*Pipelining* allows clients to send multiple commands in a single network round trip without waiting for each response, amortising the cost of network latency across many operations.
+
+In newer versions (Redis 6+), I/O threads handle reading and writing network data in parallel, while the single event loop thread remains the sole executor of commands. This separates the cost of data transfer from command execution, improving throughput on multi-core systems without introducing concurrency hazards.
+
+=== 5. Server-side scripting with Lua
+
+Redis supports server-side Lua scripts, executed atomically by the event loop. A script can read and write multiple keys, perform conditional logic, and return results — all in a single round trip, with no risk of another client interleaving commands mid-execution. This eliminates the read-modify-write race conditions that would otherwise require client-side coordination and multiple round trips.
+
+== Common use cases
+
+* *Caching*: The primary use case. Redis sits in front of a slower persistent database and serves frequently-read data from memory, dramatically reducing read latency.
+* *Session storage*: Stores user session data with configurable expiry (TTL), shared across multiple application servers.
+* *Rate limiting*: Atomic increment operations (`INCR`) on keys with TTLs make implementing sliding-window rate limiters straightforward.
+* *Pub/sub messaging*: Redis's built-in publish/subscribe channels enable simple real-time messaging between services.
+* *Leaderboards and counting*: Sorted sets make it trivial to maintain ranked lists (game scores, trending content) with O(log n) updates.
+* *Distributed locks*: The `SET NX` (set if not exists) operation with a TTL is the basis for the Redlock distributed mutex pattern.
+* *Task queues*: Lists used as FIFO queues, or Redis Streams for more durable, consumer-group-aware message queuing.
+
+== See Also
+
+* *link:./in-memory-databases.adoc[In-memory databases]*
