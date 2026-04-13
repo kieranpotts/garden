@@ -1,0 +1,62 @@
+= Internet Protocol (IP)
+
+The *Internet Protocol (IP)* is the fundamental network-layer protocol of the internet. It defines how data is addressed, packetised, and routed across interconnected networks from a source host to a destination host. IP operates at *Layer 3* of the *link:./osi-model.adoc[OSI model]*.
+
+IP is a *connectionless*, *best-effort* protocol: it makes no guarantee that packets will arrive, arrive in order, or arrive only once. Reliability, ordering, and error recovery are the responsibility of higher-layer protocols such as *link:./tcp.adoc[TCP]*.
+
+== How IP works
+
+Data from higher layers is wrapped in an *IP packet* (also called a datagram) consisting of a header and a payload:
+
+* *Header*: contains source and destination *link:./internet-protocol-address.adoc[IP addresses]*, the protocol of the encapsulated payload (e.g. TCP=6, UDP=17, ICMP=1), a TTL (Time-To-Live) counter, and other control fields.
+* *Payload*: the data from Layer 4 (e.g. a TCP segment or UDP datagram).
+
+When a packet is sent, each router along the path inspects the destination IP address, consults its routing table to determine the next hop, decrements the TTL by one (dropping the packet and sending an ICMP "Time Exceeded" message if TTL reaches zero), and forwards the packet onward. This per-hop forwarding continues until the packet reaches its destination.
+
+=== Fragmentation
+
+If a packet is larger than the *Maximum Transmission Unit (MTU)* of a network link along the path (typically 1500 bytes for Ethernet), the packet is fragmented into smaller pieces. Each fragment is forwarded independently and reassembled at the destination. Fragmentation adds overhead and is avoided where possible — TCP uses *Maximum Segment Size (MSS)* negotiation to keep segments below the MTU, and modern networks use *Path MTU Discovery (PMTUD)* to detect the smallest MTU along a path.
+
+== IPv4 vs IPv6
+
+Two versions of IP are in active use:
+
+=== IPv4
+
+The original version, introduced in 1981. Uses 32-bit addresses, written in dotted-decimal notation (e.g. `192.168.1.1`), giving a theoretical address space of ~4.3 billion addresses. IPv4 address exhaustion became a critical problem as the internet grew, leading to the widespread use of *Network Address Translation (NAT)* as a short-term workaround — allowing many devices behind a router to share a single public IP address — and driving the development of IPv6.
+
+=== IPv6
+
+Introduced to resolve IPv4 exhaustion. Uses 128-bit addresses written in colon-separated hexadecimal groups (e.g. `2001:0db8:85a3::8a2e:0370:7334`), providing ~3.4 × 10^38 unique addresses. IPv6 also removes the need for NAT, simplifies header processing (fixed 40-byte header with no checksum), and adds built-in support for features like stateless address autoconfiguration (SLAAC) and mandatory IPsec support. The internet is in a long transition from IPv4 to IPv6; most modern systems support both via *dual-stack* networking.
+
+== Special address ranges
+
+Both IPv4 and IPv6 reserve certain address ranges for specific purposes:
+
+* *Loopback*: `127.0.0.1` (IPv4) / `::1` (IPv6) — refers to the local machine itself. Traffic sent to this address never leaves the host.
+* *Private/LAN addresses* (IPv4): `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16` — routable only within private networks; not forwarded by internet routers.
+* *Link-local*: `169.254.0.0/16` (IPv4) / `fe80::/10` (IPv6) — automatically assigned when no DHCP server is available; only valid within a single network segment.
+* *Multicast*: `224.0.0.0/4` (IPv4) / `ff00::/8` (IPv6) — packets addressed to a group of receivers simultaneously.
+* *Broadcast* (IPv4 only): `255.255.255.255` — delivers to all hosts on the local network.
+
+== CIDR notation
+
+IP networks are expressed in *Classless Inter-Domain Routing (CIDR)* notation: an address followed by a prefix length (e.g. `192.168.1.0/24`). The prefix length specifies how many bits of the address identify the network (the rest identify individual hosts within it). `/24` means the first 24 bits are the network prefix, leaving 8 bits for 256 host addresses (254 usable, excluding network and broadcast addresses).
+
+CIDR replaced the older classful addressing system (Class A/B/C) and allows flexible subnetting — dividing a network into smaller subnetworks.
+
+== Related protocols
+
+IP is the foundation on which other protocols operate:
+
+* *link:./tcp.adoc[TCP]* (Transmission Control Protocol) — adds reliable, ordered, connection-oriented delivery on top of IP.
+* *UDP* (User Datagram Protocol) — lightweight, connectionless transport with no delivery guarantees; used where speed matters more than reliability (DNS, streaming, games).
+* *ICMP* (Internet Control Message Protocol) — carries diagnostic and error messages (used by `ping` and `traceroute`).
+* *DNS* — resolves human-readable hostnames to IP addresses.
+
+== See Also
+
+* *link:./internet-protocol-address.adoc[IP address]*
+* *link:./tcp.adoc[TCP]*
+* *link:./osi-model.adoc[OSI model]*
+* *link:./http.adoc[HTTP]*
