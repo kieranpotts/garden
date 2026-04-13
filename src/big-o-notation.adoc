@@ -1,0 +1,65 @@
+= Big O notation
+
+Big O notation is a mathematical notation that describes how the resource requirements (time or memory) of an algorithm grow as the size of its input grows. It was introduced by the German mathematician Paul Bachmann in 1894 — the "O" stands for _Ordnung_, meaning "order" in German, reflecting that it characterises the _order of growth_ of a function.
+
+In *link:./computer-science.adoc[computer science]*, big O is used to classify *link:./algorithms.adoc[algorithms]* (and data structure operations) according to how their execution time or memory usage scales with input size. It provides an *upper bound* on that growth: where `f(n) = O(g(n))`, the function `f` grows no faster than `g` as `n` tends towards infinity. Constants and lower-order terms are dropped, because at large input sizes they become irrelevant to the growth rate. For example, an algorithm that makes `3n + 5` operations is still `O(n)`, and one that makes `n² + n` operations is `O(n²)`.
+
+Big O, by convention, describes the *worst case* unless stated otherwise. An algorithm may perform better in the best or average case, but big O gives you a guarantee on the upper bound of how bad it can get. This makes it useful for reasoning about *link:./performance.adoc[performance]* and *link:./scalability.adoc[scalability]*.
+
+== Common complexity classes
+
+From slowest to fastest growth:
+
+*O(1) — Constant time*:: The running time does not change with input size. A direct array element lookup by index is O(1); so is a hash table lookup in a well-implemented `Set` or `Map`. Note that O(1) does not mean "instant" — it only means the time is bounded by a constant, however large that constant may be.
+
+*O(log n) — Logarithmic time*:: Running time grows slowly relative to input size, because a constant fraction of remaining possibilities is eliminated with each step. *Binary search* is the canonical example: each comparison halves the search space. An input of 1 billion requires at most ~30 comparisons. Logarithmic growth is extremely slow and scales well to very large inputs.
+
+*O(n) — Linear time*:: Running time grows in direct proportion to input size. A single loop over all elements — for example, searching an unsorted list — is O(n). Doubling the input doubles the time.
+
+*O(n log n) — Linearithmic time*:: Common in efficient *link:./algorithms.adoc[sorting algorithms]*. Merge sort and heap sort are both O(n log n), which is the theoretical lower bound for comparison-based sorting. A fast Fourier transform is also O(n log n).
+
+*O(n²) — Quadratic time*:: Running time grows with the square of input size. This typically arises from a nested loop over the same dataset — for example, *bubble sort*, insertion sort, and selection sort. A common accidental source is calling an O(n) function (such as `Array.indexOf()`) inside a loop, resulting in O(n²) overall.
+
+*O(n^c) — Polynomial time*:: A general class of algorithms whose running time is bounded by a polynomial expression of the input size. Algorithms up to and including O(n²) are polynomial, but the class also includes O(n³), etc. Polynomial algorithms are generally considered "tractable" for reasonable input sizes.
+
+*O(2^n) — Exponential time*:: Running time doubles with each additional element in the input. The brute-force solution to the travelling salesman problem is O(2^n). Exponential algorithms are effectively unusable for all but very small inputs.
+
+*O(n!) — Factorial time*:: Even more extreme than exponential. Generating all permutations of `n` elements is O(n!). Similarly unusable at scale.
+
+== Space complexity
+
+Big O applies equally to *memory usage*, not just time. An algorithm that creates a copy of its input has O(n) space complexity. One that uses a fixed amount of working memory regardless of input size has O(1) space complexity. Often there is a *time–space trade-off*: caching intermediate results (memoization) can reduce time complexity at the cost of increased space complexity.
+
+== Related notations
+
+Big O is part of a family of asymptotic notations. While big O gives an upper bound, two others are commonly encountered in computer science:
+
+* *Big Ω (Omega)* — a lower bound. Where `f(n) = Ω(g(n))`, the algorithm takes at _least_ `g(n)` time.
+* *Big Θ (Theta)* — a tight bound. Where `f(n) = Θ(g(n))`, the algorithm's time is proportional to `g(n)` from both above and below. This is more precise than big O, but big O is more commonly used in practice when only the upper bound matters.
+
+== Data structure operations
+
+Big O doesn't only apply to algorithms as a whole — individual *link:./data-structures.adoc[data structure]* operations each carry their own complexity. The same data structure can have very different complexities for different operations. For example, a singly-linked list supports O(1) insertion at the head but O(n) search; a hash table offers O(1) average-case search and insertion but O(n) worst-case (due to hash collisions). Choosing the right data structure for a problem depends on which operations dominate: if lookups are frequent, prefer a hash table; if ordered traversal and insertion/deletion matter, consider a balanced tree.
+
+For a full reference table of complexities across all common data structures and sorting algorithms, see the https://www.bigocheatsheet.com/[Big-O Cheat Sheet].
+
+== Practical guidelines
+
+* *Constants matter in practice.* Big O ignores constant factors, but a well-optimised O(n²) algorithm may outperform a poorly-optimised O(n log n) algorithm for small inputs. Profile before optimising.
+* *Avoid O(n) work inside loops.* Calling a function with linear complexity inside another loop escalates the overall complexity to O(n²). Common culprits include `indexOf`, `includes`, and `filter` inside loops.
+* *Prefer O(1) data structures for repeated lookups.* Converting an array to a `Set` or `Map` is an O(n) upfront cost, but subsequent lookups drop to O(1). This trade-off pays off when the number of lookups is large.
+* *Know your language's built-in complexities.* Standard library data structures and operations have documented complexities. Misunderstanding these is a common source of unintended O(n²) behaviour.
+
+''''
+
+== See also
+
+* *link:./algorithms.adoc[Algorithms]*
+* *link:./complexity.adoc[Complexity]*
+* *link:./data-structures.adoc[Data structures]*
+* *link:./performance.adoc[Performance]*
+* *link:./scalability.adoc[Scalability]*
+
+== References
+
+* https://www.bigocheatsheet.com/[Big-O Cheat Sheet] — Reference tables for common data structure operations and sorting algorithms.
