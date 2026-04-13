@@ -1,3 +1,68 @@
 = Hashing
 
-// TODO: https://newsletter.systemdesign.one/p/how-to-store-passwords-in-database
+Hash functions are ubiquitous in computing. They are used in databases to optimise queries, in data structures to improve lookup speed, and in security to verify data integrity and protect stored secrets. Almost every interaction with technology involves hash functions in some way.
+
+A *hash function* is a function that takes an input — usually a string — and produces a number. Two properties are fundamental:
+
+* *Deterministic*: the same input always produces the same output.
+* *Bounded*: the output is always within a defined range. The range depends on the hash function — some produce 32-bit integers (0 to ~4 billion), others go larger.
+
+Because the input domain (any possible string) is far larger than the output range (a fixed set of numbers), two different inputs can produce the same output. This is called a *collision*.
+
+== What makes a hash function good?
+
+=== Uniform distribution
+
+A good hash function distributes outputs evenly across its range, regardless of what the inputs are. If the outputs cluster or form patterns, some values collide more often than others. This matters because hash functions are used to assign items to "slots" — a clumped distribution means some slots are overloaded while others are empty.
+
+Bad hash functions tend to expose their weaknesses on *non-random* input. A function that distributes random strings adequately may produce obvious patterns when given structured input such as sequential numbers, IP addresses, or common English words.
+
+=== The avalanche effect
+
+A good hash function has a strong *avalanche effect*: flipping a single bit in the input should, on average, flip approximately 50% of the bits in the output. This property ensures that even very similar inputs produce very different outputs, preventing patterns and reducing collisions.
+
+A function that lacks the avalanche effect — where small input changes produce small output changes — is vulnerable to structured input producing clustered outputs.
+
+== Hash maps
+
+The most common application of hash functions in everyday programming is the *hash map* (also known as a hash table, dictionary, or object in various languages). A hash map stores key-value pairs and provides O(1) average-case lookup.
+
+Internally, a hash map maintains an array of *buckets* — each bucket is a list of key-value pairs. To store a pair, the key is passed through a hash function; the result (modulo the number of buckets) selects which bucket to use. To retrieve a value, the same bucket is located via the same hash, then the bucket is scanned for a matching key.
+
+The hash function is used only to identify the bucket. The key comparison within the bucket is always exact. The purpose of hashing is to reduce the number of comparisons needed: with good distribution, each bucket holds only a small fraction of all stored pairs.
+
+If the hash function produces a poor distribution, many keys land in the same bucket. In the worst case — a function that always returns the same value — every key is in one bucket and lookups degrade to O(n), no better than a plain list.
+
+== Collisions in practice
+
+The impact of collisions is most apparent with real-world, structured data. Hashing 100 million random IP addresses:
+
+* A good hash function (e.g. murmur3): ~1.2% collision rate.
+* A simple character-sum function: ~100% collision rate.
+
+Hashing 466,000 English words:
+
+* murmur3: ~0.005% collisions.
+* Character-sum: ~99.5% collisions.
+
+The character-sum function sums the ASCII values of each character — a fast but poor approach that cannot distinguish between anagrams (e.g. "listen" and "silent" produce identical sums). Real-world structured data almost always exhibits this kind of regularity, which a weak hash function cannot handle.
+
+== Manufactured collisions and HashDoS
+
+Collisions are not only accidental. Because hash functions are deterministic, it is possible to *brute-force* find inputs that collide for a specific function und seed value. An attacker who knows the hash function in use can craft a set of keys that all map to the same bucket, intentionally degrading performance.
+
+This attack is called *HashDoS*. It was exploited in the mid-2000s against web servers: HTTP requests contain headers as key-value pairs, which servers typically store in a hash map. By sending requests with many crafted headers that all collide, an attacker could force a server to spend excessive time on bucket searches, causing a denial of service.
+
+=== Seeds and salts
+
+The mitigation is to introduce randomness into the hash function via a *seed* (sometimes called a *salt*). A seeded hash function takes both the input and a seed value; the same input with a different seed produces a different output. At program startup, a random seed is generated. An attacker who does not know the seed cannot reliably produce collisions.
+
+The seed does not affect hash map correctness, because the seed is constant for the lifetime of the process and all lookups within that process use the same seed. However, if hash values are stored outside the process (e.g. persisted to disk), the seed used at generation time must also be recorded, since a different seed will produce different values.
+
+== See also
+
+* *link:./bloom-filter.adoc[Bloom filter]* — uses multiple hash functions to implement a probabilistic set membership test.
+* *link:./consistent-hashing.adoc[Consistent hashing]* — a hash ring technique used in distributed systems to minimise key remapping when nodes are added or removed.
+* *link:./rainbow-table.adoc[Rainbow table]* — a precomputed table for reversing hash functions, relevant to password storage security.
+* *link:./salt.adoc[Salt]* — random data added to input before hashing, used in password storage to prevent rainbow table attacks.
+* *link:./cryptography.adoc[Cryptography]* — cryptographic hash functions (SHA-256, etc.) are a distinct subclass designed for security properties beyond distribution and speed.
