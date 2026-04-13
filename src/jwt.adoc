@@ -1,3 +1,74 @@
 = JSON Web Token (JWT)
 
-// TODO: https://blog.bytebytego.com/i/152345604/explaining-json-web-token-jwt-with-simple-terms
+A *JSON Web Token (JWT)* is a compact, URL-safe token used to securely transmit information between two parties — typically a client and a server. JWTs are digitally signed, so their contents can be verified and trusted.
+
+JWTs are widely used for *link:./authentication.adoc[authentication]* and authorisation. The core advantage over traditional server-side sessions is that all necessary user information is stored inside the token itself. The server does not need to look up session state to authenticate a request — it only needs to verify the token's signature. This makes JWTs well-suited to distributed systems and microservices, where sharing session state across multiple servers is impractical.
+
+== Structure
+
+A JWT consists of three parts, separated by dots:
+
+----
+<header>.<payload>.<signature>
+----
+
+=== Header
+
+The header is a JSON object containing metadata about the token — specifically the signing algorithm and the token type:
+
+----
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+----
+
+This JSON is Base64Url-encoded to form the first part of the token.
+
+=== Payload
+
+The payload carries the *claims* — pieces of data about the user or the token itself. There are three categories:
+
+* *Registered claims*: A set of standard, predefined fields. Not required, but recommended. Common ones include `iss` (issuer), `sub` (subject, typically the user ID), `aud` (audience), `exp` (expiration time), and `iat` (issued at).
+* *Public claims*: Custom claims intended for public use, defined in a public namespace to avoid naming conflicts.
+* *Private claims*: Custom claims agreed upon between specific parties — for example `userId`, `role`, or `permissions`.
+
+The payload is Base64Url-encoded to form the second part of the token.
+
+CAUTION: The payload is *encoded*, not *encrypted*. Anyone in possession of the token can decode and read it. Never include passwords, secrets, or sensitive personal data in the payload.
+
+=== Signature
+
+The signature is created by signing the encoded header and payload with a secret or private key, using the algorithm specified in the header:
+
+----
+HMACSHA256(
+  base64UrlEncode(header) + "." + base64UrlEncode(payload),
+  secret
+)
+----
+
+The result is Base64Url-encoded to form the third part of the token. The signature is what prevents the token from being tampered with — any modification to the header or payload will invalidate it.
+
+== Authentication flow
+
+. The user logs in with their credentials.
+. The server validates the credentials and generates a signed JWT containing claims such as user ID, role, and expiration time.
+. The server returns the JWT to the client.
+. The client stores the token (in memory, `localStorage`, `sessionStorage`, or an HttpOnly cookie) and sends it with every subsequent request in the `Authorization` header: `Authorization: Bearer <token>`.
+. On each request, the server verifies the signature and checks the standard claims (especially `exp`). If valid, the user is authenticated without any server-side session lookup.
+
+== Security considerations
+
+* *Use HTTPS*: Always transmit JWTs over HTTPS to prevent interception.
+* *Protect signing keys*: If the secret key (HS256) or private key (RS256/ES256) is compromised, tokens can be forged. Never commit keys to version control.
+* *Avoid `alg: none`*: Some older libraries allowed this, which disables signature verification entirely. Ensure the library in use rejects tokens with no algorithm.
+* *Set short expiration times*: Short-lived access tokens (e.g. 15 minutes) limit the window of exposure if a token is stolen.
+* *Validate standard claims*: Always check `exp` (expiration), `iss` (issuer), and `aud` (audience) to confirm the token is legitimate and intended for your service.
+* *Token revocation*: JWTs are stateless — once issued, they cannot easily be revoked before expiry. Common mitigations include: using short-lived access tokens paired with longer-lived *refresh tokens* (which can be revoked server-side), or maintaining a token denylist keyed on the `jti` (JWT ID) claim.
+* *Client storage*: `localStorage` and `sessionStorage` are vulnerable to cross-site scripting (XSS) attacks. HttpOnly cookies are safer from XSS but require CSRF protection. A common best practice is to keep access tokens in memory and store refresh tokens in HttpOnly cookies.
+
+== See Also
+
+* *link:./authentication.adoc[Authentication]*
+* *link:./salt.adoc[Salt]*
