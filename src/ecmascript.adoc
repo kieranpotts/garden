@@ -1,3 +1,70 @@
 = ECMAScript
 
+ECMAScript is the formal specification that standardizes the scripting language on which *link:./javascript.adoc[JavaScript]* is based. It is maintained by ECMA International, a standards body, through its *TC39* technical committee.
+
+The ECMAScript specification defines the core syntax, semantics, and standard library for the language. JavaScript is the most widely known implementation of ECMAScript. *link:./typescript.adoc[TypeScript]* is a strict superset of JavaScript that also conforms to the ECMAScript specification, while adding a static type layer on top.
+
 // TODO: https://effectivetypescript.com/2023/09/27/closure-compiler/
+
+== History
+
+ECMAScript's origins trace back to JavaScript, which was created by Brendan Eich at Netscape in 1995. In 1996, Netscape submitted the language to ECMA International for standardization. The first edition of the ECMAScript specification was published in 1997.
+
+Early editions evolved slowly:
+
+* *ES1* (1997): Initial specification.
+* *ES2* (1998): Editorial changes only.
+* *ES3* (1999): Regular expressions, try/catch exception handling.
+* *ES4*: Abandoned due to disagreements among stakeholders.
+* *ES5* (2009): Strict mode, `JSON` built-in, array methods (`forEach`, `map`, `filter`, `reduce`).
+* *ES5.1* (2011): Minor editorial clarification.
+
+The sixth edition, ES2015 (commonly known as ES6), was the most significant update to the language since its creation. From ES2016 onward, the specification moved to an annual release cadence, with each edition named by year.
+
+== ES2015 (ES6)
+
+ES2015 was a landmark release that modernized the language substantially. Key features introduced include:
+
+* `let` and `const` block-scoped variable declarations.
+* Arrow functions (`=>`).
+* Classes (syntactic sugar over JavaScript's prototype-based inheritance).
+* Template literals (backtick strings with embedded expressions).
+* Destructuring assignment for arrays and objects.
+* Default, rest, and spread parameters.
+* Modules (`import` / `export`).
+* Promises, for managing asynchronous operations.
+* Iterators and generators.
+* `Map`, `Set`, `WeakMap`, and `WeakSet` collections.
+* `Symbol` primitive type.
+* `Proxy` and `Reflect`.
+
+== Annual releases (ES2016+)
+
+Since ES2016, each annual edition has added a smaller, more focused set of features. Notable additions include:
+
+* *ES2017*: `async`/`await`; `Object.entries()` and `Object.values()`.
+* *ES2018*: Asynchronous iteration; rest/spread properties for objects.
+* *ES2019*: `Array.flat()` and `Array.flatMap()`; optional catch binding.
+* *ES2020*: Optional chaining (`?.`); nullish coalescing (`??`); `BigInt`; `Promise.allSettled()`.
+* *ES2021*: Logical assignment operators; `String.replaceAll()`; `Promise.any()`.
+* *ES2022*: Top-level `await`; class fields and private methods; `Array.at()`.
+* *ES2023*: Array methods that return copies (`toSorted`, `toReversed`, `toSpliced`, `with`).
+* *ES2024*: `Promise.withResolvers()`; `Object.groupBy()`.
+* *ES2025*: `Iterator` helper methods; `RegExp` duplicate named capture groups.
+
+== TC39 process
+
+New features are proposed and developed through a five-stage TC39 process:
+
+* *Stage 0 – Strawperson*: Initial idea; no formal requirements.
+* *Stage 1 – Proposal*: The committee agrees the problem is worth solving; a champion is assigned.
+* *Stage 2 – Draft*: A first spec text is written.
+* *Stage 3 – Candidate*: The spec is complete and awaiting implementation feedback from browser vendors.
+* *Stage 4 – Finished*: Two independent implementations exist; the feature is ready for inclusion in the next edition of the specification.
+
+Proposals at Stage 3 are generally safe to use in production, as they are unlikely to change significantly before reaching Stage 4.
+
+== See also
+
+* *link:./javascript.adoc[JavaScript]*
+* *link:./typescript.adoc[TypeScript]*

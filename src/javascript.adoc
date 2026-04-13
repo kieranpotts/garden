@@ -1,0 +1,70 @@
+= JavaScript
+
+JavaScript is a high-level, dynamically typed, interpreted programming language. It is the primary language of the web, running natively in all major browsers. Beyond the browser, JavaScript also runs server-side and in other environments via runtimes such as Node.js, Deno, and Bun.
+
+JavaScript's behavior is governed by the *link:./ecmascript.adoc[ECMAScript]* specification. *link:./typescript.adoc[TypeScript]* is a statically typed superset of JavaScript that compiles down to JavaScript.
+
+== History
+
+JavaScript was created by Brendan Eich at Netscape in 1995, reportedly in just ten days. It was first released under the name Mocha, then LiveScript, and finally JavaScript — a name chosen partly for marketing reasons, to capitalize on the popularity of Java at the time, despite the two languages having very little in common.
+
+In 1996, Netscape submitted JavaScript to ECMA International for standardization, resulting in the ECMAScript specification. Microsoft developed their own compatible implementation, JScript, to avoid trademark issues.
+
+For many years, browser incompatibilities made cross-browser JavaScript development painful. The rise of libraries like jQuery in the mid-2000s helped smooth over these differences. Later, the maturation of the ECMAScript specification and the standardization of modern browser APIs largely resolved the problem.
+
+The release of Node.js in 2009 took JavaScript outside the browser for the first time, enabling its use for server-side and command-line applications. JavaScript is now one of the most widely used programming languages in the world.
+
+== Characteristics
+
+* *Dynamically typed*: Variable types are determined at runtime. A variable can hold any type of value, and that type can change over the lifetime of the variable.
+* *Interpreted*: JavaScript source code is executed directly by the JavaScript engine without a mandatory separate compilation step. Modern engines use JIT (just-in-time) compilation internally to improve performance, but this is transparent to the developer.
+* *Prototype-based object-oriented*: Rather than classical class-based inheritance, JavaScript uses a prototype chain for object inheritance. The `class` syntax introduced in ES2015 is syntactic sugar over this prototype model.
+* *First-class functions*: Functions are values. They can be assigned to variables, passed as arguments to other functions, and returned from functions.
+* *Single-threaded*: JavaScript executes on a single thread. Long-running synchronous operations block execution of all other code.
+
+== Event loop
+
+JavaScript's concurrency model is built around the event loop. Despite being single-threaded, JavaScript handles non-blocking I/O through an asynchronous programming model. Callbacks, Promises, and `async`/`await` all allow work to be deferred and resumed without blocking the call stack. The event loop continuously processes a task queue, executing deferred callbacks when the call stack is empty.
+
+This model is well suited to I/O-bound workloads such as network requests and file system access, but poorly suited to CPU-bound tasks, which block the event loop and degrade responsiveness.
+
+== Closures
+
+A closure is a function that captures and retains access to variables from its enclosing scope, even after that outer scope has finished executing. Closures are fundamental to many JavaScript patterns, including module encapsulation, callbacks, and factory functions.
+
+== Modules
+
+JavaScript's native module system, introduced in ES2015, allows code to be organized into files with explicit `import` and `export` declarations. Prior to native modules, systems like CommonJS (`require` / `module.exports`) — still common in Node.js codebases — served the same purpose.
+
+== Environments
+
+=== Browser
+
+JavaScript engines in major browsers include V8 (Chrome, Edge), SpiderMonkey (Firefox), and JavaScriptCore (Safari). Each engine handles parsing, execution, JIT compilation, and garbage collection.
+
+=== Node.js
+
+https://nodejs.org/[Node.js] is a server-side runtime built on V8. It provides APIs for file system access, networking, and OS-level operations, and ships with npm, the world's largest package registry.
+
+=== Deno
+
+https://deno.com/[Deno] is a modern runtime created by Ryan Dahl, the original creator of Node.js. It runs TypeScript natively, uses web-standard APIs, and has a built-in permission model for sandboxed execution.
+
+=== Bun
+
+https://bun.sh/[Bun] is a high-performance JavaScript and TypeScript runtime built on JavaScriptCore. It bundles a transpiler, bundler, and package manager into a single tool.
+
+== Ecosystem
+
+The JavaScript ecosystem is vast. Key tooling includes:
+
+* *npm* / *pnpm* / *Yarn*: Package managers and registries.
+* *Vite* / *esbuild* / *webpack*: Bundlers and build tools.
+* *React*, *Vue*, *Svelte*, *Angular*: Front-end UI frameworks and libraries.
+* *Express*, *Fastify*, *Hono*: Server-side web frameworks.
+* *Vitest*, *Jest*: Testing frameworks.
+
+== See also
+
+* *link:./ecmascript.adoc[ECMAScript]*
+* *link:./typescript.adoc[TypeScript]*
