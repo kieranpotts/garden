@@ -29,3 +29,11 @@ Choreographed sagas offer looser coupling between services, and therefore they b
 The saga pattern – whether choreographed or coordinated – offers higher *[resilience]* and *[scalability]* compared to traditional phased-commit transactions, as it avoids blocking issues which are associated with two-phase commit protocols especially. However, the trade-off is that sagas can be more complex to implement and manage, and *[consistency]* is traded for *[availability]*.
 
 When you're dealing with distributed sagas, especially choreographed ones, *[observability]* – and *[distributed tracing]* in particular – becomes crucial.
+
+== Implementations
+
+https://temporal.io/[Temporal] is a popular platform for implementing orchestrated sagas. Each step in the saga is modelled as a Temporal *Activity* — a function with built-in retry and timeout semantics. The saga itself is a Temporal *Workflow*, which is a durable, fault-tolerant function that coordinates the Activities in sequence.
+
+Compensating transactions are implemented naturally using a `try/catch` block/. If any activity throws after previous steps have committed, the catch block invokes the compensating activities in reverse order. Because Temporal persists the full state of every workflow execution, the saga is resilient to infrastructure failures — if the orchestrator crashes mid-flight, execution resumes from exactly where it left off when it restarts.
+
+Temporal's task queues underpin activity dispatch. When the orchestrator schedules an activity, it places a task on a durable queue. Workers poll the queue, execute the activity, and return the result. This decoupling means workers can be scaled independently and replaced without affecting in-flight workflows.

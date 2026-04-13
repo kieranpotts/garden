@@ -1,3 +1,36 @@
 = Execution orchestrator
 
-// TODO: https://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html
+An execution orchestrator is a centralized component that manages the dispatch and sequencing of work across a set of worker nodes. It is a *mediated, multi-step processing* pattern. Rather than workers communicating directly with one another, all coordination flows through the orchestrator.
+
+The orchestrator maintains a dependency graph of tasks. It identifies which tasks are ready to run — that is, whose dependencies have already been satisfied — and dispatches them to available workers. Workers are typically "dumb" in that they have no knowledge of the wider workflow, they simply execute the task they are given and return the result.
+
+This is in contrast to non-mediated patterns like *link:./pipe-and-filter.adoc[pipe-and-filter]*, where data flows through workers connected directly by pipes, and *[choreography]*, where workers react to events without a central coordinator.
+
+== Trade-offs
+
+The orchestrator offers centralized visibility and control over the entire workflow. This makes it straightforward to reason about the state of a process, and to implement features like retries, timeouts, and compensating transactions.
+
+The trade-off is that the orchestrator can become a *link:./single-point-of-failure.adoc[single point of failure]* and a performance bottleneck. This can be mitigated by making the orchestrator itself highly available and durable.
+
+== Durable execution
+
+A key challenge in orchestrated workflows is *durability* – ensuring that a long-running process survives infrastructure failures without losing progress. Naive implementations store workflow state only in memory, meaning a process crash requires the entire workflow to be restarted from scratch.
+
+Modern orchestration platforms address this with *durable execution*. The full state of every workflow is persisted at each step, so that execution can be resumed from exactly where it left off after any failure.
+
+https://temporal.io/[Temporal] is a leading open-source durable execution platform. Workflows are written as ordinary code using native SDKs (Go, TypeScript, Python, Java, C#, and others). Individual steps are modelled as *Activities*, which have built-in retry and timeout semantics. Temporal handles state persistence, task dispatch, retries, timers, and failure recovery transparently. Developers write sequential business logic without needing to handle distributed systems failure modes.
+
+Temporal is well-suited to:
+
+* Long-running workflows (days, weeks, or months).
+* Workflows that involve external API calls or human-in-the-loop steps.
+* Compensating workflows — such as the *link:./saga.adoc[Saga]* pattern.
+* AI agent pipelines where individual steps may fail or time out.
+
+== See also
+
+* *link:./pipe-and-filter.adoc[Pipe-and-filter]*
+* *link:./scatter-and-gather.adoc[Scatter-and-gather]*
+* *link:./bulk-synchronous-parallel.adoc[Bulk synchronous parallel]*
+* *link:./saga.adoc[Saga]*
+* *link:./task-queue.adoc[Task queue]*
