@@ -1,9 +1,188 @@
 = gRPC
 
-gRPC – Google Remote Procedure Call – is an open source *[RPC]* framework that helps services to communicate with each other efficiently. The technology is commonly used for *[synchronous]* *[inter-service communication]* in *[service-oriented architectures]*, as an alternative to conventional HTTP-based APIs where performance is more critical.
+gRPC (Google Remote Procedure Call) is an open-source, high-performance RPC framework originally developed at Google and open-sourced in 2015. It is the primary inter-process communication mechanism used inside Google's own distributed systems, and is widely adopted for microservice-to-microservice communication where performance matters more than public discoverability.
 
-Instead of JSON over HTTP, gRPC uses *[Protocol Buffers]* to encode data, and sends it over HTTP/2 streams. Protobufs are compressed, binary-encoded, type-safe messages. The binary data can be sent over the wire at high speeds, and rapidly serialized and deserialized at each end. The HTTP/2 streams can support bidirectional streaming and handle multiple request-response cycles in parallel through a single TCP connection. The combination of both technologies greatly increases throughput and reduces latency.
+Instead of JSON over HTTP/1.1, gRPC uses *link:./protocol-buffers.adoc[Protocol Buffers]* for serialization and HTTP/2 as its transport. This combination delivers significantly higher throughput and lower latency than conventional HTTP APIs, while also supporting four distinct communication patterns including bidirectional streaming.
 
-API methods are defined in a `*.proto` file, from which client and server code is automatically generated.
+== How gRPC works
 
-gRPC is the main *[inter-process communication]* mechanism used by Google in the distributed software that back its public web services. With lots of SDKs available, gRPC is a great choice for building *[microservices]* and other *[distributed software]* where different services are written in different programming languages, and where speed and efficiency are critical requirements.
+=== Protocol Buffers
+
+*link:./protocol-buffers.adoc[Protocol Buffers]* (protobuf) serve as both the interface definition language (IDL) and the serialization format. Services and messages are defined in `.proto` files:
+
+----
+syntax = "proto3";
+
+service BookService {
+  rpc GetBook (GetBookRequest) returns (Book);
+  rpc ListBooks (ListBooksRequest) returns (stream Book);
+  rpc CreateBook (stream CreateBookRequest) returns (Book);
+  rpc Chat (stream ChatMessage) returns (stream ChatMessage);
+}
+
+message Book {
+  string id = 1;
+  string title = 2;
+  string author = 3;
+  int32 published_year = 4;
+}
+
+message GetBookRequest {
+  string id = 1;
+}
+----
+
+The `protoc` compiler generates strongly-typed client and server code from the `.proto` file in any of the supported languages (Go, Java, Python, C++, Node.js, Ruby, C#, and more). Developers call generated methods as if they were local function calls; gRPC handles serialization, transport, and deserialization transparently.
+
+Protobuf messages are encoded in a compact binary format. Binary encoding is faster to serialize and deserialize than JSON, and produces significantly smaller payloads — typically 3–10x smaller than equivalent JSON.
+
+=== HTTP/2 transport
+
+gRPC runs exclusively over HTTP/2, which provides several advantages over HTTP/1.1:
+
+* *Multiplexing* — Multiple RPC calls are carried as independent streams over a single TCP connection, eliminating the head-of-line blocking that affects HTTP/1.1 pipelining.
+* *Header compression* — HTTP/2 HPACK compression reduces header overhead, which is especially significant for high-frequency small requests.
+* *Full-duplex streaming* — Both client and server can send a stream of messages over a single connection simultaneously.
+* *Server push* — HTTP/2 allows the server to proactively send data to the client (used internally by gRPC for flow control and metadata).
+
+== Communication patterns
+
+gRPC supports four communication patterns, all defined in the `.proto` service definition:
+
+[cols="1,3,2", options="header"]
+|===
+| Pattern | Description | Use case
+
+| *Unary RPC*
+| Client sends one request, server returns one response. The classic request-response cycle.
+| Most CRUD operations, simple lookups.
+
+| *Server streaming RPC*
+| Client sends one request, server returns a stream of messages.
+| Large result sets, live feeds, log tailing.
+
+| *Client streaming RPC*
+| Client sends a stream of messages, server returns one response after the stream closes.
+| Bulk uploads, aggregation of sensor data.
+
+| *Bidirectional streaming RPC*
+| Both client and server send independent streams simultaneously.
+| Chat, collaborative editing, real-time sensor telemetry.
+|===
+
+== Interceptors
+
+gRPC has a middleware layer called _interceptors_ (equivalent to HTTP middleware). Interceptors can be applied on the client or server side and are used for cross-cutting concerns such as:
+
+* Authentication and authorisation (e.g. validating JWTs).
+* Logging and tracing (e.g. injecting distributed trace IDs).
+* Rate limiting and circuit breaking.
+* Retry logic and deadline propagation.
+
+== Metadata
+
+gRPC has a _metadata_ mechanism equivalent to HTTP headers: arbitrary key-value pairs sent alongside a request or response. Metadata is used for authentication tokens, tracing context, and other request-scoped information that sits outside the protobuf message itself.
+
+== Error handling
+
+gRPC defines its own set of status codes (distinct from HTTP status codes), returned in every response:
+
+[cols="1,1,3", options="header"]
+|===
+| Code | Name | Meaning
+
+| 0 | `OK` | Success.
+| 1 | `CANCELLED` | Operation cancelled by the caller.
+| 2 | `UNKNOWN` | Unknown error.
+| 3 | `INVALID_ARGUMENT` | Client sent an invalid argument.
+| 4 | `DEADLINE_EXCEEDED` | Deadline expired before the operation completed.
+| 5 | `NOT_FOUND` | Resource not found.
+| 7 | `PERMISSION_DENIED` | Caller lacks permission.
+| 8 | `RESOURCE_EXHAUSTED` | Quota exhausted or rate limited.
+| 14 | `UNAVAILABLE` | Service is unavailable (transient; safe to retry).
+| 16 | `UNAUTHENTICATED` | Request not authenticated.
+|===
+
+Deadlines (timeouts) are a first-class concept in gRPC: the client sets a deadline on the call, and gRPC propagates it across service boundaries. If the deadline expires, all in-progress work is cancelled.
+
+== Comparison with REST and GraphQL
+
+[cols="1,2,2,2", options="header"]
+|===
+| Aspect | gRPC | REST | GraphQL
+
+| Transport
+| HTTP/2
+| HTTP/1.1 or HTTP/2
+| HTTP/1.1 or HTTP/2
+
+| Serialization
+| Protobuf (binary)
+| JSON / XML (text)
+| JSON (text)
+
+| Contract
+| Strongly typed `.proto` schema
+| OpenAPI / informal
+| Strongly typed SDL schema
+
+| Code generation
+| Yes — from `.proto`
+| Optional (OpenAPI generators)
+| Optional
+
+| Streaming
+| Built-in (4 patterns)
+| Requires SSE or WebSockets
+| Built-in (Subscriptions via WebSocket)
+
+| Browser support
+| Limited (requires gRPC-Web proxy)
+| Native
+| Native
+
+| Human readability
+| Binary — not human readable
+| JSON is human readable
+| JSON is human readable
+
+| Primary use
+| Internal service-to-service
+| Public-facing APIs
+| Data-rich APIs with varied clients
+|===
+
+== Advantages
+
+* *Performance* — Binary encoding and HTTP/2 multiplexing give gRPC measurably lower latency and higher throughput than JSON/REST, particularly for high-frequency calls.
+* *Strongly typed contracts* — The `.proto` schema is the source of truth; generated code eliminates an entire class of serialization bugs.
+* *Polyglot* — Code generation supports many languages, making it well-suited to heterogeneous microservice environments.
+* *Streaming* — Four communication patterns cover synchronous request-response, server push, client upload, and bidirectional duplex — all within the same framework.
+* *Deadline propagation* — Deadlines cascade through call chains automatically, preventing slow upstreams from stalling entire request trees indefinitely.
+
+== Disadvantages
+
+* *Limited browser support* — Browsers cannot make raw HTTP/2 calls with the required framing. gRPC-Web is a workaround but requires a proxy (e.g. Envoy) between the browser and the gRPC server.
+* *Binary protocol* — Protobuf messages are not human-readable; `curl` and browser developer tools cannot inspect them without additional tooling.
+* *Schema coupling* — Client and server must agree on the `.proto` schema. Schema changes must be managed carefully to maintain backward compatibility.
+* *Operational overhead* — Requires HTTP/2 support throughout the infrastructure stack (load balancers, service meshes). Some older infrastructure does not support HTTP/2.
+
+== When to use gRPC
+
+gRPC is the right choice when:
+
+* Communication is internal — between services in the same system, not exposed to public browsers.
+* Performance is critical — high request rates, large volumes of small messages, or low-latency requirements.
+* Streaming is needed — particularly bidirectional streaming.
+* Services are polyglot — different services are written in different languages and benefit from generated, type-safe clients.
+* Strong API contracts are valued — teams want compile-time guarantees rather than runtime JSON parsing errors.
+
+For public-facing APIs consumed by browsers or third parties, *link:./rest.adoc[REST]* remains simpler to consume. Where clients need flexible, ad-hoc queries over complex data graphs, *link:./graphql.adoc[GraphQL]* is more appropriate.
+
+== See also
+
+* *link:./protocol-buffers.adoc[Protocol Buffers]* — The IDL and binary serialization format used by gRPC.
+* *link:./rest.adoc[Representational State Transfer (REST)]* — The dominant alternative for public-facing APIs.
+* *link:./graphql.adoc[GraphQL]* — An alternative for data-rich APIs with varied client needs.
+* *link:./http.adoc[HyperText Transfer Protocol (HTTP)]* — gRPC runs over HTTP/2.
+* *link:./microservices.adoc[Microservices]* — The architectural style gRPC is most commonly used within.
