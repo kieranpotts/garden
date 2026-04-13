@@ -1,3 +1,33 @@
 = Deployment strategies
 
-// TODO: https://newsletter.fractionalarchitect.io/p/30-worth-to-know-common-deployment
+A *deployment strategy* (or *deployment pattern*) describes the approach taken to release a new version of software into a production environment. The choice of strategy involves trade-offs between *[availability]*, rollback capability, the blast radius of a failed release, infrastructure cost, and operational complexity.
+
+The core objective of most deployment strategies is to reduce or eliminate *[downtime]* and to limit user impact when a release introduces problems. As systems grow in scale, the simple approach of taking everything offline and replacing it wholesale becomes untenable; more sophisticated strategies are needed.
+
+== Deployment strategies compared
+
+=== Big bang
+
+*link:./big-bang.adoc[Big bang deployment]* is the simplest approach. The system is taken offline, all servers are updated to the new version simultaneously, and the system is brought back up. Any failure in the new version affects all users immediately, and rollback requires repeating the full process. This approach is only practical for systems that can tolerate scheduled downtime with a small user base.
+
+=== Rolling
+
+A *link:./rolling-deployments.adoc[rolling deployment]* replaces old instances with the new version incrementally — a subset of servers is updated at a time. The system remains available throughout because the remaining servers continue to handle requests. If the new version is faulty, only users routed to updated servers are affected. Rolling deployments require no additional infrastructure, but the rollout is relatively slow and offers no easy instant rollback. They work best for routine, low-risk releases.
+
+=== Blue-green
+
+A *link:./blue-green-deployment.adoc[blue-green deployment]* maintains two identical environments — one running the current version (Blue), one running the new version (Green). Traffic is switched wholesale from Blue to Green via a *[load balancer]* or DNS change once the new version has been validated. Blue remains on standby, enabling instant rollback. This approach gives high release confidence but doubles infrastructure costs and complexity. It is best suited to critical services where the cost of a bad release is high.
+
+=== Canary
+
+A *link:./canary-deployment.adoc[canary deployment]* initially routes only a small percentage of real production traffic to the new version. If that subset behaves correctly, traffic is gradually shifted until all users are on the new version. This limits the blast radius of any failure and enables validation against real user behaviour. It requires sophisticated traffic routing and monitoring, and rollout is slower than blue-green. It is well suited to large-scale services and high-risk releases.
+
+=== Feature toggles
+
+*link:./feature-flags.adoc[Feature toggles]* (also known as feature flags) decouple code deployment from feature release entirely. New code is deployed to production but kept hidden behind a conditional flag. Features can then be switched on for individual users, user segments, or everyone, independently of any new deployment. This enables *[A/B testing]*, phased rollouts, and rapid rollback of specific features without redeployment. The trade-off is increased code complexity and the risk of accumulating stale toggle logic if flags are not cleaned up promptly.
+
+== Choosing a strategy
+
+No single strategy is universally correct. Most mature organizations apply different strategies within the same product depending on context. For example, a payment service might use blue-green for its high-risk releases, while a front-end UI uses canary or feature toggles for safer, more frequent releases.
+
+The key factors to weigh are *[availability]* requirements, *[rollback]* needs, infrastructure budget, team capability to manage the added operational complexity, and the acceptable blast radius of a failed deployment.

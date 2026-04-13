@@ -3,3 +3,9 @@
 In a *[migration]* strategy, a "big bang" cutover involves switching over to a replacement system in a single step. This is contrasted with phased or parallel migration strategies, which involve incremental transitions.
 
 Generally, big bang migrations should be avoided due to the high costs and risks. However, sometimes they are unavoidable – for example, if a system is being recreated on an entirely different technology stack.
+
+== Big bang as a deployment pattern
+
+The term is also used in the context of *link:./deployment-strategies.adoc[deployment strategies]*. A big bang deployment means taking the system offline, replacing the old version with the new version on all servers simultaneously, and bringing it back up. The service is unavailable during the deployment window, and any failure in the new version affects all users at once.
+
+This approach is the simplest possible deployment strategy and requires no special infrastructure. It is only practical for small systems with a tolerant user base, or where a scheduled maintenance window is acceptable. At scale, the risks of a simultaneous full rollout — and the lack of a straightforward instant rollback — make other patterns such as *link:./rolling-deployments.adoc[rolling]*, *link:./blue-green-deployment.adoc[blue-green]*, or *link:./canary-deployment.adoc[canary]* deployments preferable.

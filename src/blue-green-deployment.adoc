@@ -1,5 +1,24 @@
 = Blue-green deployment
 
-// TODO
+*Blue-green deployment* is a *link:./deployment-strategies.adoc[deployment strategy]* that maintains two identical production environments, conventionally called *Blue* and *Green*.
 
-See also *[rollback]*.
+At any point in time, one environment is live and serving all user traffic, while the other is idle. A new version of the software is deployed to the idle environment and tested there. Once the release is validated, traffic is switched from the active environment to the previously idle one — typically by updating a *[load balancer]* or changing a DNS entry. The formerly active environment then becomes idle, acting as a warm fallback.
+
+== Trade-offs
+
+The key advantage of blue-green deployment is *instant rollback*: if the newly active environment exhibits problems, traffic can be switched back immediately without any redeployment. The idle environment remains untouched until the new version is confirmed stable.
+
+Because the new version is deployed to an environment that is identical to production, blue-green deployment also provides a high degree of *release confidence*. Problems that only manifest in production-like conditions (as opposed to staging environments) are more likely to be caught before users are affected.
+
+The main disadvantage is *infrastructure cost*: running two complete, identical environments in parallel is expensive. There is also additional operational overhead in maintaining two environments and keeping them in sync.
+
+Blue-green deployment is best suited to *critical services and high-risk releases* where the cost of a bad deployment is high enough to justify the additional infrastructure expenditure.
+
+== See also
+
+* *link:./deployment-strategies.adoc[Deployment strategies]*
+* *link:./rolling-deployments.adoc[Rolling deployments]*
+* *link:./canary-deployment.adoc[Canary deployment]*
+* *link:./feature-flags.adoc[Feature flags]*
+* *link:./big-bang.adoc[Big bang deployment]*
+* *link:./rollback.adoc[Rollback]*
