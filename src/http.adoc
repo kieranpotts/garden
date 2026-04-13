@@ -74,3 +74,73 @@ Common status codes returned by the server in response to a client request inclu
   ** *502 Bad Gateway*: The server, while acting as a gateway or proxy, received an invalid response from the upstream server.
 
   ** *503 Service Unavailable*: The server is not ready to handle the request, typically due to maintenance or overload.
+
+== The HTTP request/response cycle
+
+When a browser (or any HTTP client) makes a request to, say, `https://example.com/page`, the following sequence occurs:
+
+=== 1. DNS resolution
+
+The client first needs to translate the hostname (`example.com`) into an IP address. It checks its local DNS cache, then queries a recursive DNS resolver (typically provided by the OS or ISP), which in turn queries authoritative DNS servers if the address is not cached. The result is an IP address (e.g. `93.184.216.34`) and a TTL indicating how long to cache it.
+
+=== 2. TCP connection (three-way handshake)
+
+With an IP address in hand, the client opens a TCP connection to the server on port 443 (HTTPS) or port 80 (HTTP). TCP uses a three-way handshake to establish the connection:
+
+. *SYN* — client sends a synchronise segment to the server.
+. *SYN-ACK* — server acknowledges and sends its own synchronise.
+. *ACK* — client acknowledges; the connection is now established.
+
+This handshake incurs one full round-trip before any data can be sent.
+
+=== 3. TLS handshake (HTTPS only)
+
+For HTTPS, a TLS handshake takes place over the established TCP connection to negotiate encryption:
+
+. The client sends a `ClientHello` with supported TLS versions and cipher suites.
+. The server responds with its chosen cipher suite and its digital certificate (containing its public key).
+. The client verifies the certificate against a trusted Certificate Authority (CA).
+. The two parties exchange or derive a shared symmetric session key.
+. Both sides confirm the handshake is complete; all subsequent data is encrypted.
+
+TLS 1.3 (current standard) reduces this to a single round-trip, compared to two round-trips for TLS 1.2.
+
+=== 4. HTTP request
+
+With a secure channel established, the client sends an HTTP request. It consists of:
+
+* *Request line*: method, path, and HTTP version — e.g. `GET /page HTTP/1.1`.
+* *Headers*: metadata such as `Host`, `Accept`, `Authorization`, `Cookie`, `Content-Type`, and `User-Agent`.
+* *Body* (optional): present for `POST`, `PUT`, and `PATCH` requests, containing the payload.
+
+=== 5. Server processing and HTTP response
+
+The server receives the request, processes it (routing it through application logic, querying databases, etc.), and returns an HTTP response consisting of:
+
+* *Status line*: HTTP version and status code — e.g. `HTTP/1.1 200 OK`.
+* *Headers*: metadata such as `Content-Type`, `Content-Length`, `Set-Cookie`, `Cache-Control`, and `Location`.
+* *Body* (optional): the response payload — HTML, JSON, binary data, etc.
+
+=== 6. Connection handling
+
+* *HTTP/1.1*: Connections are kept alive by default (`Connection: keep-alive`), allowing multiple requests to reuse the same TCP connection and avoid repeated handshakes. However, each request must complete before the next can begin (*head-of-line blocking*).
+* *HTTP/2*: Multiplexes multiple requests over a single connection simultaneously, eliminating head-of-line blocking at the HTTP layer.
+* *HTTP/3*: Uses QUIC (UDP-based) instead of TCP, which eliminates head-of-line blocking at the transport layer and reduces connection establishment overhead.
+
+The connection is eventually closed either by the client or server sending a `Connection: close` header or after an idle timeout.
+
+=== Performance implications
+
+The full cycle for a first HTTPS request to a new host involves: DNS lookup + TCP handshake + TLS handshake + HTTP request/response — potentially three or more round trips before the first byte of content is received. Techniques to reduce this include:
+
+* *DNS caching and pre-fetching*: Browsers cache DNS results and can pre-resolve hosts referenced in a page.
+* *Connection reuse and pooling*: Keep-alive and HTTP/2 multiplexing avoid the cost of repeated TCP/TLS handshakes.
+* *TLS session resumption*: TLS session tickets allow a reconnecting client to skip the full handshake.
+* *CDNs*: Terminating TLS at an edge server geographically close to the user reduces round-trip time.
+
+== See Also
+
+* *link:./tcp.adoc[TCP]*
+* *link:./osi-model.adoc[OSI model]*
+* *link:./http-api.adoc[HTTP API]*
+* *link:./rest.adoc[REST]*
