@@ -1,6 +1,6 @@
 = JavaScript
 
-JavaScript is a high-level, dynamically typed, interpreted programming language. It is the primary language of the web, running natively in all major browsers. Beyond the browser, JavaScript also runs server-side and in other environments via runtimes such as Node.js, Deno, and Bun.
+JavaScript is a high-level, dynamically typed, interpreted programming language. It began as the scripting language of the web browser, but has since spread into virtually every computing context: servers, the cloud edge, native mobile and desktop applications, Smart TVs, and even microcontrollers. No other language has achieved quite the same breadth of deployment, making JavaScript arguably the most ubiquitous programming language in existence.
 
 JavaScript's behavior is governed by the *link:./ecmascript.adoc[ECMAScript]* specification. *link:./typescript.adoc[TypeScript]* is a statically typed superset of JavaScript that compiles down to JavaScript.
 
@@ -38,21 +38,35 @@ JavaScript's native module system, introduced in ES2015, allows code to be organ
 
 == Environments
 
+JavaScript began as a browser-only language, but over the last two decades it has spread into virtually every computing context. No other language has achieved quite the same breadth of deployment, which is a large part of what makes it a strategically safe choice.
+
 === Browser
 
-JavaScript engines in major browsers include V8 (Chrome, Edge), SpiderMonkey (Firefox), and JavaScriptCore (Safari). Each engine handles parsing, execution, JIT compilation, and garbage collection.
+The browser remains JavaScript's native habitat. The major engines — V8 (Chrome, Edge), SpiderMonkey (Firefox), and JavaScriptCore (Safari) — each handle parsing, JIT compilation, garbage collection, and integration with Web APIs. These engines are also the foundation for most JavaScript runtimes outside the browser.
 
-=== Node.js
+=== Server and cloud
 
-https://nodejs.org/[Node.js] is a server-side runtime built on V8. It provides APIs for file system access, networking, and OS-level operations, and ships with npm, the world's largest package registry.
+https://nodejs.org/[Node.js] (2009) was the breakthrough that took JavaScript server-side. Built on V8, it introduced an event-driven, non-blocking I/O model that proved well suited to networked applications, and it ships with npm — the world's largest package registry.
 
-=== Deno
+https://deno.com/[Deno] followed in 2018 as a security-focused alternative from Node.js's original creator Ryan Dahl, with built-in TypeScript support and web-standard APIs. https://bun.sh/[Bun] (2022) is a more recent high-performance runtime built on JavaScriptCore that bundles a transpiler, bundler, and package manager into a single tool.
 
-https://deno.com/[Deno] is a modern runtime created by Ryan Dahl, the original creator of Node.js. It runs TypeScript natively, uses web-standard APIs, and has a built-in permission model for sandboxed execution.
+=== Edge computing
 
-=== Bun
+Edge runtimes execute JavaScript in data centers that are geographically close to the user, minimizing latency. Cloudflare Workers (2017) pioneered this model with a purpose-built minimal runtime based on the Service Worker API. Deno Deploy and similar offerings from other providers have since followed. These runtimes are deliberately constrained — they sacrifice full Node.js compatibility in favor of fast startup times and low resource use.
 
-https://bun.sh/[Bun] is a high-performance JavaScript and TypeScript runtime built on JavaScriptCore. It bundles a transpiler, bundler, and package manager into a single tool.
+=== Native mobile and desktop apps
+
+JavaScript is widely used to build native applications via cross-platform frameworks. React Native (2015) renders native platform views driven by a JavaScript engine (originally JavaScriptCore, now typically Hermes, a purpose-built engine from Meta). Electron (2015) takes a different approach, bundling a full browser engine and Node.js together to create desktop apps — VS Code, Slack, and Discord are notable examples. Capacitor/ Cordova embed web views into native app shells and are popular for mobile targets.
+
+=== Smart TVs and embedded devices
+
+Many Smart TV platforms (HbbTV, webOS, Tizen, Amazon Fire TV) run JavaScript-based apps, often via browser-based runtimes or Cordova. Over a billion internet-connected TV devices are estimated to run JavaScript in some form.
+
+At the other extreme, ultra-lean engines such as Duktape, JerryScript, and Moddable's XS runtime bring JavaScript to microcontrollers with kilobytes of RAM, enabling it on IoT sensors, thermostats, and similar devices.
+
+=== Polyglot interop
+
+JavaScript engines are also embedded within runtimes for other languages, enabling cross-language interop. Graal.js runs on the JVM and supports calling Java from JavaScript and vice versa. Engines like jint (.NET/C#) and Boa (Rust) serve similar purposes in their respective ecosystems.
 
 == Ecosystem
 
