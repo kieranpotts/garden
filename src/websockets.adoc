@@ -1,11 +1,161 @@
 = WebSockets
 
-// TODO: https://www.pubnub.com/guides/websockets/
-// TODO: https://blog.algomaster.io/p/websockets
-// TODO: https://blog.algomaster.io/p/60bfcee4-8ac5-4500-a557-a04c8cbcaf48
+WebSockets is a communication protocol (RFC 6455) that provides full-duplex, bidirectional communication between a client and a server over a single, persistent TCP connection. Once established, either side can send messages to the other at any time without waiting for a request.
 
-WebSockets is a *[communication protocol]* that provides full-duplex, real-time, and bidirectional communication between a client and a server over a single, long-lived connection.
+Unlike the conventional HTTP request-response model, where a connection is closed after each exchange, a WebSocket connection stays open until explicitly closed by either party. This makes WebSockets well-suited to applications that require continuous, low-latency data exchange — chat systems, collaborative editors, multiplayer games, and live financial dashboards.
 
-WebSockets are widely used in wen applications such as chat systems or real-time collaboration tools, where instant and continuous data exchange between clients and servers is required.
+== The opening handshake
 
-// See also *long polling* and *Server-Sent Events (SSE)*, which are alternative techniques for achieving similar functionality.
+A WebSocket connection begins as a standard HTTP/1.1 request. The client sends an `Upgrade` header to signal that it wants to switch protocols:
+
+----
+GET /chat HTTP/1.1
+Host: example.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
+Sec-WebSocket-Version: 13
+----
+
+If the server supports WebSockets, it responds with HTTP `101 Switching Protocols`:
+
+----
+HTTP/1.1 101 Switching Protocols
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
+----
+
+The `Sec-WebSocket-Key` / `Sec-WebSocket-Accept` exchange is a security measure to confirm that the server understands the WebSocket protocol (preventing HTTP servers from inadvertently accepting a WebSocket upgrade). After the `101` response the HTTP connection is repurposed as a WebSocket connection and HTTP is no longer used on that socket.
+
+== Framing
+
+Data is transmitted as _frames_. The WebSocket frame format is compact: the smallest frames have just a 2-byte header, making per-message overhead negligible compared to HTTP.
+
+Key frame fields include:
+
+* *FIN bit* — Indicates whether this is the final fragment of a message (messages can be split across multiple frames).
+* *Opcode* — Frame type: `0x1` text, `0x2` binary, `0x8` close, `0x9` ping, `0xA` pong.
+* *Mask bit and masking key* — All frames sent from a client to a server must be masked (XOR-encoded with a 4-byte key), to prevent cache poisoning of intermediary proxies. Server-to-client frames are not masked.
+* *Payload length* — Variable-length encoding: 7 bits for payloads ≤125 bytes, 16-bit extension for ≤65535 bytes, 64-bit extension for larger payloads.
+
+Text frames carry UTF-8 encoded strings. Binary frames carry arbitrary bytes and are used for images, audio, or custom binary protocols.
+
+== Ping and pong
+
+The protocol includes built-in heartbeat frames. The server (or client) sends a `ping` frame; the receiver must respond with a `pong` frame containing the same payload. Heartbeats serve two purposes:
+
+* Detecting dead connections — if a pong is not received within a timeout, the connection can be considered lost.
+* Keeping connections alive through NAT gateways and proxies that close idle TCP connections.
+
+== Closing the connection
+
+Either side sends a `close` frame (opcode `0x8`), optionally including a status code and a reason string. The receiver echoes back a `close` frame and both sides then close the underlying TCP connection. The status code 1000 means normal closure; 1001 means the endpoint is going away (e.g. server restart or browser tab close).
+
+== Browser API
+
+The browser `WebSocket` API is straightforward:
+
+----
+const socket = new WebSocket('wss://example.com/chat');
+
+socket.addEventListener('open', () => {
+  socket.send(JSON.stringify({ type: 'join', room: 'general' }));
+});
+
+socket.addEventListener('message', (event) => {
+  const msg = JSON.parse(event.data);
+  console.log(msg);
+});
+
+socket.addEventListener('close', (event) => {
+  console.log(`Closed: ${event.code} ${event.reason}`);
+});
+
+socket.addEventListener('error', (error) => {
+  console.error('WebSocket error', error);
+});
+----
+
+The `wss://` scheme uses TLS (WebSocket Secure), equivalent to `https://`. Plain `ws://` should not be used in production.
+
+Unlike *link:./server-sent-events.adoc[SSE]*, the browser provides no automatic reconnection for WebSockets. Applications must implement their own reconnection logic, typically with exponential backoff.
+
+== Scalability considerations
+
+Because each connected client holds an open TCP connection, WebSocket servers are stateful. This creates scaling challenges that do not apply to stateless REST APIs:
+
+* *Load balancer affinity* — Requests from a single WebSocket client must reach the same server instance for the duration of the connection. Load balancers must be configured for sticky sessions, or a shared message bus (e.g. Redis Pub/Sub) must relay messages between server instances.
+* *Connection limits* — Each open connection consumes a file descriptor. Servers must be tuned (e.g. `ulimit`) to handle large numbers of concurrent connections. Event-driven servers (Node.js, Go, Netty) handle many idle connections far more efficiently than thread-per-connection models.
+* *Memory per connection* — State associated with each connection (user identity, subscriptions, buffers) accumulates. At scale, this must be carefully managed.
+
+== Security
+
+* *Use `wss://`* — Always encrypt WebSocket traffic with TLS.
+* *Authenticate before upgrading* — Validate credentials (e.g. a JWT in a query parameter or `Authorization` header) during the HTTP upgrade handshake, before the WebSocket connection is established.
+* *Validate all incoming messages* — The server must treat all received data as untrusted input. WebSocket connections bypass CORS, so origin validation (checking the `Origin` header during the handshake) is the primary cross-origin protection.
+* *Cross-Site WebSocket Hijacking (CSWSH)* — If the server does not validate the `Origin` header, a malicious page on another origin can open a WebSocket to the server using the victim's cookies. Validate the `Origin` header and use CSRF tokens where appropriate.
+* *Rate limiting* — Limit the message rate per connection to prevent abuse and denial-of-service.
+
+== Use cases
+
+* *Real-time chat* — Messaging platforms (Slack, Discord) push messages instantly to all participants.
+* *Collaborative editing* — Multiple users editing the same document simultaneously (Google Docs, Figma); changes are broadcast to all connected clients in real time.
+* *Multiplayer games* — Game state (positions, scores, events) is synchronised continuously between server and all players with minimal latency.
+* *Live financial data* — Stock prices, order books, and trade feeds streamed continuously to trading dashboards.
+* *Live notifications* — Social platforms push likes, comments, and messages to users immediately.
+* *IoT device communication* — Devices send telemetry and receive commands over a persistent connection.
+
+== Comparison with SSE and long polling
+
+[cols="1,2,2,2", options="header"]
+|===
+| Aspect | WebSockets | SSE | Long polling
+
+| Direction
+| Full-duplex (both ways)
+| One-way (server → client)
+| Simulated server push
+
+| Protocol
+| WebSocket (upgraded from HTTP)
+| Plain HTTP
+| Plain HTTP
+
+| Persistent connection
+| Yes — single TCP connection
+| Yes — single HTTP response stream
+| No — new HTTP request after each response
+
+| Browser reconnection
+| Manual
+| Automatic (built into spec)
+| Implicit (client re-polls)
+
+| Binary support
+| Yes — native binary frames
+| No — text only (base64 workaround)
+| Yes — standard HTTP response body
+
+| Proxy/firewall compatibility
+| Some proxies block WebSocket upgrades
+| Generally transparent
+| Generally transparent
+
+| Per-message overhead
+| Very low (2-byte minimum frame header)
+| Low (plain text lines)
+| High (full HTTP headers per request)
+
+| Best fit
+| Interactive, bidirectional: chat, games, collaboration
+| One-way streams: feeds, dashboards, notifications
+| Fallback where WebSocket/SSE unavailable
+|===
+
+== See also
+
+* *link:./server-sent-events.adoc[Server-Sent Events (SSE)]* — A simpler, HTTP-native alternative for one-directional server push.
+* *link:./long-polling.adoc[Long polling]* — A technique that simulates server push without a persistent connection.
+* *link:./http.adoc[HyperText Transfer Protocol (HTTP)]* — The underlying transport used for the opening handshake.
+* *link:./push-architecture.adoc[Push architecture]* — The broader pattern of server-initiated data delivery.
