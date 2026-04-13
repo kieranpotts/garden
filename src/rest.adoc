@@ -1,6 +1,147 @@
 = Representational State Transfer (REST)
 
-// TODO: https://aws.amazon.com/compare/the-difference-between-rpc-and-rest/
-// TODO: https://blog.algomaster.io/p/106604fb-b746-41de-88fb-60e932b2ff68
+Representational State Transfer (REST) is an architectural style for designing networked applications. It was introduced by Roy Fielding in his 2000 doctoral dissertation and has since become the dominant style for public web APIs.
 
-Representational State Transfer (REST) is a communication pattern that uses standard HTTP methods and URLs.
+REST is not a protocol or a format — it is a set of constraints that, when applied to a distributed system, produce desirable properties such as scalability, visibility, and modifiability.
+
+== Architectural constraints
+
+Fielding defined six constraints. An API that satisfies all of them is described as _RESTful_.
+
+=== Client-server
+
+The client and server are decoupled. The client handles the user interface; the server manages data and business logic. Neither needs knowledge of the other's internals.
+
+=== Stateless
+
+The server stores no session state between requests. Every request from a client must contain all the information needed for the server to understand and fulfil it — credentials, context, and data included. Session state, if needed, is held entirely by the client.
+
+Statelessness improves scalability: any server instance can handle any request without requiring sticky sessions or shared state.
+
+=== Cacheable
+
+Responses must declare whether they are cacheable or not. When responses are cacheable, the client (or an intermediary such as a CDN or reverse proxy) may reuse them for subsequent equivalent requests, reducing load on the server.
+
+=== Uniform interface
+
+A consistent, standardised interface decouples the implementation of client and server. The uniform interface is enforced through four sub-constraints:
+
+* *Resource identification in requests* — Resources are identified by URIs. The URI names the resource (`/users/42`), not the action to perform on it.
+* *Manipulation of resources through representations* — Clients interact with resources through representations (typically JSON or XML). A representation plus metadata gives the client enough information to modify or delete the resource on the server.
+* *Self-descriptive messages* — Each message includes enough information to describe how to process it (for example, the `Content-Type` header).
+* *HATEOAS* — Hypermedia as the Engine of Application State. Responses include links to related actions, allowing clients to navigate the API dynamically rather than having URLs hard-coded. In practice, HATEOAS is the least commonly implemented sub-constraint.
+
+=== Layered system
+
+A client cannot tell whether it is communicating directly with the server or with an intermediary (load balancer, cache, security gateway). Intermediaries are transparent to both ends, allowing them to be inserted or removed without changing the API.
+
+=== Code on demand (optional)
+
+The server may optionally extend client functionality by transferring executable code — for example, JavaScript. This is the only optional constraint.
+
+== Resources and HTTP methods
+
+The central concept in REST is the _resource_: any named piece of information that can be addressed (users, orders, products). Each resource is identified by a stable URI. HTTP methods convey the action to perform on that resource:
+
+[cols="1,2,1", options="header"]
+|===
+| Method | Semantics | Idempotent?
+
+| `GET`
+| Retrieve a resource or collection.
+| Yes
+
+| `POST`
+| Create a new resource (server assigns the ID).
+| No
+
+| `PUT`
+| Replace a resource in full (client provides the ID).
+| Yes
+
+| `PATCH`
+| Partially update a resource.
+| No
+
+| `DELETE`
+| Remove a resource.
+| Yes
+|===
+
+The same URI can support multiple methods; the method determines what happens. For example:
+
+----
+GET    /books       # List all books.
+POST   /books       # Create a new book.
+GET    /books/42    # Retrieve book with ID 42.
+PUT    /books/42    # Replace book 42 in full.
+PATCH  /books/42    # Partially update book 42.
+DELETE /books/42    # Delete book 42.
+----
+
+This maps naturally to CRUD operations (create, read, update, delete), which is REST's primary strength and its primary limitation — operations that are not CRUD-shaped are awkward to express.
+
+== REST vs RPC
+
+Remote Procedure Call (RPC) takes a different approach: the client calls a named function or method on the server, passing parameters.
+
+[cols="1,2,2", options="header"]
+|===
+| Aspect | REST | RPC
+
+| Focus
+| Resources (nouns)
+| Actions (verbs / functions)
+
+| URL style
+| `/products/123`
+| `/getProduct`, `/deleteProduct`
+
+| HTTP method
+| Carries semantic meaning (`GET`, `DELETE`, ...)
+| Often always `POST`
+
+| Statefulness
+| Always stateless
+| Can be stateful or stateless
+
+| Coupling
+| Loose — clients need only know the URL structure
+| Tighter — clients must know function names and signatures
+
+| Action flexibility
+| Limited to CRUD; non-CRUD operations are awkward
+| Any operation can be expressed as a function call
+
+| Data format
+| Any format; multiple formats in the same API
+| Typically fixed per implementation (JSON-RPC, XML-RPC, gRPC/Protobuf)
+|===
+
+RPC is a natural fit for internal microservice communication, particularly with modern implementations like *link:./grpc.adoc[gRPC]*, which provide performance advantages through binary encoding and streaming. REST is more appropriate when the API is public-facing and needs to be navigable by diverse, unknown clients.
+
+== Over-fetching and under-fetching
+
+Because REST endpoints return fixed response shapes, clients often receive more data than they need (_over-fetching_) or must make multiple requests to assemble what they need (_under-fetching_). *link:./graphql.adoc[GraphQL]* was designed specifically to address these problems by letting clients declare exactly which fields they require.
+
+== Advantages
+
+* *Widely understood* — Standard HTTP tooling, proxies, and caches work without modification.
+* *Stateless scalability* — No shared session state; any server instance handles any request.
+* *Cacheable* — HTTP caching mechanisms apply directly.
+* *Flexible representation* — Supports JSON, XML, plain text, and others, sometimes within the same API.
+* *Loose coupling* — Clients and servers can evolve independently so long as the URI structure and representations remain stable.
+
+== Disadvantages
+
+* *CRUD mismatch* — Operations that are inherently action-oriented (e.g. send email, process payment) do not map cleanly to HTTP methods.
+* *Over-fetching / under-fetching* — Response shapes are fixed per endpoint; clients cannot request partial data.
+* *Multiple round trips* — Assembling a page that needs data from several resources may require several sequential requests.
+* *No built-in streaming* — REST over HTTP/1.1 is request-response; streaming requires either HTTP/2 server-sent events, WebSockets, or chunked transfer encoding.
+
+== See also
+
+* *link:./http.adoc[HyperText Transfer Protocol (HTTP)]* — The underlying transport protocol, and the source of REST's uniform interface.
+* *link:./http-api.adoc[HTTP API]* — The broader category of APIs built on HTTP, of which RESTful APIs are one style.
+* *link:./grpc.adoc[gRPC]* — A high-performance RPC framework, common for internal microservice communication.
+* *link:./graphql.adoc[GraphQL]* — A query language for APIs that addresses REST's over-fetching and under-fetching limitations.
