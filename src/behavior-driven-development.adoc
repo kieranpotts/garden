@@ -1,41 +1,96 @@
 = Behavior-driven development
 
-Behavior-driven development (BDD) is a software development approach devised by Dan North. It is an extension of link:./test-driven-development.adoc[test-driven development] in which tests are focused on the behavior of the system from the user's perspective, rather than technical implementation details.
-
-The core idea is that tests are written in a way that describes the desired behavior of the software in plain language, making them understandable to all stakeholders, including non-technical ones.
+Behavior-driven development (BDD) is a software development approach devised by Dan North. It is a refinement of *link:./test-driven-development.adoc[test-driven development (TDD)]* that combines TDD techniques with ideas from *link:./domain-driven-design.adoc[domain-driven design]* to create a shared language and process for collaboration between developers, testers, and business stakeholders.
 
 [quote, Dan North]
 ____
 BDD is a second generation, outside-in, pull-based, multiple-stakeholder, multiple-scale, high-automation, agile methodology. It describes a cycle of interactions with well-defined outputs, resulting in the delivery of working, tested software that matters.
 ____
 
-The typical format is a given-when-then structure:
+Where TDD focuses on testing the correctness of an implementation, BDD focuses on specifying the desired behavior of the system from the outside in — that is, from the user's or business's perspective. BDD shifts the conversation from "how do we test this function?" to "what should this feature do for the user?" As such, BDD is as much a communication strategy as a testing methodology.
+
+== Behavioral specifications
+
+BDD suggests that requirements should be expressed as concrete examples of how the system should behave, written in a semi-formal natural language that all team members can read and contribute to. This is the *link:./ubiquitous-language.adoc[ubiquitous language]* concept borrowed from domain-driven design — a shared vocabulary that bridges the gap between technical and non-technical contributors.
+
+Each feature is documented as a *user story* with the following structure:
 
 ----
-Given <some context or initial state>
-When <an action or event occurs>
-Then <an outcome _should_ occur>
+Title: <a short, explicit title>
+
+Narrative:
+  As a <role>
+  I want <a feature>
+  So that <a business benefit>
+
+Acceptance criteria:
+
+  Scenario: <a scenario title>
+    Given <some context or initial state>
+    When <an action or event occurs>
+    Then <an expected outcome>
 ----
 
 Example:
 
 ----
-Given a user has items in their cart
-When they proceed to checkout
-Then they should see a payment form
+Title: Checkout
+
+Narrative:
+  As a shopper
+  I want to proceed to checkout
+  So that I can complete my purchase
+
+Acceptance criteria:
+
+  Scenario: Cart contains items
+    Given a user has items in their cart
+    When they proceed to checkout
+    Then they should see a payment form
+
+  Scenario: Cart is empty
+    Given a user has an empty cart
+    When they proceed to checkout
+    Then they should see an error message
 ----
 
-There exist a number of testing tools that are optimized for the BDD style of testing. Well known BDD frameworks include Cucumber, SpecFlow, and Behave. All these are based on the original BDD tool, https://jbehave.org/[jBehave], created by Dan North. Most BDD tools allow you to write tests in plain text formats, though this is not a requirement to implement BDD.
+Scenarios should be phrased *declaratively* — in the language of the business domain, not in terms of UI interactions or technical implementation details. This keeps specifications stable as the implementation evolves.
 
-Benefits of BDD include:
+The Given-When-Then format is formalized as the *link:./gherkin.adoc[Gherkin]* domain-specific language, which is used by many BDD tooling frameworks.
 
-* Improved shared understanding of software requirements specifications between developers, testers, product owners, and business stakeholders.
-* Tests serve as a form of [living documentation] that stays synchronized with the codebase.
-* Focus on user value rather than technical implementation details.
-* Clearer requirements that reduce ambiguity before coding begins.
+== The three amigos
 
-BDD shifts the conversation from "how do we test this function?" to "what should this feature do for the user?" As such, BDD is as much a communication strategy as a testing methodology. It works best when the whole team collaborates on defining behaviors up-front.
+The "three amigos" (also called a Specification Workshop) is a BDD practice in which three perspectives collaborate to define the behavior of a feature *before* development begins:
 
-== Related links
+* *Business* — defines the problem and the desired outcome; does not prescribe a solution.
+* *Development* — proposes how the problem might be solved.
+* *Testing* — challenges the proposed solution, raises edge cases, and identifies missing scenarios.
 
+The goal of the session is to trigger conversation, surface ambiguity, and arrive at a set of concrete examples that everyone agrees captures the intended behavior. Requirements gaps and misunderstandings are far cheaper to resolve at this stage than after code has been written.
+
+== Story-based vs. specification-based BDD
+
+BDD tooling broadly falls into two categories:
+
+*Story-based* frameworks use user stories and Gherkin-style scenarios as their input format. The plain-text feature files serve as living documentation as well as executable tests, and are intended to be readable by non-technical stakeholders. Examples include https://cucumber.io/[Cucumber], https://specflow.org/[SpecFlow] (.NET), and https://behave.readthedocs.io/[Behave] (Python). All of these descend from https://jbehave.org/[jBehave], the original BDD tool created by Dan North.
+
+*Specification-based* frameworks (sometimes called spec frameworks) use a more technical, code-level syntax. They are less suited for direct collaboration with business stakeholders, but serve well as a replacement for free-form unit testing, emphasizing expressive test naming and structured scenario blocks. Examples include https://rspec.info/[RSpec] (Ruby) and https://jasmine.github.io/[Jasmine] (JavaScript).
+
+== Benefits
+
+* Improved shared understanding of requirements between developers, testers, product owners, and business stakeholders.
+* Acceptance criteria defined upfront reduces ambiguity before coding begins.
+* Feature files serve as living documentation that stays synchronized with the codebase.
+* Tests are expressed in terms of user value rather than technical implementation details.
+* Works at multiple scales: from unit-level spec tests to full acceptance tests.
+
+BDD is considered most effective in problem domains where the cost of miscommunication is high and where non-technical stakeholders are closely involved in shaping requirements.
+
+== See also
+
+* *link:./test-driven-development.adoc[Test-driven development (TDD)]*
+* *link:./gherkin.adoc[Gherkin]*
+* *link:./acceptance-testing.adoc[Acceptance testing]*
+* *link:./domain-driven-design.adoc[Domain-driven design]*
+* *link:./ubiquitous-language.adoc[Ubiquitous language]*
 * https://www.youtube.com/watch?v=_k8OHEXoe9k[Behavior-driven development: embrace change], Liz Keogh, Agile on the Beach (2018)
