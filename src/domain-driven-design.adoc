@@ -166,7 +166,19 @@ For example, imagine that a video streaming context needs to know what quality o
 The interfaces between bounded contexts are responsible for translating the different domain models of each context. An *anti-corruption layer (ACL)* is any pattern that serves as an adapter between two domain models. The implementation of the ACL will depend on the communication patterns and protocols used between services in different contexts. Classical client-server network calls may require an explicit adapter layer on the server-side. However, in an *[event-driven]* architecture, changes in one context are communicated with other contexts through the publication of events, eliminating direct coupling and reducing the need for explicit mapping logic.
 ****
 
-Bounded contexts and contexts maps help to make sense of the *[essential complexity]* that is inherited from a system's business domain. Tools such as the https://contextmapper.org/[Context Mapping DSL (CML)] may be document the models of bounded contexts and to map the relationships between them.
+Evans defined a set of named patterns for describing the relationships between bounded contexts on a context map. These patterns describe both the technical integration strategy and the organizational dynamic between the teams responsible for each context:
+
+* *Partnership* — Two teams coordinate planning and release together because their contexts succeed or fail together.
+* *Shared Kernel* — A small, explicitly bounded subset of the domain model is shared between two contexts. Both teams must agree on changes to the shared kernel.
+* *Customer/Supplier* — An upstream context produces output that a downstream context consumes. The downstream team acts as a "customer" with some influence over the upstream team's roadmap.
+* *Conformist* — The downstream team has no influence over the upstream team and chooses to accept the upstream model as-is, eliminating the need for translation.
+* *Anti-corruption Layer (ACL)* — The downstream team builds a translation layer to isolate their model from the upstream model. This is the most defensive pattern.
+* *Open Host Service* — The upstream context publishes a well-defined protocol or API that multiple downstream contexts can integrate against directly.
+* *Published Language* — A well-documented shared language (eg. an industry data standard) serves as the common medium of exchange between contexts.
+* *Separate Ways* — Two contexts have no integration at all; each team finds independent solutions within their scope.
+* *Big Ball of Mud* — A context boundary is drawn around a legacy system with no clear internal model, to prevent its disorder from spreading.
+
+Bounded contexts and context maps help to make sense of the *[essential complexity]* that is inherited from a system's business domain. Tools such as the https://contextmapper.org/[Context Mapping DSL (CML)] may be used to document the models of bounded contexts and to map the relationships between them.
 
 Usage of bounded contexts and context maps is particularly beneficial for moderating *[accidental complexity]* that would otherwise arise through *[evolutionary design]* over time. For example, imagine that an insurance business acquires a competitor, and begins the process of integrating their disparate IT systems. Although the domain is the same (insurance), the two companies will likely have modeled their domain entirely differently. They will each have developed different business rules, terminology, and actors. Therefore, rather than try to integrate the two systems into the same domain model, it may make sense to keep them separate – at least initially. Wrapping each model in a bounded context and using a mapping system to translate between the two models is a great solution for managing this sort of emergent complexity.
 
@@ -264,6 +276,12 @@ Domain events are emitted by a component as a message that is somehow communicat
 ----
 
 Domain events are not emitted _because_ of database changes. Rather, they are emitted _before_ or _during_ them, reflecting business decisions.
+
+It is useful to distinguish between two categories of events:
+
+* *Domain events* signify something meaningful that happened within a specific bounded context. They are scoped to that context and are primarily consumed by listeners within the same service or module. Because the consumers are close by and their needs are well understood, domain event payloads tend to be small, carrying only the information necessary to react to the occurrence.
+
+* *Integration events* communicate changes _across_ bounded contexts. They are the mechanism by which separate parts of a distributed system are kept in sync. Because the consuming contexts may have differing, and less predictable, needs, integration event payloads tend to be broader — sometimes overcommunicating to ensure all relevant information is available to any listener. Integration events are typically published over a message broker.
 
 Domain events are distinct from *technical events*, which are used to represent things that happen in the software itself, such as a user clicking a button, a database query being executed, or a message being sent over a network. Technical events are important; they often need to be logged and monitored. But they should not be part of the domain model.
 
