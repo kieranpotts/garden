@@ -1,5 +1,36 @@
 = Block storage
 
-// TODO: https://aws.amazon.com/what-is/block-storage/
+Block storage is a technology that stores data by dividing it into fixed-size chunks called *blocks*. Each block is an independent unit of storage with a unique identifier, but carries no high-level metadata — no filename, no owner, no timestamps. A complete piece of data (such as a database record or a virtual disk image) may be spread across many non-sequential blocks on different physical devices. The application or operating system maintains a lookup table to track which blocks make up which piece of data, and reassembles them on retrieval.
 
-// See also object storage.
+Unlike *link:./file-storage.adoc[file storage]* (which adds a file-system layer on top of raw storage) or *link:./object-storage.adoc[object storage]* (which uses HTTP/REST APIs), block storage presents raw volumes directly to the host. This removes processing overhead and is the reason block storage delivers ultra-low latency and high I/O throughput — characteristics essential for latency-sensitive applications like relational databases.
+
+To perform a write, the application splits data into block-sized sections and writes each to the storage system, recording their identifiers in a lookup table. To read, the system uses the lookup table to locate the relevant blocks and reassembles them. Because only the affected block needs to be rewritten on an update (not the entire file), block storage is highly efficient for large files that change frequently.
+
+== Advantages
+
+* *Ultra-low latency*: No filesystem layer overhead. Block storage provides a direct pipeline to the data, making it suitable for high-performance, IOPS-intensive workloads.
+* *Efficient partial updates*: Only the modified block is rewritten, not the entire file. This makes block storage efficient for large, frequently-modified datasets.
+* *Flexibility*: Blocks are not tied to a specific filesystem or operating system. Developers can format block volumes with the filesystem of their choice (ext4, NTFS, etc.) and reassign them across different environments.
+* *Scalability*: New blocks can be added to existing volumes without increasing operational latency.
+
+== Limitations
+
+* *Higher cost*: Block storage is generally more expensive per gigabyte than *link:./object-storage.adoc[object storage]*, making it unsuitable for storing large volumes of infrequently-accessed data.
+* *Requires a file system*: Raw block storage cannot be browsed or accessed directly by end-users. A file system must be created on top of it.
+* *Not suited to unstructured data at scale*: Object storage is the better choice for storing billions of files (media, backups, logs).
+
+== Best for
+
+Block storage is preferred for transactional, mission-critical, and I/O-intensive applications. Common use cases include:
+
+* Relational databases (PostgreSQL, MySQL, Oracle) — require low-latency random I/O.
+* Virtual machine (VM) boot disks and file system volumes.
+* Containers — block storage underpins fast-access persistent volumes.
+* Storage Area Networks (SANs) — block storage is the foundation of SAN architecture, where physical storage is presented to multiple networked servers as locally-attached devices.
+
+Cloud implementations include Amazon EBS (Elastic Block Store) and Azure Managed Disks.
+
+== See Also
+
+* *link:./file-storage.adoc[File storage]*
+* *link:./object-storage.adoc[Object storage]*

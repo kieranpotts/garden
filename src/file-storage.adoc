@@ -1,0 +1,33 @@
+= File storage
+
+File storage is the most traditional and widely used storage paradigm. It mirrors the way data is organised on a personal computer: data is stored in files, files are grouped into folders, and folders are arranged in a hierarchical directory structure. This layout is intuitive and familiar, which makes file storage easy to manage for both users and applications.
+
+Each file comes with standard metadata: filename, size, permissions (read, write, execute), and timestamps. In networked environments, files are accessed via file-sharing protocols — typically *NFS* (Network File System) in Unix/Linux environments, or *SMB* (Server Message Block) in Windows environments. The remote file system is mounted on the client and appears just like a local drive. Every client connected to the same server sees the same shared directory structure, and changes made by one client are visible to all others in real time. File-level locking is used to manage concurrent access and prevent conflicts when multiple users read or write the same file.
+
+== Advantages
+
+* *Simplicity*: The hierarchical folder structure is familiar to most users, reducing the learning curve for both end-users and developers.
+* *Shared access*: Multiple users and applications can access and collaborate on the same files simultaneously, making it well-suited to local area network (LAN) environments.
+* *File-level access control*: Permissions can be applied at the file or folder level, giving fine-grained control over who can read or modify specific content.
+
+== Limitations
+
+* *Limited scalability*: As the number of files and deeply nested directories grows, lookups become slower and permission management becomes more complex.
+* *Basic metadata*: File systems support only standard metadata (name, size, timestamps, permissions). Unlike *link:./object-storage.adoc[object storage]*, there is little support for custom or application-specific metadata.
+* *Protocol overhead*: NFS and SMB introduce latency, especially over wide area networks (WANs), which can reduce throughput for remote access.
+
+== Best for
+
+File storage is well-suited to scenarios where multiple users or applications need to share access to the same files, a familiar folder hierarchy is desired, or fine-grained access control is required. Common use cases include:
+
+* Enterprise shared drives for collaborating on documents, spreadsheets, and media assets.
+* Source code repositories and build artifact storage in development environments.
+* Content Management Systems (CMS) that organise files in structured directories.
+* Centralised log aggregation for analysis and monitoring.
+
+Cloud implementations include AWS EFS (Elastic File System), Azure Files, and Google Filestore.
+
+== See Also
+
+* *link:./object-storage.adoc[Object storage]*
+* *link:./block-storage.adoc[Block storage]*

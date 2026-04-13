@@ -1,3 +1,42 @@
 = Object storage
 
-// TODO: https://aws.amazon.com/what-is/object-storage/?trk=faq_card
+Also known as *link:./blob-storage.adoc[blob storage]*, object storage is a technology that stores and manages data as discrete units called *objects*. Rather than organising data into a hierarchy of files and folders (as *link:./file-storage.adoc[file storage]* does), object storage uses a flat namespace: all objects live in a single container called a *bucket*, each identified by a unique key. Objects can be anything — images, videos, audio files, backups, log files, machine learning datasets.
+
+Each object consists of three things:
+
+* *Data*: the raw binary content of the file.
+* *Metadata*: a flexible, arbitrarily rich set of key-value pairs describing the object (content type, creation date, author, tags, and any custom application-specific attributes).
+* *Unique identifier*: a globally unique key used to retrieve the object via an HTTP/REST API.
+
+Unlike file storage (NFS/SMB) or *link:./block-storage.adoc[block storage]*, object storage is not mounted as a filesystem. Data is accessed programmatically via an API (the de facto standard being Amazon S3's API). This design removes the need for a traditional file-system layer, which is what allows object storage to scale to virtually unlimited capacity across multiple physical devices, data centres, and regions.
+
+== Advantages
+
+* *Massive scalability*: No hierarchical namespace to become unwieldy at scale. Systems like Amazon S3 routinely store trillions of objects and exabytes of data.
+* *Rich metadata*: Custom metadata per object enables sophisticated search, organisation, and lifecycle policies without a separate database.
+* *Durability and availability*: Objects are automatically replicated across multiple devices and availability zones. Amazon S3, for example, is designed for 99.999999999% (eleven nines) durability.
+* *Cost-effectiveness*: Per-gigabyte costs are typically far lower than block or file storage, making it well-suited to large-volume, infrequently-modified data (backups, archives, media).
+
+== Limitations
+
+* *Higher latency*: HTTP-based retrieval is slower than block-level I/O. Object storage is unsuitable for workloads that need sub-millisecond latency (databases, VMs).
+* *No partial updates*: An object must be replaced in full to update any part of it. Frequently-modified data is better served by block storage.
+* *No filesystem semantics*: There is no concept of directories, file locking, or POSIX permissions. Applications must interact via the API.
+
+== Best for
+
+Object storage is the storage of the cloud, best suited to large volumes of unstructured data that is written once and read many times. Common use cases include:
+
+* Static assets for web applications (images, CSS, JavaScript).
+* Media storage and content delivery (videos, audio).
+* Data lakes and machine learning training datasets.
+* Application backups and disaster recovery archives.
+* Log file aggregation.
+
+Cloud implementations include Amazon S3, Azure Blob Storage, and Google Cloud Storage.
+
+== See Also
+
+* *link:./blob-storage.adoc[Blob storage]*
+* *link:./file-storage.adoc[File storage]*
+* *link:./block-storage.adoc[Block storage]*
