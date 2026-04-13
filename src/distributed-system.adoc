@@ -8,9 +8,19 @@ Examples of distributed software include applications like *Hadoop* (for *[big d
 
 *Distributed programming* is the process of developing and maintaining distributed programs. *Distributed computing* is the field of *[computer science]* that studies distributed systems.
 
+Every distributed system shares three fundamental properties:
+
+* Its components operate *concurrently*.
+* Its components fail *independently*.
+* Its components do not share a *global clock*.
+
+These properties distinguish distributed systems from single-node systems, and they are collectively the root cause of most of the challenges described in this document.
+
 == Designing distributed systems
 
 Most large-scale systems are naturally distributed. That's because *link:./monolith.adoc[monoliths]*, as they grow in scope and load, become ever harder to maintain, develop, operate, and *[scale]*. So the natural tendency is toward breaking down monoliths into lots of smaller and simpler components that can each be developed, deployed, operated, scaled, and optimized independently – a process known as *[decomposition]*.
+
+Distribution is not always a deliberate architectural choice, however. When an application must communicate with external third-party services – such as payment processors, fraud detection APIs, or identity providers – those external machines are outside the developer's control. Yet the application is still subject to all the hazards of distributed communication: network failures, *[latency]*, and data consistency issues across system boundaries. Whether or not you manage those extra machines yourself, you are responsible for planning around the failures that can occur in interactions with them.
 
 But distribution of processing and data has significant *[trade-offs]* in *[system design]*.
 
@@ -29,6 +39,10 @@ _Distributed programming is hard._ The main challenges in designing distributed 
 * *Observability*: *[Monitoring]*, *[logging]*, and *[debugging]* all become much more complex in distributed systems. *[Observability]* and especially *[distributed tracing]* tools are specifically designed to address these challenges.
 
 * *[Testing]*, too, is much more challenging in distributed systems. It is harder, for example, to do proper integration tests to validate a whole system, compared to monolithic systems where all the components run in the same process. There tends to be increased reliance upon service mocks, which reduces confidence in correctness of the tests.
+
+* *Operational complexity*: Large distributed systems cannot be fully comprehended by any individual. Teams own only a fraction of the overall architecture, and different components are deployed independently by different teams on their own schedules. It is often impossible to run the full system locally, which increases reliance on staging and production environments for integration testing and debugging. This requires a level of abstract thinking that is not needed in monolithic development, and it makes it harder to reason about systemic failures.
+
+* *Infrastructure cost*: In single-process applications, the cost of new functionality is measured primarily in lines of code. In distributed systems, every component added to the architecture has a direct and ongoing monetary cost. Over-engineering in a single service leaves behind unused code; over-engineering a distributed system leaves behind running infrastructure that must be paid for. The cost of this waste can be significant in large systems. Financial constraints are therefore a practical design concern alongside the technical ones.
 
 For these reasons, distributed computing should be avoided until it is required to solve specific problems – usually something to do with *link:./scalability.adoc[scalability]*. Better to start with a *link:./modular-monolith.adoc[modular monolith]*, with scalability planned into the design from the start, and extract independent services incrementally.
 
