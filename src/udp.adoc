@@ -1,13 +1,44 @@
-= UDP
+= User Datagram Protocol (UDP)
 
-////
+The *User Datagram Protocol (UDP)* is a *link:./internet-protocol.adoc[Layer 4]* transport protocol that sends discrete messages called *datagrams* between hosts with minimal overhead. Unlike *link:./tcp.adoc[TCP]*, UDP is *connectionless* and *best-effort*: it provides no handshake, no acknowledgements, no retransmission, and no ordering guarantees. Datagrams may be lost, duplicated, or arrive out of order.
 
-𝗨𝗗𝗣
-𝗪𝗵𝗮𝘁: User Datagram Protocol prioritizes speed over reliability.
-𝗛𝗼𝘄:
-- Offers minimal overhead, making it faster but less reliable than TCP.
-- Commonly used for real-time applications like VoIP and streaming.
-𝗪𝗵𝗲𝗿𝗲:
-- Frequently paired with DNS and DHCP for network services.
+The UDP header is just 8 bytes (source port, destination port, length, checksum) compared to TCP's 20-byte minimum header. There is no connection setup, no state to maintain, and no congestion control slowing the sender down.
 
-////
+== When to use UDP
+
+UDP's lack of overhead is a feature in scenarios where:
+
+* *Latency matters more than reliability*: A retransmitted packet arriving late is useless in a live video call or a multiplayer game. It is better to drop a frame than to stall everything waiting for it.
+* *The application handles reliability itself*: DNS queries, for example, implement their own simple retry at the application layer. QUIC (the protocol underlying HTTP/3) implements reliability, ordering, and congestion control in userspace on top of UDP, giving more flexibility than TCP allows at the kernel level.
+* *Broadcast or multicast is needed*: UDP supports sending a single datagram to many recipients simultaneously; TCP's point-to-point connections cannot.
+* *Request/response is short*: For a single-packet request and single-packet response (e.g. a DNS lookup), the TCP three-way handshake would cost more than the entire exchange.
+
+== Common use cases
+
+* *DNS*: Queries and responses typically fit in one datagram; retries are handled by the resolver.
+* *DHCP*: Network configuration exchange at boot time before a full IP stack is established.
+* *Streaming media*: Video/audio streaming, VoIP, and WebRTC — brief glitches are preferable to stalls.
+* *Online gaming*: Position updates are time-sensitive; a missed update is simply superseded by the next one.
+* *SNMP*: Network management polling where occasional loss is acceptable.
+* *QUIC / HTTP/3*: Google's QUIC protocol is built on UDP, implementing its own reliable streams in userspace to avoid the limitations of TCP (head-of-line blocking, slow kernel upgrades).
+
+== UDP vs TCP
+
+[cols="1,1,1", options="header"]
+|===
+| Property | TCP | UDP
+
+| Connection | Connection-oriented (handshake required) | Connectionless
+| Reliability | Guaranteed delivery and retransmission | Best-effort, no retransmission
+| Ordering | Guaranteed in-order delivery | No ordering guarantee
+| Flow/congestion control | Yes | No
+| Header size | 20 bytes minimum | 8 bytes
+| Latency | Higher (handshake + ACKs) | Lower
+| Use cases | HTTP, email, file transfer | DNS, streaming, gaming, QUIC
+|===
+
+== See Also
+
+* *link:./tcp.adoc[TCP]*
+* *link:./internet-protocol.adoc[Internet Protocol (IP)]*
+* *link:./osi-model.adoc[OSI model]*

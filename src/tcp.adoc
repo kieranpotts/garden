@@ -1,16 +1,50 @@
 = Transmission Control Protocol (TCP)
 
-Transmission Control Protocol (TCP) is a communication protocol that ensures reliable, connection-oriented transmission of data by dividing it into smaller packets, numbering them, and reassembling them at the receiving end.
+The *Transmission Control Protocol (TCP)* is a *link:./internet-protocol.adoc[Layer 4]* transport protocol that provides *reliable*, *ordered*, and *connection-oriented* delivery of data between two hosts over an *link:./internet-protocol.adoc[IP]* network. It is one half of the TCP/IP suite that underpins most internet traffic, used by *link:./http.adoc[HTTP/HTTPS]*, email (SMTP), and file transfer (FTP).
 
-////
+TCP adds reliability on top of IP's best-effort delivery. IP can drop packets, deliver them out of order, or duplicate them; TCP guarantees that the application layer sees a continuous, correctly-ordered byte stream.
 
-TCP/IP
+== Key features
 
-𝗪𝗵𝗮𝘁: The backbone of the internet, combining the Transmission Control Protocol (TCP) and Internet Protocol (IP).
-𝗛𝗼𝘄:
-- TCP ensures reliable data delivery with error checking and flow control.
-- IP manages addressing and routing across networks.
-𝗪𝗵𝗲𝗿𝗲:
-- Web services like HTTP (port 80) and HTTPS (port 443) rely on TCP/IP for communication.
+* *Reliable delivery*: Every segment is acknowledged by the receiver. If an acknowledgement is not received within a timeout, the sender retransmits the segment.
+* *Ordered delivery*: Each byte is assigned a sequence number. The receiver buffers out-of-order segments and delivers data to the application in the correct order.
+* *Flow control*: The receiver advertises a *receive window* — the amount of data it can buffer — and the sender limits how much unacknowledged data it keeps in flight. This prevents a fast sender from overwhelming a slow receiver.
+* *Congestion control*: TCP monitors the network for signs of congestion (dropped packets, increased RTT) and reduces its send rate accordingly. Algorithms such as *slow start*, *congestion avoidance*, *fast retransmit*, and *fast recovery* (CUBIC, BBR in modern kernels) manage this automatically.
+* *Error detection*: Each TCP segment carries a checksum over the header and data. Corrupted segments are discarded and retransmitted.
+* *Full-duplex*: Data can flow in both directions simultaneously over a single connection.
 
-////
+== Connection lifecycle
+
+=== Three-way handshake (connection establishment)
+
+Before data can be exchanged, a connection is established:
+
+. *SYN* — client sends a segment with the SYN flag set and its initial sequence number (ISN).
+. *SYN-ACK* — server acknowledges the client's ISN and sends its own ISN.
+. *ACK* — client acknowledges the server's ISN. The connection is established.
+
+This costs one full round-trip before any application data can be sent.
+
+=== Data transfer
+
+Once connected, both sides exchange segments. Each segment carries a sequence number, an acknowledgement number (confirming bytes received), and the payload. The sender keeps a *congestion window* and a *receive window*, sending data up to the minimum of both.
+
+=== Four-way teardown (connection termination)
+
+. *FIN* — the closing side signals it has no more data to send.
+. *ACK* — the other side acknowledges.
+. *FIN* — the other side sends its own FIN when it is done.
+. *ACK* — the initiating side acknowledges; both sides close.
+
+Connections enter a `TIME_WAIT` state after closing to absorb any delayed packets that might otherwise corrupt a new connection reusing the same port pair.
+
+== TCP vs UDP
+
+TCP's reliability comes at a cost: the handshake, acknowledgements, and retransmissions all add latency and overhead. For applications where timeliness matters more than guaranteed delivery — real-time audio/video, gaming, DNS lookups — *link:./udp.adoc[UDP]* is preferred.
+
+== See Also
+
+* *link:./udp.adoc[UDP]*
+* *link:./internet-protocol.adoc[Internet Protocol (IP)]*
+* *link:./osi-model.adoc[OSI model]*
+* *link:./http.adoc[HTTP]*
