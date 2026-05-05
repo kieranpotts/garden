@@ -13,31 +13,37 @@ Common components of an AI agent include:
 
 == Agent development frameworks
 
-Frameworks and SDKs provide the infrastructure for building and orchestrating agents.
+Frameworks and SDKs provide the infrastructure for building and orchestrating agents. It's important to distinguish between two types:
 
-=== General-purpose frameworks
+* *Development frameworks* — Code libraries and SDKs used to write agent code. Examples: LangChain, LlamaIndex, Semantic Kernel. These are tools for _building_ agents.
 
-* https://github.com/langchain-ai/langchain[LangChain] — Comprehensive framework for building agents and LLM-powered applications. Emphasizes model interoperability, rapid prototyping, and an extensive ecosystem of integrations. Available in Python and TypeScript.
+* *Agent harnesses* — Runtime environments and orchestration systems that execute agents, manage their lifecycle, control permissions, provide observability, and coordinate multi-agent workflows. Some of these blur the line by offering both development and runtime capabilities. Examples: Microsoft Agent Framework, n8n, OpenClaw.
 
-* https://github.com/run-llama/llama_index[LlamaIndex] — Framework specialized in data ingestion, organization, and retrieval-augmented generation (RAG). Bridges enterprise data and LLM capabilities with 300+ integration packages.
+Many frameworks require a harness to run agents in production, while some frameworks include built-in harness capabilities. The distinction helps clarify whether you're looking for a tool to _write_ agent code or an environment to _run_ agents.
 
-* https://github.com/microsoft/semantic-kernel[Microsoft Semantic Kernel] — Model-agnostic SDK for building and orchestrating AI agents and multi-agent systems. Emphasizes plugin architecture and enterprise features. Available in Python, .NET, and Java.
+=== General-purpose development frameworks
 
-=== Vendor-specific SDKs
+* https://github.com/langchain-ai/langchain[LangChain] — Code library for building agents and LLM-powered applications. Emphasizes model interoperability, rapid prototyping, and an extensive ecosystem of integrations. Available in Python and TypeScript.
 
-* https://developers.openai.com/api/docs/guides/agents-sdk[OpenAI Agents SDK] — Official SDK from OpenAI for building agents with their models.
+* https://github.com/run-llama/llama_index[LlamaIndex] — Code library specialized in data ingestion, organization, and retrieval-augmented generation (RAG). Bridges enterprise data and LLM capabilities with 300+ integration packages.
 
-* https://google.github.io/adk-docs/[Google Agent Development Kit (ADK)] — Official toolkit from Google for agent development.
+* https://github.com/microsoft/semantic-kernel[Microsoft Semantic Kernel] — Code library for building and orchestrating AI agents and multi-agent systems. Emphasizes plugin architecture and enterprise features. Available in Python, .NET, and Java.
 
-* https://github.com/microsoft/agent-framework[Microsoft Agent Framework] — Production-grade framework for multi-agent workflows. Includes workflow orchestration, observability, and YAML-based agent definitions. Available in Python and C#/.NET.
+=== Vendor-specific SDKs and harnesses
 
-=== Low-code and specialized platforms
+* https://developers.openai.com/api/docs/guides/agents-sdk[OpenAI Agents SDK] — Code library from OpenAI for building agents with their models.
 
-* https://n8n.io/[n8n] — Low-code automation platform with https://docs.n8n.io/hosting/starter-kits/ai-starter-kit/[AI starter kit] for bootstrapping agent development environments.
+* https://google.github.io/adk-docs/[Google Agent Development Kit (ADK)] — Code library from Google for agent development.
 
-* https://openclaw.ai/[OpenClaw] — Open-source, self-hosted agent platform with 15+ messaging channel integrations and support for 40+ LLM providers.
+* https://github.com/microsoft/agent-framework[Microsoft Agent Framework] — Production-grade harness for running multi-agent workflows. Includes workflow orchestration, observability, YAML-based agent definitions, and cloud deployment options. Available in Python and C#/.NET.
 
-* https://pi.dev/[Pi] — Minimal agent foundation providing core components for building custom agents.
+=== Low-code platforms and foundations
+
+* https://n8n.io/[n8n] — Low-code automation harness with https://docs.n8n.io/hosting/starter-kits/ai-starter-kit/[AI starter kit] for bootstrapping and running agent workflows.
+
+* https://openclaw.ai/[OpenClaw] — Open-source, self-hosted agent harness with 15+ messaging channel integrations and support for 40+ LLM providers.
+
+* https://pi.dev/[Pi] — Code library providing minimal core components for building custom agents.
 
 Many *link:./ai-coding-assistant.adoc[AI coding assistants]* have agentic properties, too.
 
