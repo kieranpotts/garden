@@ -4,7 +4,7 @@
 
 A large language model (LLM) is a deep learning model trained on vast amounts of text. At a fundamental level, LLMs work by predicting the most probable next token in a sequence. But from this primitive process unexpected capabilities arise. At scale, LLMs demonstrate the ability to reason, summarize, translate, write code, and hold human-like conversations. These unexpected capabilities are known as *emergence*.
 
-LLMs are a category of *link:./generative-ai.adoc[generative AI]* tools. LLMs are increasingly deployed in a wide variety of contexts. *link:./src/ai-assistant.adoc[AI assistants]* are perhaps the best-known category of application software built on top of LLMs, but many other use cases are being found for LLMs.
+LLMs are a category of *link:./generative-ai.adoc[generative AI]* tools. LLMs are increasingly deployed in a wide variety of contexts. *link:./ai-assistant.adoc[AI assistants]* are perhaps the best-known category of application software built on top of LLMs, but many other use cases are being found for LLMs.
 
 This document covers how LLMs work, from training and inference to context windows and hallucinations. It also summarizes the current model landscape, with a focus on frontier models and open-weight alternatives. This document also covers the access layers through which we interact with models, which provide the front-ends for direct human interaction with models and for integrations with other automated processes.
 
@@ -40,8 +40,6 @@ A lightweight alternative to fine-tuning is *prompt-based adaptation*. This is t
 
 // The resulting model will still be limited by the quality and breadth of its training data - including data used in fine-tuning. It's because a model's knowledge of semantic associations is learnt from its training data. This is fundamental to how the transformer architecture works.
 
-Because training is a one-time process, a model's knowledge is frozen at the date its training data was collected. The model has no awareness of events, publications, or other changes in the world that occurred after that date. This is known as the *knowledge cutoff*. It is one of the core limitations of LLMs, and the primary motivation for augmenting LLMS with techniques such as retrieval-augmented generation (RAG) – see below.
-
 === RLHF
 
 Reinforcement learning from human feedback (RLHF) is a post-training technique that aligns a model's behavior with human preferences — making it safer, more helpful, and less likely to produce harmful outputs.
@@ -49,6 +47,10 @@ Reinforcement learning from human feedback (RLHF) is a post-training technique t
 The process works in two stages. First, human evaluators compare pairs of model outputs and select which is better. This data is used to train a separate *reward model* that learns to predict human preferences. Second, the main model is trained via reinforcement learning to maximize scores from the reward model. Because the second stage optimizes against the reward model rather than humans directly, it scales without requiring continuous human input.
 
 RLHF is how base models — which simply predict the next token — are transformed into helpful assistants that follow instructions. Most frontier models use RLHF or a close variant (such as constitutional AI, RLAIF, or DPO) as part of their post-training pipeline.
+
+=== Knowledge cutoff
+
+Because training is a one-time process, a model's knowledge is frozen at the date its training data was collected. The model has no awareness of events, publications, or other changes in the world that occurred after that date. This is known as the *knowledge cutoff*. It is one of the core limitations of LLMs, and the primary motivation for augmenting LLMs with techniques such as retrieval-augmented generation (RAG) – see below.
 
 === Tokens
 
@@ -68,7 +70,7 @@ Tokens with similar meanings produce vectors that are close together in this mul
 
 === Weights
 
-Weights refer to a model's learned parameters – the billion of numbers that encode everything the model learned during training. Weights determine how a model transforms inputs into output.
+Weights refer to a model's learned parameters – the billions of numbers that encode everything the model learned during training. Weights determine how a model transforms inputs into output.
 
 Small changes in weights, eg. through fine-tuning, can dramatically alter the behavior of a model.
 
@@ -171,7 +173,7 @@ Inference engines are the low-level runtimes that actually execute a model – l
 
 The two most widely used inference engines for open-weight models are:
 
-* https://github.com/ggml-org/llama.cpp[llama.cpp] – A C/C++ inference engine optimized for running quantized models on consumer hardware, including CPU-only machines, Apple Silicon, and devices with limited VRAM. Uses the GGUF model format. It is the engine that powers Ollama and LM Studio. Prioritizes broad hardware compatibility over maximum throughput. Llama.cpp can be made to use multiple GPUs, but it does not support tensor parallelism in the same way that vLLM does...
+* https://github.com/ggml-org/llama.cpp[llama.cpp] – A C/C++ inference engine optimized for running quantized models on consumer hardware, including CPU-only machines, Apple Silicon, and devices with limited VRAM. Uses the GGUF model format. It is the engine that powers Ollama and LM Studio. Prioritizes broad hardware compatibility over maximum throughput. Llama.cpp can be made to use multiple GPUs, but it does not support tensor parallelism in the same way that vLLM does — model layers are assigned to GPUs rather than operations being distributed across them, which limits throughput gains from multi-GPU setups.
 
 * https://github.com/vllm-project/vllm[vLLM] – A Python-based inference engine designed for high-throughput via one or more GPUs. The key differentiating feature is that vLLM supports multi-GPU tensor parallelism, which means (in plain English) workloads are more evenly distributed across multiple GPUs. This efficiency shows up in better throughput metrics. vLLM is really intended for optimizing multi-GPU workloads that serve multiple users. Its key innovation is _PagedAttention_, which manages the KV cache more efficiently, enabling higher request concurrency. This is a good choice when serving many users concurrently, rather than running models locally for a single user – though you can use it for that purpose too.
 
@@ -242,7 +244,7 @@ As of March 2026, *OpenAI GPT 5.2* is the flagship model in OpenAI's GPT lineup.
 |Text • Code • Image
 |===
 
-For Anthropic, as of March 2026 its *Claude Opus 4.6* is its flagship model. It's another all-rounder, but specializes in text and code generation, rather than aiming for multimodality. Unlike GPT 5.2, it cannot do image generation directly. It is also currently the most expensive and slowest of the frontier models, but it is highly regarded for its coding abilities.
+For Anthropic, as of May 2026 its *Claude Opus 4.6* is its flagship model. It's another all-rounder, but specializes in text and code generation, rather than aiming for multimodality. Unlike GPT 5.2, it cannot do image generation directly. It is also currently the most expensive and slowest of the frontier models, but it is highly regarded for its coding abilities.
 
 .Claude Opus 4.6
 |===
@@ -270,7 +272,7 @@ For Anthropic, as of March 2026 its *Claude Opus 4.6* is its flagship model. It'
 |Text • Code
 |===
 
-But, as of March 2026, it is *Grok 4.1* that is widely considered to be the most capable of the frontier models. It is fast, has a large context window, and is cheap relative to other frontier models. It's popular for its empathetic conversational abilities.
+But, as of May 2026, it is *Grok 4.1* that is widely considered to be the most capable of the frontier models. It is fast, has a large context window, and is cheap relative to other frontier models. It's popular for its empathetic conversational abilities.
 
 .Grok 4.1
 |===
@@ -298,7 +300,7 @@ But, as of March 2026, it is *Grok 4.1* that is widely considered to be the most
 |Text • Code • Image
 |===
 
-In Google's Gemini series, *Gemini 3 Pro* is the current flagship. Its performance is pretty on par with the rival flagship models, but it has two things going for it: a large context window, and (what really makes it stand out) multimodality capabilities. It can analyze _and_ generate all kinds of media, not only text.
+As of May 2026, *Gemini 3 Pro* is the current flagship in Google's Gemini series. Its performance is pretty on par with the rival flagship models, but it has two things going for it: a large context window, and (what really makes it stand out) multimodality capabilities. It can analyze _and_ generate all kinds of media, not only text.
 
 .Gemini 3 Pro
 |===
@@ -320,7 +322,7 @@ In Google's Gemini series, *Gemini 3 Pro* is the current flagship. Its performan
 |1M-2M tokens
 
 |Benchmarks
-|LMArena Text Arena 1501 Elo (#1) • GPQA Diamond (graduate-level science reasoning) 91.9% • Humanity's Last Exam (HLE) 37.5% • ARC-AGI-2 (abstract reasoning) 84.6% in deep thinking mode
+|LMArena Text Arena 1501 Elo • GPQA Diamond (graduate-level science reasoning) 91.9% • Humanity's Last Exam (HLE) 37.5% • ARC-AGI-2 (abstract reasoning) 84.6% in deep thinking mode
 
 |Multimodality
 |Text • Code • Image • Video • Audio
@@ -332,7 +334,7 @@ The mid-tier models are the workhorses that you will probably use 80% of the tim
 
 Examples include:
 
-.Example mid-tier models as of March 2026
+.Example mid-tier models as of May 2026
 |===
 |Model |Developer |Cost |Comments
 
@@ -361,9 +363,9 @@ Examples include:
 
 === Light models
 
-Light models are faster and cheaper, but less capable than the frontier/flagship models. Yet some of these are still incredibly capable. Gemini 3 Flash, for example, maintains most of the capabilties of the flagship Gemini 3 Pro model. This is achieved by a process called *knowledge distillation*, whereby knowledge from a larger model is distilled into a smaller knowledge graph to make a lighter model, which is smaller in size but still maintains a lot of the capabilities of the larger model.
+Light models are faster and cheaper, but less capable than the frontier/flagship models. Yet some of these are still incredibly capable. Gemini 3 Flash, for example, maintains most of the capabilities of the flagship Gemini 3 Pro model. This is achieved by a process called *knowledge distillation*, whereby knowledge from a larger model is distilled into a smaller knowledge graph to make a lighter model, which is smaller in size but still maintains a lot of the capabilities of the larger model.
 
-.Example light models as of March 2026
+.Example light models as of May 2026
 |===
 |Model |Developer |Speed |Comments
 
@@ -488,7 +490,7 @@ Some open-weight models compete with frontier models in capability. *Kimi K2.5* 
 
 === Open-weight coding models
 
-As of April 2026, the following open-weight models are highly regarding for the computer programming abilities. The small models (≤ 7B) are suitable for running on laptops and CPU-only setups, while the larger models (eg. CodeLlama 34B, LLaMA 2 Code 70B) provide deeper reasoning but need GPUs with ≥ 24GB VRAM.
+As of April 2026, the following open-weight models are highly regarded for the computer programming abilities. The small models (≤ 7B) are suitable for running on laptops and CPU-only setups, while the larger models (eg. CodeLlama 34B, LLaMA 2 Code 70B) provide deeper reasoning but need GPUs with ≥ 24GB VRAM.
 
 * *StarCoder 15B* — Trained on a big code dataset. Strong on Python, JavaScript, and C/C++. Apache 2.0 license.
 
