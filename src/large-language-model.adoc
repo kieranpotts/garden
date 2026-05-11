@@ -195,6 +195,24 @@ Open-weight models are commonly grouped into size tiers, each with different har
 * *Large (30–70B)* — High capability; require 32 GB+ RAM and a dedicated GPU with 24 GB+ VRAM.
 * *Very large (70B+)* — Near-frontier capability; require high-end workstations or multi-GPU setups.
 
+=== Capability types
+
+Beyond size and cost, models differ significantly in what they are designed to do. The main capability types are:
+
+*Chat models* are instruction-tuned to follow natural-language instructions and hold multi-turn conversations. These are the general-purpose workhorses — the models behind ChatGPT, Claude, and Gemini. Almost all frontier and mid-tier models fall into this category. Examples: GPT-4o, Claude Sonnet 4.6, Gemini 2.5 Pro, Llama 3.3 70B Instruct.
+
+*Base models* are the raw, pre-trained models before any instruction tuning or RLHF is applied. They predict the next token without any conversational or helpfulness alignment, and are rarely used directly. They serve as the starting point for fine-tuning. Examples: Llama 3 (base), Mistral 7B (base).
+
+*Code completion models* are optimized for programming tasks and typically deployed as IDE autocomplete backends rather than chat interfaces. A distinctive capability is fill-in-the-middle (FIM): generating code that fits between an existing prefix and suffix, which is how IDE autocomplete works. Examples: Codestral, Code Llama, Qwen2.5-Coder.
+
+*Reasoning models* spend extra compute working through a problem step-by-step — producing an internal chain of thought — before arriving at a final answer. They trade higher latency and token cost for substantially better performance on complex mathematical, logical, and multi-step problems. See the Reasoning models section below. Examples: OpenAI o3, DeepSeek-R1, Claude with extended thinking.
+
+*Embedding models* convert text into dense numerical vectors that represent the semantic meaning of the input. Unlike generative models, they produce a fixed-length vector rather than text. These vectors are used to power semantic search, RAG pipelines, clustering, and classification. Examples: OpenAI text-embedding-3, Cohere Embed, Nomic Embed, BGE.
+
+*Reranker models* are used as a second pass in RAG pipelines. After an initial retrieval step fetches candidate documents, a reranker scores each candidate's relevance to the query more precisely, so the most useful results are surfaced before being passed to the generative model. Examples: Cohere Rerank, BGE Reranker, cross-encoder models.
+
+*Multimodal models* accept inputs — or produce outputs — beyond text, such as images, audio, and video. Most modern frontier models are multimodal to some degree. Examples: GPT-4o (image input), Gemini 3 Pro (image, video, and audio input and output), Claude Opus 4.7 (image input).
+
 === Rankings
 
 A number of websites maintain rankings of LLMs based on various factors:
