@@ -185,16 +185,6 @@ At the other end of the spectrum are small models that are optimized for speed r
 
 Somewhere in the middle are the general-purpose models that find a good balance between these factors, and can do most tasks well.
 
-Model size is commonly expressed as the number of trainable parameters, in billions – for example, a 7B model has 7 billion parameters. More parameters generally means greater capability but higher memory and compute requirements. A 7B model can run comfortably on a consumer GPU; a 70B model requires a high-end workstation or server; a 405B model requires multiple high-end GPUs.
-
-Open-weight models are commonly grouped into size tiers, each with different hardware requirements:
-
-* *Ultra-light (1–3B)* — Run on almost any machine with 8 GB+ RAM. Capable of basic chat and simple tasks. Examples: Gemma 3 1B, Llama 3.2 1B/3B, Qwen3 1.7B, DeepSeek R1 1.5B.
-* *Small (3–8B)* — A good balance of quality and speed; need ~8–16 GB RAM. The recommended starting point for most local setups. Examples: Phi-4 Mini (3.8B), Gemma 3 4B, SmallThinker 3B, Mistral 7B, Qwen3 8B, Llama 3.1 8B.
-* *Medium (8–13B)* — Well-rounded general-purpose models; run well on 16–32 GB RAM with a mid-range GPU. Examples: Gemma 3 12B.
-* *Large (30–70B)* — High capability; require 32 GB+ RAM and a dedicated GPU with 24 GB+ VRAM.
-* *Very large (70B+)* — Near-frontier capability; require high-end workstations or multi-GPU setups.
-
 === Capability types
 
 Beyond size and cost, models differ significantly in what they are designed to do. The main capability types are:
@@ -470,7 +460,21 @@ Specialist models are fine-tuned for a narrow domain or task, rather than genera
 
 Licensing terms vary: some permit commercial use, others restrict it.
 
-Open-weight models – which can be downloaded to your computer and operated locally, usually through a model manager like Ollama (see below) – are a good choice for privacy-sensitive use cases, offline environments, or experimenting with open models without incurring API costs.
+The main consideration when choosing between open-weight models is the model size. Model size is commonly expressed as the number of trainable parameters, in billions – for example, a 7B model has 7 billion parameters. More parameters generally means greater capability but higher memory and compute requirements. A 7B model can run comfortably on a consumer GPU; a 70B model requires a high-end workstation or server; while a 405B model requires multiple high-end GPUs.
+
+It is useful to think of open-weight models as falling into a spectrum of size tiers, with each tier having different minimal hardware requirements:
+
+* *Ultra-light (1–3B)* — Run on almost any machine with 8 GB+ RAM. Capable of basic chat and simple tasks. Examples: Gemma 3 1B, Llama 3.2 1B/3B, Qwen3 1.7B, DeepSeek R1 1.5B.
+
+* *Small (3–8B)* — A good balance of quality and speed. Need ~8–16 GB RAM. The recommended starting point for most local setups. Examples: Phi-4 Mini (3.8B), Gemma 3 4B, SmallThinker 3B, Mistral 7B, Qwen3 8B, Llama 3.1 8B.
+
+* *Medium (8–13B)* — Well-rounded general-purpose models. Run well on 16–24 GB RAM with a mid-range GPU. Examples: Gemma 3 12B.
+
+* *Large (30–70B)* — High capability. Require at least 32 GB RAM and a dedicated GPU with 24+ GB VRAM.
+
+* *Very large (70B+)* — Near-frontier capability. Require high-end workstations with at least 64 GB RAM and multi-GPU setups.
+
+Open-weight models – which are downloaded to your computer (or server) and operated locally, usually through a model manager like Ollama (see below) – are a good choice for privacy-sensitive use cases, offline environments, or experimenting with open models without incurring API costs.
 
 Open-weight models can also be customized through further fine-tuning and through RAG. Perplexity's Sonar model is an example of an open-weight model that has been fine-tuned for specific use cases.
 
