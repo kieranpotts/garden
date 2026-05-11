@@ -2,7 +2,7 @@
 :toc: macro
 :toc-title: Contents
 
-A large language model (LLM) is a deep learning model trained on vast amounts of text. At a fundamental level, LLMs work by predicting the most probable next token in a sequence. But from this primitive process unexpected capabilities arise. At scale, LLMs demonstrate the ability to reason, summarize, translate, write code, and hold human-like conversations. These unexpected capabilities are known as *emergence*.
+A large language model (LLM) is a deep learning model trained on vast amounts of text. At a fundamental level, LLMs work by predicting the probability of each possible next token in a sequence, then sampling from that distribution. But from this primitive process unexpected capabilities arise. At scale, LLMs demonstrate the ability to reason, summarize, translate, write code, and hold human-like conversations. These unexpected capabilities are known as *emergence*.
 
 LLMs are a category of *link:./generative-ai.adoc[generative AI]* tools. LLMs are increasingly deployed in a wide variety of contexts. *link:./ai-assistant.adoc[AI assistants]* are perhaps the best-known category of application software built on top of LLMs, but many other use cases are being found for LLMs.
 
@@ -252,9 +252,9 @@ As of March 2026, *OpenAI GPT 5.2* is the flagship model in OpenAI's GPT lineup.
 |Text • Code • Image
 |===
 
-For Anthropic, as of May 2026 its *Claude Opus 4.6* is its flagship model. It's another all-rounder, but specializes in text and code generation, rather than aiming for multimodality. Unlike GPT 5.2, it cannot do image generation directly. It is also currently the most expensive and slowest of the frontier models, but it is highly regarded for its coding abilities.
+For Anthropic, as of May 2026 its *Claude Opus 4.7* is its flagship model. It's another all-rounder, but specializes in text and code generation, rather than aiming for multimodality. Unlike GPT 5.2, it cannot do image generation directly. It is also currently the most expensive and slowest of the frontier models, but it is highly regarded for its coding abilities.
 
-.Claude Opus 4.6
+.Claude Opus 4.7
 |===
 |Category |Details
 
@@ -280,7 +280,7 @@ For Anthropic, as of May 2026 its *Claude Opus 4.6* is its flagship model. It's 
 |Text • Code
 |===
 
-But, as of May 2026, it is *Grok 4.1* that is widely considered to be the most capable of the frontier models. It is fast, has a large context window, and is cheap relative to other frontier models. It's popular for its empathetic conversational abilities.
+But, as of May 2026, it is *Grok 4.1* that is widely considered to be the most capable of the frontier models. It is fast, has a very large context window, and is cheap relative to other frontier models. It is noted for strong reasoning across diverse tasks and a highly permissive output style.
 
 .Grok 4.1
 |===
@@ -346,7 +346,7 @@ Examples include:
 |===
 |Model |Developer |Cost |Comments
 
-|Claude Sonnet 4.5
+|Claude Sonnet 4.6
 |Anthropic
 |$3 input / $15 output per 1M tokens
 |Best-in-class coding performance (77.2% SWE-bench) • 1M context window • Extended thinking capabilities
@@ -367,11 +367,11 @@ Examples include:
 |Compact, high-performance model • Excellent price-to-capability ratio • 32K context window
 |===
 
-*Claude Sonnet 4.5* is a mid-tier model from Anthropic that is particularly strong at coding tasks. It's cheaper than Opus 4.6, the flagship model, but still perfectly capable at advanced programming tasks, including building greenfield projects from scratch.
+*Claude Sonnet 4.6* is a mid-tier model from Anthropic that is particularly strong at coding tasks. It's cheaper than Opus 4.6, the flagship model, but still perfectly capable at advanced programming tasks, including building greenfield projects from scratch.
 
 === Light models
 
-Light models are faster and cheaper, but less capable than the frontier/flagship models. Yet some of these are still incredibly capable. Gemini 3 Flash, for example, maintains most of the capabilities of the flagship Gemini 3 Pro model. This is achieved by a process called *knowledge distillation*, whereby knowledge from a larger model is distilled into a smaller knowledge graph to make a lighter model, which is smaller in size but still maintains a lot of the capabilities of the larger model.
+Light models are faster and cheaper, but less capable than the frontier/flagship models. Yet some of these are still incredibly capable. Gemini 3 Flash, for example, maintains most of the capabilities of the flagship Gemini 3 Pro model. This is achieved by a process called *knowledge distillation*, whereby a smaller student model is trained to replicate the output distribution of a larger teacher model, producing a model that is smaller in size but retains much of the larger model's capability.
 
 .Example light models as of May 2026
 |===
@@ -380,7 +380,7 @@ Light models are faster and cheaper, but less capable than the frontier/flagship
 |Gemini 3 Flash
 |Google
 |180-250 TPS
-|Pro-grade reasoning at Flash latency • 3x faster than 2.5 Pro with 30% better token efficiency
+|Pro-grade reasoning at Flash latency • 3x faster than Gemini 2.5 Pro with 30% better token efficiency
 
 |GPT-5 mini
 |OpenAI
@@ -475,7 +475,7 @@ Some open-weight models compete with frontier models in capability. *Kimi K2.5* 
 |Category |Details
 
 |Architecture
-|Open source Mixture-of-Experts (MoE) • 1.04T total parameters with 32B activated per token
+|Open-weight Mixture-of-Experts (MoE) • 1.04T total parameters with 32B activated per token
 
 |Model size
 |1.04 trillion parameters (32B active)
@@ -498,21 +498,17 @@ Some open-weight models compete with frontier models in capability. *Kimi K2.5* 
 
 === Open-weight coding models
 
-As of April 2026, the following open-weight models are highly regarded for the computer programming abilities. The small models (≤ 7B) are suitable for running on laptops and CPU-only setups, while the larger models (eg. CodeLlama 34B, LLaMA 2 Code 70B) provide deeper reasoning but need GPUs with ≥ 24GB VRAM.
+The following open-weight models are highly regarded for programming tasks. Small models (≤ 8B) run comfortably on a laptop or CPU-only setup; larger models require a GPU with ≥ 16–24 GB VRAM.
 
-* *StarCoder 15B* — Trained on a big code dataset. Strong on Python, JavaScript, and C/C++. Apache 2.0 license.
+* *Qwen2.5-Coder 32B Instruct* — Alibaba's dedicated coding model that consistently tops open-weight coding benchmarks. Strong across Python, JavaScript, Go, and SQL. Supports a 32K context window. Apache 2.0 license.
 
-* *WizardCoder 2.7B* — Fine-tuned on instruction-following code data. Excellent at step-by-step explanations and debugging. MIT license.
+* *DeepSeek-Coder-V2 Instruct* — A Mixture-of-Experts model (236B total, 21B active) with very strong multi-language coding performance and a 128K context window. One of the most capable open-weight options for complex, multi-file tasks. MIT license.
 
-* *LLaMa 2 Code 70B* — Large context window (4K tokens) and strong multi-language performance, especially for low-level systems code.  It is also well regarded for architecture design and large-scale refactoring. Meta's non-commercial license means the weights are available for research only.
+* *Codestral 22B* — Mistral AI's dedicated code model, optimized for low-latency code completion and fill-in-the-middle (FIM) tasks. Well suited to IDE integration. Supports 32K context. Mistral AI Non-Production License (commercial use requires a separate agreement).
 
-* *CodeLlama 34B Instruct* — Built on LLaMa 2, this model is fine-tuned on instruction-following programming tasks – so it is excellent at step-by-step explanations and debugging. Same as LLaMa 2, the weights are available for research only.
+* *StarCoder2 15B* — The successor to StarCoder, trained on The Stack v2. Strong on Python, JavaScript, and C/C++, and well suited to code search and autocompletion tasks. Apache 2.0 license.
 
-* *DeepSeek-Coder 7B* — Balancing size and performance, this model has proven to be strong at generating concise, correct snippets across 12 languages. A good choice for IDE integration for code autocompletion. Apache 2.0 license.
-
-* *Mistral-NeMo 12B Code* — Optimized for low latency inference and competitive on coding benchmarks like HumanEval. Intended for edge deployment; a use case would be a code assistant hosted as a serverless function. Apache 2.0 license.
-
-* *OpenChat 3.5 Code 7B* — OpenAI-compatible community-built model. Instruction-tuned on a mix of natural-language and code data. Performs well in the context of multi-turn programming dialogs, ie. chat-style interactions.
+* *Code Llama 70B Instruct* — Meta's instruction-tuned coding variant of Llama 2, with a 16K context window and strong performance on multi-language tasks and large-scale refactoring. Meta's non-commercial license restricts use to research.
 
 == Model access layers
 
