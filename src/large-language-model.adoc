@@ -203,6 +203,8 @@ Beyond size and cost, models differ significantly in what they are designed to d
 
 *Base models* are the raw, pre-trained models before any instruction tuning or RLHF is applied. They predict the next token without any conversational or helpfulness alignment, and are rarely used directly. They serve as the starting point for fine-tuning. Examples: Llama 3 (base), Mistral 7B (base).
 
+*Flash models*: These are optimized for producing a response in a fraction of the time it takes other models. They often rely on shortcuts like caching or pre-computing certain results to speed up generation.
+
 *Code completion models* are optimized for programming tasks and typically deployed as IDE autocomplete backends rather than chat interfaces. A distinctive capability is fill-in-the-middle (FIM): generating code that fits between an existing prefix and suffix, which is how IDE autocomplete works. Examples: Codestral, Code Llama, Qwen2.5-Coder.
 
 *Reasoning models* spend extra compute working through a problem step-by-step — producing an internal chain of thought — before arriving at a final answer. They trade higher latency and token cost for substantially better performance on complex mathematical, logical, and multi-step problems. See the Reasoning models section below. Examples: OpenAI o3, DeepSeek-R1, Claude with extended thinking.
@@ -571,3 +573,5 @@ Some popular model managers include:
 * *link:./context-engineering.adoc[Context engineering]*
 * *link:./ai-agent.adoc[AI agent]*
 * *link:./ai-coding-assistant.adoc[AI coding assistant]*
+
+
