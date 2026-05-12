@@ -461,9 +461,29 @@ Specialist models are fine-tuned for a narrow domain or task, rather than genera
 
 *Open-weight* models have publicly released weights, meaning anyone can download and run them. This is distinct from *open-source*, which would also require the training data and code to be public – most open-weight models do not meet that bar.
 
-Licensing terms vary: some permit commercial use, others restrict it.
+Licensing terms vary. Some permit commercial use, others restrict it.
 
 The main consideration when choosing between open-weight models is the model size. Model size is commonly expressed as the number of trainable parameters, in billions – for example, a 7B model has 7 billion parameters. More parameters generally means greater capability but higher memory and compute requirements. A 7B model can run comfortably on a consumer GPU; a 70B model requires a high-end workstation or server; while a 405B model requires multiple high-end GPUs.
+
+Open-weight models, which can be downloaded and run on your own computer or server, are a good choice for privacy-sensitive use cases, offline environments, or experimenting with open models without incurring API costs.
+
+Open-weight models can also be customized through further fine-tuning and through RAG. Perplexity's Sonar model is an example of an open-weight model that has been fine-tuned for specific use cases.
+
+.Pros and cons of running open-weight models locally
+****
+* Free (just the cost of the hardware and electricity)
+* Highly customizable
+* Secure and private
+* Zero network latency
+* Work offline (no internet connection required)
+* High availability; can be run 24/7/365
+* Six to 12 months behind the frontier models in capability
+* Require a lot of RAM and GPU VRAM to run large models
+****
+
+https://huggingface.co/[Hugging Face] is the primary hub for discovering and downloading open-weight models, hosting over two million models contributed by individuals, research labs, and major organizations.
+
+==== Hardware requirements
 
 It is useful to think of open-weight models as falling into a spectrum of size tiers, with each tier having different minimal hardware requirements:
 
@@ -477,11 +497,9 @@ It is useful to think of open-weight models as falling into a spectrum of size t
 
 * *Very large (70B+)* — Near-frontier capability. Require high-end workstations with at least 64 GB RAM and multi-GPU setups.
 
-Open-weight models – which are downloaded to your computer (or server) and operated locally, usually through a model manager like Ollama (see below) – are a good choice for privacy-sensitive use cases, offline environments, or experimenting with open models without incurring API costs.
+Custom hardware like the https://www.nvidia.com/en-gb/products/workstations/dgx-spark/[Nvidia DGX Spark] give you the ability to run _and train_ large language models on your own hardware.
 
-Open-weight models can also be customized through further fine-tuning and through RAG. Perplexity's Sonar model is an example of an open-weight model that has been fine-tuned for specific use cases.
-
-https://huggingface.co/[Hugging Face] is the primary hub for discovering and downloading open-weight models, hosting over two million models contributed by individuals, research labs, and major organizations.
+==== Open-weight model families
 
 As of 2026, some notable open-weight model families include:
 
