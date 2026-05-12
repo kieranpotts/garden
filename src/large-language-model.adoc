@@ -187,13 +187,26 @@ At the other end of the spectrum are small models that are optimized for speed r
 
 Somewhere in the middle are the general-purpose models that find a good balance between these factors, and can do most tasks well.
 
+.Rankings
+****
+A number of websites maintain rankings of LLMs based on various factors:
+
+* https://openrouter.ai/rankings[OpenRouter's rankings] are based on model usage on the OpenRouter platform (which provides a single API to access models from multiple providers).
+* https://artificialanalysis.ai/leaderboards/models[LLM Leaderboard] by Artificial Analysis
+* https://llm-stats.com/[llm-stats.com]
+* https://lmarena.ai/[LMArena]
+* https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard[Open LLM Leaderboard] on Hugging Face – benchmarks open-weight models across standardized tasks.
+
+See also https://www.tbench.ai/[Terminal Bench], which specifically benchmarks *link:./ai-agent.adoc[agentic front-ends]* backed by various models.
+****
+
 === Capability types
 
 Beyond size and cost, models differ significantly in what they are designed to do. The main capability types are:
 
-*Chat models* are instruction-tuned to follow natural-language instructions and hold multi-turn conversations. These are the general-purpose workhorses — the models behind ChatGPT, Claude, and Gemini. Almost all frontier and mid-tier models fall into this category. Examples: GPT-4o, Claude Sonnet 4.6, Gemini 2.5 Pro, Llama 3.3 70B Instruct.
-
 *Base models* are the raw, pre-trained models before any instruction tuning or RLHF is applied. They predict the next token without any conversational or helpfulness alignment, and are rarely used directly. They serve as the starting point for fine-tuning. Examples: Llama 3 (base), Mistral 7B (base).
+
+*Chat models* are instruction-tuned to follow natural-language instructions and hold multi-turn conversations. These are the general-purpose workhorses — the models behind ChatGPT, Claude, and Gemini. Almost all frontier and mid-tier models fall into this category. Examples: GPT-4o, Claude Sonnet 4.6, Gemini 2.5 Pro, Llama 3.3 70B Instruct.
 
 *Flash models*: These are optimized for producing a response in a fraction of the time it takes other models. They often rely on shortcuts like caching or pre-computing certain results to speed up generation.
 
@@ -206,18 +219,6 @@ Beyond size and cost, models differ significantly in what they are designed to d
 *Reranker models* are used as a second pass in RAG pipelines. After an initial retrieval step fetches candidate documents, a reranker scores each candidate's relevance to the query more precisely, so the most useful results are surfaced before being passed to the generative model. Examples: Cohere Rerank, BGE Reranker, cross-encoder models.
 
 *Multimodal models* accept inputs — or produce outputs — beyond text, such as images, audio, and video. Most modern frontier models are multimodal to some degree. Examples: GPT-4o (image input), Gemini 3 Pro (image, video, and audio input and output), Claude Opus 4.7 (image input).
-
-=== Rankings
-
-A number of websites maintain rankings of LLMs based on various factors:
-
-* https://openrouter.ai/rankings[OpenRouter's rankings] are based on model usage on the OpenRouter platform (which provides a single API to access models from multiple providers).
-* https://artificialanalysis.ai/leaderboards/models[LLM Leaderboard] by Artificial Analysis
-* https://llm-stats.com/[llm-stats.com]
-* https://lmarena.ai/[LMArena]
-* https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard[Open LLM Leaderboard] on Hugging Face – benchmarks open-weight models across standardized tasks.
-
-See also https://www.tbench.ai/[Terminal Bench], which specifically benchmarks *link:./ai-agent.adoc[agentic front-ends]* backed by various models.
 
 === Frontier models
 
