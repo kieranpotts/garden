@@ -481,7 +481,7 @@ Open-weight models can also be customized through further fine-tuning and throug
 * Require a lot of RAM and GPU VRAM to run large models
 ****
 
-https://huggingface.co/[Hugging Face] is the primary hub for discovering and downloading open-weight models, hosting over two million models contributed by individuals, research labs, and major organizations.
+https://huggingface.co/[Hugging Face] is the primary hub for discovering and downloading open-weight models, hosting over two million models contributed by individuals, research labs, and major organizations. The other major resource in this space is https://ollama.com/search[Ollama's model database], which is a more curated library of models that are proven to be stable with the Ollama model manager.
 
 ==== Hardware requirements
 
@@ -510,8 +510,19 @@ As of 2026, some notable open-weight model families include:
 * The https://huggingface.co/moonshotai[Kimi] models from Moonshot AI.
 * The https://huggingface.co/THUDM[GLM] models from Z.ai.
 * The https://www.deepseek.com/[DeepSeek] models from DeepSeek AI.
+* The https://www.minimax.io/[MiniMax] models from MiniMax AI.
 
-*Gemma* is Google's open-weight counterpart to the proprietary Gemini family, optimized to run efficiently on consumer hardware. *Mistral AI*, a French company, produces both open-weight models and proprietary API offerings; their Mixtral series helped popularize the Mixture-of-Experts (MoE) architecture in open models. *DeepSeek* made significant waves in early 2025 when DeepSeek-R1 demonstrated near-frontier reasoning performance at a fraction of the training compute cost that had previously been assumed necessary — see Reasoning models, above.
+*Gemma* is Google's open-weight counterpart to the proprietary Gemini family, optimized to run efficiently on consumer hardware.
+
+*Mistral AI*, a French company, produces both open-weight models and proprietary API offerings; their Mixtral series helped popularize the Mixture-of-Experts (MoE) architecture in open models.
+
+*MiniMax* also develops both closed-weight and open-weight models. MiniMax M2.5 is well-regarded for its performance, though it lags in intelligence compared to something like Qwen 3.5.
+
+*DeepSeek* made significant waves in early 2025 when DeepSeek-R1 demonstrated near-frontier reasoning performance at a fraction of the training compute cost that had previously been assumed necessary.
+
+The *Qwen* models are available in a wide range of sizes, so there'll always be one variant that you can run on your hardware.
+
+Nvidia is also entering the open-weight model space, with the https://research.nvidia.com/labs/nemotron/Nemotron-3/[*Nemotron 3*] family of models.
 
 Some open-weight models compete with frontier models in capability. *Kimi K2.5* is a good example of this.
 
@@ -594,7 +605,7 @@ The two most popular model managers are:
 
 Ollama is designed to run LLMs as a background service (daemon) on your machine. It provides a clean CLI for managing models and a local API (compatible with OpenAI's API) that allows other applications — like IDE plugins, web UIs, or custom scripts — to communicate with the models you've downloaded. Ollama is also a model hosting services. It maintains a curated library of models, many of which have been optimized using quantization, allowing large models to run on consumer hardware.
 
-LM Studio is a desktop GUI application that provides an "all-in-one" visual interface for discovering, downloading, and chatting. While it also provides a local server for API access, like Ollama, its primary value is its user-friendly dashboard that allows you to tweak hardware settings (like GPU offloading), monitor system resources in real-time, and chat with models without needing a terminal or other front-end integration. LM Studio integrated with the Hugging Face model library, allowing easy access with every available open-weight model.
+LM Studio is a desktop GUI application that provides an "all-in-one" visual interface for discovering, downloading, and chatting. While it also provides a local server for API access, like Ollama, its primary value is its user-friendly dashboard that allows you to tweak hardware settings (like GPU offloading), monitor system resources in real-time, and chat with models without needing a terminal or other front-end integration. LM Studio integrates with the Hugging Face model library, allowing easy access with every available open-weight model.
 
 Both Ollama and LM Studio use llama.cpp as their underlying inference engine.
 
