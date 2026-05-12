@@ -613,6 +613,8 @@ A number of free and commercial tools and services are available for fine-tuning
 
 * https://github.com/huggingface/trl[Hugging Face TRL + PEFT] are the underlying libraries everything else builds on. PEFT implements LoRA/QLoRA/prefix tuning; TRL adds RLHF, DPO, SFT trainers. Use these directly when you want full programmatic control.
 
+* https://github.com/karpathy/nanochat[nanochat] and https://github.com/karpathy/autoresearch[Autoresearch] are Python "experiment harnesses" for training LLMs. The basic idea is that you give an AI agent a small training setup and let it experiment autonomously overnight. In short cycles, it trains, modifies the code, checks if the result improved, keeps or disregards, and repeats. You wake up to a log of experiments and, hopefully, a better model. In effect, these projects replace human researchers with an AI agent to do the fine-tuning. Autoresearch is a simplified version of Nanochat designed to run on a single consumer Nvidia GPU. Both projects are maintained by Andrej Karpathy, former AI director at Tesla and a founding member of OpenAI.
+
 * https://github.com/meta-pytorch/torchtune[Torchtune] (deprecated) was PyTorch's official, opinionated fine-tuning library.
 
 For training data, https://argilla.io/[Argilla] (now part of Hugging Face) is an open-source data curation and labelling platform for AI engineers and domain experts to maintain high-quality data sets, while https://distilabel.argilla.io/latest/[distilabel] is for synthetic data generation.
