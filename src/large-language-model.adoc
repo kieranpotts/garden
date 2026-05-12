@@ -598,6 +598,43 @@ LM Studio is a desktop GUI application that provides an "all-in-one" visual inte
 
 Both Ollama and LM Studio use llama.cpp as their underlying inference engine.
 
+== Fine-tuning tools and services
+
+A number of free and commercial tools and services are available for fine-tuning open-weight models. These tools roughly split into two categories: DIY toolkits you run yourself (free, but you bring the GPU), and managed services (you pay, they handle infra). The choice depends on whether you have the compute, how much you want to learn, and whether your data can leave your network.
+
+=== Free and open-source toolkits
+
+* https://github.com/unslothai/unsloth[Unsloth Studio] is the standout for getting started on consumer hardware. It rewrites the attention kernels and gradient check-pointing to roughly halve VRAM use and double training speed versus stock Hugging Face models. The end result is that a 7B model fits comfortably in 12 GB; a 70B with QLoRA fits in 48 GB. Free for personal use. Their commercial offering adds multi-GPU support.
+
+* https://github.com/axolotl-ai-cloud/axolotl[Axolotl] is the workhorse for serious workflows. Configuration-driven (YAML), supports virtually every architecture and training method (full FT, LoRA, QLoRA, DPO, ORPO, multi-GPU via DeepSpeed/FSDP). Steeper learning curve than Unsloth but far more flexible.
+
+
+* https://github.com/hiyouga/LLaMA-Factory[LLaMA-Factory] sits between the two. It is UI-driven (https://www.gradio.app/[Gradio] web interface) so you can fine-tune without writing config files, while still supporting most popular architectures and methods. Good middle path for teams new to fine-tuning.
+
+* https://github.com/huggingface/trl[Hugging Face TRL + PEFT] are the underlying libraries everything else builds on. PEFT implements LoRA/QLoRA/prefix tuning; TRL adds RLHF, DPO, SFT trainers. Use these directly when you want full programmatic control.
+
+* https://github.com/meta-pytorch/torchtune[Torchtune] (deprecated) was PyTorch's official, opinionated fine-tuning library.
+
+For training data, https://argilla.io/[Argilla] (now part of Hugging Face) is an open-source data curation and labelling platform for AI engineers and domain experts to maintain high-quality data sets, while https://distilabel.argilla.io/latest/[distilabel] is for synthetic data generation.
+
+Other supporting tools include https://wandb.ai/site[Weights & Biases], a software-as-a-service for tracking experiments and monitoring model checkpoints during the iterative development of models. https://mlflow.org/[MLFlow] is similar but is fully self-hostable.
+
+=== Commercial toolkits and managed services
+
+* https://www.together.ai/[Together AI] is probably the most developer-friendly. It has a clean API, 200+ open models, transparent per-token billing (training tokens × epochs). Good for production workloads where you don't want to babysit GPUs.
+
+* https://fireworks.ai/[Fireworks AI] — similar positioning to Together, strong on inference performance after training. Per-token training pricing.
+
+* https://huggingface.co/autotrain[Hugging Face AutoTrain] — codeless web UI. Easiest entry point if you've never fine-tuned anything, but less flexible than the other options.
+
+* https://modal.com/[Modal], https://www.runpod.io/[Runpod], and https://northflank.com/[Northflank] are GPU-rental platforms (aka, serverless GPU clouds) rather than fine-tuning products specifically. You bring your own Axolotl/Unsloth scripts and rent A100s/H100s by the second. Cheapest option if you can write code.
+
+* https://aws.amazon.com/sagemaker/[Amazon SageMaker] / https://cloud.google.com/products/gemini-enterprise-agent-platform[Gemini Enterprise Agent Platform (formerly Google Vertex AI)] / https://azure.microsoft.com/en-us/products/machine-learning[Azure ML] — enterprise managed options, which can be good options if you're already invested in those particular public cloud services.
+
+* https://docs.predibase.com/getting-started/introduction[Predibase] and https://openpipe.ai/[OpenPipe] are workflow-focused commercial offerings that handle data prep, training, and serving as a single pipeline. Predibase originated from https://ludwig.ai/[Ludwig] (open source) and layers a commercial product on top.
+
+* https://www.premai.io/studio[Prem Studio] keeps training data, weights, and inference on infrastructure you control — useful for regulated industries where managed cloud platforms that route data through shared infrastructure (eg. Together standard tier, HF AutoTrain, OpenPipe, Fireworks) aren't suitable.
+
 ''''
 
 == See also
