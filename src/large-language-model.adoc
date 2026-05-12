@@ -541,7 +541,7 @@ Some open-weight models compete with frontier models in capability. *Kimi K2.5* 
 |Text • Code • Image (understanding, no generation) • Video (understanding, no generation)
 |===
 
-=== Open-weight coding models
+==== Open-weight coding models
 
 The following open-weight models are highly regarded for programming tasks. Small models (≤ 8B) run comfortably on a laptop or CPU-only setup; larger models require a GPU with ≥ 16–24 GB VRAM.
 
@@ -556,6 +556,11 @@ The following open-weight models are highly regarded for programming tasks. Smal
 * *Code Llama 70B Instruct* — Meta's instruction-tuned coding variant of Llama 2, with a 16K context window and strong performance on multi-language tasks and large-scale refactoring. Meta's non-commercial license restricts use to research.
 
 == Model access layers
+
+Although it is possible to interact with models directly, for most use cases you will interact with models via an access layer. The access layer is responsible for handling authentication, response formatting, and other details that are specific to a particular model provider or use case. Broadly, there are two types of access layers:
+
+* Model gateways: used for running models made available via various cloud services.
+* Model managers: used for running open-weight models locally.
 
 === Model gateways
 
@@ -578,14 +583,20 @@ A single subscription to a gateway service like Perplexity Pro or OpenRouter can
 
 === Model managers
 
-Model managers are primarily designed for running open-weight models locally. They handle downloading of models, managing hardware resources, and serving a local inference endpoint – typically an OpenAI-compatible API on localhost.
+Model managers are primarily designed for running open-weight models locally. They handle downloading of models, managing hardware resources, and serving a local inference endpoint – typically an OpenAI-compatible API on localhost. Essentially, model managers wrap an inference engine with all the additional tools needed to managing and running large-language models.
 
 By contrast, *model API gateways* (above) are middleware for routing requests to remote, hosted models across multiple cloud providers.
 
-Some popular model managers include:
+The two most popular model managers are:
 
 * https://ollama.com/[Ollama]
 * https://lmstudio.ai/[LM Studio]
+
+Ollama is designed to run LLMs as a background service (daemon) on your machine. It provides a clean CLI for managing models and a local API (compatible with OpenAI's API) that allows other applications — like IDE plugins, web UIs, or custom scripts — to communicate with the models you've downloaded. Ollama is also a model hosting services. It maintains a curated library of models, many of which have been optimized using quantization, allowing large models to run on consumer hardware.
+
+LM Studio is a desktop GUI application that provides an "all-in-one" visual interface for discovering, downloading, and chatting. While it also provides a local server for API access, like Ollama, its primary value is its user-friendly dashboard that allows you to tweak hardware settings (like GPU offloading), monitor system resources in real-time, and chat with models without needing a terminal or other front-end integration. LM Studio integrated with the Hugging Face model library, allowing easy access with every available open-weight model.
+
+Both Ollama and LM Studio use llama.cpp as their underlying inference engine.
 
 ''''
 
