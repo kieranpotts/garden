@@ -1,0 +1,53 @@
+= Transformer architecture
+
+The transformer is the deep learning architecture that underpins modern *link:./large-language-model.adoc[large language models (LLMs)]*. It was introduced by researchers at Google in the 2017 paper https://research.google/pubs/attention-is-all-you-need/["Attention Is All You Need"]. Almost every major AI model today — including GPT, Claude, and Gemini — is built on the transformer architecture.
+
+== Background
+
+Before transformers, the dominant approach to sequence modeling was recurrent neural networks (RNNs), particularly LSTM (long short-term memory, since 1995). LSTMs read text token-by-token from left to right and could, in principle, retain information across long sequences. But in practice, long-range dependencies were poorly captured, and sequential processing made it impossible to parallelize training across tokens, which meant training was slow and hard to scale.
+
+Transformers solved both problems. By removing recurrence entirely and processing all tokens in parallel, training time dropped dramatically and models could be scaled using additional compute.
+
+The trade-off is that attention computation is quadratic in the context length — for every token, the model attends to every other token — but this proved acceptable given the training speed gains at scale.
+
+== Attention mechanism
+
+The core innovation of the transformer is *self-attention*, also called scaled dot-product attention. For each token in a sequence, attention computes a weighted sum over all other tokens in the context. Tokens that are more relevant to the current token receive higher weights, while less relevant tokens are diminished. This allows the model to capture relationships between any two tokens regardless of their distance in the sequence.
+
+In practice, transformers use *multi-head attention*. Several attention operations run in parallel, each learning to attend to different kinds of relationships (for example, syntactic structure, co-reference, or subject-verb agreement). The outputs of all heads are concatenated and projected back into the model's embedding dimension.
+
+The attention score between two tokens is computed as a dot product between a *query* vector (from the token doing the attending) and a *key* vector (from the token being attended to). This score is scaled by the square root of the embedding dimension (to stabilize gradients), then passed through a softmax to produce attention weights. The final output for each token is the weighted sum of the *value* vectors for all tokens.
+
+Formally: Attention(Q, K, V) = softmax(QKᵀ / √dₖ) · V
+
+== Positional encoding
+
+Because the attention mechanism has no inherent sense of order — it treats the input as a set, not a sequence — position information must be injected explicitly. The original transformer adds a *positional encoding* to each token's embedding before it enters the network. The classic approach uses sinusoidal functions. Modern models more commonly use *RoPE* (Rotary Position Embedding), which encodes position directly into the attention score computation.
+
+== Architecture variants
+
+The original transformer used an encoder–decoder architecture for machine translation. The encoder processes the full input sequence (with all-to-all attention), and the decoder generates the output sequence one token at a time (with causal masking, so each token can only attend to earlier tokens).
+
+Modern LLMs typically use one of two variants:
+
+* *Decoder-only* (eg. GPT series): No separate encoder. Uses causal masking throughout. Suited to text generation and instruction following. The dominant architecture for general-purpose LLMs.
+
+* *Encoder-only* (eg. BERT): Processes input bidirectionally. Used for classification and representation tasks rather than generation.
+
+== Training approach
+
+Transformers are pre-trained by *self-supervised learning* — typically next-token prediction (predicting the next token in a sequence). This requires no labeled data and scales directly with the size of the training corpus.
+
+After pre-training, models are typically fine-tuned on task-specific datasets. See *link:./large-language-model.adoc[large language models]* for more on the training pipeline.
+
+== Broader applications
+
+While transformers were originally developed for NLP, the architecture has since been applied to images (vision transformers), speech (Whisper), video, protein folding (AlphaFold), robotics, and game-playing. The key generalisation is that any domain whose data can be tokenised — broken into a discrete sequence of units — can be processed by a transformer.
+
+''''
+
+== See also
+
+* *link:./large-language-model.adoc[Large language model (LLM)]*
+* *link:./machine-learning.adoc[Machine learning]*
+* *link:./generative-ai.adoc[Generative AI]*
