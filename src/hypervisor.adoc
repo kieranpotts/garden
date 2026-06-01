@@ -1,0 +1,19 @@
+= Hypervisor
+
+A hypervisor, also known as a *virtual machine monitor*, is a technology that makes *link:./virtualization.adoc[virtualization]* possible.
+
+A hypervisor manages access to the physical hardware by several operating systems at once. Each operating system runs in its own *link:./virtual-machine.adoc[virtual machine]*, managed by the hypervisor. Each OS is unaware of neighboring operating systems running on the same hardware.
+
+There are two main types of hypervisor:
+
+* *Type 1, native, bare-metal, platform, or hardware-assisted hypervisors*: This type of hypervisor is *[firmware]* that runs directly on real hardware. It does not require a host operating system. This design offers the best performance and efficiency, because the hypervisor has direct access to the physical hardware. Examples include https://www.proxmox.com/[Proxmox] and https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/hyper-v-overview[Hyper-V].
+
+* *Type 2, or hosted hypervisors*: This type of hypervisor is a regular *application* that runs within a standard operating system. The hypervisor relies on the OS below it to do the hard work of managing the CPU, memory, etc. A type 2 hypervisor does the same job of creating virtual environments in which other applications can be run, but rather than managing shared access to the real underlying hardware, the focus instead is on _simulation_ of hardware environments. Examples include https://www.vmware.com/[VMWare] and https://www.virtualbox.org/[VirtualBox].
+
+A type 2 hypervisor should not be confused for a *[hardware emulator]*. This is a different concept. In a hypervisor, the user-space application runs on the real CPU. In an emulator, it would run on a simulated CPU. With a hypervisor, the underlying architecture is always the same between the host and the guest. So, with a hypervisor running on AMD64, you can run only AMD64 code. But with an emulator you could run ARM code on an AMD64 machine, for example, because the emulated CPU does not need to match the physical one. Because of this additional layer of indirection, emulators are less efficient than hypervisors.
+
+****
+The words _host_ and _guest_ are used to distinguish between software that runs on a physical machine from software that runs in a virtual machine or container on the same system. The _host_ is the physical machine, and the _guest_ is the virtual machine or container running on the host.
+****
+
+Type 1 hypervisors are made possible by modern CPUs that natively support virtualization right on the chip. Application code running in a virtual machine provided by a type 1 hypervisor runs at the native speed of the real CPU. This gives type 1 hypervisors impressive performance. Code running in a native hypervisor will typically run within 2% of the speed it would without the virtualization layer.
