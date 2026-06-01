@@ -1,0 +1,69 @@
+= Parallelism
+
+Parallelism, aka. parallel computing, refers to computations that are performed simultaneously by multiple processing units. Parallelism is achieved by distributing the computation across multiple CPUs, CPU cores, or GPU cores in a single machine, or by distributing the computation across multiple machines (and therefore multiple processing units) in a *[cluster]* or *[grid]*.
+
+Parallelism increases the throughput and computational speed of a system by using multiple processors.
+
+In the current era of multi-core processors, parallel computing has become the dominant computer architecture. Meanwhile, computer clusters, massively parallel computing, and grid computing are widely used for big data processing.
+
+To implement parallelism in an application, the application must:
+
+* Divide the problem into smaller independent sub-tasks.
+* Spawn a separate thread for each sub-task.
+* Assign each thread to a separate CPU core (or other processing unit).
+* Aggregate the results from all parallel threads to form the final output.
+
+----
++---------------------------------------+
+|                Problem                |
++---------------------------------------+
+       |            |            |
+       v            v            v
+   +-------+    +-------+    +-------+
+   | Task 1|    | Task 2|    | Task 3|
+   +-------+    +-------+    +-------+
+       |            |            |
+       v            v            v
++-----------+ +-----------+ +-----------+
+| CPU Core 1| | CPU Core 2| | CPU Core 3|
++-----------+ +-----------+ +-----------+
+----
+
+Due to the requirement to aggregate results from parallel threads, and due to the additional overhead associated with coordinating parallel tasks, introducing parallelism to a process does not always speed it up.
+
+Parallel computing systems are significantly more difficult to design than sequential ones, because several new classes of potential bugs are introduced, of which *[race conditions]* are the most common. Requirements to communicate and synchronize data between parallel processes also make program designs more complex.
+
+There are also risks associated with parallelism, such as the risk that simultaneous changes to the same data may corrupt it. Techniques such as *[locking]* can be used to mitigate these risks.
+
+A commonly cited example of parallel computing is *distributed data processing* systems like *[Hadoop]* and *[Spark]*, in which large-scale data processing is performed across multiple clusters. Each cluster processes a portion of the data, in parallel to the processing done on other clusters, significantly reducing the overall processing time. Thus it is possible to gain fast insights from very large datasets, eg. real-time analytics data from millions of users.
+
+Other real world examples of parallel computing include:
+
+* *Machine learning*: Training deep learning models involves dividing large datasets into smaller batches, which are each processed simultaneously across multiple GPUs or CPU cores.
+
+* *Video rendering*: Video frames are rendered independently, making it possible to process multiple frames simultaneously. For example, rendering a 3D animation becomes much faster when using multiple cores to handle different frames in parallel.
+
+* *Web crawlers*: Web crawlers like Googlebot break a list of URLs into small batches and process them in parallel.
+
+* *Scientific simulations*: Simulations like weather modeling or molecular interactions require heavy computations.
+
+.Parallelism versus concurrency
+****
+Parallelism is a separate concept to *link:./concurrency.adoc[concurrency]*. A parallel program uses multiple CPU cores, each performing a task independently. A concurrent program uses a single CPU core but switches between tasks (usually represented by threads) to make the most efficient use of CPU time.
+
+----
+Parallelism
+  CPU core 1 -----------------------> Task 1
+  CPU core 2 -----------------------> Task 2
+
+Concurrency
+  CPU core 1 -----       ----->       Task 1
+                  -------      -----> Task 2
+----
+
+Parallelism is true *multi-tasking* – it means multiple tasks are executed simultaneously, literally. Concurrency is *multi-threading*.
+
+Concurrency and parallelism offer performance gains for different use cases. CPU-intensive tasks run efficiently with parallelism, but you don't tend to get performance gains from parallel processing of I/O-bound tasks – concurrency is better for this use case.
+
+Programs may have both concurrent and parallel characteristics, or neither. Combining both parallelism and concurrency can optimize performance in complex applications where there is a mix of CPU-intensive and I/O-bound tasks.
+****
