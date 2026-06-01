@@ -1,0 +1,11 @@
+= Crash-only software
+
+Crash-only software is an architectural design philosophy in which a program has only two meaningful operations: crashing (an abrupt, uncontrolled stop) and recovering (a controlled restart). There is no graceful shutdown path. The only way to stop the software is to crash it, and the only way to start it is via recovery.
+
+The central insight is that if a system's recovery mechanism is robust enough to handle an unexpected crash at any moment, a clean shutdown is simply a slow and unnecessary crash. The code path for an orderly shutdown adds complexity without adding reliability. Crash-only programs are consequently free to exit immediately on failure or on user interruption, which in practice makes them feel more responsive and robust.
+
+This constraint has wide-ranging implications for system design. Because a crash can occur at any point, all important application state must be persisted reliably — it cannot be held only in memory. Operations exposed to callers should be *[idempotent]* so that requests can be retried safely after a restart. Resources such as locks and file handles must be managed with leases and timeouts rather than explicit release calls, so they are automatically reclaimed if a component crashes rather than left dangling indefinitely.
+
+Taken together, these properties produce systems that are more resilient and predictable. A crashed component is simply restarted, and the rest of the system continues to operate.
+
+The approach is closely associated with *[fault-tolerant]* distributed systems design and shares philosophical ground with the "https://wiki.c2.com/?LetItCrash[let it crash]" principle popularized by the *[Erlang/OTP]* programming model.
