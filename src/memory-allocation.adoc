@@ -1,0 +1,94 @@
+= Memory allocation
+
+All programs need memory. Before a program can run, it must be loaded from disk into memory. While running, most of what a program does is read values from memory, compute something, and write results back. A *memory allocator* is the component responsible for managing this. It tracks which regions of memory are in use and which are available, and servicing requests to claim and release memory.
+
+== The malloc/free API
+
+In C, and in the runtimes that underpin higher-level languages (Java, Python, JavaScript, etc.), memory is requested with `malloc` and returned with `free`:
+
+[source,c]
+----
+void *ptr = malloc(4); // Request 4 bytes; returns the address of the first byte.
+free(ptr);             // Return those bytes to the allocator.
+----
+
+`malloc` returns a *pointer* — a number identifying a specific byte in memory (typically written in hexadecimal). `free` takes that same pointer and marks the memory as available again. These two functions are how almost all programs manage heap memory, even when the programmer never writes a line of C.
+
+== Memory as a sequence of bytes
+
+The smallest unit allocators work with is the *byte*. Memory can be thought of as a long sequence of numbered bytes. Each byte has an *address* — a number that uniquely identifies it. `malloc(4)` allocates 4 contiguous bytes and returns the address of the first one.
+
+== How a general-purpose allocator works
+
+A naive allocator could simply advance a pointer marking the end of used memory each time `malloc` is called. This is extremely fast, but `free` becomes a no-op: without tracking individual allocations, there is no safe way to return memory. Memory consumed is memory lost — a *memory leak*. Such a bump allocator is useful only for programs with a known, fixed memory footprint.
+
+A general-purpose allocator needs two data structures:
+
+* A *free list* — a record of all contiguous regions of memory not currently in use, with each entry storing an address and a size.
+* An *allocation list* — a record of all live allocations, again storing address and size.
+
+On `malloc(n)`, the allocator scans the free list for a block large enough to satisfy the request, records the new allocation, and shrinks the free list entry accordingly. On `free(ptr)`, it looks up the matching allocation, removes it from the allocation list, and returns the region to the free list.
+
+=== Coalescing
+
+After several allocations and frees, the free list can become fragmented into many small entries even though the total free memory is large. If a `malloc(8)` arrives but the free list only contains eight separate 1-byte entries, it cannot be satisfied — despite 8 bytes being available in total.
+
+To prevent this, allocators *coalesce* adjacent free blocks when memory is returned: if the block being freed is immediately next to another free block, the two are merged into one larger entry.
+
+== Fragmentation
+
+Even with coalescing, *fragmentation* remains a fundamental challenge. Consider a sequence of alternating allocations and frees of different sizes — the free list may end up with several small non-contiguous blocks that individually cannot satisfy a larger request, even though the total free memory is sufficient.
+
+Fragmentation cannot be solved by compacting (moving allocations to close the gaps), because `malloc` has already handed out byte addresses. Moving an allocation would invalidate pointers that the calling program holds, silently corrupting it.
+
+Two common strategies to reduce fragmentation:
+
+*Minimum allocation size*:: The allocator rounds every request up to a minimum size (e.g. 4 bytes). Requests for 1 or 2 bytes each consume 4 bytes of free list space, leaving cleanly aligned, reusable blocks. The trade-off is wasted space within each allocation (internal fragmentation).
+
+*Slab allocation*:: Memory is divided into size classes — a region for small allocations, a region for medium ones, and so on. Each region is managed independently. Allocations never compete across size classes, so small allocations cannot fragment the space available to large ones. Real allocators use many more size classes than just two.
+
+== Inline bookkeeping (boundary tag allocators)
+
+Rather than maintaining a separate allocation list and free list in reserved memory, many allocators store bookkeeping information *inline*, in a header immediately before each block. A typical layout:
+
+[source]
+----
+[size (1 byte)] [status: free=1 / used=2 (1 byte)] [usable memory ...] [size again (1 byte)]
+----
+
+This makes `malloc` and `free` simpler and faster:
+
+* To `free` a block, the allocator just sets the status byte to `1` — no list search needed.
+* To find the *next* block, it reads the size from the header and adds it to the current address.
+* To find the *previous* block (needed for coalescing), it reads the size stored at the *end* of the preceding block and subtracts it from the current address.
+
+Storing the block size at both ends — the seemingly wasteful duplication — is what makes bidirectional traversal (and therefore coalescing) possible without a separate data structure. Allocators using this layout are called *boundary tag allocators*.
+
+== Memory safety
+
+Because bookkeeping data lives in memory alongside user data, bugs that overwrite memory past the end of an allocation (*buffer overrun*) or access memory after it has been freed (*use-after-free*) can corrupt the allocator's own data structures. The consequences range from immediate crashes to delayed failures to exploitable security vulnerabilities.
+
+Some allocators write a known "magic" value into the bookkeeping area so they can detect corruption early (at the cost of one extra byte per allocation). This guard-value checking is typically disabled in production and enabled only when debugging.
+
+Memory-safe languages such as Rust address this class of bug at the language level, making such mistakes impossible to express rather than relying on runtime detection.
+
+== What this does not cover
+
+This document covers the basics of heap allocation. Related topics not addressed here include:
+
+* *Virtual memory* — the layer of abstraction between program addresses and physical RAM.
+* `brk` vs `mmap` — the two system calls allocators typically use to claim memory from the OS.
+* *CPU cache effects* — how allocation patterns interact with cache lines and hardware prefetching.
+
+''''
+
+== See also
+
+* *link:./hardware.adoc[Hardware]*
+* *link:./big-o-notation.adoc[Big O notation]*
+* *link:./data-structures.adoc[Data structures]*
+* *link:./computer-science.adoc[Computer science]*
+
+== References
+
+* https://samwho.dev/memory-allocation/[Memory Allocation, Sam Rose] — a visual, interactive introduction to memory allocators.
