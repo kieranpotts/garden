@@ -1,0 +1,27 @@
+= Canary deployment
+
+A *canary deployment* is a *link:./deployment-strategies.adoc[deployment strategy]* in which a new version of software is initially released to a small subset of users before being rolled out to everyone.
+
+The name comes from the historical practice of coal miners carrying canary birds underground to detect toxic gases. If the canary died, miners knew the environment was dangerous and could retreat. In deployment terms, the small initial user group acts as the canary: if the new version causes problems for them, the rollout can be halted or reversed before all users are affected.
+
+== How it works
+
+Traffic is split between the old version and the new version. Initially, only a small percentage of requests — perhaps 1-10% — are routed to the new version. Metrics and error rates for both versions are monitored. If the new version performs well, traffic is gradually shifted in increments (for example, 10% → 25% → 50% → 100%) until all users are on the new version. If problems are detected at any stage, the rollout is halted and traffic is redirected back to the old version.
+
+Routing is typically implemented at the *[load balancer]* level, using weighted traffic rules. More sophisticated canary deployments can target specific user segments — for example, internal users, beta testers, or users in a specific geographic region — rather than random samples.
+
+== Trade-offs
+
+The primary advantage is a limited *blast radius*: any failure in the new version initially affects only a small fraction of users, and rollback is quick. At the same time, the new version is validated against real production traffic rather than synthetic tests or staging environments, giving higher confidence than pre-deployment testing alone.
+
+The trade-offs are higher deployment complexity, the need for robust monitoring and alerting to catch regressions during the incremental rollout, and the need for tooling to manage traffic routing. Running two versions simultaneously also means the system must handle any data schema or API compatibility requirements between old and new versions during the transition period.
+
+Canary deployments are well suited to *large-scale, high-risk releases* and to *beta launches* targeting specific user populations.
+
+== See also
+
+* *link:./deployment-strategies.adoc[Deployment strategies]*
+* *link:./rolling-deployments.adoc[Rolling deployments]*
+* *link:./blue-green-deployment.adoc[Blue-green deployment]*
+* *link:./feature-flags.adoc[Feature flags]*
+* *link:./big-bang.adoc[Big bang deployment]*
