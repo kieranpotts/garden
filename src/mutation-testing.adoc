@@ -1,0 +1,13 @@
+= Mutation testing
+
+Mutation testing is a technique used to evaluate the quality and effectiveness of a test suite by deliberately introducing small, controlled changes — known as "mutants" — into the application's source code, and then checking whether the existing tests are capable of detecting those changes. 
+
+Each mutant typically represents a minor modification such as altering an operator, changing a constant value, or removing a line of logic, simulating the kind of mistake a developer might inadvertently introduce when fixing a bug or modifying existing behavior.
+
+If a mutant goes undetected — that is, the test suite continues to pass despite the altered code — it suggests a gap in test coverage that could allow real defects to slip through unnoticed.
+
+In the context of bug fixes specifically, mutation testing can be applied to code that has been modified as part of resolving a particular defect, verifying that the fix is both correct and well-covered by tests. A robust test suite should "kill" the mutant by failing when the intentional change is present, demonstrating that the tests are sensitive enough to catch regressions in that area of the code.
+
+While mutation testing can be computationally expensive — potentially generating and evaluating hundreds or thousands of mutants across a codebase — it provides a far more rigorous measure of test suite adequacy than simple code coverage metrics alone. *[Code coverage]* metrics only indicate that code is executed by tests, without confirming that its behavior is meaningfully verified.
+
+See also *[regression testing]*.
