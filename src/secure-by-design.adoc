@@ -1,0 +1,63 @@
+= Secure by design
+
+Secure by design (SbD) is a *link:./security.adoc[security]* and systems engineering philosophy that mandates security be incorporated into systems from the outset, rather than retrofitted through patching or external controls after deployment.
+
+The core premise is that systems will be attacked. Rather than reacting to vulnerabilities as they are discovered, secure by design treats security as a first-class design constraint — on a par with performance, cost, and usability — from the earliest stages of architecture and implementation.
+
+Secure by design gained prominence in the twenty-first century as high-profile incidents — supply chain breaches, ransomware campaigns, large-scale credential theft — exposed the shortcomings of purely reactive security. Regulatory bodies and standards organizations in the US, UK, and EU now increasingly require SbD practices across domains ranging from consumer IoT to defence systems.
+
+== Core principles
+
+Secure by design is grounded in the following principles:
+
+* *Security as a design constraint* — Security requirements must be incorporated into the conceptual design process and upheld at every stage of development, not added at the end.
+
+* *Assume a hostile environment* — Systems are designed on the assumption that they will be attacked. The architecture is built to make compromise difficult, contained, and recoverable.
+
+* *Principle of least privilege* — Users, processes, and services are granted only the minimum permissions necessary to perform their function. This limits the blast radius of any compromise.
+
+* *Defence in depth* — Multiple, layered security controls are applied so that no single point of failure leads to total compromise. If one control fails, others remain.
+
+* *Minimize the attack surface* — Only necessary features, interfaces, APIs, and services are exposed. Everything else is disabled or hidden.
+
+* *Avoid security through obscurity* — Security must not rely on keeping design details secret. Systems should be designed to be secure even when their internal workings are known to an adversary (see https://en.wikipedia.org/wiki/Kerckhoffs%27s_principle[Kerckhoffs's principle]).
+
+* *Continuous assurance* — Security measures must be continually tested, monitored, and improved; not validated once and forgotten.
+
+== Relationship to related paradigms
+
+Secure by design overlaps with and complements several related concepts:
+
+* *Privacy by design* — Extends the same "build it in from the start" philosophy to the protection of personal data and user privacy.
+* *Safety by design* — Applies analogous principles to physical safety in systems engineering and industrial design.
+* *Zero trust architecture* — A security model that treats every request as potentially hostile, requiring continuous verification rather than relying on network perimeter controls. Zero trust is a practical expression of the "assume hostile environment" principle at the architectural level.
+* *link:./shift-left.adoc[Shift left]* — The broader software development practice of moving quality and security concerns earlier in the development lifecycle, of which SbD is an instance.
+
+== Methodologies and frameworks
+
+Secure by design is not a single method; it is a philosophy applicable across different development lifecycles — Agile, Waterfall, DevSecOps, and others. Frameworks that operationalize SbD principles include:
+
+* **Microsoft Security Development Lifecycle (SDL)** — Integrates security activities (threat modeling, code review, penetration testing) into every phase of product development.
+* **NIST SP 800-160** — A systems security engineering framework from the US National Institute of Standards and Technology, oriented toward building intrinsically secure and resilient systems.
+* **Threat modeling** — A structured approach to identifying threats, attack vectors, and mitigations during the design phase, before code is written. Common methodologies include STRIDE and PASTA.
+* **OWASP Secure Design Principles** — Practical, code-level guidance from the Open Web Application Security Project.
+* **SEI Secure Design Patterns** (Carnegie Mellon, 2009) — Reusable strategies for solving common security design problems.
+
+== Challenges
+
+Despite broad endorsement, Secure by design faces real-world friction:
+
+* *Cost and upfront investment* — Designing for security early requires more time and skill than treating it as a patch-later concern. This increases initial project costs.
+* *Legacy systems* — Retrofitting SbD principles onto older architectures is often impractical without significant re-engineering.
+* *Supply chain risk* — Third-party libraries, open-source components, and vendor software may not adhere to SbD practices, undermining the security of systems that depend on them.
+* *Human factors* — Security controls that are too burdensome or poorly designed are routinely bypassed by well-intentioned users, reducing their effectiveness.
+
+== See also
+
+* *link:./security.adoc[Security]*
+* *link:./security-testing.adoc[Security testing]*
+* *link:./input-validation.adoc[Input validation]*
+* *link:./software-assurance.adoc[Software assurance]*
+* *link:./shift-left.adoc[Shift left]*
+* https://www.cisa.gov/resources-tools/resources/secure-by-design[CISA Secure by Design guidance]
+* https://www.owasp.org/index.php/Security_by_Design_Principles[OWASP Security by Design Principles]
