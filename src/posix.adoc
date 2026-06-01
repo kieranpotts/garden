@@ -1,0 +1,7 @@
+= POSIX
+
+The Portable Operating System Interface (POSIX) is a family of standards maintained by the IEEE Computer Society that specify APIs for link:./shell.adoc[Unix shells] and utility programs, promoting compatibility between shells and the operating systems that use them.
+
+A POSIX-compliant script can be executed with success on any Unix or Unix-like operating system that implements the POSIX standards – which includes Linux, OpenBSD, and others. Such shell scripts are considered to be "portable".
+
+Most Unix shells are POSIX-compliant, but they add their own proprietary syntax and features that are not part of the POSIX standard. These features may not be available in other shells, which can lead to portability issues. For example, Bash supports filename globbing, piping, here documents, command substitution, control structures, and iteration. Widely used syntax like `[[ ... ]]` is actually Bash-specific and not POSIX-compliant. This proprietary syntax has been adopted by other shells, too, but it does not always do the same thing. This kind of inconsistency can lead to scripts _appearing_ to work correctly in multiple shells, but actually the executed logic is inconsistent.
