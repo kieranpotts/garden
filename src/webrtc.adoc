@@ -1,0 +1,118 @@
+= WebRTC (Web Real-Time Communication)
+
+WebRTC (Web Real-Time Communication) is an open standard and set of browser APIs that enable peer-to-peer (P2P) audio, video, and arbitrary data communication directly between browsers (or native applications) without requiring an intermediary server for the media itself. It is supported natively in all modern browsers and is standardised by the W3C and IETF.
+
+WebRTC powers video calling (Google Meet, Zoom browser client), peer-to-peer file sharing, live streaming, and real-time gaming. The key characteristic is that once a connection is established, media and data flow directly between peers — the server is not in the data path.
+
+== Core components
+
+WebRTC is composed of three main browser APIs backed by a set of underlying IETF protocols.
+
+=== `RTCPeerConnection`
+
+The central API. It manages the full lifecycle of a peer-to-peer connection: codec negotiation, encryption, network traversal, and transmission of audio and video tracks. It abstracts the underlying DTLS, SRTP, and ICE protocols (described below).
+
+=== `RTCDataChannel`
+
+An API for sending arbitrary binary or text data between peers over the same P2P connection. Data channels are built on SCTP over DTLS and offer configurable delivery semantics:
+
+* *Ordered and reliable* — Like TCP; messages arrive in order with retransmission.
+* *Unordered or unreliable* — Like UDP; lower latency at the cost of potential message loss or reordering.
+
+Data channels are used for chat, file transfer, game state synchronisation, and any non-media real-time data.
+
+=== `MediaStream` (getUserMedia)
+
+The API for capturing audio and video from the device's microphone and camera. The resulting `MediaStream` is attached to a `RTCPeerConnection` to transmit media to the remote peer.
+
+== Connection establishment
+
+Establishing a WebRTC connection requires exchanging metadata between peers before the P2P channel exists. This is handled through a _signalling_ mechanism that the application provides, and a _NAT traversal_ mechanism (ICE) that WebRTC provides.
+
+=== Signalling
+
+WebRTC does not define a signalling protocol — the application is free to use any transport: *link:./websockets.adoc[WebSockets]*, HTTP polling, or even copy-paste. Signalling carries two types of messages:
+
+* *SDP offers and answers* — Session Description Protocol (SDP) documents describe what each peer supports: codecs, media formats, encryption keys, and network candidates. Once peers have exchanged and agreed on an SDP offer/answer, they know how to talk to each other.
+* *ICE candidates* — Network address/port pairs that peers can attempt to connect through.
+
+=== ICE (Interactive Connectivity Establishment)
+
+Peers behind NAT gateways or firewalls cannot directly reach each other's private IP addresses. ICE is the IETF standard (RFC 8445) that discovers and selects a working network path between peers.
+
+ICE works by gathering _candidates_ — possible connection routes — in priority order:
+
+. *Host candidates* — The peer's own local IP addresses and ports.
+. *Server-reflexive candidates (STUN)* — The peer's public IP and port as seen by a STUN server on the internet. STUN (Session Traversal Utilities for NAT, RFC 5389) is a lightweight protocol: the peer sends a request to a STUN server, which reflects back the public IP:port.
+. *Relayed candidates (TURN)* — If direct or STUN-based connectivity fails (e.g. symmetric NAT), traffic is relayed through a TURN server (Traversal Using Relays around NAT, RFC 5766). TURN is a fallback: it eliminates the P2P benefit but ensures connectivity.
+
+Both peers gather their candidate lists and exchange them via signalling. ICE then performs _connectivity checks_ — trying each candidate pair — and selects the best working path.
+
+=== DTLS and SRTP
+
+All WebRTC media and data is encrypted. WebRTC requires:
+
+* *DTLS* (Datagram Transport Layer Security) — Provides a TLS-like handshake over UDP to authenticate peers and establish encryption keys.
+* *SRTP* (Secure Real-time Transport Protocol) — Encrypts audio and video streams using keys derived from the DTLS handshake.
+* *SCTP over DTLS* — Data channels use SCTP (Stream Control Transmission Protocol) tunnelled over DTLS for the ordered/reliable or unordered/unreliable delivery modes.
+
+Encryption is mandatory in WebRTC. There is no unencrypted mode.
+
+== The offer/answer flow
+
+A typical WebRTC call setup:
+
+. *Caller* creates an `RTCPeerConnection`, adds media tracks, and calls `createOffer()` to generate an SDP offer.
+. Caller calls `setLocalDescription(offer)` and sends the SDP offer to the callee via the signalling channel.
+. *Callee* receives the offer, calls `setRemoteDescription(offer)`, then `createAnswer()`, calls `setLocalDescription(answer)`, and sends the SDP answer back via signalling.
+. Caller calls `setRemoteDescription(answer)`.
+. Both peers gather ICE candidates asynchronously and exchange them via the signalling channel. As candidates arrive, peers call `addIceCandidate()`.
+. ICE performs connectivity checks and selects a working path. The DTLS handshake completes. Media flows.
+
+== Scalability architectures
+
+Pure P2P works well for small calls (2–4 participants). At larger scale, P2P mesh networks become impractical because each peer must encode and upload a separate stream to every other peer.
+
+Three architectures are used:
+
+[cols="1,3,2", options="header"]
+|===
+| Architecture | How it works | Use case
+
+| *P2P mesh*
+| Every participant connects directly to every other. $n$ participants → $n(n-1)/2$ connections.
+| Small calls (2–4 people).
+
+| *SFU (Selective Forwarding Unit)*
+| Participants send one stream to the SFU server. The SFU forwards streams selectively to recipients without decoding/re-encoding. Each client still decodes all incoming streams.
+| Medium to large calls (5–100+ participants). Most video conferencing platforms.
+
+| *MCU (Multipoint Control Unit)*
+| Participants send one stream to the MCU. The MCU decodes all streams, composites them into a single stream, and re-encodes it for each participant to receive. High server CPU cost; low client CPU.
+| Legacy systems; very bandwidth-constrained clients.
+|===
+
+SFUs (e.g. mediasoup, Janus, Jitsi Videobridge, LiveKit) are the dominant approach for production video conferencing.
+
+== Advantages
+
+* *Low latency* — Optimised for sub-second, real-time media. UDP transport and adaptive bitrate/jitter buffering minimise perceptible delay.
+* *Encrypted by default* — DTLS + SRTP is mandatory; no unencrypted mode.
+* *No plugin required* — Runs natively in all modern browsers via standard APIs.
+* *Peer-to-peer efficiency* — Media does not pass through a server, reducing infrastructure bandwidth costs for small calls.
+* *Adaptive to network conditions* — Built-in mechanisms for congestion control, packet loss concealment, and adaptive bitrate.
+
+== Limitations
+
+* *Signalling server required* — A server is always needed to exchange SDP and ICE candidates before P2P connectivity is established.
+* *TURN fallback has costs* — When TURN relay is needed (symmetric NAT, restrictive firewalls), the media does route through a server, negating the P2P bandwidth saving. TURN servers must be provisioned and maintained.
+* *Complexity* — ICE, SDP, DTLS, SRTP, STUN, and TURN interact in subtle ways. Production WebRTC systems are non-trivial to build and debug.
+* *SFU required at scale* — P2P mesh does not scale beyond a handful of participants; an SFU adds infrastructure complexity.
+* *Limited to UDP* — WebRTC prefers UDP for low latency. Some highly restrictive networks block all UDP; TURN over TCP (or TLS port 443) is the fallback, but it increases latency.
+
+== See also
+
+* *link:./websockets.adoc[WebSockets]* — Commonly used as the signalling transport for WebRTC connection setup.
+* *link:./server-sent-events.adoc[Server-Sent Events (SSE)]* — A simpler server-push mechanism for non-media use cases.
+* *link:./udp.adoc[UDP]* — The underlying transport protocol WebRTC uses for media.
+* *link:./tcp.adoc[TCP]* — Used by WebRTC as a fallback (TURN over TCP) and for data channel reliable delivery (SCTP).
