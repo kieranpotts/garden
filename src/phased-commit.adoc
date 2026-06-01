@@ -1,0 +1,21 @@
+= Phased commits (2PC, 3PC)
+
+Phased commits are a way to implement *link:./distributed-transaction.adoc[distributed transactions]* to maintain *[data integrity]* across *[distributed databases]* and *[distributed systems]*. Phased commits are designed to ensure that a sequence of data operations undertaken across multiple nodes are completed successfully, or not at all.
+
+The *two-phase commit protocol* (2PC) involves two phases:
+
+1. *Prepare*: A coordinator node sends a prepare request to all participant nodes, asking them to prepare for the transaction. Each participant node responds with a vote (commit or abort).
+
+2. *Commit*: If all participant nodes vote to commit, the coordinator sends a commit request to all node. But if any one of the nodes votes to abort, the coordinator sends an abort request to all the nodes. All participant nodes then either commit or abort the transaction based on the coordinator's decision.
+
+2PC has some limitations. Notably, it has a tendency to block in the case of failures in any participating node (if a participant fails after voting to commit but before receiving the commit request, the entire transaction can be left in an uncertain state).
+
+The *three-phase commit protocol* (3PC) introduces an additional phase to mitigate some of the limitations of 2PC, particularly the blocking issue. The three phases are:
+
+1. *CanCommit*: The coordinator asks all participants if they can commit. Participants respond with either "Yes" (ready) or "No" (abort).
+
+2. *PreCommit*: If all participants respond "Yes", the coordinator sends a PreCommit message, and participants acknowledge by entering a prepared state. This ensures that each node can commit even after a subsequent crash/failure.
+
+3. *DoCommit*: Once all acknowledgments are received, the coordinator sends a DoCommit message, and participants commit the transaction and release resources.
+
+See also *link:./saga.adoc[Sagas]*, which are an alternative approach to managing long-running distributed transactions without relying on traditional locking or phased commit protocols.
