@@ -1,0 +1,48 @@
+= Reverse proxy
+
+A *reverse proxy* is a server that sits between clients and one or more back-end services. When a client sends a request, the reverse proxy intercepts it, applies configured rules, forwards it to the appropriate back-end service, and returns the response to the client. To the client, it appears as if all content comes from a single server — the identity and configuration of the back-end infrastructure is hidden.
+
+A reverse proxy differs from a *forward proxy* (which acts on behalf of clients to access the internet) in that it acts on behalf of servers rather than clients.
+
+== Key features
+
+=== Security and abstraction
+
+A reverse proxy shields back-end servers from direct exposure. It hides IP addresses, port numbers, and other identifying information, making back-end services less vulnerable to attacks such as DDoS, port scanning, and application fingerprinting. All external traffic passes through the proxy, which provides a single point at which to apply firewall rules, block malicious traffic, and enforce security policies.
+
+=== SSL/TLS termination
+
+A reverse proxy can handle SSL/TLS decryption for all incoming HTTPS traffic, forwarding unencrypted requests to back-end servers internally. This offloads the computational cost of cryptographic operations from application servers, and centralises certificate management.
+
+=== Caching
+
+Reverse proxies can cache frequently accessed content — images, JavaScript files, CSS, HTML pages — and serve those responses directly without hitting back-end servers. This reduces back-end load, improves response times for clients, and lowers bandwidth usage. Particularly effective for high-traffic sites with large amounts of static or infrequently-changing content.
+
+=== Compression
+
+Reverse proxies typically compress server responses (using algorithms such as Gzip or Brotli) before sending them to the client, reducing response size and speeding up page loads, especially for users on slow connections.
+
+=== URL rewriting and routing
+
+Reverse proxies can rewrite incoming URLs and route requests to different back-end services based on request path or other attributes. For example, a request to `/products` could be internally routed to `http://product-service.internal/api/v1/items`. This enables clean, public-facing URLs that decouple the client API from internal service structure.
+
+=== Load balancing
+
+Many reverse proxies support basic load balancing across multiple back-end instances, distributing requests to spread load. Tools like Nginx can function as both a reverse proxy and a *link:./load-balancer.adoc[load balancer]* simultaneously.
+
+== Reverse proxy vs. load balancer vs. API gateway
+
+These three components overlap and are often confused:
+
+* A *link:./load-balancer.adoc[load balancer]* is focused specifically on distributing traffic across multiple identical server instances for availability and scalability.
+* A *reverse proxy* is a more general-purpose intermediary — it can route, cache, compress, rewrite, and secure traffic, often in front of a heterogeneous set of back-end services.
+* An *link:./api-gateway.adoc[API gateway]* is a specialised reverse proxy for API management, adding authentication, rate limiting, request/response transformation, aggregation, and API lifecycle management.
+
+In practice, the boundaries are blurry. Nginx, for example, is used as a reverse proxy, a Layer 7 load balancer, and an API gateway depending on configuration. In large architectures, all three may coexist in layers: a reverse proxy handles SSL termination and static content at the edge, an API gateway manages authentication and routing to microservices, and load balancers distribute traffic within each service tier.
+
+Common implementations include Nginx, Apache HTTP Server, HAProxy, and Traefik.
+
+== See Also
+
+* *link:./load-balancer.adoc[Load balancer]*
+* *link:./api-gateway.adoc[API gateway]*
