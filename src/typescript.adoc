@@ -1,0 +1,75 @@
+= TypeScript
+
+TypeScript is a statically typed superset of *link:./javascript.adoc[JavaScript]* developed by Microsoft. It adds an optional type system on top of JavaScript; type annotations are erased at compile time, producing plain JavaScript that runs in any JavaScript environment.
+
+TypeScript was first released in 2012. Its lead designer is Anders Hejlsberg, who also designed C# and Delphi. The compiler and language specification are open-source and maintained by Microsoft with broad community input.
+
+Because TypeScript compiles to JavaScript, any valid JavaScript is also valid TypeScript. Developers can adopt TypeScript incrementally, adding type annotations to existing codebases as needed.
+
+TypeScript tracks the *link:./ecmascript.adoc[ECMAScript]* specification closely. Most ECMAScript proposals at Stage 3 or later are quickly incorporated into TypeScript. TypeScript has historically shipped some features (such as decorators) ahead of ECMAScript standardization, though it has moved toward tighter alignment with the spec over time.
+
+== Type system
+
+TypeScript's type system is *structural*, also known as duck typing: two types are compatible if their shapes match, regardless of their names. This contrasts with nominal type systems (as in Java or C#), where names and explicit declarations determine compatibility.
+
+The type system is optional and gradual. The `any` type disables type checking for a value, and JavaScript files can coexist with TypeScript files within the same project.
+
+=== Basic types
+
+TypeScript includes all JavaScript primitive types — `string`, `number`, `boolean`, `null`, `undefined`, `symbol`, `bigint` — as well as:
+
+* `unknown`: A type-safe alternative to `any`. A value typed as `unknown` cannot be used until its type has been narrowed through a type guard.
+* `never`: Represents a value that never occurs (eg. a function that always throws, or an exhaustive type check branch that should be unreachable).
+* `void`: Represents the absence of a meaningful return value.
+
+TypeScript also supports typed arrays, tuple types, and inline object types.
+
+=== Interfaces and type aliases
+
+TypeScript provides two ways to describe and name object shapes:
+
+* `interface` is well-suited for describing object structures and supports *declaration merging* — multiple interface declarations with the same name are automatically merged.
+* `type` aliases are more flexible. They can describe union types, intersection types, mapped types, conditional types, and other advanced constructs that interfaces cannot express.
+
+=== Generics
+
+Generics allow types to be parameterized, enabling reusable components that work with a variety of types while maintaining full type safety.
+
+[source,typescript]
+----
+function identity<T>(value: T): T {
+  return value;
+}
+----
+
+=== Union and intersection types
+
+* *Union types* (`A | B`): A value may be of type `A` or type `B`.
+* *Intersection types* (`A & B`): A value must satisfy both type `A` and type `B`.
+
+=== Type narrowing
+
+TypeScript analyses control flow to narrow the type of a value within a conditional branch. Type guards — such as `typeof`, `instanceof`, `in`, and user-defined predicates — inform TypeScript about the specific type of a value in a given execution path.
+
+=== Utility types
+
+TypeScript ships with a set of built-in generic utility types for common type transformations, including `Partial<T>`, `Required<T>`, `Readonly<T>`, `Pick<T, K>`, `Omit<T, K>`, `Record<K, V>`, `Exclude<T, U>`, `Extract<T, U>`, and `ReturnType<T>`.
+
+== Compilation
+
+TypeScript source files (`.ts` and `.tsx`) are compiled to JavaScript by the TypeScript compiler (`tsc`). Project configuration is managed through a `tsconfig.json` file at the project root, which controls options such as the target ECMAScript output version, module format, strictness settings, and output directory.
+
+Popular alternatives to `tsc` for transpilation — which strip type annotations without performing type-checking — include https://esbuild.github.io/[esbuild], https://swc.rs/[SWC], and https://oxc.rs/[Oxc]. These tools are significantly faster, making them common choices for build pipelines, while `tsc` is retained for type-checking.
+
+== Type declarations
+
+Type information for third-party JavaScript libraries is provided via `.d.ts` declaration files. These can be bundled with a library, or obtained from https://github.com/DefinitelyTyped/DefinitelyTyped[DefinitelyTyped], a community-maintained repository that distributes them under the `@types/*` namespace on npm (eg. `@types/node`, `@types/react`).
+
+== Strictness
+
+TypeScript's strict mode, enabled via `"strict": true` in `tsconfig.json`, activates a recommended bundle of type-checking options. The most impactful are `strictNullChecks`, which prevents `null` and `undefined` from being assigned to non-nullable types, and `noImplicitAny`, which disallows implicit `any` inferences. Enabling strict mode from the start of a project is strongly recommended.
+
+== See also
+
+* *link:./javascript.adoc[JavaScript]*
+* *link:./ecmascript.adoc[ECMAScript]*
