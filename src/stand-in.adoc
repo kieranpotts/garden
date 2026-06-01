@@ -1,0 +1,19 @@
+= Stand-in
+
+A stand-in is a *disaster recovery* strategy https://youtu.be/R79IRXLS0JY?feature=shared[devised by Monzo].
+
+The strategy aims to avoid the scenario in which outages are caused by software bugs being shipped to primary systems and also to secondary systems.
+
+While hardware redundancy and failover systems can help to reduce the risk of hardware and network failure causing outages, these disaster recovery strategies do not address the issue of software bugs.
+
+For example, in August 2023, the UK's National Air Traffic Service (NATS) had a three-hour outage due to a software bug. A critical exception occurred when the primary system tried to process a particular flight plan, and was unable to generate a valid route for that plan. The secondary system kicked in and took over from the failing primary system within 20 seconds. But because the failover system ran an identical copy of the software, the same critical exception occurred, taking down the secondary system too. It took three hours to identify, fix, and ship the bug fix.
+
+Monzo developed the stand-in strategy to avoid this scenario.
+
+*Monzo Stand-In* is an _alternative software system_ to Monzo's primary system. It is different software, using different data, running on different infrastructure to Monzo's primary systems.
+
+When Monzo's primary service fails, the Monzo Stand-In service takes over. The stand-in service provides only the most critical services to its customers. The *link:./graceful-degradation.adoc[graceful degradation]* principle applies to the stand-in strategy.
+
+The goal of the stand-in pattern is for the stand-in system to have _maximum independence from the primary system_. The application code must be different, the data must be replicated from the primary system, and the infrastructure too should be as isolated as possible. Monzo even runs its stand-in service on a different cloud service provider than its primary systems.
+
+A stand-in software system is an additional layer of defense, not a substitute for a reliable primary.
