@@ -1,0 +1,19 @@
+= Virtual machine
+
+A virtual machine (VM) is a software emulation of a physical computer.
+
+Virtual machines are created and managed by a *link:./hypervisor.adoc[hypervisor]*, which is a technology layer that abstracts the physical hardware and provides a *link:./virtualized.adoc[virtualized]* environment for VMs to run in.
+
+With a hypervisor, the same physical machine may be host to multiple virtual machines, each VM running different operating systems and applications, and which are highly isolated from operating systems and applications running in other VMs on the same host.
+
+Virtual machines solve the same problem – "It works on my machine!" – as *link:./container.adoc[containers]*. They both provide solutions for replicating environments and for creating isolated subsystems on a single physical machine. However, they achieve this in different ways, and they are each therefore suited to different use cases. See *link:./containerization.adoc[containerization]* for more discussion on the differences between the two.
+
+Although the general trend in recent years has been away from virtualization and toward containerization, there remain many use cases where VMs have the edge:
+
+* VMs allow for very fine control over a guest application's runtime environment, right down to the operating system's configuration. For this reason, VMs can be a better option than containers where there is a requirement for full-stack development or end-to-end testing of a system in an environment that very closely mirrors the production environment, which itself is a highly customized virtual or physical machine. Containers are more appropriate where minimal environment configuration is required, and emphasis is instead on encapsulating the code and configuration of the application.
+
+* While containers are designed to be ephemeral and stateless, VMs are designed to be persistent and stateful. This makes VMs better suited for applications that require persistent data, stored locally on the same disk image. These are sorts of constraints that are common in legacy applications, developed long before containerization, and which are not easily refactored to run in a containerized environment.
+
+* VMs provide a higher degree of isolation than containers, because each VM runs its own OS. The host OS is not shared with the guests. This makes VMs more secure than containers. For example, if a security exploit in a container achieves *link:./ring-zero-escalation.adoc[ring zero escalation]*, this would allow the attacker to gain access to all the other containers running on the same host, and even to the host system itself. By comparison, with virtualization the damage would be constrained to the single VM instance with the vulnerability.
+
+In general, VMs tend to be suitable for long-lived, stateful, vertically-scaled application instances, with high memory and CPU usage, and which require a high degree of isolation and security. VMs may also be necessary to replicate highly customized production environments for development and testing purposes, to run legacy applications that have dependencies that are not easily containerized, or where you need to run multiple applications that each depend on entirely different operating systems.
