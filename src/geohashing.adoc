@@ -1,0 +1,95 @@
+= Geohashing
+
+Geohashing is a method of encoding geographic coordinates (latitude and longitude) into a short alphanumeric string. It was invented by Gustavo Niemeyer in 2008 as a technique for efficient spatial indexing and proximity search in databases and distributed systems.
+
+The core problem it solves: querying latitude/longitude pairs to find nearby points is slow at scale. Most databases use B-tree indexes, which work well for one-dimensional data but struggle with 2D range queries. Geohashing converts a 2D location into a 1D string that a standard index can search efficiently.
+
+Example: the coordinates for downtown San Francisco (37.7749°N, -122.4194°W) encode to the geohash `9q8yyf`.
+
+== Key properties
+
+*Spatial locality*:: Locations that share a longer common prefix are geographically closer. Each additional character in the hash zooms in to a more precise region of the earth. The hash is therefore hierarchical: longer = more precise.
++
+Example: `9q8yyf` and `9q8yyx` share five characters — they are in the same neighbourhood. `9q8yyf` and `a2sed7` share no characters — they may be on different continents.
+
+*One-dimensional and indexable*:: Because a geohash is a plain string, it can be stored in a `VARCHAR` column and indexed with a standard B-tree or trie. This enables fast prefix-based lookups and efficient sorting — operations that are difficult to perform directly on floating-point coordinate pairs.
+
+== How geohashing works
+
+Encoding a coordinate pair into a geohash involves three steps.
+
+=== Step 1: Recursive bisection
+
+The globe is divided recursively, alternating between latitude (-90° to +90°) and longitude (-180° to +180°). At each step the current range is split in half:
+
+* If the coordinate falls in the *lower* half, a `0` bit is appended.
+* If it falls in the *upper* half, a `1` bit is appended.
+
+This is essentially binary search, but recording each decision rather than just finding the value.
+
+=== Step 2: Interleave bits
+
+Rather than encoding latitude and longitude as separate binary sequences, their bits are *interleaved* (odd positions = longitude bits, even positions = latitude bits). This produces a single binary string that traces a Z-order (Morton) curve across the surface of the earth, which is what preserves spatial locality between nearby points.
+
+=== Step 3: Encode as Base32
+
+The interleaved binary string is split into 5-bit groups. Each group is mapped to a character from a 32-character alphabet (`0–9`, `bcdefghjkmnpqrstuvwxyz` — letters `a`, `i`, `l`, and `o` are omitted to avoid confusion with digits). The result is the final geohash string.
+
+=== Precision vs. length
+
+Each additional character adds approximately 2.5 bits of precision in each dimension:
+
+[cols="1,2,2", options="header"]
+|===
+| Hash length | Approximate cell width | Approximate cell height
+| 1 | ~5,000 km | ~5,000 km
+| 3 | ~156 km | ~156 km
+| 5 | ~4.9 km | ~4.9 km
+| 6 | ~1.2 km | ~0.6 km
+| 7 | ~152 m | ~152 m
+| 9 | ~4.8 m | ~4.8 m
+| 12 | ~3.7 cm | ~1.9 cm
+|===
+
+Precision is controlled entirely by truncating the string. This makes it trivially easy to "zoom out" from a precise point to its containing region.
+
+== Querying for nearby items
+
+To find all items within a given radius of a user:
+
+1. Calculate the user's geohash at the desired precision (e.g. 7 characters for ~150m cells).
+2. Retrieve the 8 neighbouring cell hashes using a geohash library.
+3. Query the database for all items whose stored geohash starts with any of the 9 hashes (the user's cell plus its 8 neighbours).
+4. *Post-filter* the results using an exact distance formula (e.g. the Haversine formula) to remove items outside the true radius and rank the remainder by distance.
+
+The border-crossing problem is why step 2 is essential: a point 20 metres away may sit in a neighbouring cell and would be missed by a query on just the user's own cell. Querying all 9 cells eliminates this blind spot. The expensive distance calculation in step 4 operates on a small candidate set (hundreds of rows), not the full dataset (millions of rows).
+
+== Use cases
+
+* *Ridesharing* (Uber, Lyft): group active drivers into geohash cells; when a rider requests a trip, search only drivers in the matching and neighbouring cells.
+* *Food delivery* (Deliveroo, DoorDash): find nearby restaurants by matching stored geohashes against the user's current cell and its neighbours.
+* *Geospatial databases*: Elasticsearch supports `geohash_grid` aggregations for bucketing documents by location; MongoDB supports geohash-based prefix queries.
+* *Spatial sharding*: distribute data across servers by geohash prefix, keeping nearby records on the same node.
+
+== Limitations
+
+*The edge case problem*:: Points near a cell boundary may be closer to a point in a neighbouring cell than to points at the far edge of their own cell. Always query neighbouring cells and post-filter by exact distance.
+
+*Cell shape distortion*:: Geohash cells are rectangular, and their physical size and shape vary with latitude (they are smaller near the poles). A geohash does not represent a uniform circular area.
+
+*False positives*:: Two points can be in the same cell but at opposite corners, making them farther apart than a point in a neighbouring cell. The post-filtering step (step 4 above) is required to correct for this.
+
+*Not a true k-NN*:: Geohashing is a proximity-filtering technique, not a true k-nearest-neighbours algorithm. Combine it with an exact distance computation for ranked nearest-neighbour results.
+
+== Alternatives
+
+*Quadtrees / K-d trees*:: Tree-based structures that recursively partition 2D (or k-dimensional) space. Geohashing can be seen as a linearised representation of a quadtree traversal along a Z-order curve.
+
+*R-trees*:: Used in spatial databases such as PostGIS, Oracle Spatial, and SQLite SpatiaLite. Group nearby objects into minimum bounding rectangles, supporting efficient containment, intersection, and nearest-neighbour queries.
+
+== See also
+
+* *link:./hashing.adoc[Hashing]* — the general concept of hash functions; geohashing applies the same ideas to geographic space.
+* *link:./consistent-hashing.adoc[Consistent hashing]* — another specialised hashing technique used in distributed systems.
+* *link:./distributed-system.adoc[Distributed system]* — geohashing is commonly used for spatial sharding in distributed architectures.
+* *link:./databases.adoc[Databases]* — spatial indexing strategies and how standard indexes support geohash prefix queries.
