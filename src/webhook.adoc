@@ -1,0 +1,32 @@
+= Webhook
+
+A webhook is a mechanism for one system to send real-time notifications to another system over *link:./http.adoc[HTTP]*. Instead of polling for updates, a consumer registers a callback URL with a producer, and the producer sends an HTTP POST request to that URL whenever a relevant event occurs.
+
+Webhooks invert the typical client-server request flow. Normally, a client requests data from a server. With webhooks, the server pushes data to the client. This makes webhooks an efficient tool for event-driven integrations, eliminating the overhead and latency of polling.
+
+== How webhooks work
+
+A typical webhook flow looks like this:
+
+1. A consumer registers a callback URL with a producer (eg., via an API or UI).
+2. An event occurs in the producer's system.
+3. The producer sends an HTTP POST request to the registered URL, with a payload describing the event.
+4. The consumer processes the payload and returns an HTTP response.
+
+If the consumer returns a non-success status code (or does not respond), the producer will typically retry delivery using an exponential backoff strategy.
+
+== Conventions
+
+There is no formal standard for webhooks. Implementations tend to follow standard HTTP semantics — using POST requests, JSON payloads, and standard status codes — but otherwise follow proprietary conventions for payload structure, authentication, and retry behavior.
+
+https://github.com/standard-webhooks/standard-webhooks[Standard Webhooks] is the closest thing to a shared specification. It defines conventions for signatures, payload formats, and retry policies.
+
+https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md[CloudEvents] is an alternative specification from the CNCF that defines a common envelope format for event data. CloudEvents is broader in scope than webhooks — it covers event-driven messaging in general — but it can be used as the basis for the payload format for webhook messages.
+
+== Security considerations
+
+Since webhook endpoints are publicly accessible URLs, they need to be protected against spoofing and replay attacks. Common strategies include:
+
+* *Signature verification*: The producer signs the payload using a shared secret (typically via HMAC-SHA256) and includes the signature in a request header. The consumer verifies the signature before processing the payload.
+* *Timestamp validation*: The producer includes a timestamp in the request. The consumer rejects payloads that are too old, mitigating replay attacks.
+* *TLS*: Webhook URLs should always use HTTPS to protect payloads in transit.
