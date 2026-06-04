@@ -12,7 +12,7 @@ image::virtualization-vs-containerization.drawio.svg[]
 
 Virtual machines depend on a *xref:hypervisor.adoc[hypervisor]*, which is either *[firmware]* (running directly on the chip) or application software (running on a regular operating system). A hypervisor is responsible for sharing the CPU between multiple live operating systems. In containerization, the equivalent of the hypervisor is the *container engine*.
 
-A container engine works differently to a hypervisor. The main difference is that all the containers managed by a container engine will run on a shared OS kernel. Processes running in each container are highly isolated from each other, as they would be if they were running in separate *link:./virtual-machines.adoc[virtual machines]*. But, in container systems, a different set of technologies are used to implement this isolation.
+A container engine works differently to a hypervisor. The main difference is that all the containers managed by a container engine will run on a shared OS kernel. Processes running in each container are highly isolated from each other, as they would be if they were running in separate *xref:virtual-machine.adoc[virtual machines]*. But, in container systems, a different set of technologies are used to implement this isolation.
 
 Isolation is achieved in containers using features of the host OS's kernel. An OS kernel is the part of an OS that is responsible for interacting with the hardware – CPU, memory, storage, etc.
 
@@ -48,7 +48,7 @@ A common analogy to explain the conceptual differences between containerization 
 
 Another important difference is that containers are *[stateless]* and VMs are *[stateful]*. When a container is shut down, the internal state of the containerized application is lost. VMs use virtual disk images to store data, which may include user-generated data as well as the operating system and application. This data is persisted between reboots of the VM.
 
-To create stateful containerized applications, the container must be linked to persistent external storage systems (eg. using volumes). Containers themselves are designed to be ephemeral – created, started, stopped, and destroyed, and quickly recreated again if needed. By contrast, VMs are more like fully-fledged application runtime environments. VMs tend to have much longer life spans and their use cases tend to favour stateful applications. See *link:./virtual-machines.adoc[virtual machines]* for more notes on the common use cases for VMs.
+To create stateful containerized applications, the container must be linked to persistent external storage systems (eg. using volumes). Containers themselves are designed to be ephemeral – created, started, stopped, and destroyed, and quickly recreated again if needed. By contrast, VMs are more like fully-fledged application runtime environments. VMs tend to have much longer life spans and their use cases tend to favour stateful applications. See *xref:virtual-machine.adoc[virtual machines]* for more notes on the common use cases for VMs.
 
 Containers are suited to applications where OS-level configuration is minimal and the focus is on setting up the application.
 
