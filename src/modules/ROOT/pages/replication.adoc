@@ -1,0 +1,115 @@
+= Replication
+
+// TODO: https://redis.io/blog/what-is-data-replication/
+
+Replication, also known as *xref:redundancy.adoc[data redundancy]*, is the process of creating and maintaining identical copies of data across multiple servers or nodes.
+
+Together with *xref:sharding.adoc[sharding]*, replication is a key technique for scaling databases. Sharding splits data across multiple servers, while replication duplicates data across multiple servers.
+
+Data replication becomes necessary the more that data is distributed across multiple servers, for example in *xref:service-oriented-architecture.adoc[service-oriented]* or *xref:microservices.adoc[microservices]* architectures.
+
+In a *xref:monolith.adoc[monolithic]* architecture, data is typically stored in a single database instance, and joins are typically used to query relational data across multiple tables.
+
+image::monolith-with-cross-table-joins.svg[]
+
+But in a *xref:distributed-system.adoc[distributed software]*, those joins turn into network calls. This increases *[latency]*, decreasing *xref:performance.adoc[performance]* and having implications for the *xref:fault-tolerance.adoc[resilience]* of the system.
+
+image::microservices-with-cross-service-calls.svg[]
+
+Data replication is one possible solution to these problems. Simply, data is replicated to wherever it is needed, so that discrete services are less reliant upon each other. Services therefore work faster by needing to use only local data.
+
+image::microservices-with-data-replication.svg[]
+
+Besides the *xref:performance.adoc[performance]* benefits of reducing network calls, data replication also improves the *xref:fault-tolerance.adoc[fault tolerance]* and *xref:availability.adoc[availability]* of *xref:distributed-system.adoc[distributed software]*, due to reduced dependencies between services.
+
+Data replication is a useful strategy to support the *[re-architecture]* of system designs. For example, in the transition from monolithic services to more microservices, data replication can help to reduce the need for *[scheduled downtime]* while *[data migrations]* are run.
+
+Trade-offs are made in terms of *xref:consistency.adoc[data consistency]*, and the increased system *xref:complexity.adoc[complexity]* required to manage the data replication and synchronization processes. Storage costs also increase.
+
+Data synchronization can be achieved using either *[batch processes]* or *[event streams]*. Some database systems also provide built-in support for data replication across multiple nodes.
+
+Data need not be replicated in the form of its *[source of truth]*. *[Materialized views]* can be used to store pre-processed data that's optimized for specific use cases, such as reporting.
+
+////
+
+== Redundancy patterns
+
+Availability = failover + redundancy
+
+To keep your data available and consistent, you need replication, too.
+
+Failover helps you survive infrastructure failure. Replication helps you survive data loss and scale reads.
+
+Or:
+
+* Failover absorbs failure.
+* Replication protects data.
+
+Replication means keeping multiple copies of your data in sync across nodes. If one copy is lost, another can take over. If your read traffic spikes, replicas can help offload the pressure.
+
+There are two primary replication strategies:
+
+* Single-leader replication: one node handles all writes.
+* Multi-leader replication: multiple nodes accept writes.
+
+=== Single-leader replication
+
+In this pattern, only one node accepts writes (the leader). One or more read replicas sync from it asynchronously.
+
+Client can read from the leader or any replica, but all writes must go to the leader.
+
+Pros:
+
+* Simple to conceptualize.
+* Strong write consistency.
+* Works well with read-heavy workloads.
+
+Cons:
+
+* Single point of failure (without external failover logic).
+* Replication lag → stale reads.
+* Leader can become a write bottleneck under heavy load.
+* Failover requires promotion and reconfiguration.
+
+Use when you care about data consistency, simplicity, and read scalability. Common in OLTP systems, dashboards, and APIs where write throughput is moderate.
+
+=== Multi-leader replication
+
+In a multi-leader setup, multiple nodes can accept writes. Each node replicates its changes to the others.
+
+_Write locally, sync globally._
+
+Multi-leader setups are *eventually consistent* by default.
+
+You'll need logic to resolve conflicts, like "last write wins", version vectors, or CRTDs.
+
+Pros:
+
+* High availability across regions.
+* Local write performance (reduced latency for global users).
+* Avoids a single point of failure.
+
+Cons:
+
+* Complex conflict resolution.
+* Increased write latency due to cross-node sync.
+* Harder to figure out the data state.
+* Greater operational overhead.
+
+Use when you need multi-region write availability, or your system must remain writeable even during partial outages.
+
+Used in collaborative tools, messaging platforms, and edge-aware databases.
+
+=== Leaderless replication
+
+Some systems, eg. Cassandra and Dynamo, use leaderless replication. This is where clients write to multiple nodes directly, and consistency is managed via *quorum reads/writes*.
+
+Trade-offs vary, but typically:
+
+* Very high availability.
+* Eventual consistency unless tuned carefully.
+* Complex consistency guarantees.
+
+You'
+
+////
