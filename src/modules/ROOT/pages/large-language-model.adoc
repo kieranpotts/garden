@@ -565,13 +565,15 @@ Custom hardware like the https://www.nvidia.com/en-gb/products/workstations/dgx-
 
 As of 2026, some notable open-weight model families include:
 
+NOTE: Several of these models use a *mixture-of-experts (MoE)* architecture. Rather than activating the entire network for every token, an MoE model routes each token through only a small subset of specialized "expert" subnetworks. This lets a model carry a very large total parameter count while activating only a fraction of it per token — high capacity at a lower inference cost.
+
 * https://llama.meta.com/[*Llama*] models from Meta. The Llama family did much to kick-start the open-weight era, and its widespread adoption has made the underlying architecture a de facto reference point that many other open models build on. The Scout variant is known for its massive 10-million token context window. Released under Meta's community license, which permits commercial use but imposes some restrictions (including for very large deployments).
 
 * https://ai.google.dev/gemma[*Gemma*] models from Google. These are Google's open-weight counterparts to its proprietary, frontier Gemini models. Gemma models are optimized to run on consumer hardware.
 
 * https://qwenlm.github.io/[*Qwen*] models from Alibaba Cloud are available in a wide range of sizes, so there'll always be one variant that you can run on your hardware.
 
-* https://mistral.ai/[*Mistral*] models from Mistral AI, a French company that produces both open-weight models and proprietary models accessible via web service APIs. Their Mixtral models helped popularize the mixture-of-experts (MoE) architecture in open models, which unifies reasoning, vision, and coding into a single high-throughput model.
+* https://mistral.ai/[*Mistral*] models from Mistral AI, a French company that produces both open-weight models and proprietary models accessible via web service APIs. Their Mixtral models helped popularize the mixture-of-experts (MoE) architecture in open models.
 
 * https://huggingface.co/openai[*gpt-oss*] models from OpenAI. `gpt-oss-120b` and `gpt-oss-20b`, released under the permissive Apache 2.0 license in August 2025, were OpenAI's first open-weight models since GPT-2.
 
