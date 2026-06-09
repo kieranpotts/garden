@@ -643,6 +643,8 @@ Model gateways provide a single, unified API endpoint, and/or a GUI or other use
 
 * https://github.com/BerriAI/litellm[LiteLLM] – Open-source gateway that exposes 100+ providers (OpenAI, Anthropic, Gemini, Bedrock, Azure, and more) through a single OpenAI-format API. Available as a Python SDK for direct integration, or as a self-hosted proxy server (its "AI Gateway") for organization-wide access, with virtual API keys, per-project cost tracking, automatic fallbacks, and load balancing. Unlike the hosted services above, you run it yourself.
 
+* https://opencode.ai/docs/zen/[OpenCode Zen] – Curated gateway from the OpenCode team offering a vetted set of coding-benchmarked models (OpenAI, Anthropic, Google, Qwen, DeepSeek, and others) with pay-as-you-go per-token pricing and bring-your-own-key support. Integrates as an optional provider inside the *xref:ai-coding-assistant.adoc[OpenCode]* coding agent.
+
 [TIP]
 ======
 A single subscription to a gateway service like Perplexity Pro or OpenRouter can be more economical than maintaining separate subscriptions with multiple AI labs. These services give you access to models from OpenAI, Anthropic, Google, and others through one account, letting you switch between them based on the task at hand.
@@ -664,6 +666,8 @@ Ollama is designed to run LLMs as a background service (daemon) on your machine.
 LM Studio is a desktop GUI application that provides an "all-in-one" visual interface for discovering, downloading, and chatting. While it also provides a local server for API access, like Ollama, its primary value is its user-friendly dashboard that allows you to tweak hardware settings (like GPU offloading), monitor system resources in real-time, and chat with models without needing a terminal or other front-end integration. LM Studio integrates with the Hugging Face model library, allowing easy access with every available open-weight model.
 
 Both Ollama and LM Studio use llama.cpp as their underlying inference engine.
+
+A related but distinct tool is https://openwebui.com/[Open WebUI] — a self-hosted, extensible web _front-end_ for LLMs rather than a model manager in its own right. It provides a polished, ChatGPT-like browser interface and connects to a backend (most commonly Ollama, or any OpenAI-compatible API) to serve the actual models. It is often run alongside Ollama to give a local model stack a clean, multi-user web UI.
 
 == Fine-tuning tools and services
 
