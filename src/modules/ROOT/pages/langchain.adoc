@@ -1,0 +1,40 @@
+= LangChain
+
+LangChain is an open-source framework for building applications powered by *xref:large-language-model.adoc[large language models (LLMs)]*. It provides a unified interface for connecting models to external data sources, tools, and workflows, so developers can swap the underlying model with minimal code changes.
+
+LangChain was created by Harrison Chase in October 2022, while he was working at the machine-learning startup Robust Intelligence. It quickly became one of the most widely adopted frameworks for LLM application development, and now backs a venture-funded company of the same name (Series A led by Sequoia Capital in April 2023).
+
+== What it does
+
+LangChain's core idea is *composition*: it provides building blocks — prompts, models, retrievers, memory, and tools — that can be chained together into pipelines. Common use cases include:
+
+* *xref:large-language-model.adoc[Retrieval-augmented generation (RAG)]* over private data.
+* Chatbots and conversational agents.
+* Document analysis, question-answering, and summarization.
+* Extraction of structured data from unstructured text.
+
+It can pull context from sources such as PDFs, web pages, CSV files, and databases, and ships with a large ecosystem of integrations — model providers, vector databases (for example Milvus and Weaviate), cloud storage, search services, and tools.
+
+LangChain is written in Python, with a parallel JavaScript/TypeScript implementation (LangChain.js).
+
+== The LangChain ecosystem
+
+LangChain has grown from a single library into a family of products:
+
+* *LangChain* — the core framework of composable building blocks.
+* *LangChain Expression Language (LCEL)* — a declarative syntax (introduced mid-2023) for defining chains.
+* *xref:ai-agent.adoc[LangGraph]* — a library for building stateful, multi-step agents and multi-agent workflows as graphs, with a managed *LangGraph Platform* for deployment.
+* *LangSmith* — a (closed-source) observability and evaluation platform for LLM applications, released February 2024.
+* *LangServe* — a tool (released October 2023) for deploying chains as production APIs.
+
+== Criticism
+
+LangChain is sometimes criticized for over-abstraction — its layers of building blocks can add complexity and indirection that obscure what is, underneath, a relatively simple sequence of model calls. Some teams prefer to call model APIs directly, or to use lighter-weight alternatives, for production systems. It remains, nonetheless, a popular starting point and a useful tool for rapid prototyping.
+
+''''
+
+== See also
+
+* *xref:ai-agent.adoc[AI agent]*
+* *xref:large-language-model.adoc[Large language model (LLM)]*
+* *xref:model-context-protocol.adoc[Model Context Protocol]*
