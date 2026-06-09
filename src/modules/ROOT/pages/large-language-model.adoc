@@ -565,54 +565,27 @@ Custom hardware like the https://www.nvidia.com/en-gb/products/workstations/dgx-
 
 As of 2026, some notable open-weight model families include:
 
-* The https://llama.meta.com/[Llama] models from Meta.
-* The https://ai.google.dev/gemma[Gemma] models from Google.
-* The https://qwenlm.github.io/[Qwen] models from Alibaba.
-* The https://mistral.ai/[Mistral] models from Mistral AI.
-* The https://huggingface.co/moonshotai[Kimi] models from Moonshot AI.
-* The https://huggingface.co/THUDM[GLM] models from Z.ai.
-* The https://www.deepseek.com/[DeepSeek] models from DeepSeek AI.
-* The https://www.minimax.io/[MiniMax] models from MiniMax AI.
+* https://llama.meta.com/[*Llama*] models from Meta. The Llama family did much to kick-start the open-weight era, and its widespread adoption has made the underlying architecture a de facto reference point that many other open models build on. The Scout variant is known for its massive 10-million token context window. Released under Meta's community license, which permits commercial use but imposes some restrictions (including for very large deployments).
 
-*Gemma* is Google's open-weight counterpart to the proprietary Gemini family, optimized to run efficiently on consumer hardware.
+* https://ai.google.dev/gemma[*Gemma*] models from Google. These are Google's open-weight counterparts to its proprietary, frontier Gemini models. Gemma models are optimized to run on consumer hardware.
 
-*Mistral AI*, a French company, produces both open-weight models and proprietary API offerings; their Mixtral series helped popularize the Mixture-of-Experts (MoE) architecture in open models.
+* https://qwenlm.github.io/[*Qwen*] models from Alibaba Cloud are available in a wide range of sizes, so there'll always be one variant that you can run on your hardware.
 
-*MiniMax* also develops both closed-weight and open-weight models. MiniMax M2.5 is well-regarded for its performance, though it lags in intelligence compared to something like Qwen 3.5.
+* https://mistral.ai/[*Mistral*] models from Mistral AI, a French company that produces both open-weight models and proprietary models accessible via web service APIs. Their Mixtral models helped popularize the mixture-of-experts (MoE) architecture in open models, which unifies reasoning, vision, and coding into a single high-throughput model.
 
-*DeepSeek* made significant waves in early 2025 when DeepSeek-R1 demonstrated near-frontier reasoning performance at a fraction of the training compute cost that had previously been assumed necessary.
+* https://huggingface.co/openai[*gpt-oss*] models from OpenAI. `gpt-oss-120b` and `gpt-oss-20b`, released under the permissive Apache 2.0 license in August 2025, were OpenAI's first open-weight models since GPT-2.
 
-The *Qwen* models are available in a wide range of sizes, so there'll always be one variant that you can run on your hardware.
+* https://huggingface.co/moonshotai[*Kimi*] models from Moonshot AI. Kimi K2.5 (released January 2026) is an open-weight mixture-of-experts model with 1T total parameters (32B activated per token) and a 256K-token context window. It matches frontier models on several benchmarks and is multimodal across text, code, image, and video (understanding only, no generation). Kimi 2.5 leads in mathematical reasoning and is optimized for "agent swarming".
 
-Nvidia is also entering the open-weight model space, with the https://research.nvidia.com/labs/nemotron/Nemotron-3/[*Nemotron 3*] family of models.
+* https://huggingface.co/zai-org[*GLM*] models from Z.ai (formerly Zhipu AI). The GLM-4.5 and GLM-4.6 releases are strong open-weight MoE models, well-regarded for their "interleaved thinking" and demonstrated capabilities in both agentic and vibe coding workflows.
 
-Some open-weight models compete with frontier models in capability. *Kimi K2.5* is a good example of this.
+* https://www.deepseek.com/[*DeepSeek*] models from DeepSeek AI. This AI lab made waves in early 2025 when DeepSeek-R1 demonstrated near-frontier reasoning performance at a fraction of the training compute cost that had previously been assumed was necessary to develop frontier models. Its "engram" memory system has been proven to maintain high coding performance across 1M+ token contexts.
 
-.Kimi K2.5
-|===
-|Category |Details
+* https://www.minimax.io/[*MiniMax*] models from MiniMax AI, which also develops closed-weight models. MiniMax M2.5 is well-regarded, posting near-frontier agentic and coding scores (~80% on SWE-Bench Verified) at an exceptionally low cost.
 
-|Architecture
-|Open-weight Mixture-of-Experts (MoE) • 1.04T total parameters with 32B activated per token
+Nvidia continues to expand its open-weight offerings, most recently with the https://research.nvidia.com/labs/nemotron/Nemotron-3/[*Nemotron 3*] family (Nano, Super, and Ultra variants).
 
-|Model size
-|1.04 trillion parameters (32B active)
-
-|Price (as-a-service)
-|~$0.60/1M input tokens • ~$2.50/1M output tokens
-
-|Speed
-|High throughput (exact TPS varies per provider; reported ~23% faster than K2)
-
-|Context window
-|256K tokens (standard)
-
-|Benchmarks
-|SWE-Bench Verified (real-world coding) 76.8% • Humanity's Last Exam (HLE) 50.2% • MMMU Pro 78.5% • videoMMMU 86.6%
-
-|Multimodality
-|Text • Code • Image (understanding, no generation) • Video (understanding, no generation)
-|===
+NOTE: "Open-weight" is not the same as "open-source". Most of these families release only their trained weights, not the training data or full reproduction recipe, and some ship under restrictive custom licenses. Llama and Gemma, for example, carry usage restrictions, whereas Qwen, DeepSeek, and Mistral's open releases mostly use permissive Apache 2.0 or MIT terms.
 
 ==== Open-weight coding models
 
