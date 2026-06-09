@@ -1,6 +1,6 @@
 = AI agent
 
-Agentic systems are xref:large-language-model.adoc[LLM]-based systems that can act autonomously to achieve goals. They are a key component of many AI applications, from personal assistants to autonomous vehicles and software automation.
+Agentic systems are xref:large-language-model.adoc[LLM]-based systems that can act autonomously to achieve goals. AI agents, also known as software agents, are a key component of many AI applications, from personal assistants to autonomous vehicles and software automation.
 
 Common components of an AI agent include:
 
@@ -10,6 +10,21 @@ Common components of an AI agent include:
 * Input and output interfaces (for example, chat, audio, or APIs)
 * Guardrails
 * Orchestration
+
+== What makes an agent
+
+The term _agent_ predates large language models. In computer science, a software agent is a program that acts on behalf of a user or another program with some degree of authority to decide for itself what to do. What distinguishes an agent from an ordinary program — or from a single LLM call — is a cluster of properties:
+
+* *Autonomy* — it acts without constant human intervention, deciding its own next step.
+* *Reactivity* — it perceives its environment and responds to it. For an LLM agent, the "environment" is reached through tools (see *xref:model-context-protocol.adoc[MCP]*).
+* *Proactiveness* — it pursues goals on its own initiative, not only in direct response to a prompt.
+* *Social ability* — it can communicate and coordinate with other agents (see *xref:agent2agent.adoc[A2A]*).
+* *Persistence* — it runs as an ongoing process working toward a goal, rather than executing once and stopping.
+* *Mobility* (in some definitions) — it can relocate its execution across machines.
+
+A plain script has none of these; a single model inference has only the beginnings of reactivity. An agent is what emerges when a model is wrapped in a loop that gives it tools, goals, and the autonomy to use them — see *Models, agents, and harnesses*, below.
+
+This idea has a long history. The roots reach back to Carl Hewitt's Actor model (1977) and were popularized by Apple's "Knowledge Navigator" concept video (1987), then developed through decades of research into distributed artificial intelligence and multi-agent systems. Today's LLM-based agents are a powerful new implementation of this much older idea: the LLM supplies the reasoning that earlier agents lacked.
 
 == Models, agents, and harnesses
 
