@@ -505,6 +505,20 @@ Reasoning models are a category of LLM that spend additional compute "thinking" 
 
 Notable reasoning models include OpenAI's o1 and o3 series and the open-weight https://huggingface.co/deepseek-ai[DeepSeek-R1].
 
+=== Effort levels
+
+Where reasoning models can think before answering, an *effort level* (sometimes "reasoning effort" or "thinking level") is the dial that controls _how much_ they do so. It drives *adaptive reasoning*: rather than a fixed amount of thinking, the model decides whether and how much to reason on each step, based on the complexity of the task at hand. Lower effort is faster and cheaper for straightforward work; higher effort buys deeper reasoning on complex problems.
+
+An effort level is a _behavioral signal, not a strict token cap_. It nudges the model toward more or less deliberation — trading token spend against capability — rather than hard-limiting the number of tokens it may use.
+
+The dial is exposed differently by different tools — for example as a `reasoning_effort` parameter on some APIs, or as a configurable effort level in coding agents such as Claude Code. As a rough guide for picking a level:
+
+* *Low* — mechanical work: renames, greps, formatting fixes, simple lookups.
+* *Medium / high* — most everyday coding and analysis.
+* *Top levels* — reserve for genuinely hard problems where deep reasoning pays off, since they burn considerably more tokens.
+
+This is the same idea as the _thinking level_ column in the task-matching table above: effort is a separate dial from model tier. Turning it up helps on problems with a verifiable chain of logic (maths, code, planning), while adding latency and cost for little benefit on language tasks.
+
 === Specialist models
 
 Specialist models are fine-tuned for a narrow domain or task, rather than general-purpose use. Perplexity's *Sonar* model is an example.
