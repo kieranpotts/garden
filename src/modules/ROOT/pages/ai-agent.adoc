@@ -44,6 +44,10 @@ There are two broad categories of harness in practice:
 
 * *Production/infrastructure harnesses* — Platforms for deploying, running, and governing agents in production systems. These manage agent lifecycles, enforce permission boundaries, wire observability pipelines, and coordinate multi-agent workflows. Examples include Microsoft Agent Framework, n8n, and OpenClaw.
 
+== Harness engineering
+
+Because the harness shapes an agent's behaviour more than the choice of model does, designing and operating it well is a discipline in its own right — *xref:ai-agent-harness-engineering.adoc[harness engineering]*. A well-designed harness gives the agent its tools, context, guardrails, and feedback loops, and constrains the solution space so the agent is more likely to do the right thing, and so that when it does go wrong, the problem is caught early and cheaply. See *xref:ai-agent-harness-engineering.adoc[harness engineering]* for a full treatment.
+
 == Agent development frameworks
 
 Frameworks and SDKs provide the infrastructure for building and orchestrating agents. It's important to distinguish between two types:
@@ -52,9 +56,7 @@ Frameworks and SDKs provide the infrastructure for building and orchestrating ag
 
 * *Agent harnesses* — Runtime environments and orchestration systems that execute agents, manage their lifecycle, control permissions, provide observability, and coordinate multi-agent workflows. Some of these blur the line by offering both development and runtime capabilities. Examples: Microsoft Agent Framework, n8n, OpenClaw.
 
-Many frameworks require a harness to run agents in production, while some frameworks include built-in harness capabilities. The distinction helps clarify whether you're looking for a tool to _write_ agent code or an environment to _run_ agents.
-
-The practice of designing, configuring, and operating agent harnesses — defining agent lifecycles, enforcing permission boundaries, wiring observability pipelines, and coordinating multi-agent workflows — is sometimes called *harness engineering*. It is an emerging discipline analogous to platform engineering in the DevOps world, concerned with the reliability, governance, and operational characteristics of agentic systems rather than the capabilities of the agents themselves.
+Many frameworks require a harness to run agents in production, while some frameworks include built-in harness capabilities. The distinction helps clarify whether you're looking for a tool to _write_ agent code or an environment to _run_ agents. Designing and operating these harnesses is a discipline in its own right — see *xref:ai-agent-harness-engineering.adoc[harness engineering]*.
 
 === General-purpose development frameworks
 
@@ -118,6 +120,7 @@ Agent orchestration platforms sit above individual agent frameworks. Rather than
 
 == See also
 
+* *xref:ai-agent-harness-engineering.adoc[Harness engineering]*
 * *xref:agent-skills.adoc[Agent skills]*
 * *xref:model-context-protocol.adoc[Model Context Protocol]*
 * *xref:agent2agent.adoc[Agent2Agent (A2A)]*
