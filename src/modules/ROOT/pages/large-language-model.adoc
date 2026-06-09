@@ -203,18 +203,26 @@ At the other end of the spectrum are small models that are optimized for speed r
 
 Somewhere in the middle are the general-purpose models that find a good balance between these factors, and can do most tasks well.
 
-.Rankings
-****
-A number of websites maintain rankings of LLMs based on various factors:
+=== Leaderboards and benchmarks
 
-* https://openrouter.ai/rankings[OpenRouter's rankings] are based on model usage on the OpenRouter platform (which provides a single API to access models from multiple providers).
-* https://artificialanalysis.ai/leaderboards/models[LLM Leaderboard] by Artificial Analysis
-* https://llm-stats.com/[llm-stats.com]
-* https://lmarena.ai/[LMArena]
-* https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard[Open LLM Leaderboard] on Hugging Face – benchmarks open-weight models across standardized tasks.
+Several independent sites aggregate model rankings, pricing, speed, and availability – useful for comparing options before committing to a model:
 
-See also https://www.tbench.ai/[Terminal Bench], which specifically benchmarks *xref:ai-agent.adoc[agentic front-ends]* backed by various models.
-****
+* https://artificialanalysis.ai/leaderboards/models[Artificial Analysis] – Cross-provider leaderboards spanning intelligence, output speed (tokens/sec), latency, context window, and price. The source for many of the model stats on this page.
+* https://openrouter.ai/rankings[OpenRouter rankings] – Rankings derived from real usage across the OpenRouter platform (a single API to many providers) – a useful signal of what developers actually deploy.
+* https://lmarena.ai/[LMArena] – Crowd-sourced, blind, head-to-head human voting (formerly LMSYS Chatbot Arena), reported as Elo ratings.
+* https://www.vellum.ai/llm-leaderboard[Vellum LLM Leaderboard] – Side-by-side comparison of benchmark scores, context windows, speed, latency, and per-token pricing, with a separate open-weight leaderboard.
+* https://llm-stats.com/[llm-stats.com] – Aggregated benchmark scores, pricing, and context-window comparisons.
+* https://epoch.ai/benchmarks[Epoch AI] – Research-grade tracking of frontier benchmark results over time.
+* https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard[Open LLM Leaderboard] (Hugging Face) – Standardized benchmarks for open-weight models.
+
+Specific benchmark suites measure particular capabilities:
+
+* https://www.swebench.com/[SWE-bench] – Tasks models with resolving real GitHub issues against real repositories. The human-validated https://www.swebench.com/verified.html[SWE-bench Verified] subset is the de-facto standard for coding ability and is widely cited (including in the model tables on this page). Maintained by Princeton and Stanford.
+* https://www.tbench.ai/[Terminal-Bench] – Benchmarks *xref:ai-agent.adoc[agentic front-ends]* on real terminal tasks, backed by various models.
+* https://aider.chat/docs/leaderboards/[Aider Polyglot] – Code-editing benchmark over 225 Exercism exercises across six programming languages.
+* https://livebench.ai/[LiveBench] – Contamination-resistant benchmark whose questions are refreshed monthly, covering maths, coding, reasoning, language, instruction-following, and data analysis.
+
+The model tables on this page also cite academic benchmarks, including *GPQA Diamond* (graduate-level science reasoning), *AIME* (competition mathematics), *MMLU* / *MMMU* (broad multi-subject knowledge), *ARC-AGI-2* (abstract reasoning), *Humanity's Last Exam (HLE)* (expert-level frontier questions), and *GDPval* (economically-valuable knowledge work).
 
 === Matching tasks to models
 
