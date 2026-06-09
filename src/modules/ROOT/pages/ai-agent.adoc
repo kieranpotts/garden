@@ -52,7 +52,7 @@ Because the harness shapes an agent's behaviour more than the choice of model do
 
 Frameworks and SDKs provide the infrastructure for building and orchestrating agents. It's important to distinguish between two types:
 
-* *Development frameworks* — Code libraries and SDKs used to write agent code. Examples: *xref:langchain.adoc[LangChain]*, LlamaIndex, Semantic Kernel. These are tools for _building_ agents.
+* *Development frameworks* — Code libraries and SDKs used to write agent code. Examples: *xref:ai-agent-orchestration.adoc[LangChain]*, LlamaIndex, Semantic Kernel. These are tools for _building_ agents.
 
 * *Agent harnesses* — Runtime environments and orchestration systems that execute agents, manage their lifecycle, control permissions, provide observability, and coordinate multi-agent workflows. Some of these blur the line by offering both development and runtime capabilities. Examples: Microsoft Agent Framework, n8n, OpenClaw.
 
@@ -60,7 +60,7 @@ Many frameworks require a harness to run agents in production, while some framew
 
 === General-purpose development frameworks
 
-* *xref:langchain.adoc[LangChain]* — Code library for building agents and LLM-powered applications. Emphasizes model interoperability, rapid prototyping, and an extensive ecosystem of integrations. Available in Python and JavaScript/TypeScript. (https://github.com/langchain-ai/langchain[Repo].)
+* *xref:ai-agent-orchestration.adoc[LangChain]* — Code library for building agents and LLM-powered applications. Emphasizes model interoperability, rapid prototyping, and an extensive ecosystem of integrations. Available in Python and JavaScript/TypeScript. Its LangGraph component handles *xref:ai-agent-orchestration.adoc[multi-agent orchestration]*. (https://github.com/langchain-ai/langchain[Repo].)
 
 * https://github.com/run-llama/llama_index[LlamaIndex] — Code library specialized in data ingestion, organization, and retrieval-augmented generation (RAG). Bridges enterprise data and LLM capabilities with 300+ integration packages.
 
@@ -92,25 +92,7 @@ See also *xref:ai-coding-assistant.adoc[AI coding assistants]*, many of which ha
 
 == Agent orchestration platforms
 
-Agent orchestration platforms sit above individual agent frameworks. Rather than providing tools to build a single agent, they coordinate _teams_ of agents working together toward shared goals — managing scheduling, delegation, budgets, and governance across a whole system of autonomous workers.
-
-* [Claude Cowork]
-
-* [AG2 (AutoGen successor)]
-
-* *xref:langchain.adoc[LangGraph]* — Library for stateful, graph-based multi-agent workflows; part of the LangChain ecosystem.
-
-* [CrewAI]
-
-* [Mastra] — JS/TS-first agent orchestration framework.
-
-* [MetaGPT]
-
-* [SuperAGI]
-
-* https://github.com/paperclipai/paperclip[Paperclip] — Open-source, self-hosted platform for running organizations of AI agents, with org charts, heartbeat-based scheduling, per-agent cost budgets, and full audit logging.
-
-* https://www.warp.dev/oz[Warp Oz] – Built in to the Warp agentic terminal, Oz orchestrates and tracks fleets of agents to automate work. https://www.youtube.com/watch?v=RWT3sh68PWE[Intro video.]
+Above individual agents sits the orchestration layer, which coordinates _teams_ of agents working together toward shared goals — managing scheduling, delegation, budgets, and governance across a whole system of autonomous workers. Platforms in this space include Claude Cowork, AG2, CrewAI, LangGraph, MetaGPT, and SuperAGI. See *xref:ai-agent-orchestration.adoc[AI agent orchestration]* for the full landscape.
 
 == Benchmarks
 
@@ -121,6 +103,7 @@ Agent orchestration platforms sit above individual agent frameworks. Rather than
 == See also
 
 * *xref:ai-agent-harness-engineering.adoc[Harness engineering]*
+* *xref:ai-agent-orchestration.adoc[AI agent orchestration]*
 * *xref:agent-skills.adoc[Agent skills]*
 * *xref:model-context-protocol.adoc[Model Context Protocol]*
 * *xref:agent2agent.adoc[Agent2Agent (A2A)]*
