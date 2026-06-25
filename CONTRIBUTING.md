@@ -58,4 +58,4 @@ maintenance: update pre-commit hook versions
 
 ## Agent skills
 
-This repo has a set of [agent skills](./.agents/skills/README.md) for maintaining the garden — sowing new entries, tending broken links, fertilizing stubs, pruning duplicates, grafting overgrown pages, entwining related entries, foraging for missing topics, and harvesting a digest of recent growth.
+This repo has a set of [agent skills](./.agents/skills/README.md) for maintaining the garden — sowing new entries, tending broken links, fertilizing stubs, pruning duplicates, grafting overgrown pages, entwining related entries, foraging for missing topics, cultivating style-guide conformance, and harvesting a digest of recent growth.
