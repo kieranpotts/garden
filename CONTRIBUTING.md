@@ -23,6 +23,35 @@ To add a new entry:
 
 Alternatively, to preview a draft entry *before* merging its PR: push the draft to a branch in this repo, then manually run the `website` repo's `Netlify Preview` GitHub Actions workflow with that branch name. This builds the aggregated site against the draft branch, instead of `latest/dev`, and posts a real preview URL.
 
+## Commit messages
+
+Commit messages MUST follow the format `<type>: <description>`, where `<description>` is lowercase, imperative mood, and has no trailing period. This is enforced both locally (a pre-commit hook at `.hooks/validate_commit_message.py`) and in CI (`.github/workflows/validate-commit-messages.yaml`) — keep the two in sync if the allowed types ever change.
+
+`<type>` MUST be one of:
+
+- `sow` — plant a new entry.
+- `tend` — fix broken links, fake links, orphaned pages, etc.
+- `fertilize` — expand a thin stub entry.
+- `prune` — merge or remove a duplicate entry.
+- `graft` — split an overgrown entry into separate pages.
+- `weed` — fix something incorrect or harmful (the gardening equivalent of `fix`).
+- `uproot` — revert a change (the gardening equivalent of `revert`).
+- `landscape` — restructure scripts/CI/tooling without changing behavior (the gardening equivalent of `refactor`).
+- `chore`, `format`, `maintenance` — standard types, for changes that aren't about garden content (eg. CI config, dependency bumps, whitespace).
+
+Examples:
+
+```
+sow: add entry for event sourcing
+fertilize: expand abstraction with examples and modular design xref
+tend: fix broken xref in ai-agent.adoc
+prune: merge adapative-software-development into adaptive-software-development
+weed: correct factual error in acid-principles
+uproot: revert accidental merge of draft entry
+landscape: restructure commit validation hook for clarity
+maintenance: update pre-commit hook versions
+```
+
 ## Agent skills
 
 This repo has a set of [agent skills](./.agents/skills/README.md) for maintaining the garden — sowing new entries, tending broken links, fertilizing stubs, pruning duplicates, grafting overgrown pages, and harvesting a digest of recent growth.

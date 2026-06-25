@@ -18,16 +18,18 @@ import sys
 VALID_TYPES = [
     # Subset of standard commit types:
     "chore",
-    "fix",
     "format",
     "maintenance",
-    "refactor",
-    "revert",
 
     # Repository-specific commit types:
-    "add",
-    "edit",
-    "delete",
+    "sow",        # plant a new entry
+    "tend",       # fix broken links, fake links, orphaned pages, etc.
+    "fertilize",  # expand a thin stub entry
+    "prune",      # merge/remove a duplicate entry
+    "graft",      # split an overgrown entry into separate pages
+    "weed",       # fix something incorrect or harmful (replaces fix)
+    "uproot",     # revert a change (replaces revert)
+    "landscape",  # shape things (replaces refactor)
 ]
 
 PATTERN = rf"^({'|'.join(VALID_TYPES)}): [a-z].*"
