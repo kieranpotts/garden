@@ -17,7 +17,9 @@ A personal digital garden — a curated knowledgebase of atomic notes on compute
 
 - `src/antora.yml`: Antora component descriptor.
 
-- `.agents/skills/`: On-demand agent skills specific to maintaining this garden — see [.agents/skills/README.md](./.agents/skills/README.md).
+- [`.agents/skills/`](./.agents/skills/README.md): On-demand agent skills specific to maintaining this garden.
+
+- [`docs/style-guide.md`](./docs/style-guide.md): Writing and AsciiDoc formatting conventions for garden entries..
 
 - `.github/workflows/`: CI checks (stale-issue flagging, label sync, commit message validation).
 
@@ -36,6 +38,8 @@ The capitalized words REQUIRED, MUST, MUST NOT, RECOMMENDED, SHOULD, SHOULD NOT,
 - New entries MUST be marked 🌱 Seedling. Maturity (🌱 Seedling, 🌿 Budding, 🌳 Evergreen, 🍂 Decaying) SHOULD only be promoted or demoted with explicit user confirmation — it's an editorial judgment, not a mechanical one.
 
 - Filenames MUST be kebab-case and match the page title.
+
+- New and edited entries MUST follow [docs/style-guide.md](./docs/style-guide.md).
 
 - This repo MUST NOT accept external contributions — see [CONTRIBUTING.md](./CONTRIBUTING.md).
 

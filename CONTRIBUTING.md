@@ -7,6 +7,8 @@
 
 This repo is an Antora content module (component `garden`). It has no build of its own. It's aggregated and built by the [`website`](https://github.com/kieranpotts/website) repo.
 
+See the [style guide](./docs/style-guide.md) for writing and formatting conventions.
+
 To add a new entry:
 
 1. Add a new `.adoc` file under `src/modules/ROOT/pages/`, named after the topic in kebab-case, eg. `event-sourcing.adoc`.
