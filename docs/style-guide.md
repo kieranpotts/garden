@@ -58,7 +58,7 @@ Don't bold anything else. Bold is not used for general emphasis.
 
 - Link to other garden pages with `xref:target.adoc[Link text]`. Use this for every mention of a concept that has its own page, even if it has been mentioned and linked already elsewhere on the same page.
 
-- Don't bold an `xref:` (`*xref:foo.adoc[Foo]*`). The `xref:` is already rendered as a link. It doesn't also need bold markup.
+- Bold every `xref:` (`*xref:foo.adoc[Foo]*`), per the [Bold text](#bold-text) rule above.
 
 - Cross-reference link text matches the natural reading of the sentence, not necessarily the target page's exact title, eg. `xref:asynchronous-communication.adoc[asynchronously]`.
 
