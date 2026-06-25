@@ -14,7 +14,7 @@ ____
 Everything in software architecture is a trade-off.
 ____
 
-Much of system design is about making trade-offs between high-level goals and constraints. For example, we might need to prioritize a system being highly *[available]* but less *[consistent]*, or we might need to prioritize consistency over availability.
+Much of system design is about making trade-offs between high-level goals and constraints. For example, we might need to prioritize a system being highly *[available]* but less *xref:consistency.adoc[consistent]*, or we might need to prioritize consistency over availability.
 
 These sorts of decisions have big impacts on system design, and they are expensive to change later on. *[Evolutionary design]* is best avoided at the highest abstractions of a system. However, it can't always be avoided, due to the xref:project-paradox.adoc[project paradox].
 
@@ -23,7 +23,7 @@ image::system-design-tradeoffs.webp[]
 Examples of trade-offs in system design include:
 
 * *Monolithic vs distributed architecture*: +
-*[Monolithic systems]* are simpler to develop and deploy, but they can be harder to maintain and they are limited to *[vertical scalability]*. *[Distributed software]* is more complex to develop and deploy, but individual parts are easier to maintain and there is greater scope for scalability using xref:horizontal-scaling.adoc[horizontal scaling] techniques. xref:modular-monolith.adoc[Modular monoliths] provide a middle ground and allow for the incremental transition of a monolith to distributed software.
+*[Monolithic systems]* are simpler to develop and deploy, but they can be harder to maintain and they are limited to *[vertical scalability]*. *xref:distributed-system.adoc[Distributed software]* is more complex to develop and deploy, but individual parts are easier to maintain and there is greater scope for scalability using xref:horizontal-scaling.adoc[horizontal scaling] techniques. xref:modular-monolith.adoc[Modular monoliths] provide a middle ground and allow for the incremental transition of a monolith to distributed software.
 
 * *Vertical vs horizontal scaling*: +
 xref:vertical-scaling.adoc[Vertical scaling] involves boosting the power of existing nodes (eg. CPU, RAM, storage). xref:horizontal-scaling.adoc[Horizontal scaling] involves adding more nodes. Scaling vertically is simpler but there's a physical limit to how much you can upgrade individual nodes, and it maintains a single point of failure. Scaling horizontally is more complicated, and it adds whole new categories of complexity such as those related to achieving xref:consistency.adoc[consistency], but it allows for almost limitless scaling.

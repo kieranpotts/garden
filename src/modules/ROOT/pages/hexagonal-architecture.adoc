@@ -19,7 +19,7 @@ An application will typically have many different inputs and outputs.
 
 image::hexagonal-architecture.svg[Hexagonal architecture]
 
-The choice of a hexagonal shape to represent this architectural concept is arbitrary. It suggests there are typically multiple inputs on the "driving" side of an application and multiple outputs on its "driven" side. In the context of *[distributed software]* or xref:modular-monolith.adoc[modular monoliths], multiple services or components may interface with each other through connections made via their ports (using adapters), so the whole system – from a *[conceptual]* view – forms a honeycomb pattern.
+The choice of a hexagonal shape to represent this architectural concept is arbitrary. It suggests there are typically multiple inputs on the "driving" side of an application and multiple outputs on its "driven" side. In the context of *xref:distributed-system.adoc[distributed software]* or xref:modular-monolith.adoc[modular monoliths], multiple services or components may interface with each other through connections made via their ports (using adapters), so the whole system – from a *[conceptual]* view – forms a honeycomb pattern.
 
 image::honeycomb-pattern.svg[Honeycomb pattern]
 
@@ -40,7 +40,7 @@ For the same reason, applications become less tightly coupled to any particular 
 
 For the ports-and-adapters pattern to effectively deliver these promised benefits, it is important that business logic does not leak into the ports-and-adapters layer. This is the same constraint as for *[n-tier architecture]*, in which business logic should not leak into either the uppermost UI/presentation layer or the bottommost persistence layer.
 
-The main trade-off is that hexagonal architecture adds a lot of *[accidental complexity]*. There is more code to maintain, and potentially more effort involved in running applications in development and other environments. This additional complexity may not be worthwhile for small, trivial applications.
+The main trade-off is that hexagonal architecture adds a lot of *xref:complexity.adoc[accidental complexity]*. There is more code to maintain, and potentially more effort involved in running applications in development and other environments. This additional complexity may not be worthwhile for small, trivial applications.
 
 == References
 

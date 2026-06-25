@@ -1,0 +1,13 @@
+= Resilience
+
+Resilience is the ability of a system to continue functioning, in a degraded or limited capacity, in the presence of failure — rather than failing completely. It is closely related to, but distinct from, *xref:fault-tolerance.adoc[fault tolerance]*: fault tolerance is about preventing a failure from causing harm at all, while resilience accepts that failures will happen and focuses on the system's ability to absorb them and keep operating, or to recover quickly once they occur.
+
+Resilience is a particularly important *xref:quality-attributes.adoc[quality attribute]* of *xref:distributed-system.adoc[distributed software]*, where the number of independent components — and therefore the number of independent ways things can fail — is much higher than in a single-node system. Several design choices contribute to resilience:
+
+* *xref:isolation.adoc[Isolation]* between components, so that a failure in one does not cascade into others.
+* *xref:circuit-breaker.adoc[Circuit breakers]* and *xref:bulkhead.adoc[bulkheads]*, which contain the blast radius of a failing dependency.
+* *xref:retry.adoc[Retries]* with backoff, for transient failures that are likely to resolve on their own.
+* *xref:redundancy.adoc[Redundancy]*, so that a failed component can be replaced or routed around without the system as a whole going down.
+* *xref:disaster-recovery.adoc[Disaster recovery]* planning, for the failure modes that redundancy alone cannot absorb.
+
+Architectures with a high degree of decoupling between components — such as *xref:peer-to-peer-architecture.adoc[peer-to-peer networks]*, which have no single point of failure, and the *xref:saga.adoc[saga pattern]*, which avoids the blocking failure modes of two-phase commit — tend to exhibit greater resilience than tightly-coupled alternatives, at the cost of additional design and operational complexity.

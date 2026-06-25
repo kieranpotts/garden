@@ -24,7 +24,7 @@ Distribution is not always a deliberate architectural choice, however. When an a
 
 But distribution of processing and data has significant *[trade-offs]* in xref:system-design.adoc[system design].
 
-Although individual units within a distributed system may be simpler and more *[resilient]* due to increased xref:isolation.adoc[isolation], overall a distributed system will always have more *[points of failure]* and a higher degree of *[accidental complexity]* than single-node systems with comparable functionality. Distributed software is inherently *[brittle]* because you're introducing internal network calls, which are subject to *xref:fault-tolerance.adoc[network failures]* and greater operational constraints like xref:latency.adoc[latency] and *[bandwidth]*.
+Although individual units within a distributed system may be simpler and more *[resilient]* due to increased xref:isolation.adoc[isolation], overall a distributed system will always have more *[points of failure]* and a higher degree of *xref:complexity.adoc[accidental complexity]* than single-node systems with comparable functionality. Distributed software is inherently *[brittle]* because you're introducing internal network calls, which are subject to *xref:fault-tolerance.adoc[network failures]* and greater operational constraints like xref:latency.adoc[latency] and *[bandwidth]*.
 
 Reasoning about *xref:concurrency.adoc[concurrency]*, managing *xref:consistency.adoc[data consistency]*, and designing *xref:monitoring.adoc[monitoring]* solutions, are other concerns that are particularly challenging in distributed software design.
 
@@ -36,7 +36,7 @@ _Distributed programming is hard._ The main challenges in designing distributed 
 
 * *Concurrency and consistency*: Because distributed systems generally use asynchronous communication between services, managing xref:concurrency.adoc[concurrency] and ensuring *xref:consistency.adoc[eventual consistency]* become key design concerns. *xref:cap-theorem.adoc[CAP theorem]* is relevant in distributed systems that *[replicate]* data between nodes.
 
-* *Observability*: xref:monitoring.adoc[Monitoring], xref:logging.adoc[logging], and *[debugging]* all become much more complex in distributed systems. xref:observability.adoc[Observability] and especially *[distributed tracing]* tools are specifically designed to address these challenges.
+* *Observability*: xref:monitoring.adoc[Monitoring], xref:logging.adoc[logging], and *[debugging]* all become much more complex in distributed systems. xref:observability.adoc[Observability] and especially *xref:tracing.adoc[distributed tracing]* tools are specifically designed to address these challenges.
 
 * xref:testing.adoc[Testing], too, is much more challenging in distributed systems. It is harder, for example, to do proper integration tests to validate a whole system, compared to monolithic systems where all the components run in the same process. There tends to be increased reliance upon service mocks, which reduces confidence in correctness of the tests.
 
