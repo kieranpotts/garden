@@ -10,6 +10,12 @@ This guide covers writing style and AsciiDoc formatting. For the contribution wo
 
 - Singular and atomic. One topic per file. Don't use `and`/`&` in a filename to bundle two concepts into one page. Create separate pages and cross-reference them instead.
 
+## Atomicity
+
+- Keep each page focused on its own topic. If a paragraph is really explaining a different concept at length, that's a sign that concept needs (or already has) its own page. Cross-reference it with `xref:` instead.
+
+- It's fine for an entry to be short. A few paragraphs that clearly state what a thing is, why it matters, and how it relates to neighboring topics, is a complete page. It doesn't need padding to feel "finished".
+
 ## Title and headings
 
 - The document title (`= Title`) is sentence case. Capitalize the first word and any proper nouns or acronyms, lowercase everything else. Example: `= Event-driven architecture (EDA)`, not `= Event-Driven Architecture`.
@@ -38,17 +44,21 @@ This guide covers writing style and AsciiDoc formatting. For the contribution wo
 
 - In a bullet list, prefer a colon to a hyphen/dash to separate a term from its description, eg. `` `sow`: Plant a new entry. `` rather than `` `sow` — plant a new entry. ``. Capitalize the description as its own sentence.
 
-- Keep each page focused on its own topic. If a paragraph is really explaining a different concept at length, that's a sign that concept needs (or already has) its own page. Cross-reference it with `xref:` instead.
+## Bold text
 
-- It's fine for an entry to be short. A few paragraphs that clearly state what a thing is, why it matters, and how it relates to neighboring topics, is a complete page. It doesn't need padding to feel "finished".
+Only two things are ever bold in body text:
+
+- Cross-references: `xref:target.adoc[Link text]`, eg. `xref:resilience.adoc[resilience]`. Use this for every mention of a concept that has its own page.
+
+- Technical terms that don't yet have a dedicated topic page, but could warrant one in the future, eg. `*event-carried state transfer*`. This is a deliberate signal, not a placeholder error. It marks a candidate for a future `sow` (see the `forage` skill).
+
+Don't bold anything else. Bold is not used for general emphasis.
 
 ## Cross-references
 
-- Link to other garden pages with `xref:target.adoc[Link text]`, eg. `xref:resilience.adoc[resilience]`. Use this for every mention of a concept that has its own page.
+- Link to other garden pages with `xref:target.adoc[Link text]`. Use this for every mention of a concept that has its own page, even if it has been mentioned and linked already elsewhere on the same page.
 
-- Never write a fake link. Bracketed or bolded text that looks like a link but isn't (`*[some concept]*` or `*some concept*` where a real page exists). If a page exists for that concept, link it with `xref:`. If no page exists yet, write the term as plain text. Don't invent a fake-looking link as a placeholder for a future page.
-
-- Don't double up `xref:` inside bold markup (`*xref:foo.adoc[Foo]*`). The link itself is sufficient signal. Bold is for genuine emphasis elsewhere in the text.
+- Don't bold an `xref:` (`*xref:foo.adoc[Foo]*`). The `xref:` is already rendered as a link. It doesn't also need bold markup.
 
 - Cross-reference link text matches the natural reading of the sentence, not necessarily the target page's exact title, eg. `xref:asynchronous-communication.adoc[asynchronously]`.
 
