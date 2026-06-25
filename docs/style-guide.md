@@ -22,9 +22,21 @@ This guide covers writing style and AsciiDoc formatting. For the contribution wo
 
 ## Written style
 
+- Write in American English.
+
 - Write in prose paragraphs.
 
 - Bullet lists are for genuine enumerations (examples, steps, trade-offs), not a substitute for sentences.
+
+- Prefer simple sentences to complex ones. If a sentence has multiple clauses, consider splitting it into two or more simple sentences.
+
+- Avoid semicolons in sentences. Split into multiple sentences instead.
+
+- Where a sentence needs a dash to set off a parenthetical or a pause, use an en dash (–), not a hyphen (-) or an em dash (—).
+
+- A colon must only be followed by a list. Don't use a colon to join two clauses where a period or a new sentence would do.
+
+- In a bullet list, prefer a colon to a hyphen/dash to separate a term from its description, eg. `` `sow`: Plant a new entry. `` rather than `` `sow` — plant a new entry. ``. Capitalize the description as its own sentence.
 
 - Keep each page focused on its own topic. If a paragraph is really explaining a different concept at length, that's a sign that concept needs (or already has) its own page. Cross-reference it with `xref:` instead.
 

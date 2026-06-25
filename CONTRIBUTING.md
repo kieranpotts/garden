@@ -31,16 +31,16 @@ Commit messages MUST follow the format `<type>: <description>`, where `<descript
 
 `<type>` MUST be one of:
 
-- `sow` — plant a new entry.
-- `tend` — fix broken links, fake links, orphaned pages, etc.
-- `fertilize` — expand a thin stub entry.
-- `prune` — merge or remove a duplicate entry.
-- `graft` — split an overgrown entry into separate pages.
-- `entwine` — add missing cross-references between existing entries.
-- `weed` — fix something incorrect or harmful (the gardening equivalent of `fix`).
-- `uproot` — revert a change (the gardening equivalent of `revert`).
-- `landscape` — restructure scripts/CI/tooling without changing behavior (the gardening equivalent of `refactor`).
-- `chore`, `format`, `maintenance` — standard types, for changes that aren't about garden content (eg. CI config, dependency bumps, whitespace).
+- `sow`: Plant a new entry.
+- `tend`: Fix broken links, fake links, orphaned pages, etc.
+- `fertilize`: Expand a thin stub entry.
+- `prune`: Merge or remove a duplicate entry.
+- `graft`: Split an overgrown entry into separate pages.
+- `entwine`: Add missing cross-references between existing entries.
+- `weed`: Fix something incorrect or harmful (the gardening equivalent of `fix`).
+- `uproot`: Revert a change (the gardening equivalent of `revert`).
+- `landscape`: Restructure scripts/CI/tooling without changing behavior (the gardening equivalent of `refactor`).
+- `chore`, `format`, `maintenance`: Standard types, for changes that aren't about garden content (eg. CI config, dependency bumps, whitespace).
 
 Examples:
 
