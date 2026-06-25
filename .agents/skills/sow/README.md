@@ -1,0 +1,17 @@
+# Sow
+
+Plants a brand-new entry in the digital garden.
+
+Researches a topic, writes an atomic AsciiDoc page, and cross-references it to relevant adjacent entries already in the garden.
+
+## What it does
+
+Given a topic, the agent checks it doesn't already exist, researches it, writes a focused `.adoc` page under `src/modules/ROOT/pages/`, links it to and from related entries, and adds it to `index.adoc`, marked as a seedling 🌱.
+
+## How to invoke
+
+> Sow a new entry for event sourcing.
+
+> Plant a page on the circuit breaker pattern.
+
+No arguments beyond the topic itself. The skill asks for confirmation if the topic is ambiguous or might already exist.

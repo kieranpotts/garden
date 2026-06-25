@@ -22,3 +22,7 @@ To add a new entry:
 6. To preview the changes, rebuild the `website` repo. (The `website` repo fetches content sources from the `latest/dev` branch of the remote `garden` repository – it is not currently possible to preview local changes.)
 
 Alternatively, to preview a draft entry *before* merging its PR: push the draft to a branch in this repo, then manually run the `website` repo's `Netlify Preview` GitHub Actions workflow with that branch name. This builds the aggregated site against the draft branch, instead of `latest/dev`, and posts a real preview URL.
+
+## Agent skills
+
+This repo has a set of [agent skills](./.agents/skills/README.md) for maintaining the garden — sowing new entries, tending broken links, fertilizing stubs, pruning duplicates, grafting overgrown pages, and harvesting a digest of recent growth.
