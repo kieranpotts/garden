@@ -1,6 +1,10 @@
 # Garden
 
-**🚧 Under reconstruction.**
+**Source content for my digital garden, published at https://kieranpotts.com/garden.**
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for how Digital Garden content is created and published.
 
 -----
 
