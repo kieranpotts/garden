@@ -2,7 +2,7 @@
 
 GraphQL is a query language for APIs and a runtime for executing those queries, developed internally at Facebook in 2012 and open-sourced in 2015. It was designed to address the over-fetching and under-fetching problems common in *xref:rest.adoc[REST]* APIs, where response shapes are fixed by the server.
 
-With GraphQL, clients declare exactly what data they need in each request. The server returns precisely that data — no more, no less — in a single response.
+With GraphQL, clients declare exactly what data they need in each request. The server returns precisely that data – no more, no less – in a single response.
 
 == Schema and type system
 
@@ -10,7 +10,7 @@ Every GraphQL API is defined by a _schema_ written in the Schema Definition Lang
 
 === Scalar types
 
-Scalar types represent leaf values — they have no sub-fields. Built-in scalars are `Int`, `Float`, `String`, `Boolean`, and `ID`. Custom scalars (e.g. `DateTime`, `URL`) can be defined.
+Scalar types represent leaf values – they have no sub-fields. Built-in scalars are `Int`, `Float`, `String`, `Boolean`, and `ID`. Custom scalars (e.g. `DateTime`, `URL`) can be defined.
 
 === Object types
 
@@ -116,7 +116,7 @@ query {
 
 == Mutations
 
-Mutations modify server-side data. Like queries, they return exactly the fields requested — useful for immediately retrieving the updated state after a write:
+Mutations modify server-side data. Like queries, they return exactly the fields requested – useful for immediately retrieving the updated state after a write:
 
 ----
 mutation CreateBook($input: CreateBookInput!) {
@@ -143,7 +143,7 @@ subscription {
 
 == Resolvers
 
-The schema defines _what_ data is available; resolvers define _how_ it is fetched. Each field in the schema can have a resolver function that fetches or computes the field's value — from a database, another service, or anywhere else.
+The schema defines _what_ data is available. Resolvers define _how_ it is fetched. Each field in the schema can have a resolver function that fetches or computes the field's value – from a database, another service, or anywhere else.
 
 The GraphQL execution engine calls resolvers for each requested field, assembling the response. A DataLoader pattern is commonly used to batch multiple resolver calls into a single database query, avoiding the N+1 query problem.
 
@@ -203,8 +203,8 @@ Introspection powers tooling such as GraphiQL (an in-browser IDE) and automatic 
 | Built-in via subscriptions
 
 | Learning curve
-| Low — uses familiar HTTP semantics
-| Higher — requires understanding of schema, resolvers, and query language
+| Low – uses familiar HTTP semantics
+| Higher – requires understanding of schema, resolvers, and query language
 
 | Tooling
 | Vast, mature ecosystem
@@ -213,33 +213,33 @@ Introspection powers tooling such as GraphiQL (an in-browser IDE) and automatic 
 
 == Advantages
 
-* *Precise data fetching* — Clients receive exactly the fields requested; no wasted bandwidth.
-* *Single request for related data* — Nested queries replace multiple REST round trips.
-* *Strongly typed schema* — The schema acts as documentation and enables early error detection.
-* *Introspection and tooling* — Self-documenting APIs; rich IDE support through introspection.
-* *Evolutionary API design* — Fields can be deprecated in place; no forced versioning.
+* *Precise data fetching*: Clients receive exactly the fields requested. No wasted bandwidth.
+* *Single request for related data*: Nested queries replace multiple REST round trips.
+* *Strongly typed schema*: The schema acts as documentation and enables early error detection.
+* *Introspection and tooling*: Self-documenting APIs. Rich IDE support through introspection.
+* *Evolutionary API design*: Fields can be deprecated in place. No forced versioning.
 
 == Disadvantages
 
-* *Complexity* — Schema design, resolver implementation (including N+1 mitigation), and query depth management add overhead.
-* *HTTP caching* — REST benefits from URL-based HTTP caching; GraphQL typically uses `POST` requests to a single endpoint, making standard HTTP caching harder to apply.
-* *Query cost and rate limiting* — Deeply nested or highly complex queries can be expensive to execute. Rate limiting based on request count is insufficient; query complexity analysis or depth limiting is needed.
-* *Not always the right fit* — For simple CRUD APIs with well-defined, stable response shapes, REST is simpler to implement and operate.
+* *Complexity*: Schema design, resolver implementation (including N+1 mitigation), and query depth management add overhead.
+* *HTTP caching*: REST benefits from URL-based HTTP caching. GraphQL typically uses `POST` requests to a single endpoint, making standard HTTP caching harder to apply.
+* *Query cost and rate limiting*: Deeply nested or highly complex queries can be expensive to execute. Rate limiting based on request count is insufficient. Query complexity analysis or depth limiting is needed.
+* *Not always the right fit*: For simple CRUD APIs with well-defined, stable response shapes, REST is simpler to implement and operate.
 
 == When to use GraphQL
 
 GraphQL is a good fit when:
 
 * The API is consumed by multiple clients (web, mobile, third-party) with different data needs.
-* Reducing bandwidth matters — particularly for mobile clients on constrained connections.
+* Reducing bandwidth matters – particularly for mobile clients on constrained connections.
 * The data graph is complex with many interrelated types that clients need to traverse.
 * Rapid frontend iteration is more important than the cost of schema and resolver maintenance.
 
-*xref:rest.adoc[REST]* remains preferable for simple CRUD APIs, public APIs where HTTP caching is important, or teams without GraphQL experience. *xref:grpc.adoc[gRPC]* is preferable for high-performance internal service-to-service communication.
+xref:rest.adoc[REST] remains preferable for simple CRUD APIs, public APIs where HTTP caching is important, or teams without GraphQL experience. xref:grpc.adoc[gRPC] is preferable for high-performance internal service-to-service communication.
 
 == See also
 
-* *xref:rest.adoc[Representational State Transfer (REST)]* — The architectural style GraphQL was designed to complement and, in some cases, replace.
-* *xref:grpc.adoc[gRPC]* — A high-performance RPC framework, an alternative for internal microservice communication.
-* *xref:http-api.adoc[HTTP API]* — The broader category of APIs built on HTTP.
-* *xref:http.adoc[HyperText Transfer Protocol (HTTP)]* — The underlying transport protocol.
+* xref:rest.adoc[Representational State Transfer (REST)]: The architectural style GraphQL was designed to complement and, in some cases, replace.
+* xref:grpc.adoc[gRPC]: A high-performance RPC framework, an alternative for internal microservice communication.
+* xref:http-api.adoc[HTTP API]: The broader category of APIs built on HTTP.
+* xref:http.adoc[HyperText Transfer Protocol (HTTP)]: The underlying transport protocol.

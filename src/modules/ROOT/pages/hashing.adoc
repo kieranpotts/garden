@@ -2,10 +2,10 @@
 
 Hash functions are ubiquitous in computing. They are used in databases to optimise queries, in data structures to improve lookup speed, and in security to verify data integrity and protect stored secrets. Almost every interaction with technology involves hash functions in some way.
 
-A *hash function* is a function that takes an input — usually a string — and produces a number. Two properties are fundamental:
+A *hash function* is a function that takes an input – usually a string – and produces a number. Two properties are fundamental:
 
 * *Deterministic*: the same input always produces the same output.
-* *Bounded*: the output is always within a defined range. The range depends on the hash function — some produce 32-bit integers (0 to ~4 billion), others go larger.
+* *Bounded*: the output is always within a defined range. The range depends on the hash function – some produce 32-bit integers (0 to ~4 billion), others go larger.
 
 Because the input domain (any possible string) is far larger than the output range (a fixed set of numbers), two different inputs can produce the same output. This is called a *collision*.
 
@@ -21,17 +21,17 @@ Bad hash functions tend to expose their weaknesses on *non-random* input. A func
 
 A good hash function has a strong *avalanche effect*: flipping a single bit in the input should, on average, flip approximately 50% of the bits in the output. This property ensures that even very similar inputs produce very different outputs, preventing patterns and reducing collisions.
 
-A function that lacks the avalanche effect — where small input changes produce small output changes — is vulnerable to structured input producing clustered outputs.
+A function that lacks the avalanche effect – where small input changes produce small output changes – is vulnerable to structured input producing clustered outputs.
 
 == Hash maps
 
 The most common application of hash functions in everyday programming is the *hash map* (also known as a hash table, dictionary, or object in various languages). A hash map stores key-value pairs and provides O(1) average-case lookup.
 
-Internally, a hash map maintains an array of *buckets* — each bucket is a list of key-value pairs. To store a pair, the key is passed through a hash function; the result (modulo the number of buckets) selects which bucket to use. To retrieve a value, the same bucket is located via the same hash, then the bucket is scanned for a matching key.
+Internally, a hash map maintains an array of *buckets* – each bucket is a list of key-value pairs. To store a pair, the key is passed through a hash function. The result (modulo the number of buckets) selects which bucket to use. To retrieve a value, the same bucket is located via the same hash, then the bucket is scanned for a matching key.
 
 The hash function is used only to identify the bucket. The key comparison within the bucket is always exact. The purpose of hashing is to reduce the number of comparisons needed: with good distribution, each bucket holds only a small fraction of all stored pairs.
 
-If the hash function produces a poor distribution, many keys land in the same bucket. In the worst case — a function that always returns the same value — every key is in one bucket and lookups degrade to O(n), no better than a plain list.
+If the hash function produces a poor distribution, many keys land in the same bucket. In the worst case – a function that always returns the same value – every key is in one bucket and lookups degrade to O(n), no better than a plain list.
 
 == Collisions in practice
 
@@ -49,7 +49,7 @@ The character-sum function sums the ASCII values of each character — a fast bu
 
 == Manufactured collisions and HashDoS
 
-Collisions are not only accidental. Because hash functions are deterministic, it is possible to *brute-force* find inputs that collide for a specific function und seed value. An attacker who knows the hash function in use can craft a set of keys that all map to the same bucket, intentionally degrading performance.
+Collisions are not only accidental. Because hash functions are deterministic, it is possible to *brute-force* find inputs that collide for a specific function and seed value. An attacker who knows the hash function in use can craft a set of keys that all map to the same bucket, intentionally degrading performance.
 
 This attack is called *HashDoS*. It was exploited in the mid-2000s against web servers: HTTP requests contain headers as key-value pairs, which servers typically store in a hash map. By sending requests with many crafted headers that all collide, an attacker could force a server to spend excessive time on bucket searches, causing a denial of service.
 
@@ -61,8 +61,8 @@ The seed does not affect hash map correctness, because the seed is constant for 
 
 == See also
 
-* *xref:bloom-filter.adoc[Bloom filter]* — uses multiple hash functions to implement a probabilistic set membership test.
-* *xref:consistent-hashing.adoc[Consistent hashing]* — a hash ring technique used in distributed systems to minimise key remapping when nodes are added or removed.
-* *xref:rainbow-table.adoc[Rainbow table]* — a precomputed table for reversing hash functions, relevant to password storage security.
-* *xref:salt.adoc[Salt]* — random data added to input before hashing, used in password storage to prevent rainbow table attacks.
-* *xref:cryptography.adoc[Cryptography]* — cryptographic hash functions (SHA-256, etc.) are a distinct subclass designed for security properties beyond distribution and speed.
+* xref:bloom-filter.adoc[Bloom filter]: Uses multiple hash functions to implement a probabilistic set membership test.
+* xref:consistent-hashing.adoc[Consistent hashing]: A hash ring technique used in distributed systems to minimise key remapping when nodes are added or removed.
+* xref:rainbow-table.adoc[Rainbow table]: A precomputed table for reversing hash functions, relevant to password storage security.
+* xref:salt.adoc[Salt]: Random data added to input before hashing, used in password storage to prevent rainbow table attacks.
+* xref:cryptography.adoc[Cryptography]: Cryptographic hash functions (SHA-256, etc.) are a distinct subclass designed for security properties beyond distribution and speed.

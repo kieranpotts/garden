@@ -1,6 +1,6 @@
 = Transformer architecture
 
-The transformer is the deep learning architecture that underpins modern *xref:large-language-model.adoc[large language models (LLMs)]*. It was introduced by researchers at Google in the 2017 paper https://research.google/pubs/attention-is-all-you-need/["Attention Is All You Need"]. Almost every major AI model today — including GPT, Claude, and Gemini — is built on the transformer architecture.
+The transformer is the deep learning architecture that underpins modern xref:large-language-model.adoc[large language models (LLMs)]. It was introduced by researchers at Google in the 2017 paper https://research.google/pubs/attention-is-all-you-need/["Attention Is All You Need"]. Almost every major AI model today – including GPT, Claude, and Gemini – is built on the transformer architecture.
 
 == Background
 
@@ -8,7 +8,7 @@ Before transformers, the dominant approach to sequence modeling was recurrent ne
 
 Transformers solved both problems. By removing recurrence entirely and processing all tokens in parallel, training time dropped dramatically and models could be scaled using additional compute.
 
-The trade-off is that attention computation is quadratic in the context length — for every token, the model attends to every other token — but this proved acceptable given the training speed gains at scale.
+The trade-off is that attention computation is quadratic in the context length – for every token, the model attends to every other token – but this proved acceptable given the training speed gains at scale.
 
 == Attention mechanism
 
@@ -22,7 +22,7 @@ Formally: Attention(Q, K, V) = softmax(QKᵀ / √dₖ) · V
 
 == Positional encoding
 
-Because the attention mechanism has no inherent sense of order — it treats the input as a set, not a sequence — position information must be injected explicitly. The original transformer adds a *positional encoding* to each token's embedding before it enters the network. The classic approach uses sinusoidal functions. Modern models more commonly use *RoPE* (Rotary Position Embedding), which encodes position directly into the attention score computation.
+Because the attention mechanism has no inherent sense of order – it treats the input as a set, not a sequence – position information must be injected explicitly. The original transformer adds a *positional encoding* to each token's embedding before it enters the network. The classic approach uses sinusoidal functions. Modern models more commonly use *RoPE* (Rotary Position Embedding), which encodes position directly into the attention score computation.
 
 == Architecture variants
 
@@ -36,18 +36,18 @@ Modern LLMs typically use one of two variants:
 
 == Training approach
 
-Transformers are pre-trained by *self-supervised learning* — typically next-token prediction (predicting the next token in a sequence). This requires no labeled data and scales directly with the size of the training corpus.
+Transformers are pre-trained by *self-supervised learning* – typically next-token prediction (predicting the next token in a sequence). This requires no labeled data and scales directly with the size of the training corpus.
 
-After pre-training, models are typically fine-tuned on task-specific datasets. See *xref:large-language-model.adoc[large language models]* for more on the training pipeline.
+After pre-training, models are typically fine-tuned on task-specific datasets. See xref:large-language-model.adoc[large language models] for more on the training pipeline.
 
 == Broader applications
 
-While transformers were originally developed for NLP, the architecture has since been applied to images (vision transformers), speech (Whisper), video, protein folding (AlphaFold), robotics, and game-playing. The key generalisation is that any domain whose data can be tokenised — broken into a discrete sequence of units — can be processed by a transformer.
+While transformers were originally developed for NLP, the architecture has since been applied to images (vision transformers), speech (Whisper), video, protein folding (AlphaFold), robotics, and game-playing. The key generalisation is that any domain whose data can be tokenised – broken into a discrete sequence of units – can be processed by a transformer.
 
 ''''
 
 == See also
 
-* *xref:large-language-model.adoc[Large language model (LLM)]*
-* *xref:machine-learning.adoc[Machine learning]*
-* *xref:generative-ai.adoc[Generative AI]*
+* xref:large-language-model.adoc[Large language model (LLM)]
+* xref:machine-learning.adoc[Machine learning]
+* xref:generative-ai.adoc[Generative AI]

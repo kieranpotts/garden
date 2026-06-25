@@ -1,19 +1,19 @@
 = Harness engineering
 
-An agent harness is the execution environment and control framework that wraps an *xref:ai-agent.adoc[AI agent]* so it can operate reliably against tools, systems, and tasks. *Harness engineering* is the discipline of designing, building, and operating these harnesses.
+An agent harness is the execution environment and control framework that wraps an xref:ai-agent.adoc[AI agent] so it can operate reliably against tools, systems, and tasks. Harness engineering is the discipline of designing, building, and operating these harnesses.
 
 == What a harness does
 
 If the model is the decision-maker, the harness is the runtime infrastructure that lets it act — the scaffolding around the model that handles:
 
-* *Tool invocation* — shell, APIs, browser, database, code execution.
-* *State management* — memory, context, scratchpads.
-* *Input/output mediation* — formatting prompts, validating outputs.
-* *Safety guardrails* — permissions, sandboxing, rate limits.
-* *Observation and feedback loops* — capturing tool results and feeding them back.
-* *Task orchestration* — retry logic, planning, branching, checkpoints.
+* `Tool invocation`: Shell, APIs, browser, database, code execution.
+* `State management`: Memory, context, scratchpads.
+* `Input/output mediation`: Formatting prompts, validating outputs.
+* `Safety guardrails`: Permissions, sandboxing, rate limits.
+* `Observation and feedback loops`: Capturing tool results and feeding them back.
+* `Task orchestration`: Retry logic, planning, branching, checkpoints.
 
-A useful analogy: if the *agent is the driver*, the *harness is the car, the dashboard, the rules of the road, and the telemetry system*. The driver decides; everything around them determines what they can safely do and how well they can see the consequences.
+A useful analogy: if the agent is the driver, the harness is the car, the dashboard, the rules of the road, and the telemetry system. The driver decides. Everything around them determines what they can safely do and how well they can see the consequences.
 
 == Concrete examples
 
@@ -56,11 +56,11 @@ The harness translates a high-level intent — _"click the login button"_ — in
 
 == Why it's called a harness
 
-The term is borrowed from an older practice: the *xref:test-harness.adoc[test harness]*, the *xref:scaffolding.adoc[scaffolding]* of drivers, stubs, and fixtures that wraps a unit of code so it can be exercised in isolation — supplying its inputs, invoking it repeatedly, and capturing its outputs for inspection. An agent harness plays the same role for a model: it wraps the model in a controlled, observable environment, feeds it inputs (prompts, context, tools), and captures its outputs (tool calls and their results) so they can be validated and fed back. In both cases the harness is not the thing being run — it is the rig that makes running it safe, repeatable, and observable.
+The term is borrowed from an older practice: the xref:test-harness.adoc[test harness], the xref:scaffolding.adoc[scaffolding] of drivers, stubs, and fixtures that wraps a unit of code so it can be exercised in isolation — supplying its inputs, invoking it repeatedly, and capturing its outputs for inspection. An agent harness plays the same role for a model: it wraps the model in a controlled, observable environment, feeds it inputs (prompts, context, tools), and captures its outputs (tool calls and their results) so they can be validated and fed back. In both cases the harness is not the thing being run — it is the rig that makes running it safe, repeatable, and observable.
 
 == Why it matters
 
-Recall that _Agent = Model + Harness_: the model is supplied by a third party and improves on its own schedule, so the harness is the part of the system a team actually controls — and, in practice, the part that most determines whether an agent is useful and trustworthy. The harness shapes what an agent can do far more than the choice of model alone; two agents powered by the same model but run inside different harnesses will behave very differently.
+Recall that _Agent = Model + Harness_: the model is supplied by a third party and improves on its own schedule, so the harness is the part of the system a team actually controls, and, in practice, the part that most determines whether an agent is useful and trustworthy. The harness shapes what an agent can do far more than the choice of model alone. Two agents powered by the same model but run inside different harnesses will behave very differently.
 
 The motivation is trust and reliability. A capable model let loose without constraints produces work that is hard to review and easy to get wrong. A well-designed harness _constrains the solution space_ so the agent is more likely to do the right thing, and so that when it does go wrong, the problem is caught early and cheaply.
 
@@ -68,9 +68,9 @@ The motivation is trust and reliability. A capable model let loose without const
 
 Harness engineering is easily confused with two neighbouring practices that also shape an LLM's behaviour. The difference is one of altitude:
 
-* *xref:context-engineering.adoc#prompt-engineering[Prompt engineering]* shapes the _instructions_ given to the model — how a task is phrased, what examples and output format are supplied. It operates on a single request.
-* *xref:context-engineering.adoc[Context engineering]* is the broader practice of curating everything in the context window: system prompts, retrieved documents, conversation history, and tool outputs. Prompt engineering is a subset of it.
-* *Harness engineering* operates one level out again. Where prompt and context engineering shape what the model _sees_ (its inputs), harness engineering shapes what the model _can do_ and how it is controlled — its action space, tools, guardrails, and feedback loops.
+* xref:context-engineering.adoc#prompt-engineering[Prompt engineering] shapes the _instructions_ given to the model — how a task is phrased, what examples and output format are supplied. It operates on a single request.
+* xref:context-engineering.adoc[Context engineering] is the broader practice of curating everything in the context window: system prompts, retrieved documents, conversation history, and tool outputs. Prompt engineering is a subset of it.
+* Harness engineering operates one level out again. Where prompt and context engineering shape what the model _sees_ (its inputs), harness engineering shapes what the model _can do_ and how it is controlled — its action space, tools, guardrails, and feedback loops.
 
 The three nest rather than compete: the harness is what assembles and manages the context on each turn, so context engineering is one of the concerns a harness handles. A rough division of labour — prompt engineering tunes the _words_, context engineering tunes the _information_, and harness engineering builds the _machine_ that delivers both and acts on the results.
 
@@ -78,8 +78,8 @@ The three nest rather than compete: the harness is what assembles and manages th
 
 Birgitta Böckeler (Thoughtworks) frames the controls in a harness as two complementary kinds:
 
-* *Guides* (feedforward) — anticipatory steering applied _before_ the agent acts: documentation, rules, conventions, *xref:agent-skills.adoc[skills]*, scaffolding, and code-transformation tools.
-* *Sensors* (feedback) — observational controls that detect problems _after_ the agent acts and feed signals back for self-correction: linters, tests, type checks, and semantic reviews.
+* `Guides` (feedforward): Anticipatory steering applied _before_ the agent acts: documentation, rules, conventions, xref:agent-skills.adoc[skills], scaffolding, and code-transformation tools.
+* `Sensors` (feedback): Observational controls that detect problems _after_ the agent acts and feed signals back for self-correction: linters, tests, type checks, and semantic reviews.
 
 Both kinds come in two flavours: _computational_ (deterministic tools such as linters and test suites) and _inferential_ (semantic checks performed by an LLM). When an agent struggles, the harness-engineering response is to treat it as a signal — identify what is missing (a tool, a guardrail, a piece of documentation) and add it.
 
@@ -87,7 +87,7 @@ Both kinds come in two flavours: _computational_ (deterministic tools such as li
 
 For production and multi-agent systems, harness engineering broadens into something close to platform engineering for agents: defining agent lifecycles, enforcing permission boundaries, wiring observability pipelines, and coordinating multi-agent workflows. The concern is the reliability, governance, and operational characteristics of agentic systems, rather than the raw capability of the underlying model. It is an emerging discipline, analogous to platform engineering in the DevOps world.
 
-The payoff shows up at the orchestration layer. *xref:ai-agent-orchestration.adoc[Orchestration]* tools such as OpenAI Symphony — which spawn an autonomous agent per task and expect each to return a validated deliverable — are explicitly designed to run against codebases built on harness-engineering principles. Without the guides and sensors a harness provides, autonomous, unsupervised agents have nothing to keep their output trustworthy.
+The payoff shows up at the orchestration layer. xref:ai-agent-orchestration.adoc[Orchestration] tools such as OpenAI Symphony — which spawn an autonomous agent per task and expect each to return a validated deliverable — are explicitly designed to run against codebases built on harness-engineering principles. Without the guides and sensors a harness provides, autonomous, unsupervised agents have nothing to keep their output trustworthy.
 
 == Useful links
 
@@ -98,7 +98,7 @@ The payoff shows up at the orchestration layer. *xref:ai-agent-orchestration.ado
 
 == See also
 
-* *xref:ai-agent.adoc[AI agent]*
-* *xref:agent-skills.adoc[Agent skills]*
-* *xref:model-context-protocol.adoc[Model Context Protocol]*
-* *xref:scaffolding.adoc[Scaffolding]*
+* xref:ai-agent.adoc[AI agent]
+* xref:agent-skills.adoc[Agent skills]
+* xref:model-context-protocol.adoc[Model Context Protocol]
+* xref:scaffolding.adoc[Scaffolding]

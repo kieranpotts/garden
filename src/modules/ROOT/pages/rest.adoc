@@ -26,10 +26,10 @@ Responses must declare whether they are cacheable or not. When responses are cac
 
 A consistent, standardised interface decouples the implementation of client and server. The uniform interface is enforced through four sub-constraints:
 
-* *Resource identification in requests* — Resources are identified by URIs. The URI names the resource (`/users/42`), not the action to perform on it.
-* *Manipulation of resources through representations* — Clients interact with resources through representations (typically JSON or XML). A representation plus metadata gives the client enough information to modify or delete the resource on the server.
-* *Self-descriptive messages* — Each message includes enough information to describe how to process it (for example, the `Content-Type` header).
-* *HATEOAS* — Hypermedia as the Engine of Application State. Responses include links to related actions, allowing clients to navigate the API dynamically rather than having URLs hard-coded. In practice, HATEOAS is the least commonly implemented sub-constraint.
+* *Resource identification in requests*: Resources are identified by URIs. The URI names the resource (`/users/42`), not the action to perform on it.
+* *Manipulation of resources through representations*: Clients interact with resources through representations (typically JSON or XML). A representation plus metadata gives the client enough information to modify or delete the resource on the server.
+* *Self-descriptive messages*: Each message includes enough information to describe how to process it (for example, the `Content-Type` header).
+* *HATEOAS*: Hypermedia as the Engine of Application State. Responses include links to related actions, allowing clients to navigate the API dynamically rather than having URLs hard-coded. In practice, HATEOAS is the least commonly implemented sub-constraint.
 
 === Layered system
 
@@ -118,30 +118,30 @@ Remote Procedure Call (RPC) takes a different approach: the client calls a named
 | Typically fixed per implementation (JSON-RPC, XML-RPC, gRPC/Protobuf)
 |===
 
-RPC is a natural fit for internal microservice communication, particularly with modern implementations like *xref:grpc.adoc[gRPC]*, which provide performance advantages through binary encoding and streaming. REST is more appropriate when the API is public-facing and needs to be navigable by diverse, unknown clients.
+RPC is a natural fit for internal microservice communication, particularly with modern implementations like xref:grpc.adoc[gRPC], which provide performance advantages through binary encoding and streaming. REST is more appropriate when the API is public-facing and needs to be navigable by diverse, unknown clients.
 
 == Over-fetching and under-fetching
 
-Because REST endpoints return fixed response shapes, clients often receive more data than they need (_over-fetching_) or must make multiple requests to assemble what they need (_under-fetching_). *xref:graphql.adoc[GraphQL]* was designed specifically to address these problems by letting clients declare exactly which fields they require.
+Because REST endpoints return fixed response shapes, clients often receive more data than they need (_over-fetching_) or must make multiple requests to assemble what they need (_under-fetching_). xref:graphql.adoc[GraphQL] was designed specifically to address these problems by letting clients declare exactly which fields they require.
 
 == Advantages
 
-* *Widely understood* — Standard HTTP tooling, proxies, and caches work without modification.
-* *Stateless scalability* — No shared session state; any server instance handles any request.
-* *Cacheable* — HTTP caching mechanisms apply directly.
-* *Flexible representation* — Supports JSON, XML, plain text, and others, sometimes within the same API.
-* *Loose coupling* — Clients and servers can evolve independently so long as the URI structure and representations remain stable.
+* *Widely understood*: Standard HTTP tooling, proxies, and caches work without modification.
+* *Stateless scalability*: No shared session state. Any server instance handles any request.
+* *Cacheable*: HTTP caching mechanisms apply directly.
+* *Flexible representation*: Supports JSON, XML, plain text, and others, sometimes within the same API.
+* *Loose coupling*: Clients and servers can evolve independently so long as the URI structure and representations remain stable.
 
 == Disadvantages
 
-* *CRUD mismatch* — Operations that are inherently action-oriented (e.g. send email, process payment) do not map cleanly to HTTP methods.
-* *Over-fetching / under-fetching* — Response shapes are fixed per endpoint; clients cannot request partial data.
-* *Multiple round trips* — Assembling a page that needs data from several resources may require several sequential requests.
-* *No built-in streaming* — REST over HTTP/1.1 is request-response; streaming requires either HTTP/2 server-sent events, WebSockets, or chunked transfer encoding.
+* *CRUD mismatch*: Operations that are inherently action-oriented (e.g. send email, process payment) do not map cleanly to HTTP methods.
+* *Over-fetching / under-fetching*: Response shapes are fixed per endpoint. Clients cannot request partial data.
+* *Multiple round trips*: Assembling a page that needs data from several resources may require several sequential requests.
+* *No built-in streaming*: REST over HTTP/1.1 is request-response. Streaming requires either HTTP/2 server-sent events, WebSockets, or chunked transfer encoding.
 
 == See also
 
-* *xref:http.adoc[HyperText Transfer Protocol (HTTP)]* — The underlying transport protocol, and the source of REST's uniform interface.
-* *xref:http-api.adoc[HTTP API]* — The broader category of APIs built on HTTP, of which RESTful APIs are one style.
-* *xref:grpc.adoc[gRPC]* — A high-performance RPC framework, common for internal microservice communication.
-* *xref:graphql.adoc[GraphQL]* — A query language for APIs that addresses REST's over-fetching and under-fetching limitations.
+* xref:http.adoc[HyperText Transfer Protocol (HTTP)]: The underlying transport protocol, and the source of REST's uniform interface.
+* xref:http-api.adoc[HTTP API]: The broader category of APIs built on HTTP, of which RESTful APIs are one style.
+* xref:grpc.adoc[gRPC]: A high-performance RPC framework, common for internal microservice communication.
+* xref:graphql.adoc[GraphQL]: A query language for APIs that addresses REST's over-fetching and under-fetching limitations.

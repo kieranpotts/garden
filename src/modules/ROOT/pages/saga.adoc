@@ -1,8 +1,8 @@
 = Saga
 
-In distributed systems, a saga is a design pattern used to manage long-running, multi-step *xref:distributed-transaction.adoc[distributed transactions]*. It is an alternative approach to *xref:phased-commit.adoc[two-phase or three-phase commit (2PC, 3PC)]* protocols.
+In distributed systems, a saga is a design pattern used to manage long-running, multi-step xref:distributed-transaction.adoc[distributed transactions]. It is an alternative approach to xref:phased-commit.adoc[two-phase or three-phase commit (2PC, 3PC)] protocols.
 
-Instead of there being one big transaction, a saga breaks it into a sequence of local *xref:transaction.adoc[transactions]*. Each step updates its own service and then triggers the next step via an event or message. If something fails along the way, the saga runs compensating transactions to undo the previous steps, so eventually reverting the system to a *xref:consistency.adoc[consistent]* state.
+Instead of there being one big transaction, a saga breaks it into a sequence of local xref:transaction.adoc[transactions]. Each step updates its own service and then triggers the next step via an event or message. If something fails along the way, the saga runs compensating transactions to undo the previous steps, so eventually reverting the system to a xref:consistency.adoc[consistent] state.
 
 Like phased commits, the saga pattern depends on a central coordinator, called the *orchestrator*, to define and manage the order of local transactions. Example:
 
@@ -24,16 +24,16 @@ The orchestrator offers centralized logic and good visibility of the control flo
 
 An alternative to orchestration is *choreography*. There is no central coordinator, and instead each service listens for events and reacts independently, emitting further events for other services to progress the flow. This is more decentralized and can scale better, but it can lead to complex interactions and harder-to-manage workflows.
 
-Choreographed sagas offer looser coupling between services, and therefore they better support the implementation of business processes that span multiple independent teams Orchestrated sagas tend to be a better choice in scenarios where one team owns the entire process. The two patterns can be combined, for example by using orchestration for critical paths (eg. payment processing) and choreography for less critical paths (eg. sending notifications).
+Choreographed sagas offer looser coupling between services, and therefore they better support the implementation of business processes that span multiple independent teams. Orchestrated sagas tend to be a better choice in scenarios where one team owns the entire process. The two patterns can be combined, for example by using orchestration for critical paths (eg. payment processing) and choreography for less critical paths (eg. sending notifications).
 
-The saga pattern – whether choreographed or coordinated – offers higher *xref:resilience.adoc[resilience]* and xref:scalability.adoc[scalability] compared to traditional phased-commit transactions, as it avoids blocking issues which are associated with two-phase commit protocols especially. However, the trade-off is that sagas can be more complex to implement and manage, and xref:consistency.adoc[consistency] is traded for xref:availability.adoc[availability].
+The saga pattern – whether choreographed or coordinated – offers higher xref:resilience.adoc[resilience] and xref:scalability.adoc[scalability] compared to traditional phased-commit transactions, as it avoids blocking issues which are associated with two-phase commit protocols especially. However, the trade-off is that sagas can be more complex to implement and manage, and xref:consistency.adoc[consistency] is traded for xref:availability.adoc[availability].
 
-When you're dealing with distributed sagas, especially choreographed ones, xref:observability.adoc[observability] – and *xref:tracing.adoc[distributed tracing]* in particular – becomes crucial.
+When you're dealing with distributed sagas, especially choreographed ones, xref:observability.adoc[observability] – and xref:tracing.adoc[distributed tracing] in particular – becomes crucial.
 
 == Implementations
 
-https://temporal.io/[Temporal] is a popular platform for implementing orchestrated sagas. Each step in the saga is modelled as a Temporal *Activity* — a function with built-in retry and timeout semantics. The saga itself is a Temporal *Workflow*, which is a durable, fault-tolerant function that coordinates the Activities in sequence.
+https://temporal.io/[Temporal] is a popular platform for implementing orchestrated sagas. Each step in the saga is modelled as a Temporal *Activity* – a function with built-in retry and timeout semantics. The saga itself is a Temporal *Workflow*, which is a durable, fault-tolerant function that coordinates the Activities in sequence.
 
-Compensating transactions are implemented naturally using a `try/catch` block/. If any activity throws after previous steps have committed, the catch block invokes the compensating activities in reverse order. Because Temporal persists the full state of every workflow execution, the saga is resilient to infrastructure failures — if the orchestrator crashes mid-flight, execution resumes from exactly where it left off when it restarts.
+Compensating transactions are implemented naturally using a `try/catch` block. If any activity throws after previous steps have committed, the catch block invokes the compensating activities in reverse order. Because Temporal persists the full state of every workflow execution, the saga is resilient to infrastructure failures – if the orchestrator crashes mid-flight, execution resumes from exactly where it left off when it restarts.
 
 Temporal's task queues underpin activity dispatch. When the orchestrator schedules an activity, it places a task on a durable queue. Workers poll the queue, execute the activity, and return the result. This decoupling means workers can be scaled independently and replaced without affecting in-flight workflows.

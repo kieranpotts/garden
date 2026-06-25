@@ -1,8 +1,8 @@
-= Server-Sent Events (SSE)
+= Server-sent events (SSE)
 
 Server-Sent Events (SSE) is a server push technology built on HTTP that allows a server to stream a sequence of events to a client over a single, long-lived HTTP connection. Once the connection is established, the server can push data to the client at any time without the client needing to poll.
 
-SSE is a W3C standard, natively supported in all modern browsers through the `EventSource` API. Unlike *xref:websockets.adoc[WebSockets]*, which are bidirectional, SSE is unidirectional: data flows only from server to client.
+SSE is a W3C standard, natively supported in all modern browsers through the `EventSource` API. Unlike xref:websockets.adoc[WebSockets], which are bidirectional, SSE is unidirectional: data flows only from server to client.
 
 == How SSE works
 
@@ -29,7 +29,7 @@ data: {"symbol":"AAPL","price":172.34}\n
 | Field | Meaning
 
 | `data`
-| The payload of the event. Multi-line payloads use multiple `data:` lines; they are concatenated with newline characters.
+| The payload of the event. Multi-line payloads use multiple `data:` lines. They are concatenated with newline characters.
 
 | `event`
 | An optional event type. The client can listen for specific event types. Defaults to `"message"` if omitted.
@@ -92,22 +92,22 @@ Automatic reconnection is built into the SSE specification. When the connection 
 | `fetch` / `XMLHttpRequest`
 
 | Automatic reconnection
-| Yes — built into the spec
-| No — must be implemented manually
+| Yes: built into the spec
+| No: must be implemented manually
 | Implicit (client re-polls)
 
 | HTTP/2 support
-| Yes — HTTP/2 multiplexing removes the 6-connection-per-host limit
+| Yes: HTTP/2 multiplexing removes the 6-connection-per-host limit
 | Not applicable (WebSocket upgrade bypasses HTTP/2)
 | Yes
 
 | Overhead per message
-| Low — plain text, no framing overhead
-| Low — WebSocket frames are small
-| High — full HTTP request/response headers for each message
+| Low: plain text, no framing overhead
+| Low: WebSocket frames are small
+| High: full HTTP request/response headers for each message
 
 | Proxies and firewalls
-| Generally transparent — uses standard HTTP
+| Generally transparent: uses standard HTTP
 | Some corporate proxies block WebSocket upgrades
 | Generally transparent
 
@@ -119,25 +119,25 @@ Automatic reconnection is built into the SSE specification. When the connection 
 
 == Use cases
 
-SSE is the right choice when the communication is inherently one-directional — the server produces a stream of events and the client only needs to consume them:
+SSE is the right choice when the communication is inherently one-directional – the server produces a stream of events and the client only needs to consume them:
 
-* *Live dashboards and monitoring* — Metrics, server health, or deployment status streamed in real time.
-* *News feeds and social timelines* — New posts or updates pushed as they are published.
-* *Notifications* — Alerts, messages, or system events pushed immediately to users.
-* *Progress updates* — Long-running background jobs (file processing, report generation) streaming progress to the UI.
-* *Financial data* — Stock prices, exchange rates, or order book updates streamed continuously.
-* *AI response streaming* — Large Language Model (LLM) APIs stream token-by-token output to the client using SSE (this is how ChatGPT and similar tools display responses incrementally).
+* Live dashboards and monitoring: Metrics, server health, or deployment status streamed in real time.
+* News feeds and social timelines: New posts or updates pushed as they are published.
+* Notifications: Alerts, messages, or system events pushed immediately to users.
+* Progress updates: Long-running background jobs (file processing, report generation) streaming progress to the UI.
+* Financial data: Stock prices, exchange rates, or order book updates streamed continuously.
+* AI response streaming: Large Language Model (LLM) APIs stream token-by-token output to the client using SSE (this is how ChatGPT and similar tools display responses incrementally).
 
 == Limitations
 
-* *Unidirectional* — The client cannot send data back over the SSE connection. Client-to-server messages require a separate HTTP request.
-* *Text only* — The `text/event-stream` format is plain text. Binary data must be base64-encoded or sent as JSON, adding overhead.
-* *HTTP/1.1 connection limit* — Browsers limit HTTP/1.1 connections per domain (typically six). Multiple SSE tabs to the same origin can exhaust this limit. HTTP/2 multiplexing eliminates the issue since all SSE streams share one TCP connection.
-* *No built-in backpressure* — If the server sends events faster than the client can process them, the client's buffer grows unboundedly. Applications must implement their own rate control.
+* Unidirectional: The client cannot send data back over the SSE connection. Client-to-server messages require a separate HTTP request.
+* Text only: The `text/event-stream` format is plain text. Binary data must be base64-encoded or sent as JSON, adding overhead.
+* HTTP/1.1 connection limit: Browsers limit HTTP/1.1 connections per domain (typically six). Multiple SSE tabs to the same origin can exhaust this limit. HTTP/2 multiplexing eliminates the issue since all SSE streams share one TCP connection.
+* No built-in backpressure: If the server sends events faster than the client can process them, the client's buffer grows unboundedly. Applications must implement their own rate control.
 
 == See also
 
-* *xref:websockets.adoc[WebSockets]* — For full-duplex, bidirectional real-time communication.
-* *xref:long-polling.adoc[Long polling]* — A simpler, less efficient server push technique.
-* *xref:http.adoc[HyperText Transfer Protocol (HTTP)]* — SSE is built on standard HTTP.
-* *xref:push-architecture.adoc[Push architecture]* — The broader pattern of server-initiated data delivery.
+* xref:websockets.adoc[WebSockets]: For full-duplex, bidirectional real-time communication.
+* xref:long-polling.adoc[Long polling]: A simpler, less efficient server push technique.
+* xref:http.adoc[HyperText Transfer Protocol (HTTP)]: SSE is built on standard HTTP.
+* xref:push-architecture.adoc[Push architecture]: The broader pattern of server-initiated data delivery.

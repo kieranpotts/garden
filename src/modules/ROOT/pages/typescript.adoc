@@ -1,12 +1,12 @@
 = TypeScript
 
-TypeScript is a statically typed superset of *xref:javascript.adoc[JavaScript]* developed by Microsoft. It adds an optional type system on top of JavaScript; type annotations are erased at compile time, producing plain JavaScript that runs in any JavaScript environment.
+TypeScript is a statically typed superset of xref:javascript.adoc[JavaScript] developed by Microsoft. It adds an optional type system on top of JavaScript. Type annotations are erased at compile time, producing plain JavaScript that runs in any JavaScript environment.
 
 TypeScript was first released in 2012. Its lead designer is Anders Hejlsberg, who also designed C# and Delphi. The compiler and language specification are open-source and maintained by Microsoft with broad community input.
 
 Because TypeScript compiles to JavaScript, any valid JavaScript is also valid TypeScript. Developers can adopt TypeScript incrementally, adding type annotations to existing codebases as needed.
 
-TypeScript tracks the *xref:ecmascript.adoc[ECMAScript]* specification closely. Most ECMAScript proposals at Stage 3 or later are quickly incorporated into TypeScript. TypeScript has historically shipped some features (such as decorators) ahead of ECMAScript standardization, though it has moved toward tighter alignment with the spec over time.
+TypeScript tracks the xref:ecmascript.adoc[ECMAScript] specification closely. Most ECMAScript proposals at Stage 3 or later are quickly incorporated into TypeScript. TypeScript has historically shipped some features (such as decorators) ahead of ECMAScript standardization, though it has moved toward tighter alignment with the spec over time.
 
 == Type system
 
@@ -16,7 +16,7 @@ The type system is optional and gradual. The `any` type disables type checking f
 
 === Basic types
 
-TypeScript includes all JavaScript primitive types — `string`, `number`, `boolean`, `null`, `undefined`, `symbol`, `bigint` — as well as:
+TypeScript includes all JavaScript primitive types – `string`, `number`, `boolean`, `null`, `undefined`, `symbol`, `bigint` – as well as:
 
 * `unknown`: A type-safe alternative to `any`. A value typed as `unknown` cannot be used until its type has been narrowed through a type guard.
 * `never`: Represents a value that never occurs (eg. a function that always throws, or an exhaustive type check branch that should be unreachable).
@@ -28,7 +28,7 @@ TypeScript also supports typed arrays, tuple types, and inline object types.
 
 TypeScript provides two ways to describe and name object shapes:
 
-* `interface` is well-suited for describing object structures and supports *declaration merging* — multiple interface declarations with the same name are automatically merged.
+* `interface` is well-suited for describing object structures and supports *declaration merging* – multiple interface declarations with the same name are automatically merged.
 * `type` aliases are more flexible. They can describe union types, intersection types, mapped types, conditional types, and other advanced constructs that interfaces cannot express.
 
 === Generics
@@ -49,7 +49,7 @@ function identity<T>(value: T): T {
 
 === Type narrowing
 
-TypeScript analyses control flow to narrow the type of a value within a conditional branch. Type guards — such as `typeof`, `instanceof`, `in`, and user-defined predicates — inform TypeScript about the specific type of a value in a given execution path.
+TypeScript analyses control flow to narrow the type of a value within a conditional branch. Type guards – such as `typeof`, `instanceof`, `in`, and user-defined predicates – inform TypeScript about the specific type of a value in a given execution path.
 
 === Utility types
 
@@ -59,7 +59,7 @@ TypeScript ships with a set of built-in generic utility types for common type tr
 
 TypeScript source files (`.ts` and `.tsx`) are compiled to JavaScript by the TypeScript compiler (`tsc`). Project configuration is managed through a `tsconfig.json` file at the project root, which controls options such as the target ECMAScript output version, module format, strictness settings, and output directory.
 
-Popular alternatives to `tsc` for transpilation — which strip type annotations without performing type-checking — include https://esbuild.github.io/[esbuild], https://swc.rs/[SWC], and https://oxc.rs/[Oxc]. These tools are significantly faster, making them common choices for build pipelines, while `tsc` is retained for type-checking.
+Popular alternatives to `tsc` for transpilation – which strip type annotations without performing type-checking – include https://esbuild.github.io/[esbuild], https://swc.rs/[SWC], and https://oxc.rs/[Oxc]. These tools are significantly faster, making them common choices for build pipelines, while `tsc` is retained for type-checking.
 
 == Type declarations
 
@@ -71,5 +71,5 @@ TypeScript's strict mode, enabled via `"strict": true` in `tsconfig.json`, activ
 
 == See also
 
-* *xref:javascript.adoc[JavaScript]*
-* *xref:ecmascript.adoc[ECMAScript]*
+* xref:javascript.adoc[JavaScript]
+* xref:ecmascript.adoc[ECMAScript]

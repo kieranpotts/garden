@@ -10,9 +10,9 @@ Example: the coordinates for downtown San Francisco (37.7749°N, -122.4194°W) e
 
 *Spatial locality*:: Locations that share a longer common prefix are geographically closer. Each additional character in the hash zooms in to a more precise region of the earth. The hash is therefore hierarchical: longer = more precise.
 +
-Example: `9q8yyf` and `9q8yyx` share five characters — they are in the same neighbourhood. `9q8yyf` and `a2sed7` share no characters — they may be on different continents.
+Example: `9q8yyf` and `9q8yyx` share five characters – they are in the same neighbourhood. `9q8yyf` and `a2sed7` share no characters – they may be on different continents.
 
-*One-dimensional and indexable*:: Because a geohash is a plain string, it can be stored in a `VARCHAR` column and indexed with a standard B-tree or trie. This enables fast prefix-based lookups and efficient sorting — operations that are difficult to perform directly on floating-point coordinate pairs.
+*One-dimensional and indexable*:: Because a geohash is a plain string, it can be stored in a `VARCHAR` column and indexed with a standard B-tree or trie. This enables fast prefix-based lookups and efficient sorting – operations that are difficult to perform directly on floating-point coordinate pairs.
 
 == How geohashing works
 
@@ -33,7 +33,7 @@ Rather than encoding latitude and longitude as separate binary sequences, their 
 
 === Step 3: Encode as Base32
 
-The interleaved binary string is split into 5-bit groups. Each group is mapped to a character from a 32-character alphabet (`0–9`, `bcdefghjkmnpqrstuvwxyz` — letters `a`, `i`, `l`, and `o` are omitted to avoid confusion with digits). The result is the final geohash string.
+The interleaved binary string is split into 5-bit groups. Each group is mapped to a character from a 32-character alphabet (`0–9`, `bcdefghjkmnpqrstuvwxyz` – letters `a`, `i`, `l`, and `o` are omitted to avoid confusion with digits). The result is the final geohash string.
 
 === Precision vs. length
 
@@ -66,10 +66,10 @@ The border-crossing problem is why step 2 is essential: a point 20 metres away m
 
 == Use cases
 
-* *Ridesharing* (Uber, Lyft): group active drivers into geohash cells; when a rider requests a trip, search only drivers in the matching and neighbouring cells.
-* *Food delivery* (Deliveroo, DoorDash): find nearby restaurants by matching stored geohashes against the user's current cell and its neighbours.
-* *Geospatial databases*: Elasticsearch supports `geohash_grid` aggregations for bucketing documents by location; MongoDB supports geohash-based prefix queries.
-* *Spatial sharding*: distribute data across servers by geohash prefix, keeping nearby records on the same node.
+* *Ridesharing* (Uber, Lyft): Group active drivers into geohash cells. When a rider requests a trip, search only drivers in the matching and neighbouring cells.
+* *Food delivery* (Deliveroo, DoorDash): Find nearby restaurants by matching stored geohashes against the user's current cell and its neighbours.
+* *Geospatial databases*: Elasticsearch supports `geohash_grid` aggregations for bucketing documents by location. MongoDB supports geohash-based prefix queries.
+* *Spatial sharding*: Distribute data across servers by geohash prefix, keeping nearby records on the same node.
 
 == Limitations
 
@@ -89,7 +89,7 @@ The border-crossing problem is why step 2 is essential: a point 20 metres away m
 
 == See also
 
-* *xref:hashing.adoc[Hashing]* — the general concept of hash functions; geohashing applies the same ideas to geographic space.
-* *xref:consistent-hashing.adoc[Consistent hashing]* — another specialised hashing technique used in distributed systems.
-* *xref:distributed-system.adoc[Distributed system]* — geohashing is commonly used for spatial sharding in distributed architectures.
-* *xref:databases.adoc[Databases]* — spatial indexing strategies and how standard indexes support geohash prefix queries.
+* xref:hashing.adoc[Hashing]: The general concept of hash functions. Geohashing applies the same ideas to geographic space.
+* xref:consistent-hashing.adoc[Consistent hashing]: Another specialised hashing technique used in distributed systems.
+* xref:distributed-system.adoc[Distributed system]: Geohashing is commonly used for spatial sharding in distributed architectures.
+* xref:databases.adoc[Databases]: Spatial indexing strategies and how standard indexes support geohash prefix queries.

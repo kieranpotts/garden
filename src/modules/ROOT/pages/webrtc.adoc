@@ -16,8 +16,8 @@ The central API. It manages the full lifecycle of a peer-to-peer connection: cod
 
 An API for sending arbitrary binary or text data between peers over the same P2P connection. Data channels are built on SCTP over DTLS and offer configurable delivery semantics:
 
-* *Ordered and reliable* — Like TCP; messages arrive in order with retransmission.
-* *Unordered or unreliable* — Like UDP; lower latency at the cost of potential message loss or reordering.
+* *Ordered and reliable* — Like TCP. Messages arrive in order with retransmission.
+* *Unordered or unreliable* — Like UDP. Lower latency at the cost of potential message loss or reordering.
 
 Data channels are used for chat, file transfer, game state synchronisation, and any non-media real-time data.
 
@@ -31,7 +31,7 @@ Establishing a WebRTC connection requires exchanging metadata between peers befo
 
 === Signalling
 
-WebRTC does not define a signalling protocol — the application is free to use any transport: *xref:websockets.adoc[WebSockets]*, HTTP polling, or even copy-paste. Signalling carries two types of messages:
+WebRTC does not define a signalling protocol — the application is free to use any transport: xref:websockets.adoc[WebSockets], HTTP polling, or even copy-paste. Signalling carries two types of messages:
 
 * *SDP offers and answers* — Session Description Protocol (SDP) documents describe what each peer supports: codecs, media formats, encryption keys, and network candidates. Once peers have exchanged and agreed on an SDP offer/answer, they know how to talk to each other.
 * *ICE candidates* — Network address/port pairs that peers can attempt to connect through.
@@ -88,8 +88,8 @@ Three architectures are used:
 | Medium to large calls (5–100+ participants). Most video conferencing platforms.
 
 | *MCU (Multipoint Control Unit)*
-| Participants send one stream to the MCU. The MCU decodes all streams, composites them into a single stream, and re-encodes it for each participant to receive. High server CPU cost; low client CPU.
-| Legacy systems; very bandwidth-constrained clients.
+| Participants send one stream to the MCU. The MCU decodes all streams, composites them into a single stream, and re-encodes it for each participant to receive. High server CPU cost. Low client CPU.
+| Legacy systems. Very bandwidth-constrained clients.
 |===
 
 SFUs (e.g. mediasoup, Janus, Jitsi Videobridge, LiveKit) are the dominant approach for production video conferencing.
@@ -97,7 +97,7 @@ SFUs (e.g. mediasoup, Janus, Jitsi Videobridge, LiveKit) are the dominant approa
 == Advantages
 
 * *Low latency* — Optimised for sub-second, real-time media. UDP transport and adaptive bitrate/jitter buffering minimise perceptible delay.
-* *Encrypted by default* — DTLS + SRTP is mandatory; no unencrypted mode.
+* *Encrypted by default* — DTLS + SRTP is mandatory. No unencrypted mode.
 * *No plugin required* — Runs natively in all modern browsers via standard APIs.
 * *Peer-to-peer efficiency* — Media does not pass through a server, reducing infrastructure bandwidth costs for small calls.
 * *Adaptive to network conditions* — Built-in mechanisms for congestion control, packet loss concealment, and adaptive bitrate.
@@ -107,12 +107,12 @@ SFUs (e.g. mediasoup, Janus, Jitsi Videobridge, LiveKit) are the dominant approa
 * *Signalling server required* — A server is always needed to exchange SDP and ICE candidates before P2P connectivity is established.
 * *TURN fallback has costs* — When TURN relay is needed (symmetric NAT, restrictive firewalls), the media does route through a server, negating the P2P bandwidth saving. TURN servers must be provisioned and maintained.
 * *Complexity* — ICE, SDP, DTLS, SRTP, STUN, and TURN interact in subtle ways. Production WebRTC systems are non-trivial to build and debug.
-* *SFU required at scale* — P2P mesh does not scale beyond a handful of participants; an SFU adds infrastructure complexity.
-* *Limited to UDP* — WebRTC prefers UDP for low latency. Some highly restrictive networks block all UDP; TURN over TCP (or TLS port 443) is the fallback, but it increases latency.
+* *SFU required at scale* — P2P mesh does not scale beyond a handful of participants. An SFU adds infrastructure complexity.
+* *Limited to UDP* — WebRTC prefers UDP for low latency. Some highly restrictive networks block all UDP. TURN over TCP (or TLS port 443) is the fallback, but it increases latency.
 
 == See also
 
-* *xref:websockets.adoc[WebSockets]* — Commonly used as the signalling transport for WebRTC connection setup.
-* *xref:server-sent-events.adoc[Server-Sent Events (SSE)]* — A simpler server-push mechanism for non-media use cases.
-* *xref:udp.adoc[UDP]* — The underlying transport protocol WebRTC uses for media.
-* *xref:tcp.adoc[TCP]* — Used by WebRTC as a fallback (TURN over TCP) and for data channel reliable delivery (SCTP).
+* xref:websockets.adoc[WebSockets] — Commonly used as the signalling transport for WebRTC connection setup.
+* xref:server-sent-events.adoc[Server-Sent Events (SSE)] — A simpler server-push mechanism for non-media use cases.
+* xref:udp.adoc[UDP] — The underlying transport protocol WebRTC uses for media.
+* xref:tcp.adoc[TCP] — Used by WebRTC as a fallback (TURN over TCP) and for data channel reliable delivery (SCTP).

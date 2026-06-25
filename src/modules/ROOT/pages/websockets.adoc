@@ -43,14 +43,14 @@ Text frames carry UTF-8 encoded strings. Binary frames carry arbitrary bytes and
 
 == Ping and pong
 
-The protocol includes built-in heartbeat frames. The server (or client) sends a `ping` frame; the receiver must respond with a `pong` frame containing the same payload. Heartbeats serve two purposes:
+The protocol includes built-in heartbeat frames. The server (or client) sends a `ping` frame. The receiver must respond with a `pong` frame containing the same payload. Heartbeats serve two purposes:
 
 * Detecting dead connections — if a pong is not received within a timeout, the connection can be considered lost.
 * Keeping connections alive through NAT gateways and proxies that close idle TCP connections.
 
 == Closing the connection
 
-Either side sends a `close` frame (opcode `0x8`), optionally including a status code and a reason string. The receiver echoes back a `close` frame and both sides then close the underlying TCP connection. The status code 1000 means normal closure; 1001 means the endpoint is going away (e.g. server restart or browser tab close).
+Either side sends a `close` frame (opcode `0x8`), optionally including a status code and a reason string. The receiver echoes back a `close` frame and both sides then close the underlying TCP connection. The status code 1000 means normal closure. The status code 1001 means the endpoint is going away (e.g. server restart or browser tab close).
 
 == Browser API
 
@@ -79,7 +79,7 @@ socket.addEventListener('error', (error) => {
 
 The `wss://` scheme uses TLS (WebSocket Secure), equivalent to `https://`. Plain `ws://` should not be used in production.
 
-Unlike *xref:server-sent-events.adoc[SSE]*, the browser provides no automatic reconnection for WebSockets. Applications must implement their own reconnection logic, typically with exponential backoff.
+Unlike xref:server-sent-events.adoc[SSE], the browser provides no automatic reconnection for WebSockets. Applications must implement their own reconnection logic, typically with exponential backoff.
 
 == Scalability considerations
 
@@ -100,7 +100,7 @@ Because each connected client holds an open TCP connection, WebSocket servers ar
 == Use cases
 
 * *Real-time chat* — Messaging platforms (Slack, Discord) push messages instantly to all participants.
-* *Collaborative editing* — Multiple users editing the same document simultaneously (Google Docs, Figma); changes are broadcast to all connected clients in real time.
+* *Collaborative editing* — Multiple users editing the same document simultaneously (Google Docs, Figma). Changes are broadcast to all connected clients in real time.
 * *Multiplayer games* — Game state (positions, scores, events) is synchronised continuously between server and all players with minimal latency.
 * *Live financial data* — Stock prices, order books, and trade feeds streamed continuously to trading dashboards.
 * *Live notifications* — Social platforms push likes, comments, and messages to users immediately.
@@ -155,7 +155,7 @@ Because each connected client holds an open TCP connection, WebSocket servers ar
 
 == See also
 
-* *xref:server-sent-events.adoc[Server-Sent Events (SSE)]* — A simpler, HTTP-native alternative for one-directional server push.
-* *xref:long-polling.adoc[Long polling]* — A technique that simulates server push without a persistent connection.
-* *xref:http.adoc[HyperText Transfer Protocol (HTTP)]* — The underlying transport used for the opening handshake.
-* *xref:push-architecture.adoc[Push architecture]* — The broader pattern of server-initiated data delivery.
+* xref:server-sent-events.adoc[Server-Sent Events (SSE)] — A simpler, HTTP-native alternative for one-directional server push.
+* xref:long-polling.adoc[Long polling] — A technique that simulates server push without a persistent connection.
+* xref:http.adoc[HyperText Transfer Protocol (HTTP)] — The underlying transport used for the opening handshake.
+* xref:push-architecture.adoc[Push architecture] — The broader pattern of server-initiated data delivery.

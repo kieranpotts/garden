@@ -1,6 +1,6 @@
 = Message-driven architecture (MDA)
 
-Message-driven architecture (MDA) is a *[software architecture pattern]* that promotes the production, consumption, and routing of messages, delivered *xref:asynchronous-communication.adoc[asynchronously]* via xref:message-broker.adoc[message brokers] (aka. message queues), between software components.
+Message-driven architecture (MDA) is a software architecture pattern that promotes the production, consumption, and routing of messages, delivered xref:asynchronous-communication.adoc[asynchronously] via xref:message-broker.adoc[message brokers] (aka. message queues), between software components.
 
 Messages are an abstraction of a piece of data that typically represents one of the following:
 
@@ -12,7 +12,7 @@ Messages are an abstraction of a piece of data that typically represents one of 
 
 Commands and events are very similar. The difference is mostly just in the statement of intent that underpins their semantics, whether the message is telling another component to do something (a command), or informing other components that something has happened (an event). And queries are just one component asking for a piece of data from whatever other component can provide it.
 
-Thus, *xref:event-driven-architecture.adoc[event-driven architecture]* can be seen as a subset of message-driven architecture, where events are the primary type of message.
+Thus, xref:event-driven-architecture.adoc[event-driven architecture] can be seen as a subset of message-driven architecture, where events are the primary type of message.
 
 == Message distribution patterns
 
@@ -28,7 +28,7 @@ The following patterns are found in message-driven distributed software:
 
 * *Point-to-point*: A single message is sent from one producer to one consumer. This ensures that each message is processed by one and only one receiver. For example, processing tasks in a job queue, where each task needs to be handled by one worker.
 
-* *xref:publish-subscribe-pattern.adoc[Publish-subscribe (pubsub)]*: Producers (publishers) send messages to a channel, and consumers (subscribers) receive messages from that channel. Subscribers express interest in specific topics and receive only messages related to those topics. This pattern is commonly used for real-time data feeds, where users subscribe to topics of interest such as stock prices or news updates. This patterns is also the basis for *xref:event-driven-architecture.adoc[event-driven]* communication.
+* xref:publish-subscribe-pattern.adoc[Publish-subscribe (pubsub)]: Producers (publishers) send messages to a channel, and consumers (subscribers) receive messages from that channel. Subscribers express interest in specific topics and receive only messages related to those topics. This pattern is commonly used for real-time data feeds, where users subscribe to topics of interest such as stock prices or news updates. This patterns is also the basis for xref:event-driven-architecture.adoc[event-driven] communication.
 
 * *Scatter-gather*: This pattern involves sending a request to multiple services (scatter),collecting their responses (gather), and then aggregating the results. This is useful for distributed search queries where results from multiple databases are combined into a single response.
 

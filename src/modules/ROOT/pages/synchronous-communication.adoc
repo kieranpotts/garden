@@ -3,14 +3,14 @@
 // TODO: https://www.techtarget.com/searchapparchitecture/tip/Synchronous-vs-asynchronous-communication-The-differences
 // TODO: https://blog.algomaster.io/p/aec1cebf-6060-45a7-8e00-47364ca70761
 
-Synchronous and *xref:asynchronous-communication.adoc[asynchronous]* communication are two approaches to *interaction* in software design.
+Synchronous and xref:asynchronous-communication.adoc[asynchronous] communication are two approaches to interaction in software design.
 
 Synchronous communication is when sender and receiver components interact in real-time. This is the default mode of interaction for most components _within_ a monolithic software system. In most programming languages, function calls are synchronous by default, meaning that the caller waits for the callee to return a value before it proceeds further with its own execution.
 
-Synchronous communication is more commonly discussed in the context of *xref:distributed-system.adoc[distributed software]*, where it is implemented using *xref:request-response.adoc[request-response]* communication protocols such as *xref:http.adoc[HTTP]* or *xref:grpc.adoc[gRPC]*.
+Synchronous communication is more commonly discussed in the context of xref:distributed-system.adoc[distributed software], where it is implemented using xref:request-response.adoc[request-response] communication protocols such as xref:http.adoc[HTTP] or xref:grpc.adoc[gRPC].
 
-Synchronous communication in distributed software requires individual services within the network to expose their own *[APIs]*, rather than relying on a xref:message-broker.adoc[message broker], xref:event-bus.adoc[event bus], or other intermediary system to manage communication between services.
+Synchronous communication in distributed software requires individual services within the network to expose their own *APIs*, rather than relying on a xref:message-broker.adoc[message broker], xref:event-bus.adoc[event bus], or other intermediary system to manage communication between services.
 
-Synchronous communication in distributed software can lead to tight coupling between services, making it difficult to change services independently of each other. However, it is often necessary when low xref:latency.adoc[latency] or *[real-time data]* processing is a requirement, or when data *xref:consistency.adoc[consistency]* is a primary *[constraint]*.
+Synchronous communication in distributed software can lead to tight coupling between services, making it difficult to change services independently of each other. However, it is often necessary when low xref:latency.adoc[latency] or *real-time data* processing is a requirement, or when data xref:consistency.adoc[consistency] is a primary *constraint*.
 
-It is best practice for services that depend on synchronous communication to serve a *[health check]* endpoint. This allows clients to check the availability of the services on which they depend. Alternatively, load balancers can monitor the health check endpoints and route traffic to healthy services.
+It is best practice for services that depend on synchronous communication to serve a *health check* endpoint. This allows clients to check the availability of the services on which they depend. Alternatively, load balancers can monitor the health check endpoints and route traffic to healthy services.

@@ -19,15 +19,15 @@ Domain-driven design (DDD) was popularized by Eric Evans in his 2003 book of the
 
 image::domain-driven-design-book-cover.webp[]
 
-Evans observed that good software tends to closely model the human processes that it automates or the real-world problems that it solves. It follows that the first job of a software developer should not be to write computer code, but to understand the *xref:domain.adoc[domain]* of the software. Domain-driven design enforces this by putting a *xref:domain-model.adoc[model]* of the domain at the center of the software design.
+Evans observed that good software tends to closely model the human processes that it automates or the real-world problems that it solves. It follows that the first job of a software developer should not be to write computer code, but to understand the xref:domain.adoc[domain] of the software. Domain-driven design enforces this by putting a xref:domain-model.adoc[model] of the domain at the center of the software design.
 
-Domain-driven software designs are built around *xref:domain-model.adoc[models]* of their *xref:domain.adoc[business domains]* or problem spaces – the subject areas of the software.
+Domain-driven software designs are built around xref:domain-model.adoc[models] of their xref:domain.adoc[business domains] or problem spaces, the subject areas of the software.
 
 DDD is analogous to physical architecture. Architects design buildings to serve specific functions. The blueprints for a public library and a private home will therefore look very different. Domain-driven design takes this principle and applies it to software. Thus, the blueprint for a banking application should look like the departments and procedures of a high street bank, while the blueprint for an e-commerce application should resemble the operating model of a bricks-and-mortar shop. Likewise, bespoke xref:enterprise-application-software.adoc[enterprise application software] should model the very businesses that own it.
 
 DDD rejects the process of reusing generic architectural patterns like *[model-view-controller]* and forcing entirely different applications to fit the same ready-made floor plans. Instead, a domain-driven design approach to software involves creating a unique architecture for each application, one that is tailored to the specific business domain it serves by constructing the system around representations of objects and events that exist in the real world.
 
-To design and build high quality domain models, close collaboration is required between the *technical experts* (who implement the software and hardware) and the *xref:domain-experts.adoc[domain experts]* (aka. subject matter experts or business stakeholders). The two parties are jointly responsible for iteratively refining the conceptual model of the solution. This is one of the most powerful aspects of domain-driven design: that development of software is equally driven by software developers and the customers/users (or representatives of them, such as a product manager).
+To design and build high quality domain models, close collaboration is required between the *technical experts* (who implement the software and hardware) and the xref:domain-experts.adoc[domain experts] (aka. subject matter experts or business stakeholders). The two parties are jointly responsible for iteratively refining the conceptual model of the solution. This is one of the most powerful aspects of domain-driven design: that development of software is equally driven by software developers and the customers/users (or representatives of them, such as a product manager).
 
 DDD is particularly beneficial in complex problem spaces – things like banking applications and air traffic control systems – or where the business domain is not well understood. Domain-driven design emphasizes the design of a system's *xref:complexity.adoc[essential complexity]*, the stuff that is essential to the business itself. This process helps to clarify the business domain, to identify the key concepts and relationships within it, and to build a shared understanding of the domain between the technical and business people.
 
@@ -45,7 +45,7 @@ But DDD is (perhaps) most useful as a software design process. Evans described t
 
 Implementing domain-driven design in software projects requires a deep understanding of business needs and a clear strategy to effectively model the domain. This work is carried out as part of the *strategic design*, which is the first phase of a domain-driven approach to software design and which will typically be undertaken during a project's *[discovery phase]*.
 
-Fundamentally, DDD is all about good *xref:domain-model.adoc[domain modeling]*. The goal of the strategic design is to end up with a high-level model of the business domain. The model is created by the technical experts but its design is driven by the people who know most about the domain – the *xref:domain-experts.adoc[domain experts]*. The model is discovered through *conversations* with the domain experts. The technical experts collaborate with the domain experts through continuous conversation and feedback to create a model of the problem space that makes sense to all the project's stakeholders.
+Fundamentally, DDD is all about good xref:domain-model.adoc[domain modeling]. The goal of the strategic design is to end up with a high-level model of the business domain. The model is created by the technical experts but its design is driven by the people who know most about the domain – the xref:domain-experts.adoc[domain experts]. The model is discovered through *conversations* with the domain experts. The technical experts collaborate with the domain experts through continuous conversation and feedback to create a model of the problem space that makes sense to all the project's stakeholders.
 
 This is pure business exploration. Methodologies used to discover the domain may include *Big Picture*, *Process-Level Event Sourcing*, *Domain Storytelling*, and *xref:event-storming.adoc[EventStorming]*. The strategic design is normally an *[iterative and incremental]* process, because it is normally difficult to create from the start a complete model that covers all of a business's needs.
 
@@ -58,7 +58,7 @@ Eric Evans promotes xref:continuous-integration.adoc[continuous integration] as 
 
 The emphasis on continuous conversation and close collaboration between technical and non-technical stakeholders brings other advantages. Often the process of automating business processes through software development can yield new insights into the business itself. The process of continuous integration brings a continuous *[feedback loop]* of fresh insights. And domain modeling also serves the purpose of pooling knowledge within an organization, such that knowledge of certain aspects of a business and its IT systems are not restricted to particular tribes within the organization. Instead, knowledge is dissipated throughout the organization.
 
-The outcome of the strategic design phase is a comprehensive *xref:domain-model.adoc[model]* of the software's *xref:domain.adoc[domain]* or xref:problem-space.adoc[problem space]. Domain models may be expressed in documentation, code, tests, or visually (eg. using UML or similar graphical notations), or a combination of all these. DDD is not prescriptive about the choice of modeling artifacts. The only criteria is that a consistent language – an xref:ontology.adoc[ontology] – is used throughout the model.
+The outcome of the strategic design phase is a comprehensive xref:domain-model.adoc[model] of the software's xref:domain.adoc[domain] or xref:problem-space.adoc[problem space]. Domain models may be expressed in documentation, code, tests, or visually (eg. using UML or similar graphical notations), or a combination of all these. DDD is not prescriptive about the choice of modeling artifacts. The only criteria is that a consistent language – an xref:ontology.adoc[ontology] – is used throughout the model.
 
 Ultimately, the domain model will be implemented in code. So a good modeling process needs to consider not only the domain but also its implementation in software. It is important that models can be translated into working code. It is possible that a model that is truthful to its domain could have serious problems in its implementation, such as unacceptable xref:performance.adoc[performance]. For this reason, domain modeling and xref:system-design.adoc[system design] should run concurrently.
 
@@ -68,7 +68,7 @@ Developers should have ownership of the model, and responsibility for its integr
 
 === Domain
 
-The first step to creating a domain model is to define the *xref:domain.adoc[domain]*. The domain is the subject area of the software. The domain is taken from a sphere of knowledge in the real world, or a set of business processes that the software is intended to automate.
+The first step to creating a domain model is to define the xref:domain.adoc[domain]. The domain is the subject area of the software. The domain is taken from a sphere of knowledge in the real world, or a set of business processes that the software is intended to automate.
 
 Examples of domains include customer relationship management, financial loan application management, video subscription services, and so on.
 
@@ -126,9 +126,9 @@ Some key parts will be common across multiple subdomains. For example, subscribe
 
 === Bounded contexts and their ubiquitous languages
 
-DDD encourages developers and domain experts to collaborate together and develop a common *xref:ubiquitous-language.adoc[language]* to describe the whole business domain. The objective is for domain terminology to be understood and used consistently by all stakeholders in a software project – both technical and non-technical stakeholders.
+DDD encourages developers and domain experts to collaborate together and develop a common xref:ubiquitous-language.adoc[language] to describe the whole business domain. The objective is for domain terminology to be understood and used consistently by all stakeholders in a software project – both technical and non-technical stakeholders.
 
-DDD calls this common language the *ubiquitous language*. It is similar in concept to an *xref:ontology.adoc[ontology]*. The language is taken from the real world business domain, and it should be used to specify software requirements and to name things in the application code and its tests. Indeed, the domain language should be used in all forms of communication (both written and verbal) between the technical teams and the *xref:domain-experts.adoc[domain experts]*.
+DDD calls this common language the *ubiquitous language*. It is similar in concept to an xref:ontology.adoc[ontology]. The language is taken from the real world business domain, and it should be used to specify software requirements and to name things in the application code and its tests. Indeed, the domain language should be used in all forms of communication (both written and verbal) between the technical teams and the xref:domain-experts.adoc[domain experts].
 
 Ideally, there would be a single unified model covering the whole business domain. However, in complex problem spaces, this is often unrealistic. Different subdomains may need to have different models, each with its own distinct language. For example, in the billing subdomain, subscribers might be referred to as "accounts", while the video streaming subdomain might refer to them as "viewers", and the user management subdomain might use the term "subscribers". Thus, the terms "account", "viewer", and "subscriber" all refer to the same type of entity, and only the language changes depending on the context. (Variations in language are most likely to appear in the key parts of subdomains.)
 
@@ -163,7 +163,7 @@ For example, imagine that a video streaming context needs to know what quality o
 
 .Interfaces between bounded contexts
 ****
-The interfaces between bounded contexts are responsible for translating the different domain models of each context. An *anti-corruption layer (ACL)* is any pattern that serves as an adapter between two domain models. The implementation of the ACL will depend on the communication patterns and protocols used between services in different contexts. Classical client-server network calls may require an explicit adapter layer on the server-side. However, in an *xref:event-driven-architecture.adoc[event-driven]* architecture, changes in one context are communicated with other contexts through the publication of events, eliminating direct coupling and reducing the need for explicit mapping logic.
+The interfaces between bounded contexts are responsible for translating the different domain models of each context. An *anti-corruption layer (ACL)* is any pattern that serves as an adapter between two domain models. The implementation of the ACL will depend on the communication patterns and protocols used between services in different contexts. Classical client-server network calls may require an explicit adapter layer on the server-side. However, in an xref:event-driven-architecture.adoc[event-driven] architecture, changes in one context are communicated with other contexts through the publication of events, eliminating direct coupling and reducing the need for explicit mapping logic.
 ****
 
 Evans defined a set of named patterns for describing the relationships between bounded contexts on a context map. These patterns describe both the technical integration strategy and the organizational dynamic between the teams responsible for each context:
@@ -246,7 +246,7 @@ Whether a piece of data should be modeled as an entity or a value object is not 
 
 A complete domain model is made up of a mix of entities and value objects. Typically, you will end up with a lot more value objects than entities, but this will vary between domain models.
 
-Some domain models may required that related entities and value objects (and perhaps other structures, too) be grouped together. This is where the *aggregate* pattern comes in. An aggregate is an object that encapsulates multiple related domain objects (xref:composition.adoc[composition]). Each aggregate will have exactly one root entity, which provides a single point of entry to the whole group of objects. The root entity guarantees the consistency of changes made to all domain objects within the aggregate, and restricts external objects from holding references to its member objects.
+Some domain models may required that related entities and value objects (and perhaps other structures, too) be grouped together. This is where the *aggregate* pattern comes in. An aggregate is an object that encapsulates multiple related domain objects (xref:composition.adoc[composition]). Each aggregate has exactly one root entity, which provides a single point of entry to the whole group of objects. The root entity guarantees the consistency of changes made to all domain objects within the aggregate, and restricts external objects from holding references to its member objects.
 
 An example of an aggregate would be a `Customer` entity that internally references lots of other entities and values objects that represent things like a `PhoneNumber`, `PostalAddress`, `EmailAddress`, and so on. From an external point of view, the `Customer` entity is a single unit of code, and all the other objects are hidden from view.
 
@@ -258,7 +258,7 @@ Finally, *[collections]* may be used to group together multiple instances of the
 
 Domain events are a way of representing things that happen in the domain. They are used to model things that happen in the real world, such as a customer placing an order, a product being shipped, or a payment being made.
 
-Domain events are emitted by a component as a message that is somehow communicated with the rest of the application. Other components of an application may or may not handle the events when they receive them. Commonly, domain events will trigger additional domain events being generated by other components; for example, a domain event for a user being assigned to a department may trigger a domain event for the department's payroll system to be updated. Other domain events may trigger processes such as invoicing, notifications, or inventory updates. Thus, complex business functionality is composed by having lots of independent services handle specific domain events.
+Domain events are emitted by a component as a message that is somehow communicated with the rest of the application. Other components of an application may or may not handle the events when they receive them. Commonly, domain events will trigger additional domain events being generated by other components. For example, a domain event for a user being assigned to a department may trigger a domain event for the department's payroll system to be updated. Other domain events may trigger processes such as invoicing, notifications, or inventory updates. Thus, complex business functionality is composed by having lots of independent services handle specific domain events.
 
 .Domain event example
 ----
@@ -281,12 +281,12 @@ It is useful to distinguish between two categories of events:
 
 * *Domain events* signify something meaningful that happened within a specific bounded context. They are scoped to that context and are primarily consumed by listeners within the same service or module. Because the consumers are close by and their needs are well understood, domain event payloads tend to be small, carrying only the information necessary to react to the occurrence.
 
-* *Integration events* communicate changes _across_ bounded contexts. They are the mechanism by which separate parts of a distributed system are kept in sync. Because the consuming contexts may have differing, and less predictable, needs, integration event payloads tend to be broader — sometimes overcommunicating to ensure all relevant information is available to any listener. Integration events are typically published over a message broker.
+* *Integration events* communicate changes _across_ bounded contexts. They are the mechanism by which separate parts of a distributed system are kept in sync. Because the consuming contexts may have differing, and less predictable, needs, integration event payloads tend to be broader – sometimes overcommunicating to ensure all relevant information is available to any listener. Integration events are typically published over a message broker.
 
-Domain events are distinct from *technical events*, which are used to represent things that happen in the software itself, such as a user clicking a button, a database query being executed, or a message being sent over a network. Technical events are important; they often need to be logged and monitored. But they should not be part of the domain model.
+Domain events are distinct from *technical events*, which are used to represent things that happen in the software itself, such as a user clicking a button, a database query being executed, or a message being sent over a network. Technical events are important. They often need to be logged and monitored. But they should not be part of the domain model.
 
 ****
-See also *xref:change-data-capture.adoc[Change data capture (CDC)]*, which is a similar but distinct concept to domain events, but are focused on capturing data changes in databases, rather than data changes in business logic.
+See also xref:change-data-capture.adoc[Change data capture (CDC)], which is a similar but distinct concept to domain events, but are focused on capturing data changes in databases, rather than data changes in business logic.
 ****
 
 ==== Services
@@ -365,11 +365,11 @@ image::ddd-extra-layers.png[]
 
 A key design constraint of domain-driven architecture is that each layer should only have knowledge of the layers below it in the hierarchy. Or, to explain it another way, software components within a layer should be accessed only by components in a layer above it. (Dependencies may skip layers. For example, components in the application layer may interact with both domain objects and abstractions of the infrastructure. For example, an application service for sending a user an email message may have dependencies on both a `UserEntity` domain object and an `EmailTransportService`.)
 
-The domain layer should be isolated further by not having any direct dependencies on the infrastructure layer below it. This can be achieved by implementing *inversion of control* patterns at the boundary between the domain and infrastructure layers. xref:interfaces.adoc[Interfaces] and *[adapters]* are commonly used for this purpose. The interfaces belong to the layer above (the domain layer), and the adapters to the layer below (the infrastructure layer). The interfaces define the dependencies required of the domain objects, domain events, and domain services. The adapters implement those interfaces. (And the responsibility for mapping interfaces to adapters may be delegated to a *xref:dependency-injection.adoc[dependency injection container]*.)
+The domain layer should be isolated further by not having any direct dependencies on the infrastructure layer below it. This can be achieved by implementing *inversion of control* patterns at the boundary between the domain and infrastructure layers. xref:interfaces.adoc[Interfaces] and *[adapters]* are commonly used for this purpose. The interfaces belong to the layer above (the domain layer), and the adapters to the layer below (the infrastructure layer). The interfaces define the dependencies required of the domain objects, domain events, and domain services. The adapters implement those interfaces. (And the responsibility for mapping interfaces to adapters may be delegated to a xref:dependency-injection.adoc[dependency injection container].)
 
 Commonly, domain objects will interact with repository instances from the infrastructure later. Thus, the interfaces of repositories should belong to the domain layer, while the implementation of repositories belongs to the infrastructure layer. The domain therefore defines the methods and parameters that it accepts for repository access, but the implementation details of the persistence technologies are kept out of the domain layer.
 
-The purpose of this design constraint is to enforce good xref:separation-of-concerns.adoc[separation of concerns], which in turn promotes *xref:coupling.adoc[loose coupling]*. In particular, it is important that domain logic does not get scattered throughout a codebase – coupled to parts of the UI or database queries, for example.
+The purpose of this design constraint is to enforce good xref:separation-of-concerns.adoc[separation of concerns], which in turn promotes xref:coupling.adoc[loose coupling]. In particular, it is important that domain logic does not get scattered throughout a codebase – coupled to parts of the UI or database queries, for example.
 
 == References
 
@@ -412,8 +412,8 @@ The purpose of this design constraint is to enforce good xref:separation-of-conc
 
 == See also
 
-* *xref:clean-architecture.adoc[Clean architecture]*
-* *xref:conways-law.adoc[Conway's Law]*
-* *xref:event-sourcing.adoc[Event sourcing]*
-* *xref:hexagonal-architecture.adoc[Hexagonal architecture]*
-* *xref:onion-architecture.adoc[Onion architecture]*
+* xref:clean-architecture.adoc[Clean architecture]
+* xref:conways-law.adoc[Conway's Law]
+* xref:event-sourcing.adoc[Event sourcing]
+* xref:hexagonal-architecture.adoc[Hexagonal architecture]
+* xref:onion-architecture.adoc[Onion architecture]
