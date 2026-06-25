@@ -25,7 +25,7 @@ API gateways provide a convenient centralized point for implementing cross-cutti
 
 An API gateway is a specialised *xref:reverse-proxy.adoc[reverse proxy]* designed specifically for API management. While a *xref:reverse-proxy.adoc[reverse proxy]* focuses on forwarding HTTP traffic, abstracting back-end infrastructure, and providing caching and SSL termination, an API gateway adds API-specific capabilities: authentication, rate limiting, request transformation, aggregation, and API lifecycle management (versioning, developer portals).
 
-Since an API gateway is a potential *[single point of failure]*, it is typically deployed in a *xref:load-balancing.adoc[load-balanced]* configuration, with traffic distributed between multiple instances. Additional *xref:load-balancer.adoc[load balancers]* may sit behind the API gateway to further distribute traffic between multiple instances of the back-end services.
+Since an API gateway is a potential xref:single-point-of-failure.adoc[single point of failure], it is typically deployed in a *xref:load-balancing.adoc[load-balanced]* configuration, with traffic distributed between multiple instances. Additional *xref:load-balancer.adoc[load balancers]* may sit behind the API gateway to further distribute traffic between multiple instances of the back-end services.
 
 In large-scale architectures, all three may be used together: an edge load balancer distributes traffic across regions, a reverse proxy handles SSL termination and static content caching, and an API gateway manages API security, routing, and transformation before passing requests to internal service load balancers.
 

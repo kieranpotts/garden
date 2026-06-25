@@ -3,9 +3,9 @@
 // TODO: https://github.com/arpitbbhayani/system-design-questions/blob/master/load-balancer.md
 // TODO: https://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html
 
-A load balancer is a network device or software application that distributes incoming network traffic across multiple backend servers or other resources. This is a technique for *[horizontal scaling]*, and is widely used in *xref:distributed-system.adoc[distributed software]* to improve capacity, availability, and *xref:fault-tolerance.adoc[fault tolerance]*.
+A load balancer is a network device or software application that distributes incoming network traffic across multiple backend servers or other resources. This is a technique for xref:horizontal-scaling.adoc[horizontal scaling], and is widely used in *xref:distributed-system.adoc[distributed software]* to improve capacity, availability, and *xref:fault-tolerance.adoc[fault tolerance]*.
 
-Load balancers work particularly well in front of stateless services, where any instance can handle any request without needing to consider session state. If a database also needs to be replicated to handle the load, there are additional challenges to ensure *[consistency]*.
+Load balancers work particularly well in front of stateless services, where any instance can handle any request without needing to consider session state. If a database also needs to be replicated to handle the load, there are additional challenges to ensure xref:consistency.adoc[consistency].
 
 Load balancers also enable *xref:rolling-deployments.adoc[rolling deployments]*: instances can be added and removed one at a time while deploying changes, making it possible to do thousands of releases to hundreds of microservices without any downtime.
 
@@ -33,7 +33,7 @@ Handling SSL/TLS encryption and decryption is computationally expensive. A load 
 
 === Single point of failure
 
-A load balancer itself introduces a potential *[single point of failure]*. To mitigate this, load balancers are typically deployed in redundant pairs or clusters — with standby instances ready to take over — often spread across multiple availability zones.
+A load balancer itself introduces a potential xref:single-point-of-failure.adoc[single point of failure]. To mitigate this, load balancers are typically deployed in redundant pairs or clusters — with standby instances ready to take over — often spread across multiple availability zones.
 
 == Load balancing algorithms
 

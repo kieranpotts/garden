@@ -32,7 +32,7 @@ This design makes containers highly efficient. Containerization achieves a simil
 
 Because they're not booting a whole new operating system from scratch, containers start very quickly. Really, when you start a container, all you're doing is starting a new isolated filesystem and running a particular process in the context of that filesystem.
 
-The small image size, low memory footprint, and fast startup and shutdown times make containers ideal for recurring lightweight tasks, such as those run in *[CI/CD]* systems, and for rapid *[horizontal scalability]* of *[microservices]*. Container systems have become the _de facto_ standard for isolation in cloud environments, where the technology helps to optimize usage of the underlying hardware resources, and to achieve a higher density of applications per unit of infrastructure.
+The small image size, low memory footprint, and fast startup and shutdown times make containers ideal for recurring lightweight tasks, such as those run in *[CI/CD]* systems, and for rapid *[horizontal scalability]* of xref:microservices.adoc[microservices]. Container systems have become the _de facto_ standard for isolation in cloud environments, where the technology helps to optimize usage of the underlying hardware resources, and to achieve a higher density of applications per unit of infrastructure.
 
 By comparison, when you run an application in a VM, the VM will include the application and all its dependencies (binaries and libraries), plus an entire operating system running on a virtualized kernel provided by the hypervisor. While a container engine virtualizes only the applications layer of the OS, a VM virtualizes the complete operating system – both the applications layer and the kernel of the OS.
 
@@ -46,7 +46,7 @@ Historically, a trade-off of container systems was that you could only run conta
 A common analogy to explain the conceptual differences between containerization and virtualization is that a virtual machine is a bit like a house whereas a container is an apartment in a larger building of apartments. A house has its own infrastructure: plumbing, heating, electrical, and so on. An apartment shares infrastructure with other apartments in the same building.
 ****
 
-Another important difference is that containers are *[stateless]* and VMs are *[stateful]*. When a container is shut down, the internal state of the containerized application is lost. VMs use virtual disk images to store data, which may include user-generated data as well as the operating system and application. This data is persisted between reboots of the VM.
+Another important difference is that containers are xref:stateless.adoc[stateless] and VMs are *[stateful]*. When a container is shut down, the internal state of the containerized application is lost. VMs use virtual disk images to store data, which may include user-generated data as well as the operating system and application. This data is persisted between reboots of the VM.
 
 To create stateful containerized applications, the container must be linked to persistent external storage systems (eg. using volumes). Containers themselves are designed to be ephemeral – created, started, stopped, and destroyed, and quickly recreated again if needed. By contrast, VMs are more like fully-fledged application runtime environments. VMs tend to have much longer life spans and their use cases tend to favour stateful applications. See *xref:virtual-machine.adoc[virtual machines]* for more notes on the common use cases for VMs.
 

@@ -20,15 +20,15 @@ The orchestrator explicitly calls each step. If any step fails, the saga runs co
 * Service B: `ReleaseStock`
 * Service A: `CancelOrder`
 
-The orchestrator offers centralized logic and good visibility of the control flow. Trade-offs include the coordinator becoming a *[single point of failure]* and a potential performance bottleneck.
+The orchestrator offers centralized logic and good visibility of the control flow. Trade-offs include the coordinator becoming a xref:single-point-of-failure.adoc[single point of failure] and a potential performance bottleneck.
 
 An alternative to orchestration is *choreography*. There is no central coordinator, and instead each service listens for events and reacts independently, emitting further events for other services to progress the flow. This is more decentralized and can scale better, but it can lead to complex interactions and harder-to-manage workflows.
 
 Choreographed sagas offer looser coupling between services, and therefore they better support the implementation of business processes that span multiple independent teams Orchestrated sagas tend to be a better choice in scenarios where one team owns the entire process. The two patterns can be combined, for example by using orchestration for critical paths (eg. payment processing) and choreography for less critical paths (eg. sending notifications).
 
-The saga pattern – whether choreographed or coordinated – offers higher *[resilience]* and *[scalability]* compared to traditional phased-commit transactions, as it avoids blocking issues which are associated with two-phase commit protocols especially. However, the trade-off is that sagas can be more complex to implement and manage, and *[consistency]* is traded for *[availability]*.
+The saga pattern – whether choreographed or coordinated – offers higher *[resilience]* and xref:scalability.adoc[scalability] compared to traditional phased-commit transactions, as it avoids blocking issues which are associated with two-phase commit protocols especially. However, the trade-off is that sagas can be more complex to implement and manage, and xref:consistency.adoc[consistency] is traded for xref:availability.adoc[availability].
 
-When you're dealing with distributed sagas, especially choreographed ones, *[observability]* – and *[distributed tracing]* in particular – becomes crucial.
+When you're dealing with distributed sagas, especially choreographed ones, xref:observability.adoc[observability] – and *[distributed tracing]* in particular – becomes crucial.
 
 == Implementations
 

@@ -9,8 +9,8 @@ Synchronous communication is when sender and receiver components interact in rea
 
 Synchronous communication is more commonly discussed in the context of *xref:distributed-system.adoc[distributed software]*, where it is implemented using *xref:request-response.adoc[request-response]* communication protocols such as *xref:http.adoc[HTTP]* or *xref:grpc.adoc[gRPC]*.
 
-Synchronous communication in distributed software requires individual services within the network to expose their own *[APIs]*, rather than relying on a *[message broker]*, *[event bus]*, or other intermediary system to manage communication between services.
+Synchronous communication in distributed software requires individual services within the network to expose their own *[APIs]*, rather than relying on a xref:message-broker.adoc[message broker], xref:event-bus.adoc[event bus], or other intermediary system to manage communication between services.
 
-Synchronous communication in distributed software can lead to tight coupling between services, making it difficult to change services independently of each other. However, it is often necessary when low *[latency]* or *[real-time data]* processing is a requirement, or when data *xref:consistency.adoc[consistency]* is a primary *[constraint]*.
+Synchronous communication in distributed software can lead to tight coupling between services, making it difficult to change services independently of each other. However, it is often necessary when low xref:latency.adoc[latency] or *[real-time data]* processing is a requirement, or when data *xref:consistency.adoc[consistency]* is a primary *[constraint]*.
 
 It is best practice for services that depend on synchronous communication to serve a *[health check]* endpoint. This allows clients to check the availability of the services on which they depend. Alternatively, load balancers can monitor the health check endpoints and route traffic to healthy services.

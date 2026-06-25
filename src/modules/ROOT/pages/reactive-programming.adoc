@@ -10,7 +10,7 @@ Reactive programming is based on the *xref:asynchronous-processing.adoc[asynchro
 
 The origins of reactive programming can be traced back to the first GUI applications. Even today, GUIs are implemented using an endlessly-running *[event loop]*, which is responsible for listening for user input (or other events) and updating the UI in response. But in the earliest GUIs this process was synchronous. When a user input triggered a UI update, nothing else could happen until the update was complete. This led to unresponsive user interfaces. The UI would "hang" – not respond to new user input – while prior events were being processed.
 
-The solution was to decouple the event handling from the GUI update. This is done by introducing an *[event queue]*, which is processed asynchronously. A *producer* thread handling user input pushes events to the queue, and a *consumer* thread takes those events and processes them. This is an implementation of the *[observer pattern]*.
+The solution was to decouple the event handling from the GUI update. This is done by introducing an *[event queue]*, which is processed asynchronously. A *producer* thread handling user input pushes events to the queue, and a *consumer* thread takes those events and processes them. This is an implementation of the xref:observer-pattern.adoc[observer pattern].
 
 == The Reactive Manifesto
 

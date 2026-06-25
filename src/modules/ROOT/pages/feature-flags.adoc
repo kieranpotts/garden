@@ -6,7 +6,7 @@ The main objective of feature flags is to separate the process of software *[rel
 
 Once the release of functionality is decoupled from the deployment of the code and configuration that enables the functionality, more sophisticated software release workflows become possible. For example, *[phased rollouts]* can be supported, in which new features are initially enabled for a small subset of users (*[canary testing]*) and then gradually rolled out to all users as confidence in the stability of the features increases. This technique reduces the risk of introducing bugs or performance issues into production environments.
 
-Feature flags are an essential component of the technical *[architecture]* of a software system where advanced *[agile development methodologies]* and *[DevOps]* practices are desirable. Feature flags support *[trunk-based development]*, *[continuous delivery]* and *[continuous deployment]* (which depend on trunk-based development), *[canary releases]* and *[phased rollouts]*, and *[A/B testing]*.
+Feature flags are an essential component of the technical *[architecture]* of a software system where advanced *[agile development methodologies]* and xref:devops.adoc[DevOps] practices are desirable. Feature flags support xref:trunk-based-development.adoc[trunk-based development], xref:continuous-delivery.adoc[continuous delivery] and xref:continuous-deployment.adoc[continuous deployment] (which depend on trunk-based development), *[canary releases]* and *[phased rollouts]*, and xref:ab-testing.adoc[A/B testing].
 
 Feature flag systems are commonly implemented as user-based systems, in which there is a mapping of users to features. This affords the maximum flexibility, allowing feature flags to be used in a wide variety of ways, including phased roll-outs and A/B testing.
 
@@ -33,7 +33,7 @@ Complex feature toggling logic can be composed from any combination of these tec
 * The user has opted-in to beta testing (authorization system check).
 * There is a 50:50 chance of the feature being enabled (feature flag configured based on a percentage rollout).
 
-Feature flag systems should not conflate these different concerns. The following is an example of an *[anti-pattern]* in which feature flag logic is used in place of an authorization system to restrict access to certain features based on user roles or permissions. This design can lead to *[technical debt]* and reduced *[evolvability]* of the software system.
+Feature flag systems should not conflate these different concerns. The following is an example of an xref:anti-pattern.adoc[anti-pattern] in which feature flag logic is used in place of an authorization system to restrict access to certain features based on user roles or permissions. This design can lead to xref:technical-debt.adoc[technical debt] and reduced xref:evolvability.adoc[evolvability] of the software system.
 
 [source,php]
 ----
@@ -48,7 +48,7 @@ class MyFeature {
 
 Nevertheless, feature flags may piggyback on authorization systems as a solution for *[phased roll-outs]*. For example, new features may be initially released to a small subset of internal users with the "admin" role, then to "support" staff, before being enabled to all other users with the "customer" role.
 
-But feature flag systems themselves should have the *[single responsibility]* of decoupling releases from deployments, and for phasing releases (gradually making releases available to more and more users, rather than releasing in a *[big bang]*). Feature flag systems should not be overloaded with other responsibilities such as authorization, feature detection, or locale detection.
+But feature flag systems themselves should have the *[single responsibility]* of decoupling releases from deployments, and for phasing releases (gradually making releases available to more and more users, rather than releasing in a xref:big-bang.adoc[big bang]). Feature flag systems should not be overloaded with other responsibilities such as authorization, feature detection, or locale detection.
 
 Another way to think about feature flags is that the code added to application logic to enable or disable features should be considered transient. Once a feature has been fully released, the relevant feature flag code should be removed from the codebase in a subsequent deployment. 
 

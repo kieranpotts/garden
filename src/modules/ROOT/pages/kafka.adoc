@@ -7,7 +7,7 @@
 
 Kafka is a distributed streaming platform that is used for building real-time data pipelines and streaming applications. It is horizontally scalable, fault-tolerant, and extremely fast.
 
-In Kafka, all message routing is handled by a *producer*. A Kafka setup can consist of multiple *queues*, organized into multiple *topics* and *partitions*. The producer is solely responsible for determining which queue its data should be added to. This has the advantage of the Kafka cluster itself not having to do a lot of work, which is part of Kafka's design that allows it to handle such high *[throughput]*.
+In Kafka, all message routing is handled by a *producer*. A Kafka setup can consist of multiple *queues*, organized into multiple *topics* and *partitions*. The producer is solely responsible for determining which queue its data should be added to. This has the advantage of the Kafka cluster itself not having to do a lot of work, which is part of Kafka's design that allows it to handle such high xref:throughput.adoc[throughput].
 
 image::kafka-message-routing.png[]
 
@@ -19,7 +19,7 @@ One of the trade-offs of this design is that, once a message has been produced, 
 
 If something goes wrong and a consumer fails to process a message, we need some way to be able to retry and send the message to a different consumer.
 
-How this is done varies between *[message queues]* and *[stream processing systems]* like Kafka.
+How this is done varies between xref:message-queues.adoc[message queues] and xref:stream-processing-systems.adoc[stream processing systems] like Kafka.
 
 In the Kafka model, there is no concept of acknowledgments, instead we have *offsets*. Kafka logs an offset of how many messages each consumer has received so far. Whenever a consumer needs new data, it fetches data from the queue from that offset. Thus, the consumer gets all new data from the last position it read from.
 

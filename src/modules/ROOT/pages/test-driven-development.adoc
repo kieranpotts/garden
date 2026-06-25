@@ -50,7 +50,7 @@ Writing tests first requires programmers to think about how to implement changes
 
 Advocates of TDD argue that it leads to:
 
-* Better design and higher code quality, due to enforcement of *[modularity]* and well-defined *[interfaces]*.
+* Better design and higher code quality, due to enforcement of xref:modularity.adoc[modularity] and well-defined xref:interfaces.adoc[interfaces].
 * Fewer defects, because testing is *[shifted left]*, meaning errors are caught early in the development lifecycle.
 * Confident refactoring, as you end up with comprehensive test coverage that makes it much easier to make changes with minimized risk of breaking existing functionality.
 
@@ -60,7 +60,7 @@ However, TDD is not universally practiced or accepted. Criticisms of TDD include
 
 Many times it is easier to experiment with code structure, data structures, and interfaces, perhaps using temporary branches in source control, rather than using tests to drive the design. It is not always necessary or desirable to write failing tests before writing or changing code.
 
-TDD can also over-emphasize *[bottom-up design]*. It puts focus on small increments of isolated units of code, rather than on the *[high-level design]* and maintaining *[conceptual integrity]* of the *[system design]* as a whole. This can lead to situations where individual components are well-made but which do not integrate well into a cohesive whole.
+TDD can also over-emphasize xref:bottom-up-design.adoc[bottom-up design]. It puts focus on small increments of isolated units of code, rather than on the xref:high-level-design.adoc[high-level design] and maintaining xref:conceptual-integrity.adoc[conceptual integrity] of the xref:system-design.adoc[system design] as a whole. This can lead to situations where individual components are well-made but which do not integrate well into a cohesive whole.
 
 In addition, TDD tends to produce lots of low-level unit tests, which can make large-scale refactoring harder, not easier. Refactoring is easier, generally, when you err on the side of integration and system/e2e tests.
 
@@ -72,9 +72,9 @@ There is *[no silver bullet]* in software development. TDD is a *[practice]* tha
 
 Acceptance test–driven development (ATDD) scales the test-first discipline up to the requirements level. Where TDD uses unit tests to drive the implementation of small units of code, ATDD uses _acceptance tests_ — written in business domain terms — to drive the development of whole features or user stories.
 
-Acceptance tests are created collaboratively by the requirement requester (product owner, business analyst, or customer representative), the developer, and the tester _before_ coding begins. This collaboration is sometimes called a _specification workshop_, or the _three amigos_ meeting. The practice is closely related to *[behavior-driven development (BDD)]*: both ATDD and BDD emphasize shared, structured specifications; BDD focuses specifically on the behavioral language of the tests. Tests and requirements are tightly interrelated: a requirement without an acceptance test may not be implemented correctly, and a test without a corresponding requirement is unnecessary.
+Acceptance tests are created collaboratively by the requirement requester (product owner, business analyst, or customer representative), the developer, and the tester _before_ coding begins. This collaboration is sometimes called a _specification workshop_, or the _three amigos_ meeting. The practice is closely related to xref:behavior-driven-development.adoc[behavior-driven development (BDD)]: both ATDD and BDD emphasize shared, structured specifications; BDD focuses specifically on the behavioral language of the tests. Tests and requirements are tightly interrelated: a requirement without an acceptance test may not be implemented correctly, and a test without a corresponding requirement is unnecessary.
 
-Acceptance tests are written using a structured format that mirrors the Given-When-Then pattern used in *[Gherkin]* and BDD tools:
+Acceptance tests are written using a structured format that mirrors the Given-When-Then pattern used in xref:gherkin.adoc[Gherkin] and BDD tools:
 
 * *Given* — the initial state of the system.
 * *When* — the action or event that occurs.
