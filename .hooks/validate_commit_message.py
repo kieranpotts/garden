@@ -28,6 +28,7 @@ VALID_TYPES = [
     "prune",      # merge/remove a duplicate entry
     "graft",      # split an overgrown entry into separate pages
     "entwine",    # add missing cross-references between existing entries
+    "cultivate",  # bring an entry into conformance with the style guide
     "weed",       # fix something incorrect or harmful (replaces fix)
     "uproot",     # revert a change (replaces revert)
     "landscape",  # shape things (replaces refactor)

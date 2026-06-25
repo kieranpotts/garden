@@ -37,6 +37,7 @@ Commit messages MUST follow the format `<type>: <description>`, where `<descript
 - `prune`: Merge or remove a duplicate entry.
 - `graft`: Split an overgrown entry into separate pages.
 - `entwine`: Add missing cross-references between existing entries.
+- `cultivate`: Bring an entry into conformance with the style guide.
 - `weed`: Fix something incorrect or harmful (the gardening equivalent of `fix`).
 - `uproot`: Revert a change (the gardening equivalent of `revert`).
 - `landscape`: Restructure scripts/CI/tooling without changing behavior (the gardening equivalent of `refactor`).
@@ -50,6 +51,7 @@ fertilize: expand abstraction with examples and modular design xref
 tend: fix broken xref in ai-agent.adoc
 prune: merge adapative-software-development into adaptive-software-development
 entwine: link circuit-breaker and retry as related resilience patterns
+cultivate: fix dash and colon usage in resilience
 weed: correct factual error in acid-principles
 uproot: revert accidental merge of draft entry
 landscape: restructure commit validation hook for clarity
