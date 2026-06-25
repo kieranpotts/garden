@@ -43,4 +43,4 @@ The capitalized words REQUIRED, MUST, MUST NOT, RECOMMENDED, SHOULD, SHOULD NOT,
 
 ## Skills
 
-Skills specific to this project are installed in [.agents/skills/](./.agents/skills/). They are named with gardening metaphors: `sow`, `tend`, `fertilize`, `prune`, `graft`, `harvest`.
+Skills specific to this project are installed in [.agents/skills/](./.agents/skills/). They are named with gardening metaphors: `sow`, `tend`, `fertilize`, `prune`, `graft`, `entwine`, `harvest`.

@@ -9,6 +9,7 @@ Agent skills for maintaining this digital garden. Each does one focused task.
 | [fertilize](./fertilize/README.md) | Expand a thin stub entry into a fuller page, without changing its scope. |
 | [prune](./prune/README.md) | Find duplicate or near-duplicate entries and merge them into one surviving page. |
 | [graft](./graft/README.md) | Split an overgrown entry that's drifted into covering multiple concepts back into separate atomic pages. |
-| [harvest](./harvest/README.md) | Produce a digest of recent garden activity — what's been sown, fertilized, tended, pruned, or grafted. |
+| [entwine](./entwine/README.md) | Find existing pages that are related but not cross-referenced, and add the missing links between them. |
+| [harvest](./harvest/README.md) | Produce a digest of recent garden activity — what's been sown, fertilized, tended, pruned, grafted, or entwined. |
 
 See each skill's own `SKILL.md` for the full instructions an agent follows, and `README.md` for invocation examples.
