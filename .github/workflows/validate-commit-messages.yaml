@@ -62,7 +62,7 @@ jobs:
           #     uproot     - revert a change (replaces revert)
           #     landscape  - restructure scripts/CI/tooling without changing behavior (replaces refactor)
           types="chore|format|maintenance|sow|tend|fertilize|prune|graft|entwine|cultivate|weed|uproot|landscape"
-          re="^($types): [a-z].*$"
+          re="^($types): [a-z0-9].*$"
 
           echo "$GIT_LOG_OUTPUT" | while read -r line; do
             [ -z "$line" ] && continue
