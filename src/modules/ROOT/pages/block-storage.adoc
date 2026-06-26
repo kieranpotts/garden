@@ -2,7 +2,7 @@
 
 Block storage is a technology that stores data by dividing it into fixed-size chunks called blocks. Each block is an independent unit of storage with a unique identifier, but carries no high-level metadata – no filename, no owner, no timestamps. A complete piece of data (such as a database record or a virtual disk image) may be spread across many non-sequential blocks on different physical devices. The application or operating system maintains a lookup table to track which blocks make up which piece of data, and reassembles them on retrieval.
 
-Unlike xref:file-storage.adoc[file storage] (which adds a file-system layer on top of raw storage) or xref:object-storage.adoc[object storage] (which uses HTTP/REST APIs), block storage presents raw volumes directly to the host. This removes processing overhead and is the reason block storage delivers ultra-low latency and high I/O throughput – characteristics essential for latency-sensitive applications like relational databases.
+Unlike *xref:file-storage.adoc[file storage]* (which adds a file-system layer on top of raw storage) or *xref:object-storage.adoc[object storage]* (which uses HTTP/REST APIs), block storage presents raw volumes directly to the host. This removes processing overhead and is the reason block storage delivers ultra-low latency and high I/O throughput – characteristics essential for latency-sensitive applications like relational databases.
 
 To perform a write, the application splits data into block-sized sections and writes each to the storage system, recording their identifiers in a lookup table. To read, the system uses the lookup table to locate the relevant blocks and reassembles them. Because only the affected block needs to be rewritten on an update (not the entire file), block storage is highly efficient for large files that change frequently.
 
@@ -15,7 +15,7 @@ To perform a write, the application splits data into block-sized sections and wr
 
 == Limitations
 
-* Higher cost: Block storage is generally more expensive per gigabyte than xref:object-storage.adoc[object storage], making it unsuitable for storing large volumes of infrequently-accessed data.
+* Higher cost: Block storage is generally more expensive per gigabyte than *xref:object-storage.adoc[object storage]*, making it unsuitable for storing large volumes of infrequently-accessed data.
 * Requires a file system: Raw block storage cannot be browsed or accessed directly by end-users. A file system must be created on top of it.
 * Not suited to unstructured data at scale: Object storage is the better choice for storing billions of files (media, backups, logs).
 
@@ -32,5 +32,5 @@ Cloud implementations include Amazon EBS (Elastic Block Store) and Azure Managed
 
 == See also
 
-* xref:file-storage.adoc[File storage]
-* xref:object-storage.adoc[Object storage]
+* *xref:file-storage.adoc[File storage]*
+* *xref:object-storage.adoc[Object storage]*
