@@ -4,7 +4,7 @@
 
 The canonical specification lives at https://agentskills.io/specification.
 
-NOTE: "Agent skills" in this specification sense is distinct from "tools" in the function-calling sense (tool use, MCP servers). Skills are context bundles — structured documentation the agent reads. Tools are executable programs the agent calls. See xref:model-context-protocol.adoc[Model Context Protocol] for the tool-use protocol.
+NOTE: "Agent skills" in this specification sense is distinct from "tools" in the function-calling sense (tool use, MCP servers). Skills are context bundles — structured documentation the agent reads. Tools are executable programs the agent calls. See *xref:model-context-protocol.adoc[Model Context Protocol]* for the tool-use protocol.
 
 Each skill is a directory containing a `SKILL.md` file — YAML front-matter followed by Markdown instructions. The front-matter's `description` field is the primary activation mechanism. At startup, the agent reads only each skill's `name` and `description`. The full body is loaded only when the description matches the current task. This on-demand, just-in-time loading keeps the context window focused on what is currently relevant.
 
@@ -22,7 +22,7 @@ The specification is supported by a growing set of coding agents, though the act
 
 Some tools require opt-in via a configuration option or command-line flag to activate skill support. Check each tool's documentation for its specific activation model.
 
-In the language of xref:ai-agent-harness-engineering.adoc[harness engineering], skills are a _guide_ — a feedforward control that steers an agent toward the right approach before it acts, rather than a tool it executes or a sensor that checks its output.
+In the language of *xref:ai-agent-harness-engineering.adoc[harness engineering]*, skills are a _guide_ — a feedforward control that steers an agent toward the right approach before it acts, rather than a tool it executes or a sensor that checks its output.
 
 == Skills registries and collections
 
@@ -38,7 +38,7 @@ In the language of xref:ai-agent-harness-engineering.adoc[harness engineering], 
 
 == See also
 
-* xref:ai-agent.adoc[AI agent]
-* xref:ai-agent-harness-engineering.adoc[Harness engineering]
-* xref:ai-coding-assistant.adoc[AI coding assistant]
-* xref:model-context-protocol.adoc[Model Context Protocol]
+* *xref:ai-agent.adoc[AI agent]*
+* *xref:ai-agent-harness-engineering.adoc[Harness engineering]*
+* *xref:ai-coding-assistant.adoc[AI coding assistant]*
+* *xref:model-context-protocol.adoc[Model Context Protocol]*

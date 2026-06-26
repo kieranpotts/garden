@@ -1,11 +1,11 @@
 = AI agent
 
-Agentic systems are xref:large-language-model.adoc[LLM]-based systems that can act autonomously to achieve goals. AI agents, also known as software agents, are a key component of many AI applications, from personal assistants to autonomous vehicles and software automation.
+Agentic systems are *xref:large-language-model.adoc[LLM]*-based systems that can act autonomously to achieve goals. AI agents, also known as software agents, are a key component of many AI applications, from personal assistants to autonomous vehicles and software automation.
 
 Common components of an AI agent include:
 
-* xref:large-language-model.adoc[Models]
-* xref:agent-skills.adoc[Skills and tools]
+* *xref:large-language-model.adoc[Models]*
+* *xref:agent-skills.adoc[Skills and tools]*
 * Data, knowledge, and memory
 * Input and output interfaces (for example, chat, audio, or APIs)
 * Guardrails
@@ -16,9 +16,9 @@ Common components of an AI agent include:
 The term _agent_ predates large language models. In computer science, a software agent is a program that acts on behalf of a user or another program with some degree of authority to decide for itself what to do. What distinguishes an agent from an ordinary program — or from a single LLM call — is a cluster of properties:
 
 * `Autonomy`: It acts without constant human intervention, deciding its own next step.
-* `Reactivity`: It perceives its environment and responds to it. For an LLM agent, the "environment" is reached through tools (see xref:model-context-protocol.adoc[MCP]).
+* `Reactivity`: It perceives its environment and responds to it. For an LLM agent, the "environment" is reached through tools (see *xref:model-context-protocol.adoc[MCP]*).
 * `Proactiveness`: It pursues goals on its own initiative, not only in direct response to a prompt.
-* `Social ability`: It can communicate and coordinate with other agents (see xref:agent2agent.adoc[A2A]).
+* `Social ability`: It can communicate and coordinate with other agents (see *xref:agent2agent.adoc[A2A]*).
 * `Persistence`: It runs as an ongoing process working toward a goal, rather than executing once and stopping.
 * `Mobility` (in some definitions): It can relocate its execution across machines.
 
@@ -40,27 +40,27 @@ The harness shapes what an agent can do far more than the choice of model alone.
 
 There are two broad categories of harness in practice:
 
-* `Developer-facing harnesses`: Tools used by software developers to delegate coding tasks to an agent, such as file editing, shell execution, running tests, and reading documentation. The developer specifies a goal, and the harness plans and executes a sequence of steps to reach it autonomously. Examples include Claude Code, OpenCode, and Aider. These are distinct from xref:ai-coding-assistant.adoc[IDE coding assistants] (GitHub Copilot, Cursor), which are inline tools where the developer drives the interaction at a fine-grained level. Developer-facing harnesses operate at the task level. IDE assistants operate at the line or block level.
+* `Developer-facing harnesses`: Tools used by software developers to delegate coding tasks to an agent, such as file editing, shell execution, running tests, and reading documentation. The developer specifies a goal, and the harness plans and executes a sequence of steps to reach it autonomously. Examples include Claude Code, OpenCode, and Aider. These are distinct from *xref:ai-coding-assistant.adoc[IDE coding assistants]* (GitHub Copilot, Cursor), which are inline tools where the developer drives the interaction at a fine-grained level. Developer-facing harnesses operate at the task level. IDE assistants operate at the line or block level.
 
 * `Production/infrastructure harnesses`: Platforms for deploying, running, and governing agents in production systems. These manage agent lifecycles, enforce permission boundaries, wire observability pipelines, and coordinate multi-agent workflows. Examples include Microsoft Agent Framework, n8n, and OpenClaw.
 
 == Harness engineering
 
-Because the harness shapes an agent's behaviour more than the choice of model does, designing and operating it well is a discipline in its own right — xref:ai-agent-harness-engineering.adoc[harness engineering]. A well-designed harness gives the agent its tools, context, guardrails, and feedback loops, and constrains the solution space so the agent is more likely to do the right thing, and so that when it does go wrong, the problem is caught early and cheaply. See xref:ai-agent-harness-engineering.adoc[harness engineering] for a full treatment.
+Because the harness shapes an agent's behaviour more than the choice of model does, designing and operating it well is a discipline in its own right — *xref:ai-agent-harness-engineering.adoc[harness engineering]*. A well-designed harness gives the agent its tools, context, guardrails, and feedback loops, and constrains the solution space so the agent is more likely to do the right thing, and so that when it does go wrong, the problem is caught early and cheaply. See *xref:ai-agent-harness-engineering.adoc[harness engineering]* for a full treatment.
 
 == Agent development frameworks
 
 Frameworks and SDKs provide the infrastructure for building and orchestrating agents. It's important to distinguish between two types:
 
-* `Development frameworks`: Code libraries and SDKs used to write agent code. Examples: xref:ai-agent-orchestration.adoc[LangChain], LlamaIndex, Semantic Kernel. These are tools for _building_ agents.
+* `Development frameworks`: Code libraries and SDKs used to write agent code. Examples: *xref:ai-agent-orchestration.adoc[LangChain]*, LlamaIndex, Semantic Kernel. These are tools for _building_ agents.
 
 * `Agent harnesses`: Runtime environments and orchestration systems that execute agents, manage their lifecycle, control permissions, provide observability, and coordinate multi-agent workflows. Some of these blur the line by offering both development and runtime capabilities. Examples: Microsoft Agent Framework, n8n, OpenClaw.
 
-Many frameworks require a harness to run agents in production, while some frameworks include built-in harness capabilities. The distinction helps clarify whether you're looking for a tool to _write_ agent code or an environment to _run_ agents. Designing and operating these harnesses is a discipline in its own right — see xref:ai-agent-harness-engineering.adoc[harness engineering].
+Many frameworks require a harness to run agents in production, while some frameworks include built-in harness capabilities. The distinction helps clarify whether you're looking for a tool to _write_ agent code or an environment to _run_ agents. Designing and operating these harnesses is a discipline in its own right — see *xref:ai-agent-harness-engineering.adoc[harness engineering]*.
 
 === General-purpose development frameworks
 
-* xref:ai-agent-orchestration.adoc[LangChain] — Code library for building agents and LLM-powered applications. Emphasizes model interoperability, rapid prototyping, and an extensive ecosystem of integrations. Available in Python and JavaScript/TypeScript. Its LangGraph component handles xref:ai-agent-orchestration.adoc[multi-agent orchestration]. (https://github.com/langchain-ai/langchain[Repo].)
+* *xref:ai-agent-orchestration.adoc[LangChain]* — Code library for building agents and LLM-powered applications. Emphasizes model interoperability, rapid prototyping, and an extensive ecosystem of integrations. Available in Python and JavaScript/TypeScript. Its LangGraph component handles *xref:ai-agent-orchestration.adoc[multi-agent orchestration]*. (https://github.com/langchain-ai/langchain[Repo].)
 
 * https://ai.pydantic.dev/[Pydantic AI] — Typed agent framework from the team behind Pydantic. Uses Pydantic models to enforce safe, predictable, structured outputs from LLMs. Python.
 
@@ -96,11 +96,11 @@ Many frameworks require a harness to run agents in production, while some framew
 
 * https://pi.dev/[Pi] — Code library providing minimal core components for building custom agents. Requires extensions like `pi-schedule-prompt` and `@pi-agents/loop` to implement autonomous tasks through recurring prompts, cron-style jobs, and dynamic pacing. Can also be used as a basic terminal-based coding assistant out-of-the-box.
 
-See also xref:ai-coding-assistant.adoc[AI coding assistants], many of which have agentic properties, too.
+See also *xref:ai-coding-assistant.adoc[AI coding assistants]*, many of which have agentic properties, too.
 
 == Agent orchestration platforms
 
-Above individual agents sits the orchestration layer, which coordinates _teams_ of agents working together toward shared goals — managing scheduling, delegation, budgets, and governance across a whole system of autonomous workers. Platforms in this space include Claude Cowork, AG2, CrewAI, LangGraph, MetaGPT, and SuperAGI. See xref:ai-agent-orchestration.adoc[AI agent orchestration] for the full landscape.
+Above individual agents sits the orchestration layer, which coordinates _teams_ of agents working together toward shared goals — managing scheduling, delegation, budgets, and governance across a whole system of autonomous workers. Platforms in this space include Claude Cowork, AG2, CrewAI, LangGraph, MetaGPT, and SuperAGI. See *xref:ai-agent-orchestration.adoc[AI agent orchestration]* for the full landscape.
 
 == Benchmarks
 
@@ -110,11 +110,11 @@ Above individual agents sits the orchestration layer, which coordinates _teams_ 
 
 == See also
 
-* xref:ai-agent-harness-engineering.adoc[Harness engineering]
-* xref:ai-agent-orchestration.adoc[AI agent orchestration]
-* xref:agent-skills.adoc[Agent skills]
-* xref:model-context-protocol.adoc[Model Context Protocol]
-* xref:agent2agent.adoc[Agent2Agent (A2A)]
+* *xref:ai-agent-harness-engineering.adoc[Harness engineering]*
+* *xref:ai-agent-orchestration.adoc[AI agent orchestration]*
+* *xref:agent-skills.adoc[Agent skills]*
+* *xref:model-context-protocol.adoc[Model Context Protocol]*
+* *xref:agent2agent.adoc[Agent2Agent (A2A)]*
 
 == References
 
