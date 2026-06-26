@@ -24,6 +24,7 @@ Items raised during cultivate passes (A–R sections so far) that are outside cu
 - [ ] `ports-and-adapters.adoc` — page title says "Ports-and-adapters" (hyphenated) but `index.adoc` lists it as "Ports and adapters" (no hyphens), and both forms are used interchangeably in the prose. Pick one and make consistent.
 - [ ] `phased-commit.adoc` — filename is singular ("phased-commit") but the page title says "Phased commits (2PC, 3PC)" (plural) and `index.adoc` says "Phased commit (2PC, 3PC)" (singular). Pick one form.
 - [ ] `adaptive-software-development.adoc` — body text says "Adaptive Software Development (ASD)" in Title Case mid-sentence, inconsistent with the page's own sentence-case title ("Adaptive software development (ASD)").
+- [ ] `specification-by-example.adoc` — page title is correctly sentence case ("Specification by example") but `index.adoc` lists it as "Specification by Example" (Title Case). Pick one and make consistent.
 
 ## Maturity labels missing (editorial call, not cultivate's job)
 
@@ -39,7 +40,7 @@ Items raised during cultivate passes (A–R sections so far) that are outside cu
 - [ ] `mythical-man-month.adoc` line 18 — `*blog post*` is bold with no link attached; looks like a forgotten link target.
 - [ ] `processor-architectures.adoc` — "Related links" section lists the same Wikipedia IA-32 URL twice.
 - [ ] `linux.adoc` line 9 — minor grammar slip: "It is core component" (missing article "a").
-- [ ] Semicolons that are genuine "avoid semicolons" violations but need a sentence rewrite (not a mechanical fix) rather than a silent split: `rational-unified-process.adoc`, `replay-attack.adoc` (×2), `rest.adoc` (×4).
+- [ ] Semicolons that are genuine "avoid semicolons" violations but need a sentence rewrite (not a mechanical fix) rather than a silent split: `rational-unified-process.adoc`, `replay-attack.adoc` (×2), `rest.adoc` (×4), `system-design.adoc` line 43 (semicolon inside a long, nested parenthetical aside about TCP vs UDP — risky to split mechanically without changing meaning).
 
 ## Style guide gaps worth deciding on (would feed back into docs/style-guide.md and the cultivate skill)
 
@@ -47,6 +48,7 @@ Items raised during cultivate passes (A–R sections so far) that are outside cu
 - [ ] Bold table-cell header labels (eg. `microservices.adoc`'s comparison table: `|*Granularity*`, `|*Communication*`) — don't strictly match any of the four accepted bold conventions but mirror an established table-formatting pattern seen elsewhere. Decide whether this is a fifth accepted convention.
 - [ ] `cynefin-framework.adoc` bolds its five domain names (*Clear*, *Complicated*, *Complex*, *Chaotic*, *Disorder*) as a glossary-style convention — borderline against "no general emphasis," left as-is pending a decision.
 - [ ] Book titles in body prose (eg. `rubber-ducking.adoc` line 3 bolds `*The Pragmatic Programmer*`) — the style guide has no convention for book/publication titles at all (no italics rule, doesn't fit any of the four bold conventions). Decide on a convention (italics? bold? plain?) and codify it.
+- [ ] Semicolons used to chain list items into one flowing enumeration (seen in `spoofing.adoc` and `stepwise-refinement.adoc`) — stylistic list structure, not flagged as a sentence-level violation, but worth deciding if the "avoid semicolons" rule is meant to reach list-item punctuation too.
 
 ## Judgment calls on formal-proper-noun exemption (flagged, not changed)
 
