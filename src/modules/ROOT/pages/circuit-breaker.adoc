@@ -2,13 +2,13 @@
 
 // TODO: https://medium.com/geekculture/design-patterns-for-microservices-circuit-breaker-pattern-276249ffab33
 
-The circuit breaker pattern is a way to handle transient failures in xref:distributed-system.adoc[distributed software].
+The circuit breaker pattern is a way to handle transient failures in *xref:distributed-system.adoc[distributed software]*.
 
 When requests to services fail, a circuit breaker will automatically open, preventing any further requests from being sent to the failing service. The circuit breaker will remain open for a configurable amount of time, after which it will automatically close, allowing further requests to be sent again to the service.
 
-Circuit breakers complement the xref:retry.adoc[retry mechanism]. Whereas a retry mechanism will keep retrying a failing service until it succeeds, a circuit breaker will trip when the error rate exceeds a configured threshold and it will prevent any further requests from being sent to the failing service for a configured period of time.
+Circuit breakers complement the *xref:retry.adoc[retry mechanism]*. Whereas a retry mechanism will keep retrying a failing service until it succeeds, a circuit breaker will trip when the error rate exceeds a configured threshold and it will prevent any further requests from being sent to the failing service for a configured period of time.
 
-Both are solutions for improving xref:fault-tolerance.adoc[fault tolerance], and the two solutions work particularly well in combination. If a service is failing, it is likely that it will continue to fail for a period of time, until its failure mode is resolved through xref:disaster-recovery.adoc[disaster recovery] mechanisms. While disaster recovery is ongoing, a circuit breaker will help to prevent the recovering system from being overwhelmed by retries.
+Both are solutions for improving *xref:fault-tolerance.adoc[fault tolerance]*, and the two solutions work particularly well in combination. If a service is failing, it is likely that it will continue to fail for a period of time, until its failure mode is resolved through *xref:disaster-recovery.adoc[disaster recovery]* mechanisms. While disaster recovery is ongoing, a circuit breaker will help to prevent the recovering system from being overwhelmed by retries.
 
 ////
 
