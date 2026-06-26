@@ -2,7 +2,7 @@
 
 Representational State Transfer (REST) is an architectural style for designing networked applications. It was introduced by Roy Fielding in his 2000 doctoral dissertation and has since become the dominant style for public web APIs.
 
-REST is not a protocol or a format — it is a set of constraints that, when applied to a distributed system, produce desirable properties such as scalability, visibility, and modifiability.
+REST is not a protocol or a format – it is a set of constraints that, when applied to a distributed system, produce desirable properties such as scalability, visibility, and modifiability.
 
 == Architectural constraints
 
@@ -14,7 +14,7 @@ The client and server are decoupled. The client handles the user interface; the 
 
 === Stateless
 
-The server stores no session state between requests. Every request from a client must contain all the information needed for the server to understand and fulfil it — credentials, context, and data included. Session state, if needed, is held entirely by the client.
+The server stores no session state between requests. Every request from a client must contain all the information needed for the server to understand and fulfil it – credentials, context, and data included. Session state, if needed, is held entirely by the client.
 
 Statelessness improves scalability: any server instance can handle any request without requiring sticky sessions or shared state.
 
@@ -37,7 +37,7 @@ A client cannot tell whether it is communicating directly with the server or wit
 
 === Code on demand (optional)
 
-The server may optionally extend client functionality by transferring executable code — for example, JavaScript. This is the only optional constraint.
+The server may optionally extend client functionality by transferring executable code – for example, JavaScript. This is the only optional constraint.
 
 == Resources and HTTP methods
 
@@ -79,7 +79,7 @@ PATCH  /books/42    # Partially update book 42.
 DELETE /books/42    # Delete book 42.
 ----
 
-This maps naturally to CRUD operations (create, read, update, delete), which is REST's primary strength and its primary limitation — operations that are not CRUD-shaped are awkward to express.
+This maps naturally to CRUD operations (create, read, update, delete), which is REST's primary strength and its primary limitation – operations that are not CRUD-shaped are awkward to express.
 
 == REST vs RPC
 
@@ -106,8 +106,8 @@ Remote Procedure Call (RPC) takes a different approach: the client calls a named
 | Can be stateful or stateless
 
 | Coupling
-| Loose — clients need only know the URL structure
-| Tighter — clients must know function names and signatures
+| Loose – clients need only know the URL structure
+| Tighter – clients must know function names and signatures
 
 | Action flexibility
 | Limited to CRUD; non-CRUD operations are awkward
@@ -118,11 +118,11 @@ Remote Procedure Call (RPC) takes a different approach: the client calls a named
 | Typically fixed per implementation (JSON-RPC, XML-RPC, gRPC/Protobuf)
 |===
 
-RPC is a natural fit for internal microservice communication, particularly with modern implementations like xref:grpc.adoc[gRPC], which provide performance advantages through binary encoding and streaming. REST is more appropriate when the API is public-facing and needs to be navigable by diverse, unknown clients.
+RPC is a natural fit for internal microservice communication, particularly with modern implementations like *xref:grpc.adoc[gRPC]*, which provide performance advantages through binary encoding and streaming. REST is more appropriate when the API is public-facing and needs to be navigable by diverse, unknown clients.
 
 == Over-fetching and under-fetching
 
-Because REST endpoints return fixed response shapes, clients often receive more data than they need (_over-fetching_) or must make multiple requests to assemble what they need (_under-fetching_). xref:graphql.adoc[GraphQL] was designed specifically to address these problems by letting clients declare exactly which fields they require.
+Because REST endpoints return fixed response shapes, clients often receive more data than they need (_over-fetching_) or must make multiple requests to assemble what they need (_under-fetching_). *xref:graphql.adoc[GraphQL]* was designed specifically to address these problems by letting clients declare exactly which fields they require.
 
 == Advantages
 
@@ -141,7 +141,7 @@ Because REST endpoints return fixed response shapes, clients often receive more 
 
 == See also
 
-* xref:http.adoc[HyperText Transfer Protocol (HTTP)]: The underlying transport protocol, and the source of REST's uniform interface.
-* xref:http-api.adoc[HTTP API]: The broader category of APIs built on HTTP, of which RESTful APIs are one style.
-* xref:grpc.adoc[gRPC]: A high-performance RPC framework, common for internal microservice communication.
-* xref:graphql.adoc[GraphQL]: A query language for APIs that addresses REST's over-fetching and under-fetching limitations.
+* *xref:http.adoc[HyperText Transfer Protocol (HTTP)]*: The underlying transport protocol, and the source of REST's uniform interface.
+* *xref:http-api.adoc[HTTP API]*: The broader category of APIs built on HTTP, of which RESTful APIs are one style.
+* *xref:grpc.adoc[gRPC]*: A high-performance RPC framework, common for internal microservice communication.
+* *xref:graphql.adoc[GraphQL]*: A query language for APIs that addresses REST's over-fetching and under-fetching limitations.

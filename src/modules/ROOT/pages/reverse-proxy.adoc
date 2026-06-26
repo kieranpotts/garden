@@ -28,15 +28,15 @@ Reverse proxies can rewrite incoming URLs and route requests to different back-e
 
 === Load balancing
 
-Many reverse proxies support basic load balancing across multiple back-end instances, distributing requests to spread load. Tools like Nginx can function as both a reverse proxy and a xref:load-balancer.adoc[load balancer] simultaneously.
+Many reverse proxies support basic load balancing across multiple back-end instances, distributing requests to spread load. Tools like Nginx can function as both a reverse proxy and a *xref:load-balancer.adoc[load balancer]* simultaneously.
 
 == Reverse proxy vs. load balancer vs. API gateway
 
 These three components overlap and are often confused:
 
-* A xref:load-balancer.adoc[load balancer] is focused specifically on distributing traffic across multiple identical server instances for availability and scalability.
+* A *xref:load-balancer.adoc[load balancer]* is focused specifically on distributing traffic across multiple identical server instances for availability and scalability.
 * A reverse proxy is a more general-purpose intermediary – it can route, cache, compress, rewrite, and secure traffic, often in front of a heterogeneous set of back-end services.
-* An xref:api-gateway.adoc[API gateway] is a specialized reverse proxy for API management, adding authentication, rate limiting, request/response transformation, aggregation, and API lifecycle management.
+* An *xref:api-gateway.adoc[API gateway]* is a specialized reverse proxy for API management, adding authentication, rate limiting, request/response transformation, aggregation, and API lifecycle management.
 
 In practice, the boundaries are blurry. Nginx, for example, is used as a reverse proxy, a Layer 7 load balancer, and an API gateway depending on configuration. In large architectures, all three may coexist in layers: a reverse proxy handles SSL termination and static content at the edge, an API gateway manages authentication and routing to microservices, and load balancers distribute traffic within each service tier.
 
@@ -44,5 +44,5 @@ Common implementations include Nginx, Apache HTTP Server, HAProxy, and Traefik.
 
 == See also
 
-* xref:load-balancer.adoc[Load balancer]
-* xref:api-gateway.adoc[API gateway]
+* *xref:load-balancer.adoc[Load balancer]*
+* *xref:api-gateway.adoc[API gateway]*

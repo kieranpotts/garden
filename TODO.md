@@ -1,10 +1,12 @@
 # TODO
 
-Items raised during cultivate passes (A–P sections so far) that are outside cultivate's scope (style only) and were flagged rather than fixed. Grouped roughly by which skill would handle them.
+Items raised during cultivate passes (A–R sections so far) that are outside cultivate's scope (style only) and were flagged rather than fixed. Grouped roughly by which skill would handle them.
 
 ## Duplicate / mergeable pages (prune)
 
 - [ ] `cqrs.adoc` and `command-query-responsibility-segregation.adoc` both cover "Command Query Responsibility Segregation (CQRS)" — likely duplicates, candidate for merging.
+- [ ] `robustness-principle.adoc` substantially overlaps `postels-law.adoc` (which is already documented as "aka the Robustness Principle"). `robustness-principle.adoc`'s entire body is just "See xref:postels-law.adoc[Postel's law]." — likely a redirect stub that could be merged/removed.
+- [ ] `rubber-duck-debugging.adoc` and `rubber-ducking.adoc` appear to cover the same concept under two different titles — candidate for merging.
 
 ## Broken or fake cross-references (tend)
 
@@ -23,6 +25,11 @@ Items raised during cultivate passes (A–P sections so far) that are outside cu
 - [ ] `phased-commit.adoc` — filename is singular ("phased-commit") but the page title says "Phased commits (2PC, 3PC)" (plural) and `index.adoc` says "Phased commit (2PC, 3PC)" (singular). Pick one form.
 - [ ] `adaptive-software-development.adoc` — body text says "Adaptive Software Development (ASD)" in Title Case mid-sentence, inconsistent with the page's own sentence-case title ("Adaptive software development (ASD)").
 
+## Maturity labels missing (editorial call, not cultivate's job)
+
+- [ ] `raaml.adoc` — its `index.adoc` listing line has no maturity emoji (🌱/🌿/🌳/🍂), unlike every sibling entry.
+- [ ] `robustness-principle.adoc` — same issue, no maturity emoji in its `index.adoc` listing line.
+
 ## Content defects (not style — needs a human edit)
 
 - [ ] `archimate.adoc` — has a bare, unwrapped URL on its own line (not an `xref:` or AsciiDoc link).
@@ -32,12 +39,14 @@ Items raised during cultivate passes (A–P sections so far) that are outside cu
 - [ ] `mythical-man-month.adoc` line 18 — `*blog post*` is bold with no link attached; looks like a forgotten link target.
 - [ ] `processor-architectures.adoc` — "Related links" section lists the same Wikipedia IA-32 URL twice.
 - [ ] `linux.adoc` line 9 — minor grammar slip: "It is core component" (missing article "a").
+- [ ] Semicolons that are genuine "avoid semicolons" violations but need a sentence rewrite (not a mechanical fix) rather than a silent split: `rational-unified-process.adoc`, `replay-attack.adoc` (×2), `rest.adoc` (×4).
 
 ## Style guide gaps worth deciding on (would feed back into docs/style-guide.md and the cultivate skill)
 
 - [ ] A repeated, repo-wide `* https://url[Tool Name] — Description.` citation-list convention (em dash) appears dozens/hundreds of times across many files (seen heavily in A, D, and other sections). The style guide doesn't explicitly cover this list/citation idiom. Decide whether to codify it as an accepted pattern (and update the style guide + cultivate skill accordingly) or mechanically convert it.
 - [ ] Bold table-cell header labels (eg. `microservices.adoc`'s comparison table: `|*Granularity*`, `|*Communication*`) — don't strictly match any of the four accepted bold conventions but mirror an established table-formatting pattern seen elsewhere. Decide whether this is a fifth accepted convention.
 - [ ] `cynefin-framework.adoc` bolds its five domain names (*Clear*, *Complicated*, *Complex*, *Chaotic*, *Disorder*) as a glossary-style convention — borderline against "no general emphasis," left as-is pending a decision.
+- [ ] Book titles in body prose (eg. `rubber-ducking.adoc` line 3 bolds `*The Pragmatic Programmer*`) — the style guide has no convention for book/publication titles at all (no italics rule, doesn't fit any of the four bold conventions). Decide on a convention (italics? bold? plain?) and codify it.
 
 ## Judgment calls on formal-proper-noun exemption (flagged, not changed)
 
@@ -45,6 +54,7 @@ Items raised during cultivate passes (A–P sections so far) that are outside cu
 - [ ] `iconix.adoc` — title kept as all-caps "ICONIX", treated as the methodology's own stylized name.
 - [ ] `protocol-buffers.adoc` — title kept as Title Case ("Protocol Buffers", Google's named technology), but the page itself is only a TODO stub with no body text yet to corroborate the judgment once it's fertilized.
 - [ ] `feature-factory.adoc` line 35 — links to `capability-maturity-model.adoc` with sentence-case link text ("Capability maturity model") even though the target's own title is Title Case under the proper-noun rule. Cross-reference link text is normally allowed to read naturally rather than match the target's exact title — decide if this specific case should match anyway.
+- [ ] `rational-unified-process.adoc` — `*waterfall*` and `*OpenUP*` are bold but don't clearly fit a first-use-definition (they're proper nouns naming specific things, not generic technical terms like the style guide's own examples). Decide whether to keep, unbold, or treat as exempt.
 
 ## Structural inconsistency (minor, not yet actioned)
 
