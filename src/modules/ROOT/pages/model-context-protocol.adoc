@@ -4,17 +4,17 @@ The Model Context Protocol (MCP) is an open standard, introduced by Anthropic in
 
 Before MCP, developers had to write custom integration code for each tool or data source they wanted to connect to a model. MCP solves this by providing a single, standardized protocol. Any tool that implements the MCP server specification can be connected to any MCP-compatible model client, without bespoke integration work.
 
-MCP enables AI models to interact with external systems — reading from and writing to calendars, CRMs, databases, code repositories, communication tools such as Slack, and more. The model can also use these integrations to take actions: scheduling meetings, committing code, querying databases, sending messages.
+MCP enables AI models to interact with external systems – reading from and writing to calendars, CRMs, databases, code repositories, communication tools such as Slack, and more. The model can also use these integrations to take actions: scheduling meetings, committing code, querying databases, sending messages.
 
 MCP is a client-server protocol. An *MCP server* exposes three kinds of primitive: *tools* (functions the model can call), *resources* (data the model can read), and *prompts* (reusable templates). An *MCP client* (typically the AI application or agent) connects to one or more MCP servers and uses their capabilities to fulfil tasks. A single agent can connect to many MCP servers simultaneously, giving it access to a large and composable set of capabilities.
 
-Technically, MCP borrows from the Language Server Protocol (LSP) — the same standard that lets code editors talk to language tooling — and exchanges messages over JSON-RPC 2.0.
+Technically, MCP borrows from the Language Server Protocol (LSP) – the same standard that lets code editors talk to language tooling – and exchanges messages over JSON-RPC 2.0.
 
 MCP is particularly relevant for *xref:ai-agent.adoc[agentic]* use cases, where a model needs to plan and execute multi-step tasks using a variety of tools.
 
-MCP has been widely adopted across the industry. OpenAI adopted it in March 2025, followed by Google DeepMind in April 2025, and Microsoft has integrated it into Semantic Kernel and Azure OpenAI. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF), a Linux Foundation fund co-founded by Anthropic, Block, and OpenAI — moving the standard out from under any single vendor.
+MCP has been widely adopted across the industry. OpenAI adopted it in March 2025, followed by Google DeepMind in April 2025, and Microsoft has integrated it into Semantic Kernel and Azure OpenAI. In December 2025, Anthropic donated MCP to the Agentic AI Foundation (AAIF), a Linux Foundation fund co-founded by Anthropic, Block, and OpenAI – moving the standard out from under any single vendor.
 
-A separate class of proposals addresses an adjacent problem: communication _between_ agents, rather than between an agent and its tools. The main standard here is Google's xref:agent2agent.adoc[A2A (Agent2Agent)] protocol. A parallel effort, IBM's ACP (Agent Communication Protocol), merged into A2A in 2025. MCP and A2A are complementary — MCP gives an agent its tools, A2A lets agents collaborate.
+A separate class of proposals addresses an adjacent problem: communication _between_ agents, rather than between an agent and its tools. The main standard here is Google's *xref:agent2agent.adoc[A2A (Agent2Agent)]* protocol. A parallel effort, IBM's ACP (Agent Communication Protocol), merged into A2A in 2025. MCP and A2A are complementary – MCP gives an agent its tools, A2A lets agents collaborate.
 
 Because MCP servers can feed untrusted content and tool definitions into a model, the protocol also introduces security risks. Research published in April 2025 identified prompt injection, tool poisoning (malicious instructions hidden in tool descriptions), data exfiltration through combined tools, and lookalike tools that shadow trusted ones.
 
@@ -22,8 +22,8 @@ Because MCP servers can feed untrusted content and tool definitions into a model
 
 == See also
 
-* xref:agent2agent.adoc[Agent2Agent (A2A)]
-* xref:agent-skills.adoc[Agent skills]
-* xref:large-language-model.adoc[Large language model (LLM)]
-* xref:ai-agent.adoc[AI agent]
-* xref:ai-coding-assistant.adoc[AI coding assistant]
+* *xref:agent2agent.adoc[Agent2Agent (A2A)]*
+* *xref:agent-skills.adoc[Agent skills]*
+* *xref:large-language-model.adoc[Large language model (LLM)]*
+* *xref:ai-agent.adoc[AI agent]*
+* *xref:ai-coding-assistant.adoc[AI coding assistant]*
