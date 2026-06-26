@@ -3,15 +3,15 @@
 // TODO: https://github.com/arpitbbhayani/system-design-questions/blob/master/load-balancer.md
 // TODO: https://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html
 
-A load balancer is a network device or software application that distributes incoming network traffic across multiple backend servers or other resources. This is a technique for xref:horizontal-scaling.adoc[horizontal scaling], and is widely used in xref:distributed-system.adoc[distributed software] to improve capacity, availability, and xref:fault-tolerance.adoc[fault tolerance].
+A load balancer is a network device or software application that distributes incoming network traffic across multiple backend servers or other resources. This is a technique for *xref:horizontal-scaling.adoc[horizontal scaling]*, and is widely used in *xref:distributed-system.adoc[distributed software]* to improve capacity, availability, and *xref:fault-tolerance.adoc[fault tolerance]*.
 
-Load balancers work particularly well in front of stateless services, where any instance can handle any request without needing to consider session state. If a database also needs to be replicated to handle the load, there are additional challenges to ensure xref:consistency.adoc[consistency].
+Load balancers work particularly well in front of stateless services, where any instance can handle any request without needing to consider session state. If a database also needs to be replicated to handle the load, there are additional challenges to ensure *xref:consistency.adoc[consistency]*.
 
-Load balancers also enable xref:rolling-deployments.adoc[rolling deployments]: instances can be added and removed one at a time while deploying changes, making it possible to do thousands of releases to hundreds of microservices without any downtime.
+Load balancers also enable *xref:rolling-deployments.adoc[rolling deployments]*: instances can be added and removed one at a time while deploying changes, making it possible to do thousands of releases to hundreds of microservices without any downtime.
 
 == Network layers
 
-Load balancers can operate at different layers of the xref:osi-model.adoc[OSI model]:
+Load balancers can operate at different layers of the *xref:osi-model.adoc[OSI model]*:
 
 * *Layer 4 (transport layer)*: Makes routing decisions based on network information only – source and destination IP addresses and TCP/UDP port numbers. The load balancer forwards packets without inspecting their content. This is faster and more efficient, but less flexible.
 
@@ -21,7 +21,7 @@ Load balancers can operate at different layers of the xref:osi-model.adoc[OSI mo
 
 === Health checks
 
-Load balancers continuously monitor the health of backend servers. If a server becomes unresponsive, slow, or returns errors, the load balancer removes it from rotation and stops sending it traffic. This is how load balancers provide automatic xref:failover.adoc[failover]: when a server fails, requests are rerouted to the remaining healthy instances with no visible impact on users.
+Load balancers continuously monitor the health of backend servers. If a server becomes unresponsive, slow, or returns errors, the load balancer removes it from rotation and stops sending it traffic. This is how load balancers provide automatic *xref:failover.adoc[failover]*: when a server fails, requests are rerouted to the remaining healthy instances with no visible impact on users.
 
 === Session persistence
 
@@ -33,7 +33,7 @@ Handling SSL/TLS encryption and decryption is computationally expensive. A load 
 
 === Single point of failure
 
-A load balancer itself introduces a potential xref:single-point-of-failure.adoc[single point of failure]. To mitigate this, load balancers are typically deployed in redundant pairs or clusters – with standby instances ready to take over – often spread across multiple availability zones.
+A load balancer itself introduces a potential *xref:single-point-of-failure.adoc[single point of failure]*. To mitigate this, load balancers are typically deployed in redundant pairs or clusters – with standby instances ready to take over – often spread across multiple availability zones.
 
 == Load balancing algorithms
 
@@ -67,7 +67,7 @@ A more sophisticated algorithm that combines ideas from dynamic weighted round r
 
 == See also
 
-* xref:load-balancing.adoc[Load balancing]
-* xref:osi-model.adoc[OSI model] – Load balancers operate at either Layer 4 (transport) or Layer 7 (application).
-* xref:reverse-proxy.adoc[Reverse proxy]
-* xref:api-gateway.adoc[API gateway]
+* *xref:load-balancing.adoc[Load balancing]*
+* *xref:osi-model.adoc[OSI model]* – Load balancers operate at either Layer 4 (transport) or Layer 7 (application).
+* *xref:reverse-proxy.adoc[Reverse proxy]*
+* *xref:api-gateway.adoc[API gateway]*

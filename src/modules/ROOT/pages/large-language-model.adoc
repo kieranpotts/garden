@@ -4,7 +4,7 @@
 
 A large language model (LLM) is a deep learning model trained on vast amounts of text. At a fundamental level, LLMs work by predicting the probability of each possible next token in a sequence, then sampling from that distribution. But from this primitive process unexpected capabilities arise. At scale, LLMs demonstrate the ability to reason, summarize, translate, write code, and hold human-like conversations. These unexpected capabilities are known as *emergence*.
 
-LLMs are a category of xref:generative-ai.adoc[generative AI] tools. LLMs are increasingly deployed in a wide variety of contexts. xref:ai-assistant.adoc[AI assistants] are perhaps the best-known category of application software built on top of LLMs, but many other use cases are being found for LLMs.
+LLMs are a category of *xref:generative-ai.adoc[generative AI]* tools. LLMs are increasingly deployed in a wide variety of contexts. *xref:ai-assistant.adoc[AI assistants]* are perhaps the best-known category of application software built on top of LLMs, but many other use cases are being found for LLMs.
 
 This document covers how LLMs work, from training and inference to context windows and hallucinations. It also summarizes the current model landscape, with a focus on frontier models and open-weight alternatives. This document also covers the access layers through which we interact with models, which provide the front-ends for direct human interaction with models and for integrations with other automated processes.
 
@@ -14,9 +14,9 @@ toc::[]
 
 === Transformer architecture
 
-Modern LLMs are built on the xref:transformer.adoc[transformer architecture], which was introduced in Google's 2017 research paper "https://research.google/pubs/attention-is-all-you-need/[Attention Is All You Need]".
+Modern LLMs are built on the *xref:transformer.adoc[transformer architecture]*, which was introduced in Google's 2017 research paper "https://research.google/pubs/attention-is-all-you-need/[Attention Is All You Need]".
 
-The core innovation of the transformer architecture is the *attention mechanism*. This is what allows a model to weigh the relevance of every token against every other token in the current context when predicting the next token. This enables transformers to capture long-range dependencies in text far more effectively than earlier architectures. See xref:transformer.adoc[transformer architecture] for a full explanation.
+The core innovation of the transformer architecture is the *attention mechanism*. This is what allows a model to weigh the relevance of every token against every other token in the current context when predicting the next token. This enables transformers to capture long-range dependencies in text far more effectively than earlier architectures. See *xref:transformer.adoc[transformer architecture]* for a full explanation.
 
 === Training
 
@@ -44,11 +44,11 @@ A lightweight alternative to fine-tuning is *prompt-based adaptation*. This is t
 
 === RLHF
 
-Reinforcement learning from human feedback (RLHF) is a post-training technique that aligns a model's behavior with human preferences — making it safer, more helpful, and less likely to produce harmful outputs.
+Reinforcement learning from human feedback (RLHF) is a post-training technique that aligns a model's behavior with human preferences – making it safer, more helpful, and less likely to produce harmful outputs.
 
 The process works in two stages. First, human evaluators compare pairs of model outputs and select which is better. This data is used to train a separate *reward model* that learns to predict human preferences. Second, the main model is trained via reinforcement learning to maximize scores from the reward model. Because the second stage optimizes against the reward model rather than humans directly, it scales without requiring continuous human input.
 
-RLHF is how base models — which simply predict the next token — are transformed into helpful assistants that follow instructions. Most frontier models use RLHF or a close variant (such as constitutional AI, RLAIF, or DPO) as part of their post-training pipeline.
+RLHF is how base models – which simply predict the next token – are transformed into helpful assistants that follow instructions. Most frontier models use RLHF or a close variant (such as constitutional AI, RLAIF, or DPO) as part of their post-training pipeline.
 
 === Knowledge cutoff
 
@@ -101,7 +101,7 @@ Quantization is what makes it practical to run large models on consumer hardware
 [#distillation]
 === Distillation
 
-Distillation (or _knowledge distillation_) is a technique for transferring the capabilities of a large, capable model into a smaller, cheaper one. The large model is the _teacher_ and the smaller model is the _student_. Rather than training the student from scratch on raw data, it is trained to imitate the teacher — either by matching the teacher's full output probability distribution (the "soft labels", which carry more information than a single correct answer alone), or simply by training on large volumes of synthetic data generated by the teacher.
+Distillation (or _knowledge distillation_) is a technique for transferring the capabilities of a large, capable model into a smaller, cheaper one. The large model is the _teacher_ and the smaller model is the _student_. Rather than training the student from scratch on raw data, it is trained to imitate the teacher – either by matching the teacher's full output probability distribution (the "soft labels", which carry more information than a single correct answer alone), or simply by training on large volumes of synthetic data generated by the teacher.
 
 The result is a model that is far smaller and faster to run, yet retains much of the teacher's capability. This is how many light models are produced (see *Light models*, below): Google's Gemini Flash models, for example, are distilled from the larger Gemini Pro models.
 
@@ -157,7 +157,7 @@ Hallucinations are an inherent limitation of how LLMs work, not a bug that can b
 
 Evals (short for evaluations) are structured tests used to measure how well an LLM or LLM-powered application performs on specific tasks. They are the AI equivalent of unit tests and regression tests.
 
-An eval runs the model through a predefined set of inputs and compares its responses against expected outputs or criteria — such as factual correctness, safety, helpfulness, tone, or task completion. This allows developers to quantify progress, catch regressions when switching models or changing prompts, and guide improvements over time.
+An eval runs the model through a predefined set of inputs and compares its responses against expected outputs or criteria – such as factual correctness, safety, helpfulness, tone, or task completion. This allows developers to quantify progress, catch regressions when switching models or changing prompts, and guide improvements over time.
 
 Evals are particularly important in production applications, where the quality of model outputs directly affects user experience. They are often cited as the most critical, yet most overlooked, practice in building reliable AI products.
 
@@ -165,15 +165,15 @@ Teams typically write their own evals tailored to their use case, but open-sourc
 
 === Retrieval-augmented generation (RAG)
 
-A core limitation of LLMs is that their knowledge is frozen at the point of training. By default, models cannot access new information or browse the web. In addition, LLMs are prone to hallucination — generating fluent, confident-sounding responses that are factually incorrect — particularly when asked about topics outside their training data or at the edges of their knowledge.
+A core limitation of LLMs is that their knowledge is frozen at the point of training. By default, models cannot access new information or browse the web. In addition, LLMs are prone to hallucination – generating fluent, confident-sounding responses that are factually incorrect – particularly when asked about topics outside their training data or at the edges of their knowledge.
 
 Retrieval-augmented generation (RAG) is a technique that addresses these issues. It combines an LLM with an external knowledge source, which is retrieved at inference time and loaded into the context window.
 
 In a RAG system, a user's query is used to search a knowledge base (a vector database, a search index, or live web results). The most relevant results are fetched and injected into the model's context alongside the original query. The model then generates a response grounded in that retrieved content, rather than relying solely on what it learned during training.
 
-RAG is widely used to build knowledge-aware applications – internal document Q&A systems, customer support bots, and AI search engines. https://www.perplexity.ai/[Perplexity] is a prominent consumer example. It uses RAG over live web search to answer questions with cited sources in real time. See xref:ai-assistant.adoc[AI assistants] for other examples.
+RAG is widely used to build knowledge-aware applications – internal document Q&A systems, customer support bots, and AI search engines. https://www.perplexity.ai/[Perplexity] is a prominent consumer example. It uses RAG over live web search to answer questions with cited sources in real time. See *xref:ai-assistant.adoc[AI assistants]* for other examples.
 
-Frameworks such as xref:ai-agent-orchestration.adoc[LangChain] and LlamaIndex are commonly used to build RAG pipelines, providing the retrieval, chunking, and orchestration plumbing so developers do not have to wire it together from scratch.
+Frameworks such as *xref:ai-agent-orchestration.adoc[LangChain]* and LlamaIndex are commonly used to build RAG pipelines, providing the retrieval, chunking, and orchestration plumbing so developers do not have to wire it together from scratch.
 
 === GPU compute
 
@@ -193,7 +193,7 @@ Inference engines are the low-level runtimes that actually execute a model – l
 
 The two most widely used inference engines for open-weight models are:
 
-* https://github.com/ggml-org/llama.cpp[llama.cpp] – A C/C++ inference engine optimized for running quantized models on consumer hardware, including CPU-only machines, Apple Silicon, and devices with limited VRAM. Uses the GGUF model format. It is the engine that powers Ollama and LM Studio. Prioritizes broad hardware compatibility over maximum throughput. Llama.cpp can be made to use multiple GPUs, but it does not support tensor parallelism in the same way that vLLM does — model layers are assigned to GPUs rather than operations being distributed across them, which limits throughput gains from multi-GPU setups.
+* https://github.com/ggml-org/llama.cpp[llama.cpp] – A C/C++ inference engine optimized for running quantized models on consumer hardware, including CPU-only machines, Apple Silicon, and devices with limited VRAM. Uses the GGUF model format. It is the engine that powers Ollama and LM Studio. Prioritizes broad hardware compatibility over maximum throughput. Llama.cpp can be made to use multiple GPUs, but it does not support tensor parallelism in the same way that vLLM does – model layers are assigned to GPUs rather than operations being distributed across them, which limits throughput gains from multi-GPU setups.
 
 * https://github.com/vllm-project/vllm[vLLM] – A Python-based inference engine designed for high-throughput via one or more GPUs. The key differentiating feature is that vLLM supports multi-GPU tensor parallelism, which means (in plain English) workloads are more evenly distributed across multiple GPUs. This efficiency shows up in better throughput metrics. vLLM is really intended for optimizing multi-GPU workloads that serve multiple users. Its key innovation is _PagedAttention_, which manages the KV cache more efficiently, enabling higher request concurrency. This is a good choice when serving many users concurrently, rather than running models locally for a single user – though you can use it for that purpose too.
 
@@ -220,7 +220,7 @@ Several independent sites aggregate model rankings, pricing, speed, and availabi
 Specific benchmark suites measure particular capabilities:
 
 * https://www.swebench.com/[SWE-bench] – Tasks models with resolving real GitHub issues against real repositories. The human-validated https://www.swebench.com/verified.html[SWE-bench Verified] subset is the de-facto standard for coding ability and is widely cited (including in the model tables on this page). Maintained by Princeton and Stanford.
-* https://www.tbench.ai/[Terminal-Bench] – Benchmarks xref:ai-agent.adoc[agentic front-ends] on real terminal tasks, backed by various models.
+* https://www.tbench.ai/[Terminal-Bench] – Benchmarks *xref:ai-agent.adoc[agentic front-ends]* on real terminal tasks, backed by various models.
 * https://aider.chat/docs/leaderboards/[Aider Polyglot] – Code-editing benchmark over 225 Exercism exercises across six programming languages.
 * https://livebench.ai/[LiveBench] – Contamination-resistant benchmark whose questions are refreshed monthly, covering maths, coding, reasoning, language, instruction-following, and data analysis.
 
@@ -228,18 +228,18 @@ The model tables on this page also cite academic benchmarks, including *GPQA Dia
 
 === Matching tasks to models
 
-The single most useful question when choosing a model is: _what kind of task is this?_ Each task type stresses a different capability — language quality, step-by-step reasoning, code quality, factual grounding, raw speed — and that dominant capability, not the model's headline benchmark score, is what should drive the choice. The aim is to match the model to the work, rather than defaulting to the biggest model for everything (wasteful) or the cheapest (unreliable).
+The single most useful question when choosing a model is: _what kind of task is this?_ Each task type stresses a different capability – language quality, step-by-step reasoning, code quality, factual grounding, raw speed – and that dominant capability, not the model's headline benchmark score, is what should drive the choice. The aim is to match the model to the work, rather than defaulting to the biggest model for everything (wasteful) or the cheapest (unreliable).
 
 .Matching common task types to models
 |===
 |Task type |What matters most |Recommended model |Thinking level
 
-|Prose & language — proofreading, copy-editing, summarizing, translation, tone
+|Prose & language – proofreading, copy-editing, summarizing, translation, tone
 |Language quality, instruction-following
 |Strong frontier or mid-tier chat model (Claude Sonnet/Opus, GPT-class)
 |Low / none
 
-|Complex reasoning — maths, logic, planning, multi-step analysis
+|Complex reasoning – maths, logic, planning, multi-step analysis
 |Step-by-step reasoning
 |Reasoning model with extended thinking (OpenAI o3, DeepSeek-R1, Claude/Gemini thinking modes)
 |High
@@ -254,12 +254,12 @@ The single most useful question when choosing a model is: _what kind of task is 
 |RAG- or search-augmented model (Perplexity/Sonar)
 |Low–medium
 
-|High-volume, simple, latency-sensitive — classification, extraction, routing
+|High-volume, simple, latency-sensitive – classification, extraction, routing
 |Speed and cost
 |Light/flash model (Claude Haiku, Gemini Flash, GPT mini)
 |None
 
-|Multimodal — image, audio, or video as input or output
+|Multimodal – image, audio, or video as input or output
 |Modality support
 |Multimodal frontier model (Gemini 3 Pro, GPT-4o)
 |Task-dependent
@@ -277,13 +277,13 @@ The single most useful question when choosing a model is: _what kind of task is 
 
 Two principles underpin the table:
 
-* Match the model to the dominant capability the task demands. A task that is easy along one axis may be hard along another — proofreading is linguistically demanding but reasoning-light, whereas a maths word problem is the reverse.
+* Match the model to the dominant capability the task demands. A task that is easy along one axis may be hard along another – proofreading is linguistically demanding but reasoning-light, whereas a maths word problem is the reverse.
 
-* Thinking level is a separate dial from model tier. Extended thinking (see *Reasoning models*, below) helps on problems with a verifiable chain of logic — maths, code, planning — but adds latency and cost for little benefit on language tasks, and can even push a model to over-edit. Turn it down for prose, up for reasoning.
+* Thinking level is a separate dial from model tier. Extended thinking (see *Reasoning models*, below) helps on problems with a verifiable chain of logic – maths, code, planning – but adds latency and cost for little benefit on language tasks, and can even push a model to over-edit. Turn it down for prose, up for reasoning.
 
 .Worked example: proofreading a block of text
 ****
-Proofreading is a prose/language task, not a hard reasoning task, so a model's language quality matters more than its coding or reasoning ability. Reach for a strong frontier model — Claude Sonnet or Opus, or a GPT-class model — at a low thinking level.
+Proofreading is a prose/language task, not a hard reasoning task, so a model's language quality matters more than its coding or reasoning ability. Reach for a strong frontier model – Claude Sonnet or Opus, or a GPT-class model – at a low thinking level.
 
 Avoid cheaper small models here. They tend to miss subtle grammar and consistency issues and, worse, sometimes "improve" technical wording in ways that change its meaning. The modest cost saving is rarely worth the risk of silently altered content.
 ****
@@ -294,19 +294,19 @@ Beyond size and cost, models differ significantly in what they are designed to d
 
 *Base models* are the raw, pre-trained models before any instruction tuning or RLHF is applied. They predict the next token without any conversational or helpfulness alignment, and are rarely used directly. They serve as the starting point for fine-tuning. Examples: Llama 3 (base), Mistral 7B (base).
 
-*Chat models* are instruction-tuned to follow natural-language instructions and hold multi-turn conversations. These are the general-purpose workhorses — the models behind ChatGPT, Claude, and Gemini. Almost all frontier and mid-tier models fall into this category. Examples: GPT-4o, Claude Sonnet 4.6, Gemini 2.5 Pro, Llama 3.3 70B Instruct.
+*Chat models* are instruction-tuned to follow natural-language instructions and hold multi-turn conversations. These are the general-purpose workhorses – the models behind ChatGPT, Claude, and Gemini. Almost all frontier and mid-tier models fall into this category. Examples: GPT-4o, Claude Sonnet 4.6, Gemini 2.5 Pro, Llama 3.3 70B Instruct.
 
 *Flash models*: These are optimized for producing a response in a fraction of the time it takes other models. They often rely on shortcuts like caching or pre-computing certain results to speed up generation.
 
 *Code completion models* are optimized for programming tasks and typically deployed as IDE autocomplete backends rather than chat interfaces. A distinctive capability is fill-in-the-middle (FIM): generating code that fits between an existing prefix and suffix, which is how IDE autocomplete works. Examples: Codestral, Code Llama, Qwen2.5-Coder.
 
-*Reasoning models* spend extra compute working through a problem step-by-step — producing an internal chain of thought — before arriving at a final answer. They trade higher latency and token cost for substantially better performance on complex mathematical, logical, and multi-step problems. See the Reasoning models section below. Examples: OpenAI o3, DeepSeek-R1, Claude with extended thinking.
+*Reasoning models* spend extra compute working through a problem step-by-step – producing an internal chain of thought – before arriving at a final answer. They trade higher latency and token cost for substantially better performance on complex mathematical, logical, and multi-step problems. See the Reasoning models section below. Examples: OpenAI o3, DeepSeek-R1, Claude with extended thinking.
 
 *Embedding models* convert text into dense numerical vectors that represent the semantic meaning of the input. Unlike generative models, they produce a fixed-length vector rather than text. These vectors are used to power semantic search, RAG pipelines, clustering, and classification. Examples: OpenAI text-embedding-3, Cohere Embed, Nomic Embed, BGE.
 
 *Reranker models* are used as a second pass in RAG pipelines. After an initial retrieval step fetches candidate documents, a reranker scores each candidate's relevance to the query more precisely, so the most useful results are surfaced before being passed to the generative model. Examples: Cohere Rerank, BGE Reranker, cross-encoder models.
 
-*Multimodal models* accept inputs — or produce outputs — beyond text, such as images, audio, and video. Most modern frontier models are multimodal to some degree. Examples: GPT-4o (image input), Gemini 3 Pro (image, video, and audio input and output), Claude Opus 4.7 (image input).
+*Multimodal models* accept inputs – or produce outputs – beyond text, such as images, audio, and video. Most modern frontier models are multimodal to some degree. Examples: GPT-4o (image input), Gemini 3 Pro (image, video, and audio input and output), Claude Opus 4.7 (image input).
 
 === Frontier models
 
@@ -441,7 +441,7 @@ As of May 2026, *Gemini 3 Pro* is the current flagship in Google's Gemini series
 
 === Mid-tier models
 
-The mid-tier models are the workhorses that you will probably use 80% of the time for general tasks. They offer a good balance between capability, size, speed, and cost. These are the defaults for a lot of xref:ai-agent.adoc[agentic workflows].
+The mid-tier models are the workhorses that you will probably use 80% of the time for general tasks. They offer a good balance between capability, size, speed, and cost. These are the defaults for a lot of *xref:ai-agent.adoc[agentic workflows]*.
 
 Examples include:
 
@@ -521,9 +521,9 @@ Notable reasoning models include OpenAI's o1 and o3 series and the open-weight h
 
 Where reasoning models can think before answering, an *effort level* (sometimes "reasoning effort" or "thinking level") is the dial that controls _how much_ they do so. It drives *adaptive reasoning*: rather than a fixed amount of thinking, the model decides whether and how much to reason on each step, based on the complexity of the task at hand. Lower effort is faster and cheaper for straightforward work. Higher effort buys deeper reasoning on complex problems.
 
-An effort level is a _behavioral signal, not a strict token cap_. It nudges the model toward more or less deliberation — trading token spend against capability — rather than hard-limiting the number of tokens it may use.
+An effort level is a _behavioral signal, not a strict token cap_. It nudges the model toward more or less deliberation – trading token spend against capability – rather than hard-limiting the number of tokens it may use.
 
-The dial is exposed differently by different tools — for example as a `reasoning_effort` parameter on some APIs, or as a configurable effort level in coding agents such as Claude Code. As a rough guide for picking a level:
+The dial is exposed differently by different tools – for example as a `reasoning_effort` parameter on some APIs, or as a configurable effort level in coding agents such as Claude Code. As a rough guide for picking a level:
 
 * *Low*: Mechanical work: renames, greps, formatting fixes, simple lookups.
 * *Medium / high*: Most everyday coding and analysis.
@@ -603,7 +603,7 @@ It is useful to think of open-weight models as falling into a spectrum of size t
 
 [TIP]
 ======
-To estimate whether your own hardware can run a given model — accounting for quantization level (Q4–F16), context length, and expected token throughput (TPS) — try the https://logarithmicspirals.com/tools/local-ai-vram-calculator-gpu-planner/[Local AI VRAM Calculator & GPU Planner]. It maps a hardware setup and use case to model recommendations, with the caveat that the figures are planning estimates, not performance guarantees.
+To estimate whether your own hardware can run a given model – accounting for quantization level (Q4–F16), context length, and expected token throughput (TPS) – try the https://logarithmicspirals.com/tools/local-ai-vram-calculator-gpu-planner/[Local AI VRAM Calculator & GPU Planner]. It maps a hardware setup and use case to model recommendations, with the caveat that the figures are planning estimates, not performance guarantees.
 ======
 
 Custom hardware like the https://www.nvidia.com/en-gb/products/workstations/dgx-spark/[Nvidia DGX Spark] give you the ability to run _and train_ large language models on your own hardware.
@@ -612,7 +612,7 @@ Custom hardware like the https://www.nvidia.com/en-gb/products/workstations/dgx-
 
 As of 2026, some notable open-weight model families include:
 
-NOTE: Several of these models use a *mixture-of-experts (MoE)* architecture. Rather than activating the entire network for every token, an MoE model routes each token through only a small subset of specialized "expert" subnetworks. This lets a model carry a very large total parameter count while activating only a fraction of it per token — high capacity at a lower inference cost.
+NOTE: Several of these models use a *mixture-of-experts (MoE)* architecture. Rather than activating the entire network for every token, an MoE model routes each token through only a small subset of specialized "expert" subnetworks. This lets a model carry a very large total parameter count while activating only a fraction of it per token – high capacity at a lower inference cost.
 
 * https://llama.meta.com/[*Llama*] models from Meta. The Llama family did much to kick-start the open-weight era, and its widespread adoption has made the underlying architecture a de facto reference point that many other open models build on. The Scout variant is known for its massive 10-million token context window. Released under Meta's community license, which permits commercial use but imposes some restrictions (including for very large deployments).
 
@@ -656,21 +656,21 @@ The following open-weight models are highly regarded for programming tasks. Smal
 
 Although it is possible to interact with models directly, for most use cases you will interact with models via an access layer. The access layer is responsible for handling authentication, response formatting, and other details that are specific to a particular model provider or use case.
 
-There are two useful lenses on your options. The first is _where the model runs, and who operates the infrastructure_ — the deployment patterns described next. The second is _the tooling you use to reach the model_: broadly, *model gateways* (for hosted models) and *model managers* (for running open-weight models locally), each covered in its own subsection below.
+There are two useful lenses on your options. The first is _where the model runs, and who operates the infrastructure_ – the deployment patterns described next. The second is _the tooling you use to reach the model_: broadly, *model gateways* (for hosted models) and *model managers* (for running open-weight models locally), each covered in its own subsection below.
 
 === Deployment patterns
 
 There are five broad patterns for running and accessing LLMs, spanning a spectrum from full local control to fully managed services:
 
-* *Local*: The model runs on your own machine, with direct access to your data. Model managers such as https://ollama.com/[Ollama] https://lmstudio.ai/[LM Studio], and Open Web UI (see *Model managers*, below) handle downloading, hardware management, and serving a local API. Best for privacy, offline use, and experimentation, with no per-token cost — but you are limited by your own hardware.
+* *Local*: The model runs on your own machine, with direct access to your data. Model managers such as https://ollama.com/[Ollama] https://lmstudio.ai/[LM Studio], and Open Web UI (see *Model managers*, below) handle downloading, hardware management, and serving a local API. Best for privacy, offline use, and experimentation, with no per-token cost – but you are limited by your own hardware.
 
-* *VPS + rented GPU*: You run your own models on infrastructure you rent, then expose them over an API (for example, Ollama behind an https://nginx.org/[Nginx] reverse proxy). Hosting providers include https://www.digitalocean.com/[DigitalOcean] and https://www.runpod.io/[RunPod]. You keep full control over the model and the data path while offloading the hardware, but you own the operations — scaling, uptime, and security. Higher up-front costs, but cheaper in the long-term than managed cloud...
+* *VPS + rented GPU*: You run your own models on infrastructure you rent, then expose them over an API (for example, Ollama behind an https://nginx.org/[Nginx] reverse proxy). Hosting providers include https://www.digitalocean.com/[DigitalOcean] and https://www.runpod.io/[RunPod]. You keep full control over the model and the data path while offloading the hardware, but you own the operations – scaling, uptime, and security. Higher up-front costs, but cheaper in the long-term than managed cloud...
 
 * *Managed cloud*: Your model runs on a cloud provider's managed ML platform, which handles provisioning, scaling, and serving. Examples include https://aws.amazon.com/sagemaker/[Amazon SageMaker], AWS Bedrock, https://cloud.google.com/products/gemini-enterprise-agent-platform[Google Vertex AI], https://azure.microsoft.com/en-us/products/machine-learning[Azure ML], Modal, and Beam. Well suited to organizations already invested in a particular cloud, and to enterprise governance and data-residency requirements. Also good for unpredictable workloads, and for deploying fine-tune custom models with autoscaling. Trade-offs: complex setup, steep learning curve, and high costs and low scale.
 
 * *Managed inference API*: You call a provider's hosted endpoint with just an API key, choosing from _their_ model library and paying per use or by subscription. Examples include https://groq.com/[Groq], https://www.together.ai/[Together AI], https://fireworks.ai/[Fireworks AI], https://replicate.com/[Replicate], https://openrouter.ai/[OpenRouter], and the https://huggingface.co/inference-api[Hugging Face Inference API]. There is no infrastructure to manage, but you have the least control over where and how the model runs. Great for indie hackers and shipping fast. Free tiers are available, and you can experiment with lots of model variants. (*Model gateways*, below, are the tooling for this pattern.)
 +
-The *first-party APIs of the frontier labs* — https://docs.anthropic.com/[Anthropic], https://platform.openai.com/[OpenAI], and https://ai.google.dev/[Google's Gemini API] — are a variant of this pattern. The difference is that you are calling the lab's own proprietary model directly, rather than choosing an (often open-weight) model from a third party's library. This is typically the only way to access the very latest frontier models, but it ties you to a single vendor.
+The *first-party APIs of the frontier labs* – https://docs.anthropic.com/[Anthropic], https://platform.openai.com/[OpenAI], and https://ai.google.dev/[Google's Gemini API] – are a variant of this pattern. The difference is that you are calling the lab's own proprietary model directly, rather than choosing an (often open-weight) model from a third party's library. This is typically the only way to access the very latest frontier models, but it ties you to a single vendor.
 
 * *Edge / on-device*: The model is embedded directly into your application and ships to your users' devices, running entirely client-side with no server. Tooling includes https://github.com/mlc-ai/web-llm[WebLLM], https://github.com/ml-explore/mlx[Apple MLX], https://github.com/mlc-ai/mlc-llm[MLC LLM], https://github.com/ggml-org/llama.cpp[llama.cpp], ONNX Runtime, and https://huggingface.co/docs/transformers.js[Transformers.js]. Best for privacy, low latency, and offline support, but constrained by the capabilities of the user's device – typically, you'e looking at ultra-light models, 1-3B parameters maximum.
 
@@ -686,11 +686,11 @@ Model gateways provide a single, unified API endpoint, and/or a GUI or other use
 
 * https://build.nvidia.com/models[Nvidia's Build] site includes free endpoints to access open-weight models.
 
-* https://www.perplexity.ai/[Perplexity] – AI-native search engine and general-purpose xref:ai-assistant.adoc[AI assistant]. Provides access to a large number of models, and you can even experiment with multiple models simultaneously, feeding them the same inputs.
+* https://www.perplexity.ai/[Perplexity] – AI-native search engine and general-purpose *xref:ai-assistant.adoc[AI assistant]*. Provides access to a large number of models, and you can even experiment with multiple models simultaneously, feeding them the same inputs.
 
 * https://github.com/BerriAI/litellm[LiteLLM] – Open-source gateway that exposes 100+ providers (OpenAI, Anthropic, Gemini, Bedrock, Azure, and more) through a single OpenAI-format API. Available as a Python SDK for direct integration, or as a self-hosted proxy server (its "AI Gateway") for organization-wide access, with virtual API keys, per-project cost tracking, automatic fallbacks, and load balancing. Unlike the hosted services above, you run it yourself.
 
-* https://opencode.ai/docs/zen/[OpenCode Zen] – Curated gateway from the OpenCode team offering a vetted set of coding-benchmarked models (OpenAI, Anthropic, Google, Qwen, DeepSeek, and others) with pay-as-you-go per-token pricing and bring-your-own-key support. Integrates as an optional provider inside the xref:ai-coding-assistant.adoc[OpenCode] coding agent.
+* https://opencode.ai/docs/zen/[OpenCode Zen] – Curated gateway from the OpenCode team offering a vetted set of coding-benchmarked models (OpenAI, Anthropic, Google, Qwen, DeepSeek, and others) with pay-as-you-go per-token pricing and bring-your-own-key support. Integrates as an optional provider inside the *xref:ai-coding-assistant.adoc[OpenCode]* coding agent.
 
 [TIP]
 ======
@@ -708,13 +708,13 @@ The two most popular model managers are:
 * https://ollama.com/[Ollama]
 * https://lmstudio.ai/[LM Studio]
 
-Ollama is designed to run LLMs as a background service (daemon) on your machine. It provides a clean CLI for managing models and a local API (compatible with OpenAI's API) that allows other applications — like IDE plugins, web UIs, or custom scripts — to communicate with the models you've downloaded. Ollama is also a model hosting service. It maintains a curated library of models, many of which have been optimized using quantization, allowing large models to run on consumer hardware.
+Ollama is designed to run LLMs as a background service (daemon) on your machine. It provides a clean CLI for managing models and a local API (compatible with OpenAI's API) that allows other applications – like IDE plugins, web UIs, or custom scripts – to communicate with the models you've downloaded. Ollama is also a model hosting service. It maintains a curated library of models, many of which have been optimized using quantization, allowing large models to run on consumer hardware.
 
 LM Studio is a desktop GUI application that provides an "all-in-one" visual interface for discovering, downloading, and chatting. While it also provides a local server for API access, like Ollama, its primary value is its user-friendly dashboard that allows you to tweak hardware settings (like GPU offloading), monitor system resources in real-time, and chat with models without needing a terminal or other front-end integration. LM Studio integrates with the Hugging Face model library, allowing easy access with every available open-weight model.
 
 Both Ollama and LM Studio use llama.cpp as their underlying inference engine.
 
-A related but distinct tool is https://openwebui.com/[Open WebUI] — a self-hosted, extensible web _front-end_ for LLMs rather than a model manager in its own right. It provides a polished, ChatGPT-like browser interface and connects to a backend (most commonly Ollama, or any OpenAI-compatible API) to serve the actual models. It is often run alongside Ollama to give a local model stack a clean, multi-user web UI.
+A related but distinct tool is https://openwebui.com/[Open WebUI] – a self-hosted, extensible web _front-end_ for LLMs rather than a model manager in its own right. It provides a polished, ChatGPT-like browser interface and connects to a backend (most commonly Ollama, or any OpenAI-compatible API) to serve the actual models. It is often run alongside Ollama to give a local model stack a clean, multi-user web UI.
 
 == Fine-tuning tools and services
 
@@ -743,30 +743,30 @@ Other supporting tools include https://wandb.ai/site[Weights & Biases], a softwa
 
 * https://www.together.ai/[Together AI] is probably the most developer-friendly. It has a clean API, 200+ open models, transparent per-token billing (training tokens × epochs). Good for production workloads where you don't want to babysit GPUs.
 
-* https://fireworks.ai/[Fireworks AI] — similar positioning to Together, strong on inference performance after training. Per-token training pricing.
+* https://fireworks.ai/[Fireworks AI] – similar positioning to Together, strong on inference performance after training. Per-token training pricing.
 
-* https://huggingface.co/autotrain[Hugging Face AutoTrain] — codeless web UI. Easiest entry point if you've never fine-tuned anything, but less flexible than the other options.
+* https://huggingface.co/autotrain[Hugging Face AutoTrain] – codeless web UI. Easiest entry point if you've never fine-tuned anything, but less flexible than the other options.
 
 * https://modal.com/[Modal], https://www.runpod.io/[Runpod], and https://northflank.com/[Northflank] are GPU-rental platforms (aka, serverless GPU clouds) rather than fine-tuning products specifically. You bring your own Axolotl/Unsloth scripts and rent A100s/H100s by the second. Cheapest option if you can write code.
 
-* https://aws.amazon.com/sagemaker/[Amazon SageMaker] / https://cloud.google.com/products/gemini-enterprise-agent-platform[Gemini Enterprise Agent Platform (formerly Google Vertex AI)] / https://azure.microsoft.com/en-us/products/machine-learning[Azure ML] — enterprise managed options, which can be good options if you're already invested in those particular public cloud services.
+* https://aws.amazon.com/sagemaker/[Amazon SageMaker] / https://cloud.google.com/products/gemini-enterprise-agent-platform[Gemini Enterprise Agent Platform (formerly Google Vertex AI)] / https://azure.microsoft.com/en-us/products/machine-learning[Azure ML] – enterprise managed options, which can be good options if you're already invested in those particular public cloud services.
 
 * https://docs.predibase.com/getting-started/introduction[Predibase] and https://openpipe.ai/[OpenPipe] are workflow-focused commercial offerings that handle data prep, training, and serving as a single pipeline. Predibase originated from https://ludwig.ai/[Ludwig] (open source) and layers a commercial product on top.
 
-* https://www.premai.io/studio[Prem Studio] keeps training data, weights, and inference on infrastructure you control — useful for regulated industries where managed cloud platforms that route data through shared infrastructure (eg. Together standard tier, HF AutoTrain, OpenPipe, Fireworks) aren't suitable.
+* https://www.premai.io/studio[Prem Studio] keeps training data, weights, and inference on infrastructure you control – useful for regulated industries where managed cloud platforms that route data through shared infrastructure (eg. Together standard tier, HF AutoTrain, OpenPipe, Fireworks) aren't suitable.
 
 ''''
 
 == See also
 
-* xref:machine-learning.adoc[Machine learning]: The broader field of which LLMs are a part.
-* xref:transformer.adoc[Transformer architecture]: The neural network architecture that underpins all modern LLMs.
-* xref:generative-ai.adoc[Generative AI]: Covers broader AI product categories including diffusion models for image generation.
-* xref:ai-assistant.adoc[AI assistant]: General-purpose conversational interfaces to LLMs, such as ChatGPT, Claude, and Perplexity.
-* xref:context-engineering.adoc[Context engineering]
-* xref:ai-agent.adoc[AI agent]
-* xref:ai-coding-assistant.adoc[AI coding assistant]
-* xref:ai-agent-orchestration.adoc[AI agent orchestration]: Frameworks and platforms for building and coordinating agents (LangChain, CrewAI, and others).
+* *xref:machine-learning.adoc[Machine learning]*: The broader field of which LLMs are a part.
+* *xref:transformer.adoc[Transformer architecture]*: The neural network architecture that underpins all modern LLMs.
+* *xref:generative-ai.adoc[Generative AI]*: Covers broader AI product categories including diffusion models for image generation.
+* *xref:ai-assistant.adoc[AI assistant]*: General-purpose conversational interfaces to LLMs, such as ChatGPT, Claude, and Perplexity.
+* *xref:context-engineering.adoc[Context engineering]*
+* *xref:ai-agent.adoc[AI agent]*
+* *xref:ai-coding-assistant.adoc[AI coding assistant]*
+* *xref:ai-agent-orchestration.adoc[AI agent orchestration]*: Frameworks and platforms for building and coordinating agents (LangChain, CrewAI, and others).
 
 == References
 
