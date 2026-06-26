@@ -2,13 +2,13 @@
 
 gRPC (Google Remote Procedure Call) is an open-source, high-performance RPC framework originally developed at Google and open-sourced in 2015. It is the primary inter-process communication mechanism used inside Google's own distributed systems, and is widely adopted for microservice-to-microservice communication where performance matters more than public discoverability.
 
-Instead of JSON over HTTP/1.1, gRPC uses xref:protocol-buffers.adoc[Protocol Buffers] for serialization and HTTP/2 as its transport. This combination delivers significantly higher throughput and lower latency than conventional HTTP APIs, while also supporting four distinct communication patterns including bidirectional streaming.
+Instead of JSON over HTTP/1.1, gRPC uses *xref:protocol-buffers.adoc[Protocol Buffers]* for serialization and HTTP/2 as its transport. This combination delivers significantly higher throughput and lower latency than conventional HTTP APIs, while also supporting four distinct communication patterns including bidirectional streaming.
 
 == How gRPC works
 
 === Protocol Buffers
 
-xref:protocol-buffers.adoc[Protocol Buffers] (protobuf) serve as both the interface definition language (IDL) and the serialization format. Services and messages are defined in `.proto` files:
+*xref:protocol-buffers.adoc[Protocol Buffers]* (protobuf) serve as both the interface definition language (IDL) and the serialization format. Services and messages are defined in `.proto` files:
 
 ----
 syntax = "proto3";
@@ -32,7 +32,7 @@ message GetBookRequest {
 }
 ----
 
-The `protoc` compiler generates strongly-typed client and server code from the `.proto` file in any of the supported languages (Go, Java, Python, C++, Node.js, Ruby, C#, and more). Developers call generated methods as if they were local function calls; gRPC handles serialization, transport, and deserialization transparently.
+The `protoc` compiler generates strongly-typed client and server code from the `.proto` file in any of the supported languages (Go, Java, Python, C++, Node.js, Ruby, C#, and more). Developers call generated methods as if they were local function calls. gRPC handles serialization, transport, and deserialization transparently.
 
 Protobuf messages are encoded in a compact binary format. Binary encoding is faster to serialize and deserialize than JSON, and produces significantly smaller payloads – typically 3–10x smaller than equivalent JSON.
 
@@ -142,7 +142,7 @@ Deadlines (timeouts) are a first-class concept in gRPC: the client sets a deadli
 | Native
 
 | Human readability
-| Binary — not human readable
+| Binary – not human readable
 | JSON is human readable
 | JSON is human readable
 
@@ -177,12 +177,12 @@ gRPC is the right choice when:
 * Services are polyglot – different services are written in different languages and benefit from generated, type-safe clients.
 * Strong API contracts are valued – teams want compile-time guarantees rather than runtime JSON parsing errors.
 
-For public-facing APIs consumed by browsers or third parties, xref:rest.adoc[REST] remains simpler to consume. Where clients need flexible, ad-hoc queries over complex data graphs, xref:graphql.adoc[GraphQL] is more appropriate.
+For public-facing APIs consumed by browsers or third parties, *xref:rest.adoc[REST]* remains simpler to consume. Where clients need flexible, ad-hoc queries over complex data graphs, *xref:graphql.adoc[GraphQL]* is more appropriate.
 
 == See also
 
-* xref:protocol-buffers.adoc[Protocol Buffers]: The IDL and binary serialization format used by gRPC.
-* xref:rest.adoc[Representational State Transfer (REST)]: The dominant alternative for public-facing APIs.
-* xref:graphql.adoc[GraphQL]: An alternative for data-rich APIs with varied client needs.
-* xref:http.adoc[HyperText Transfer Protocol (HTTP)]: gRPC runs over HTTP/2.
-* xref:microservices.adoc[Microservices]: The architectural style gRPC is most commonly used within.
+* *xref:protocol-buffers.adoc[Protocol Buffers]*: The IDL and binary serialization format used by gRPC.
+* *xref:rest.adoc[Representational State Transfer (REST)]*: The dominant alternative for public-facing APIs.
+* *xref:graphql.adoc[GraphQL]*: An alternative for data-rich APIs with varied client needs.
+* *xref:http.adoc[HyperText Transfer Protocol (HTTP)]*: gRPC runs over HTTP/2.
+* *xref:microservices.adoc[Microservices]*: The architectural style gRPC is most commonly used within.
