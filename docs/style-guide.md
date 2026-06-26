@@ -48,11 +48,15 @@ This guide covers writing style and AsciiDoc formatting. For the contribution wo
 
 ## Bold text
 
-Only two things are ever bold in body text:
+Only four things are ever bold in body text:
 
 - Cross-references: `xref:target.adoc[Link text]`, eg. `xref:resilience.adoc[resilience]`. Use this for every mention of a concept that has its own page.
 
 - Technical terms that don't yet have a dedicated topic page, but could warrant one in the future, eg. `*event-carried state transfer*`. This is a deliberate signal, not a placeholder error. It marks a candidate for a future `sow` (see the `forage` skill).
+
+- A glossary-style list term immediately followed by its description, eg. `` * *Atomicity*: Transactions are fully completed, or not at all. ``. The bold ends at the colon; the description after it is plain text.
+
+- A term being introduced or defined for the first time in running prose, eg. `` Base models are known as *emergence*. `` or `` *LoRA (Low-Rank Adaptation)* is a fine-tuning technique that... ``. This marks the moment a term is defined, not ongoing emphasis — don't bold the same term again on subsequent mentions within the same page unless it's also an `xref:` or forage candidate.
 
 Don't bold anything else. Bold is not used for general emphasis.
 

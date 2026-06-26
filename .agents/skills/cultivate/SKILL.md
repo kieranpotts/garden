@@ -29,7 +29,7 @@ Do NOT use this skill for structural maintenance — broken `xref:` targets, fak
 
     - **Title and headings** — sentence case, acronyms spelled out on first use, no over-structuring with headings on short entries. Formal proper nouns (named legal documents, standards, frameworks, methods — eg. "Developer Certificate of Origin", "Capability Maturity Model") keep their own established capitalization and are not forced into sentence case. If unsure whether a term is a formal proper noun, leave it and flag it rather than guessing.
     - **Written style** — prose paragraphs (not bullet-heavy where prose belongs), simple sentences, no semicolons, en dash (not hyphen or em dash) for sentence-level pauses, colons only before lists, colons (not hyphens) separating list terms from descriptions.
-    - **Bold text** — only `xref:` cross-references and not-yet-sown candidate terms are bold; nothing else. Check both directions: every `xref:` must be bold, and nothing else is.
+    - **Bold text** — only four things are ever bold (see [docs/style-guide.md](../../../docs/style-guide.md#bold-text)): `xref:` cross-references, not-yet-sown forage-candidate terms, glossary-style list-term lead-ins (`*Term*: Description.`), and a term being defined for the first time in running prose. Nothing else. Check both directions: every `xref:` must be bold, and nothing else is bold unless it fits one of the other three conventions.
     - **Admonitions** — used sparingly, only for genuinely secondary asides.
     - **Open questions and TODOs** — `// TODO` comments are fine as-is; don't flag them as violations.
 
@@ -38,15 +38,16 @@ Do NOT use this skill for structural maintenance — broken `xref:` targets, fak
     - Hyphen or em dash used as a sentence-level pause → en dash.
     - Hyphen/em dash separating a list term from its description → colon, with the description capitalized as its own sentence.
     - A colon followed by prose rather than a list → split into two sentences.
-    - Wrong-case heading or title → sentence case.
-    - Bold markup used for something other than an `xref:` or a forage-candidate term → unbold it (unless it's a genuine candidate term, in which case leave it; if you can't tell, flag it instead of guessing).
+    - Wrong-case heading or title → sentence case, respecting the formal-proper-noun exception.
+    - Bold markup that doesn't fit any of the four accepted conventions → unbold it (unless it's a genuine forage candidate, in which case leave it; if you can't tell, flag it instead of guessing).
     - An `xref:` that isn't bolded → bold it. Every `xref:` link must be wrapped in `*...*`, with no exceptions — check this on every single occurrence, not just the first per page.
 
 5.  **Flag judgment calls for the user**, rather than fixing them automatically:
 
     - Long or complex sentences that need rewriting (not just dash/colon mechanics) — propose a rewrite, don't apply it silently, since rephrasing changes meaning more than punctuation fixes do.
     - A page that's grown past "a few short paragraphs" and might need restructuring or splitting — that's [graft](../graft/SKILL.md)'s job; flag it, don't act on it here.
-    - Whether a bolded term is a genuine forage candidate or should just be unbolded.
+    - Whether a bolded term is a genuine forage candidate, a first-use definition, or should just be unbolded.
+    - Whether a heading or title is a genuine formal proper noun (exempt from sentence case) or just a capitalized-sounding descriptive phrase — if unsure, leave it and flag rather than guess.
 
 6.  **Report a summary.**
 
