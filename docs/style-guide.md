@@ -20,6 +20,8 @@ This guide covers writing style and AsciiDoc formatting. For the contribution wo
 
 - The document title (`= Title`) is sentence case. Capitalize the first word and any proper nouns or acronyms, lowercase everything else. Example: `= Event-driven architecture (EDA)`, not `= Event-Driven Architecture`.
 
+- A formal proper noun — the official name of a named legal document, standard, framework, or method (eg. `Developer Certificate of Origin`, `Capability Maturity Model`) — keeps its own established capitalization throughout, even where that means multiple capitalized words. Don't force sentence case onto a name that is conventionally Title Case in its source. If in doubt whether a term is a formal proper noun or just a descriptive phrase, leave it as found and flag it rather than guessing.
+
 - Acronyms are spelled out on first use, with the acronym in parentheses, eg. `Event-driven architecture (EDA)`. Subsequent headings/text may use the acronym alone.
 
 - Section headings (`==`, `===`) follow the same sentence-case rule.

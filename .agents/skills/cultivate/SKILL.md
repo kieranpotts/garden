@@ -27,7 +27,7 @@ Do NOT use this skill for structural maintenance — broken `xref:` targets, fak
 
 3.  **Check each page against the style guide, section by section:**
 
-    - **Title and headings** — sentence case, acronyms spelled out on first use, no over-structuring with headings on short entries.
+    - **Title and headings** — sentence case, acronyms spelled out on first use, no over-structuring with headings on short entries. Formal proper nouns (named legal documents, standards, frameworks, methods — eg. "Developer Certificate of Origin", "Capability Maturity Model") keep their own established capitalization and are not forced into sentence case. If unsure whether a term is a formal proper noun, leave it and flag it rather than guessing.
     - **Written style** — prose paragraphs (not bullet-heavy where prose belongs), simple sentences, no semicolons, en dash (not hyphen or em dash) for sentence-level pauses, colons only before lists, colons (not hyphens) separating list terms from descriptions.
     - **Bold text** — only `xref:` cross-references and not-yet-sown candidate terms are bold; nothing else. Check both directions: every `xref:` must be bold, and nothing else is.
     - **Admonitions** — used sparingly, only for genuinely secondary asides.
