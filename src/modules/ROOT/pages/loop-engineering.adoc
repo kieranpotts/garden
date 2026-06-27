@@ -1,0 +1,61 @@
+= Loop engineering
+
+Loop engineering is the practice of designing self-running systems in which an *xref:ai-agent.adoc[AI agent]* operates repeatedly, with minimal human involvement, on a recurring cadence rather than a single request-response turn. The term and framework come from Peter Steinberger, Boris Cherny, and Addy Osmani's paper _https://hyper.ai/en/papers/Loop-Engineering-IEEE[Loop Engineering: The Anthropic Playbook for Designing Systems That Prompt Your Agents]_.
+
+Where *xref:context-engineering.adoc#prompt-engineering[prompt engineering]* shapes a single instruction, *xref:context-engineering.adoc[context engineering]* curates what a model sees on one turn, and *xref:ai-agent-harness-engineering.adoc[harness engineering]* builds the machine that lets one agent act, loop engineering sits a level above all three. It designs the system that decides _when_ and _how often_ an agent runs at all, often with agents prompting other agents rather than a human supplying each turn.
+
+== The five moves
+
+Loop engineering decomposes the design of a recurring agent system into five concerns:
+
+* `Discovery`: Finding what work needs to be done — scanning a queue, an inbox, a repository, or a schedule for items that warrant a run.
+
+* `Handoff`: Passing context between agent runs or sessions, since a loop's iterations rarely share a live context window.
+
+* `Verification`: Checking the quality of an iteration's output before it is acted on or trusted.
+
+* `Persistence`: Maintaining state and memory across iterations, so each run can build on what came before rather than starting cold.
+
+* `Scheduling`: Deciding when the loop fires — locally on a fixed interval, or in the cloud against an event or queue — trading off responsiveness against state-management complexity.
+
+== Maker-checker
+
+The paper's central architectural principle is to structurally separate the agent that generates work from the agent that evaluates it, rather than asking one agent to critique its own output.
+
+Self-evaluation is prone to *self-praise bias*. A generator grading its own work tends to rate it more favorably than an independent evaluator would. An independent checker agent, with no stake in the generated artifact, is a more reliable verification step than self-review.
+
+This maps onto the `guides`/`sensors` distinction in *xref:ai-agent-harness-engineering.adoc[harness engineering]*. The checker acts as a sensor, feeding an independent quality signal back into the loop rather than trusting the maker's own assessment.
+
+== Building blocks
+
+The paper catalogs six structural components that recur across loop-engineered systems: automations, worktrees, *xref:agent-skills.adoc[skills]*, connectors, sub-agents, and memory systems.
+
+Production examples cited include Stripe's pipeline, which processes over 1,300 machine-written pull requests per week.
+
+== Hidden costs
+
+Running agents in a loop introduces costs that are easy to miss because no single iteration looks expensive in isolation:
+
+* `Verification debt`: Checks deferred or skipped accumulate silently across iterations.
+
+* `Comprehension rot`: The humans nominally supervising the loop gradually lose understanding of what it is actually doing.
+
+* `Cognitive surrender`: Over-trusting the loop's judgment, deferring decisions to it that still warrant human review.
+
+* `Token blowout`: Cost compounds across iterations in ways that are easy to underestimate from a single run.
+
+== Why it matters
+
+The paper's framing is that code generation is becoming close to free, which makes judgment — configuring a loop well, verifying its output correctly, knowing when to intervene — the scarce resource.
+
+Two identical loop architectures can produce very different outcomes depending entirely on the quality of the human configuration and oversight behind them, which is the opposite of what "automation" is usually assumed to guarantee.
+
+''''
+
+== See also
+
+* *xref:ai-agent.adoc[AI agent]*
+* *xref:ai-agent-harness-engineering.adoc[Harness engineering]*
+* *xref:ai-agent-orchestration.adoc[AI agent orchestration]*
+* *xref:context-engineering.adoc[Context engineering]*
+* *xref:agent-skills.adoc[Agent skills]*
