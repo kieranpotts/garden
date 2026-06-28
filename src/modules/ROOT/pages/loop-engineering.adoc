@@ -4,6 +4,8 @@ Loop engineering is the practice of designing self-running systems in which an *
 
 Where *xref:context-engineering.adoc#prompt-engineering[prompt engineering]* shapes a single instruction, *xref:context-engineering.adoc[context engineering]* curates what a model sees on one turn, and *xref:ai-agent-harness-engineering.adoc[harness engineering]* builds the machine that lets one agent act, loop engineering sits a level above all three. It designs the system that decides _when_ and _how often_ an agent runs at all, often with agents prompting other agents rather than a human supplying each turn.
 
+The explicit objective at this layer is to remove the human from the loop entirely. The preceding layers — prompt, context, and harness engineering — all still assume a human triggers each run and reviews its output. Loop engineering instead designs for the human to step back into a supervisory role: setting up discovery, verification, and scheduling once, then letting the system run unattended across many iterations.
+
 == The five moves
 
 Loop engineering decomposes the design of a recurring agent system into five concerns:
