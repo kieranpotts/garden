@@ -18,8 +18,8 @@ import sys
 VALID_TYPES = [
     # Subset of standard commit types:
     "chore",
-    "format",
     "maintenance",
+    "style",
 
     # Repository-specific commit types:
     "sow",        # plant a new entry
