@@ -4,9 +4,7 @@ Items raised during cultivate passes (A–R sections so far) that are outside cu
 
 ## Duplicate / mergeable pages (prune)
 
-- [ ] `cqrs.adoc` and `command-query-responsibility-segregation.adoc` both cover "Command Query Responsibility Segregation (CQRS)" — likely duplicates, candidate for merging.
 - [ ] `robustness-principle.adoc` substantially overlaps `postels-law.adoc` (which is already documented as "aka the Robustness Principle"). `robustness-principle.adoc`'s entire body is just "See xref:postels-law.adoc[Postel's law]." — likely a redirect stub that could be merged/removed.
-- [ ] `rubber-duck-debugging.adoc` and `rubber-ducking.adoc` appear to cover the same concept under two different titles — candidate for merging.
 
 ## Broken or fake cross-references (tend)
 
