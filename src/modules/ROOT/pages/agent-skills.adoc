@@ -1,28 +1,16 @@
 = Agent skills
 
-*Agent Skills* is an open specification for packaging reusable, task-scoped bundles of context that AI coding agents can load on demand. It is designed to complement the `AGENTS.md` convention: where `AGENTS.md` provides a static, always-loaded project orientation, skills encapsulate specific procedures, standards, or playbooks that are only relevant to certain tasks.
+*Agent Skills* is an open specification for packaging reusable, task-scoped bundles of context that AI coding agents can load on demand. Skills support *xref:context-engineering.adoc[context engineering]*
 
-The canonical specification lives at https://agentskills.io/specification.
-
-NOTE: "Agent skills" in this specification sense is distinct from "tools" in the function-calling sense (tool use, MCP servers). Skills are context bundles — structured documentation the agent reads. Tools are executable programs the agent calls. See *xref:model-context-protocol.adoc[Model Context Protocol]* for the tool-use protocol.
-
-Each skill is a directory containing a `SKILL.md` file — YAML front-matter followed by Markdown instructions. The front-matter's `description` field is the primary activation mechanism. At startup, the agent reads only each skill's `name` and `description`. The full body is loaded only when the description matches the current task. This on-demand, just-in-time loading keeps the context window focused on what is currently relevant.
+A skill is simply a directory containing a `SKILL.md` file — YAML front-matter followed by Markdown instructions. The front-matter's `description` field is the primary activation mechanism. At startup, the agent reads only each skill's `name` and `description`. The full body is loaded only when the description matches the current task. This on-demand, just-in-time loading keeps the context window focused on what is currently relevant.
 
 Skills can also contain optional `scripts/`, `references/`, and `assets/` subdirectories for executable code, supplementary documentation, and static resources.
 
-== Supporting agents and harnesses
+The canonical specification lives at https://agentskills.io/specification. The specification is supported by a growing set of coding agent harnesses. Some systems call them "rules" or "instructions".
 
-The specification is supported by a growing set of coding agents, though the activation model varies by tool:
+In the language of *xref:ai-agent-harness-engineering.adoc[harness engineering]*, skills are a _guide_ — a feed-forward control that steers an agent toward the right approach before it acts, rather than a _tool_ it executes or a _sensor_ that checks its output.
 
-* `On-demand`: The agent reads each skill's `description` and loads the full body only when it matches the current task. This is the model the specification targets. Claude Code is a primary example.
-
-* `Persistent/always-on`: The skill is injected at the start of every session regardless of relevance. Cursor, Windsurf, and Cline load their native rule files this way, making token-efficiency especially important for skills targeting these tools.
-
-* `Manual`: The user triggers a skill explicitly via a slash command or similar mechanism.
-
-Some tools require opt-in via a configuration option or command-line flag to activate skill support. Check each tool's documentation for its specific activation model.
-
-In the language of *xref:ai-agent-harness-engineering.adoc[harness engineering]*, skills are a _guide_ — a feedforward control that steers an agent toward the right approach before it acts, rather than a tool it executes or a sensor that checks its output.
+Agent skills complement the `AGENTS.md` convention. Whereas `AGENTS.md` provides a static, always-loaded project orientation, skills encapsulate specific procedures, standards, or playbooks that are relevant only to certain tasks.
 
 == Skills registries and collections
 

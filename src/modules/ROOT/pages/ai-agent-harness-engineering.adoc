@@ -54,6 +54,14 @@ Examples include https://playwright.dev/[Playwright] wrapped for agents, https:/
 
 The harness translates a high-level intent – _"click the login button"_ – into the deterministic browser API calls that carry it out.
 
+== Categories of harness
+
+There are two broad categories of harness in practice:
+
+* `Developer-facing harnesses`: Tools used by software developers to delegate coding tasks to an agent, such as file editing, shell execution, running tests, and reading documentation. The developer specifies a goal, and the harness plans and executes a sequence of steps to reach it autonomously. Examples include Claude Code, OpenCode, and Aider. These are distinct from *xref:ai-coding-assistant.adoc[IDE coding assistants]* (GitHub Copilot, Cursor), which are inline tools where the developer drives the interaction at a fine-grained level. Developer-facing harnesses operate at the task level. IDE assistants operate at the line or block level.
+
+* `Production/infrastructure harnesses`: Platforms for deploying, running, and governing agents in production systems. These manage agent lifecycles, enforce permission boundaries, wire observability pipelines, and coordinate multi-agent workflows. Examples include Microsoft Agent Framework, n8n, and OpenClaw.
+
 == Why it's called a harness
 
 The term is borrowed from an older practice: the *xref:test-harness.adoc[test harness]*, the *xref:scaffolding.adoc[scaffolding]* of drivers, stubs, and fixtures that wraps a unit of code so it can be exercised in isolation – supplying its inputs, invoking it repeatedly, and capturing its outputs for inspection. An agent harness plays the same role for a model: it wraps the model in a controlled, observable environment, feeds it inputs (prompts, context, tools), and captures its outputs (tool calls and their results) so they can be validated and fed back. In both cases the harness is not the thing being run – it is the rig that makes running it safe, repeatable, and observable.
