@@ -39,6 +39,7 @@ Commit messages MUST follow the format `<type>: <description>`, where `<descript
 - `split`: Split an overgrown entry into separate pages.
 - `entwine`: Add missing cross-references between existing entries.
 - `cultivate`: Bring an entry into conformance with the style guide.
+- `tidy`: Freeform tidy-up — trim, smooth, reorder within a page.
 - `weed`: Fix something incorrect or harmful (the gardening equivalent of `fix`).
 - `uproot`: Revert a change (the gardening equivalent of `revert`).
 - `landscape`: Restructure scripts/CI/tooling without changing behavior (the gardening equivalent of `refactor`).
@@ -55,6 +56,7 @@ graft: merge retry, backoff and jitter into retry-strategies
 split: divide event-driven-architecture into event-sourcing and cqrs
 entwine: link circuit-breaker and retry as related resilience patterns
 cultivate: fix dash and colon usage in resilience
+tidy: trim waffle and reorder sections in ai-agent
 weed: correct factual error in acid-principles
 uproot: revert accidental merge of draft entry
 landscape: restructure commit validation hook for clarity
@@ -63,4 +65,4 @@ maintenance: update pre-commit hook versions
 
 ## Agent skills
 
-This repo has a set of [agent skills](./.agents/skills/README.md) for maintaining the garden — sowing new entries, tending broken links, fertilizing stubs, pruning duplicates, grafting related entries into one, splitting overgrown pages, entwining related entries, foraging for missing topics, cultivating style-guide conformance, and harvesting a digest of recent growth.
+This repo has a set of [agent skills](./.agents/skills/README.md) for maintaining the garden — sowing new entries, tending broken links, fertilizing stubs, pruning duplicates, grafting related entries into one, splitting overgrown pages, entwining related entries, foraging for missing topics, cultivating style-guide conformance, tidying loose ends, and harvesting a digest of recent growth.
