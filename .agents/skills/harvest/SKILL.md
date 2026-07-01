@@ -13,7 +13,7 @@ Do NOT use this skill to make any changes to the garden — it only reports. Do 
 
 **Input**: OPTIONAL — a time window or commit range (eg. "harvest the last 2 weeks", "harvest since v1.4"). Defaults to commits since the last harvest digest was produced, or the last 30 days if no prior digest exists.
 
-**Output**: A digest, grouped by activity type (sown / fertilized / tended / pruned / grafted / entwined / weeded / uprooted / other), printed to the chat. If the user asks for it to be saved, write it to a dated entry, newest first, rather than overwriting prior digests.
+**Output**: A digest, grouped by activity type (sown / fertilized / tended / pruned / grafted / split / entwined / weeded / uprooted / other), printed to the chat. If the user asks for it to be saved, write it to a dated entry, newest first, rather than overwriting prior digests.
 
 ## Instructions
 
@@ -27,7 +27,7 @@ Do NOT use this skill to make any changes to the garden — it only reports. Do 
     git log --since="<window-start>" --name-status --pretty=format:'%h %s'
     ```
 
-    This repo's commit messages are prefixed by type, and the repository-specific types map directly onto garden activity: `sow:`, `tend:`, `fertilize:`, `prune:`, `graft:`, `entwine:`, `weed:`, `uproot:`. Standard types (`chore:`, `format:`, `maintenance:`, `landscape:`) fall under "other". Use the prefix as the primary signal, but spot-check against the diff — a commit can be mislabeled, and history predating this commit-type convention won't have a matching prefix at all.
+    This repo's commit messages are prefixed by type, and the repository-specific types map directly onto garden activity: `sow:`, `tend:`, `fertilize:`, `prune:`, `graft:`, `split:`, `entwine:`, `weed:`, `uproot:`. Standard types (`chore:`, `format:`, `maintenance:`, `landscape:`) fall under "other". Use the prefix as the primary signal, but spot-check against the diff — a commit can be mislabeled, and history predating this commit-type convention won't have a matching prefix at all.
 
 3.  **Classify each change.**
 
@@ -37,7 +37,8 @@ Do NOT use this skill to make any changes to the garden — it only reports. Do 
     - **Fertilized** (`fertilize:`): an existing page's content grew substantially.
     - **Tended** (`tend:`): fixes to `xref:` targets, pseudo-links, or index listings with no new concept introduced.
     - **Pruned** (`prune:`): a page deleted along with repointed references elsewhere.
-    - **Grafted** (`graft:`): one page's content shrank while one or more new pages appeared in the same change, with cross-links between them.
+    - **Grafted** (`graft:`): two or more pages were merged into one broader page — the survivor grew while the absorbed pages were deleted and their references repointed.
+    - **Split** (`split:`): one page's content shrank while one or more new pages appeared in the same change, with cross-links between them.
     - **Entwined** (`entwine:`): new `xref:` links added between existing pages, with no content otherwise changed.
     - **Weeded** (`weed:`): a factual error or other harmful content corrected on an existing page.
     - **Uprooted** (`uproot:`): a change reverted.
@@ -55,7 +56,7 @@ Do NOT use this skill to make any changes to the garden — it only reports. Do 
 
 ## Rules
 
--   **Trust the commit type prefix, but spot-check.** `sow:`/`tend:`/`fertilize:`/`prune:`/`graft:`/`entwine:` map directly onto these categories, but prefixes can be wrong or absent in older history — fall back to inspecting the diff when a prefix is missing or looks mismatched against the actual files touched.
+-   **Trust the commit type prefix, but spot-check.** `sow:`/`tend:`/`fertilize:`/`prune:`/`graft:`/`split:`/`entwine:` map directly onto these categories, but prefixes can be wrong or absent in older history — fall back to inspecting the diff when a prefix is missing or looks mismatched against the actual files touched.
 
 -   **Keep it a report, not an action.** If the digest surfaces something that looks broken or undone (eg. a half-finished graft, a page added but never linked from the index), name it as a finding for the user to send to [tend](../tend/SKILL.md) — don't fix it inline.
 

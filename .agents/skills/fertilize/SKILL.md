@@ -35,7 +35,7 @@ Do NOT use this skill to create a page that doesn't exist yet — use [sow](../s
 
 5.  **Rewrite the entry.**
 
-    Expand the body in place. Keep it focused on the original topic — fertilize grows the existing plant, it doesn't graft on a different one. Remove resolved `// TODO` markers. Preserve the existing title and filename.
+    Expand the body in place. Keep it focused on the original topic — fertilize grows the existing plant, it doesn't bolt a different one onto it. Remove resolved `// TODO` markers. Preserve the existing title and filename.
 
 6.  **Re-link.**
 

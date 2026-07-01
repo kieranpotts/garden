@@ -35,7 +35,8 @@ Commit messages MUST follow the format `<type>: <description>`, where `<descript
 - `tend`: Fix broken links, fake links, orphaned pages, etc.
 - `fertilize`: Expand a thin stub entry.
 - `prune`: Merge or remove a duplicate entry.
-- `graft`: Split an overgrown entry into separate pages.
+- `graft`: Merge related-but-distinct entries into one page.
+- `split`: Split an overgrown entry into separate pages.
 - `entwine`: Add missing cross-references between existing entries.
 - `cultivate`: Bring an entry into conformance with the style guide.
 - `weed`: Fix something incorrect or harmful (the gardening equivalent of `fix`).
@@ -50,6 +51,8 @@ sow: add entry for event sourcing
 fertilize: expand abstraction with examples and modular design xref
 tend: fix broken xref in ai-agent.adoc
 prune: merge adapative-software-development into adaptive-software-development
+graft: merge retry, backoff and jitter into retry-strategies
+split: divide event-driven-architecture into event-sourcing and cqrs
 entwine: link circuit-breaker and retry as related resilience patterns
 cultivate: fix dash and colon usage in resilience
 weed: correct factual error in acid-principles
@@ -60,4 +63,4 @@ maintenance: update pre-commit hook versions
 
 ## Agent skills
 
-This repo has a set of [agent skills](./.agents/skills/README.md) for maintaining the garden — sowing new entries, tending broken links, fertilizing stubs, pruning duplicates, grafting overgrown pages, entwining related entries, foraging for missing topics, cultivating style-guide conformance, and harvesting a digest of recent growth.
+This repo has a set of [agent skills](./.agents/skills/README.md) for maintaining the garden — sowing new entries, tending broken links, fertilizing stubs, pruning duplicates, grafting related entries into one, splitting overgrown pages, entwining related entries, foraging for missing topics, cultivating style-guide conformance, and harvesting a digest of recent growth.

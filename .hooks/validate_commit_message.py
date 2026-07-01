@@ -26,7 +26,8 @@ VALID_TYPES = [
     "tend",       # fix broken links, fake links, orphaned pages, etc.
     "fertilize",  # expand a thin stub entry
     "prune",      # merge/remove a duplicate entry
-    "graft",      # split an overgrown entry into separate pages
+    "graft",      # merge related-but-distinct entries into one page
+    "split",      # split an overgrown entry into separate pages
     "entwine",    # add missing cross-references between existing entries
     "cultivate",  # bring an entry into conformance with the style guide
     "weed",       # fix something incorrect or harmful (replaces fix)

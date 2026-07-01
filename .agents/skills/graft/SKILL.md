@@ -1,72 +1,74 @@
 ---
 name: graft
-description: Split an overgrown garden entry that has drifted into covering two or more distinct concepts back into separate atomic pages, cross-linked together. Use when the user says "graft this entry", "split X into separate pages", or notices a page covering more than one idea.
+description: Merge two or more related-but-distinct garden entries into a single broader page, cross-links repointed and the absorbed pages removed. Use when the user says "graft these entries", "merge X and Y into one page", or notices several thin pages that would read better as one concept.
 metadata:
   interactive: yes
 ---
 
 # Graft
 
-Use this skill to take a single entry that has grown to cover more than one concept and split it into separate atomic pages — the opposite of [prune](../prune/SKILL.md), which merges accidental duplicates back into one.
+Use this skill to join two or more separate entries that cover *related but distinct* concepts into one broader page — the opposite of [split](../split/SKILL.md), which breaks an overgrown entry into separate atomic pages.
 
-Do NOT use this skill on a page that's merely long but still about one concept — length alone isn't grounds for a split. Do NOT use this skill to expand a thin stub — that's [fertilize](../fertilize/SKILL.md). Graft only acts when a page's scope has genuinely drifted to cover multiple ideas.
+Graft is a deliberate consolidation. The merged pages aren't duplicates, they're neighbors that have turned out to belong under one heading — eg. three thin pages on `retry`, `backoff`, and `jitter` that read better as one entry on retry strategies.
 
-**Input**: A target page named by the user (eg. "graft event-driven-architecture.adoc — it's covering both event sourcing and CQRS"). REQUIRED. This skill confirms the proposed split (which sections become which new pages, and what stays on the original) with the user before making any changes.
+Do NOT use this skill on accidental duplicates of the *same* concept — merging those is [prune](../prune/SKILL.md), which keeps one page and discards the redundant one.
 
-**Output**: The original page narrowed back to its core concept, one or more new `.adoc` pages for the concepts that were split out, all of them cross-linked to each other, and the new pages added to `index.adoc`.
+Graft merges genuinely different content, while prune removes redundancy.
+
+**Input**: Two or more target pages named by the user (eg. "graft retry.adoc, backoff.adoc and jitter.adoc into one retry-strategies page"). REQUIRED. This skill confirms the merge plan — which page becomes the survivor (or whether a new page is created), what its title is, and how the absorbed content is arranged — with the user before making any changes.
+
+**Output**: One surviving page covering the combined concept, its sections carrying over the distinct content from each source page; the absorbed pages removed; every `xref:` and `index.adoc` entry that pointed at a removed page repointed to the survivor.
 
 ## Instructions
 
-1.  **Read the target page in full.**
+1.  **Read all the target pages in full.**
 
-    Identify the distinct concepts it currently covers. A genuine split candidate has sections that could each stand alone as a self-contained entry, not just sub-points of one idea.
+    Confirm they're related-but-distinct, not accidental duplicates. If they turn out to say the same thing, stop and hand off to [prune](../prune/SKILL.md) instead — graft is for merging different content, not cutting redundancy.
 
-2.  **Propose the split.**
+2.  **Propose the merge.**
 
-    Name the resulting pages: what stays under the original title, and what becomes a new page for each split-out concept. Present this to the user before editing — splitting is a structural decision the original entry's title and scope depend on, and should be agreed before content moves.
+    Decide the survivor: either promote one existing page to the broader title, or create a new page that absorbs all the sources. Name the resulting title and sketch how each source page's content maps onto sections of the merged page. Present this to the user before editing — a graft changes the title and scope of existing content, and should be agreed before anything moves.
 
-3.  **Check for collisions.**
+3.  **Build the merged page.**
 
-    Before creating any new page, check it doesn't already duplicate an existing entry elsewhere in the garden (the same failure mode [prune](../prune/SKILL.md) cleans up). If one already exists, merge the split-out content into that page instead of creating a new one.
+    Carry the distinct content from each source into the survivor, arranged as coherent sections rather than concatenated verbatim. Rewrite transitions so it reads as one entry, not stitched fragments. Follow the garden's atomic-entry conventions (single `=` title, focused body, `xref:` outward). If the survivor is a newly created page, create `src/modules/ROOT/pages/<topic>.adoc`; if it's a promoted existing page, edit it in place and retitle as agreed.
 
-4.  **Create the new page(s).**
+4.  **Repoint every reference.**
 
-    For each split-out concept, create `src/modules/ROOT/pages/<topic>.adoc` following the garden's atomic-entry conventions (single `=` title, focused body, `xref:` outward rather than re-explaining). Carry over the relevant content from the original, rewritten to stand alone rather than assuming the context of the rest of the original page.
+    Grep the whole garden for `xref:<absorbed-file>.adoc` for each removed page and replace with `xref:<survivor-file>.adoc`, keeping the link text sensible in context. Where several old links now point at the same survivor from one page, collapse duplicates.
 
-5.  **Narrow the original.**
+5.  **Remove the absorbed pages.**
 
-    Remove the split-out sections from the original page, leaving it focused on its core concept. Add an `xref:` from the original to each new page where the relationship is natural (eg. "see also").
+    Delete each source page that was folded into the survivor, once nothing references it. If the survivor is a promoted existing page, only the *other* sources are deleted.
 
-6.  **Cross-link the new pages.**
+6.  **Update the index.**
 
-    If the split-out concepts relate to each other as well as to the original, link them to one another too.
+    Remove the absorbed pages' entries from `index.adoc`. Ensure the survivor is listed once under its final title, in the correct alphabetical section. Propose a maturity label that reflects the merged page's completeness rather than silently keeping the highest or lowest of the sources.
 
-7.  **Update the index.**
+7.  **Report back.**
 
-    Add each new page to `index.adoc` in its correct alphabetical section, marked 🌱 Seedling (it's new content, even though it originated from older material). Leave the original's existing maturity label as-is unless the narrowing changes how complete it looks — propose a change rather than applying one silently.
-
-8.  **Report back.**
-
-    List the new files created, what moved from the original into each, and every cross-link added.
+    State which page survived (or was created), what content came from each source, every reference repointed, and every page deleted.
 
 ## Rules
 
--   **Confirm the split before editing.** Unlike tend's mechanical fixes, a graft changes the meaning and boundaries of existing content — get the user's agreement on the proposed split before moving any text.
+- **Confirm the merge before editing.** A graft changes the meaning and boundaries of existing content and deletes pages — get the user's agreement on the survivor, title, and structure before moving any text.
 
--   **Check for an existing page first.** A split-out concept might already have its own entry elsewhere in the garden; don't create a duplicate that [prune](../prune/SKILL.md) will later have to clean up.
+- **Graft is not prune.** If the pages are accidental duplicates of one concept, this is the wrong skill — [prune](../prune/SKILL.md) keeps one and discards the redundant rest. Graft only merges pages that each contribute distinct content to the combined concept.
 
--   **Rewrite for standalone reading.** Content lifted out of the original page often refers back to it implicitly ("as mentioned above"). Rewrite those references as explicit `xref:` links or remove them — the new page must be self-contained.
+- **Don't discard distinct content.** Every source page contributes something the others don't — that's why it's a graft and not a prune. Confirm with the user before dropping any section, don't lose it silently in the merge.
 
--   **Committing is out of scope.** This skill edits files in the working tree only. Staging, committing, and pushing are the user's call — never run `git commit` or `git push` as part of grafting.
+- **Never delete a page before every reference to it has been repointed.** A dangling `xref:` after a graft is worse than the fragmentation it replaced.
+
+- **Committing is out of scope.** This skill edits and deletes files in the working tree only. Staging, committing, and pushing are the user's call — never run `git commit` or `git push` as part of grafting.
 
 ## Success criteria
 
-- **The original page covers exactly one concept** after the split.
+- **One surviving page covers the combined concept**, reading as a single coherent entry rather than stitched fragments.
 
-- **Each new page is self-contained** — readable without having read the original first.
+- **No `xref:` anywhere in the garden still points to a removed source page.**
 
-- **All new pages are listed in `index.adoc`.**
+- **`index.adoc` lists the survivor once** under its final title, with the absorbed pages' entries removed.
 
-- **No new page duplicates an existing entry** — checked against the garden before creation.
+- **Distinct content from every source is present in the survivor**, or was confirmed by the user as not worth keeping.
 
-- **The user confirmed the split plan before any content was moved.**
+- **The user confirmed the merge plan before any content was moved or any page deleted.**

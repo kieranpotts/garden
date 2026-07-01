@@ -9,7 +9,7 @@ metadata:
 
 Use this skill to cut back redundant growth: entries that cover the same concept as another entry, usually created by accident (a typo'd filename, a synonym, forgetting an entry already exists).
 
-Do NOT use this skill for broken links, orphaned pages, or stale maturity labels — those are mechanical checks handled by [tend](../tend/SKILL.md). Prune is a semantic judgment call about whether two *different* pages are actually the *same* concept. Do NOT use this skill to split an overgrown entry that covers two concepts — that's the opposite operation, handled by [graft](../graft/SKILL.md).
+Do NOT use this skill for broken links, orphaned pages, or stale maturity labels — those are mechanical checks handled by [tend](../tend/SKILL.md). Prune is a semantic judgment call about whether two *different* pages are actually the *same* concept. Do NOT use this skill to split an overgrown entry that covers two concepts — that's the opposite operation, handled by [split](../split/SKILL.md). And do NOT use it to combine entries that cover *different but related* concepts into one broader page — those aren't duplicates, and merging them is [graft](../graft/SKILL.md)'s job. Prune only removes accidental duplication of the *same* concept.
 
 **Input**: OPTIONAL — a pair of suspected duplicate topics or files named by the user (eg. "are acid.adoc and acid-principles.adoc duplicates?"). If none given, this skill scans the garden for likely duplicate pairs (similar filenames, similar titles, overlapping first paragraphs) and presents candidates for confirmation before merging anything.
 

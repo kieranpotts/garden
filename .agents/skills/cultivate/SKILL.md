@@ -45,7 +45,7 @@ Do NOT use this skill for structural maintenance — broken `xref:` targets, fak
 5.  **Flag judgment calls for the user**, rather than fixing them automatically:
 
     - Long or complex sentences that need rewriting (not just dash/colon mechanics) — propose a rewrite, don't apply it silently, since rephrasing changes meaning more than punctuation fixes do.
-    - A page that's grown past "a few short paragraphs" and might need restructuring or splitting — that's [graft](../graft/SKILL.md)'s job; flag it, don't act on it here.
+    - A page that's grown past "a few short paragraphs" and might need restructuring or splitting — that's [split](../split/SKILL.md)'s job; flag it, don't act on it here.
     - Whether a bolded term is a genuine forage candidate, a first-use definition, or should just be unbolded.
     - Whether a heading or title is a genuine formal proper noun (exempt from sentence case) or just a capitalized-sounding descriptive phrase — if unsure, leave it and flag rather than guess.
 
@@ -59,7 +59,7 @@ Do NOT use this skill for structural maintenance — broken `xref:` targets, fak
 
 -   **Don't fix structural issues.** Broken links, fake pseudo-links to existing pages, orphans, and maturity labels belong to [tend](../tend/SKILL.md). If you notice one while cultivating, mention it in the report but don't fix it here.
 
--   **Don't rewrite for content, only for style.** Cultivate doesn't expand thin stubs ([fertilize](../fertilize/SKILL.md)'s job) or split overgrown pages ([graft](../graft/SKILL.md)'s job). It only changes how existing prose is written.
+-   **Don't rewrite for content, only for style.** Cultivate doesn't expand thin stubs ([fertilize](../fertilize/SKILL.md)'s job) or split overgrown pages ([split](../split/SKILL.md)'s job). It only changes how existing prose is written.
 
 -   **Committing is out of scope.** This skill edits files in the working tree only. Staging, committing, and pushing are the user's call — never run `git commit` or `git push` as part of cultivating.
 
