@@ -9,7 +9,7 @@ metadata:
 
 **Input**: OPTIONAL — a time window or commit range (eg. "harvest the last 2 weeks", "harvest since v1.4"). Defaults to commits since the last harvest digest was produced, or the last 30 days if no prior digest exists. Do not block to ask the user questions. This skill is read-only unless the user explicitly asks for the digest to be saved.
 
-**Output**: A digest, grouped by activity type (sown / fertilized / tended / pruned / grafted / split / entwined / cultivated / tidied / weeded / uprooted / other), printed to the chat. If the user asks for it to be saved, write it to a dated entry, newest first, rather than overwriting prior digests.
+**Output**: A digest, grouped by activity type (sown / fertilized / tended / pruned / grafted / split / entwined / cultivated / trimmed / weeded / uprooted / other), printed to the chat. If the user asks for it to be saved, write it to a dated entry, newest first, rather than overwriting prior digests.
 
 ##  Instructions
 
@@ -23,7 +23,7 @@ metadata:
     git log --since="<window-start>" --name-status --pretty=format:'%h %s'
     ```
 
-    This repo's commit messages are prefixed by type, and the repository-specific types map directly onto garden activity: `sow:`, `tend:`, `fertilize:`, `prune:`, `graft:`, `split:`, `entwine:`, `cultivate:`, `tidy:`, `weed:`, `uproot:`. Standard types (`chore:`, `format:`, `maintenance:`, `landscape:`) fall under "other". Use the prefix as the primary signal, but spot-check against the diff — a commit can be mislabeled, and history predating this commit-type convention won't have a matching prefix at all.
+    This repo's commit messages are prefixed by type, and the repository-specific types map directly onto garden activity: `sow:`, `tend:`, `fertilize:`, `prune:`, `graft:`, `split:`, `entwine:`, `cultivate:`, `trim:`, `weed:`, `uproot:`. The `trim:` type was formerly named `tidy:`, so older commits carry the legacy `tidy:` prefix. Standard types (`chore:`, `format:`, `maintenance:`, `landscape:`) fall under "other". Use the prefix as the primary signal, but spot-check against the diff — a commit can be mislabeled, and history predating this commit-type convention won't have a matching prefix at all.
 
 3.  **Classify each change.**
 
@@ -45,7 +45,7 @@ metadata:
 
     - **Cultivated** (`cultivate:`): mechanical style-guide fixes (dashes, colons, casing, bold usage) with no change to meaning.
 
-    - **Tidied** (`tidy:`): freeform tidy-up within a page — trimmed waffle, smoothed phrasing, reordered or de-duplicated content, with meaning left intact.
+    - **Trimmed** (`trim:`, or legacy `tidy:` in older commits): freeform trim within a page — trimmed waffle, smoothed phrasing, reordered or de-duplicated content, with meaning left intact.
 
     - **Weeded** (`weed:`): a factual error or other harmful content corrected on an existing page.
 
@@ -67,7 +67,7 @@ metadata:
 
 -   **Trust the commit type prefix, but spot-check.**
 
-    `sow:`/`tend:`/`fertilize:`/`prune:`/`graft:`/`split:`/`entwine:`/`cultivate:`/`tidy:` map directly onto these categories, but prefixes can be wrong or absent in older history — fall back to inspecting the diff when a prefix is missing or looks mismatched against the actual files touched.
+    `sow:`/`tend:`/`fertilize:`/`prune:`/`graft:`/`split:`/`entwine:`/`cultivate:`/`trim:` (and legacy `tidy:`) map directly onto these categories, but prefixes can be wrong or absent in older history — fall back to inspecting the diff when a prefix is missing or looks mismatched against the actual files touched.
 
 -   **Keep it a report, not an action.**
 

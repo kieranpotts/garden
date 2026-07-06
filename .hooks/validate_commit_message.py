@@ -30,7 +30,7 @@ VALID_TYPES = [
     "split",      # split an overgrown entry into separate pages
     "entwine",    # add missing cross-references between existing entries
     "cultivate",  # bring an entry into conformance with the style guide
-    "tidy",       # freeform tidy-up: trim, smooth, reorder within a page
+    "trim",       # freeform trim: trim, smooth, reorder within a page
     "weed",       # fix something incorrect or harmful (replaces fix)
     "uproot",     # revert a change (replaces revert)
     "landscape",  # shape things (replaces refactor)

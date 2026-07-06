@@ -50,7 +50,7 @@ jobs:
         run: |
           # Allowed commit types:
           #   Standard (subset of TS-9) : chore, maintenance, style
-          #   Custom (this repository)  : sow, tend, fertilize, prune, graft, split, entwine, cultivate, tidy, weed, uproot, landscape
+          #   Custom (this repository)  : sow, tend, fertilize, prune, graft, split, entwine, cultivate, trim, weed, uproot, landscape
           #     sow        - plant a new entry
           #     tend       - fix broken links, fake links, orphaned pages, etc.
           #     fertilize  - expand a thin stub entry
@@ -59,11 +59,11 @@ jobs:
           #     split      - split an overgrown entry into separate pages
           #     entwine    - add missing cross-references between existing entries
           #     cultivate  - bring an entry into conformance with the style guide
-          #     tidy       - freeform tidy-up: trim, smooth, reorder within a page
+          #     trim       - freeform trim: trim, smooth, reorder within a page
           #     weed       - fix something incorrect or harmful (replaces fix)
           #     uproot     - revert a change (replaces revert)
           #     landscape  - restructure scripts/CI/tooling without changing behavior (replaces refactor)
-          types="chore|maintenance|style|sow|tend|fertilize|prune|graft|split|entwine|cultivate|tidy|weed|uproot|landscape"
+          types="chore|maintenance|style|sow|tend|fertilize|prune|graft|split|entwine|cultivate|trim|weed|uproot|landscape"
           re="^($types): [a-z0-9].*$"
 
           echo "$GIT_LOG_OUTPUT" | while read -r line; do

@@ -1,11 +1,11 @@
 ---
-name: tidy
-description: Everyday gardening. Follow this skill when you're requested to do a freeform, judgment-driven tidy-up pass over one discrete item in the garden. This is about making small trimmings while walking the garden with secateurs in hand: trim waffle, smooth awkward phrasing, move a paragraph to a better home, merge stray sentences, drop redundancy. Use when the user says "tidy this up", "give this a once-over", "trim this", "move this bit somewhere better", "tidy agent.adoc" or "tidy the section on AI agents".
+name: trim
+description: Everyday gardening. Follow this skill when you're requested to do a freeform, judgment-driven trim over one discrete entry in the garden. This is about making small trimmings while walking the garden with secateurs in hand: trim waffle, smooth awkward phrasing, move a paragraph to a better home, merge stray sentences, drop redundancy. Use when the user says "trim this", "tidy this up", "give this a once-over", "move this bit somewhere better", "trim agent.adoc" or "trim the section on AI agents".
 metadata:
   interactive: no
 ---
 
-# Tidy
+# Trim
 
 **Input**: A single target entry in the garden. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user to decide what to do with them.
 

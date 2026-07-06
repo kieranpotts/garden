@@ -14,6 +14,6 @@ Agent skills for maintaining this digital garden. Each does one focused task.
 | [forage](./forage/README.md) | Find topics referenced or implied across the garden that don't have a page yet, ranked by mention frequency, for sowing. |
 | [harvest](./harvest/README.md) | Produce a digest of recent garden activity — what's been sown, fertilized, tended, pruned, grafted, or entwined. |
 | [cultivate](./cultivate/README.md) | Review a single entry against the style guide and fix mechanical style violations: dashes, colons, casing, bold-text usage. |
-| [tidy](./tidy/README.md) | Freeform general gardening — trim waffle, smooth phrasing, move things about, drop repetition — small inline improvements within a page. |
+| [trim](./trim/README.md) | Freeform general gardening — trim waffle, smooth phrasing, move things about, drop repetition — small inline improvements within a page. |
 
 See each skill's own `SKILL.md` for the full instructions an agent follows, and `README.md` for invocation examples.
