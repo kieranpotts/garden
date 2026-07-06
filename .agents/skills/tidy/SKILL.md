@@ -11,7 +11,7 @@ Use this skill for the loose, everyday gardening that doesn't fit a single named
 
 Tidy is deliberately low-ceremony. Unlike [graft](../graft/SKILL.md), [split](../split/SKILL.md), or [prune](../prune/SKILL.md) — which change the boundaries of entries and confirm a plan before acting — tidy makes small, self-evidently-good edits directly and reports what it did. It's meant for a human driving interactively, who can see each change and reel it back if they disagree.
 
-**Input**: One or more target pages named by the user (eg. "tidy ai-agent.adoc"), or a selection/region the user points at. If nothing is named, ask what to tidy rather than roaming the whole garden — tidy is a focused pass, not a garden-wide sweep.
+**Input**: One or more target pages named by the user (eg. "tidy agent.adoc"), or a selection/region the user points at. If nothing is named, ask what to tidy rather than roaming the whole garden — tidy is a focused pass, not a garden-wide sweep.
 
 **Output**: The target edited in place — tighter, better-ordered, less repetitive — plus a short report of the changes made, so the user can scan and undo any they don't want.
 

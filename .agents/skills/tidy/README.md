@@ -8,7 +8,7 @@ The everyday secateurs work that doesn't fit a single named operation: trimming 
 
 ## How to invoke
 
-> Tidy ai-agent.adoc.
+> Tidy agent.adoc.
 
 > Give this page a once-over — trim the waffle and move things about.
 

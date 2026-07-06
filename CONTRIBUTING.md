@@ -50,13 +50,13 @@ Examples:
 ```
 sow: add entry for event sourcing
 fertilize: expand abstraction with examples and modular design xref
-tend: fix broken xref in ai-agent.adoc
+tend: fix broken xref in agent.adoc
 prune: merge adapative-software-development into adaptive-software-development
 graft: merge retry, backoff and jitter into retry-strategies
 split: divide event-driven-architecture into event-sourcing and cqrs
 entwine: link circuit-breaker and retry as related resilience patterns
 cultivate: fix dash and colon usage in resilience
-tidy: trim waffle and reorder sections in ai-agent
+tidy: trim waffle and reorder sections in agent
 weed: correct factual error in acid-principles
 uproot: revert accidental merge of draft entry
 landscape: restructure commit validation hook for clarity
