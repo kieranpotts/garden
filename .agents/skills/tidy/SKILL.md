@@ -33,13 +33,13 @@ metadata:
 
     Trim waffle. Cut filler and padding. Say the same thing in fewer words.
 
-    Smooth awkward phrasing. Fix clumsy sentences, bad transitions,tangled clauses.
+    Smooth awkward phrasing. Fix clumsy sentences, bad transitions, tangled clauses.
 
     Drop redundancy. Remove sentences or clauses that repeat something said elsewhere in the page.
 
     Reorder content for better flow. Shuffle paragraphs, pull a stray point into a section where it sits more comfortably, merge two half-empty bullets, etc.
 
-    Tighten bullets and lists. Fix over-long headings, collapse a one-item lists, split run-on bullets, etc.
+    Tighten bullets and lists. Fix over-long headings, collapse one-item lists, split run-on bullets, etc.
 
 -   **Out-of-scope changes:**
 
@@ -69,7 +69,7 @@ metadata:
 
     Make your edits in the working tree only. Staging, committing, and pushing are the user's call.
 
-## Success criteria
+##  Success criteria
 
 -   **The page is tighter and better-ordered than before.**
 

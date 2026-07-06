@@ -1,6 +1,6 @@
 # Tidy
 
-General gardening — a freeform, judgment-driven tidy-up pass over one discrete entry in the garden.
+General gardening — a freeform, judgment-driven tidy-up pass over one discrete item in the garden.
 
 ## What it does
 
