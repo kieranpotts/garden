@@ -23,6 +23,7 @@ VALID_TYPES = [
 
     # Repository-specific commit types:
     "sow",        # plant a new entry
+    "water",      # research and extend an existing entry
     "tend",       # fix broken links, fake links, orphaned pages, etc.
     "fertilize",  # expand a thin stub entry
     "prune",      # merge/remove a duplicate entry

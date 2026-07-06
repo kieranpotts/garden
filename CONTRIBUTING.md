@@ -33,6 +33,7 @@ Commit messages MUST follow the format `<type>: <description>`, where `<descript
 
 - `sow`: Plant a new entry.
 - `tend`: Fix broken links, fake links, orphaned pages, etc.
+- `water`: Research and extend an existing entry.
 - `fertilize`: Expand a thin stub entry.
 - `prune`: Merge or remove a duplicate entry.
 - `graft`: Merge related-but-distinct entries into one page.
@@ -49,6 +50,7 @@ Examples:
 
 ```
 sow: add entry for event sourcing
+water: research and extend event-sourcing with recent developments
 fertilize: expand abstraction with examples and modular design xref
 tend: fix broken xref in agent.adoc
 prune: merge adapative-software-development into adaptive-software-development
@@ -65,4 +67,4 @@ maintenance: update pre-commit hook versions
 
 ## Agent skills
 
-This repo has a set of [agent skills](./.agents/skills/README.md) for maintaining the garden — sowing new entries, tending broken links, fertilizing stubs, pruning duplicates, grafting related entries into one, splitting overgrown pages, entwining related entries, foraging for missing topics, cultivating style-guide conformance, trimming loose ends, and harvesting a digest of recent growth.
+This repo has a set of [agent skills](./.agents/skills/README.md) for maintaining the garden — sowing new entries, watering established entries, tending broken links, fertilizing stubs, pruning duplicates, grafting related entries into one, splitting overgrown pages, entwining related entries, foraging for missing topics, cultivating style-guide conformance, trimming loose ends, and harvesting a digest of recent growth.

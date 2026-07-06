@@ -6,6 +6,7 @@ Agent skills for maintaining this digital garden. Each does one focused task.
 | --- | --- |
 | [sow](./sow/README.md) | Research a new topic and plant it as a new entry, cross-referenced to relevant adjacent topics. |
 | [tend](./tend/README.md) | Find broken cross-references, fake pseudo-links, orphaned pages, and stale maturity labels. |
+| [water](./water/README.md) | Research an existing entry's topic afresh and extend it with new depth and developments — like sow, for a page that already exists. |
 | [fertilize](./fertilize/README.md) | Expand a thin stub entry into a fuller page, without changing its scope. |
 | [prune](./prune/README.md) | Check whether a single entry duplicates an existing page, and if so merge them into one surviving page. |
 | [graft](./graft/README.md) | Merge two or more related-but-distinct entries into a single broader page. |
