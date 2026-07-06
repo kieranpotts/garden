@@ -2,16 +2,18 @@
 name: cultivate
 description: Review garden entries against docs/style-guide.md — sentence-case titles, prose style, dash/colon usage, bold-text rules, admonition usage — and report or fix violations. Use when the user says "cultivate the garden", "check style", or asks for a style-guide pass over one or more pages.
 metadata:
-  interactive: yes
+  interactive: no
 ---
 
 # Cultivate
 
 Use this skill to bring one or more entries into conformance with [docs/style-guide.md](../../../docs/style-guide.md): titles and headings, written style (sentence length, dashes, colons), bold-text usage, admonitions, and TODO conventions.
 
-Do NOT use this skill for structural maintenance — broken `xref:` targets, fake pseudo-links to existing pages, orphaned pages, or maturity labels are [tend](../tend/SKILL.md)'s job, not cultivate's. Cultivate is about *how something is written*, not *whether it's linked or discoverable*.
+## Interface
 
 **Input**: A page, a set of pages, or "the whole garden" (the user may scope it; default to recently-touched pages if no scope is given, since a full-garden pass can be large). The skill always re-reads [docs/style-guide.md](../../../docs/style-guide.md) first, since it's the source of truth and may have changed since the skill was last run.
+
+**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
 
 **Output**: A report of style-guide violations found, with unambiguous mechanical fixes (eg. hyphen → en dash, colon-then-prose → split sentence, wrong-case heading) applied directly. Judgment calls (eg. whether a paragraph should be split into a new page, whether a term should be bolded as a forage candidate) are flagged for the user.
 

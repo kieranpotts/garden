@@ -2,16 +2,18 @@
 name: split
 description: Split an overgrown garden entry that has drifted into covering two or more distinct concepts back into separate atomic pages, cross-linked together. Use when the user says "split this entry", "split X into separate pages", or notices a page covering more than one idea.
 metadata:
-  interactive: yes
+  interactive: no
 ---
 
 # Split
 
 Use this skill to take a single entry that has grown to cover more than one concept and split it into separate atomic pages — the opposite of [graft](../graft/SKILL.md), which merges two or more related-but-distinct entries into one.
 
-Do NOT use this skill on a page that's merely long but still about one concept — length alone isn't grounds for a split. Do NOT use this skill to expand a thin stub — that's [fertilize](../fertilize/SKILL.md). Split only acts when a page's scope has genuinely drifted to cover multiple ideas.
+## Interface
 
 **Input**: A target page named by the user (eg. "split event-driven-architecture.adoc — it's covering both event sourcing and CQRS"). REQUIRED. This skill confirms the proposed split (which sections become which new pages, and what stays on the original) with the user before making any changes.
+
+**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
 
 **Output**: The original page narrowed back to its core concept, one or more new `.adoc` pages for the concepts that were split out, all of them cross-linked to each other, and the new pages added to `index.adoc`.
 

@@ -2,16 +2,18 @@
 name: fertilize
 description: Expand a thin stub entry in the digital garden into a fuller page, without changing its scope. Use when the user says "fertilize X", "this entry needs more growth", "expand the stub on X", or asks to flesh out a short/underdeveloped garden page.
 metadata:
-  interactive: yes
+  interactive: no
 ---
 
 # Fertilize
 
 Use this skill to feed growth into an existing, undernourished garden entry — turning a thin stub into a fuller page, without changing what it's about.
 
-Do NOT use this skill to create a page that doesn't exist yet — use [sow](../sow/SKILL.md) for that. Do NOT use this skill to fix broken links or relabel maturity across the garden — use [tend](../tend/SKILL.md) for that.
+## Interface
 
 **Input**: OPTIONAL — a topic or file the user wants expanded (eg. "fertilize abstraction.adoc"). If no target is given, this skill scans the garden and recommends the weakest stub (shortest body, most `// TODO` markers, fewest outbound links), then confirms with the user before proceeding.
+
+**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
 
 **Output**: The target `.adoc` file rewritten with a fuller explanation and more cross-references, with its maturity label in `index.adoc` updated if the expansion now qualifies it for promotion (eg. 🌱 Seedling → 🌳 Evergreen).
 

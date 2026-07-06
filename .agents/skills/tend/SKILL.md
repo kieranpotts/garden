@@ -2,16 +2,18 @@
 name: tend
 description: Inspect the digital garden for withering content — broken cross-references, fake pseudo-links, orphaned pages missing from the index, and stale maturity labels — and report or fix what's found. Use when the user says "tend the garden", "check for broken links", or asks for general garden maintenance/health checks.
 metadata:
-  interactive: yes
+  interactive: no
 ---
 
 # Tend
 
 Use this skill to walk the garden and bring withering content back to health: broken cross-references, fake links that look like xrefs but aren't, pages that exist but aren't listed anywhere, and maturity labels that no longer reflect reality.
 
-Do NOT use this skill to write new content — use [sow](../sow/SKILL.md) for new topics or [fertilize](../fertilize/SKILL.md) to expand a thin stub. Tend only repairs and reports; it doesn't grow new material.
+## Interface
 
 **Input**: None required — tend scans the whole garden by default. OPTIONAL: the user may scope it to a single page or section (eg. "tend the AI topics"). This skill also confirms fixes with the user before applying any that are ambiguous (eg. which file a broken xref was meant to point to).
+
+**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
 
 **Output**: A report of findings (broken xrefs, fake links, orphaned pages, stale labels), followed by fixes applied directly to the affected `.adoc` files for anything unambiguous. Ambiguous cases are listed for the user to resolve manually.
 

@@ -2,16 +2,18 @@
 name: sow
 description: Research a new topic and plant it as a new entry in the digital garden, cross-referenced to relevant adjacent topics. Use when the user says "sow a new entry for X", "plant a page on X", or asks to add a new topic to the garden.
 metadata:
-  interactive: yes
+  interactive: no
 ---
 
 # Sow
 
 Use this skill to plant a brand-new entry in the digital garden: research the topic, write an atomic AsciiDoc page, and link it into the surrounding bed of related topics.
 
-Do NOT use this skill to expand an existing thin entry — use [fertilize](../fertilize/SKILL.md) for that. Do NOT use this skill to fix broken links or stale content on existing pages — use [tend](../tend/SKILL.md) for that.
+## Interface
 
 **Input**: A topic name or short description, supplied by the user (eg. "sow an entry for event sourcing"). REQUIRED. If the topic is ambiguous or could collide with an existing entry, this skill asks the user to confirm scope and exact title before writing.
+
+**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
 
 **Output**: A new `.adoc` file under `src/modules/ROOT/pages/`, self-contained and focused on a single idea, cross-referenced from and to relevant adjacent entries, and listed on `src/modules/ROOT/pages/index.adoc` under the correct alphabetical section (and "Hot topics" if applicable).
 

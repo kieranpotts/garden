@@ -11,7 +11,11 @@ Use this skill to gather a digest of what's happened in the garden recently — 
 
 Do NOT use this skill to make any changes to the garden — it only reports. Do NOT use it as a substitute for [tend](../tend/SKILL.md) — harvest summarizes *what changed*, not *what's currently broken*.
 
+## Interface
+
 **Input**: OPTIONAL — a time window or commit range (eg. "harvest the last 2 weeks", "harvest since v1.4"). Defaults to commits since the last harvest digest was produced, or the last 30 days if no prior digest exists.
+
+**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
 
 **Output**: A digest, grouped by activity type (sown / fertilized / tended / pruned / grafted / split / entwined / cultivated / tidied / weeded / uprooted / other), printed to the chat. If the user asks for it to be saved, write it to a dated entry, newest first, rather than overwriting prior digests.
 

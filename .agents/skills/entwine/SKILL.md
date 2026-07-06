@@ -1,17 +1,19 @@
 ---
 name: entwine
-description: Find existing garden pages that are related but not cross-referenced, and add the missing xref links between them. Use when the user says "entwine the garden", "find missing cross-references", or asks whether related entries are properly linked together.
+description: Find existing garden pages that are related but not cross-referenced, and add the missing xref links between them. Use when the user says "entwine related topics in the garden", "find missing cross-references", or asks whether related entries are properly linked together.
 metadata:
-  interactive: yes
+  interactive: no
 ---
 
 # Entwine
 
 Use this skill to grow connections between existing, separately-planted entries: pages that cover related concepts but don't yet `xref:` to each other.
 
-Do NOT use this skill to fix broken or fake links — those are mechanical repairs handled by [tend](../tend/SKILL.md). Do NOT use this skill to create new pages — if a gap calls for content that doesn't exist yet, hand it to [sow](../sow/SKILL.md) instead of writing it here. Entwine only links what already exists.
+## Interface
 
 **Input**: OPTIONAL — a page or topic to focus on (eg. "entwine event-sourcing.adoc with its neighbors"). If none given, this skill scans the whole garden for unlinked-but-related pairs and proposes a batch of candidates, confirming with the user before adding any links.
+
+**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
 
 **Output**: New `xref:` links added to existing pages, connecting concepts that are related but were previously isolated from each other. No new pages, no content rewrites beyond inserting a link (and, where natural, a short clause introducing it).
 

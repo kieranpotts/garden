@@ -2,16 +2,18 @@
 name: prune
 description: Find duplicate or near-duplicate entries in the digital garden and merge them into one, redirecting or removing the redundant page. Use when the user says "prune the garden", "check for duplicates", or asks whether two entries cover the same ground.
 metadata:
-  interactive: yes
+  interactive: no
 ---
 
 # Prune
 
 Use this skill to cut back redundant growth: entries that cover the same concept as another entry, usually created by accident (a typo'd filename, a synonym, forgetting an entry already exists).
 
-Do NOT use this skill for broken links, orphaned pages, or stale maturity labels — those are mechanical checks handled by [tend](../tend/SKILL.md). Prune is a semantic judgment call about whether two *different* pages are actually the *same* concept. Do NOT use this skill to split an overgrown entry that covers two concepts — that's the opposite operation, handled by [split](../split/SKILL.md). And do NOT use it to combine entries that cover *different but related* concepts into one broader page — those aren't duplicates, and merging them is [graft](../graft/SKILL.md)'s job. Prune only removes accidental duplication of the *same* concept.
+## Interface
 
 **Input**: OPTIONAL — a pair of suspected duplicate topics or files named by the user (eg. "are acid.adoc and acid-principles.adoc duplicates?"). If none given, this skill scans the garden for likely duplicate pairs (similar filenames, similar titles, overlapping first paragraphs) and presents candidates for confirmation before merging anything.
+
+**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
 
 **Output**: One surviving page per concept, retitled/expanded if the merge pulled in unique content from the removed page; the removed page deleted; every `xref:` and index entry that pointed at the removed page repointed to the survivor.
 

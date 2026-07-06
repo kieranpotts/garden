@@ -2,7 +2,7 @@
 name: graft
 description: Merge two or more related-but-distinct garden entries into a single broader page, cross-links repointed and the absorbed pages removed. Use when the user says "graft these entries", "merge X and Y into one page", or notices several thin pages that would read better as one concept.
 metadata:
-  interactive: yes
+  interactive: no
 ---
 
 # Graft
@@ -15,7 +15,11 @@ Do NOT use this skill on accidental duplicates of the *same* concept — merging
 
 Graft merges genuinely different content, while prune removes redundancy.
 
+## Interface
+
 **Input**: Two or more target pages named by the user (eg. "graft retry.adoc, backoff.adoc and jitter.adoc into one retry-strategies page"). REQUIRED. This skill confirms the merge plan — which page becomes the survivor (or whether a new page is created), what its title is, and how the absorbed content is arranged — with the user before making any changes.
+
+**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
 
 **Output**: One surviving page covering the combined concept, its sections carrying over the distinct content from each source page; the absorbed pages removed; every `xref:` and `index.adoc` entry that pointed at a removed page repointed to the survivor.
 

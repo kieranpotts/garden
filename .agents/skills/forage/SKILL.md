@@ -2,16 +2,18 @@
 name: forage
 description: Find topics that are referenced or implied across the garden but don't have their own page yet, and produce a prioritized list of candidates for sowing. Use when the user says "forage the garden", "what topics are missing?", or asks what new entries are worth creating.
 metadata:
-  interactive: yes
+  interactive: no
 ---
 
 # Forage
 
 Use this skill to search beyond what's already cultivated: topics that come up repeatedly in existing pages — as fake pseudo-links, as plain unbracketed mentions, or as concepts implied by what's already written — but have no page of their own.
 
-Do NOT use this skill to create new pages — it only produces a ranked list of candidates. Hand each confirmed candidate to [sow](../sow/SKILL.md) to actually write it. Do NOT use this skill to find missing links *between existing* pages — that's [entwine](../entwine/SKILL.md). Forage is about gaps where no destination page exists at all yet.
+## Interface
 
 **Input**: None required — forage scans the whole garden by default. OPTIONAL: the user may scope it to a section or topic (eg. "forage around the AI topics"). This skill presents its findings and asks the user which candidates to act on, rather than sowing anything itself.
+
+**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
 
 **Output**: A prioritized list of candidate topics with no existing page, each with a frequency count (how many pages mention it) and the files where it appears, ranked by mention frequency. No files are created or modified — this skill is read-only.
 
