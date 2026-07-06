@@ -7,24 +7,20 @@ metadata:
 
 # Prune
 
-Use this skill to cut back redundant growth: entries that cover the same concept as another entry, usually created by accident (a typo'd filename, a synonym, forgetting an entry already exists).
-
-## Interface
-
-**Input**: OPTIONAL — a pair of suspected duplicate topics or files named by the user (eg. "are acid.adoc and acid-principles.adoc duplicates?"). If none given, this skill scans the garden for likely duplicate pairs (similar filenames, similar titles, overlapping first paragraphs) and presents candidates for confirmation before merging anything.
-
-**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
+**Input**: OPTIONAL — a pair of suspected duplicate topics or files named by the user (eg. "are acid.adoc and acid-principles.adoc duplicates?"). If none given, scan the garden for likely duplicate pairs (similar filenames, similar titles, overlapping first paragraphs) and present candidates for confirmation before merging anything. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user to decide what to do with them.
 
 **Output**: One surviving page per concept, retitled/expanded if the merge pulled in unique content from the removed page; the removed page deleted; every `xref:` and index entry that pointed at the removed page repointed to the survivor.
 
-## Instructions
+##  Instructions
 
 1.  **Find duplicate candidates.**
 
     If the user named a pair, use it directly. Otherwise scan `src/modules/ROOT/pages/` for likely duplicates:
 
     - Filenames that are near-anagrams or one-letter-off (eg. `adapative-software-development.adoc` vs `adaptive-software-development.adoc` — a typo'd duplicate).
+
     - Titles (the `=` line) that are synonyms or near-identical phrasing (eg. `acid.adoc` vs `acid-principles.adoc`).
+
     - Opening paragraphs that describe the same concept in different words.
 
     Present each candidate pair to the user with a one-line reason, and confirm before merging — false positives here (two genuinely distinct concepts with similar names) are costly to get wrong.
@@ -49,22 +45,30 @@ Use this skill to cut back redundant growth: entries that cover the same concept
 
     State which page survived, what (if anything) was merged in from the removed page, and every file where a reference was repointed.
 
-## Rules
+##  Rules
 
--   **When in doubt, don't merge.** Two pages that look similar but address genuinely distinct concepts (eg. a general pattern vs. a specific implementation of it) should stay separate — link them with `xref:` instead. Prune removes accidental duplication, not legitimately related entries.
+-   **When in doubt, don't merge.**
 
--   **The correctly spelled, more complete, or more-linked page wins** as survivor by default — don't let creation date or alphabetical order decide it.
+    Two pages that look similar but address genuinely distinct concepts (eg. a general pattern vs. a specific implementation of it) should stay separate — link them with `xref:` instead. Prune removes accidental duplication, not legitimately related entries.
 
--   **Never delete a file before every reference to it has been repointed.** A dangling `xref:` after a prune is worse than the duplicate it replaced.
+-   **The correctly spelled, more complete, or more-linked page wins** as survivor by default.
 
--   **Committing is out of scope.** This skill edits and deletes files in the working tree only. Staging, committing, and pushing are the user's call — never run `git commit` or `git push` as part of pruning.
+    Don't let creation date or alphabetical order decide it.
 
-## Success criteria
+-   **Never delete a file before every reference to it has been repointed.**
 
-- **No `xref:` anywhere in the garden still points to a deleted file.**
+    A dangling `xref:` after a prune is worse than the duplicate it replaced.
 
-- **`index.adoc` lists exactly one entry per surviving concept**, not the removed duplicate.
+-   **Do NOT commit your changes.**
 
-- **Any unique content from the removed page is either present in the survivor or was confirmed by the user as not worth keeping.**
+    Make your edits in the working tree only. Staging, committing, and pushing are the user's call.
 
-- **The user confirmed every merge before deletion** — no page was removed automatically without explicit sign-off.
+##  Success criteria
+
+-   **No `xref:` anywhere in the garden still points to a deleted file.**
+
+-   **`index.adoc` lists exactly one entry per surviving concept**, not the removed duplicate.
+
+-   **Any unique content from the removed page is either present in the survivor or was confirmed by the user as not worth keeping.**
+
+-   **The user confirmed every merge before deletion** — no page was removed automatically without explicit sign-off.

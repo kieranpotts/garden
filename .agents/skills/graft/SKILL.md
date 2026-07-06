@@ -7,23 +7,11 @@ metadata:
 
 # Graft
 
-Use this skill to join two or more separate entries that cover *related but distinct* concepts into one broader page — the opposite of [split](../split/SKILL.md), which breaks an overgrown entry into separate atomic pages.
-
-Graft is a deliberate consolidation. The merged pages aren't duplicates, they're neighbors that have turned out to belong under one heading — eg. three thin pages on `retry`, `backoff`, and `jitter` that read better as one entry on retry strategies.
-
-Do NOT use this skill on accidental duplicates of the *same* concept — merging those is [prune](../prune/SKILL.md), which keeps one page and discards the redundant one.
-
-Graft merges genuinely different content, while prune removes redundancy.
-
-## Interface
-
-**Input**: Two or more target pages named by the user (eg. "graft retry.adoc, backoff.adoc and jitter.adoc into one retry-strategies page"). REQUIRED. This skill confirms the merge plan — which page becomes the survivor (or whether a new page is created), what its title is, and how the absorbed content is arranged — with the user before making any changes.
-
-**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
+**Input**: REQUIRED — two or more target pages named by the user (eg. "graft retry.adoc, backoff.adoc and jitter.adoc into one retry-strategies page"). Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user to decide what to do with them.
 
 **Output**: One surviving page covering the combined concept, its sections carrying over the distinct content from each source page; the absorbed pages removed; every `xref:` and `index.adoc` entry that pointed at a removed page repointed to the survivor.
 
-## Instructions
+##  Instructions
 
 1.  **Read all the target pages in full.**
 
@@ -53,26 +41,36 @@ Graft merges genuinely different content, while prune removes redundancy.
 
     State which page survived (or was created), what content came from each source, every reference repointed, and every page deleted.
 
-## Rules
+##  Rules
 
-- **Confirm the merge before editing.** A graft changes the meaning and boundaries of existing content and deletes pages — get the user's agreement on the survivor, title, and structure before moving any text.
+-   **Confirm the merge before editing.**
 
-- **Graft is not prune.** If the pages are accidental duplicates of one concept, this is the wrong skill — [prune](../prune/SKILL.md) keeps one and discards the redundant rest. Graft only merges pages that each contribute distinct content to the combined concept.
+    A graft changes the meaning and boundaries of existing content and deletes pages — get the user's agreement on the survivor, title, and structure before moving any text.
 
-- **Don't discard distinct content.** Every source page contributes something the others don't — that's why it's a graft and not a prune. Confirm with the user before dropping any section, don't lose it silently in the merge.
+-   **Graft is not prune.**
 
-- **Never delete a page before every reference to it has been repointed.** A dangling `xref:` after a graft is worse than the fragmentation it replaced.
+    If the pages are accidental duplicates of one concept, this is the wrong skill — [prune](../prune/SKILL.md) keeps one and discards the redundant rest. Graft only merges pages that each contribute distinct content to the combined concept.
 
-- **Committing is out of scope.** This skill edits and deletes files in the working tree only. Staging, committing, and pushing are the user's call — never run `git commit` or `git push` as part of grafting.
+-   **Don't discard distinct content.**
 
-## Success criteria
+    Every source page contributes something the others don't — that's why it's a graft and not a prune. Confirm with the user before dropping any section, don't lose it silently in the merge.
 
-- **One surviving page covers the combined concept**, reading as a single coherent entry rather than stitched fragments.
+-   **Never delete a page before every reference to it has been repointed.**
 
-- **No `xref:` anywhere in the garden still points to a removed source page.**
+    A dangling `xref:` after a graft is worse than the fragmentation it replaced.
 
-- **`index.adoc` lists the survivor once** under its final title, with the absorbed pages' entries removed.
+-   **Do NOT commit your changes.**
 
-- **Distinct content from every source is present in the survivor**, or was confirmed by the user as not worth keeping.
+    Make your edits in the working tree only. Staging, committing, and pushing are the user's call.
 
-- **The user confirmed the merge plan before any content was moved or any page deleted.**
+##  Success criteria
+
+-   **One surviving page covers the combined concept**, reading as a single coherent entry rather than stitched fragments.
+
+-   **No `xref:` anywhere in the garden still points to a removed source page.**
+
+-   **`index.adoc` lists the survivor once** under its final title, with the absorbed pages' entries removed.
+
+-   **Distinct content from every source is present in the survivor**, or was confirmed by the user as not worth keeping.
+
+-   **The user confirmed the merge plan before any content was moved or any page deleted.**

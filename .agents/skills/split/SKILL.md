@@ -7,17 +7,11 @@ metadata:
 
 # Split
 
-Use this skill to take a single entry that has grown to cover more than one concept and split it into separate atomic pages — the opposite of [graft](../graft/SKILL.md), which merges two or more related-but-distinct entries into one.
-
-## Interface
-
-**Input**: A target page named by the user (eg. "split event-driven-architecture.adoc — it's covering both event sourcing and CQRS"). REQUIRED. This skill confirms the proposed split (which sections become which new pages, and what stays on the original) with the user before making any changes.
-
-**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
+**Input**: REQUIRED — a target page named by the user (eg. "split event-driven-architecture.adoc — it's covering both event sourcing and CQRS"). Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user to decide what to do with them.
 
 **Output**: The original page narrowed back to its core concept, one or more new `.adoc` pages for the concepts that were split out, all of them cross-linked to each other, and the new pages added to `index.adoc`.
 
-## Instructions
+##  Instructions
 
 1.  **Read the target page in full.**
 
@@ -51,24 +45,32 @@ Use this skill to take a single entry that has grown to cover more than one conc
 
     List the new files created, what moved from the original into each, and every cross-link added.
 
-## Rules
+##  Rules
 
--   **Confirm the split before editing.** Unlike tend's mechanical fixes, a split changes the meaning and boundaries of existing content — get the user's agreement on the proposed split before moving any text.
+-   **Confirm the split before editing.**
 
--   **Check for an existing page first.** A split-out concept might already have its own entry elsewhere in the garden; don't create a duplicate that [prune](../prune/SKILL.md) will later have to clean up.
+    Unlike tend's mechanical fixes, a split changes the meaning and boundaries of existing content — get the user's agreement on the proposed split before moving any text.
 
--   **Rewrite for standalone reading.** Content lifted out of the original page often refers back to it implicitly ("as mentioned above"). Rewrite those references as explicit `xref:` links or remove them — the new page must be self-contained.
+-   **Check for an existing page first.**
 
--   **Committing is out of scope.** This skill edits files in the working tree only. Staging, committing, and pushing are the user's call — never run `git commit` or `git push` as part of splitting.
+    A split-out concept might already have its own entry elsewhere in the garden; don't create a duplicate that [prune](../prune/SKILL.md) will later have to clean up.
 
-## Success criteria
+-   **Rewrite for standalone reading.**
 
-- **The original page covers exactly one concept** after the split.
+    Content lifted out of the original page often refers back to it implicitly ("as mentioned above"). Rewrite those references as explicit `xref:` links or remove them — the new page must be self-contained.
 
-- **Each new page is self-contained** — readable without having read the original first.
+-   **Do NOT commit your changes.**
 
-- **All new pages are listed in `index.adoc`.**
+    Make your edits in the working tree only. Staging, committing, and pushing are the user's call.
 
-- **No new page duplicates an existing entry** — checked against the garden before creation.
+##  Success criteria
 
-- **The user confirmed the split plan before any content was moved.**
+-   **The original page covers exactly one concept** after the split.
+
+-   **Each new page is self-contained** — readable without having read the original first.
+
+-   **All new pages are listed in `index.adoc`.**
+
+-   **No new page duplicates an existing entry** — checked against the garden before creation.
+
+-   **The user confirmed the split plan before any content was moved.**

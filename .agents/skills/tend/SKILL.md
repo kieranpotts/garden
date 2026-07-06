@@ -7,17 +7,11 @@ metadata:
 
 # Tend
 
-Use this skill to walk the garden and bring withering content back to health: broken cross-references, fake links that look like xrefs but aren't, pages that exist but aren't listed anywhere, and maturity labels that no longer reflect reality.
-
-## Interface
-
-**Input**: None required — tend scans the whole garden by default. OPTIONAL: the user may scope it to a single page or section (eg. "tend the AI topics"). This skill also confirms fixes with the user before applying any that are ambiguous (eg. which file a broken xref was meant to point to).
-
-**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
+**Input**: OPTIONAL — the user may scope it to a single page or section (eg. "tend the AI topics"); otherwise scan the whole garden. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user to decide what to do with them.
 
 **Output**: A report of findings (broken xrefs, fake links, orphaned pages, stale labels), followed by fixes applied directly to the affected `.adoc` files for anything unambiguous. Ambiguous cases are listed for the user to resolve manually.
 
-## Instructions
+##  Instructions
 
 1.  **Inventory the garden.**
 
@@ -32,6 +26,7 @@ Use this skill to walk the garden and bring withering content back to health: br
     Some pages contain bracketed bold text that looks like a cross-reference but isn't real AsciiDoc xref syntax — eg. `*[modular design]*` instead of `xref:modular-design.adoc[Modular design]`. Search for this pattern (`*[...]*` or `[...]` not preceded by `xref:` or a URL scheme). For each match, check whether a real page exists for that topic:
 
     - If a matching page exists, convert it to a proper `xref:`.
+
     - If no matching page exists, flag it to the user as a candidate for [sow](../sow/SKILL.md) — don't silently create new pages from inside tend.
 
 4.  **Find orphaned pages.**
@@ -43,6 +38,7 @@ Use this skill to walk the garden and bring withering content back to health: br
     Maturity emoji (🌱 Seedling, 🌿 Budding, 🌳 Evergreen, 🍂 Decaying) are a judgment call, not something to bulk-rewrite automatically. Flag candidates rather than changing labels outright:
 
     - A 🌱 Seedling page that is substantial, well-linked, and has no `// TODO` markers — candidate for promotion to 🌳 Evergreen.
+
     - A page with a `// TODO` comment, or noticeably thinner than its peers, still marked 🌳 Evergreen or 🌿 Budding — candidate for demotion to 🌱 Seedling, or a 🍂 Decaying flag if it looks abandoned.
 
     Present these as suggestions; only change the label in `index.adoc` if the user confirms.
@@ -55,24 +51,32 @@ Use this skill to walk the garden and bring withering content back to health: br
 
     List what was found, what was fixed automatically, and what needs the user's decision, grouped by category (broken xrefs / fake links / orphans / stale labels).
 
-## Rules
+##  Rules
 
--   **Don't invent destinations for dead links.** If a broken `xref:` has no obvious correct target, report it — don't guess and silently repoint it to the wrong page.
+-   **Don't invent destinations for dead links.**
 
--   **Maturity labels are an editorial judgment, not a mechanical one.** Surface evidence (TODO markers, length, link density) but let the user make the final call.
+    If a broken `xref:` has no obvious correct target, report it — don't guess and silently repoint it to the wrong page.
 
--   **Tend doesn't grow content.** If a fix would mean writing new prose (eg. an orphan needs a one-line description in the index, or a fake link needs a target page that doesn't exist yet), do the minimum mechanical fix and hand the rest to [sow](../sow/SKILL.md) or [fertilize](../fertilize/SKILL.md).
+-   **Maturity labels are an editorial judgment, not a mechanical one.**
 
--   **Committing is out of scope.** This skill edits files in the working tree only. Staging, committing, and pushing are the user's call — never run `git commit` or `git push` as part of tending.
+    Surface evidence (TODO markers, length, link density) but let the user make the final call.
 
-## Success criteria
+-   **Tend doesn't grow content.**
 
-- **Every `xref:` target in the garden has been checked** against the actual file inventory, with all mismatches reported.
+    If a fix would mean writing new prose (eg. an orphan needs a one-line description in the index, or a fake link needs a target page that doesn't exist yet), do the minimum mechanical fix and hand the rest to [sow](../sow/SKILL.md) or [fertilize](../fertilize/SKILL.md).
 
-- **Every bracketed pseudo-link has been checked** for a matching real page, and converted to `xref:` where one exists.
+-   **Do NOT commit your changes.**
 
-- **Every page under `pages/` has been checked against `index.adoc`** for orphan status.
+    Make your edits in the working tree only. Staging, committing, and pushing are the user's call.
 
-- **No maturity label was changed without explicit user confirmation.**
+##  Success criteria
 
-- **The final report distinguishes fixes already applied from items still needing the user's decision.**
+-   **Every `xref:` target in the garden has been checked** against the actual file inventory, with all mismatches reported.
+
+-   **Every bracketed pseudo-link has been checked** for a matching real page, and converted to `xref:` where one exists.
+
+-   **Every page under `pages/` has been checked against `index.adoc`** for orphan status.
+
+-   **No maturity label was changed without explicit user confirmation.**
+
+-   **The final report distinguishes fixes already applied from items still needing the user's decision.**

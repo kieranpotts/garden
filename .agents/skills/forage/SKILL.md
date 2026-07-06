@@ -7,17 +7,11 @@ metadata:
 
 # Forage
 
-Use this skill to search beyond what's already cultivated: topics that come up repeatedly in existing pages — as fake pseudo-links, as plain unbracketed mentions, or as concepts implied by what's already written — but have no page of their own.
-
-## Interface
-
-**Input**: None required — forage scans the whole garden by default. OPTIONAL: the user may scope it to a section or topic (eg. "forage around the AI topics"). This skill presents its findings and asks the user which candidates to act on, rather than sowing anything itself.
-
-**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
+**Input**: OPTIONAL — the user may scope it to a section or topic (eg. "forage around the AI topics"); otherwise scan the whole garden. Do not block to ask the user questions. This skill is read-only: it presents its findings for the user to decide what to act on, rather than sowing anything itself.
 
 **Output**: A prioritized list of candidate topics with no existing page, each with a frequency count (how many pages mention it) and the files where it appears, ranked by mention frequency. No files are created or modified — this skill is read-only.
 
-## Instructions
+##  Instructions
 
 1.  **Collect fake pseudo-link mentions.**
 
@@ -39,20 +33,26 @@ Use this skill to search beyond what's already cultivated: topics that come up r
 
     Show the ranked candidates with their mention counts and source pages. Ask the user which ones (if any) to send to [sow](../sow/SKILL.md). Don't sow anything automatically — this skill only forages, it doesn't plant.
 
-## Rules
+##  Rules
 
--   **Frequency is a signal, not a verdict.** A topic mentioned many times might still be too narrow, too broad, or already covered under a different name — use judgment, and flag ambiguous cases rather than ranking them as if frequency settles it.
+-   **Frequency is a signal, not a verdict.**
 
--   **Don't duplicate tend's job.** If a `*[text]*` pseudo-link actually does have a matching real page, that's a mechanical fix for [tend](../tend/SKILL.md), not a foraging find. Forage is specifically about the gaps where nothing exists yet.
+    A topic mentioned many times might still be too narrow, too broad, or already covered under a different name — use judgment, and flag ambiguous cases rather than ranking them as if frequency settles it.
 
--   **This skill never writes to the garden.** It's pure discovery — no file is created, edited, or deleted. Even confirmed candidates are only ever handed to [sow](../sow/SKILL.md) as a follow-up, not actioned inline.
+-   **Don't duplicate tend's job.**
 
-## Success criteria
+    If a `*[text]*` pseudo-link actually does have a matching real page, that's a mechanical fix for [tend](../tend/SKILL.md), not a foraging find. Forage is specifically about the gaps where nothing exists yet.
 
-- **Every candidate listed has no existing matching page** — checked against the actual file inventory in `src/modules/ROOT/pages/`, not assumed.
+-   **This skill never writes to the garden.**
 
-- **Each candidate's mention count and source pages are accurate** and verifiable by re-running the same grep.
+    It's pure discovery — no file is created, edited, or deleted. Even confirmed candidates are only ever handed to [sow](../sow/SKILL.md) as a follow-up, not actioned inline.
 
-- **The list is ranked by frequency**, not presented as an unordered dump.
+##  Success criteria
 
-- **No file in the garden was created, edited, or deleted** by running this skill.
+-   **Every candidate listed has no existing matching page** — checked against the actual file inventory in `src/modules/ROOT/pages/`, not assumed.
+
+-   **Each candidate's mention count and source pages are accurate** and verifiable by re-running the same grep.
+
+-   **The list is ranked by frequency**, not presented as an unordered dump.
+
+-   **No file in the garden was created, edited, or deleted** by running this skill.

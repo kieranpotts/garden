@@ -13,5 +13,3 @@ The agent inventories every page, checks all `xref:` targets resolve, finds brac
 > Check for broken links.
 
 > Tend the AI topics.
-
-Optionally scope it to a section or topic. Otherwise it scans everything.

@@ -7,17 +7,11 @@ metadata:
 
 # Fertilize
 
-Use this skill to feed growth into an existing, undernourished garden entry — turning a thin stub into a fuller page, without changing what it's about.
-
-## Interface
-
-**Input**: OPTIONAL — a topic or file the user wants expanded (eg. "fertilize abstraction.adoc"). If no target is given, this skill scans the garden and recommends the weakest stub (shortest body, most `// TODO` markers, fewest outbound links), then confirms with the user before proceeding.
-
-**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
+**Input**: OPTIONAL — a topic or file the user wants expanded (eg. "fertilize abstraction.adoc"). If no target is given, scan the garden and recommend the weakest stub (shortest body, most `// TODO` markers, fewest outbound links). Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user to decide what to do with them.
 
 **Output**: The target `.adoc` file rewritten with a fuller explanation and more cross-references, with its maturity label in `index.adoc` updated if the expansion now qualifies it for promotion (eg. 🌱 Seedling → 🌳 Evergreen).
 
-## Instructions
+##  Instructions
 
 1.  **Pick the target.**
 
@@ -51,22 +45,30 @@ Use this skill to feed growth into an existing, undernourished garden entry — 
 
     Summarize what was added, which `// TODO` markers were resolved, new links made, and whether the maturity label changed.
 
-## Rules
+##  Rules
 
--   **Don't change scope.** If research reveals the topic should really be split into two entries, stop and suggest [sow](../sow/SKILL.md) for the new one rather than smuggling a second concept into this page.
+-   **Don't change scope.**
 
--   **Resolve, don't ignore, `// TODO` markers.** They're the clearest signal of what the page's original author knew was missing. If a `// TODO` can't be resolved with confidence, leave it in place rather than deleting it unanswered.
+    If research reveals the topic should really be split into two entries, stop and suggest [sow](../sow/SKILL.md) for the new one rather than smuggling a second concept into this page.
 
--   **Maturity promotion needs confirmation.** Never bump a maturity emoji in `index.adoc` without the user agreeing the expanded page has earned it.
+-   **Resolve, don't ignore, `// TODO` markers.**
 
--   **Committing is out of scope.** This skill edits files in the working tree only. Staging, committing, and pushing are the user's call — never run `git commit` or `git push` as part of fertilizing.
+    They're the clearest signal of what the page's original author knew was missing. If a `// TODO` can't be resolved with confidence, leave it in place rather than deleting it unanswered.
 
-## Success criteria
+-   **Maturity promotion needs confirmation.**
 
-- **The target file's scope is unchanged** — same topic, same title, same filename, just fuller.
+    Never bump a maturity emoji in `index.adoc` without the user agreeing the expanded page has earned it.
 
-- **All `// TODO` markers in the target file are either resolved and removed, or deliberately left with reasoning given to the user.**
+-   **Do NOT commit your changes.**
 
-- **At least one new cross-reference was considered**, even if research turns up none worth adding.
+    Make your edits in the working tree only. Staging, committing, and pushing are the user's call.
 
-- **No maturity label changed without explicit user confirmation.**
+##  Success criteria
+
+-   **The target file's scope is unchanged** — same topic, same title, same filename, just fuller.
+
+-   **All `// TODO` markers in the target file are either resolved and removed, or deliberately left with reasoning given to the user.**
+
+-   **At least one new cross-reference was considered**, even if research turns up none worth adding.
+
+-   **No maturity label changed without explicit user confirmation.**

@@ -7,17 +7,11 @@ metadata:
 
 # Sow
 
-Use this skill to plant a brand-new entry in the digital garden: research the topic, write an atomic AsciiDoc page, and link it into the surrounding bed of related topics.
-
-## Interface
-
-**Input**: A topic name or short description, supplied by the user (eg. "sow an entry for event sourcing"). REQUIRED. If the topic is ambiguous or could collide with an existing entry, this skill asks the user to confirm scope and exact title before writing.
-
-**Interactive**: No. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user or orchestrator to decide what to do next.
+**Input**: REQUIRED — a topic name or short description, supplied by the user (eg. "sow an entry for event sourcing"). If the topic is ambiguous or could collide with an existing entry, confirm scope and exact title before writing. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user to decide what to do with them.
 
 **Output**: A new `.adoc` file under `src/modules/ROOT/pages/`, self-contained and focused on a single idea, cross-referenced from and to relevant adjacent entries, and listed on `src/modules/ROOT/pages/index.adoc` under the correct alphabetical section (and "Hot topics" if applicable).
 
-## Instructions
+##  Instructions
 
 1.  **Check for an existing entry first.**
 
@@ -36,7 +30,9 @@ Use this skill to plant a brand-new entry in the digital garden: research the to
     Create `src/modules/ROOT/pages/<topic-kebab-case>.adoc`, named after the topic in kebab-case (eg. `event-sourcing.adoc`). Follow the structure of existing entries:
 
     - A single `=` title line matching the topic name.
+
     - A short, focused explanation — self-contained, but linking out via `xref:` rather than re-explaining concepts that already have their own page.
+
     - A "See also" line or section if there are related topics that don't fit naturally inline.
 
     Keep it atomic: one idea or concept per file. If the research surfaces a second distinct concept, that's a separate entry, not a section of this one.
@@ -53,22 +49,30 @@ Use this skill to plant a brand-new entry in the digital garden: research the to
 
     Tell the user the file path created, the entries it links to/from, and where it landed in the index.
 
-## Rules
+##  Rules
 
--   **Prefer linking over duplicating.** If a concept is already explained on another page, link to it with `xref:` instead of re-explaining it. The value of the garden comes from connections between atomic notes, not self-contained essays.
+-   **Prefer linking over duplicating.**
 
--   **One file, one concept.** If a topic naturally splits into two or more distinct ideas, sow separate entries and cross-link them, rather than producing one long page.
+    If a concept is already explained on another page, link to it with `xref:` instead of re-explaining it. The value of the garden comes from connections between atomic notes, not self-contained essays.
 
--   **New entries start as 🌱 Seedling.** Don't mark a freshly sown entry 🌳 Evergreen — maturity is earned through later tending and fertilizing, not assigned at creation.
+-   **One file, one concept.**
 
--   **Committing is out of scope.** This skill edits files in the working tree only. Staging, committing, and pushing are the user's call — never run `git commit` or `git push` as part of sowing.
+    If a topic naturally splits into two or more distinct ideas, sow separate entries and cross-link them, rather than producing one long page.
 
-## Success criteria
+-   **New entries start as 🌱 Seedling.**
 
-- **The new file exists** at `src/modules/ROOT/pages/<topic>.adoc`, with a single `=` title and a non-empty body.
+    Don't mark a freshly sown entry 🌳 Evergreen — maturity is earned through later tending and fertilizing, not assigned at creation.
 
-- **It is listed in `index.adoc`** under the correct alphabetical section, with the 🌱 emoji.
+-   **Do NOT commit your changes.**
 
-- **All `xref:` targets resolve** — every `xref:foo.adoc[...]` added (in the new page or in pages linking back to it) corresponds to a real file in `src/modules/ROOT/pages/`.
+    Make your edits in the working tree only. Staging, committing, and pushing are the user's call.
 
-- **At least one adjacent topic is linked,** unless research genuinely turns up no related entries in the garden yet.
+##  Success criteria
+
+-   **The new file exists** at `src/modules/ROOT/pages/<topic>.adoc`, with a single `=` title and a non-empty body.
+
+-   **It is listed in `index.adoc`** under the correct alphabetical section, with the 🌱 emoji.
+
+-   **All `xref:` targets resolve** — every `xref:foo.adoc[...]` added (in the new page or in pages linking back to it) corresponds to a real file in `src/modules/ROOT/pages/`.
+
+-   **At least one adjacent topic is linked**, unless research genuinely turns up no related entries in the garden yet.
