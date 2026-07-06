@@ -2,6 +2,8 @@
 
 Loop engineering is the practice of designing self-running systems in which an *xref:ai-agent.adoc[AI agent]* operates repeatedly, with minimal human involvement, on a recurring cadence rather than a single request-response turn. The term and framework come from Peter Steinberger, Boris Cherny, and Addy Osmani's paper _https://hyper.ai/en/papers/Loop-Engineering-IEEE[Loop Engineering: The Anthropic Playbook for Designing Systems That Prompt Your Agents]_.
 
+Don't confuse this with the *xref:agent-loop.adoc[agent loop]* — the observe/decide/act cycle within a single agent run. Loop engineering operates one level up, designing the system that decides when and how often that inner loop fires at all, often unattended across many separate runs.
+
 Where *prompt engineering* shapes a single instruction, *xref:context-engineering.adoc[context engineering]* curates what a model sees on one turn, and *xref:ai-agent-harness-engineering.adoc[harness engineering]* builds the machine that lets one agent act, loop engineering sits a level above all three. It designs the system that decides _when_ and _how often_ an agent runs at all, often with agents prompting other agents rather than a human supplying each turn.
 
 The explicit objective at this layer is to remove the human from the loop entirely. The preceding layers — prompt, context, and harness engineering — all still assume a human triggers each run and reviews its output. Loop engineering instead designs for the human to step back into a supervisory role: setting up discovery, verification, and scheduling once, then letting the system run unattended across many iterations.
@@ -57,6 +59,7 @@ Two identical loop architectures can produce very different outcomes depending e
 == See also
 
 * *xref:ai-agent.adoc[AI agent]*
+* *xref:agent-loop.adoc[Agent loop]*
 * *xref:ai-agent-harness-engineering.adoc[Harness engineering]*
 * *xref:ai-agent-orchestration.adoc[AI agent orchestration]*
 * *xref:context-engineering.adoc[Context engineering]*
