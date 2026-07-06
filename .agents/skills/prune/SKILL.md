@@ -1,41 +1,57 @@
 ---
 name: prune
-description: Check whether a single garden entry duplicates an existing page, and if so merge them into one, repointing references and removing the redundant page. Use when the user says "is acid.adoc a duplicate of anything?", "prune this entry", or suspects a page repeats one that already exists.
+description: Drop a garden entry whose topic is already well-covered by another page — deleting it and redirecting its inbound links to the covering page. Use when the user says "prune acid.adoc", "this entry is already covered by X, drop it", or suspects a page is redundant.
 metadata:
   interactive: no
 ---
 
 # Prune
 
-**Input**: A single target entry in the garden, to check for duplication against the rest of the garden (eg. "is acid.adoc a duplicate of anything?"). Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user to decide what to do with them.
+**Input**: A single target entry suspected of being redundant — its topic
+already covered by another page. The user may also name the covering page (eg.
+"acid.adoc is covered by acid-principles.adoc, drop it"). Do not block to ask
+the user questions. Make your proposed edits and leave them in the Git working
+tree for the user to decide what to do with them.
 
-**Output**: If the target duplicates an existing page, one surviving page per concept — retitled/expanded if the merge pulled in unique content from the removed page — the removed page deleted, and every `xref:` and index entry that pointed at the removed page repointed to the survivor. If no duplicate is found, a report saying so, with nothing changed.
+**Output**: The redundant target page deleted, with every `xref:` and
+`index.adoc` entry that pointed at it repointed to the covering page. If the
+target turns out to carry content the covering page lacks, nothing is deleted —
+it is reported as a graft or keep-and-link candidate instead.
 
 ##  Instructions
 
-1.  **Look for a duplicate of the target.**
+1.  **Identify the covering page.**
 
-    Scan `src/modules/ROOT/pages/` for a page covering the same concept as the target:
+    Confirm the target's topic is already well-covered by another existing page.
+    If the user named that page, use it. Otherwise search
+    `src/modules/ROOT/pages/` for the page that covers the same concept (similar
+    title or filename, overlapping content). If no page covers it, stop — this
+    isn't a prune; the topic is unique and should be kept.
 
-    - A filename that is a near-anagram or one-letter-off (eg. `adapative-software-development.adoc` vs `adaptive-software-development.adoc` — a typo'd duplicate).
+2.  **Confirm the target is genuinely redundant.**
 
-    - A title (the `=` line) that is a synonym or near-identical phrasing (eg. `acid.adoc` vs `acid-principles.adoc`).
+    Read both pages in full. The target is a prune candidate only if the
+    covering page already says everything the target does. If the target carries
+    substantial unique content — examples, nuance, a distinct angle — then it
+    isn't really covered: stop and hand off to [graft](../graft/SKILL.md) (to
+    combine the distinct content) or leave both and suggest
+    [entwine](../entwine/SKILL.md) (to link them). Present the candidate to the
+    user with a one-line reason and confirm before deleting anything — a wrong
+    drop loses content.
 
-    - An opening paragraph that describes the same concept in different words.
+3.  **Salvage any stray detail (optional).**
 
-    Present the candidate pair to the user with a one-line reason, and confirm before merging — false positives here (two genuinely distinct concepts with similar names) are costly to get wrong. If nothing matches, report that the target has no duplicate and stop.
-
-2.  **Read both pages in full.**
-
-    Identify the better-written, more complete, or correctly-named page as the survivor. Prefer the page with the correctly spelled filename, more content, more inbound links, and no unresolved `// TODO` markers, in that order of priority. The survivor may be the target or the page it duplicates.
-
-3.  **Merge unique content into the survivor.**
-
-    If the page being removed has any detail, example, or nuance the survivor lacks, fold it into the survivor before deleting anything. Don't silently discard content — a duplicate page often still has one sentence worth keeping.
+    If the target has only a small scrap the covering page lacks (a single
+    sentence, one example), offer to fold it into the covering page before
+    deletion. Anything larger than a scrap means the topic wasn't really covered
+    — reclassify as a graft.
 
 4.  **Repoint every reference.**
 
-    Grep the whole garden for `xref:<removed-file>.adoc` and replace each with `xref:<survivor-file>.adoc`, keeping the link text sensible in context. Check `index.adoc` too — remove the entry for the deleted page if present, and ensure the survivor's entry is still correctly listed.
+    Grep the whole garden for `xref:<target-file>.adoc` and replace each with
+    `xref:<covering-file>.adoc`, keeping the link text sensible in context.
+    Check `index.adoc` too — remove the target's entry and ensure the covering
+    page's entry stays correct.
 
 5.  **Delete the redundant page.**
 
@@ -43,36 +59,56 @@ metadata:
 
 6.  **Report back.**
 
-    State which page survived, what (if anything) was merged in from the removed page, and every file where a reference was repointed.
+    State which page was dropped, which page now covers it, any scrap salvaged,
+    and every file where a reference was repointed.
 
 ##  Rules
 
 -   **One entry at a time.**
 
-    Prune checks a single target entry for duplication. It is not a whole-garden duplicate sweep; run it once per entry of interest.
+    Prune drops a single redundant target. It is not a whole-garden duplicate
+    sweep; run it once per entry of interest.
 
--   **When in doubt, don't merge.**
+-   **Drop, don't merge.**
 
-    Two pages that look similar but address genuinely distinct concepts (eg. a general pattern vs. a specific implementation of it) should stay separate — link them with `xref:` instead. Prune removes accidental duplication, not legitimately related entries.
+    Prune removes a page whose topic another page already covers. If the two
+    pages each carry distinct content that should be combined, that's
+    [graft](../graft/SKILL.md), not prune — hand it off rather than merging
+    here.
 
--   **The correctly spelled, more complete, or more-linked page wins** as survivor by default.
+-   **The covering page survives, the redundant one goes.**
 
-    Don't let creation date or alphabetical order decide it.
+    Prune keeps the page that already covers the topic and deletes the one that
+    adds nothing. If the named target turns out to be the fuller page, don't
+    prune it — flag that the *other* page is the redundant one and confirm the
+    direction with the user.
+
+-   **When in doubt, don't drop.**
+
+    If you're unsure the target is genuinely redundant, keep it and link the two
+    with `xref:` ([entwine](../entwine/SKILL.md)) instead. Deleting a page that
+    wasn't really covered loses content; a redundant page left in place is
+    harmless by comparison.
 
 -   **Never delete a file before every reference to it has been repointed.**
 
-    A dangling `xref:` after a prune is worse than the duplicate it replaced.
+    A dangling `xref:` after a prune is worse than the redundant page it
+    replaced.
 
 -   **Do NOT commit your changes.**
 
-    Make your edits in the working tree only. Staging, committing, and pushing are the user's call.
+    Make your edits in the working tree only. Staging, committing, and pushing
+    are the user's call.
 
 ##  Success criteria
 
--   **No `xref:` anywhere in the garden still points to a deleted file.**
+-   **The dropped page's topic is genuinely covered by the surviving page** —
+    nothing unique was lost without the user's sign-off.
 
--   **`index.adoc` lists exactly one entry per surviving concept**, not the removed duplicate.
+-   **No `xref:` anywhere in the garden still points to the deleted file.**
 
--   **Any unique content from the removed page is either present in the survivor or was confirmed by the user as not worth keeping.**
+-   **`index.adoc` no longer lists the dropped page**, and the covering page's
+    entry is intact.
 
--   **The user confirmed the merge before deletion** — no page was removed automatically without explicit sign-off.
+-   **The user confirmed the drop before deletion** — no page was removed
+    automatically.

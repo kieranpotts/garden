@@ -1,15 +1,20 @@
 # Prune
 
-Checks whether a single garden entry duplicates an existing page, and if so merges them into one surviving page.
+Drops an entry whose topic is already well-covered by another page, deleting it
+and redirecting its links to the covering page.
 
 ## What it does
 
-Given one target entry, the agent scans for a page covering the same concept (typo'd filename, synonymous title, overlapping content), confirms the candidate with you, merges any unique content into the better page, repoints every reference, and deletes the redundant one. If nothing matches, it reports that the entry has no duplicate.
+Given one target entry, the agent finds the page that already covers its topic,
+confirms the target is genuinely redundant (nothing unique would be lost),
+repoints every reference to the covering page, and deletes the target. If the
+target actually carries distinct content, it's not a prune — the agent reports
+it as a `graft` (combine) or `entwine` (link) candidate instead.
 
 ## How to invoke
 
-> Is `acid.adoc` a duplicate of anything?
+> Prune acid.adoc — it's already covered by acid-principles.adoc.
 
-> Prune this entry.
+> This entry is redundant, drop it.
 
-> Does circuit-breaker.adoc repeat an existing page?
+> Is circuit-breaker.adoc made redundant by resilience.adoc?

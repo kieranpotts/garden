@@ -1,10 +1,12 @@
 # Trim
 
-General gardening — a freeform, judgment-driven trim over one discrete entry in the garden.
+General gardening — a freeform, judgment-driven trim over one discrete entry in
+the garden.
 
 ## What it does
 
-This skill instructs agents to make small, self-evidently-good edits directly. It's the everyday secateurs work that keeps the garden trim.
+This skill instructs agents to make small, self-evidently-good edits directly.
+It's the everyday secateurs work that keeps the garden trim.
 
 ## How to invoke
 
