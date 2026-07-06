@@ -1,15 +1,15 @@
 # Prune
 
-Finds duplicate or near-duplicate entries in the digital garden and merges them into one surviving page.
+Checks whether a single garden entry duplicates an existing page, and if so merges them into one surviving page.
 
 ## What it does
 
-The agent scans for likely duplicates (typo'd filenames, synonymous titles, overlapping content), confirms each candidate pair with you, merges any unique content into the better page, repoints every reference, and deletes the redundant one.
+Given one target entry, the agent scans for a page covering the same concept (typo'd filename, synonymous title, overlapping content), confirms the candidate with you, merges any unique content into the better page, repoints every reference, and deletes the redundant one. If nothing matches, it reports that the entry has no duplicate.
 
 ## How to invoke
 
-> Prune the garden.
+> Is `acid.adoc` a duplicate of anything?
 
-> Are `acid.adoc` and `acid-principles.adoc` duplicates?
+> Prune this entry.
 
-> Check for duplicate entries.
+> Does circuit-breaker.adoc repeat an existing page?

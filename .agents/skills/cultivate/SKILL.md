@@ -1,13 +1,13 @@
 ---
 name: cultivate
-description: Review garden entries against docs/style-guide.md — sentence-case titles, prose style, dash/colon usage, bold-text rules, admonition usage — and report or fix violations. Use when the user says "cultivate the garden", "check style", or asks for a style-guide pass over one or more pages.
+description: Review a single garden entry against docs/style-guide.md — sentence-case titles, prose style, dash/colon usage, bold-text rules, admonition usage — and report or fix violations. Use when the user says "cultivate agent.adoc", "check style on this entry", or asks for a style-guide pass over one page.
 metadata:
   interactive: no
 ---
 
 # Cultivate
 
-**Input**: A page, a set of pages, or "the whole garden". The user may scope it; default to recently-touched pages if no scope is given, since a full-garden pass can be large. Always re-read [docs/style-guide.md](../../../docs/style-guide.md) first — it is the source of truth and may have changed since this skill last ran. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user to decide what to do with them.
+**Input**: A single target entry in the garden. Always re-read [docs/style-guide.md](../../../docs/style-guide.md) first — it is the source of truth and may have changed since this skill last ran. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user to decide what to do with them.
 
 **Output**: Unambiguous mechanical style fixes applied in place (eg. hyphen → en dash, colon-then-prose → split sentence, wrong-case heading). Plus a short report, outputted to the conversation thread, listing what was fixed automatically and which judgment calls are flagged for the user.
 
@@ -17,11 +17,7 @@ metadata:
 
     Read [docs/style-guide.md](../../../docs/style-guide.md) in full before reviewing anything. Don't rely on a remembered or cached understanding of its rules — it changes independently of any one page.
 
-2.  **Determine scope.**
-
-    If the user names specific pages or a topic area, scope to those. If they say "cultivate the garden" with no further scope, default to a recent slice (eg. pages touched in recent commits) rather than the whole garden, since a full sweep can surface a lot of findings at once.
-
-3.  **Check each page against the style guide, section by section:**
+2.  **Check the entry against the style guide, section by section:**
 
     - **Title and headings** — sentence case, acronyms spelled out on first use, no over-structuring with headings on short entries. Formal proper nouns (named legal documents, standards, frameworks, methods — eg. "Developer Certificate of Origin", "Capability Maturity Model") keep their own established capitalization and are not forced into sentence case. If unsure whether a term is a formal proper noun, leave it and flag it rather than guessing.
 
@@ -33,7 +29,7 @@ metadata:
 
     - **Open questions and TODOs** — `// TODO` comments are fine as-is; don't flag them as violations.
 
-4.  **Apply unambiguous mechanical fixes directly:**
+3.  **Apply unambiguous mechanical fixes directly:**
 
     - Hyphen or em dash used as a sentence-level pause → en dash.
 
@@ -47,7 +43,7 @@ metadata:
 
     - An `xref:` that isn't bolded → bold it. Every `xref:` link must be wrapped in `*...*`, with no exceptions — check this on every single occurrence, not just the first per page.
 
-5.  **Flag judgment calls for the user, rather than fixing them automatically:**
+4.  **Flag judgment calls for the user, rather than fixing them automatically:**
 
     - Long or complex sentences that need rewriting (not just dash/colon mechanics) — propose a rewrite, don't apply it silently, since rephrasing changes meaning more than punctuation fixes do.
 
@@ -57,11 +53,15 @@ metadata:
 
     - Whether a heading or title is a genuine formal proper noun (exempt from sentence case) or just a capitalized-sounding descriptive phrase — if unsure, leave it and flag rather than guess.
 
-6.  **Report a summary.**
+5.  **Report a summary.**
 
     List what was checked, what was fixed automatically, and what's flagged for the user, grouped by style-guide section.
 
 ##  Rules
+
+-   **One entry at a time.**
+
+    Cultivate works on a single target entry. A garden-wide style sweep produces a large, hard-to-review diff; run the skill once per entry instead.
 
 -   **The style guide is the only source of truth for style.**
 
@@ -81,9 +81,9 @@ metadata:
 
 ##  Success criteria
 
--   **The current style guide was read before any page was reviewed.**
+-   **The current style guide was read before the entry was reviewed.**
 
--   **Every page in scope was checked against every section of the style guide.**
+-   **The target entry was checked against every section of the style guide.**
 
 -   **All unambiguous mechanical fixes were applied directly** — dash, colon, case, stray bold, unbolded `xref:`.
 

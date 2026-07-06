@@ -1,33 +1,33 @@
 ---
 name: prune
-description: Find duplicate or near-duplicate entries in the digital garden and merge them into one, redirecting or removing the redundant page. Use when the user says "prune the garden", "check for duplicates", or asks whether two entries cover the same ground.
+description: Check whether a single garden entry duplicates an existing page, and if so merge them into one, repointing references and removing the redundant page. Use when the user says "is acid.adoc a duplicate of anything?", "prune this entry", or suspects a page repeats one that already exists.
 metadata:
   interactive: no
 ---
 
 # Prune
 
-**Input**: OPTIONAL — a pair of suspected duplicate topics or files named by the user (eg. "are acid.adoc and acid-principles.adoc duplicates?"). If none given, scan the garden for likely duplicate pairs (similar filenames, similar titles, overlapping first paragraphs) and present candidates for confirmation before merging anything. Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user to decide what to do with them.
+**Input**: A single target entry in the garden, to check for duplication against the rest of the garden (eg. "is acid.adoc a duplicate of anything?"). Do not block to ask the user questions. Make your proposed edits and leave them in the Git working tree for the user to decide what to do with them.
 
-**Output**: One surviving page per concept, retitled/expanded if the merge pulled in unique content from the removed page; the removed page deleted; every `xref:` and index entry that pointed at the removed page repointed to the survivor.
+**Output**: If the target duplicates an existing page, one surviving page per concept — retitled/expanded if the merge pulled in unique content from the removed page — the removed page deleted, and every `xref:` and index entry that pointed at the removed page repointed to the survivor. If no duplicate is found, a report saying so, with nothing changed.
 
 ##  Instructions
 
-1.  **Find duplicate candidates.**
+1.  **Look for a duplicate of the target.**
 
-    If the user named a pair, use it directly. Otherwise scan `src/modules/ROOT/pages/` for likely duplicates:
+    Scan `src/modules/ROOT/pages/` for a page covering the same concept as the target:
 
-    - Filenames that are near-anagrams or one-letter-off (eg. `adapative-software-development.adoc` vs `adaptive-software-development.adoc` — a typo'd duplicate).
+    - A filename that is a near-anagram or one-letter-off (eg. `adapative-software-development.adoc` vs `adaptive-software-development.adoc` — a typo'd duplicate).
 
-    - Titles (the `=` line) that are synonyms or near-identical phrasing (eg. `acid.adoc` vs `acid-principles.adoc`).
+    - A title (the `=` line) that is a synonym or near-identical phrasing (eg. `acid.adoc` vs `acid-principles.adoc`).
 
-    - Opening paragraphs that describe the same concept in different words.
+    - An opening paragraph that describes the same concept in different words.
 
-    Present each candidate pair to the user with a one-line reason, and confirm before merging — false positives here (two genuinely distinct concepts with similar names) are costly to get wrong.
+    Present the candidate pair to the user with a one-line reason, and confirm before merging — false positives here (two genuinely distinct concepts with similar names) are costly to get wrong. If nothing matches, report that the target has no duplicate and stop.
 
 2.  **Read both pages in full.**
 
-    Identify the better-written, more complete, or correctly-named page as the survivor. Prefer the page with the correctly spelled filename, more content, more inbound links, and no unresolved `// TODO` markers, in that order of priority.
+    Identify the better-written, more complete, or correctly-named page as the survivor. Prefer the page with the correctly spelled filename, more content, more inbound links, and no unresolved `// TODO` markers, in that order of priority. The survivor may be the target or the page it duplicates.
 
 3.  **Merge unique content into the survivor.**
 
@@ -46,6 +46,10 @@ metadata:
     State which page survived, what (if anything) was merged in from the removed page, and every file where a reference was repointed.
 
 ##  Rules
+
+-   **One entry at a time.**
+
+    Prune checks a single target entry for duplication. It is not a whole-garden duplicate sweep; run it once per entry of interest.
 
 -   **When in doubt, don't merge.**
 
@@ -71,4 +75,4 @@ metadata:
 
 -   **Any unique content from the removed page is either present in the survivor or was confirmed by the user as not worth keeping.**
 
--   **The user confirmed every merge before deletion** — no page was removed automatically without explicit sign-off.
+-   **The user confirmed the merge before deletion** — no page was removed automatically without explicit sign-off.
