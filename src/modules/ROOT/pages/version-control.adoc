@@ -1,0 +1,11 @@
+= Version control
+
+Version control is the practice of tracking and managing changes to files over time. A version control system (VCS) records every modification to a set of files – typically source code, but also configuration, documentation, and other plain-text artifacts – so that any past state can be retrieved, compared, or restored. This makes it possible to understand what changed, when, and by whom, and to experiment safely without losing prior work.
+
+In software development, version control is foundational infrastructure. Teams use it to coordinate work: multiple developers can change the same codebase concurrently, with the system merging their contributions and flagging conflicts. Branching allows developers to diverge from the main line of development to work on a feature or fix in isolation, and merging brings those changes back. *xref:trunk-based-development.adoc[Trunk-based development]* is one branching strategy that favors short-lived branches and frequent integration.
+
+The dominant version control systems today are distributed, meaning every clone of a repository contains the full history. Git, created by Linus Torvalds in 2005, is the most widely used. Distributed version control systems replaced earlier centralized systems like Subversion (SVN) and CVS, in which a single server held the authoritative history.
+
+Version control enables several other practices. *xref:commit-early-commit-often.adoc[Commit early, commit often]* relies on it as a safety net. *xref:test-driven-development.adoc[Test-driven development]* benefits from the ability to revert to a known-good state. *xref:continuous-integration.adoc[Continuous integration]* and *xref:continuous-deployment.adoc[continuous deployment]* pipelines are triggered by commits to a shared repository. *xref:diagrams-as-code.adoc[Diagrams-as-code]* and other *xref:modeling.adoc[modeling]* approaches that use plain-text formats are valuable in part because their output can be version-controlled alongside application code.
+
+See also *code review*, which is typically conducted on commits or pull requests in a version control system.
