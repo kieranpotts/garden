@@ -1,40 +1,34 @@
-= AI agent
+= Agent
 
-Agentic systems are *xref:large-language-model.adoc[LLM]*-based systems that can act autonomously to achieve goals. AI agents, also known as software agents, are a key component of many AI applications, from personal assistants to autonomous vehicles and software automation.
+*Agentic systems* are *xref:large-language-model.adoc[LLM]*-based systems that can act autonomously to achieve goals. *Agents*, also known as *AI agents* and *software agents*, are a key component of many AI applications, from personal assistants to autonomous vehicles and software automation.
 
-== What makes an agent
+== Definitions
 
-The term _agent_ predates large language models. In computer science, a software agent is a program that acts on behalf of a user or another program with some degree of authority to decide for itself what to do.
+The term "agent" predates large language models. In computer science, a software agent is a program that acts on behalf of a user or another program with some degree of autonomy to decide for itself what to do.
 
-What distinguishes an agent from an ordinary program — or from a single LLM call — is a cluster of properties:
+What distinguishes an agent from an ordinary program — or from a single LLM call — is a cluster of properties, including: autonomy (it reacts without constant human intervention, deciding its own next step); reactivity (it perceives its environment and responds to it); proactivity (it pursues goals on its own initiative, not only in response to a user prompt); and persistence (it runs in a *xref:agent-loop.adoc[loop]* toward a goal, rather than a one-off execution).
 
-* Autonomy: It acts without constant human intervention, deciding its own next step.
+It helps to distinguish three closely related concepts:
 
-* Reactivity: It perceives its environment and responds to it.
+* *Model*: The underlying LLM, a reasoning engine (the "brain") that transforms input tokens into output tokens. It has no persistent state, no tools, and no memory. It exists only during inference, while a model runtime (or model engine) is executing a model's weights.
 
-* Proactivity: It pursues goals on its own initiative, not only in direct response to a prompt.
+* *Agent*: A model instance running within an active context, equipped with tools, a system prompt, and a conversation history. The agent is the model in operation via a harness.
 
-* Social ability: It can communicate and coordinate with other agents.
+* *Harness*: The infrastructure layer that creates and manages agents. It provides the tools the agent can use (file system access, shell execution, web search, etc.), manages the context window, enforces guardrails, handles memory persistence, and orchestrates multi-step task execution.
 
-* Persistence: It runs as an ongoing process working toward a goal, rather than executing once and stopping — driven by an *xref:agent-loop.adoc[agent loop]* of observing, deciding, acting, and observing again.
+----
+agent = model + harness
+----
 
-== Models, agents, and harnesses
+The harness shapes what an agent can do. Two agents powered by the same model but run inside different harnesses will behave very differently, because the harness – not the model – defines the agent's action space and constraints.
 
-To understand agentic systems, it helps to distinguish three closely related concepts:
-
-* *Model*: The underlying LLM, a reasoning engine that transforms input tokens into output tokens. It has no persistent state, no tools, and no memory. It exists only during inference.
-
-* *Agent*: A model instance running within an active context, equipped with tools, a system prompt, and a conversation history. The agent is the model in operation.
-
-* *Harness*: The infrastructure layer that creates and manages agents. It provides the tools the agent can use (file system access, shell execution, web search, and others), manages the context window, enforces guardrails, handles memory persistence, and orchestrates multi-step task execution.
-
-The harness shapes what an agent can do far more than the choice of model alone. Two agents powered by the same model but run inside different harnesses will behave very differently, because the harness defines the agent's action space and constraints. Designing and operating it well is a discipline in its own right — see *xref:ai-agent-harness-engineering.adoc[harness engineering]*.
+Designing and operating an agent harness is a discipline in its own right — known as *xref:agent-harness.adoc[harness engineering]*.
 
 == Agent development frameworks
 
 Frameworks and SDKs provide the infrastructure for building and orchestrating agents. It's important to distinguish between two types:
 
-* *Development frameworks*: Code libraries and SDKs used to write agent code. Examples: LangChain, LlamaIndex, Semantic Kernel. These are tools for _building_ agents.
+* *Development frameworks*: Code libraries and SDKs used to write agent code. Examples: LangChain, LlamaIndex, Semantic Kernel. These are tools for building agents.
 
 * *Agent harnesses*: Runtime environments and orchestration systems that execute agents, manage their lifecycle, control permissions, provide observability, and coordinate multi-agent workflows. Some of these blur the line by offering both development and runtime capabilities. Examples: Microsoft Agent Framework, n8n, OpenClaw.
 
@@ -42,7 +36,7 @@ Many frameworks require a harness to run agents in production, while some framew
 
 General-purpose agent development frameworks include:
 
-* https://github.com/langchain-ai/langchain[LangChain]: Code library for building agents and LLM-powered applications. Emphasizes model interoperability, rapid prototyping, and an extensive ecosystem of integrations. Available in Python and JavaScript/TypeScript. Its LangGraph component handles *xref:ai-agent-orchestration.adoc[multi-agent orchestration]*.
+* https://github.com/langchain-ai/langchain[LangChain]: Code library for building agents and LLM-powered applications. Emphasizes model interoperability, rapid prototyping, and an extensive ecosystem of integrations. Available in Python and JavaScript/TypeScript. Its LangGraph component handles *xref:agent-orchestration.adoc[multi-agent orchestration]*.
 
 * https://ai.pydantic.dev/[Pydantic AI]: Typed agent framework from the team behind Pydantic. Uses Pydantic models to enforce safe, predictable, structured outputs from LLMs. Python.
 
@@ -50,17 +44,19 @@ General-purpose agent development frameworks include:
 
 * https://github.com/microsoft/semantic-kernel[Microsoft Semantic Kernel]: Code library for building and orchestrating AI agents and multi-agent systems. Emphasizes plugin architecture and enterprise features. Available in Python, .NET, and Java.
 
+* https://github.com/microsoft/autogen[AutoGen]: Code library for multi-agent conversation, built around `UserProxyAgent` and `AssistantAgent` components that collaborate and refine solutions together. Unlike the other frameworks in this list, AutoGen also runs the multi-agent conversation loop itself, so it blurs the line toward being a harness rather than a pure development framework.
+
 Data and RAG frameworks include:
 
 * https://github.com/run-llama/llama_index[LlamaIndex]: Code library specialized in data ingestion, organization, and retrieval-augmented generation (RAG). Bridges enterprise data and LLM capabilities with 300+ integration packages.
 
-* https://haystack.deepset.ai/[Haystack]: Open-source framework from deepset for building search, RAG, and agent pipelines from modular, swappable components. Python.
+* https://haystack.deepset.ai/[Haystack]: Open-source framework for building search, RAG, and agent pipelines from modular, swappable components. Python.
 
 * https://github.com/docling-project/docling[Docling]: Document-ingestion library that parses PDF, DOCX, HTML, and other formats into structured output for RAG pipelines. A building block rather than an agent framework in its own right.
 
 There are also vendor-specific SDKs and harnesses:
 
-* [Anthropic Claude SDK / Agent SDK]
+* https://docs.claude.com/en/api/agent-sdk/overview[Claude Agent SDK]: Code library from Anthropic for building agents with Claude, providing the harness primitives (context management, tools, permissions, subagents) that power Claude Code itself.
 
 * https://developers.openai.com/api/docs/guides/agents-sdk[OpenAI Agents SDK]: Code library from OpenAI for building agents with their models.
 
@@ -82,7 +78,7 @@ See also *xref:ai-coding-assistant.adoc[AI coding assistants]*, many of which ha
 
 == Agent orchestration platforms
 
-Above individual agents sits the orchestration layer, which coordinates _teams_ of agents working together toward shared goals — managing scheduling, delegation, budgets, and governance across a whole system of autonomous workers. Platforms in this space include Claude Cowork, AG2, CrewAI, LangGraph, MetaGPT, and SuperAGI. See *xref:ai-agent-orchestration.adoc[AI agent orchestration]* for the full landscape.
+Above individual agents sits the orchestration layer, which coordinates teams/swarms of agents working together toward shared goals — managing scheduling, delegation, budgets, and governance across a whole system of autonomous workers. Platforms in this space include Claude Cowork, AG2, CrewAI, LangGraph, MetaGPT, and SuperAGI. See *xref:agent-orchestration.adoc[agent orchestration]*.
 
 == Benchmarks
 
@@ -93,8 +89,8 @@ Above individual agents sits the orchestration layer, which coordinates _teams_ 
 == See also
 
 * *xref:agent-loop.adoc[Agent loop]*
-* *xref:ai-agent-harness-engineering.adoc[Harness engineering]*
-* *xref:ai-agent-orchestration.adoc[AI agent orchestration]*
+* *xref:agent-harness.adoc[Agent harness]*
+* *xref:agent-orchestration.adoc[Agent orchestration]*
 * *xref:loop-engineering.adoc[Loop engineering]*
 * *xref:agent-skills.adoc[Agent skills]*
 * *xref:model-context-protocol.adoc[Model Context Protocol]*
