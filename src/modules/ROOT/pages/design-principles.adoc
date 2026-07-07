@@ -1,0 +1,13 @@
+= Design principles
+
+Design principles are foundational guidelines that inform decision-making in software design. They codify hard-won lessons about what tends to work and what tends to fail, offering heuristics rather than rigid rules.
+
+A design principle expresses a preference – eg. for *xref:cohesion.adoc[cohesion]* over *xref:coupling.adoc[coupling]* – and helps teams reason about trade-offs when competing concerns pull in different directions.
+
+Unlike *xref:design-patterns.adoc[design patterns]*, which describe reusable solutions to specific recurring problems, design principles operate at a higher level of abstraction. They don't prescribe a particular structure or mechanism. Instead, they shape the values and priorities that guide the selection and application of patterns. For example, the *xref:dry.adoc[DRY]* principle argues that duplication is a source of errors and maintenance burden, but it doesn't specify how to factor out the duplication – that is left to the designer's judgment.
+
+Many design principles are interrelated and mutually reinforcing. *xref:cohesion.adoc[Cohesion]* and *xref:coupling.adoc[coupling]* are two sides of the same coin. Modules that group strongly related responsibilities tend to depend less on other modules. *xref:separation-of-concerns.adoc[Separation of concerns]* and *xref:modular-design.adoc[modular design]* both push toward decomposing a system into parts that can be reasoned about independently. *xref:isolation.adoc[Isolation]* and *xref:redundancy.adoc[redundancy]* are complementary approaches to *xref:fault-tolerance.adoc[fault tolerance]* – one limits the blast radius of failures, the other ensures that a failed component has a backup.
+
+Some principles are associated with particular domains or methodologies. The *xref:unix-philosophy.adoc[Unix philosophy]* is a set of design principles for building composable command-line tools. *xref:domain-driven-design.adoc[Domain-driven design]* advocates principles such as aligning software structure with *xref:bounded-context.adoc[bounded contexts]*. The SOLID principles, of which *xref:dependency-inversion.adoc[dependency inversion]* is one, guide object-oriented design at the class and module level.
+
+Principles are most useful when they are understood in context. Applied dogmatically, any principle can lead to *over-engineering* or unnecessary complexity. The *xref:pareto-principle.adoc[Pareto principle]* is itself a useful reminder: a principle need not be followed perfectly to deliver most of its value.
