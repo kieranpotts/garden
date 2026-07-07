@@ -18,7 +18,7 @@ in the Git working tree for the user to decide what to do with them.
 
 **Output**: The original page narrowed back to its core concept, one or more new
 `.adoc` pages for the concepts that were split out, all of them cross-linked to
-each other, and the new pages added to `index.adoc`.
+each other, and the new pages added to `index.adoc` and `nav.adoc`.
 
 ##  Instructions
 
@@ -69,7 +69,13 @@ each other, and the new pages added to `index.adoc`.
     narrowing changes how complete it looks — propose a change rather than
     applying one silently.
 
-8.  **Report back.**
+8.  **Update the nav.**
+
+    Add each new page to `src/modules/ROOT/nav.adoc`, in the same alphabetical
+    position it occupies in `index.adoc`. Without this, the new page has no
+    ancestry and renders with no breadcrumb trail.
+
+9.  **Report back.**
 
     List the new files created, what moved from the original into each, and
     every cross-link added.
@@ -106,7 +112,7 @@ each other, and the new pages added to `index.adoc`.
 -   **Each new page is self-contained** — readable without having read the
     original first.
 
--   **All new pages are listed in `index.adoc`.**
+-   **All new pages are listed in `index.adoc` and `nav.adoc`.**
 
 -   **No new page duplicates an existing entry** — checked against the garden
     before creation.
