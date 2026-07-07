@@ -94,6 +94,10 @@ An LLM with 100 billion parameters has roughly that many weights, stored in memo
 
 Small changes in weights, eg. through fine-tuning, can dramatically alter a model's behavior.
 
+== Mixture of experts
+
+*Mixture-of-experts (MoE)* is a model architecture in which, rather than activating the entire network for every token, each token is routed through only a small subset of specialized "expert" subnetworks. This lets a model carry a very large total parameter count while activating only a fraction of it per token — high capacity at a lower inference cost.
+
 == Quantization
 
 *Quantization* is a technique for reducing the numerical precision of a model's weights, for example representing values with 4-bit integers instead of 16-bit or 32-bit floats. This reduces memory footprint and speeds up inference (see below), at the cost of a small reduction in output quality.
@@ -244,280 +248,6 @@ llama.cpp and vLLM have different use cases. llama.cpp is optimized for single-G
 
 Llama.cpp can be made to use multiple GPUs, but it does not support tensor parallelism in the same way that vLLM does. In llama.cpp, model layers are assigned to GPUs rather than operations being distributed across them, which limits throughput gains from multi-GPU setups.
 
-////
-
-== Choosing LLMs
-
-In choosing an LLM, you need to appreciate the tradeoffs to be made between capability, size, speed, and cost. The bigger the AI model, the more capable it is. But the trade-off is that the big, advanced frontier models are also slow and costly to run.
-
-At the other end of the spectrum are small models that are optimized for speed rather than capability. Some small models may also specialize in particular domains, rather than being capable of lots of different tasks.
-
-Somewhere in the middle are the general-purpose models that find a good balance between these factors, and which can do most tasks well.
-
-=== Leaderboards and benchmarks
-
-Several independent sites aggregate model rankings, pricing, speed, and availability — useful for comparing options before committing to a model:
-
-* https://artificialanalysis.ai/leaderboards/models[Artificial Analysis]: Cross-provider leaderboards spanning intelligence, output speed (tokens/sec), latency, context window, and price.
-
-* https://openrouter.ai/rankings[OpenRouter rankings]: Rankings derived from real usage across the OpenRouter platform (a single API to many providers) — a useful signal of what application developers actually deploy.
-
-* https://lmarena.ai/[LMArena]: Crowd-sourced, blind, head-to-head human voting.
-
-* https://www.vellum.ai/llm-leaderboard[Vellum LLM Leaderboard]: Side-by-side comparison of benchmark scores, context windows, speed, latency, and per-token pricing, with a separate open-weight leaderboard.
-
-* https://llm-stats.com/[llm-stats.com]: Aggregated benchmark scores, pricing, and context-window comparisons.
-
-* https://epoch.ai/benchmarks[Epoch AI]: Research-grade tracking of frontier benchmark results over time.
-
-* https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard[Hugging Face Open LLM Leaderboard]: — Standardized benchmarks for open-weight models.
-
-Different benchmarks measure particular capabilities:
-
-* https://www.swebench.com/[SWE-bench]: Tasks models with resolving real GitHub issues against real repositories. The human-validated https://www.swebench.com/verified.html[SWE-bench Verified] subset is the de-facto standard for coding ability and is widely cited. Maintained by Princeton and Stanford.
-
-* https://www.tbench.ai/[Terminal-Bench]: Benchmarks *xref:agent.adoc[agentic front-ends]* on real terminal tasks, backed by various models.
-
-* https://aider.chat/docs/leaderboards/[Aider Polyglot]: Code-editing benchmark. Over 225 exercises across six programming languages.
-
-* https://livebench.ai/[LiveBench]: Contamination-resistant benchmark whose questions are refreshed monthly, covering maths, coding, reasoning, language, instruction-following, and data analysis.
-
-Model cards and leaderboards also commonly cite academic benchmarks, including *GPQA Diamond* (graduate-level science reasoning), *AIME* (competition mathematics), *MMLU* / *MMMU* (broad multi-subject knowledge), *ARC-AGI-2* (abstract reasoning), *Humanity's Last Exam (HLE)* (expert-level frontier questions), and *GDPval* (economically-valuable knowledge work).
-
-=== Matching tasks to models
-
-The aim should be to match the model to the work, rather than defaulting to the biggest model for everything (wasteful) or the cheapest (unreliable).
-
-Each task type stresses a different model capability, eg. language quality, step-by-step reasoning, factual grounding, raw speed. That core capability, matched to the task at hand, is often more important than a model's headline benchmark scores.
-
-.Matching common task types to models
-|===
-|Task type |What matters most |Recommended models |Thinking level
-
-|Prose & language: proofreading, copy-editing, summarizing, translation, tone
-|Language quality, instruction-following
-|Strong frontier or mid-tier chat model (Claude Sonnet/Opus, GPT-class)
-|Low / none
-
-|Complex reasoning: maths, logic, planning, multi-step analysis
-|Step-by-step reasoning
-|Reasoning model with extended thinking (OpenAI o3, DeepSeek-R1, Claude/Gemini thinking modes)
-|High
-
-|Coding
-|Code quality, large context window
-|Strong coding model (Claude Sonnet/Opus; Qwen2.5-Coder locally)
-|Scale to task complexity
-
-|Factual lookup, research, current events
-|Grounding in retrieved facts
-|RAG- or search-augmented model (Perplexity/Sonar)
-|Low–medium
-
-|High-volume, simple, latency-sensitive: classification, extraction, routing
-|Speed and cost
-|Light/flash model (Claude Haiku, Gemini Flash, GPT mini)
-|None
-
-|Multimodal: image, audio, or video as input or output
-|Modality support
-|Multimodal frontier model (Gemini 3 Pro, GPT-4o)
-|Task-dependent
-
-|Semantic search, RAG retrieval
-|Quality of the vector representation
-|Embedding model, plus a reranker for a second pass
-|N/A
-
-|Privacy-sensitive or offline
-|Data locality
-|Open-weight model run locally, sized to your hardware
-|Task-dependent
-|===
-
-Two principles underpin the table:
-
-* Match the model to the dominant capability the task demands. A task that is easy along one axis may be hard along another — proofreading is linguistically demanding but reasoning-light, whereas a maths word problem is the reverse.
-
-* Thinking level is a separate dial from model tier. Extended thinking (see *Reasoning models*, below) helps on problems with a verifiable chain of logic — maths, code, planning — but adds latency and cost for little benefit on language tasks, and can even push a model to over-edit. Turn it down for prose, up for reasoning.
-
-.Worked example: proofreading a block of text
-****
-Proofreading is a prose/language task, not a hard reasoning task, so a model's language quality matters more than its coding or reasoning ability. Reach for a strong frontier model — Claude Sonnet or Opus, or a GPT-class model — at a low thinking level.
-
-Avoid cheaper small models here. They tend to miss subtle grammar and consistency issues and, worse, sometimes "improve" technical wording in ways that change its meaning. The modest cost saving is rarely worth the risk of silently altered content.
-****
-
-=== Capability types
-
-Beyond size and cost, models differ significantly in what they are designed to do. The main capability types are:
-
-*Base models* are the raw, pre-trained models before any instruction tuning or RLHF is applied. They predict the next token without any conversational or helpfulness alignment, and are rarely used directly. They serve as the starting point for fine-tuning. Examples: Llama 3 (base), Mistral 7B (base).
-
-*Chat models* are instruction-tuned to follow natural-language instructions and hold multi-turn conversations. These are the general-purpose workhorses — the models behind ChatGPT, Claude, and Gemini. Almost all frontier and mid-tier models fall into this category. Examples: GPT-4o, Claude Sonnet 4.6, Gemini 2.5 Pro, Llama 3.3 70B Instruct.
-
-*Flash models*: These are optimized for producing a response in a fraction of the time it takes other models. They often rely on shortcuts like caching or pre-computing certain results to speed up generation.
-
-*Code completion models* are optimized for programming tasks and typically deployed as IDE autocomplete backends rather than chat interfaces. A distinctive capability is fill-in-the-middle (FIM): generating code that fits between an existing prefix and suffix, which is how IDE autocomplete works. Examples: Codestral, Code Llama, Qwen2.5-Coder.
-
-*Reasoning models* spend extra compute working through a problem step-by-step — producing an internal chain of thought — before arriving at a final answer. They trade higher latency and token cost for substantially better performance on complex mathematical, logical, and multi-step problems. See the Reasoning models section below. Examples: OpenAI o3, DeepSeek-R1, Claude with extended thinking.
-
-*Embedding models* convert text into dense numerical vectors that represent the semantic meaning of the input. Unlike generative models, they produce a fixed-length vector rather than text. These vectors are used to power semantic search, RAG pipelines, clustering, and classification. Examples: OpenAI text-embedding-3, Cohere Embed, Nomic Embed, BGE.
-
-*Reranker models* are used as a second pass in RAG pipelines. After an initial retrieval step fetches candidate documents, a reranker scores each candidate's relevance to the query more precisely, so the most useful results are surfaced before being passed to the generative model. Examples: Cohere Rerank, BGE Reranker, cross-encoder models.
-
-*Multimodal models* accept inputs — or produce outputs — beyond text, such as images, audio, and video. Most modern frontier models are multimodal to some degree. Examples: GPT-4o (image input), Gemini 3 Pro (image, video, and audio input and output), Claude Opus 4.7 (image input).
-
-=== Frontier models
-
-A frontier model is a model — or, more commonly, a _family_ of models — that represents the current state of the art.
-
-Frontier models are typically the largest models, trained on the most data, with the best performance across a broad range of tasks. They are developed by well-resourced AI labs and accessed via paid APIs rather than downloaded and run locally.
-
-Frontier models are usually proprietary — which means their weights are not publicly released. The companies that develop them invest heavily in safety evaluation and alignment — the process of steering model behavior to be helpful, honest, and to avoid harmful outputs.
-
-Modern frontier models are increasingly *multimodal* — capable of processing not just text but also images, audio, and video as inputs, and in some cases generating them as outputs.
-
-Examples of frontier model families include:
-
-* https://platform.openai.com/docs/models[OpenAI's GPT models].
-* https://www.anthropic.com/claude[Anthropic's Claude models].
-* https://deepmind.google/technologies/gemini/[Google's Gemini models].
-* https://x.ai/grok[xAI's Grok models].
-
-Other notable proprietary providers include https://cohere.com/[Cohere], whose *Command* family targets enterprise use cases with strong retrieval-augmented generation support (Cohere also produces the widely-used Embed and Rerank models — see *Capability types*, below). The leading https://qwenlm.github.io/[Qwen] (Alibaba), https://www.deepseek.com/[DeepSeek], https://www.kimi.com/[Kimi] (Moonshot AI), and https://chatglm.cn/[GLM] (Z.ai) families also reach near-frontier performance while releasing open weights — covered under *Open-weight models*, below.
-
-The four families differ in emphasis. OpenAI's *GPT* is the well-rounded all-rounder, strong across multimodality and chaining multiple actions. Anthropic's *Claude* specializes in text and code generation over multimodality, and is highly regarded for coding, though it tends to be the most expensive and slowest. xAI's *Grok* is fast, cheap relative to its peers, and has an unusually large context window, with strong reasoning and a permissive output style. Google's *Gemini* stands out for multimodality — it can analyze _and_ generate text, images, audio, and video — and for a large context window.
-
-For current prices, speeds, and benchmark scores, consult a live leaderboard such as https://artificialanalysis.ai/[Artificial Analysis] rather than any figure quoted here — frontier specs change too fast to pin down.
-
-=== Mid-tier models
-
-The mid-tier models are the workhorses that you will probably use 80% of the time for general tasks. They offer a good balance between capability, size, speed, and cost, and are the defaults for a lot of *xref:agent.adoc[agentic workflows]*. Examples include Anthropic's Claude Sonnet, OpenAI's GPT mid-tier releases, and open-weight workhorses such as Meta's Llama 70B and Alibaba's Qwen. Claude Sonnet in particular is strong at coding — cheaper than the flagship Opus, but still capable of advanced programming tasks, including building greenfield projects from scratch.
-
-=== Light models
-
-Light models are faster and cheaper, but less capable than the frontier/flagship models. Yet some are still incredibly capable. Google's Gemini Flash, for example, retains most of the capabilities of the flagship Gemini Pro, achieved by <<distillation,knowledge distillation>> — training a smaller student model to replicate the behaviour of a larger teacher. Most labs ship a light tier alongside their flagship (Gemini Flash, GPT mini, Claude Haiku), and there are edge-optimized options such as Mistral's Ministral and non-transformer architectures such as Liquid AI's LFM, whose speed is constant regardless of context length.
-
-=== Reasoning models
-
-Reasoning models are a category of LLM that spend additional compute "thinking" through a problem before producing a final response. Rather than generating an answer immediately, they produce an internal chain-of-thought — working through steps, checking logic, and reconsidering — before arriving at a conclusion. This makes them substantially better at complex mathematical, logical, and multi-step problems, at the cost of higher latency and token usage.
-
-Notable reasoning models include OpenAI's o1 and o3 series and the open-weight https://huggingface.co/deepseek-ai[DeepSeek-R1].
-
-=== Effort levels
-
-Where reasoning models can think before answering, an *effort level* (sometimes "reasoning effort" or "thinking level") is the dial that controls _how much_ they do so. It drives *adaptive reasoning*: rather than a fixed amount of thinking, the model decides whether and how much to reason on each step, based on the complexity of the task at hand. Lower effort is faster and cheaper for straightforward work. Higher effort buys deeper reasoning on complex problems.
-
-An effort level is a _behavioral signal, not a strict token cap_. It nudges the model toward more or less deliberation — trading token spend against capability — rather than hard-limiting the number of tokens it may use.
-
-The dial is exposed differently by different tools — for example as a `reasoning_effort` parameter on some APIs, or as a configurable effort level in coding agents such as Claude Code. As a rough guide for picking a level:
-
-* *Low*: Mechanical work: renames, greps, formatting fixes, simple lookups.
-* *Medium / high*: Most everyday coding and analysis.
-* *Top levels*: Reserve for genuinely hard problems where deep reasoning pays off, since they burn considerably more tokens.
-
-This is the same idea as the _thinking level_ column in the task-matching table above: effort is a separate dial from model tier. Turning it up helps on problems with a verifiable chain of logic (maths, code, planning), while adding latency and cost for little benefit on language tasks.
-
-=== Specialist models
-
-Specialist models are fine-tuned for a narrow domain or task, rather than general-purpose use. Perplexity's *Sonar* is an example: built on Llama 70B and search-optimized for web retrieval with real-time information and grounded citations, tuned for answer factuality over broad capability.
-
-=== Open-weight models
-
-*Open-weight* models have publicly released weights, meaning anyone can download and run them. This is distinct from *open-source*, which would also require the training data and code to be public — most open-weight models do not meet that bar.
-
-Licensing terms vary. Some permit commercial use, others restrict it.
-
-The main consideration when choosing between open-weight models is the model size. Model size is commonly expressed as the number of trainable parameters, in billions — for example, a 7B model has 7 billion parameters. More parameters generally means greater capability but higher memory and compute requirements. A 7B model can run comfortably on a consumer GPU; a 70B model requires a high-end workstation or server; while a 405B model requires multiple high-end GPUs.
-
-Open-weight models, which can be downloaded and run on your own computer or server, are a good choice for privacy-sensitive use cases, offline environments, or experimenting with open models without incurring API costs.
-
-Open-weight models can also be customized through further fine-tuning and through RAG. Perplexity's Sonar model is an example of an open-weight model that has been fine-tuned for specific use cases.
-
-.Pros and cons of running open-weight models locally
-****
-* Free (just the cost of the hardware and electricity)
-* Highly customizable
-* Secure and private
-* Zero network latency
-* Work offline (no internet connection required)
-* High availability. Can be run 24/7/365
-* Six to 12 months behind the frontier models in capability
-* Require a lot of RAM and GPU VRAM to run large models
-****
-
-https://huggingface.co/[Hugging Face] is the primary hub for discovering and downloading open-weight models, hosting over two million models contributed by individuals, research labs, and major organizations. The other major resource in this space is https://ollama.com/search[Ollama's model database], which is a more curated library of models that are proven to be stable with the Ollama model manager.
-
-==== Hardware requirements
-
-It is useful to think of open-weight models as falling into a spectrum of size tiers, with each tier having different minimal hardware requirements:
-
-* *Ultra-light (1–3B)*: Run on almost any machine with 8 GB+ RAM. Capable of basic chat and simple tasks.
-
-* *Small (3–8B)*: A good balance of quality and speed. Need ~8–16 GB RAM. The recommended starting point for most local setups.
-
-* *Medium (8–13B)*: Well-rounded general-purpose models. Run well on 16–24 GB RAM with a mid-range GPU.
-
-* *Large (30–70B)*: High capability. Require at least 32 GB RAM and a dedicated GPU with 24+ GB VRAM.
-
-* *Very large (70B+)*: Near-frontier capability. Require high-end workstations with multi-GPU setups and at least 64 GB each of RAM and VRAM.
-
-[TIP]
-======
-To estimate whether your own hardware can run a given model — accounting for quantization level (Q4–F16), context length, and expected token throughput (TPS) — try the https://logarithmicspirals.com/tools/local-ai-vram-calculator-gpu-planner/[Local AI VRAM Calculator & GPU Planner]. It maps a hardware setup and use case to model recommendations, with the caveat that the figures are planning estimates, not performance guarantees.
-======
-
-Custom hardware like the https://www.nvidia.com/en-gb/products/workstations/dgx-spark/[Nvidia DGX Spark] give you the ability to run _and train_ large language models on your own hardware.
-
-==== Open-weight model families
-
-As of 2026, some notable open-weight model families include:
-
-NOTE: Several of these models use a *mixture-of-experts (MoE)* architecture. Rather than activating the entire network for every token, an MoE model routes each token through only a small subset of specialized "expert" subnetworks. This lets a model carry a very large total parameter count while activating only a fraction of it per token — high capacity at a lower inference cost.
-
-* https://llama.meta.com/[*Llama*] models from Meta. The Llama family did much to kick-start the open-weight era, and its widespread adoption has made the underlying architecture a de facto reference point that many other open models build on. The Scout variant is known for its massive 10-million token context window. Released under Meta's community license, which permits commercial use but imposes some restrictions (including for very large deployments).
-
-* https://ai.google.dev/gemma[*Gemma*] models from Google. These are Google's open-weight counterparts to its proprietary, frontier Gemini models. Gemma models are optimized to run on consumer hardware.
-
-* https://qwenlm.github.io/[*Qwen*] models from Alibaba Cloud are available in a wide range of sizes, so there'll always be one variant that you can run on your hardware.
-
-* https://mistral.ai/[*Mistral*] models from Mistral AI, a French company that produces both open-weight models and proprietary models accessible via web service APIs. Their Mixtral models helped popularize the mixture-of-experts (MoE) architecture in open models.
-
-* https://azure.microsoft.com/en-us/products/phi/[*Phi*] models from Microsoft. A family of small language models (SLMs) that punch well above their size on reasoning and maths, achieved largely by training on high-quality, "textbook-quality" filtered and synthetic data rather than sheer scale. Optimized for on-device and edge use, and released under the permissive MIT license. Recent releases include Phi-4 (14B) and the compact Phi-4-mini, with multimodal variants.
-
-* https://huggingface.co/openai[*gpt-oss*] models from OpenAI. `gpt-oss-120b` and `gpt-oss-20b`, released under the permissive Apache 2.0 license in August 2025, were OpenAI's first open-weight models since GPT-2.
-
-* https://huggingface.co/moonshotai[*Kimi*] models from Moonshot AI. Kimi K2.5 (released January 2026) is an open-weight mixture-of-experts model with 1T total parameters (32B activated per token) and a 256K-token context window. It matches frontier models on several benchmarks and is multimodal across text, code, image, and video (understanding only, no generation). Kimi 2.5 leads in mathematical reasoning and is optimized for "agent swarming".
-
-* https://huggingface.co/zai-org[*GLM*] models from Z.ai (formerly Zhipu AI). The GLM-4.5 and GLM-4.6 releases are strong open-weight MoE models, well-regarded for their "interleaved thinking" and demonstrated capabilities in both agentic and vibe coding workflows.
-
-* https://www.deepseek.com/[*DeepSeek*] models from DeepSeek AI. This AI lab made waves in early 2025 when DeepSeek-R1 demonstrated near-frontier reasoning performance at a fraction of the training compute cost that had previously been assumed was necessary to develop frontier models. Its "engram" memory system has been proven to maintain high coding performance across 1M+ token contexts.
-
-* https://www.minimax.io/[*MiniMax*] models from MiniMax AI, which also develops closed-weight models. MiniMax M2.5 is well-regarded, posting near-frontier agentic and coding scores (~80% on SWE-Bench Verified) at an exceptionally low cost.
-
-Nvidia continues to expand its open-weight offerings, most recently with the https://research.nvidia.com/labs/nemotron/Nemotron-3/[*Nemotron 3*] family (Nano, Super, and Ultra variants).
-
-NOTE: "Open-weight" is not the same as "open-source". Most of these families release only their trained weights, not the training data or full reproduction recipe, and some ship under restrictive custom licenses. Llama and Gemma, for example, carry usage restrictions, whereas Qwen, DeepSeek, and Mistral's open releases mostly use permissive Apache 2.0 or MIT terms.
-
-==== Open-weight coding models
-
-The following open-weight models are highly regarded for programming tasks. Small models (≤ 8B) run comfortably on a laptop or CPU-only setup. Larger models require a GPU with ≥ 16–24 GB VRAM.
-
-* *Qwen2.5-Coder 32B Instruct*: Alibaba's dedicated coding model that consistently tops open-weight coding benchmarks. Strong across Python, JavaScript, Go, and SQL. Supports a 32K context window. Apache 2.0 license.
-
-* *DeepSeek-Coder-V2 Instruct*: A Mixture-of-Experts model (236B total, 21B active) with very strong multi-language coding performance and a 128K context window. One of the most capable open-weight options for complex, multi-file tasks. MIT license.
-
-* *Codestral 22B*: Mistral AI's dedicated code model, optimized for low-latency code completion and fill-in-the-middle (FIM) tasks. Well suited to IDE integration. Supports 32K context. Mistral AI Non-Production License (commercial use requires a separate agreement).
-
-* *StarCoder2 15B*: The successor to StarCoder, trained on The Stack v2. Strong on Python, JavaScript, and C/C++, and well suited to code search and autocompletion tasks. Apache 2.0 license.
-
-* *Code Llama 70B Instruct*: Meta's instruction-tuned coding variant of Llama 2, with a 16K context window and strong performance on multi-language tasks and large-scale refactoring. Meta's non-commercial license restricts use to research.
-
-////
-
-////
-
 == Model access layers
 
 Although it is possible to interact with a model directly, for most use cases you reach it via an access layer, which handles authentication, response formatting, and other details specific to a particular provider or use case.
@@ -582,46 +312,87 @@ Both Ollama and LM Studio use llama.cpp as their underlying inference engine.
 
 A related but distinct tool is https://openwebui.com/[Open WebUI] — a self-hosted, extensible web _front-end_ for LLMs rather than a model manager in its own right. It provides a polished, ChatGPT-like browser interface and connects to a backend (most commonly Ollama, or any OpenAI-compatible API) to serve the actual models. It is often run alongside Ollama to give a local model stack a clean, multi-user web UI.
 
-== Fine-tuning tools and services
+== Open-weight
 
-A number of free and commercial tools and services are available for fine-tuning open-weight models. These tools roughly split into two categories: DIY toolkits you run yourself (free, but you bring the GPU), and managed services (you pay, they handle infra). The choice depends on whether you have the compute, how much you want to learn, and whether your data can leave your network.
+*Open-weight* models have their trained weights published for anyone to download and run. This is distinct from *open-source*, which would also require the training data and code used to produce the model to be public — most open-weight models do not meet that bar, since labs frequently withhold the data and training recipes even when releasing the weights themselves.
 
-=== Free and open-source toolkits
+Licensing terms vary between open-weight models. Some permit unrestricted commercial use (eg. Apache 2.0, MIT). Others carry custom licenses that restrict commercial use, redistribution, or use above a certain scale (eg. Meta's Llama community license).
 
-* https://github.com/unslothai/unsloth[Unsloth Studio] is the standout for getting started on consumer hardware. It rewrites the attention kernels and gradient check-pointing to roughly halve VRAM use and double training speed versus stock Hugging Face models. The end result is that a 7B model fits comfortably in 12 GB; a 70B with QLoRA fits in 48 GB. Free for personal use. Their commercial offering adds multi-GPU support.
+https://huggingface.co/[Hugging Face] is the primary hub for discovering and downloading open-weight models, hosting over two million models contributed by individuals, research labs, and major organizations. The other major resource in this space is https://ollama.com/search[Ollama's model database], which is a more curated library of models that are proven to be stable with the Ollama model manager.
 
-* https://github.com/axolotl-ai-cloud/axolotl[Axolotl] is the workhorse for serious workflows. Configuration-driven (YAML), supports virtually every architecture and training method (full FT, LoRA, QLoRA, DPO, ORPO, multi-GPU via DeepSpeed/FSDP). Steeper learning curve than Unsloth but far more flexible.
+There are pros and cons to running open-weight models on your own hardware:
 
+* Free (just the cost of the hardware and electricity).
+* Highly customizable.
+* Secure and private.
+* Zero network latency.
+* Work offline (no internet connection required).
+* High availability. Can be run 24/7/365.
+* Six to 12 months behind the frontier models in capability.
+* Require a lot of RAM and GPU VRAM to run large models.
 
-* https://github.com/hiyouga/LLaMA-Factory[LLaMA-Factory] sits between the two. It is UI-driven (https://www.gradio.app/[Gradio] web interface) so you can fine-tune without writing config files, while still supporting most popular architectures and methods. Good middle path for teams new to fine-tuning.
+=== Hardware requirements
 
-* https://github.com/huggingface/trl[Hugging Face TRL + PEFT] are the underlying libraries everything else builds on. PEFT implements LoRA/QLoRA/prefix tuning. TRL adds RLHF, DPO, SFT trainers. Use these directly when you want full programmatic control.
+It is useful to think of open-weight models as falling into a spectrum of size tiers, with each tier having different minimal hardware requirements:
 
-* https://github.com/karpathy/nanochat[nanochat] and https://github.com/karpathy/autoresearch[Autoresearch] are Python "experiment harnesses" for training LLMs. The basic idea is that you give an AI agent a small training setup and let it experiment autonomously overnight. In short cycles, it trains, modifies the code, checks if the result improved, keeps or disregards, and repeats. You wake up to a log of experiments and, hopefully, a better model. In effect, these projects replace human researchers with an AI agent to do the fine-tuning. Autoresearch is a simplified version of Nanochat designed to run on a single consumer Nvidia GPU. Both projects are maintained by Andrej Karpathy, former AI director at Tesla and a founding member of OpenAI.
+* *Ultra-light (1–3B)*: Run on almost any machine with 8 GB+ RAM. Capable of basic chat and simple tasks.
 
-* https://github.com/meta-pytorch/torchtune[Torchtune] (deprecated) was PyTorch's official, opinionated fine-tuning library.
+* *Small (3–8B)*: A good balance of quality and speed. Need ~8–16 GB RAM. The recommended starting point for most local setups.
 
-For training data, https://argilla.io/[Argilla] (now part of Hugging Face) is an open-source data curation and labelling platform for AI engineers and domain experts to maintain high-quality data sets, while https://distilabel.argilla.io/latest/[distilabel] is for synthetic data generation.
+* *Medium (8–13B)*: Well-rounded general-purpose models. Run well on 16–24 GB RAM with a mid-range GPU.
 
-Other supporting tools include https://wandb.ai/site[Weights & Biases], a software-as-a-service for tracking experiments and monitoring model checkpoints during the iterative development of models. https://mlflow.org/[MLFlow] is similar but is fully self-hostable.
+* *Large (30–70B)*: High capability. Require at least 32 GB RAM and a dedicated GPU with 24+ GB VRAM.
 
-=== Commercial toolkits and managed services
+* *Very large (70B+)*: Near-frontier capability. Require high-end workstations with multi-GPU setups and at least 64 GB each of RAM and VRAM.
 
-* https://www.together.ai/[Together AI] is probably the most developer-friendly. It has a clean API, 200+ open models, transparent per-token billing (training tokens × epochs). Good for production workloads where you don't want to babysit GPUs.
+[TIP]
+======
+To estimate whether your own hardware can run a given model — accounting for quantization level (Q4–F16), context length, and expected token throughput (TPS) — try the https://logarithmicspirals.com/tools/local-ai-vram-calculator-gpu-planner/[Local AI VRAM Calculator & GPU Planner]. It maps a hardware setup and use case to model recommendations, with the caveat that the figures are planning estimates, not performance guarantees.
+======
 
-* https://fireworks.ai/[Fireworks AI] — similar positioning to Together, strong on inference performance after training. Per-token training pricing.
+Custom hardware like the https://www.nvidia.com/en-gb/products/workstations/dgx-spark/[Nvidia DGX Spark] give you the ability to run _and train_ large language models on your own hardware.
 
-* https://huggingface.co/autotrain[Hugging Face AutoTrain] — codeless web UI. Easiest entry point if you've never fine-tuned anything, but less flexible than the other options.
+=== Open-weight model families
 
-* https://modal.com/[Modal], https://www.runpod.io/[Runpod], and https://northflank.com/[Northflank] are GPU-rental platforms (aka, serverless GPU clouds) rather than fine-tuning products specifically. You bring your own Axolotl/Unsloth scripts and rent A100s/H100s by the second. Cheapest option if you can write code.
+As of 2026, some notable open-weight model families include (several use a *xref:large-language-model.adoc#_mixture_of_experts[mixture-of-experts (MoE)]* architecture):
 
-* https://aws.amazon.com/sagemaker/[Amazon SageMaker] / https://cloud.google.com/products/gemini-enterprise-agent-platform[Gemini Enterprise Agent Platform (formerly Google Vertex AI)] / https://azure.microsoft.com/en-us/products/machine-learning[Azure ML] — enterprise managed options, which can be good options if you're already invested in those particular public cloud services.
+* https://llama.meta.com/[*Llama*] models from Meta. The Llama family did much to kick-start the open-weight era, and its widespread adoption has made the underlying architecture a de facto reference point that many other open models build on. The Scout variant is known for its massive 10-million token context window. Released under Meta's community license, which permits commercial use but imposes some restrictions (including for very large deployments).
 
-* https://docs.predibase.com/getting-started/introduction[Predibase] and https://openpipe.ai/[OpenPipe] are workflow-focused commercial offerings that handle data prep, training, and serving as a single pipeline. Predibase originated from https://ludwig.ai/[Ludwig] (open source) and layers a commercial product on top.
+* https://ai.google.dev/gemma[*Gemma*] models from Google. These are Google's open-weight counterparts to its proprietary, frontier Gemini models. Gemma models are optimized to run on consumer hardware.
 
-* https://www.premai.io/studio[Prem Studio] keeps training data, weights, and inference on infrastructure you control — useful for regulated industries where managed cloud platforms that route data through shared infrastructure (eg. Together standard tier, HF AutoTrain, OpenPipe, Fireworks) aren't suitable.
+* https://qwenlm.github.io/[*Qwen*] models from Alibaba Cloud are available in a wide range of sizes, so there'll always be one variant that you can run on your hardware.
 
-////
+* https://mistral.ai/[*Mistral*] models from Mistral AI, a French company that produces both open-weight models and proprietary models accessible via web service APIs. Their Mixtral models helped popularize the mixture-of-experts (MoE) architecture in open models.
+
+* https://azure.microsoft.com/en-us/products/phi/[*Phi*] models from Microsoft. A family of small language models (SLMs) that punch well above their size on reasoning and maths, achieved largely by training on high-quality, "textbook-quality" filtered and synthetic data rather than sheer scale. Optimized for on-device and edge use, and released under the permissive MIT license. Recent releases include Phi-4 (14B) and the compact Phi-4-mini, with multimodal variants.
+
+* https://huggingface.co/openai[*gpt-oss*] models from OpenAI. `gpt-oss-120b` and `gpt-oss-20b`, released under the permissive Apache 2.0 license in August 2025, were OpenAI's first open-weight models since GPT-2.
+
+* https://huggingface.co/moonshotai[*Kimi*] models from Moonshot AI. Kimi K2.5 (released January 2026) is an open-weight mixture-of-experts model with 1T total parameters (32B activated per token) and a 256K-token context window. It matches frontier models on several benchmarks and is multimodal across text, code, image, and video (understanding only, no generation). Kimi 2.5 leads in mathematical reasoning and is optimized for "agent swarming".
+
+* https://huggingface.co/zai-org[*GLM*] models from Z.ai (formerly Zhipu AI). The GLM-4.5 and GLM-4.6 releases are strong open-weight MoE models, well-regarded for their "interleaved thinking" and demonstrated capabilities in both agentic and vibe coding workflows.
+
+* https://www.deepseek.com/[*DeepSeek*] models from DeepSeek AI. This AI lab made waves in early 2025 when DeepSeek-R1 demonstrated near-frontier reasoning performance at a fraction of the training compute cost that had previously been assumed was necessary to develop frontier models. Its "engram" memory system has been proven to maintain high coding performance across 1M+ token contexts.
+
+* https://www.minimax.io/[*MiniMax*] models from MiniMax AI, which also develops closed-weight models. MiniMax M2.5 is well-regarded, posting near-frontier agentic and coding scores (~80% on SWE-Bench Verified) at an exceptionally low cost.
+
+Nvidia continues to expand its open-weight offerings, most recently with the https://research.nvidia.com/labs/nemotron/Nemotron-3/[*Nemotron 3*] family (Nano, Super, and Ultra variants).
+
+NOTE: "Open-weight" is not the same as "open-source". Most of these families release only their trained weights, not the training data or full reproduction recipe, and some ship under restrictive custom licenses. Llama and Gemma, for example, carry usage restrictions, whereas Qwen, DeepSeek, and Mistral's open releases mostly use permissive Apache 2.0 or MIT terms.
+
+=== Open-weight coding models
+
+The following open-weight models are highly regarded for programming tasks. Small models (≤ 8B) run comfortably on a laptop or CPU-only setup. Larger models require a GPU with ≥ 16–24 GB VRAM.
+
+* *Qwen2.5-Coder 32B Instruct*: Alibaba's dedicated coding model that consistently tops open-weight coding benchmarks. Strong across Python, JavaScript, Go, and SQL. Supports a 32K context window. Apache 2.0 license.
+
+* *DeepSeek-Coder-V2 Instruct*: A Mixture-of-Experts model (236B total, 21B active) with very strong multi-language coding performance and a 128K context window. One of the most capable open-weight options for complex, multi-file tasks. MIT license.
+
+* *Codestral 22B*: Mistral AI's dedicated code model, optimized for low-latency code completion and fill-in-the-middle (FIM) tasks. Well suited to IDE integration. Supports 32K context. Mistral AI Non-Production License (commercial use requires a separate agreement).
+
+* *StarCoder2 15B*: The successor to StarCoder, trained on The Stack v2. Strong on Python, JavaScript, and C/C++, and well suited to code search and autocompletion tasks. Apache 2.0 license.
+
+* *Code Llama 70B Instruct*: Meta's instruction-tuned coding variant of Llama 2, with a 16K context window and strong performance on multi-language tasks and large-scale refactoring. Meta's non-commercial license restricts use to research.
 
 ''''
 
