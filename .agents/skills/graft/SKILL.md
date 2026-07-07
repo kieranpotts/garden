@@ -1,6 +1,10 @@
 ---
 name: graft
-description: Merge two or more related-but-distinct garden entries into a single broader page, cross-links repointed and the absorbed pages removed. Use when the user says "graft these entries", "merge X and Y into one page", or notices several thin pages that would read better as one concept.
+description: >-
+  Merge two or more related-but-distinct garden entries into a single broader
+  page, cross-links repointed and the absorbed pages removed. Use when the user
+  says "graft these entries", "merge X and Y into one page", or notices several
+  thin pages that would read better as one concept.
 metadata:
   interactive: no
 ---

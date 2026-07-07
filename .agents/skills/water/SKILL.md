@@ -1,6 +1,11 @@
 ---
 name: water
-description: Research an existing garden entry's topic afresh and extend the page with new depth, detail, and developments — like sow, but for an entry that already exists. Use when the user says "water event-sourcing.adoc", "research and extend this entry", or wants an established page grown further. For rescuing a thin stub, use fertilize instead.
+description: >-
+  Research an existing garden entry's topic afresh and extend the page with new
+  depth, detail, and developments — like sow, but for an entry that already
+  exists. Use when the user says "water event-sourcing.adoc", "research and
+  extend this entry", or wants an established page grown further. For rescuing a
+  thin stub, use fertilize instead.
 metadata:
   interactive: no
 ---

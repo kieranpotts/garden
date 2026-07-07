@@ -1,6 +1,11 @@
 ---
 name: tend
-description: Inspect the digital garden for withering content — broken cross-references, fake pseudo-links, orphaned pages missing from the index, and stale maturity labels — and report or fix what's found. Use when the user says "tend the garden", "check for broken links", or asks for general garden maintenance/health checks.
+description: >-
+  Inspect the digital garden for withering content — broken cross-references,
+  fake pseudo-links, orphaned pages missing from the index, and stale maturity
+  labels — and report or fix what's found. Use when the user says "tend the
+  garden", "check for broken links", or asks for general garden
+  maintenance/health checks.
 metadata:
   interactive: no
 ---

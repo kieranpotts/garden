@@ -1,6 +1,11 @@
 ---
 name: harvest
-description: Produce a digest of recent garden activity — entries sown, fertilized, tended, pruned, grafted, entwined, weeded, or uprooted over a given period — for review or changelog purposes. Use when the user says "harvest the garden", "what's changed recently", or asks for a summary/digest of recent garden activity.
+description: >-
+  Produce a digest of recent garden activity — entries sown, fertilized, tended,
+  pruned, grafted, entwined, weeded, or uprooted over a given period — for
+  review or changelog purposes. Use when the user says "harvest the garden",
+  "what's changed recently", or asks for a summary/digest of recent garden
+  activity.
 metadata:
   interactive: no
 ---

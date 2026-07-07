@@ -1,6 +1,10 @@
 ---
 name: fertilize
-description: Expand a thin stub entry in the digital garden into a fuller page, without changing its scope. Use when the user says "fertilize X", "this entry needs more growth", "expand the stub on X", or asks to flesh out a short/underdeveloped garden page.
+description: >-
+  Expand a thin stub entry in the digital garden into a fuller page, without
+  changing its scope. Use when the user says "fertilize X", "this entry needs
+  more growth", "expand the stub on X", or asks to flesh out a
+  short/underdeveloped garden page.
 metadata:
   interactive: no
 ---

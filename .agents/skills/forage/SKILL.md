@@ -1,6 +1,10 @@
 ---
 name: forage
-description: Find topics that are referenced or implied across the garden but don't have their own page yet, and produce a prioritized list of candidates for sowing. Use when the user says "forage the garden", "what topics are missing?", or asks what new entries are worth creating.
+description: >-
+  Find topics that are referenced or implied across the garden but don't have
+  their own page yet, and produce a prioritized list of candidates for sowing.
+  Use when the user says "forage the garden", "what topics are missing?", or
+  asks what new entries are worth creating.
 metadata:
   interactive: no
 ---

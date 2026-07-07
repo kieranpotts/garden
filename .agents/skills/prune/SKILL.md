@@ -1,6 +1,10 @@
 ---
 name: prune
-description: Drop a garden entry whose topic is already well-covered by another page — deleting it and redirecting its inbound links to the covering page. Use when the user says "prune acid.adoc", "this entry is already covered by X, drop it", or suspects a page is redundant.
+description: >-
+  Drop a garden entry whose topic is already well-covered by another page —
+  deleting it and redirecting its inbound links to the covering page. Use when
+  the user says "prune acid.adoc", "this entry is already covered by X, drop
+  it", or suspects a page is redundant.
 metadata:
   interactive: no
 ---

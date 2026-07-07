@@ -1,15 +1,17 @@
 ---
 name: cultivate
-description: Review a single garden entry against docs/style-guide.md — sentence-case titles, prose style, dash/colon usage, bold-text rules, admonition usage — and report or fix violations. Use when the user says "cultivate agent.adoc", "check style on this entry", or asks for a style-guide pass over one page.
+description: >-
+  Review a single garden entry against docs/style-guide.md — sentence-case
+  titles, prose style, dash/colon usage, bold-text rules, admonition usage — and
+  report or fix violations. Use when the user says "cultivate agent.adoc",
+  "check style on this entry", or asks for a style-guide pass over one page.
 metadata:
   interactive: no
 ---
 
 # Cultivate
 
-**Input**: A single target entry in the garden. Always re-read
-[docs/style-guide.md](../../../docs/style-guide.md) first — it is the source of
-truth and may have changed since this skill last ran. Do not block to ask the
+**Input**: A single target entry in the garden. Do not block to ask the
 user questions. Make your proposed edits and leave them in the Git working tree
 for the user to decide what to do with them.
 
@@ -24,7 +26,7 @@ automatically and which judgment calls are flagged for the user.
 
     Read [docs/style-guide.md](../../../docs/style-guide.md) in full before
     reviewing anything. Don't rely on a remembered or cached understanding of
-    its rules — it changes independently of any one page.
+    its rules — it may have changed since the last run.
 
 2.  **Check the entry against the style guide, section by section:**
 

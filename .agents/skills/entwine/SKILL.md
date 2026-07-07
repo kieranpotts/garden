@@ -1,6 +1,10 @@
 ---
 name: entwine
-description: Given a single garden entry, find other pages that are related to it but not yet cross-referenced, and add the missing xref links. Use when the user says "entwine event-sourcing.adoc with its neighbors", "link this page to related entries", or asks whether an entry is properly connected.
+description: >-
+  Given a single garden entry, find other pages that are related to it but not
+  yet cross-referenced, and add the missing xref links. Use when the user says
+  "entwine event-sourcing.adoc with its neighbors", "link this page to related
+  entries", or asks whether an entry is properly connected.
 metadata:
   interactive: no
 ---
