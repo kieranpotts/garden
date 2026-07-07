@@ -198,6 +198,16 @@ Hallucinations are an inherent limitation of how LLMs work, not a bug that can b
 * Grounding model outputs in retrieved facts (RAG — see below).
 * Verifying outputs independently.
 
+== Computational irreducibility
+
+Some tasks like multi-digit arithmetic, tracing the execution of a novel algorithm, or simulating a complex system step-by-step, cannot be shortcut using LLMs due to their inherent limitations.
+
+LLMs are trained to recognize and extrapolate statistical patterns, not to carry out arbitrary chains of exact computation. This is why they can fail at tasks that seem "simple" to a conventional computer, such as multiplying two large numbers, while succeeding at tasks that are traditionally hard for computers to do, such as writing a coherent essay. It turns out that essay writing is more statistically patterned (and computationally shallower) than exact step-by-step computation.
+
+https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/[Stephen Wolfram calls this property] *computational irreducibility*.
+
+This is one reason *xref:agent.adoc[agentic systems]* pair LLMs with external tools such as calculators, code interpreters, and REPLs. The idea is to offload irreducible computation to a traditional system which can actually execute the computation, rather than asking the model to predict the answer token by token.
+
 == Retrieval-augmented generation (RAG)
 
 A core limitation of LLMs is that their knowledge is frozen at the point of training. By default, models cannot access new information or browse the web. In addition, LLMs are prone to hallucination — generating fluent, confident-sounding responses that are factually incorrect — particularly when asked about topics outside their training data or at the edges of their knowledge.
@@ -281,6 +291,8 @@ Although it is possible to interact with a model directly, for most use cases yo
 * https://cookbook.openai.com/[OpenAI Cookbook], OpenAI — Example code, recipes, and best practices for working with the OpenAI APIs.
 
 * https://github.com/SylphAI-Inc/LLM-engineer-handbook[LLM Engineer Handbook] — Curated collection of links and resources for AI engineers.
+
+* https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/[What Is ChatGPT Doing … and Why Does It Work?], Stephen Wolfram — Accessible first-principles explanation of next-token prediction, embeddings, and the transformer's attention mechanism, plus the concept of computational irreducibility.
 
 === Books
 
