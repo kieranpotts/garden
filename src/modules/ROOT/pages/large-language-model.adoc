@@ -46,7 +46,7 @@ Fine-tuning is how general-purpose base models are turned into specialized assis
 
 Fine-tuning is commonly used to create new models. Rather than training a new model from scratch — which requires enormous compute and data — fine-tuning starts from an existing model's weights and adjusts them incrementally.
 
-A specialized form of fine-tuning is *instruction tuning*, which is training a base model on examples of instructions paired with desired responses. Most frontier models also undergo reinforcement learning from human feedback (RLHF), which can be thought of as a highly labour-intensive form of instruction tuning — see below.
+A specialized form of fine-tuning is *instruction tuning*, which is training a base model on examples of instructions paired with desired responses. Most frontier models also undergo reinforcement learning from human feedback (RLHF), which can be thought of as a highly labor-intensive form of instruction tuning — see below.
 
 *LoRA (Low-Rank Adaptation)*, introduced by Microsoft researchers in 2021, is the most common fine-tuning technique for open-weight models such as Llama and Qwen. Instead of updating a model's billions of weights — which is expensive, slow, and produces huge files — LoRA freezes the original weights and trains small "adapter" matrices alongside them. The upshot is that a LoRA for a 7B model might be 10–200 MB instead of 14 GB, trainable in hours on a single consumer GPU, and swappable in and out at inference time.
 
@@ -180,7 +180,7 @@ When generating a response, an LLM does not simply pick the most probable next t
 
 For factual or code-generation tasks, a low temperature is usually preferable. For creative writing, a higher temperature produces more interesting results.
 
-Many model expose temperature as a configurable parameter.
+Many models expose temperature as a configurable parameter.
 
 == Hallucinations
 
@@ -204,7 +204,7 @@ In a RAG system, a user's query is used to search a knowledge base — a vector 
 
 RAG is widely used to build knowledge-aware applications — internal document Q&A systems, customer support bots, and AI search engines. https://www.perplexity.ai/[Perplexity] is a prominent consumer example. It uses live web search to answer questions with cited sources in real time. See *xref:ai-assistant.adoc[AI assistants]* for other examples.
 
-Agent development frameworks such as LangChain and LlamaIndex Can used to build RAG capabilities into agents, providing the retrieval, chunking, and orchestration plumbing so developers do not have to wire it together from scratch. See *xref:agents.adoc[agents]*.
+Agent development frameworks such as LangChain and LlamaIndex can be used to build RAG capabilities into agents, providing the retrieval, chunking, and orchestration plumbing so developers do not have to wire it together from scratch. See *xref:agents.adoc[agents]*.
 
 == Evals
 
