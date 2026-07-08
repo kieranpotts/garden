@@ -1,35 +1,37 @@
 # Garden
 
-## Project overview
-
 A personal digital garden — a curated knowledgebase of atomic notes on computer
 science topics, formatted in AsciiDoc. This repo has no build of its own; it's
 an Antora content module aggregated and built by the
 [`website`](https://github.com/kieranpotts/website) repo.
+
+The capitalized words REQUIRED, MUST, MUST NOT, RECOMMENDED, SHOULD,
+SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
+[IETF RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 ## Tech stack
 
 - AsciiDoc, structured as an Antora component (`src/antora.yml`).
 - No local build, test runner, or package manager — content only.
 
-## Repository structure
+## Project structure
 
-- `src/modules/ROOT/pages/`: One `.adoc` file per topic. Each is atomic —
+- **`src/modules/ROOT/pages/`**: One `.adoc` file per topic. Each is atomic —
   focused on a single idea or concept — and cross-references related topics with
   `xref:` rather than repeating content.
 
-- `src/modules/ROOT/pages/index.adoc`: The only page listing — every entry MUST
+- **`src/modules/ROOT/pages/index.adoc`**: The only page listing — every entry MUST
   be listed here to be discoverable on the site.
 
-- `src/antora.yml`: Antora component descriptor.
+- **`src/antora.yml`**: Antora component descriptor.
 
-- [`.agents/skills/`](./.agents/skills/README.md): On-demand agent skills
+- **[`.agents/skills/`](./.agents/skills/README.md)**: On-demand agent skills
   specific to maintaining this garden.
 
-- [`docs/style-guide.md`](./docs/style-guide.md): Writing and AsciiDoc
+- **[`docs/style-guide.md`](./docs/style-guide.md)**: Writing and AsciiDoc
   formatting conventions for garden entries..
 
-- `.github/workflows/`: CI checks (stale-issue flagging, label sync, commit
+- **`.github/workflows/`**: CI checks (stale-issue flagging, label sync, commit
   message validation).
 
 ## Tools
@@ -38,11 +40,6 @@ No build, lint, or test commands. Validity is structural: every `xref:` target
 must resolve to a real file, and every page must be listed in `index.adoc`.
 
 ## Rules
-
-The capitalized words REQUIRED, MUST, MUST NOT, RECOMMENDED, SHOULD, SHOULD NOT,
-OPTIONAL, and MAY, in the context of this document and agent
-skills/instructions/rules, are to be interpreted as described in
-[IETF RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
 
 - Each `.adoc` file MUST cover exactly one topic. Use `xref:` to link rather
   than re-explaining a concept that already has its own page.
