@@ -4,7 +4,11 @@
 
 A large language model (LLM) is a *xref:machine-learning.adoc[deep learning]* model trained on vast amounts of text.
 
-At a fundamental level, LLMs work by predicting the probability of each possible next token in a sequence, then sampling from that distribution. But from this primitive process unexpected capabilities arise. At scale, LLMs demonstrate the ability to reason, summarize, translate, write code, and hold human-like conversations. These unexpected capabilities are known as *emergence*.
+At a fundamental level, LLMs work by predicting the probability of each possible next token in a sequence, then sampling from that distribution. Under the hood, an LLM is a sophisticated autocomplete: you give it some initial text, and it keeps writing, one token at a time, based on what it calculates to be the most likely continuation. Feed it "I think, therefore I..." and it will almost always complete it with "am", because that continuation is overwhelmingly the most likely one across its training data. Feed it something more unusual and the completions vary from run to run.
+
+But from this primitive process unexpected capabilities arise. At scale, LLMs demonstrate the ability to reason, summarize, translate, write code, and hold human-like conversations. These unexpected capabilities are known as *emergence*.
+
+Part of why the output _feels_ so human is simply that the training data is human: models learn from our own conversations, writing, and creative works, and so come to mirror the way we communicate.
 
 LLMs are a category of *xref:generative-ai.adoc[generative AI]*. They are increasingly deployed across a wide variety of contexts. *xref:ai-assistant.adoc[AI assistants]* are perhaps the best-known application built on top of LLMs, but many other use cases are being found.
 
@@ -24,7 +28,11 @@ Training a frontier model requires data centers full of specialized hardware run
 
 There are multiple stages of training. *Pre-training* is the process of building a model's foundational knowledge by exposing it to a broad, general-purpose corpus of data. The model learns to predict the next token in a sequence, and in doing so it internalizes the statistical patterns, semantic associations, and structure of the training data.
 
-The result is a base model with broad capabilities but no particular alignment to how it should be used.
+Crucially, this is *unsupervised* (or, more precisely, self-supervised): unlike earlier forms of AI, pre-training needs no carefully labelled data. The model learns to recognize the patterns, structures, and context of human language directly from raw text, which is what makes it feasible to train on a corpus this large.
+
+The result is a base model with broad capabilities but no particular alignment to how it should be used. In this raw state a model simply reflects back the material it was trained on — including the biases, errors, and falsehoods in that material — and it has no ethical boundaries of its own. *Judgment* is a layer added afterwards, during *fine-tuning* (see below), where AI labs work to build in ethical boundaries and design out biases.
+
+It is worth being clear-eyed about the limits of this. A model is ultimately just a massive vector of numerical parameters, so there is no way to _guarantee_ that a model will behave safely on its own. Fine-tuning shifts the odds but proves nothing. In practice, safety depends as much on the wrapping infrastructure around the model — the *xref:agent-harness.adoc[harness]*, guardrails, and monitoring — as on the model's own training.
 
 == Post-training
 
@@ -50,7 +58,9 @@ These pressures are a large part of why the frontier has turned toward data _qua
 
 *Fine-tuning* is the process of taking a pre-trained model and continuing to train it on a smaller, task-specific dataset to adapt its behavior for a particular domain or use case.
 
-Fine-tuning is how general-purpose base models are turned into specialized assistants. A model fine-tuned on medical literature will perform better on clinical tasks than the same base model used out-of-the-box.
+Fine-tuning is how general-purpose base models are turned into specialized assistants. A model fine-tuned on medical literature will perform better on clinical tasks than the same base model used out-of-the-box. It can also be done for an individual customer on their own data — for example, fine-tuning on a company's customer-service transcripts to match its house style and handle its particular queries. The common thread is customizing a model for a specific use case, typically by continuing to train it on a set of high-quality examples.
+
+The examples used for fine-tuning need not be hand-curated up front. They can also come from production usage — most simply, from the thumbs-up and thumbs-down reactions users give to a model's responses. This feedback signals which answers were good and which were not, and can be fed back in to refine the model, closing the loop between how a model is used and how it is subsequently improved.
 
 Fine-tuning is commonly used to create new models. Rather than training a new model from scratch — which requires enormous compute and data — fine-tuning starts from an existing model's weights and adjusts them incrementally.
 
@@ -63,6 +73,8 @@ Variants include *QLoRA (Quantized LoRA)* and *merged LoRAs*, where the changes 
 == RLHF
 
 *Reinforcement learning from human feedback (RLHF)* is a post-training technique that aligns a model's behavior with human preferences, making it safer, more helpful, and less likely to produce harmful outputs.
+
+This is the stage that brings humans directly into the loop. A workforce — ranging from highly-paid domain experts to large numbers of low-paid contractors — reads the model's answers and rates them for qualities like helpfulness, accuracy, and safety. That feedback reinforces good answers and discourages bad ones, and is used to refine the model.
 
 The process works in two stages. First, human evaluators compare pairs of model outputs and select which is better. This data is used to train a separate *reward model* that learns to predict human preferences. Second, the main model is trained via reinforcement learning to maximize scores from the reward model. Because the second stage optimizes against the reward model rather than humans directly, it scales without requiring continuous human input.
 
@@ -96,7 +108,7 @@ Tokens with similar meanings produce vectors that are close together in this mul
 
 == Weights
 
-Weights are a model's learned *parameters* — the billions of numbers that encode everything it learned during training, and that determine how the model transforms inputs into output.
+Weights are a model's learned *parameters* — the billions of numbers that encode everything it learned during training, and that determine how the model transforms inputs into output. Critically, these weights are _learned_ from the training data, not explicitly programmed by hand. It is the combination of a vast training corpus and billions of such weights that lets a model emulate human communication so closely.
 
 An LLM with 100 billion parameters has roughly that many weights, stored in memory or on disk.
 
