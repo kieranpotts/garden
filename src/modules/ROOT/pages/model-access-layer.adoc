@@ -18,7 +18,7 @@ There are five broad patterns for running and accessing LLMs, spanning a spectru
 +
 The *first-party APIs of the frontier labs* — https://docs.anthropic.com/[Anthropic], https://platform.openai.com/[OpenAI], and https://ai.google.dev/[Google's Gemini API] — are a variant of this pattern. The difference is that you are calling the lab's own proprietary model directly, rather than choosing an (often open-weight) model from a third party's library. This is typically the only way to access the very latest frontier models, but it ties you to a single vendor.
 
-* *Edge / on-device*: The model is embedded directly into your application and ships to your users' devices, running entirely client-side with no server. Tooling includes https://github.com/mlc-ai/web-llm[WebLLM], https://github.com/ml-explore/mlx[Apple MLX], https://github.com/mlc-ai/mlc-llm[MLC LLM], https://github.com/ggml-org/llama.cpp[llama.cpp], ONNX Runtime, and https://huggingface.co/docs/transformers.js[Transformers.js]. Best for privacy, low latency, and offline support, but constrained by the capabilities of the user's device — typically, you'e looking at ultra-light models, 1-3B parameters maximum.
+* *Edge / on-device*: The model is embedded directly into your application and ships to your users' devices, running entirely client-side with no server. Tooling includes https://github.com/mlc-ai/web-llm[WebLLM], https://github.com/ml-explore/mlx[Apple MLX], https://github.com/mlc-ai/mlc-llm[MLC LLM], https://github.com/ggml-org/llama.cpp[llama.cpp], ONNX Runtime, and https://huggingface.co/docs/transformers.js[Transformers.js]. Best for privacy, low latency, and offline support, but constrained by the capabilities of the user's device — typically, you're looking at ultra-light models, 1-3B parameters maximum.
 
 == Model gateways
 
@@ -45,7 +45,7 @@ A single subscription to a gateway service like Perplexity Pro or OpenRouter can
 
 == Model managers
 
-Model managers are primarily designed for running *xref:open-weight-model.adoc[open-weight models]* locally. They handle downloading of models, managing hardware resources, and serving a local inference endpoint — typically an OpenAI-compatible API on localhost. Essentially, model managers wrap an inference engine with all the additional tools needed to managing and running large-language models.
+Model managers are primarily designed for running *xref:open-weight-model.adoc[open-weight models]* locally. They handle downloading of models, managing hardware resources, and serving a local inference endpoint — typically an OpenAI-compatible API on localhost. Essentially, model managers wrap an inference engine with all the additional tools needed to manage and run large-language models.
 
 By contrast, *model API gateways* (above) are middleware for routing requests to remote, hosted models across multiple cloud providers.
 
