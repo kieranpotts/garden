@@ -4,4 +4,8 @@
 
 The idea is most closely associated with Anthropic's *Constitutional AI* method, developed for the Claude family of *xref:large-language-model.adoc[large language models]*. In this approach, the constitution is a written list of principles drawn from sources such as the Universal Declaration of Human Rights, philosophical writings, and best-practice guidance. During training, the model samples an initial response, critiques that response against the constitution, revises it to better satisfy the principles, and is then fine-tuned on the revised output. A later reinforcement-learning stage can use the model's own constitutional evaluations as feedback — a variant known as reinforcement learning from AI feedback (RLAIF) — rather than relying on large amounts of human preference data.
 
-Constitutional methods are one layer of safety engineering for capable models. They do not guarantee safe behavior on their own. A constitution is only as good as the principles it contains and the training process that instills them. In practice, it is complemented by guardrails, monitoring, and careful design of the surrounding *xref:agent-harness.adoc[agent harness]*.
+Constitutional methods are one layer of *xref:agent-harness.adoc[safety engineering]* for capable models. They do not guarantee safe behavior on their own. A constitution is only as good as the principles it contains and the training process that instills them. In practice, it is complemented by guardrails, monitoring, and careful design of the surrounding *xref:agent.adoc[agent]* harness.
+
+== See also
+
+* *xref:recursive-self-improvement.adoc[Recursive self-improvement (RSI)]*
