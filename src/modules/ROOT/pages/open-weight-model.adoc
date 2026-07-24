@@ -1,6 +1,20 @@
 = Open-weight model
 
-*Open-weight* models are *xref:large-language-model.adoc[large language models]* (or other machine learning models) whose trained weights are published for anyone to download and run. This is distinct from *open-source*, which would also require the training data and code used to produce the model to be public — most open-weight models do not meet that bar, since labs frequently withhold the data and training recipes even when releasing the weights themselves.
+*Open-weight* models are *xref:large-language-model.adoc[large language models]* (or other machine learning models) whose trained weights are published for anyone to download and run. This is distinct from *open-source*, which would also require the training data and code used to produce the model to be public.
+
+== Open weight vs. open source
+
+Most "open" AI models are only open-weight. The weights are downloadable, but the training corpus, the data-cleaning recipes, and the exact training code are kept private. That is enough for many use cases — you can run, fine-tune, and self-host the model — but it is not enough to reproduce it from scratch, audit what it was trained on, or verify that a given output is free of inherited copyright or bias issues.
+
+A smaller but growing category is *truly open-source* models, which release the weights _and_ the training data and methodology. The standout example is Nvidia's https://research.nvidia.com/labs/nemotron/Nemotron-3/[*Nemotron 3*] family, announced alongside a partnership with Palantir in July 2026. Nvidia published not just the model weights but the training recipes and roughly ten trillion tokens of the underlying training data. That level of openness makes it possible to inspect, reproduce, and modify the full pipeline, not just the final artifact.
+
+The distinction matters for several reasons:
+
+* *Reproducibility and auditability.* Open-source models let researchers and regulators inspect what went into the model. Open-weight models do not.
+
+* *Data sovereignty and IP risk.* Running an open-weight or open-source model on your own hardware keeps proprietary prompts and data inside your infrastructure. More fully open models also make it easier to avoid the training-data copyright questions that have led to large settlements against closed labs.
+
+* *Cost.* When performance is roughly equivalent, self-hosting an open model is often an order of magnitude cheaper per token than using a closed frontier API.
 
 Licensing terms vary between open-weight models. Some permit unrestricted commercial use (eg. Apache 2.0, MIT). Others carry custom licenses that restrict commercial use, redistribution, or use above a certain scale (eg. Meta's Llama community license).
 
