@@ -164,15 +164,7 @@ Context window size is one of the most impactful characteristics of models on th
 
 Modern frontier models support context windows of 128K tokens or more. Some now extend to 1M tokens and beyond.
 
-== Key-value cache
-
-During inference, the attention mechanism requires each token to be compared against every other token in the context. Doing this from scratch for every new token generated would be enormously wasteful. The keys and values for all previously processed tokens would have to be recomputed identically at each step.
-
-A *key-value cache* or *KV cache* solves this by storing the computed key and value vectors for every token already processed, so they only need to be calculated once and can be reused as each subsequent token is generated. This trades memory for compute, and is what makes token-by-token generation practical at interactive speeds.
-
-The cost is that KV caches grow linearly with context length and model depth. A large context window requires proportionally more VRAM to hold its KV cache. This is one reason why large context inference is memory-intensive even when the model itself fits comfortably in VRAM.
-
-This is also the problem that vLLM's "PagedAttention" addresses – see the section on inference engines, below. It manages KV cache memory more efficiently to support higher request concurrency.
+The *xref:key-value-cache.adoc[key-value cache (KV cache)]* stores the attention states of previously processed tokens so they don't have to be recomputed for every new token. This trades memory for compute and is what makes long, interactive generation practical. See *xref:key-value-cache.adoc[key-value cache (KV cache)]* for details.
 
 == Compaction
 

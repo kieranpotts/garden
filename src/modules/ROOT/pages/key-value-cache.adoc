@@ -1,0 +1,22 @@
+= Key-value cache (KV cache)
+
+A *key-value cache* or *KV cache* is the buffer of intermediate attention states that a *xref:transformer.adoc[transformer]*-based *xref:large-language-model.adoc[large language model (LLM)]* keeps in GPU memory during inference. It stores the key and value vectors already computed for every token in the current context, so the model can generate the next token without recomputing the entire sequence from scratch.
+
+In standard autoregressive decoding, the model predicts one token at a time, and each new token depends on all the tokens that came before it. The attention mechanism compares the new token against every earlier token in the context. Without a cache, the keys and values for all those earlier tokens would be recomputed identically on every single step. The KV cache prevents that waste by remembering the earlier results and reusing them. This trades memory for compute and is what makes long, interactive responses feasible at reasonable speed.
+
+A useful mental model is to treat the KV cache as the model's short-term memory. When it generates a new word, it does not re-read the whole prompt and conversation history. It looks at the cached state of the past and calculates only the contribution of the new token.
+
+The cost of this convenience is memory. The cache grows linearly with context length, model depth, and hidden dimension. Long contexts therefore need proportionally more video memory (VRAM), which is one reason large-context inference is memory-intensive even when the model weights themselves fit comfortably on the GPU.
+
+Several techniques manage this pressure. *PagedAttention*, used by inference engines such as vLLM, stores the cache in fixed-size blocks and shares them across requests, reducing fragmentation and allowing higher concurrency. Lower-precision representations, such as those used by some forms of quantization, can also shrink the per-token cache footprint.
+
+Some architectures avoid duplicating the cache across models. For example, a small *drafter* model used for speculative decoding can share the main model's KV cache rather than building its own, because both models are operating on the same context. This saves both memory and the work of reprocessing the context a second time.
+
+''''
+
+== See also
+
+* *xref:large-language-model.adoc[Large language model (LLM)]*
+* *xref:transformer.adoc[Transformer architecture]*
+* *xref:caching.adoc[Caching]*
+* *xref:context-engineering.adoc[Context engineering]*
