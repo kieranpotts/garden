@@ -1,0 +1,15 @@
+= Database branching
+
+Database branching is the practice of creating isolated, divergent copies of a database so that different versions of schema and data can evolve in parallel. Like *xref:version-control.adoc[version control]* branches, a database branch lets developers experiment, run migrations, or test features against realistic data without affecting the main database.
+
+Historically, database branching has been hard to do well. Creating a faithful copy of a production database for a feature branch or staging environment is often slow and expensive. It also raises *xref:privacy.adoc[privacy]* concerns when production data, including personal information, is copied into less-secure development environments. And keeping long-lived branches synchronized with the mainline adds operational *xref:complexity.adoc[complexity]*.
+
+Newer database-as-a-service platforms have changed this by making branches cheap and fast to create, often using copy-on-write storage or snapshots. This brings database workflows closer to the familiar branch-and-merge model of *Git* and to environment provisioning with *xref:infrastructure-as-code.adoc[infrastructure-as-code]* tools such as *Terraform*.
+
+Database branching is useful throughout the delivery pipeline. It supports *xref:ci-cd.adoc[CI/CD]* and *xref:continuous-deployment.adoc[continuous deployment]* by giving each change its own data context to test against. It can complement *xref:deployment-strategies.adoc[deployment strategies]* such as *xref:blue-green-deployment.adoc[blue-green deployment]*, and it helps *xref:platform-engineering.adoc[platform engineering]* teams provide self-service environments.
+
+== See also
+
+* *xref:databases.adoc[Databases]*
+* *xref:relational-databases.adoc[Relational databases]*
+* *xref:serverless-computing.adoc[Serverless computing]*
