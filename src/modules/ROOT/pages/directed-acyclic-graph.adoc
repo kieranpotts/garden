@@ -1,0 +1,20 @@
+= Directed acyclic graph (DAG)
+
+A *directed acyclic graph* (DAG) is a graph of nodes connected by directed edges, with no path that loops back to its starting node. The direction gives an execution order, and the absence of cycles guarantees that order can always be resolved. You cannot end up waiting for yourself.
+
+In software engineering, DAGs are often used to model tasks and their dependencies. A node represents a unit of work, and an edge from one node to another means the second task cannot start until the first finishes. Independent branches can run in parallel. Converging branches wait for every prerequisite to complete. This structure is common in build systems, data pipelines, workflow engines, and — increasingly — *xref:agent-orchestration.adoc[agent orchestration]* and *xref:loop-engineering.adoc[agent loop engineering]*.
+
+For agentic workflows, a DAG provides a declarative way to define control flow. Rather than hard-coding sequences of calls or relying on implicit event triggers, the orchestrator reads a graph that spells out which *xref:agent.adoc[agent]* or tool depends on which. The scheduler then executes ready nodes, routes their outputs to downstream nodes, and retries or rolls back failed branches. This makes the workflow explicit, inspectable, and reproducible compared with purely *xref:event-driven-architecture.adoc[event-driven]* choreography or simple sequential queues.
+
+The trade-off is rigidity. A DAG works best when the control flow can be known ahead of time and expressed as fixed dependencies. Loops, human approvals, and open-ended reasoning are harder to represent directly, which is why some agent systems combine DAGs with stateful graph machines or *xref:loop-engineering.adoc[loop-engineering]* constructs for dynamic, recurring execution.
+
+''''
+
+== See also
+
+* *xref:agent-orchestration.adoc[Agent orchestration]*
+* *xref:agent.adoc[Agent]*
+* *xref:loop-engineering.adoc[Loop engineering]*
+* *xref:execution-orchestrator.adoc[Execution orchestrator]*
+* *xref:event-driven-architecture.adoc[Event-driven architecture]*
+* *xref:data-structures.adoc[Data structures]*
