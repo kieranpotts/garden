@@ -7,6 +7,7 @@ description: >-
   thin pages that would read better as one concept.
 metadata:
   interactive: no
+  preferred_model: ollama/PROSE_DEEP
 ---
 
 # Graft

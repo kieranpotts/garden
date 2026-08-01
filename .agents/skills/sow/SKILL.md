@@ -7,6 +7,7 @@ description: >-
   garden.
 metadata:
   interactive: no
+  preferred_model: ollama/PROSE_DEEP
 ---
 
 # Sow

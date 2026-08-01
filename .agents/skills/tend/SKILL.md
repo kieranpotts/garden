@@ -8,6 +8,7 @@ description: >-
   maintenance/health checks.
 metadata:
   interactive: no
+  preferred_model: ollama/WORKFLOW_BASIC
 ---
 
 # Tend

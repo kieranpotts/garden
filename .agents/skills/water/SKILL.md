@@ -8,6 +8,7 @@ description: >-
   thin stub, use fertilize instead.
 metadata:
   interactive: no
+  preferred_model: ollama/PROSE_DEEP
 ---
 
 # Water

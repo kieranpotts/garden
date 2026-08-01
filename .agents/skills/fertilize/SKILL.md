@@ -7,6 +7,7 @@ description: >-
   short/underdeveloped garden page.
 metadata:
   interactive: no
+  preferred_model: ollama/PROSE_DEEP
 ---
 
 # Fertilize

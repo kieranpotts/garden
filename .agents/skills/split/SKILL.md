@@ -7,6 +7,7 @@ description: >-
   notices a page covering more than one idea.
 metadata:
   interactive: no
+  preferred_model: ollama/PROSE_DEEP
 ---
 
 # Split

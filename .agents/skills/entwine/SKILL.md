@@ -7,6 +7,7 @@ description: >-
   entries", or asks whether an entry is properly connected.
 metadata:
   interactive: no
+  preferred_model: ollama/ANALYSIS_STANDARD
 ---
 
 # Entwine

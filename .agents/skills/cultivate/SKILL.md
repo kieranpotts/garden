@@ -7,6 +7,7 @@ description: >-
   "check style on this entry", or asks for a style-guide pass over one page.
 metadata:
   interactive: no
+  preferred_model: ollama/PROSE_STANDARD
 ---
 
 # Cultivate

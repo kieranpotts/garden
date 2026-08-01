@@ -7,6 +7,7 @@ description: >-
   it", or suspects a page is redundant.
 metadata:
   interactive: no
+  preferred_model: ollama/WORKFLOW_STANDARD
 ---
 
 # Prune

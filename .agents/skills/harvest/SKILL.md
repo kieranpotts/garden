@@ -8,6 +8,7 @@ description: >-
   activity.
 metadata:
   interactive: no
+  preferred_model: ollama/PROSE_STANDARD
 ---
 
 # Harvest

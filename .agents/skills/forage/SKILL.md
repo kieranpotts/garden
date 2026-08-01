@@ -7,6 +7,7 @@ description: >-
   asks what new entries are worth creating.
 metadata:
   interactive: no
+  preferred_model: ollama/ANALYSIS_DEEP
 ---
 
 # Forage

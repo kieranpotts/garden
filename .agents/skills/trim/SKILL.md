@@ -10,6 +10,7 @@ description: >-
   agent.adoc" or "trim the section on AI agents".
 metadata:
   interactive: no
+  preferred_model: ollama/PROSE_STANDARD
 ---
 
 # Trim
