@@ -72,13 +72,14 @@ to the header or payload will invalidate it.
 == Authentication flow
 
 . The user logs in with their credentials. . The server validates the
-credentials and generates a signed JWT containing claims such as user ID, role,
-and expiration time. . The server returns the JWT to the client. . The client
-stores the token (in memory, `localStorage`, `sessionStorage`, or an HttpOnly
-cookie) and sends it with every subsequent request in the `Authorization`
-header: `Authorization: Bearer <token>`. . On each request, the server verifies
-the signature and checks the standard claims (especially `exp`). If valid, the
-user is authenticated without any server-side session lookup.
+  credentials and generates a signed JWT containing claims such as user ID,
+  role, and expiration time. . The server returns the JWT to the client. . The
+  client stores the token (in memory, `localStorage`, `sessionStorage`, or an
+  HttpOnly cookie) and sends it with every subsequent request in the
+  `Authorization` header: `Authorization: Bearer <token>`. . On each request,
+  the server verifies the signature and checks the standard claims (especially
+  `exp`). If valid, the user is authenticated without any server-side session
+  lookup.
 
 == Security considerations
 

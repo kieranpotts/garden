@@ -73,13 +73,13 @@ ICE works by gathering _candidates_ – possible connection routes – in priori
 order:
 
 . *Host candidates*: The peer's own local IP addresses and ports. .
-*Server-reflexive candidates (STUN)*: The peer's public IP and port as seen by a
-STUN server on the internet. STUN (Session Traversal Utilities for NAT, RFC
-5389) is a lightweight protocol: the peer sends a request to a STUN server,
-which reflects back the public IP:port. . *Relayed candidates (TURN)*: If direct
-or STUN-based connectivity fails (e.g. symmetric NAT), traffic is relayed
-through a TURN server (Traversal Using Relays around NAT, RFC 5766). TURN is a
-fallback: it eliminates the P2P benefit but ensures connectivity.
+  *Server-reflexive candidates (STUN)*: The peer's public IP and port as seen by
+  a STUN server on the internet. STUN (Session Traversal Utilities for NAT, RFC
+  5389) is a lightweight protocol: the peer sends a request to a STUN server,
+  which reflects back the public IP:port. . *Relayed candidates (TURN)*: If
+  direct or STUN-based connectivity fails (e.g. symmetric NAT), traffic is
+  relayed through a TURN server (Traversal Using Relays around NAT, RFC 5766).
+  TURN is a fallback: it eliminates the P2P benefit but ensures connectivity.
 
 Both peers gather their candidate lists and exchange them via signalling. ICE
 then performs _connectivity checks_ – trying each candidate pair – and selects
@@ -104,15 +104,15 @@ Encryption is mandatory in WebRTC. There is no unencrypted mode.
 A typical WebRTC call setup:
 
 . *Caller* creates an `RTCPeerConnection`, adds media tracks, and calls
-`createOffer()` to generate an SDP offer. . Caller calls
-`setLocalDescription(offer)` and sends the SDP offer to the callee via the
-signalling channel. . *Callee* receives the offer, calls
-`setRemoteDescription(offer)`, then `createAnswer()`, calls
-`setLocalDescription(answer)`, and sends the SDP answer back via signalling. .
-Caller calls `setRemoteDescription(answer)`. . Both peers gather ICE candidates
-asynchronously and exchange them via the signalling channel. As candidates
-arrive, peers call `addIceCandidate()`. . ICE performs connectivity checks and
-selects a working path. The DTLS handshake completes. Media flows.
+  `createOffer()` to generate an SDP offer. . Caller calls
+  `setLocalDescription(offer)` and sends the SDP offer to the callee via the
+  signalling channel. . *Callee* receives the offer, calls
+  `setRemoteDescription(offer)`, then `createAnswer()`, calls
+  `setLocalDescription(answer)`, and sends the SDP answer back via signalling. .
+  Caller calls `setRemoteDescription(answer)`. . Both peers gather ICE
+  candidates asynchronously and exchange them via the signalling channel. As
+  candidates arrive, peers call `addIceCandidate()`. . ICE performs connectivity
+  checks and selects a working path. The DTLS handshake completes. Media flows.
 
 == Scalability architectures
 

@@ -119,8 +119,8 @@ port 443 (HTTPS) or port 80 (HTTP). TCP uses a three-way handshake to establish
 the connection:
 
 . *SYN* – client sends a synchronize segment to the server. . *SYN-ACK* – server
-acknowledges and sends its own synchronize. . *ACK* – client acknowledges. The
-connection is now established.
+  acknowledges and sends its own synchronize. . *ACK* – client acknowledges. The
+  connection is now established.
 
 This handshake incurs one full round-trip before any data can be sent.
 
@@ -130,11 +130,11 @@ For HTTPS, a TLS handshake takes place over the established TCP connection to
 negotiate encryption:
 
 . The client sends a `ClientHello` with supported TLS versions and cipher
-suites. . The server responds with its chosen cipher suite and its digital
-certificate (containing its public key). . The client verifies the certificate
-against a trusted Certificate Authority (CA). . The two parties exchange or
-derive a shared symmetric session key. . Both sides confirm the handshake is
-complete. All subsequent data is encrypted.
+  suites. . The server responds with its chosen cipher suite and its digital
+  certificate (containing its public key). . The client verifies the certificate
+  against a trusted Certificate Authority (CA). . The two parties exchange or
+  derive a shared symmetric session key. . Both sides confirm the handshake is
+  complete. All subsequent data is encrypted.
 
 TLS 1.3 (current standard) reduces this to a single round-trip, compared to two
 round-trips for TLS 1.2.

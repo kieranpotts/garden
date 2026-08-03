@@ -38,8 +38,9 @@ application layer sees a continuous, correctly-ordered byte stream.
 Before data can be exchanged, a connection is established:
 
 . SYN: Client sends a segment with the SYN flag set and its initial sequence
-number (ISN). . SYN-ACK: Server acknowledges the client's ISN and sends its own
-ISN. . ACK: Client acknowledges the server's ISN. The connection is established.
+  number (ISN). . SYN-ACK: Server acknowledges the client's ISN and sends its
+  own ISN. . ACK: Client acknowledges the server's ISN. The connection is
+  established.
 
 This costs one full round-trip before any application data can be sent.
 
@@ -53,8 +54,8 @@ the minimum of both.
 === Four-way teardown (connection termination)
 
 . FIN: The closing side signals it has no more data to send. . ACK: The other
-side acknowledges. . FIN: The other side sends its own FIN when it is done. .
-ACK: The initiating side acknowledges. Both sides close.
+  side acknowledges. . FIN: The other side sends its own FIN when it is done. .
+  ACK: The initiating side acknowledges. Both sides close.
 
 Connections enter a `TIME_WAIT` state after closing to absorb any delayed
 packets that might otherwise corrupt a new connection reusing the same port
