@@ -1,32 +1,75 @@
 = Loop engineering
 
-Loop engineering is the practice of designing self-running systems in which an *xref:agent.adoc[agent]* operates repeatedly, with minimal human involvement, on a recurring cadence rather than a single request-response turn.
+Loop engineering is the practice of designing self-running systems in which an
+*xref:agent.adoc[agent]* operates repeatedly, with minimal human involvement, on
+a recurring cadence rather than a single request-response turn.
 
-Loop engineering is a specialized form of *xref:agent-orchestration.adoc[agent orchestration]*. It coordinates agents over repeated turns and long-running goals, but with a narrower focus on unattended execution and self-running loops.
+Loop engineering is a specialized form of
+*xref:agent-orchestration.adoc[agent orchestration]*. It coordinates agents over
+repeated turns and long-running goals, but with a narrower focus on unattended
+execution and self-running loops.
 
-The term and framework come from Peter Steinberger, Boris Cherny, and Addy Osmani's paper _https://asixiv.org/pdf/curated/2606.00001[Loop Engineering: The Anthropic Playbook for Designing Systems That Prompt Your Agents]_.
+The term and framework come from Peter Steinberger, Boris Cherny, and Addy
+Osmani's paper
+_https://asixiv.org/pdf/curated/2606.00001[Loop Engineering: The Anthropic Playbook for Designing Systems That Prompt Your Agents]_.
 
-Don't confuse this with the *xref:agent-loop.adoc[agent loop]*, which is the cycle within which an agent runs. Loop engineering operates at a higher level of abstraction. It is the design of an agentic away-from-keyboard workflow that autonomously decides when and how often to run that inner agent loop, unattended, until a goal is reached. In other words, loop engineering is the design of a system that runs an agent loop, rather than the design of an agent loop itself. Or, to explain it another way, loop engineering is the practice of designing automated systems that prompt agents on behalf of humans, rather than humans prompting agents directly.
+Don't confuse this with the *xref:agent-loop.adoc[agent loop]*, which is the
+cycle within which an agent runs. Loop engineering operates at a higher level of
+abstraction. It is the design of an agentic away-from-keyboard workflow that
+autonomously decides when and how often to run that inner agent loop,
+unattended, until a goal is reached. In other words, loop engineering is the
+design of a system that runs an agent loop, rather than the design of an agent
+loop itself. Or, to explain it another way, loop engineering is the practice of
+designing automated systems that prompt agents on behalf of humans, rather than
+humans prompting agents directly.
 
-Loop engineering builds on prompt/context and harness engineering. *xref:context-engineering.adoc[Context engineering]* curates what a model sees on one turn. *xref:agent-harness.adoc[Harness engineering]* builds a machine for running one or more agents. Loop engineering sits a level above the harness. It designs a system that decides when and how often an agent runs, often with agents prompting other agents, rather than a human managing the turns.
+Loop engineering builds on prompt/context and harness engineering.
+*xref:context-engineering.adoc[Context engineering]* curates what a model sees
+on one turn. *xref:agent-harness.adoc[Harness engineering]* builds a machine for
+running one or more agents. Loop engineering sits a level above the harness. It
+designs a system that decides when and how often an agent runs, often with
+agents prompting other agents, rather than a human managing the turns.
 
-The explicit objective of loop engineering is to remove the human from the loop entirely. Loop engineering designs for the human to step back into a supervisory role — setting up discovery, verification, and scheduling once, then letting the system run unattended across many iterations. Agent execution in this detached, no-chat-interface mode is sometimes described as *xref:away-from-keyboard.adoc[AFK]*.
+The explicit objective of loop engineering is to remove the human from the loop
+entirely. Loop engineering designs for the human to step back into a supervisory
+role — setting up discovery, verification, and scheduling once, then letting the
+system run unattended across many iterations. Agent execution in this detached,
+no-chat-interface mode is sometimes described as
+*xref:away-from-keyboard.adoc[AFK]*.
 
-As per the original paper, loop engineering decomposes the design of a recurring agent system into five concerns:
+As per the original paper, loop engineering decomposes the design of a recurring
+agent system into five concerns:
 
-* *Discovery*: Finding what work needs to be done, eg. scanning a queue, an inbox, a repository, or a schedule for items that warrant a run.
+* *Discovery*: Finding what work needs to be done, eg. scanning a queue, an
+  inbox, a repository, or a schedule for items that warrant a run.
 
-* *Delegation*: Handing the work to an agent (or a team of agents) equipped to carry it out.
+* *Delegation*: Handing the work to an agent (or a team of agents) equipped to
+  carry it out.
 
-* *Verification*: Checking the quality of an iteration's output before it is acted on or trusted.
+* *Verification*: Checking the quality of an iteration's output before it is
+  acted on or trusted.
 
-* *Persistence*: Maintaining state and memory across iterations, so each run can build on what came before rather than starting cold.
+* *Persistence*: Maintaining state and memory across iterations, so each run can
+  build on what came before rather than starting cold.
 
-* *Scheduling*: Deciding when the loop fires — locally on a fixed interval, or in the cloud against an event or queue — trading off responsiveness against state-management complexity.
+* *Scheduling*: Deciding when the loop fires — locally on a fixed interval, or
+  in the cloud against an event or queue — trading off responsiveness against
+  state-management complexity.
 
-The paper's central architectural principle is to structurally separate the agent that generates work from the agent that evaluates it, rather than asking one agent to critique its own output. *Self-evaluation* is prone to self-praise bias. A generator grading its own work tends to rate it more favorably than an independent evaluator would.
+The paper's central architectural principle is to structurally separate the
+agent that generates work from the agent that evaluates it, rather than asking
+one agent to critique its own output. *Self-evaluation* is prone to self-praise
+bias. A generator grading its own work tends to rate it more favorably than an
+independent evaluator would.
 
-The paper catalogs six structural components that recur across loop-engineered systems: automations, worktrees, *xref:agent-skills.adoc[skills]*, connectors, sub-agents, and memory systems. Further patterns are emerging in early open source implementations (see below). For example, a common pattern is to define agentic workflows declaratively as a *xref:directed-acyclic-graph.adoc[directed acyclic graph (DAG)]* — typically expressed in YAML or JSON — where each node is a task or specialized *xref:agent.adoc[agent]* and each edge is a dependency.
+The paper catalogs six structural components that recur across loop-engineered
+systems: automations, worktrees, *xref:agent-skills.adoc[skills]*, connectors,
+sub-agents, and memory systems. Further patterns are emerging in early open
+source implementations (see below). For example, a common pattern is to define
+agentic workflows declaratively as a
+*xref:directed-acyclic-graph.adoc[directed acyclic graph (DAG)]* — typically
+expressed in YAML or JSON — where each node is a task or specialized
+*xref:agent.adoc[agent]* and each edge is a dependency.
 
 == Implementations
 
@@ -34,7 +77,11 @@ The paper catalogs six structural components that recur across loop-engineered s
 * https://github.com/GitHubSecurityLab/seclab-taskflow-agent[GitHub Security Lab Taskflow Agent]
 * https://github.com/ohitslaurence/agent-loop[Laurence Davies' agent-loop]
 
-The https://www.openagentspec.dev/[Open Agent Spec] is an attempt to define a common schema for defining agents declaratively. It is strictly linear and cannot orchestrate multiple agents or complex workflows involving a mix of agentic and deterministic steps. It is unclear how widely this has been implemented as of July 2026.
+The https://www.openagentspec.dev/[Open Agent Spec] is an attempt to define a
+common schema for defining agents declaratively. It is strictly linear and
+cannot orchestrate multiple agents or complex workflows involving a mix of
+agentic and deterministic steps. It is unclear how widely this has been
+implemented as of July 2026.
 
 ''''
 

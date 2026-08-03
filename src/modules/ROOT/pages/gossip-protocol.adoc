@@ -2,16 +2,25 @@
 
 // TODO: https://highscalability.com/gossip-protocol-explained/
 
-Gossip protocol is a decentralized communication protocol used in *xref:distributed-system.adoc[distributed software]* to spread information across all nodes.
+Gossip protocol is a decentralized communication protocol used in
+*xref:distributed-system.adoc[distributed software]* to spread information
+across all nodes.
 
-It is inspired by the way humans share news by *word-of-mouth*, where each person who learns the information shares it with others, leading to widespread dissemination.
+It is inspired by the way humans share news by *word-of-mouth*, where each
+person who learns the information shares it with others, leading to widespread
+dissemination.
 
 == How it works
 
-1.  *Initialization*: A node in the system starts with a piece of information, known as a *gossip*.
+1.  *Initialization*: A node in the system starts with a piece of information,
+    known as a *gossip*.
 
-2.  *Gossip exchange*: At regular intervals, each node randomly selects another node and shares its current gossip. The receiving node then merges the received gossip with its own.
+2.  *Gossip exchange*: At regular intervals, each node randomly selects another
+    node and shares its current gossip. The receiving node then merges the
+    received gossip with its own.
 
-3.  *Propagation*: The process repeats, with each node spreading the gossip to others.
+3.  *Propagation*: The process repeats, with each node spreading the gossip to
+    others.
 
-4.  *Convergence*: Eventually, every node in the network will have received the gossip, ensuring that all nodes have consistent information.
+4.  *Convergence*: Eventually, every node in the network will have received the
+    gossip, ensuring that all nodes have consistent information.

@@ -1,21 +1,73 @@
 = Non-functional requirements (NFRs)
 
-Non-functional requirements are *xref:requirements.adoc[requirements]* that specify the expected *xref:quality-attributes.adoc[quality attributes]* of a system, as distinct from *xref:functional-requirements.adoc[functional requirements]*, which specify what the system should do. NFRs are sometimes called *quality requirements* or *cross-functional requirements (CFRs)*, the latter indicating that qualities such as performance, availability, and security are *xref:cross-cutting-concern.adoc[cross-cutting concerns]* that cut through the whole system design – changing one typically touches multiple components, layers, or services, rather than a single, localized part of the codebase.
+Non-functional requirements are *xref:requirements.adoc[requirements]* that
+specify the expected *xref:quality-attributes.adoc[quality attributes]* of a
+system, as distinct from
+*xref:functional-requirements.adoc[functional requirements]*, which specify what
+the system should do. NFRs are sometimes called *quality requirements* or
+*cross-functional requirements (CFRs)*, the latter indicating that qualities
+such as performance, availability, and security are
+*xref:cross-cutting-concern.adoc[cross-cutting concerns]* that cut through the
+whole system design – changing one typically touches multiple components,
+layers, or services, rather than a single, localized part of the codebase.
 
-A simple way to see the FR/NFR distinction: a requirement to show the user the number of records in a database is functional. How current and accurate that number needs to be – whether it can be a minute stale, or must be exact to the millisecond – is non-functional.
+A simple way to see the FR/NFR distinction: a requirement to show the user the
+number of records in a database is functional. How current and accurate that
+number needs to be – whether it can be a minute stale, or must be exact to the
+millisecond – is non-functional.
 
-It can help to think of NFRs as *constraints* within which a production system is required to operate, rather than as functions it performs. Examples include accessibility, availability, *xref:compliance.adoc[compliance]*, *xref:efficiency.adoc[efficiency]*, maintainability, *xref:performance.adoc[performance]*, portability, reliability, reusability, *xref:scalability.adoc[scalability]*, *xref:security.adoc[security]*, testability, and usability. Some of these are user-facing (accessibility, usability, performance); others are more technical (scalability, security, reliability); and others still are about supporting the ongoing development of the system itself (testability, maintainability, extensibility).
+It can help to think of NFRs as *constraints* within which a production system
+is required to operate, rather than as functions it performs. Examples include
+accessibility, availability, *xref:compliance.adoc[compliance]*,
+*xref:efficiency.adoc[efficiency]*, maintainability,
+*xref:performance.adoc[performance]*, portability, reliability, reusability,
+*xref:scalability.adoc[scalability]*, *xref:security.adoc[security]*,
+testability, and usability. Some of these are user-facing (accessibility,
+usability, performance); others are more technical (scalability, security,
+reliability); and others still are about supporting the ongoing development of
+the system itself (testability, maintainability, extensibility).
 
-NFRs are frequently in tension with one another – hardening a system's security often costs some performance or efficiency – though they can also be complementary, as when improving the reusability of a unit of code also improves its testability and maintainability.
+NFRs are frequently in tension with one another – hardening a system's security
+often costs some performance or efficiency – though they can also be
+complementary, as when improving the reusability of a unit of code also improves
+its testability and maintainability.
 
-NFRs are also known as *architectural requirements*, because they are intrinsic to a system's design rather than bolted on afterwards. This makes them difficult to retrofit: best practice is to define NFRs up front, so they constrain how the functional requirements get built, and then to continuously benchmark the system against them as its design evolves. Some non-functional properties are emergent, too – performance problems, for instance, may only surface once a system is under real load – so NFRs should be expected to evolve over the system's lifetime, not be fixed once and forgotten.
+NFRs are also known as *architectural requirements*, because they are intrinsic
+to a system's design rather than bolted on afterwards. This makes them difficult
+to retrofit: best practice is to define NFRs up front, so they constrain how the
+functional requirements get built, and then to continuously benchmark the system
+against them as its design evolves. Some non-functional properties are emergent,
+too – performance problems, for instance, may only surface once a system is
+under real load – so NFRs should be expected to evolve over the system's
+lifetime, not be fixed once and forgotten.
 
 == Defining NFRs
 
-Defining NFRs well is harder than defining functional requirements, precisely because their effects are diffuse across the architecture rather than localized to one feature. Wherever possible, define an NFR as a measurable metric with a target value or range – "the system must handle 1,000 concurrent users", "reads must respond within 500ms, writes within 1,000ms" – using benchmarks such as Mean Time Between Failures (MTBF), Mean Time to Recover (MTTR), crash rate, and test coverage, or conformance to a published standard (AES-256 encryption at rest, TLS in transit, WCAG 2.1 AA, GDPR). Some qualities, such as usability, resist precise measurement; for these, a general statement of intent – "a user should be able to find what they need within three clicks of login" – is a reasonable substitute.
+Defining NFRs well is harder than defining functional requirements, precisely
+because their effects are diffuse across the architecture rather than localized
+to one feature. Wherever possible, define an NFR as a measurable metric with a
+target value or range – "the system must handle 1,000 concurrent users", "reads
+must respond within 500ms, writes within 1,000ms" – using benchmarks such as
+Mean Time Between Failures (MTBF), Mean Time to Recover (MTTR), crash rate, and
+test coverage, or conformance to a published standard (AES-256 encryption at
+rest, TLS in transit, WCAG 2.1 AA, GDPR). Some qualities, such as usability,
+resist precise measurement; for these, a general statement of intent – "a user
+should be able to find what they need within three clicks of login" – is a
+reasonable substitute.
 
-*xref:acceptance-criteria.adoc[Acceptance criteria]* are derived from NFRs in the same way they're derived from functional requirements. For example, if a system is expected to be *xref:availability.adoc[highly available]*, an NFR may specify a requirement for the system to achieve an average monthly uptime of 99.99%. If a system is expected to have *xref:latency.adoc[low latency]*, an NFR may specify a maximum response time of 500ms for reads and 1000ms for writes.
+*xref:acceptance-criteria.adoc[Acceptance criteria]* are derived from NFRs in
+the same way they're derived from functional requirements. For example, if a
+system is expected to be *xref:availability.adoc[highly available]*, an NFR may
+specify a requirement for the system to achieve an average monthly uptime of
+99.99%. If a system is expected to have *xref:latency.adoc[low latency]*, an NFR
+may specify a maximum response time of 500ms for reads and 1000ms for writes.
 
 == Testing NFRs
 
-Unlike testing for functional requirements, testing for non-functional requirements may be periodic and more manual – for example, running a load test against a production replica once a quarter to confirm the system still meets its concurrency target, rather than asserting it on every commit. Because there's an inherent degree of subjectivity in judging a system's quality attributes, runtime constraints are best treated as a guide to design and implementation, not as strict pass/fail rules.
+Unlike testing for functional requirements, testing for non-functional
+requirements may be periodic and more manual – for example, running a load test
+against a production replica once a quarter to confirm the system still meets
+its concurrency target, rather than asserting it on every commit. Because
+there's an inherent degree of subjectivity in judging a system's quality
+attributes, runtime constraints are best treated as a guide to design and
+implementation, not as strict pass/fail rules.

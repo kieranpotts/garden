@@ -1,26 +1,48 @@
 = Agent skills
 
-*Agent Skills* is an open specification for packaging reusable, task-scoped bundles of context that AI coding agents can load on demand. Skills support *xref:context-engineering.adoc[context engineering]*.
+*Agent Skills* is an open specification for packaging reusable, task-scoped
+bundles of context that AI coding agents can load on demand. Skills support
+*xref:context-engineering.adoc[context engineering]*.
 
-A skill is simply a directory containing a `SKILL.md` file — YAML front-matter followed by Markdown instructions. The front-matter's `description` field is the primary activation mechanism. At startup, the agent reads only each skill's `name` and `description`. The full body is loaded only when the description matches the current task. This on-demand, just-in-time loading keeps the context window focused on what is currently relevant.
+A skill is simply a directory containing a `SKILL.md` file — YAML front-matter
+followed by Markdown instructions. The front-matter's `description` field is the
+primary activation mechanism. At startup, the agent reads only each skill's
+`name` and `description`. The full body is loaded only when the description
+matches the current task. This on-demand, just-in-time loading keeps the context
+window focused on what is currently relevant.
 
-Skills can also contain optional `scripts/`, `references/`, and `assets/` subdirectories for executable code, supplementary documentation, and static resources.
+Skills can also contain optional `scripts/`, `references/`, and `assets/`
+subdirectories for executable code, supplementary documentation, and static
+resources.
 
-The canonical specification lives at https://agentskills.io/specification. The specification is supported by a growing set of coding agent harnesses. Some systems call them "rules" or "instructions".
+The canonical specification lives at https://agentskills.io/specification. The
+specification is supported by a growing set of coding agent harnesses. Some
+systems call them "rules" or "instructions".
 
-In the language of *xref:agent-harness.adoc[agent harness engineering]*, skills are a _guide_ — a feed-forward control that steers an agent toward the right approach before it acts, rather than a _tool_ it executes or a _sensor_ that checks its output.
+In the language of *xref:agent-harness.adoc[agent harness engineering]*, skills
+are a _guide_ — a feed-forward control that steers an agent toward the right
+approach before it acts, rather than a _tool_ it executes or a _sensor_ that
+checks its output.
 
-Agent skills complement the `AGENTS.md` convention. Whereas `AGENTS.md` provides a static, always-loaded project orientation, skills encapsulate specific procedures, standards, or playbooks that are relevant only to certain tasks.
+Agent skills complement the `AGENTS.md` convention. Whereas `AGENTS.md` provides
+a static, always-loaded project orientation, skills encapsulate specific
+procedures, standards, or playbooks that are relevant only to certain tasks.
 
 == Skills registries and collections
 
-* https://www.skills.sh/[Agent Skills Directory] (skills.sh): The primary public registry for discoverable, installable skills. Install skills into any project via `npx skillsadd <owner/repo>`.
+* https://www.skills.sh/[Agent Skills Directory] (skills.sh): The primary public
+  registry for discoverable, installable skills. Install skills into any project
+  via `npx skillsadd <owner/repo>`.
 
-* https://github.com/anthropics/skills[Anthropic Skills]: A collection of skills maintained by Anthropic, optimized for use with Claude models.
+* https://github.com/anthropics/skills[Anthropic Skills]: A collection of skills
+  maintained by Anthropic, optimized for use with Claude models.
 
-* https://github.com/google/skills[Google Skills]: A collection of domain-specific skills for working with Google products.
+* https://github.com/google/skills[Google Skills]: A collection of
+  domain-specific skills for working with Google products.
 
-* https://platform.openai.com/docs/guides/function-calling[OpenAI Actions]: Domain-specific tools and actions (not agent skills, specifically) for use with OpenAI's models and agents SDK.
+* https://platform.openai.com/docs/guides/function-calling[OpenAI Actions]:
+  Domain-specific tools and actions (not agent skills, specifically) for use
+  with OpenAI's models and agents SDK.
 
 ''''
 

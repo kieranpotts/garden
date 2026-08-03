@@ -9,33 +9,63 @@ There are two parts to Docker:
 * The Docker client application (Docker.exe on Windows).
 * The Docker daemon (dockerd.exe on Windows).
 
-The Docker client has a command-line interface (CLI) that allows users to interact with the Docker daemon. A GUI client is also available, called *Docker Desktop*. The Docker daemon serves a REST API for communication with these and other clients.
+The Docker client has a command-line interface (CLI) that allows users to
+interact with the Docker daemon. A GUI client is also available, called
+*Docker Desktop*. The Docker daemon serves a REST API for communication with
+these and other clients.
 
-The Docker daemon runs the *container engine*, which creates, runs, and manages containers.
+The Docker daemon runs the *container engine*, which creates, runs, and manages
+containers.
 
-Docker was originally written and built for Linux, but it has since been ported to Windows and macOS. Since Linux container images require a Linux kernel to run, Docker Desktop integrates a hypervisor layer (eg. Hyper-V) with a lightweight Linux distro on top of it.
+Docker was originally written and built for Linux, but it has since been ported
+to Windows and macOS. Since Linux container images require a Linux kernel to
+run, Docker Desktop integrates a hypervisor layer (eg. Hyper-V) with a
+lightweight Linux distro on top of it.
 
-The license agreement for *Docker Desktop* requires a subscription for commercial use. Alternative Docker-compatible container management systems include Podman Desktop, Rancher Desktop by SUSE, and OrbStack (Mac only). There's also a command line tool called Colima.
+The license agreement for *Docker Desktop* requires a subscription for
+commercial use. Alternative Docker-compatible container management systems
+include Podman Desktop, Rancher Desktop by SUSE, and OrbStack (Mac only).
+There's also a command line tool called Colima.
 
 == Container registries
 
-https://hub.docker.com/[Docker Hub] is a registry of Docker container images. It gives access to thousands of container images that you can download and run on demand, including "official images" that are maintained by the authors of applications like Redis, Mongo, Postgres, etc., and which are usually synchronized with the latest stable releases of those applications.
+https://hub.docker.com/[Docker Hub] is a registry of Docker container images. It
+gives access to thousands of container images that you can download and run on
+demand, including "official images" that are maintained by the authors of
+applications like Redis, Mongo, Postgres, etc., and which are usually
+synchronized with the latest stable releases of those applications.
 
-Other registries are available such as https://www.linuxserver.io/[linuxserver.io] (formerly lscr.io).
+Other registries are available such as
+https://www.linuxserver.io/[linuxserver.io] (formerly lscr.io).
 
-You can also create your own private registry, and all of the big cloud providers offer private registries (Amazon ECR, Google Container Registry, etc.). Docker Hub also offers private registries for organizations.
+You can also create your own private registry, and all of the big cloud
+providers offer private registries (Amazon ECR, Google Container Registry,
+etc.). Docker Hub also offers private registries for organizations.
 
 == Union filesystem
 
-Docker does something different to most virtualization technologies with its union filesystem.
+Docker does something different to most virtualization technologies with its
+union filesystem.
 
-Imagine you had an Ubuntu image and you wanted to add JDK to that. Using a virtualization technology, you would take the Ubuntu image, run it, install JDK, and then save a new image. With a container system, you would take the Ubuntu image, run it, install JDK, and then save a _diff_ of the image.
+Imagine you had an Ubuntu image and you wanted to add JDK to that. Using a
+virtualization technology, you would take the Ubuntu image, run it, install JDK,
+and then save a new image. With a container system, you would take the Ubuntu
+image, run it, install JDK, and then save a _diff_ of the image.
 
-Thus, the isolated file system of a container is composed from a hierarchy of layers, starting with the container's base image. Each additional layer represents a different set of changes to the filesystem. It's like an onion – which kind of sounds like "union"!
+Thus, the isolated file system of a container is composed from a hierarchy of
+layers, starting with the container's base image. Each additional layer
+represents a different set of changes to the filesystem. It's like an onion –
+which kind of sounds like "union"!
 
-You can see this whenever you download a container from Docker Hub. You will notice that CLI shows multiple downloads, all of which must complete before the image is available to build from. Each download is an individual layer of the overall image. Docker can reuse both base images and additional layers across different containers. Each layer needs to be downloaded once only, even if shared by multiple containers.
+You can see this whenever you download a container from Docker Hub. You will
+notice that CLI shows multiple downloads, all of which must complete before the
+image is available to build from. Each download is an individual layer of the
+overall image. Docker can reuse both base images and additional layers across
+different containers. Each layer needs to be downloaded once only, even if
+shared by multiple containers.
 
-This is a very efficient way of storing images, because you're not storing the whole image every time you make a change. You're just storing the diffs.
+This is a very efficient way of storing images, because you're not storing the
+whole image every time you make a change. You're just storing the diffs.
 
 image::docker-union-filesystem.drawio.svg[]
 
@@ -67,28 +97,70 @@ docker build -t voltdb/voltdb .
 
 == Alternatives to Docker
 
-While Docker is by far the most popular containerization technology, there are alternatives available. These include *Podman*, *containerd*, *rkt*, and *LXC*.
+While Docker is by far the most popular containerization technology, there are
+alternatives available. These include *Podman*, *containerd*, *rkt*, and *LXC*.
 
 === Podman
 
-Podman addresses a key criticism of Docker: that the Docker daemon runs as a privileged root process. This is a security risk, because if an attacker is able to compromise the Docker daemon, they can gain root access to the host system.
+Podman addresses a key criticism of Docker: that the Docker daemon runs as a
+privileged root process. This is a security risk, because if an attacker is able
+to compromise the Docker daemon, they can gain root access to the host system.
 
-Podman threw this execution model out the window. Podman is a daemon-less container engine. It runs containers as child processes of the Podman CLI, which means when you run `podman run my-app`, the container becomes a direct child of your command, running under your user privileges. This simple architectural change has significant implications:
+Podman threw this execution model out the window. Podman is a daemon-less
+container engine. It runs containers as child processes of the Podman CLI, which
+means when you run `podman run my-app`, the container becomes a direct child of
+your command, running under your user privileges. This simple architectural
+change has significant implications:
 
-* *Daemon-less execution* means no single point of failure. If the Podman CLI crashes, your containers keep running. With Docker, if the daemon crashes, it will take down all running containers. With Podman when one container crashes, the others keep running like nothing happened.
+* *Daemon-less execution* means no single point of failure. If the Podman CLI
+  crashes, your containers keep running. With Docker, if the daemon crashes, it
+  will take down all running containers. With Podman when one container crashes,
+  the others keep running like nothing happened.
 
-* *Rootless containers*: Podman allows users to run containers without root privileges. This enhances security by reducing the attack surface and limiting potential damage from compromised containers. Even if someone somehow escalates privileges inside a container to root level, they're still just an unprivileged user on the actual host.
+* *Rootless containers*: Podman allows users to run containers without root
+  privileges. This enhances security by reducing the attack surface and limiting
+  potential damage from compromised containers. Even if someone somehow
+  escalates privileges inside a container to root level, they're still just an
+  unprivileged user on the actual host.
 
-* *Light resource footprint*: Podman's design uses fewer system resources compared to traditional container engines like Docker. No constantly running daemon means less memory usage. This makes it an attractive option for running containers on resource-constrained environments.
+* *Light resource footprint*: Podman's design uses fewer system resources
+  compared to traditional container engines like Docker. No constantly running
+  daemon means less memory usage. This makes it an attractive option for running
+  containers on resource-constrained environments.
 
-Podman's secure, lightweight runtime design makes it a good choice for multi-tenant environments, and low-resource systems.
+Podman's secure, lightweight runtime design makes it a good choice for
+multi-tenant environments, and low-resource systems.
 
 Other advantages of Podman include:
 
-* *Systemd integration*: Podman can generate systemd unit files – with the command `podman generate systemd --name my-app` – for your containers, making it easy to manage them as system services. This means you can take advantage of all the features systemd offers, like automatic restarts and resource limits. You can enable, start, stop, and monitor your containers using standard `systemctl` commands.
+* *Systemd integration*: Podman can generate systemd unit files – with the
+  command `podman generate systemd --name my-app` – for your containers, making
+  it easy to manage them as system services. This means you can take advantage
+  of all the features systemd offers, like automatic restarts and resource
+  limits. You can enable, start, stop, and monitor your containers using
+  standard `systemctl` commands.
 
-* *Kubernetes integration*: Podman has excellent support for Kubernetes. Red Hat, the company behind Podman, is also a major contributor to Kubernetes, so Podman was designed with Kubernetes in mind from the start. Podman was really designed to work _with_ Kubernetes, rather than k8s being a bolt-on feature. For example, you can generate Kubernetes YAML files directly from Podman using the `podman generate kube` command. And if your Docker Compose is overly complex, just convert it to Kubernetes YAML! This makes it easy to transition from local development to deployment on a Kubernetes cluster, keeping the two environments consistent.
+* *Kubernetes integration*: Podman has excellent support for Kubernetes. Red
+  Hat, the company behind Podman, is also a major contributor to Kubernetes, so
+  Podman was designed with Kubernetes in mind from the start. Podman was really
+  designed to work _with_ Kubernetes, rather than k8s being a bolt-on feature.
+  For example, you can generate Kubernetes YAML files directly from Podman using
+  the `podman generate kube` command. And if your Docker Compose is overly
+  complex, just convert it to Kubernetes YAML! This makes it easy to transition
+  from local development to deployment on a Kubernetes cluster, keeping the two
+  environments consistent.
 
-* *Compatibility with Docker CLI*: Podman is designed to be a drop-in replacement for Docker. This means you can use the same commands and workflows you're already familiar with. In fact, you can alias `docker` to `podman` in your shell (`docker=podman`) and continue working without missing a beat. `podman run`, `podman build`, `podman ps` – they all behave exactly like their Docker counterparts. Your existing Dockerfiles will work without modification, too.
+* *Compatibility with Docker CLI*: Podman is designed to be a drop-in
+  replacement for Docker. This means you can use the same commands and workflows
+  you're already familiar with. In fact, you can alias `docker` to `podman` in
+  your shell (`docker=podman`) and continue working without missing a beat.
+  `podman run`, `podman build`, `podman ps` – they all behave exactly like their
+  Docker counterparts. Your existing Dockerfiles will work without modification,
+  too.
 
-* *Unix philosophy*: Podman adheres to the Unix philosophy of doing one thing well. It focuses on container management and delegates other tasks, like image building and registry management, to specialized tools like Buildah (to build images with fine-grained controls) and Skopeo (to inspect images, and copy them between registries). This modular approach allows users to choose the best tool for each task, rather than relying on a monolithic solution.
+* *Unix philosophy*: Podman adheres to the Unix philosophy of doing one thing
+  well. It focuses on container management and delegates other tasks, like image
+  building and registry management, to specialized tools like Buildah (to build
+  images with fine-grained controls) and Skopeo (to inspect images, and copy
+  them between registries). This modular approach allows users to choose the
+  best tool for each task, rather than relying on a monolithic solution.

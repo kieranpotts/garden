@@ -1,39 +1,74 @@
 = Agent harness
 
-An *agent harness* is the execution environment and control framework that wraps an *xref:agent.adoc[AI agent]* so it can operate reliably against tools, systems, and tasks.
+An *agent harness* is the execution environment and control framework that wraps
+an *xref:agent.adoc[AI agent]* so it can operate reliably against tools,
+systems, and tasks.
 
-*Agent harness engineering* is the discipline of designing, building, and operating these harnesses.
+*Agent harness engineering* is the discipline of designing, building, and
+operating these harnesses.
 
 ----
 agent = model + harness
 ----
 
-If the model is the decision-maker, the harness is the runtime infrastructure that lets it act – the scaffolding around the model that handles:
+If the model is the decision-maker, the harness is the runtime infrastructure
+that lets it act – the scaffolding around the model that handles:
 
 * *Tool invocation*: Shell, APIs, browser, database, code execution.
 * *State management*: Memory, context, scratchpads.
 * *Input/output mediation*: Formatting prompts, validating outputs.
 * *Safety guardrails*: Permissions, sandboxing, rate limits.
-* *Observation and feedback loops*: Capturing tool results and feeding them back.
+* *Observation and feedback loops*: Capturing tool results and feeding them
+  back.
 * *Task orchestration*: Retry logic, planning, branching, checkpoints.
 
-The term is borrowed from the concept of the *xref:test-harness.adoc[test harness]*, which is the *xref:scaffolding.adoc[scaffolding]* of drivers, stubs, and fixtures that wraps a unit of code so it can be exercised in isolation – supplying its inputs, invoking it repeatedly, and capturing its outputs for inspection. An agent harness plays the same role for a model. It wraps the model in a controlled, observable environment, feeds it inputs (prompts, context, tools), and captures its outputs (tool calls and their results) so they can be validated and fed back.
+The term is borrowed from the concept of the
+*xref:test-harness.adoc[test harness]*, which is the
+*xref:scaffolding.adoc[scaffolding]* of drivers, stubs, and fixtures that wraps
+a unit of code so it can be exercised in isolation – supplying its inputs,
+invoking it repeatedly, and capturing its outputs for inspection. An agent
+harness plays the same role for a model. It wraps the model in a controlled,
+observable environment, feeds it inputs (prompts, context, tools), and captures
+its outputs (tool calls and their results) so they can be validated and fed
+back.
 
-In both cases the harness is not the thing being run – it is the rig that makes running it safe, repeatable, and observable.
+In both cases the harness is not the thing being run – it is the rig that makes
+running it safe, repeatable, and observable.
 
 There are two broad categories of agent harness in practice:
 
-* *Developer-facing harnesses*: Tools used by software developers to delegate coding tasks to an agent, such as file editing, shell execution, running tests, and reading documentation. The developer specifies a goal, and the harness plans and executes a sequence of steps to reach it autonomously. Examples include Claude Code, OpenCode, and Aider. These are distinct from *xref:ai-coding-assistant.adoc[IDE coding assistants]* (GitHub Copilot, Cursor), which are inline tools where the developer drives the interaction at a fine-grained level. Developer-facing harnesses operate at the task level. IDE assistants operate at the line or block level.
+* *Developer-facing harnesses*: Tools used by software developers to delegate
+  coding tasks to an agent, such as file editing, shell execution, running
+  tests, and reading documentation. The developer specifies a goal, and the
+  harness plans and executes a sequence of steps to reach it autonomously.
+  Examples include Claude Code, OpenCode, and Aider. These are distinct from
+  *xref:ai-coding-assistant.adoc[IDE coding assistants]* (GitHub Copilot,
+  Cursor), which are inline tools where the developer drives the interaction at
+  a fine-grained level. Developer-facing harnesses operate at the task level.
+  IDE assistants operate at the line or block level.
 
-* *Production/infrastructure harnesses*: Platforms for deploying, running, and governing agents in production systems. These manage agent lifecycles, enforce permission boundaries, wire observability pipelines, and coordinate multi-agent workflows. Examples include Microsoft Agent Framework, n8n, and OpenClaw.
+* *Production/infrastructure harnesses*: Platforms for deploying, running, and
+  governing agents in production systems. These manage agent lifecycles, enforce
+  permission boundaries, wire observability pipelines, and coordinate
+  multi-agent workflows. Examples include Microsoft Agent Framework, n8n, and
+  OpenClaw.
 
-For production and multi-agent systems, *harness engineering* broadens into something close to platform engineering for agents: defining agent lifecycles, enforcing permission boundaries, wiring observability pipelines, and *xref:agent-orchestration.adoc[orchestrating]* multi-agent workflows. The concern is the reliability, governance, and operational characteristics of agentic systems, rather than the raw capability of the underlying model. It is an emerging discipline, analogous to platform engineering in the DevOps world.
+For production and multi-agent systems, *harness engineering* broadens into
+something close to platform engineering for agents: defining agent lifecycles,
+enforcing permission boundaries, wiring observability pipelines, and
+*xref:agent-orchestration.adoc[orchestrating]* multi-agent workflows. The
+concern is the reliability, governance, and operational characteristics of
+agentic systems, rather than the raw capability of the underlying model. It is
+an emerging discipline, analogous to platform engineering in the DevOps world.
 
 == Useful links
 
-* https://martinfowler.com/articles/harness-engineering.html[Harness Engineering] – Birgitta Böckeler's article on the system of controls (guides and sensors) that surround a coding agent.
+* https://martinfowler.com/articles/harness-engineering.html[Harness Engineering]
+  – Birgitta Böckeler's article on the system of controls (guides and sensors)
+  that surround a coding agent.
 
-* https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html[Harness engineering memo] – A shorter companion memo introducing the idea.
+* https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html[Harness engineering memo]
+  – A shorter companion memo introducing the idea.
 
 == See also
 

@@ -1,8 +1,11 @@
 = Agent loop
 
-The agent loop is the core pattern behind an *xref:agent.adoc[AI agent]*. It's the cycle that lets a model take actions in the world rather than just answer once. The cycle is:
+The agent loop is the core pattern behind an *xref:agent.adoc[AI agent]*. It's
+the cycle that lets a model take actions in the world rather than just answer
+once. The cycle is:
 
-* *Observe.* The model receives context — the user's goal, plus the results of anything it has done so far.
+* *Observe.* The model receives context — the user's goal, plus the results of
+  anything it has done so far.
 
 * *Reason/decide.* It figures out the next step toward the goal.
 
@@ -10,32 +13,51 @@ The agent loop is the core pattern behind an *xref:agent.adoc[AI agent]*. It's t
 
 * *Get results.* The tool's output is fed back into the model's context.
 
-* *Repeat.* The model looks at the new information and decides the next action, until it judges the task done, or it hits a limit such as a max-steps or budget cap.
+* *Repeat.* The model looks at the new information and decides the next action,
+  until it judges the task done, or it hits a limit such as a max-steps or
+  budget cap.
 
 A full cycle is known as a **turn**, sometimes a **round**.
 
-The key difference from a plain chatbot is that the loop lets the model iterate: try something, see what happened, adjust. That is what makes things like coding agents work — write code, run tests, see failures, fix, run again. A single request-response turn cannot do this. The loop is what turns a model into something that can pursue a goal rather than merely respond to one.
+The key difference from a plain chatbot is that the loop lets the model iterate:
+try something, see what happened, adjust. That is what makes things like coding
+agents work — write code, run tests, see failures, fix, run again. A single
+request-response turn cannot do this. The loop is what turns a model into
+something that can pursue a goal rather than merely respond to one.
 
-In practice, three concerns dominate the difficulty of running an agent loop well:
+In practice, three concerns dominate the difficulty of running an agent loop
+well:
 
-* *Context management.* The loop accumulates a lot of tokens as tool results pile up turn over turn — see also *xref:context-engineering.adoc[context engineering]*.
+* *Context management.* The loop accumulates a lot of tokens as tool results
+  pile up turn over turn — see also
+  *xref:context-engineering.adoc[context engineering]*.
 
-* *Knowing when to stop.* Judging that the task is actually done, rather than looping past completion or giving up early.
+* *Knowing when to stop.* Judging that the task is actually done, rather than
+  looping past completion or giving up early.
 
-* *Error handling.* Recovering gracefully from failed tool calls and dead ends instead of compounding them into further bad actions.
+* *Error handling.* Recovering gracefully from failed tool calls and dead ends
+  instead of compounding them into further bad actions.
 
-The infrastructure that wraps the loop — providing tools, managing the context window, enforcing guardrails — is the *xref:agent-harness.adoc[harness]*. In other words, agent harnesses are responsible for running agent loops.
+The infrastructure that wraps the loop — providing tools, managing the context
+window, enforcing guardrails — is the *xref:agent-harness.adoc[harness]*. In
+other words, agent harnesses are responsible for running agent loops.
 
-https://github.com/strongdm/attractor/blob/main/coding-agent-loop-spec.md[Coding Agent Loop Specification] is an attempt to provide a language-agnostic specification for building a coding agent harness.
+https://github.com/strongdm/attractor/blob/main/coding-agent-loop-spec.md[Coding Agent Loop Specification]
+is an attempt to provide a language-agnostic specification for building a coding
+agent harness.
 
-Running many such loops unattended, on a recurring cadence rather than a single session, is the concern of *xref:loop-engineering.adoc[loop engineering]*, which is a separate topic concerned with the end-to-end automation of one or more agents in pursuit of a goal.
+Running many such loops unattended, on a recurring cadence rather than a single
+session, is the concern of *xref:loop-engineering.adoc[loop engineering]*, which
+is a separate topic concerned with the end-to-end automation of one or more
+agents in pursuit of a goal.
 
 ''''
 
 == References
 
 * https://code.claude.com/docs/en/agent-sdk/agent-loop[Claude Code Docs: How the agent loop works].
-  This document explains how the agent loop works in the context of Anthropic's Agent SDK.
+  This document explains how the agent loop works in the context of Anthropic's
+  Agent SDK.
 
 == See also
 
