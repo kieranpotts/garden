@@ -205,38 +205,28 @@ within each subdomain. For example, if we look at the billing subdomain in our
 theoretical video subscription service, we might identify accounts, payment
 details, and subscription plans as the key parts of that subdomain.
 
-[plantuml]
+[mermaid]
 ....
-@startuml
+flowchart TB
 
-top to bottom direction
+subgraph video_subscriptions ["video subscriptions"]
 
-rectangle "video subscriptions" {
+  subgraph user_management ["user management"]
+    subscribers["subscribers"]
+  end
 
-  rectangle "user management" {
-    rectangle "subscribers" {
-    }
-  }
+  subgraph video_streaming ["video streaming"]
+    videos["videos"]
+    viewers["viewers"]
+  end
 
-  rectangle "video streaming" {
-    rectangle "videos" {
-    }
-    rectangle "viewers" {
-    }
-  }
+  subgraph billing ["billing"]
+    accounts["accounts"]
+    payment_details["payment details"]
+    subscription_plans["subscription plans"]
+  end
 
-  rectangle "billing" {
-    rectangle "accounts" {
-    }
-    rectangle "payment details" {
-    }
-    rectangle "subscription plans" {
-    }
-  }
-
-}
-
-@enduml
+end
 ....
 
 Some key parts will be common across multiple subdomains. For example,
