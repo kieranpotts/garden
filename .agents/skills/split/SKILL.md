@@ -51,14 +51,24 @@ print an error message.
     original entry's title and scope depend on, and should be agreed
     before content moves.
 
-3.  Check for collisions.
+3.  Check whether each split-out concept warrants its own page.
+
+    A split-out concept earns its own file only when it will be
+    cross-referenced from *multiple* other pages — that is the
+    atomicity criterion. If a concept would only be linked from the
+    original page, it belongs as a section of the original, not a new
+    entry. In that case, drop it from the split and keep it inline.
+    Apply this test to each proposed split-out concept before
+    creating anything.
+
+4.  Check for collisions.
 
     Before creating any new page, check it doesn't already duplicate an
     existing entry elsewhere in the garden (the same failure mode
     [prune](../prune/SKILL.md) cleans up). If one already exists, merge
     the split-out content into that page instead of creating a new one.
 
-4.  Create the new page(s).
+5.  Create the new page(s).
 
     For each split-out concept, create
     `src/modules/ROOT/pages/<topic>.adoc` following the garden's
@@ -67,18 +77,18 @@ print an error message.
     from the original, rewritten to stand alone rather than assuming
     the context of the rest of the original page.
 
-5.  Narrow the original.
+6.  Narrow the original.
 
     Remove the split-out sections from the original page, leaving it
     focused on its core concept. Add an `xref:` from the original to
     each new page where the relationship is natural (eg. "see also").
 
-6.  Cross-link the new pages.
+7.  Cross-link the new pages.
 
     If the split-out concepts relate to each other as well as to the
     original, link them to one another too.
 
-7.  Update the index.
+8.  Update the index.
 
     Add each new page to `index.adoc` in its correct alphabetical
     section, marked 🌱 Seedling (it's new content, even though it
@@ -86,18 +96,27 @@ print an error message.
     maturity label as-is unless the narrowing changes how complete it
     looks — propose a change rather than applying one silently.
 
-8.  Update the nav.
+9.  Update the nav.
 
     Add each new page to `src/modules/ROOT/nav.adoc`, in the same
     alphabetical position it occupies in `index.adoc`. Without this, the
     new page has no ancestry and renders with no breadcrumb trail.
 
-9.  Report back.
+10. Report back.
 
     List the new files created, what moved from the original into each,
     and every cross-link added.
 
 ## Rules
+
+- Only split out a concept that will be cross-referenced from multiple pages.
+
+  This is the gate for splitting. A concept that would only be linked
+  from the original page is a section of that page, not a new entry. If
+  a proposed split-out concept fails this test, keep it inline and drop
+  it from the split. Splitting should reduce a page back to one concept
+  by extracting genuinely shared concepts — not fragment it into
+  single-link stubs.
 
 - Confirm the split before editing.
 

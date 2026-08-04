@@ -46,7 +46,17 @@ print an error message.
     and tell the user — point them to [fertilize](../fertilize/SKILL.md)
     instead of creating a duplicate.
 
-2.  Research the topic.
+2.  Decide whether the topic warrants its own page.
+
+    A page earns its own file when it will be cross-referenced from
+    *multiple* other pages — that is the atomicity criterion. If the
+    topic would only be referenced from one place, it belongs as a
+    section of that page, not as a standalone entry. In that case, stop
+    and tell the user — point them to [water](../water/SKILL.md) (to
+    extend an existing page) or [trim](../trim/SKILL.md) (to relocate
+    content within a page) instead of sowing.
+
+3.  Research the topic.
 
     Gather enough understanding to write an accurate, concise
     explanation — what the concept is, why it matters, and how it
@@ -54,14 +64,14 @@ print an error message.
     small number of reliable sources over breadth. This is a
     knowledgebase entry, not a survey paper.
 
-3.  Find adjacent topics already in the garden.
+4.  Find adjacent topics already in the garden.
 
     Search existing pages for related concepts (eg. broader categories,
     sibling techniques, prerequisites). These become the entry's
     outbound `xref:` links. Note their exact filenames — AsciiDoc
     `xref:` targets must match real files.
 
-4.  Write the entry.
+5.  Write the entry.
 
     Create `src/modules/ROOT/pages/<topic-kebab-case>.adoc`, named
     after the topic in kebab-case (eg. `event-sourcing.adoc`). Follow
@@ -80,7 +90,7 @@ print an error message.
     surfaces a second distinct concept, that's a separate entry, not a
     section of this one.
 
-5.  Link it back in.
+6.  Link it back in.
 
     For each adjacent topic identified in step 3, check whether that
     page already references the new topic. If it's a natural fit, add
@@ -88,7 +98,7 @@ print an error message.
     when paths run in both directions, not just outward from the new
     page.
 
-6.  List it on the index.
+7.  List it on the index.
 
     Add a line to `src/modules/ROOT/pages/index.adoc`, in the correct
     alphabetical sub-section under "All topics", following the existing
@@ -96,12 +106,20 @@ print an error message.
     (Seedling). If the topic is something the user is actively
     researching right now, also add it under "Hot topics".
 
-7.  Report back.
+8.  Report back.
 
     Tell the user the file path created, the entries it links to/from,
     and where it landed in the index.
 
 ## Rules
+
+- A new page must be cross-referenceable from multiple places.
+
+  This is the gate for sowing. If a topic would only be linked from one
+  other page, it is a section of that page, not its own entry. Sow only
+  when at least two existing or plausible future pages would naturally
+  `xref:` it. When in doubt, prefer extending an existing page over
+  creating a new one.
 
 - Prefer linking over duplicating.
 
@@ -113,7 +131,8 @@ print an error message.
 
   If a topic naturally splits into two or more distinct ideas, sow
   separate entries and cross-link them, rather than producing one long
-  page.
+  page — but only when each idea meets the cross-reference criterion
+  above. Otherwise keep them together under one page.
 
 - New entries start as 🌱 Seedling.
 
