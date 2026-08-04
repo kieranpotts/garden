@@ -25,6 +25,32 @@ agents work — write code, run tests, see failures, fix, run again. A single
 request-response turn cannot do this. The loop is what turns a model into
 something that can pursue a goal rather than merely respond to one.
 
+== The request chain
+
+The loop is a chain of *xref:large-language-model.adoc[model provider]*
+requests, each one re-sending the whole context. One turn is many requests:
+every tool result triggers another request, and every request carries everything
+— the system prompt, the full history, all tool results so far — because the
+*xref:large-language-model.adoc[model]* is *xref:stateless.adoc[stateless]* and
+sees only what is in the current request. This is why context grows turn over
+turn and why *xref:context-engineering.adoc[context engineering]* matters: every
+token in the window is paid for and attended to on every request in the chain.
+
+== Tool calls and tool results
+
+A *tool call* is the model's output naming a tool and its arguments — structured
+text the *xref:agent-harness.adoc[harness]* parses and executes. It is produced by
+*xref:large-language-model.adoc[next-token prediction]*, so like any model output
+it can be wrong: a malformed call, a hallucinated argument, a tool that does not
+exist. The harness validates and dispatches what it can.
+
+A *tool result* is what the harness sends back after running the tool — the
+agent's only view of the environment. A result stays in the context for the rest
+of the session and is re-sent with every subsequent request in the chain. Tool
+results are usually the bulk of a coding session's context: file contents, test
+output, search hits, shell stdout. See *xref:agent-handoff.adoc[agent handoff]*
+for how durable results are carried beyond a session.
+
 In practice, three concerns dominate the difficulty of running an agent loop
 well:
 
@@ -63,6 +89,8 @@ agents in pursuit of a goal.
 
 * *xref:agent.adoc[Agent]*
 * *xref:agent-harness.adoc[Agent harness]*
+* *xref:agent-handoff.adoc[Agent handoff]*
 * *xref:context-engineering.adoc[Context engineering]*
+* *xref:large-language-model.adoc[Large language model (LLM)]*
 * *xref:loop-engineering.adoc[Loop engineering]*
 * *xref:ai-coding-assistant.adoc[AI coding assistant]*

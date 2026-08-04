@@ -36,6 +36,21 @@ prompt injection, tool poisoning (malicious instructions hidden in tool
 descriptions), data exfiltration through combined tools, and lookalike tools
 that shadow trusted ones.
 
+MCP solves an integration problem: write the integration once as a server, and
+any MCP-compatible harness can use it. But the cost is paid in context. Every
+tool a server advertises arrives as a definition (name, description, parameter
+schema), and the model can only call tools it knows about. The naive approach
+loads every definition up front. Install a few generous servers and a session
+starts with thousands of tokens of tool schemas before you've typed anything,
+spending attention budget on tools the task will never use.
+
+Many harnesses mitigate this with *tool search*. Instead of full definitions, the
+context holds a context pointer to available tools. The agent searches by name or
+purpose and loads a definition only when it needs it. This is the same
+*xref:agent-memory.adoc[progressive disclosure]* idea that keeps skills and
+`AGENTS.md` lean. If your harness doesn't do this, enable only the servers a
+project actually needs.
+
 MCP has been widely adopted across the industry. See also
 *xref:agent2agent.adoc[A2A (Agent2Agent)]*, a separate protocol that addresses a
 separate concern — communication between agents, rather than between agents and
@@ -47,6 +62,7 @@ tools or data.
 
 * *xref:agent.adoc[Agent]*
 * *xref:agent2agent.adoc[Agent2Agent (A2A)]*
+* *xref:agent-memory.adoc[Agent memory]*
 * *xref:agent-skills.adoc[Agent skills]*
 * *xref:large-language-model.adoc[Large language model (LLM)]*
 * *xref:ai-coding-assistant.adoc[AI coding assistant]*

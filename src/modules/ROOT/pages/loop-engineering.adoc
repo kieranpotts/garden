@@ -62,6 +62,74 @@ one agent to critique its own output. *Self-evaluation* is prone to self-praise
 bias. A generator grading its own work tends to rate it more favorably than an
 independent evaluator would.
 
+== Verification layering
+
+The "verification" concern is operationalized as a layered set of checks, each
+catching a different class of failure at a different cost.
+
+=== Automated check
+
+An *automated check* is a deterministic verification in the environment — tests,
+type checks, lints, build, pre-commit hooks. It is pass/fail with no judgement.
+The signal is something an agent can self-correct from without involving anyone
+else. Self-correction works as a loop: the agent makes a change, runs the check
+as a tool call, and the failure output lands in its context — a type error with
+file and line, a failing assertion with expected and actual — enough to fix and
+re-run, around and around until it passes, with no human in the loop.
+
+Determinism is what makes the loop trustworthy. A flaky check poisons it: the
+agent "fixes" code that was fine, or retries past a real failure. Good checks
+are a large part of a codebase's *xref:agent-harness.adoc[AX]*. A check only
+catches what it asserts — green checks mean the asserted properties hold, not
+that the code is right. See *xref:automated-testing.adoc[automated testing]*.
+
+=== Automated review
+
+An *automated review* is an agent reviewing another agent's work, often with a
+different model or a review-specific system prompt. It is non-deterministic — it
+forms a judgement. The separation from the working agent is what makes it work.
+Asking the agent that wrote the code to review itself gets little: the session
+that produced the bug contains the reasoning that produced it, so a
+fresh-context reviewer sees the diff the way a stranger would. A different
+model or review-specific system prompt sharpens this.
+
+Automated review slots between the other layers. Automated checks are
+deterministic and catch the mechanical. Human review is expensive and scales
+worst. Automated review catches judgement-shaped problems — a misleading
+function name, a missed edge case — at machine cost. It is non-deterministic, so
+it can miss things and flag non-issues. It is a filter that raises the floor
+before a human looks, not a gate that replaces one.
+
+=== Human review
+
+*Human review* is the user reading the code the agent produced and forming a
+judgement. Reading the diff or changed files counts; reading the agent's
+description of what it did does not. Narration is not the artifact — the
+description is a secondary source written by the party being reviewed, while
+the diff is the primary source (see *xref:agent-handoff.adoc[agent handoff]*).
+
+Agents raise the volume of code produced, so review becomes the bottleneck.
+Layer the strategies: automated checks catch mechanical failures, automated
+review catches describable ones, and human review is reserved for what only you
+can judge — is the change the right change, does the approach fit, should this
+exist at all. Review is cheaper earlier. Reading a plan before work starts, or a
+small diff mid-flight, takes minutes; excavating a finished branch after an
+*xref:away-from-keyboard.adoc[AFK]* run takes longer. Dropping review entirely is
+what *xref:vibe-coding.adoc[vibe coding]* names.
+
+=== Trajectory evaluation
+
+Testing AI-generated work requires evaluating not just the final artifact but
+how the agent got there. *Output evaluation* checks the result – does it compile,
+do tests pass. *Trajectory evaluation* checks the full sequence of tool calls and
+intermediate reasoning that produced it. Both are necessary. A fluent output
+that skipped its verification steps is a more dangerous failure than one with a
+visible error, because the silence hides the gap. This is why the
+generator/evaluator separation matters – an independent evaluator with fresh
+context judges the trajectory, not just the result. See
+*xref:agent-loop.adoc[agent loop]* for the loop and
+*xref:automated-testing.adoc[automated testing]*.
+
 The paper catalogs six structural components that recur across loop-engineered
 systems: automations, worktrees, *xref:agent-skills.adoc[skills]*, connectors,
 sub-agents, and memory systems. Further patterns are emerging in early open

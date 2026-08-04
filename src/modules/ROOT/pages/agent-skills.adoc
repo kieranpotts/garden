@@ -11,6 +11,12 @@ primary activation mechanism. At startup, the agent reads only each skill's
 matches the current task. This on-demand, just-in-time loading keeps the context
 window focused on what is currently relevant.
 
+In this sense a skill is the unit of *progressive disclosure* in a harness. Only
+the name and description sit in context by default; the full instructions arrive
+only when triggered. This is what distinguishes a skill from `AGENTS.md`, which is
+loaded into every session regardless of task. See *xref:agent-memory.adoc[agent
+memory]* for the wider memory system this fits into.
+
 Skills can also contain optional `scripts/`, `references/`, and `assets/`
 subdirectories for executable code, supplementary documentation, and static
 resources.
@@ -24,9 +30,11 @@ are a _guide_ — a feed-forward control that steers an agent toward the right
 approach before it acts, rather than a _tool_ it executes or a _sensor_ that
 checks its output.
 
-Agent skills complement the `AGENTS.md` convention. Whereas `AGENTS.md` provides
-a static, always-loaded project orientation, skills encapsulate specific
-procedures, standards, or playbooks that are relevant only to certain tasks.
+Agent skills complement the `AGENTS.md` convention. `AGENTS.md` is the always-on
+project orientation, loaded into every session. Skills encapsulate the procedures,
+standards, and playbooks that are relevant only to certain tasks. See
+*xref:agent-memory.adoc[agent memory]* for how `AGENTS.md` and skills fit the
+broader memory system.
 
 == Skills registries and collections
 
@@ -50,6 +58,7 @@ procedures, standards, or playbooks that are relevant only to certain tasks.
 
 * *xref:agent.adoc[Agent]*
 * *xref:agent-harness.adoc[Agent harness]*
+* *xref:agent-memory.adoc[Agent memory]*
 * *xref:ai-coding-assistant.adoc[AI coding assistant]*
 * *xref:model-context-protocol.adoc[Model Context Protocol]*
 * *xref:loop-engineering.adoc[Loop engineering]*

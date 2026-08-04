@@ -31,6 +31,32 @@ engineering is to remove the human from the loop and into a supervisory role
 that sets up discovery, verification, and scheduling once, then lets the agentic
 workflow run its course.
 
+AFK is the throughput multiplier of AI coding. Many AFK sessions can run in
+parallel while you sleep, eat, or work on something else — work that would block
+a live session proceeds on its own. This usually requires a permissive
+permission mode combined with *xref:sandbox.adoc[sandboxing]* to be safe.
+
+When you're not there, the agent handles ambiguity differently. While you're
+watching, an ambiguous decision surfaces as a question. Once you've walked
+away, the agent picks a default and keeps going, and every later decision
+builds on that guess. The characteristic failure is coming back to hours of
+finished, confident work built on a wrong call made in the first ten minutes —
+coherent, just coherent about the wrong thing.
+
+Since you can't give input during the run, give it before and after. Before:
+resolve ambiguity up front — a grilling session, a written
+*xref:agent-handoff.adoc[spec]* — so there are fewer gaps to fill alone. During:
+automated checks and *xref:loop-engineering.adoc[automated review]* stand in for
+the attention you're not giving, failing fast on what can be caught
+mechanically. After: the run ends in something reviewable — a PR, not changes
+already merged. AFK doesn't remove human review, it defers all of it to the end,
+so what arrives has to be worth reviewing. *xref:agent-harness.adoc[AX]* matters
+most in AFK runs — with no one watching, the environment is the only support the
+agent gets.
+
+Avoid "background agent". That phrase centers the machine rather than the human
+pattern. AFK names the fact that matters: the user isn't watching.
+
 == See also
 
 * *xref:downtime.adoc[Downtime]* – the analogous concept for systems rather than

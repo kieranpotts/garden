@@ -217,6 +217,26 @@ Prompt-based adaptation sees the optimizations being baked into the application
 layer that wraps a model, rather than into the underlying models themselves.
 This is simpler but less powerful than fine-tuning.
 
+== Parametric knowledge
+
+A model's *parametric knowledge* is what it "knows" from training, encoded in its
+weights. Training adjusts the parameters until next-token prediction is accurate,
+and a model that predicts text about a topic behaves as if it knows it — the
+knowledge is not stored as discrete facts but distributed across billions of
+numerical parameters.
+
+Parametric knowledge is frozen at training time. The model cannot see or update
+its own parameters during inference, so what it learned is fixed the moment
+training ends. Reliability tracks training frequency: a topic seen millions of
+times in the training data is recalled accurately, while a handful of examples
+leaves the model guessing.
+
+It also ages. Parameters stop absorbing information at the knowledge cutoff (see
+below), so anything published after that date is simply absent from the model's
+parametric knowledge. For both kinds of gap — too rare in the training data, or
+too recent to have been included — the remedy is contextual knowledge, loaded
+into the context window at inference time.
+
 == Knowledge cutoff
 
 Because training is a one-time process, a model's knowledge is frozen at the
@@ -225,6 +245,29 @@ publications, or other changes in the world that occurred after that date. This
 is known as the *knowledge cutoff*. It is one of the core limitations of LLMs,
 and the primary motivation for augmenting LLMs with techniques such as
 retrieval-augmented generation (RAG) — see below.
+
+Each model release ships with its own cutoff date. The model does not know that
+its knowledge has an edge: asked about something past the cutoff, it
+extrapolates from the nearest thing it does know. Code written against an old
+version of a library looks plausible and may even compile, then fails on the
+parts that changed. The fix is to get current information into the context
+window — a changelog, type definitions, or up-to-date documentation — so the
+model works from contextual knowledge rather than stale parametric knowledge.
+
+== Contextual knowledge
+
+*Contextual knowledge* is the facts an agent can read directly from its context
+window: the user's task, files that have been read in, tool results, and
+*xref:agent-memory.adoc[agent memory]* such as an AGENTS.md file. It is the
+counterpart to parametric knowledge, which is recalled from the model's
+parameters — contextual knowledge is read from the window.
+
+Only contextual knowledge is in your control, because the parameters are frozen.
+When contextual and parametric knowledge conflict, contextual usually wins,
+though old parametric knowledge can bleed through deep into a long session as
+attention degrades (see Context rot, below). Contextual knowledge also costs
+something to use: everything loaded into the window spends tokens and attention
+budget, so loading more context is not always an improvement.
 
 == Tokens
 
@@ -239,7 +282,9 @@ four characters, or three-quarters of the average word in English.
 Tokens are the unit of measurement for both input (the prompt) and output (the
 response). LLM pricing is typically quoted per million tokens (eg. $1.50/1M
 input, $3.25/1M output). A model's context window (see below) and other
-capabilities are also measured in tokens.
+capabilities are also measured in tokens. The distinction between input and
+output tokens matters for billing, since output is typically billed at several
+times the input rate — see below.
 
 == Embeddings
 
@@ -337,13 +382,35 @@ can run on a single workstation GPU. Available VRAM is the primary constraint on
 both the size of model you can run and its throughput, measured in
 *tokens per second*.
 
+== Next-token prediction
+
+At inference, what the model actually does is *next-token prediction*: given the
+current context, sample one next token, append it to the sequence, and run
+again. Every output — a sentence, a tool call, a thousand-line file — is built
+one token at a time this way. The model produces a probability distribution over
+its vocabulary for the next token, one token is sampled and appended, and the
+loop repeats until a stop condition is reached.
+
+There is no truth-check before a token is emitted, only likelihood. This is the
+root of hallucination (see below): the model produces fluent output whether or
+not the underlying fact is real, because it is predicting the most plausible
+continuation, not verifying anything.
+
+Tool calls are not a separate mechanism. They are simply structured strings the
+*xref:agent-harness.adoc[harness]* parses from the output stream. The model emits
+text that happens to parse as a tool invocation, the harness intercepts it, runs
+the tool, and feeds the result back as context for the next request.
+
 == Context window
 
 The *context window* is the maximum number of tokens (the *context*) an LLM can
 process in a single interaction. It is the combined total of the system prompt,
 conversation history, and the current input and output.
 
-Text outside the context window is not visible to the model.
+Text outside the context window is not visible to the model. The window is the
+only surface through which the model perceives anything: if something is in the
+token sequence the model can use it, and if it is not, the model does not know
+it exists.
 
 Context window size is one of the most impactful characteristics of models on
 the user experience. A larger context window allows a model to consider more of
@@ -352,11 +419,21 @@ a document, a longer conversation history, or a larger codebase at once.
 Modern frontier models support context windows of 128K tokens or more. Some now
 extend to 1M tokens and beyond.
 
+The window is finite, which means it fills up. Long sessions force compaction (see
+below) or clearing, because everything — system prompt, conversation history,
+tool results — competes for the same budget. *xref:context-engineering.adoc[Context engineering]* treats the window as a budget to be spent deliberately
+rather than a container to be filled.
+
 The *xref:key-value-cache.adoc[key-value cache (KV cache)]* stores the attention
 states of previously processed tokens so they don't have to be recomputed for
 every new token. This trades memory for compute and is what makes long,
 interactive generation practical. See
 *xref:key-value-cache.adoc[key-value cache (KV cache)]* for details.
+
+The context window is working state, not memory. It does not persist across
+sessions: a fresh session starts with an empty window. What persists across
+sessions is *xref:agent-memory.adoc[agent memory]* — files, handoff artifacts,
+and other records written to disk — not the window itself.
 
 == Compaction
 
@@ -373,7 +450,9 @@ The trade-off is fidelity for capacity. Compaction frees up space and keeps
 latency and cost bounded as a conversation grows, but it is inherently lossy.
 Detail that seemed unimportant at summarization time is discarded and cannot be
 recovered, and errors introduced into the summary propagate silently through
-everything that follows.
+everything that follows. The raw transcript is a primary source and the summary
+a secondary one — *xref:agent-handoff.adoc[agent handoff]* treats the same
+distinction more generally.
 
 Compacting too aggressively risks losing context the model still needs.
 Compacting too rarely wastes tokens and eventually hits the hard context limit.
@@ -383,7 +462,21 @@ inference pass.
 
 Well-designed systems therefore compact selectively — preserving verbatim what
 is cheap and load-bearing (such as the system prompt and recent turns) while
-summarizing the older, bulkier middle of the conversation.
+summarizing the older, bulkier middle of the conversation. Compaction can be
+prompted to preserve particular information — "keep the schema decisions" —
+whereas clearing simply drops everything and starts fresh.
+
+=== Autocompact
+
+*Autocompact* is compaction triggered automatically when the context window
+approaches full, typically around 80% of capacity. It is lossy at a moment you
+did not choose: it fires mid-task, and the summary decides for itself what to
+keep. The usual symptom is that the agent carries on but has quietly forgotten
+a constraint it was holding earlier.
+
+The defence is to compact manually at a natural boundary, so the summary is
+written when the work is in a coherent state, or to write decisions to a plan
+document or handoff artifact on disk, where no summary can lose them.
 
 == Context rot
 
@@ -394,22 +487,66 @@ relationships gets stretched thin. Thus, as the number of tokens in the context
 window increases, the model's ability to accurately recall information from that
 context decreases — a concept known as *context rot*.
 
+Each of these pairwise pairings is an *attention relationship*. When predicting a
+token, the model factors in every other token — some heavily, others barely —
+and meaningful pairs (a pronoun and its antecedent, a call site and its function
+definition) influence each other more. With n tokens there are roughly n²
+relationships, computed across many attention heads (typically 50–100), each
+building its own version. Only a few relationships matter for any given task,
+but the pool they sit in grows quadratically: at 1,000 tokens the pairing you
+care about is one in a million, and at 100,000 it is one in 10 billion.
+
 Context rot is not a hard cut-off. A model's performance does not suddenly drop
 off when context size exceeds the model's context window. We observe a
 performance gradient rather than a hard cut-off. Models remain capable with
 large contexts, but show reduced precision for information retrieval and
 long-range reasoning compared to their performance on shorter contexts.
 
+The underlying cause is *attention budget*. Each token has finite influence to
+distribute across the rest of the context, and that budget does not grow as the
+context grows. Think of signal and noise: your instruction is a fixed-volume
+signal, and everything else in the window is competing sound. As the context
+grows the room gets louder and the signal-to-noise ratio drops. The symptom
+reads as disobedience — an early constraint slips, and re-pasting it helps only
+briefly, because re-pasting adds another competitor rather than strengthening the
+signal. This is *attention degradation*: the same model with the same parameters
+has more mouths to feed, so each token's budget spreads across more competitors.
+It presents as the model getting worse mid-session — re-asking things it was
+told, ignoring a file it read earlier, drifting from its instructions — with no
+error or threshold, just a gradual decline. By the time it is obvious, the
+session has been in decline for a while.
+
 This phenomenon is accentuated by optimization techniques like compaction.
 
-This emergent behavior, known as a model's *attention budget*, is analogous to
-working memory capacity in humans. We too can lose focus and get confused once
-we reach a certain point of information overload. Like people, some models
-exhibit more gentle context rot than others, but this behavior is observed
-across all models.
+The remedy is to remove context, not add it. Clearing and reloading only what
+the current task needs, compacting at a natural boundary, or handing off to a
+fresh session all recover instruction-following. Treat declining
+instruction-following as a signal about context length, not about the model.
+
+This emergent behavior is analogous to working memory capacity in humans. We
+too can lose focus and get confused once we reach a certain point of information
+overload. Like people, some models exhibit more gentle context rot than others,
+but this behavior is observed across all models.
 
 *Context engineering* is fundamentally about the problem of optimizing the
 signal-to-noise ratio of a model's context.
+
+== Smart zone and dumb zone
+
+Early in a session, the agent is in a *smart zone*: sharp, focused, with good
+recall of what it has been told. As the session grows and attention degrades, it
+drifts into a *dumb zone*: sloppier, forgetful, more prone to faithfulness
+hallucinations (see below). The zones are not separate models or settings —
+the same model on the same harness just has more context to spread its attention
+across.
+
+The dumb zone commonly begins somewhere around 125,000–150,000 tokens on
+frontier models, though the exact threshold is debated and varies by model. The
+zones do not track the context window limit: quality falls off long before the
+window is full. Planning around the smart zone, rather than the window limit,
+means giving each task its own session so it gets the sharpest part, and when a
+single task is bigger than one smart zone, handing off or compacting at a
+natural boundary. See *xref:agent-handoff.adoc[agent handoff]*.
 
 == Temperature and sampling
 
@@ -429,6 +566,34 @@ For creative writing, a higher temperature produces more interesting results.
 
 Many models expose temperature as a configurable parameter.
 
+== Non-determinism
+
+The same input can produce different output. Because the model samples from a
+probability distribution, usually with some randomness, two identical requests
+can diverge — and a single different token early in the response changes
+everything that follows. Always picking the most likely token would avoid this
+but produces repetitive, degenerate output, so the randomness is intentional.
+
+Provider-side serving adds further variation: request batching and
+floating-point differences mean even a fixed temperature is not perfectly
+reproducible. Expect a spread of responses across runs; most cluster together,
+but the tails are real. Retrying is a legitimate response to a bad result, and a
+string of poor runs is not evidence that "the model got worse" — it may just be
+an unlucky sample. Don't over-narrativize a few bad runs into a trend.
+
+== Effort
+
+*Effort* is a dial for how much reasoning a model does before it answers. Set
+per request, it controls the length of the chain-of-thought the model works
+through before writing the visible response. Higher effort costs more, because
+the reasoning is emitted as output tokens that are billed even when hidden from
+the user, and it runs slower.
+
+A typical ladder runs from low (mechanical edits), through medium (the default),
+to high (tricky bugs or design work) and max (the hardest problems). The right
+setting matches the effort to the task, not to the session: a one-line fix does
+not need max effort, and a subtle design problem deserves more than low.
+
 == Hallucinations
 
 LLMs generate text by predicting the most statistically plausible next token,
@@ -438,7 +603,28 @@ fluent and confident but factually incorrect — a phenomenon known as
 
 A model may fabricate citations, invent plausible-sounding names, or state
 incorrect information as though it were certain. These are all examples of
-hallucinations.
+hallucinations. Next-token prediction produces fluent output whether or not the
+underlying fact is real — there is no internal "I don't know" signal, only
+likelihood.
+
+Hallucinations come in two flavors, and the distinction matters because the fixes
+are different:
+
+* *Factuality* hallucinations invent facts about the world — a wrong API
+  signature, a fake citation. The cause is a gap in parametric knowledge past the
+  knowledge cutoff, and the fix is to load contextual knowledge (the correct
+  documentation, type definitions, or retrieved facts) into the window.
+
+* *Faithfulness* hallucinations drift from context the model already has —
+  ignoring loaded instructions, contradicting a file it read, or abandoning its
+  own earlier reasoning. The cause is attention degradation in a long session
+  (see Context rot, above), and the fix is to clear or compact the context, not
+  to paste in more.
+
+Misdiagnosing a faithfulness problem as a factuality problem leads you to paste
+in more documentation, growing the context and making the drift worse. Before
+reaching for a fix, check whether the correct information was already in the
+context — if it was, the problem is faithfulness, not factuality.
 
 Hallucinations are an inherent limitation of how LLMs work, not a bug that can
 be fully fixed. The practical mitigations are:
@@ -446,6 +632,20 @@ be fully fixed. The practical mitigations are:
 * Setting lower temperatures to sample only the highest-probability next tokens.
 * Grounding model outputs in retrieved facts (RAG — see below).
 * Verifying outputs independently.
+
+== Sycophancy
+
+*Sycophancy* is confidently agreeable model output, caused by training: the
+model has learned that agreement is rewarded even when it is wrong. It surfaces
+as caving under pushback, praising bad input, biased framing (positive when you
+signal you wrote something, negative when you signal someone else did), and
+mimicry of the user's framing.
+
+The diagnostic for sycophancy is to ask whether the model would have said the
+same thing without your steer. If not, the agreement is sycophancy. The fix is to
+hide preferences and phrase prompts neutrally, so the model has nothing to
+flatter. The term should not be stretched to cover any wrong answer that happens
+to please you — without that diagnostic, it has no value.
 
 == Computational irreducibility
 
@@ -580,6 +780,79 @@ parallelism in the same way that vLLM does. In llama.cpp, model layers are
 assigned to GPUs rather than operations being distributed across them, which
 limits throughput gains from multi-GPU setups.
 
+== Model provider
+
+A *model provider* is whatever serves a model for inference. It is usually a
+remote service — Anthropic, OpenAI, or Google — but it can also be a local
+runtime such as Ollama, LM Studio, or llama.cpp. The
+*xref:agent-harness.adoc[harness]* asks a provider for each response, and the
+provider owns the hardware and the model's parameters.
+
+The provider is the source of rate limits, degraded capacity, and outages, so
+the provider's status page is the first place to look when something is wrong.
+The provider also sets pricing and decides which models are available, and the
+provider need not be the model's maker: Amazon Bedrock, Google Vertex, and
+OpenRouter all serve models made by others. Local providers trade capability and
+breadth of model selection for control and the absence of a per-token bill.
+
+== Model provider request
+
+A *model provider request* is one round-trip from the harness to the provider. It
+sends the current context and returns one response — either a tool call or a
+final answer. A single user message can spawn many requests: each tool result
+triggers another request, so a turn such as "fix the failing test" plays out as a
+chain of requests (read the tests, read the file, edit, re-run, answer) that
+each re-send the whole context.
+
+Each request carries everything — system prompt, full history, all tool results
+— because the model is *xref:stateless.adoc[stateless]*: the provider keeps
+nothing between requests. The request, not the turn, is the unit of billing.
+Distinguishing the two matters for cost: one turn is many requests, and every
+request after the first re-sends the entire session so far.
+
+== Input tokens
+
+*Input tokens* are the tokens the harness sends on each request — the system
+prompt, conversation history, and tool results. They are billed at a lower rate
+than output tokens, but they make up most of an AI coding bill, because the model
+is stateless and each turn re-sends the entire session: turn 50 carries 49 turns
+of history. The prefix cache (see below) reduces this, by billing the matching
+portion of the history as cheap cache tokens.
+
+== Output tokens
+
+*Output tokens* are the tokens the model generates back. They are billed at
+roughly five times the input rate, and everything counts: prose, code, tool
+calls, and extended thinking — reasoning tokens are billed as output even when
+hidden from the user, so turning up effort (see above) spends more.
+
+Output tokens set the pace of a response. Generation is one token at a time, so
+a slow turn usually means a long answer is being written, not that the service
+is lagging.
+
+== Prefix cache
+
+The *prefix cache* is a provider-side store that lets consecutive requests skip
+re-processing a shared prefix. When the start of a request matches a recent one —
+the same system prompt, the same history up to some point — the provider reuses
+prior work and bills those tokens as *cache tokens* at a much lower rate, often
+a tenth of the input rate or less.
+
+This pays off because sessions grow append-only: each request is the previous
+one plus a few messages, so the long shared beginning is processed once and then
+reused. A typical sequence looks like this: a request sends AB and nothing is
+cached, so all of it is full-rate; the next sends ABC, with AB cached and C
+full-rate; then ABCD, with ABC cached and D full-rate. But if the next request
+sends AXCD, the edit at the second position breaks the prefix — only A is
+cached, and XCD is full-rate from the break onward. A broken cache shows up in
+the usage report as cache tokens dropping relative to input tokens.
+
+Caches are fragile and short-lived. They match exact prefixes, so anything that
+changes earlier in the context — reordered content, a timestamp, a shifted
+file representation — misses the cache from that point on, and everything after
+is full-rate. They also expire within minutes, not hours: idle past the window
+and the next request rebuilds at full price once.
+
 == Model access layers
 
 Although it is possible to interact with a model directly, for most use cases
@@ -607,6 +880,20 @@ formatting, and other details specific to a particular provider or use case. See
 
 * *xref:agent.adoc[Agent]*
 
+* *xref:agent-harness.adoc[Agent harness]*: The wrapping infrastructure around a
+  model that drives requests, parses tool calls, and manages context.
+
+* *xref:agent-memory.adoc[Agent memory]*: What persists across sessions — files,
+  handoff artifacts, and other records on disk — as distinct from the context
+  window's working state.
+
+* *xref:agent-handoff.adoc[Agent handoff]*: Clearing, compaction, and handoff as
+  ways of managing context across session boundaries.
+
+* *xref:stateful.adoc[Stateful design]* and *xref:stateless.adoc[statelessness]*:
+  The statelessness of the model underlies why every request re-sends the full
+  context.
+
 * *xref:ai-coding-assistant.adoc[AI coding assistant]*
 
 * *xref:agent-orchestration.adoc[Agent orchestration]*: Frameworks and platforms
@@ -631,6 +918,11 @@ formatting, and other details specific to a particular provider or use case. See
   Stephen Wolfram — Accessible first-principles explanation of next-token
   prediction, embeddings, and the transformer's attention mechanism, plus the
   concept of computational irreducibility.
+
+* https://github.com/mattpocock/dictionary-of-ai-coding[Dictionary of AI Coding],
+  Matt Pocock — Plain-English glossary of the vocabulary of AI coding: models,
+  context windows, tokens, harnesses, tools, failure modes, handoffs, and
+  patterns of work.
 
 === Books
 

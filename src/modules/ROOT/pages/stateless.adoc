@@ -1,3 +1,45 @@
 = Stateless design
 
-// TODO: https://blog.bytebytego.com/p/stateless-architecture-the-key-to
+A *stateless* design or system carries no information forward between
+interactions. Each request or invocation is handled independently, with
+everything it needs supplied fresh. It is the counterpart to
+*xref:stateful.adoc[stateful design]*.
+
+In distributed systems, statelessness is a key to
+*xref:horizontal-scaling.adoc[horizontal scaling]*. Any instance can handle any
+request, instances are interchangeable, and capacity is easy to add or remove.
+Because no instance holds state a caller depends on, failure of one instance
+just shifts work to another, which makes stateless designs fault-tolerant and
+friendly to *xref:load-balancing.adoc[load balancing]*.
+
+In *xref:agent.adoc[agent]* and *xref:large-language-model.adoc[LLM]* systems,
+the model is permanently stateless. Its parameters are frozen after training,
+and nothing you do at inference changes them – the model does not learn from
+corrections and does not remember being told the same thing yesterday. The
+feeling of continuity within a session is manufactured by the
+*xref:agent-harness.adoc[harness]*, which keeps the transcript and re-sends it
+with every request. The model is not remembering the conversation – it is
+re-reading it.
+
+The practical consequence is that if you want something remembered across
+sessions, you have to write it down somewhere the agent will read it back:
+`AGENTS.md` files, *xref:agent-memory.adoc[memory systems]*, or
+*xref:agent-handoff.adoc[handoff artifacts]*. When the agent keeps making a
+mistake you have corrected before, the question is not why it did not learn –
+it cannot – but where that correction should be written down. This is the core
+problem *xref:context-engineering.adoc[context engineering]* addresses.
+
+As a general software-engineering trade-off, statelessness buys simplicity,
+scalability, and fault-tolerance at the cost of having to re-supply context
+every time (cost and latency) and the inability to build on prior interaction.
+
+== See also
+
+* *xref:stateful.adoc[Stateful design]*
+* *xref:large-language-model.adoc[Large language model]*
+* *xref:context-engineering.adoc[Context engineering]*
+* *xref:agent.adoc[Agent]*
+* *xref:agent-memory.adoc[Agent memory]*
+* *xref:agent-handoff.adoc[Agent handoff]*
+* *xref:load-balancing.adoc[Load balancing]*
+* *xref:horizontal-scaling.adoc[Horizontal scaling]*

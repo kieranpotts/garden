@@ -9,11 +9,28 @@ ML encompasses a wide range of techniques and problem types:
 
 * Supervised learning: The model is trained on labeled examples (input/output
   pairs) to learn a mapping from inputs to outputs. Used for classification (eg.
-  spam detection, image recognition) and regression (eg. predicting house
-  prices).
+  spam detection, *xref:computer-vision.adoc[computer vision]*) and regression
+  (eg. predicting house prices). Suppose you give a model a dozen photos, six
+  labeled "car" and six labeled "van", and ask it to find a visual pattern
+  separating the groups. With so few images it may seize on color (red for car,
+  white for van) rather than shape, and then misclassify a white car as a van
+  and a red van as a car. Two remedies reinforce each other. Provide more varied
+  training examples to correct the bias in the data, and give the model feedback
+  on its mistakes so it refines its decision-making. This kind of
+  *xref:ai-bias.adoc[AI bias]* is a central concern for supervised systems.
 
-* Unsupervised learning: The model finds structure in unlabeled data. Used for
-  clustering, dimensionality reduction, and anomaly detection.
+* Unsupervised learning: The model finds structure in unlabeled data with no
+  human guidance, and is used for clustering, dimensionality reduction, and
+  anomaly detection. ChatGPT is the prominent example. The volume of text on
+  the internet and in digitized books is so vast that, over many months, the
+  model learned to combine words meaningfully by itself, with humans then
+  fine-tuning its responses. The analogy is giving someone a big pile of books
+  in a foreign language, some with images, and eventually they work out that a
+  particular word appears whenever a tree is pictured, another when a house is,
+  and a nearby word that might mean "a" or "the". This self-directed learning
+  from raw text is the foundation of
+  *xref:large-language-model.adoc[large language models]* and modern
+  *xref:natural-language-processing.adoc[natural language processing]*.
 
 * Reinforcement learning: An agent learns by interacting with an environment and
   receiving rewards or penalties. Used in robotics, game-playing, and
@@ -31,8 +48,11 @@ LLMs are built on the *xref:transformer.adoc[transformer architecture]*.
 
 == See also
 
+* *xref:ai-bias.adoc[AI bias]*
+* *xref:computer-vision.adoc[Computer vision]*
 * *xref:generative-ai.adoc[Generative AI]*
 * *xref:large-language-model.adoc[Large language model (LLM)]*
+* *xref:natural-language-processing.adoc[Natural language processing]*
 * *xref:transformer.adoc[Transformer architecture]*
 
 == References

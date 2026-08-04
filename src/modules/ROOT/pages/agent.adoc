@@ -45,6 +45,123 @@ harness — not the model — defines the agent's action space and constraints.
 Designing and operating an agent harness is a discipline in its own right —
 known as *xref:agent-harness.adoc[harness engineering]*.
 
+== The anthropomorphized unit
+
+An agent is the unit you are speaking to — the
+*xref:large-language-model.adoc[model]* in motion, configured for a purpose.
+"Agent" does not name a mechanical part. The model is a file of parameters; the
+*xref:agent-harness.adoc[harness]* is software. "Agent" is the anthropomorphized
+unit you delegate to, the thing you address when you give a goal.
+
+The idea predates this wave of AI. Software agents — programs you delegate a goal
+to — have been a concept as long as AI has. "The AI" and "the bot" are too vague
+to be useful; "agent" names the unit precisely.
+
+== Session
+
+A *session* is one bounded run of interaction. It starts empty and accumulates
+messages, tool results, and files read, and it ends when cleared, closed, or
+*xref:large-language-model.adoc[compacted]*. The session is what fills the context
+window. Message history is the agent's working memory — the model is
+*xref:stateless.adoc[stateless]*, and everything it appears to remember is in the
+history re-sent with each request. Memory ends with the session; a new session
+starts from nothing. What survives is the filesystem. Keeping one task per
+session keeps the context relevant. See
+*xref:context-engineering.adoc[context engineering]* and
+*xref:agent-handoff.adoc[agent handoff]*.
+
+== Turn
+
+A *turn* is one user message plus everything the agent does in response, up until
+it yields back. A turn contains one or more
+*xref:large-language-model.adoc[model provider]* requests — many, if tools are
+called. The turn's length is the agent's decision, not yours: a turn can be a
+one-sentence answer or twenty minutes of work. Long turns enable
+*xref:away-from-keyboard.adoc[AFK]* work, and they are where things go wrong
+unsupervised. The turn is the natural unit for steering — the gaps between turns
+are where you redirect. See *xref:agent-loop.adoc[agent loop]*.
+
+== Human-in-the-loop
+
+*Human-in-the-loop* is a working pattern where one or more humans pair with the
+agent during a session — reviewing, redirecting, collaborating in real time. The
+contrast is *xref:away-from-keyboard.adoc[AFK]*, where the agent runs unattended
+and you judge the result afterwards. Human-in-the-loop catches problems while
+they are cheap.
+
+Well-specified, low-risk, easy-to-verify tasks suit AFK. Ambiguous,
+irreversible, or hard-to-review tasks — a schema migration, a tricky design,
+anything touching production — suit staying in the loop. The judgement call is
+how expensive a wrong turn would be, and how late you would catch it. Some work
+is in-the-loop by nature: *grilling* and *xref:prototyping.adoc[prototyping]*.
+Staying in the loop costs your attention, and part of getting better is moving
+more work safely out of the loop. See
+*xref:loop-engineering.adoc[loop engineering]* and
+*xref:agent-handoff.adoc[agent handoff]*.
+
+== Design concept
+
+The *design concept* is the shared understanding of what is being built, held
+between user and agent but separate from any asset. Fred Brooks' term (from
+_The Design of Design_): the conversation, the handoff artifacts, and the code
+are all assets that try to capture the design concept, but none of them is it.
+The concept names the gap behind "the agent wrote exactly what I asked for and
+it's still wrong" — the design concept was not finished in your own head, and the
+agent filled the silences with its own assumptions.
+
+You can tell the concept is shared when the other party starts answering
+questions you have not asked, the way you would. Until then the work is
+conversation, and *grilling* is the deliberate version of that conversation. See
+*xref:agent-handoff.adoc[agent handoff]*.
+
+== Grilling
+
+*Grilling* is a technique for developing a design concept with an agent. The
+agent interviews the user Socratically, one decision at a time, proposing a
+recommended answer each time. It slows the rush to a finished plan; no
+*xref:agent-handoff.adoc[handoff artifact]* is produced until the concept
+stabilises.
+
+Grilling exists because agents fill gaps silently. Asked to write a spec from a
+two-line prompt, the agent picks defaults and writes them in, indistinguishable
+from your own choices. Grilling inverts this: instead of guessing, the agent
+asks. It is a human-in-the-loop technique — your answers are the input. When a
+question cannot be answered in conversation, switch to
+*xref:prototyping.adoc[prototyping]*.
+
+== Conductor and orchestrator
+
+As AI takes over more implementation, developers move fluidly between two
+modes. In *conductor* mode the developer works in real time with an AI
+pair-programmer – in the IDE, watching code appear, guiding the AI with prompts and
+corrections, maintaining fine-grained control. The AI is a powerful instrument and
+the developer is actively directing every movement. This suits complex logic,
+tricky debugging, and unfamiliar codebases where the developer needs to understand
+each change as it is made. The risk is that personally directing every keystroke
+caps the throughput gain.
+
+In *orchestrator* mode the developer operates at a higher level of abstraction –
+defining goals, assigning them to agents, and reviewing results rather than
+watching code appear line by line. Agents may work in the background, in parallel,
+on different parts of a codebase. The developer checks in periodically, reviews
+output, and gives course corrections. This suits well-defined tasks like bug
+fixes, features against established patterns, codebase migrations, and test
+generation, and is the natural mode for *xref:away-from-keyboard.adoc[AFK]* work
+and *xref:agent-orchestration.adoc[multi-agent delegation]*.
+
+The orchestrator demands a different skill set than the conductor: specification
+(defining tasks precisely enough for unambiguous execution), decomposition
+(breaking large tasks into appropriately sized units), evaluation (quickly
+assessing whether output meets the bar), and system design (the constraints,
+tests, and feedback loops that keep agents productive). The shift is from
+implementation skill to judgment – directing agents well matters more than
+writing the most code.
+
+The conductor and orchestrator are two ends of a spectrum, and most real work
+mixes both. The choice connects to *xref:agentic-engineering.adoc[agentic
+engineering]*, *xref:loop-engineering.adoc[loop engineering]*, and the
+human-in-the-loop pattern above.
+
 == Agent development frameworks
 
 Frameworks and SDKs provide the infrastructure for building and orchestrating
@@ -166,12 +283,17 @@ LangGraph, MetaGPT, and SuperAGI. See
 
 * *xref:agent-loop.adoc[Agent loop]*
 * *xref:agent-harness.adoc[Agent harness]*
+* *xref:agent-handoff.adoc[Agent handoff]*
+* *xref:agent-memory.adoc[Agent memory]*
 * *xref:agent-orchestration.adoc[Agent orchestration]*
 * *xref:loop-engineering.adoc[Loop engineering]*
+* *xref:away-from-keyboard.adoc[Away-from-keyboard (AFK)]*
 * *xref:recursive-self-improvement.adoc[Recursive self-improvement (RSI)]*
 * *xref:agent-skills.adoc[Agent skills]*
 * *xref:model-context-protocol.adoc[Model Context Protocol]*
 * *xref:agent2agent.adoc[Agent2Agent (A2A)]*
+* *xref:prototyping.adoc[Prototyping]*
+* *xref:developer-experience.adoc[Developer experience (DX)]*
 
 == References
 
@@ -186,3 +308,6 @@ LangGraph, MetaGPT, and SuperAGI. See
 
 * https://www.kaggle.com/whitepaper-agent-companion[Agents Companion], Google –
   Companion whitepaper to the above.
+
+* _The New SDLC With Vibe Coding_, Addy Osmani, Shubham Saboo & Sokratis
+  Kartakis (2026).
