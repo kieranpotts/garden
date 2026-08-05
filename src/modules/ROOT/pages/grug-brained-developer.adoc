@@ -1,0 +1,92 @@
+= Grug-brained developer
+
+"The Grug Brained Developer" is a humorous essay on software development,
+published anonymously at https://grugbrain.dev/[grugbrain.dev] in 2022 and
+written in the voice of "grug", a caveman developer who values simplicity above
+all else. The essay is widely attributed to Carsten, the creator of htmx, and
+has become a touchstone for developers skeptical of fashion-driven complexity.
+
+The grug persona's defining trait is that he is "not so smart" but has programmed
+for many long years and learned a few things. He positions himself against the
+"big brained developer" who reaches for abstractions, frameworks, and processes
+before understanding the problem. The recurring villain is the *complexity demon
+spirit*, an invisible force that enters a codebase through well-meaning but
+over-eager developers and makes the system impossible to change.
+
+== Core themes
+
+The essay is a long list of opinions, all in service of one idea: keep
+*xref:complexity.adoc[complexity]* at bay. The most cited positions include:
+
+* *Say "no" to complexity.* The strongest weapon against the complexity demon
+  is the word "no" — to features, abstractions, and tools that aren't needed.
+  Where compromise is unavoidable, say "ok" and ship an 80/20 solution that
+  delivers most of the value with little of the code.
+
+* *Don't factor too early.* Early in a project everything is fluid, and
+  premature abstraction locks in the wrong shapes. Wait for "cut points" —
+  narrow interfaces that emerge from the code as it stabilizes — and refactor
+  toward them.
+
+* *Prototype before designing.* When big-brained developers are spinning on
+  architecture, demand a working demo tomorrow. Building something forces
+  contact with reality and short-circuits abstraction for its own sake.
+
+* *Integration tests are the sweet spot.* *xref:unit-testing.adoc[Unit tests]*
+  break on every refactor and *xref:testing.adoc[end-to-end tests]* are hard to
+  debug; tests just below the API boundary give the best signal-to-effort ratio.
+  Always write a regression test before fixing a bug.
+
+* *Master your tools.* A good debugger is worth more than shiny rocks, and IDE
+  autocomplete is where most of the value of *xref:abstraction.adoc[type systems]*
+  comes from — not proofs of correctness.
+
+* *DRY is a balance.* *xref:dry.adoc[DRY]* is good advice, but a little
+  copy-paste with small variations is often clearer than a clever abstraction
+  that takes longer to read than the duplication would have.
+
+* *Prefer locality of behavior.* *xref:separation-of-concerns.adoc[Separation of
+  concerns]* spreads a feature across many files; grug prefers code that lives
+  on the thing it affects, so reading the thing tells you what the thing does.
+
+* *Fear concurrency.* Reach for simple, ideally
+  *xref:stateless.adoc[stateless]*, concurrency models and avoid shared mutable
+  state whenever possible.
+
+* *Optimize only with evidence.* Profile before optimizing, and remember that
+  network calls cost millions of CPU cycles — a warning aimed squarely at
+  *xref:microservices.adoc[microservices]*, which grug sees as taking the hardest
+  problem (factoring a system) and adding a network call to it.
+
+* *Respect Chesterton's Fence.* Understand why code exists before tearing it
+  out, even when it looks ugly. *xref:refactoring.adoc[Refactors]* should stay
+  small so the system keeps working at every step.
+
+== The cultural point
+
+Underneath the caveman voice, the essay makes two cultural arguments. The
+first is that *xref:agile.adoc[Agile]* has become a self-defending dogma: when
+an Agile project fails, its shamans say you "didn't do Agile right," which is
+unfalsifiable. The second is that *Fear Of Looking Dumb (FOLD)* is a major
+power source for the complexity demon. Senior developers who publicly admit
+"this is too complex for me" make it safe for juniors to do the same, and that
+honesty is what keeps accidental complexity from accumulating.
+
+The essay closes on *xref:egoless-programming.adoc[impostor syndrome]*: nearly
+every developer feels like an impostor most of the time, and "nobody is an
+imposter if everybody is an imposter."
+
+== See also
+
+* *xref:worse-is-better.adoc[Worse is better]* — a key inspiration for the
+  essay, listed in its recommended reading.
+* *xref:kiss-principle.adoc[KISS principle]* — the general principle grug
+  embodies.
+* *xref:yagni.adoc[YAGNI]* — "you aren't gonna need it," the formal name for
+  grug's bias against speculative abstractions.
+* *xref:premature-optimization.adoc[Premature optimization]* — grug's
+  profiling-before-optimizing stance restated.
+* *xref:technical-debt.adoc[Technical debt]* — the cost the complexity demon
+  exacts when it goes untrapped.
+* *xref:conceptual-integrity.adoc[Conceptual integrity]* — the quality grug
+  defends by saying "no."
