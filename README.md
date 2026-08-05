@@ -1,7 +1,7 @@
 # Garden
 
-**Source content for my digital garden, published at
-https://kieranpotts.com/garden.**
+**Source content for my digital garden**,
+published at https://kieranpotts.com/garden.
 
 ## Contributing
 

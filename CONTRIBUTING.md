@@ -1,5 +1,7 @@
 # Contributing
 
+<!-- Agents MUST read ./AGENTS.md. This document is for humans. -->
+
 > [!NOTE]
 > This repo is not open to external contributions.
 
