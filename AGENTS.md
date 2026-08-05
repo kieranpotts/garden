@@ -20,8 +20,12 @@ SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
   focused on a single idea or concept — and cross-references related topics with
   `xref:` rather than repeating content.
 
-- **`src/modules/ROOT/pages/index.adoc`**: The only page listing — every entry MUST
+- **`src/modules/ROOT/pages/index.adoc`**: The page listing — every entry MUST
   be listed here to be discoverable on the site.
+
+- **`src/modules/ROOT/nav.adoc`**: The Antora navigation file, which declares the
+  page hierarchy and drives each page's breadcrumb trail. Every entry MUST be
+  listed here too — a page missing from `nav.adoc` renders with no ancestry.
 
 - **`src/antora.yml`**: Antora component descriptor.
 
@@ -37,15 +41,19 @@ SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
 ## Tools
 
 No build, lint, or test commands. Validity is structural: every `xref:` target
-must resolve to a real file, and every page must be listed in `index.adoc`.
+must resolve to a real file, and every page must be listed in both `index.adoc`
+and `nav.adoc`.
 
 ## Rules
 
 - Each `.adoc` file MUST cover exactly one topic. Use `xref:` to link rather
   than re-explaining a concept that already has its own page.
 
-- Every page under `src/modules/ROOT/pages/` MUST be listed in `index.adoc`, in
-  the correct alphabetical section.
+- Every page under `src/modules/ROOT/pages/` MUST be listed in both
+  `index.adoc` (with its maturity emoji) and `nav.adoc` (the Antora navigation
+  file), in the correct alphabetical section. The two files are kept in sync: a
+  page added to one is added to the other, and a page removed from one is
+  removed from the other.
 
 - New entries MUST be marked 🌱 Seedling. Maturity (🌱 Seedling, 🌿 Budding, 🌳
   Evergreen, 🍂 Decaying) SHOULD only be promoted or demoted with explicit user
