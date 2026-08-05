@@ -9,3 +9,27 @@ The idea he presents is that abstractions can never be perfect, and consumers of
 an abstraction will always need to understand, to some extent, the underlying
 implementation of that abstraction. If they don't, they will struggle to resolve
 issues when the implementation inevitably leaks through the abstraction.
+
+== Complexity as a moat
+
+Spolsky frames leakage as an unfortunate but inevitable fact of engineering life.
+Mahesh Balakrishnan's 2024 "second law of software complexity" gives it a
+sharper edge: in competing systems, abstractions leak *deliberately*. When
+systems fight for adoption, the pressure to attract application developers
+pushes designers to expose implementation detail through the API. This both
+grows market share and locks the implementation in, because no rival can
+substitute a different one beneath the same interface. ZooKeeper's
+stronger-than-linearizable consistency coupled to TCP/IP-based ephemeral node
+semantics, and Kafka's idempotent produce semantics, are APIs that are nearly
+impossible to implement any other way.
+
+Under this reading, leaky abstractions are not just a maintenance hazard but a
+*xref:complexity.adoc[complexity]* strategy: a moat the incumbent digs with its
+own API, and that competitors and downstream engineers then have to swim
+across. The same leak that makes the abstraction easy to consume also makes it
+hard to replace.
+
+== See also
+
+* *xref:abstraction.adoc[Abstraction]* – what an abstraction is, and why it
+leaks.

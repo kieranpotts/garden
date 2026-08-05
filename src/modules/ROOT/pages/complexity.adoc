@@ -1,7 +1,5 @@
 = Complexity
 
-// TODO
-
 == Essential complexity
 
 All systems are complex because all systems have *essential complexity*.
@@ -36,3 +34,56 @@ tolerance. Add *xref:asynchronous-communication.adoc[asynchronous]*
 and you have even more complexity that requires specialist tools and techniques
 – like *xref:observability.adoc[observability]* and especially
 *xref:tracing.adoc[distributed tracing]* – to deal with.
+
+== The three laws of software complexity
+
+Mahesh Balakrishnan's 2024 essay "Three Laws of Software Complexity" argues
+that engineers are destined to wallow in unnecessary complexity because of
+three forces that, between them, explain why most working software is badly
+designed regardless of how carefully it started out.
+
+* *First law: a well-designed system degrades into a badly designed one over
+time.* Taking "well-designed" to mean "easy to change", every quick and easy
+change to a well-designed system risks leaving it harder to change next time. A
+well-designed database behind a clean storage engine API stays swappable until
+someone adds a `getLevelSize` call, at which point it can no longer be ported
+off an LSM tree. Well-designed is therefore an unstable, ephemeral state, and
+*xref:software-rot.adoc[software rot]* is the stable attractor the whole field
+drifts toward. This is *xref:technical-debt.adoc[technical debt]* accruing
+as a law of motion, not a one-off mistake.
+
+* *Second law: complexity is a moat, filled by leaky abstractions.* When systems
+compete for adoption, the pressure to attract application developers pushes
+designers to expose implementation detail through the API. This both grows
+market share and locks the implementation in, because no competitor can
+substitute a different one under the hood. ZooKeeper's
+stronger-than-linearizable consistency coupled to TCP/IP-based ephemeral node
+semantics, and Kafka's idempotent produce semantics, are APIs that are nearly
+impossible to implement any other way. This is
+*xref:leaky-abstractions.adoc[leaky abstractions]* weaponized as a competitive
+strategy rather than suffered as an accident.
+
+* *Third law: there is no fundamental upper limit on software complexity.* In
+systems built by large groups over time, complexity is bounded only by human
+creativity. The shape of a system reflects the abilities, philosophies, and
+incentives of dozens of developers, each navigating real and perceived
+political constraints. Why does a replicated database roll its own
+*xref:gossip-protocol.adoc[gossip]* failure-detection layer instead of relying
+on Kubernetes? Maybe the original author's PhD was on gossip, maybe the
+manager had already written the promo docs, maybe the tech lead split
+membership and leader election into separate layers to avoid a political
+fight. Each existing system is, in Balakrishnan's phrase, "a DoS attack on you
+by dozens of people you may not even know" – a booby-trapped palace of
+ticking *xref:big-ball-of-mud.adoc[complexity time-bombs]* planted years before
+you arrived.
+
+The throughline is that *xref:conceptual-integrity.adoc[conceptual integrity]*
+is the quality the three laws conspire against: a single coherent design erodes
+under accumulated changes, competitive API pressure, and the many hands that
+touch a long-lived system. Balakrishnan's own answer is to keep building new
+systems from scratch before they succumb – a strategy whose difficulty he
+concedes.
+
+== See also
+
+* *xref:abstraction.adoc[Abstraction]* – the mechanism the second law exploits.
