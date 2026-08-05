@@ -1,0 +1,34 @@
+= Code for the maintainer
+
+Maintenance is by far the most expensive phase of any software project. More
+time, and more money, is spent reading and changing existing code than was
+ever spent writing it the first time. Coding for the maintainer means writing
+with that future reader in mind, rather than for the convenience of the
+original author.
+
+A well-known piece of folklore puts it bluntly: always code as if the person
+who ends up maintaining your code is a violent psychopath who knows where you
+live. The joke is memorable because it captures the real point. Someone
+unknown will inherit this code. They will read it under stress, at midnight,
+with a production fault to diagnose. Make their job easy.
+
+The practical form of this advice is to favor *xref:clean-code.adoc[clean
+code]* and clear intent over cleverness. Name things honestly. Keep
+functions small and focused. Comment the why, not the what. Aim for code that
+a developer a few notches junior can read and learn from with pleasure. The
+test is whether a newcomer can follow the logic without having to reverse
+engineer your thinking.
+
+This stance is the everyday source of resistance to
+*xref:technical-debt.adoc[technical debt]*. Code written for the maintainer
+is cheaper to change, so it accrues less interest. It also makes
+*xref:refactoring.adoc[refactoring]* safer, because the structure is already
+legible to the next person who touches it. Good
+*xref:code-conventions.adoc[code conventions]* help here by making the
+expected shape of the code predictable rather than idiosyncratic.
+
+Code for the maintainer also aligns with the
+*xref:principle-of-least-astonishment.adoc[principle of least
+astonishment]*. Write the code that the reader expects to see. The less a
+reader has to think to understand a change, the fewer mistakes they will
+make, and the faster the system can evolve.
