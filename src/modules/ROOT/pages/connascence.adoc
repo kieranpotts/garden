@@ -1,0 +1,39 @@
+= Connascence
+
+// TODO: https://en.wikipedia.org/wiki/Connascence
+
+*Connascence* is a software quality metric that describes different levels and
+dimensions of *xref:coupling.adoc[coupling]*. Two components are connascent when a
+change in one would require a change in the other as well. Lower connascence
+means higher code quality. The concept generalizes and extends the older
+*xref:coupling.adoc[coupling]* and *xref:cohesion.adoc[cohesion]* ideas, and was
+formalized by Meilir Page-Jones.
+
+Each instance of connascence is considered on three axes, namely strength,
+degree, and locality. *Strength* is the type of the connascence, ranked from
+weak to strong. Weaker connascence is preferable because it is easier to change.
+*Degree* is how many occurrences of the connascence exist between the components.
+*Locality* is how far apart the components are. Connascence is worse when
+components are far apart.
+
+Connascence gives developers a vocabulary to talk about different types of
+coupling. The types, in increasing strength, are *Connascence of Name*,
+*Connascence of Type*, *Connascence of Meaning*, *Connascence of Position*,
+*Connascence of Algorithm*, *Connascence of Execution*, and *Connascence of
+Timing*. Stronger connascence is harder to change.
+
+The weakest form, *Connascence of Name*, requires only that two components agree
+on the name of something. Renaming a method forces every caller to be updated,
+but nothing else about the callers need change. *Connascence of Position*,
+further up the scale, requires that components agree on the order of elements,
+such as the positional arguments to a function. A change in the order forces a
+matching change at every call site and is correspondingly more disruptive.
+
+The practical value of connascence is as a guide to
+*xref:decoupling.adoc[decoupling]*. Stronger forms can often be refactored into
+weaker ones. Passing values by position can be replaced by passing them by name.
+Hidden assumptions captured by *Connascence of Meaning* – where two components
+must agree on the interpretation of a value – can be made explicit through
+*xref:cohesion.adoc[cohesive]* types. Reducing the strength of connascence is a
+concrete way to honor the *xref:law-of-demeter.adoc[Law of Demeter]* and other
+*xref:design-principles.adoc[design principles]*.
