@@ -8,7 +8,8 @@ already in the garden.
 
 Given a topic, the agent checks it doesn't already exist, researches it, writes
 a focused `.adoc` page under `src/modules/ROOT/pages/`, links it to and from
-related entries, and adds it to `index.adoc`, marked as a seedling 🌱.
+related entries, and adds it to `index.adoc` (marked as a seedling 🌱) and
+`nav.adoc`, in matching alphabetical positions.
 
 ## How to invoke
 

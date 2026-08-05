@@ -2,9 +2,9 @@
 name: tend
 description: >-
   Inspect the digital garden for withering content — broken cross-references,
-  fake pseudo-links, orphaned pages missing from the index, and stale maturity
-  labels — and report or fix what's found. Use when the user says "tend the
-  garden", "check for broken links", or asks for general garden
+  fake pseudo-links, orphaned pages missing from the index or nav, and stale
+  maturity labels — and report or fix what's found. Use when the user says "tend
+  the garden", "check for broken links", or asks for general garden
   maintenance/health checks.
 compatibility: requires Read, Grep, Edit
 license: CC0-1.0
@@ -13,9 +13,9 @@ license: CC0-1.0
 # Tend
 
 Inspect the digital garden for withering content — broken cross-references,
-fake pseudo-links, orphaned pages missing from the index, and stale maturity
-labels — and report or fix what's found. General garden maintenance and health
-checks.
+fake pseudo-links, orphaned pages missing from the index or nav, and stale
+maturity labels — and report or fix what's found. General garden maintenance
+and health checks.
 
 ## Input
 
@@ -67,11 +67,13 @@ print an error message.
 
 4.  Find orphaned pages.
 
-    Cross-check the inventory from step 1 against every `xref:` target
-    listed in `index.adoc`. Any page not listed in the index is orphaned
-    — it exists but has no discoverable path from the front page. Report
-    orphans for the user to slot into the index (you may propose the
-    section, but confirm before editing the index, since placement is a
+    Cross-check the inventory from step 1 against the entries in both
+    `index.adoc` and `src/modules/ROOT/nav.adoc`. A page missing from
+    `index.adoc` is orphaned — it exists but has no discoverable path
+    from the front page. A page missing from `nav.adoc` renders with no
+    ancestry and no breadcrumb trail. Report either kind of orphan for
+    the user to slot into the file(s) it's missing from (you may propose
+    the section, but confirm before editing, since placement is a
     judgment call about taxonomy).
 
 5.  Find stale maturity labels.
@@ -137,8 +139,8 @@ print an error message.
 - Every bracketed pseudo-link has been checked for a matching real
   page, and converted to `xref:` where one exists.
 
-- Every page under `pages/` has been checked against `index.adoc` for
-  orphan status.
+- Every page under `pages/` has been checked against both `index.adoc`
+  and `nav.adoc` for orphan status.
 
 - No maturity label was changed without explicit user confirmation.
 

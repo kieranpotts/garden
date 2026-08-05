@@ -25,10 +25,11 @@ working tree for the user to decide what to do with them.
 
 ## Output
 
-The redundant target page deleted, with every `xref:` and `index.adoc`
-entry that pointed at it repointed to the covering page. If the target
-turns out to carry content the covering page lacks, nothing is deleted —
-it is reported as a graft or keep-and-link candidate instead.
+The redundant target page deleted, with every `xref:`, `index.adoc` entry,
+and `nav.adoc` entry that pointed at it repointed to (or, for the nav, removed)
+for the covering page. If the target turns out to carry content the covering page
+lacks, nothing is deleted — it is reported as a graft or keep-and-link
+candidate instead.
 
 This task runs non-interactively to completion. It does not block for
 user input. If in doubt about any of the requirements of this task, stop
@@ -67,8 +68,9 @@ and print an error message.
 
     Grep the whole garden for `xref:<target-file>.adoc` and replace
     each with `xref:<covering-file>.adoc`, keeping the link text
-    sensible in context. Check `index.adoc` too — remove the target's
-    entry and ensure the covering page's entry stays correct.
+    sensible in context. Check `index.adoc` and `src/modules/ROOT/nav.adoc`
+    too — remove the target's entry from both and ensure the covering
+    page's entries stay correct.
 
 5.  Delete the redundant page.
 
@@ -124,8 +126,8 @@ and print an error message.
 
 - No `xref:` anywhere in the garden still points to the deleted file.
 
-- `index.adoc` no longer lists the dropped page, and the covering
-  page's entry is intact.
+- `index.adoc` and `nav.adoc` no longer list the dropped page, and the
+  covering page's entries in both are intact.
 
 - The user confirmed the drop before deletion — no page was removed
   automatically.

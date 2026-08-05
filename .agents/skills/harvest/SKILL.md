@@ -67,7 +67,7 @@ print an error message.
     For each commit, use the type prefix as the primary signal:
 
     - Sown (`sow:`): a new `.adoc` page added under `pages/`, plus a
-      corresponding `index.adoc` addition.
+      corresponding `index.adoc` addition and a matching `nav.adoc` entry.
 
     - Watered (`water:`): an existing page grown with freshly
       researched depth, detail, or developments, staying on its

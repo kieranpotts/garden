@@ -27,8 +27,8 @@ them in the Git working tree for the user to decide what to do with them.
 
 One surviving page covering the combined concept, its sections carrying over
 the distinct content from each source page; the absorbed pages removed;
-every `xref:` and `index.adoc` entry that pointed at a removed page
-repointed to the survivor.
+every `xref:`, `index.adoc` entry, and `nav.adoc` entry that pointed at a
+removed page repointed to (or, for the nav, replaced by) the survivor.
 
 This task runs non-interactively to completion. It does not block for user
 input. If in doubt about any of the requirements of this task, stop and
@@ -76,13 +76,13 @@ print an error message.
     nothing references it. If the survivor is a promoted existing page,
     only the other sources are deleted.
 
-6.  Update the index.
+6.  Update the index and nav.
 
-    Remove the absorbed pages' entries from `index.adoc`. Ensure the
-    survivor is listed once under its final title, in the correct
-    alphabetical section. Propose a maturity label that reflects the
-    merged page's completeness rather than silently keeping the highest
-    or lowest of the sources.
+    Remove the absorbed pages' entries from `index.adoc` and
+    `src/modules/ROOT/nav.adoc`. Ensure the survivor is listed once under
+    its final title, in the correct alphabetical section, in both files.
+    Propose a maturity label that reflects the merged page's completeness
+    rather than silently keeping the highest or lowest of the sources.
 
 7.  Report back.
 
@@ -129,7 +129,8 @@ print an error message.
   page.
 
 - `index.adoc` lists the survivor once under its final title, with
-  the absorbed pages' entries removed.
+  the absorbed pages' entries removed, and `nav.adoc` lists the
+  survivor with the absorbed pages' entries removed.
 
 - Distinct content from every source is present in the survivor, or
   was confirmed by the user as not worth keeping.

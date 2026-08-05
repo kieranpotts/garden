@@ -30,7 +30,8 @@ with them.
 A new `.adoc` file under `src/modules/ROOT/pages/`, self-contained and
 focused on a single idea, cross-referenced from and to relevant adjacent
 entries, and listed on `src/modules/ROOT/pages/index.adoc` under the
-correct alphabetical section (and "Hot topics" if applicable).
+correct alphabetical section (and "Hot topics" if applicable), and on
+`src/modules/ROOT/nav.adoc` in the same alphabetical position.
 
 This task runs non-interactively to completion. It does not block for user
 input. If in doubt about any of the requirements of this task, stop and
@@ -105,7 +106,15 @@ print an error message.
     (Seedling). If the topic is something the user is actively
     researching right now, also add it under "Hot topics".
 
-8.  Report back.
+8.  Update the nav.
+
+    Add the new page to `src/modules/ROOT/nav.adoc`, in the same
+    alphabetical position it occupies in `index.adoc`, following the
+    existing `** xref:<file>.adoc[Title]` pattern (no maturity emoji).
+    Without this, the new page has no ancestry and renders with no
+    breadcrumb trail.
+
+9.  Report back.
 
     Tell the user the file path created, the entries it links to/from,
     and where it landed in the index.
@@ -149,7 +158,8 @@ print an error message.
   single `=` title and a non-empty body.
 
 - It is listed in `index.adoc` under the correct alphabetical section,
-  with the 🌱 emoji.
+  with the 🌱 emoji, and in `nav.adoc` in the same alphabetical
+  position.
 
 - All `xref:` targets resolve — every `xref:foo.adoc[...]` added (in
   the new page or in pages linking back to it) corresponds to a real
