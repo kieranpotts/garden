@@ -5,9 +5,8 @@ description: >-
   yet cross-referenced, and add the missing xref links. Use when the user says
   "entwine event-sourcing.adoc with its neighbors", "link this page to related
   entries", or asks whether an entry is properly connected.
-metadata:
-  interactive: no
-  preferred_model: ollama/ANALYSIS_STANDARD
+compatibility: requires Read, Grep, Edit
+license: CC0-1.0
 ---
 
 # Entwine

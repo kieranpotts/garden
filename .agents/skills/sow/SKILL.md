@@ -5,9 +5,8 @@ description: >-
   cross-referenced to relevant adjacent topics. Use when the user says "sow a
   new entry for X", "plant a page on X", or asks to add a new topic to the
   garden.
-metadata:
-  interactive: no
-  preferred_model: ollama/PROSE_DEEP
+compatibility: requires Read, Grep, Write, Edit, WebSearch, WebFetch
+license: CC0-1.0
 ---
 
 # Sow

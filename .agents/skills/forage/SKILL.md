@@ -5,9 +5,8 @@ description: >-
   their own page yet, and produce a prioritized list of candidates for sowing.
   Use when the user says "forage the garden", "what topics are missing?", or
   asks what new entries are worth creating.
-metadata:
-  interactive: no
-  preferred_model: ollama/ANALYSIS_DEEP
+compatibility: requires Read, Grep
+license: CC0-1.0
 ---
 
 # Forage

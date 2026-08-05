@@ -5,9 +5,8 @@ description: >-
   titles, prose style, dash/colon usage, bold-text rules, admonition usage — and
   report or fix violations. Use when the user says "cultivate agent.adoc",
   "check style on this entry", or asks for a style-guide pass over one page.
-metadata:
-  interactive: no
-  preferred_model: ollama/PROSE_STANDARD
+compatibility: requires Read, Edit
+license: CC0-1.0
 ---
 
 # Cultivate

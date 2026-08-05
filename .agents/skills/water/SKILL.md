@@ -6,9 +6,8 @@ description: >-
   exists. Use when the user says "water event-sourcing.adoc", "research and
   extend this entry", or wants an established page grown further. For rescuing a
   thin stub, use fertilize instead.
-metadata:
-  interactive: no
-  preferred_model: ollama/PROSE_DEEP
+compatibility: requires Read, Grep, Edit, WebSearch, WebFetch
+license: CC0-1.0
 ---
 
 # Water

@@ -5,9 +5,8 @@ description: >-
   deleting it and redirecting its inbound links to the covering page. Use when
   the user says "prune acid.adoc", "this entry is already covered by X, drop
   it", or suspects a page is redundant.
-metadata:
-  interactive: no
-  preferred_model: ollama/WORKFLOW_STANDARD
+compatibility: requires Read, Grep, Edit, Bash (rm)
+license: CC0-1.0
 ---
 
 # Prune

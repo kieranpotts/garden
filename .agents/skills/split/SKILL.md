@@ -5,9 +5,8 @@ description: >-
   distinct concepts back into separate atomic pages, cross-linked together. Use
   when the user says "split this entry", "split X into separate pages", or
   notices a page covering more than one idea.
-metadata:
-  interactive: no
-  preferred_model: ollama/PROSE_DEEP
+compatibility: requires Read, Grep, Write, Edit
+license: CC0-1.0
 ---
 
 # Split

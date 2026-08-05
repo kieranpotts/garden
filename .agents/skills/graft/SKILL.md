@@ -5,9 +5,8 @@ description: >-
   page, cross-links repointed and the absorbed pages removed. Use when the user
   says "graft these entries", "merge X and Y into one page", or notices several
   thin pages that would read better as one concept.
-metadata:
-  interactive: no
-  preferred_model: ollama/PROSE_DEEP
+compatibility: requires Read, Grep, Write, Edit, Bash (rm)
+license: CC0-1.0
 ---
 
 # Graft

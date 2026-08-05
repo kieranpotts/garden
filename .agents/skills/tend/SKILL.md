@@ -6,9 +6,8 @@ description: >-
   labels — and report or fix what's found. Use when the user says "tend the
   garden", "check for broken links", or asks for general garden
   maintenance/health checks.
-metadata:
-  interactive: no
-  preferred_model: ollama/WORKFLOW_BASIC
+compatibility: requires Read, Grep, Edit
+license: CC0-1.0
 ---
 
 # Tend

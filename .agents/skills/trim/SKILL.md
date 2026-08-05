@@ -8,9 +8,8 @@ description: >-
   stray sentences, drop redundancy. Use when the user says "trim this", "tidy
   this up", "give this a once-over", "move this bit somewhere better", "trim
   agent.adoc" or "trim the section on AI agents".
-metadata:
-  interactive: no
-  preferred_model: ollama/PROSE_STANDARD
+compatibility: requires Read, Edit
+license: CC0-1.0
 ---
 
 # Trim

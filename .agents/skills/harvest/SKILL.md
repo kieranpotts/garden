@@ -6,9 +6,8 @@ description: >-
   review or changelog purposes. Use when the user says "harvest the garden",
   "what's changed recently", or asks for a summary/digest of recent garden
   activity.
-metadata:
-  interactive: no
-  preferred_model: ollama/PROSE_STANDARD
+compatibility: requires Bash (git log), Write
+license: CC0-1.0
 ---
 
 # Harvest
