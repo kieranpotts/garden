@@ -1,0 +1,35 @@
+= Interface segregation principle
+
+The interface segregation principle (ISP) states that clients should not be
+forced to depend on methods they do not use. It is the I in
+*xref:solid.adoc[SOLID]*, a family of
+*xref:design-principles.adoc[design principles]* for
+*xref:object-oriented-programming.adoc[object-oriented programming]*, and it was
+introduced by Robert C. Martin. The remedy it prescribes is to split fat
+*xref:interfaces.adoc[interfaces]* into several smaller, client-specific ones,
+so that each consumer depends only on the operations it actually calls.
+
+A fat interface bundles together methods that serve unrelated clients. Any
+class implementing that interface must provide every method, even the ones its
+particular role does not need, which often means stubbing them out or raising
+"not supported" errors. That bloats implementations and couples every consumer
+to the full surface area of the interface, even the parts it never touches. The
+result is accidental *xref:coupling.adoc[coupling]*. A change to a method that
+one client uses forces a recompile or redeploy of every other client, simply
+because they share the same interface type.
+
+The principle is stated from the client's perspective – an interface should be
+shaped by the code that calls it, not by the code that implements it. Splitting
+by role produces interfaces that are cohesive in the
+*xref:cohesion.adoc[cohesion]* sense, since each one groups only the operations
+a single client cares about. This dovetails with the
+*xref:single-responsibility-principle.adoc[single responsibility principle]*,
+which asks that a module answer to one actor. A client-specific interface does
+exactly that, with the actor being the client rather than the implementer.
+
+Segregated interfaces also smooth the path for the other SOLID letters. They
+make the *xref:open-closed-principle.adoc[open-closed principle]* easier to
+satisfy, because a new client can get its own narrow interface rather than
+forcing changes to a shared one, and they support
+*xref:dependency-inversion.adoc[dependency inversion]*, which asks clients to
+depend on abstractions – but only on the abstractions they actually need.
