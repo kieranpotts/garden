@@ -1,7 +1,33 @@
 = Composition
 
-Composition is a *xref:design-patterns.adoc[design pattern]* supported by
-*xref:object-oriented-programming.adoc[object-oriented programming]* languages.
-Composition refers to complex objects being composed from lots of simpler ones.
+Composition is a *xref:design-patterns.adoc[design pattern]* and a
+*xref:design-principles.adoc[design principle]* of
+*xref:object-oriented-programming.adoc[object-oriented programming]*. As a
+mechanism, it builds complex objects from simpler ones. An object holds
+references to other objects that supply part of its behavior, rather than
+deriving that behavior from a parent class through
+*xref:inheritance.adoc[inheritance]*. The composed object "has a" collaborator,
+where inheritance expresses an "is a" relationship.
 
-This design pattern enhances code maintainability and flexibility.
+The Gang of Four's recommendation to *favor composition over inheritance* is the
+principle's best-known form. Inheritance is a powerful but rigid tool. A
+subclass is bound to its parent's implementation at compile time, cannot change
+its parent at runtime, and easily breaks the
+*xref:liskov-substitution-principle.adoc[Liskov substitution principle]* when
+used for code reuse rather than true subtyping. Composition sidesteps these
+problems. A class can swap or replace a collaborator at runtime, and each
+collaborator can be tested and evolved independently, which keeps
+*xref:coupling.adoc[coupling]* low and *xref:cohesion.adoc[cohesion]* high.
+
+Composition also plays well with *xref:interfaces.adoc[interfaces]* and
+*xref:polymorphism.adoc[polymorphism]*. A class delegates to a collaborator
+through an interface, so the collaborator's concrete type can vary without the
+consumer changing. This is the basis of many
+*xref:design-patterns.adoc[design patterns]* — strategy, decorator, and adapter
+all compose objects to vary behavior rather than bending a class hierarchy.
+
+The trade-off is indirection. A composed object delegates through one extra
+layer, which can make the control flow harder to follow than a direct
+inheritance chain. Composition is nevertheless the safer default for reuse.
+Inheritance is best reserved for genuine subtyping, where every subclass truly
+is a substitutable specialization of its parent.
