@@ -1,125 +1,114 @@
 ---
 name: trim
 description: >-
-  Everyday gardening. Follow this skill when you're requested to do a freeform,
-  judgment-driven trim over one discrete entry in the garden. This is about
-  making small trimmings while walking the garden with secateurs in hand: trim
-  waffle, smooth awkward phrasing, move a paragraph to a better home, merge
-  stray sentences, drop redundancy. Use when the user says "trim this", "tidy
-  this up", "give this a once-over", "move this bit somewhere better", "trim
-  agent.adoc" or "trim the section on AI agents".
+  Make small, self-evident improvements to how one entry reads — cutting
+  waffle, smoothing awkward phrasing, dropping repetition, and moving a
+  paragraph to a better home — without changing what it says. Use when the
+  user says "trim this", "tidy this up", "give this a once-over", "move this bit
+  somewhere better", or "trim agent.adoc". Do not use it to add content, fix
+  links, or apply style-guide rules.
 compatibility: requires Read, Edit
 license: CC0-1.0
 ---
 
 # Trim
 
-Everyday gardening — a freeform, judgment-driven trim over one discrete entry
-in the garden. Make small trimmings while walking the garden with secateurs in
-hand: trim waffle, smooth awkward phrasing, move a paragraph to a better home,
-merge stray sentences, drop redundancy.
+Everyday gardening: a freeform, judgment-driven pass over one entry, made with
+secateurs in hand. Cut waffle, smooth awkward phrasing, move a paragraph to a
+better home, merge stray sentences, drop repetition. Change how the entry
+reads, never what it says.
 
-## Input
+## Parameters
 
-A single target entry in the garden. Do not block to ask the user questions.
-Make your proposed edits and leave them in the Git working tree for the user
-to decide what to do with them.
+Determine the following information from the surrounding context and
+environment. You MUST NOT prompt the user for clarification on this task's
+requirements. If you cannot determine the requirements, stop and alert the
+user with an error message.
 
-## Output
+- **Target entry — REQUIRED.** A single existing file under
+  `src/modules/ROOT/pages/`, named by the user, eg. "trim agent.adoc".
+  Accept a topic name too, and resolve it to the file whose `=` title
+  matches.
 
-The target edits in place, but not committed. Plus a short report, outputted
-to the conversation thread, listing the changes made and their rationale.
-
-This task runs non-interactively to completion. It does not block for user
-input. If in doubt about any of the requirements of this task, stop and
-print an error message.
-
-## Instructions
-
-1.  Read the target in full.
-
-    Understand what the page is about, before touching it.
-
-2.  Make small improvements inline.
-
-    Work through the page applying your edits. Keep each change small.
-
-3.  Report what you did.
-
-    List the edits you made. OPTIONALLY, group them, eg. trimmed,
-    moved, dead-headed, etc.
-
-## Rules
-
-- In-scope changes:
-
-  Make only small changes that are self-evidently improvements, without
-  requiring clarification from the user.
-
-  Trim waffle. Cut filler and padding. Say the same thing in fewer
-  words.
-
-  Smooth awkward phrasing. Fix clumsy sentences, bad transitions,
-  tangled clauses.
-
-  Drop redundancy. Remove sentences or clauses that repeat something
-  said elsewhere in the page.
-
-  Reorder content for better flow. Shuffle paragraphs, pull a stray
-  point into a section where it sits more comfortably, merge two
-  half-empty bullets, etc.
-
-  Tighten bullets and lists. Fix over-long headings, collapse one-item
-  lists, split run-on bullets, etc.
-
-- Out-of-scope changes:
-
-  Do NOT fix broken xrefs, pseudo-links, orphaned pages, or stale
-  maturity labels.
-
-  Do NOT apply changes for style guide conformance, eg. dashes,
-  colons, casing, bold text.
-
-  Do NOT expand with new content — even if the existing content is just
-  a stub.
-
-- Do NOT change meaning.
-
-  Do not make any edits that could change the perceived meaning of the
-  content.
-
-  If tightening a sentence could alter its meaning, leave it as-is.
-
-- Preserve voice.
-
-  Match the existing tone and phrasing conventions.
-
-- Stay within the target page.
-
-  Do not edit anything except the target topic page.
-
-  Do not create, delete, or merge pages here.
-
-- Do NOT commit your changes.
-
-  Make your edits in the working tree only. Staging, committing, and
-  pushing are the user's call.
+- **Focus — OPTIONAL.** A section of the entry the user wants trimmed, eg.
+  "trim the section on AI agents". Defaults to the whole entry.
 
 ## Success criteria
 
-- The page is tighter and better-ordered than before.
+- The entry MUST read tighter and better ordered than before, with no waffle
+  or local repetition a careful read would still catch.
 
-  There's no waffle or local redundancy left that a quick read would
-  catch.
+- The entry's meaning and voice MUST be unchanged. Only the expression and
+  the arrangement move.
 
-- The meaning and voice are unchanged.
+- No content MAY have moved to or from another entry, and no entry MAY have
+  been created, merged, or deleted.
 
-  Only the expression and arrangement are improved.
+- No `xref:` target, bracketed term, or maturity emoji MAY have changed.
+  These belong to structural and style passes, and mixing them into a
+  freeform diff makes the trim impossible to review.
 
-- No content moved between pages.
+- Nothing MUST be staged, committed, or pushed.
 
-  And no page was created, merged, or deleted.
+## Instructions
 
-## References
+1.  Read the target entry in full, and understand what it is about before
+    touching it.
 
-None.
+2.  Work through the entry applying small improvements in place. Keep each
+    change small enough that its merit is self-evident on reading the diff.
+
+3.  Report the edits you made and why. Group them where it helps, eg.
+    trimmed, smoothed, moved, de-duplicated.
+
+## Rules
+
+- You SHOULD make only changes that are self-evidently improvements.
+
+  A trim is approved by reading the diff, so every edit must justify itself
+  at a glance. Anything needing an argument is too big for this pass.
+
+- In scope: you MAY cut filler and padding, fix clumsy sentences and tangled
+  clauses, remove a sentence that repeats something said elsewhere in the
+  entry, reorder paragraphs for flow, pull a stray point into a section it
+  sits better in, merge two half-empty bullets, and split a run-on bullet.
+
+- Out of scope: you MUST NOT repair cross-references, pseudo-links, orphans,
+  or maturity emoji; you MUST NOT apply style-guide conventions such as dash,
+  colon, casing, or bold rules; and you MUST NOT add new content, even where
+  the entry is plainly a stub.
+
+  Each of those is a separate pass, and each produces a differently shaped
+  diff. Keeping them apart is what makes any of them reviewable.
+
+- You MUST NOT change meaning.
+
+  Where tightening a sentence could shift what it asserts, leave the
+  sentence alone. A slightly baggy true statement beats a crisp wrong one.
+
+- You SHOULD preserve the author's voice.
+
+  Match the existing tone and phrasing conventions rather than imposing your
+  own register.
+
+- You MUST stay within the target entry.
+
+  Do not edit any other file, and do not create, delete, or merge entries.
+
+- You MUST NOT stage, commit, or push.
+
+  Leave every change in the Git working tree. Reviewing the diff is how the
+  user approves the work, so it stands in for any mid-flow prompt.
+
+## Edge cases
+
+- The entry is too thin to trim.
+
+  Say so and stop. A stub has no waffle to cut, and padding it out is a
+  different job with a different scope.
+
+- A paragraph would sit better on a different entry entirely.
+
+  Do not move it. Report it as a candidate for a linking or restructuring
+  pass — moving content between entries changes both, which is outside this
+  skill's single-entry boundary.

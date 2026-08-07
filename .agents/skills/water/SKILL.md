@@ -1,138 +1,132 @@
 ---
 name: water
 description: >-
-  Research an existing garden entry's topic afresh and extend the page with new
-  depth, detail, and developments — like sow, but for an entry that already
-  exists. Use when the user says "water event-sourcing.adoc", "research and
-  extend this entry", or wants an established page grown further. For rescuing a
-  thin stub, use fertilize instead.
-compatibility: requires Read, Grep, Edit, WebSearch, WebFetch
+  Research an established entry's topic afresh and extend the page with new
+  depth, detail, and developments, without widening its scope. Use when the
+  user says "water event-sourcing.adoc", "research and extend this entry", or
+  wants an established page grown further. Do not use it to rescue a thin stub
+  or to plant a topic that has no entry yet.
+compatibility: >-
+  requires Read, Glob, Grep, Edit, WebSearch, WebFetch
 license: CC0-1.0
 ---
 
 # Water
 
-Research an existing garden entry's topic afresh and extend the page with new
-depth, detail, and developments. Like sow, but for an entry that already
-exists. The entry stays on its existing concept — water grows the plant, it
-doesn't graft a different one on.
+Research an existing entry's topic afresh and extend the entry with new depth,
+detail, and developments. Watering grows the plant that is already there — it
+must not graft a different one onto it.
 
-## Input
+## Parameters
 
-A single existing entry named by the user (eg. "water event-sourcing.adoc").
-Do not block to ask the user questions. Make your proposed edits and leave
-them in the Git working tree for the user to decide what to do with them.
+Determine the following information from the surrounding context and
+environment. You MUST NOT prompt the user for clarification on this task's
+requirements. If you cannot determine the requirements, stop and alert the
+user with an error message.
 
-## Output
+- **Target entry — REQUIRED.** A single existing file under
+  `src/modules/ROOT/pages/`, named by the user, eg. "water
+  event-sourcing.adoc". Accept a topic name too, and resolve it to the file
+  whose `=` title matches.
 
-The target `.adoc` file extended with additional researched content and new
-cross-references, staying on its existing concept, with its maturity label
-in `index.adoc` reconsidered if the growth warrants it.
-
-This task runs non-interactively to completion. It does not block for user
-input. If in doubt about any of the requirements of this task, stop and
-print an error message.
-
-## Instructions
-
-1.  Read the existing entry in full.
-
-    Understand its current scope, claims, and what it already covers, so
-    new material extends the entry rather than repeating what's already
-    there.
-
-2.  Research the topic.
-
-    Gather understanding beyond what's already on the page — deeper
-    detail, recent developments, additional facets, worked examples,
-    trade-offs, common pitfalls. Prefer a small number of reliable
-    sources over breadth. This is a knowledgebase entry, not a survey
-    paper.
-
-3.  Find adjacent topics already in the garden.
-
-    As the entry grows, new cross-reference opportunities usually surface
-    (related patterns, prerequisites, contrasting approaches). Search
-    existing pages for concepts that should now be linked, both outbound
-    from this entry and inbound from those pages. Note their exact
-    filenames — AsciiDoc `xref:` targets must match real files.
-
-4.  Extend the entry.
-
-    Weave the new material into the existing structure, in place. Keep
-    it on the same concept — water grows the existing plant, it doesn't
-    graft a different one on. Link out via `xref:` rather than
-    re-explaining concepts that already have their own page. Keep it
-    atomic: if the research surfaces a genuinely distinct concept, that's
-    a new entry ([sow](../sow/SKILL.md)) cross-linked back, or a
-    [split](../split/SKILL.md) — not a new section here.
-
-5.  Link it back in.
-
-    Add the new `xref:` links found in step 3, in both directions where
-    it's a natural fit — the garden is most useful when paths run both
-    ways.
-
-6.  Reconsider the maturity label.
-
-    If watering has grown the entry substantially, propose promoting its
-    emoji in `index.adoc` (eg. 🌱 → 🌳). Confirm with the user before
-    changing it — maturity is an editorial call.
-
-7.  Report back.
-
-    Summarize what was added, new links made, and whether the maturity
-    label changed.
-
-## Rules
-
-- Extend, don't rescue.
-
-  Water grows an already-established entry. If the target is a thin stub
-  with known gaps or unresolved `// TODO` markers, that's
-  [fertilize](../fertilize/SKILL.md)'s job — hand it off rather than
-  doing a rescue here.
-
-- Stay on the entry's concept.
-
-  If research surfaces a genuinely distinct concept,
-  [sow](../sow/SKILL.md) a separate entry and cross-link it, or flag the
-  page for [split](../split/SKILL.md) — don't smuggle a second concept
-  into this page.
-
-- Prefer linking over duplicating.
-
-  If a concept is already explained on another page, link to it with
-  `xref:` instead of re-explaining it. The value of the garden comes
-  from connections between atomic notes, not self-contained essays.
-
-- Maturity promotion needs confirmation.
-
-  Never bump a maturity emoji in `index.adoc` without the user agreeing
-  the grown page has earned it.
-
-- Do NOT commit your changes.
-
-  Make your edits in the working tree only. Staging, committing, and
-  pushing are the user's call.
+- **Emphasis — OPTIONAL.** A particular angle the user wants grown, eg.
+  recent developments, worked examples, trade-offs. Defaults to whichever
+  facets the entry is thinnest on.
 
 ## Success criteria
 
-- The entry covers the same core concept as before, now with more depth
-  or breadth — same topic, same title, same filename.
+- The target entry MUST still carry the same title, filename, and core
+  concept as before, now with more depth or breadth.
 
-- The new material is genuinely additive, not a restatement of what the
-  page already said.
+- The added material MUST be genuinely additive, not a restatement of what
+  the entry already said.
 
-- All `xref:` targets resolve — every `xref:foo.adoc[...]` added (in
-  this page or in pages linking back to it) corresponds to a real file
-  in `src/modules/ROOT/pages/`.
+- Every `xref:` you add, in the target entry and in entries linking back to
+  it, MUST name a file that exists under `src/modules/ROOT/pages/`.
 
-- No genuinely distinct new concept was folded in — anything that big
-  became a sow or a split instead.
+- No second concept MAY have been folded in. Anything that large is a
+  separate entry, or a case for breaking the entry up.
 
-- No maturity label changed without explicit user confirmation.
+- No maturity emoji in `src/modules/ROOT/pages/index.adoc` MUST have
+  changed.
 
-## References
+- Nothing MUST be staged, committed, or pushed.
 
-None.
+## Instructions
+
+1.  Read the target entry in full.
+
+    Understand its current scope and claims, so new material extends the
+    entry rather than repeating it.
+
+2.  Check the entry is established, not a stub.
+
+    A body of a few sentences, unresolved `// TODO` markers, or almost no
+    outbound links means the entry needs rescuing rather than growing. Stop
+    and report that instead.
+
+3.  Research the topic.
+
+    Gather understanding beyond what the entry already carries: deeper
+    detail, recent developments, additional facets, worked examples,
+    trade-offs, common pitfalls. Prefer a small number of reliable sources
+    over breadth. This is a knowledgebase entry, not a survey paper.
+
+4.  Find adjacent topics already in the garden.
+
+    Growth usually surfaces new cross-reference opportunities — related
+    patterns, prerequisites, contrasting approaches. Search existing entries
+    for concepts that should now be linked, outbound from this entry and
+    inbound from those. Note their exact filenames — an AsciiDoc `xref:`
+    target must match a real file.
+
+5.  Extend the entry.
+
+    Weave the new material into the existing structure, in place. Link out
+    via `xref:` rather than re-explaining a concept that has its own entry.
+    Follow `docs/style-guide.md`, wrapping every `xref:` in `*...*`.
+
+6.  Add the cross-references from step 4, in both directions where each
+    reads naturally in its host entry's context.
+
+7.  Report what was added, which links were made, and whether the entry's
+    maturity emoji now looks understated.
+
+## Rules
+
+- You MUST keep the entry on its existing concept.
+
+  Watering grows the established plant. If research surfaces a genuinely
+  distinct concept, it belongs in a separate entry, cross-linked — or the
+  entry has outgrown itself and should be broken up. Either way, report it
+  rather than smuggling a second concept in here.
+
+- You MUST link rather than duplicate.
+
+  Where a concept is already explained elsewhere, `xref:` to it instead of
+  re-explaining it. The value of the garden is in the connections between
+  atomic notes, not in self-contained essays.
+
+- You MUST NOT change an entry's maturity emoji in the index.
+
+  Maturity is an editorial judgment the user reserves. Recommend a promotion
+  in your report and leave the label as it stands.
+
+- You MUST NOT stage, commit, or push.
+
+  Leave every change in the Git working tree. Reviewing the diff is how the
+  user approves the work, so it stands in for any mid-flow prompt.
+
+## Edge cases
+
+- Research contradicts something the entry already asserts.
+
+  Do not quietly overwrite the claim. Correct it, and call the correction
+  out explicitly in your report, naming the source — a factual fix is a
+  different kind of change from growth, and the user will want to see it.
+
+- The entry is already long and well-developed.
+
+  Prefer depth over volume. Sharpen and extend the weakest facets rather
+  than padding an entry that is already at the limit of one concept, and say
+  in your report if the entry looks ready to be broken up instead.

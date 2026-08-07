@@ -1,152 +1,144 @@
 ---
 name: tend
 description: >-
-  Inspect the digital garden for withering content — broken cross-references,
-  fake pseudo-links, orphaned pages missing from the index or nav, and stale
-  maturity labels — and report or fix what's found. Use when the user says "tend
-  the garden", "check for broken links", or asks for general garden
-  maintenance/health checks.
-compatibility: requires Read, Grep, Edit
+  Check the garden's structural health — unresolvable cross-references, fake
+  bracketed pseudo-links, entries missing from the index or nav, and maturity
+  emoji that no longer match the content — then fix what is mechanical and
+  report the rest. Use when the user says "tend the garden", "check for broken
+  links", or asks for a general maintenance or health check. Do not use it to
+  write or reword an entry's prose.
+compatibility: requires Read, Glob, Grep, Edit
 license: CC0-1.0
 ---
 
 # Tend
 
-Inspect the digital garden for withering content — broken cross-references,
-fake pseudo-links, orphaned pages missing from the index or nav, and stale
-maturity labels — and report or fix what's found. General garden maintenance
-and health checks.
+Inspect the garden for withering content — broken cross-references, fake
+pseudo-links, orphaned entries, and stale maturity emoji — then apply the
+unambiguous fixes and report everything else. Tending repairs structure; it
+never grows content.
 
-## Input
+## Parameters
 
-OPTIONAL — the user may scope it to a single page or section (eg. "tend the
-AI topics"); otherwise scan the whole garden. Do not block to ask the user
-questions. Make your proposed edits and leave them in the Git working tree
-for the user to decide what to do with them.
+Determine the following information from the surrounding context and
+environment. You MUST NOT prompt the user for clarification on this task's
+requirements. If you cannot determine the requirements, stop and alert the
+user with an error message.
 
-## Output
+- **Scope — OPTIONAL.** A subset of the garden to inspect, eg. "tend the AI
+  topics" or a single named entry. Defaults to every file under
+  `src/modules/ROOT/pages/`.
 
-A report of findings (broken xrefs, fake links, orphaned pages, stale
-labels), followed by fixes applied directly to the affected `.adoc` files
-for anything unambiguous. Ambiguous cases are listed for the user to
-resolve manually.
+## Success criteria
 
-This task runs non-interactively to completion. It does not block for user
-input. If in doubt about any of the requirements of this task, stop and
-print an error message.
+- Every `xref:` target within the scope MUST have been checked against the
+  actual file inventory, and each unresolvable one reported.
+
+- Every bracketed pseudo-link within the scope MUST have been checked for a
+  matching entry, and converted to a real `xref:` wherever one exists.
+
+- Every entry within the scope MUST have been checked for a listing in both
+  `src/modules/ROOT/pages/index.adoc` and `src/modules/ROOT/nav.adoc`.
+
+- No `xref:` MAY have been repointed to a target that was guessed rather than
+  established.
+
+- No maturity emoji in the index MUST have changed.
+
+- The report MUST separate the fixes already applied from the items still
+  needing the user's decision.
+
+- Nothing MUST be staged, committed, or pushed.
 
 ## Instructions
 
 1.  Inventory the garden.
 
     List every `.adoc` file under `src/modules/ROOT/pages/`. This is the
-    ground truth for steps 2–4.
+    ground truth for steps 2 to 4.
 
-2.  Find broken cross-references.
+2.  Find unresolvable cross-references.
 
-    Grep all pages for `xref:` targets (pattern
-    `xref:([a-z0-9-]+\.adoc)`). For each target, confirm the file exists
-    in the inventory from step 1. Report any that don't — these are dead
-    links pointing to a page that was renamed, removed, or never
-    created.
+    Grep every entry for `xref:` targets, pattern `xref:([a-z0-9-]+\.adoc)`,
+    and confirm each names a file in the inventory. A target that does not
+    is a dead link, left behind by a rename, a removal, or an entry that was
+    never planted.
 
 3.  Find fake pseudo-links.
 
-    Some pages contain bracketed bold text that looks like a
-    cross-reference but isn't real AsciiDoc xref syntax — eg.
-    `*[modular design]*` instead of
-    `xref:modular-design.adoc[Modular design]`. Search for this pattern
-    (`*[...]*` or `[...]` not preceded by `xref:` or a URL scheme). For
-    each match, check whether a real page exists for that topic:
+    Some entries carry bracketed text that looks like a cross-reference but
+    is not AsciiDoc `xref:` syntax, eg. `*[modular design]*` where
+    `*xref:modular-design.adoc[Modular design]*` was meant. Search for
+    bracketed text not preceded by `xref:` or a URL scheme. Where the
+    inventory holds a matching entry, convert it. Where it does not, the
+    bracketed term is a deliberate marker for a topic not yet planted —
+    report it as such and leave it alone.
 
-    - If a matching page exists, convert it to a proper `xref:`.
+4.  Find orphaned entries.
 
-    - If no matching page exists, flag it to the user as a candidate for
-      [sow](../sow/SKILL.md) — don't silently create new pages from
-      inside tend.
+    Cross-check the inventory against `src/modules/ROOT/pages/index.adoc`
+    and `src/modules/ROOT/nav.adoc`. An entry missing from the index has no
+    discoverable path from the front page. An entry missing from the nav
+    renders with no ancestry and no breadcrumb trail. Report each orphan
+    with the section you would file it under — placement is a taxonomy
+    judgment, so propose it rather than applying it.
 
-4.  Find orphaned pages.
+5.  Find stale maturity emoji.
 
-    Cross-check the inventory from step 1 against the entries in both
-    `index.adoc` and `src/modules/ROOT/nav.adoc`. A page missing from
-    `index.adoc` is orphaned — it exists but has no discoverable path
-    from the front page. A page missing from `nav.adoc` renders with no
-    ancestry and no breadcrumb trail. Report either kind of orphan for
-    the user to slot into the file(s) it's missing from (you may propose
-    the section, but confirm before editing, since placement is a
-    judgment call about taxonomy).
+    Compare each entry against its emoji in the index and flag the
+    mismatches:
 
-5.  Find stale maturity labels.
+    - A 🌱 Seedling that is substantial, well-linked, and carries no
+      `// TODO` marker — a candidate for 🌿 Budding or 🌳 Evergreen.
 
-    Maturity emoji (🌱 Seedling, 🌿 Budding, 🌳 Evergreen, 🍂 Decaying)
-    are a judgment call, not something to bulk-rewrite automatically.
-    Flag candidates rather than changing labels outright:
+    - An entry carrying a `// TODO` marker, or noticeably thinner than its
+      peers, still marked 🌿 Budding or 🌳 Evergreen — a candidate for
+      demotion, or for 🍂 Decaying if it looks abandoned.
 
-    - A 🌱 Seedling page that is substantial, well-linked, and has no
-      `// TODO` markers — candidate for promotion to 🌳 Evergreen.
+6.  Apply the unambiguous fixes.
 
-    - A page with a `// TODO` comment, or noticeably thinner than its
-      peers, still marked 🌳 Evergreen or 🌿 Budding — candidate for
-      demotion to 🌱 Seedling, or a 🍂 Decaying flag if it looks
-      abandoned.
+    Repoint a broken `xref:` only where the intended target is beyond doubt,
+    such as an exact rename or an obvious typo. Convert a pseudo-link only
+    where a matching entry genuinely exists. Leave everything else for the
+    user.
 
-    Present these as suggestions; only change the label in `index.adoc`
-    if the user confirms.
-
-6.  Apply unambiguous fixes.
-
-    Fix broken xrefs only when the intended target is obvious (eg. an
-    exact rename, a clear typo). Convert fake pseudo-links to real
-    `xref:` only when a matching page genuinely exists. Leave everything
-    else — orphan placement, maturity relabeling, dead links with no
-    obvious target — for the user to decide.
-
-7.  Report a summary.
-
-    List what was found, what was fixed automatically, and what needs
-    the user's decision, grouped by category (broken xrefs / fake links
-    / orphans / stale labels).
+7.  Report what was found, what was fixed, and what needs a decision,
+    grouped as broken cross-references, fake pseudo-links, orphans, and
+    stale maturity emoji.
 
 ## Rules
 
-- Don't invent destinations for dead links.
+- You MUST NOT invent a destination for a dead link.
 
-  If a broken `xref:` has no obvious correct target, report it — don't
-  guess and silently repoint it to the wrong page.
+  A broken `xref:` with no obvious correct target is reported, never guessed
+  at. Silently repointing a link at the wrong entry is harder to notice, and
+  harder to undo, than leaving it dead.
 
-- Maturity labels are an editorial judgment, not a mechanical one.
+- You MUST NOT change an entry's maturity emoji in the index.
 
-  Surface evidence (TODO markers, length, link density) but let the
-  user make the final call.
+  Maturity is an editorial judgment the user reserves. Surface the evidence
+  — `// TODO` markers, body length, link density — and let the user decide.
 
-- Tend doesn't grow content.
+- You MUST NOT write or reword an entry's prose.
 
-  If a fix would mean writing new prose (eg. an orphan needs a
-  one-line description in the index, or a fake link needs a target page
-  that doesn't exist yet), do the minimum mechanical fix and hand the
-  rest to [sow](../sow/SKILL.md) or [fertilize](../fertilize/SKILL.md).
+  Where a repair would mean composing new content, such as an index
+  description or an entry that does not exist yet, do the mechanical part
+  and report the rest. Tending repairs structure, and mixing prose changes
+  into a structural diff makes both harder to review.
 
-- Do NOT commit your changes.
+- You MUST NOT stage, commit, or push.
 
-  Make your edits in the working tree only. Staging, committing, and
-  pushing are the user's call.
+  Leave every change in the Git working tree. Reviewing the diff is how the
+  user approves the work, so it stands in for any mid-flow prompt.
 
-## Success criteria
+## Edge cases
 
-- Every `xref:` target in the garden has been checked against the
-  actual file inventory, with all mismatches reported.
+- A bracketed term has no matching entry.
 
-- Every bracketed pseudo-link has been checked for a matching real
-  page, and converted to `xref:` where one exists.
+  This is the garden's convention for marking a topic worth planting later,
+  not a defect. Report it as a candidate and leave the markup as it is.
 
-- Every page under `pages/` has been checked against both `index.adoc`
-  and `nav.adoc` for orphan status.
+- Two entries cover the same topic under different names.
 
-- No maturity label was changed without explicit user confirmation.
-
-- The final report distinguishes fixes already applied from items
-  still needing the user's decision.
-
-## References
-
-None.
+  Tending does not resolve redundancy. Report the pair, with which looks
+  fuller, and leave both in place for a dedicated merge or drop pass.

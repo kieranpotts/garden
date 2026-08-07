@@ -1,131 +1,136 @@
 ---
 name: fertilize
 description: >-
-  Expand a thin stub entry in the digital garden into a fuller page, without
-  changing its scope. Use when the user says "fertilize X", "this entry needs
-  more growth", "expand the stub on X", or asks to flesh out a
-  short/underdeveloped garden page.
-compatibility: requires Read, Grep, Edit, WebSearch, WebFetch
+  Bring a thin stub entry up to strength — deepening its explanation,
+  resolving its flagged gaps, and adding cross-references — without changing
+  what it is about. Use when the user says "fertilize X", "this needs growth",
+  "expand the stub on X", or asks to flesh out a short or underdeveloped page.
+  Do not use it on an entry that is already established.
+compatibility: >-
+  requires Read, Glob, Grep, Edit, WebSearch, WebFetch
 license: CC0-1.0
 ---
 
 # Fertilize
 
-Expand a thin stub entry in the digital garden into a fuller page, without
-changing its scope. Fertilize grows the existing plant — it deepens the entry's
-explanation, resolves flagged gaps, and adds cross-references, but doesn't
-widen it into a different concept.
+Bring a thin stub entry in the garden up to strength, without changing its
+scope. Fertilizing deepens the entry's explanation, resolves the gaps its
+author flagged, and adds cross-references — it does not widen the entry into a
+different concept.
 
-## Input
+## Parameters
 
-OPTIONAL — a topic or file the user wants expanded (eg. "fertilize
-abstraction.adoc"). If no target is given, scan the garden and recommend the
-weakest stub (shortest body, most `// TODO` markers, fewest outbound links).
-Do not block to ask the user questions. Make your proposed edits and leave
-them in the Git working tree for the user to decide what to do with them.
+Determine the following information from the surrounding context and
+environment. You MUST NOT prompt the user for clarification on this task's
+requirements. If you cannot determine the requirements, stop and alert the
+user with an error message.
 
-## Output
+- **Target entry — OPTIONAL.** A single existing file under
+  `src/modules/ROOT/pages/`, named by the user, eg. "fertilize
+  abstraction.adoc". Where none is given, pick the weakest stub yourself, by
+  the ranking in step 1.
 
-The target `.adoc` file rewritten with a fuller explanation and more
-cross-references, with its maturity label in `index.adoc` updated if the
-expansion now qualifies it for promotion (eg. 🌱 Seedling → 🌳 Evergreen).
+## Success criteria
 
-This task runs non-interactively to completion. It does not block for user
-input. If in doubt about any of the requirements of this task, stop and
-print an error message.
+- The target entry MUST still carry the same title, filename, and scope as
+  before, only fuller.
+
+- Every `// TODO` marker in the target entry MUST be either resolved and
+  removed, or left in place with the reason given in your report.
+
+- Every `xref:` you add, in the target entry and in entries linking back to
+  it, MUST name a file that exists under `src/modules/ROOT/pages/`.
+
+- The entry SHOULD gain at least one cross-reference, unless research turns
+  up no adjacent topic worth linking.
+
+- No maturity emoji in `src/modules/ROOT/pages/index.adoc` MUST have
+  changed.
+
+- Nothing MUST be staged, committed, or pushed.
 
 ## Instructions
 
 1.  Pick the target.
 
-    If the user named a topic or file, use it directly. Otherwise,
-    scan `src/modules/ROOT/pages/` for the weakest candidates: short
-    body length, presence of `// TODO` comments, low outbound `xref:`
-    count, or 🌱/🌿 maturity in `index.adoc`. Rank a handful and
-    present the top pick to the user with a one-line reason, then wait
-    for confirmation before editing.
+    Where the user named an entry, use it. Otherwise scan
+    `src/modules/ROOT/pages/` and rank candidates by weakness: short body,
+    `// TODO` markers present, few outbound `xref:` links, 🌱 or 🌿 maturity
+    in the index. Take the top-ranked entry, and name your runners-up in the
+    report so the user can redirect you.
 
-2.  Read the existing entry in full.
+2.  Read the target entry in full.
 
-    Understand its current scope and claims before adding anything —
-    fertilizing should deepen the existing idea, not widen it into a
+    Understand its current scope and claims before adding anything.
+    Fertilizing deepens the existing idea; it does not widen it into a
     different one.
 
 3.  Research to fill the gaps.
 
-    Identify what's missing: a clearer definition, examples,
-    trade-offs, common pitfalls, or context on when/why the concept
-    matters. Resolve any `// TODO` markers in the file — these mark
-    known gaps the original author flagged.
+    Identify what is missing: a clearer definition, examples, trade-offs,
+    common pitfalls, or context on when and why the concept matters. Address
+    each `// TODO` marker in the file — these are the gaps the original
+    author knew about.
 
-4.  Find additional adjacent topics.
+4.  Find adjacent topics already in the garden.
 
-    As content deepens, new cross-reference opportunities usually
-    surface (related patterns, prerequisites, contrasting approaches).
-    Search the garden for pages that should now be linked, both
-    outbound from this entry and inbound from those pages.
+    Deepening usually surfaces new cross-reference opportunities — related
+    patterns, prerequisites, contrasting approaches. Search existing entries
+    for concepts that should now be linked, outbound from this entry and
+    inbound from those. Note their exact filenames — an AsciiDoc `xref:`
+    target must match a real file.
 
 5.  Rewrite the entry.
 
-    Expand the body in place. Keep it focused on the original topic —
-    fertilize grows the existing plant, it doesn't bolt a different one
-    onto it. Remove resolved `// TODO` markers. Preserve the existing
-    title and filename.
+    Expand the body in place, keeping the original title and filename.
+    Remove each `// TODO` marker you resolved. Follow `docs/style-guide.md`,
+    wrapping every `xref:` in `*...*`.
 
-6.  Re-link.
+6.  Add the cross-references from step 4, in both directions where each
+    reads naturally in its host entry's context.
 
-    Add new `xref:` links found in step 4, in both directions where
-    it's a natural fit.
-
-7.  Reconsider the maturity label.
-
-    If the expanded entry is now substantial, accurate, and
-    well-linked, propose promoting its emoji in `index.adoc` (eg.
-    🌱 → 🌳). Confirm with the user before changing it — maturity is
-    an editorial call.
-
-8.  Report back.
-
-    Summarize what was added, which `// TODO` markers were resolved,
-    new links made, and whether the maturity label changed.
+7.  Report what was added, which `// TODO` markers were resolved, which
+    links were made, and whether the entry's maturity emoji now looks
+    understated.
 
 ## Rules
 
-- Don't change scope.
+- You MUST NOT change the entry's scope.
 
-  If research reveals the topic should really be split into two
-  entries, stop and suggest [sow](../sow/SKILL.md) for the new one
-  rather than smuggling a second concept into this page.
+  If research reveals the topic really covers two ideas, report that and
+  leave the second one out. Smuggling a second concept into a stub trades
+  one problem for a worse one.
 
-- Resolve, don't ignore, `// TODO` markers.
+- You SHOULD resolve `// TODO` markers rather than delete them.
 
-  They're the clearest signal of what the page's original author knew
-  was missing. If a `// TODO` can't be resolved with confidence, leave
-  it in place rather than deleting it unanswered.
+  They are the clearest signal of what the entry's author knew was missing.
+  Where a marker cannot be resolved with confidence, leave it in place — an
+  unanswered gap is better recorded than silently erased.
 
-- Maturity promotion needs confirmation.
+- You MUST link rather than duplicate.
 
-  Never bump a maturity emoji in `index.adoc` without the user
-  agreeing the expanded page has earned it.
+  Where a concept is already explained elsewhere, `xref:` to it instead of
+  re-explaining it. The value of the garden is in the connections between
+  atomic notes, not in self-contained essays.
 
-- Do NOT commit your changes.
+- You MUST NOT change an entry's maturity emoji in the index.
 
-  Make your edits in the working tree only. Staging, committing, and
-  pushing are the user's call.
+  Maturity is an editorial judgment the user reserves. Recommend a promotion
+  in your report and leave the label as it stands.
 
-## Success criteria
+- You MUST NOT stage, commit, or push.
 
-- The target file's scope is unchanged — same topic, same title, same
-  filename, just fuller.
+  Leave every change in the Git working tree. Reviewing the diff is how the
+  user approves the work, so it stands in for any mid-flow prompt.
 
-- All `// TODO` markers in the target file are either resolved and
-  removed, or deliberately left with reasoning given to the user.
+## Edge cases
 
-- At least one new cross-reference was considered, even if research
-  turns up none worth adding.
+- The entry is a redirect stub whose whole body points at another entry.
 
-- No maturity label changed without explicit user confirmation.
+  Do not fertilize it into a second entry on the same topic. Report it as a
+  redundancy to be dropped, with the covering entry named.
 
-## References
+- The named target turns out to be substantial already.
 
-None.
+  Say so and stop. An established entry wants researching and extending, not
+  rescuing, and the two produce noticeably different diffs.

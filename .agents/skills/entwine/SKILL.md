@@ -1,128 +1,135 @@
 ---
 name: entwine
 description: >-
-  Given a single garden entry, find other pages that are related to it but not
-  yet cross-referenced, and add the missing xref links. Use when the user says
+  Find entries related to one target entry but not yet cross-referenced from
+  it, and add the missing links in both directions. Use when the user says
   "entwine event-sourcing.adoc with its neighbors", "link this page to related
-  entries", or asks whether an entry is properly connected.
-compatibility: requires Read, Grep, Edit
+  entries", or asks whether an entry is properly connected. Do not use it to
+  create entries or to repair links that are already broken.
+compatibility: requires Read, Glob, Grep, Edit
 license: CC0-1.0
 ---
 
 # Entwine
 
-Given a single garden entry, find other pages that are related to it but not
-yet cross-referenced, and add the missing `xref:` links. The skill connects
-concepts that are related but were previously isolated from each other — no
-new pages, no content rewrites beyond inserting a link.
+Given a single garden entry, find other entries related to it but not yet
+cross-referenced, and add the missing `xref:` links. Entwining connects
+concepts that were growing in isolation. It creates no entries and rewrites no
+prose beyond the clause that carries a link.
 
-## Input
+## Parameters
 
-A single target entry in the garden. Find pages elsewhere in the garden that
-are related to it but not yet linked, and add the missing `xref:` connections.
-Do not block to ask the user questions. Make your proposed edits and leave
-them in the Git working tree for the user to decide what to do with them.
+Determine the following information from the surrounding context and
+environment. You MUST NOT prompt the user for clarification on this task's
+requirements. If you cannot determine the requirements, stop and alert the
+user with an error message.
 
-## Output
-
-New `xref:` links added between the target entry and its related pages,
-connecting concepts that are related but were previously isolated from each
-other. No new pages, no content rewrites beyond inserting a link (and, where
-natural, a short clause introducing it).
-
-This task runs non-interactively to completion. It does not block for user
-input. If in doubt about any of the requirements of this task, stop and
-print an error message.
-
-## Instructions
-
-1.  Build a map of existing concepts.
-
-    List every page under `src/modules/ROOT/pages/`, using its title
-    and opening paragraph as a summary of what it covers. This is the
-    field the target entry is compared against.
-
-2.  Find pages related to the target but not linked to it.
-
-    Look for pages that:
-
-    - Share a category or parent with the target in `index.adoc` (eg.
-      both filed under the same "tent pole" topic).
-
-    - Mention the same concept the target covers, by name in prose
-      without an `xref:` (this overlaps with what
-      [tend](../tend/SKILL.md) catches as a fake pseudo-link — if the
-      mention is already bracketed as `*[text]*`, that's tend's job;
-      entwine looks for plain, unbracketed mentions and genuinely
-      missing connections that neither page currently gestures at).
-
-    - Are natural neighbors of the target by domain knowledge even
-      without a textual hint (eg. `circuit-breaker.adoc` and
-      `retry.adoc` both belong to resilience patterns, and a reader of
-      one likely wants the other).
-
-    Favor precision over volume — a wrong or strained link is worse
-    than a missing one.
-
-3.  Propose the batch.
-
-    Present the candidate links to the user before editing: which page
-    pairs with the target, and a one-line reason they're related.
-    Confirm before making changes, especially for less obvious pairs.
-
-4.  Add the links.
-
-    For each confirmed pair, add an `xref:` in at least one direction —
-    ideally both, where the relationship reads naturally in each page's
-    context. Insert it where it fits the existing prose; don't bolt on
-    an orphaned "see also" line if a more natural spot exists in an
-    existing sentence.
-
-5.  Report back.
-
-    List every link added, with the two files and a one-line reason
-    for the connection.
-
-## Rules
-
-- One entry at a time.
-
-  Entwine links a single target entry into its neighborhood. It is not
-  a whole-garden link-everything-to-everything sweep; run it once per
-  entry of interest.
-
-- Precision over volume.
-
-  A handful of well-justified links is better than dozens of tenuous
-  ones. If the relationship needs a paragraph to justify, it's too thin
-  to link.
-
-- Don't link to hubs that already aggregate the target.
-
-  Hub pages (eg. `architecture-and-design.adoc`,
-  `computer-science.adoc`) already aggregate many topics by design —
-  entwine is about finding missing sibling connections, not adding a
-  redundant link back to a hub that already lists the target.
-
-- Do NOT commit your changes.
-
-  Make your edits in the working tree only. Staging, committing, and
-  pushing are the user's call.
+- **Target entry — REQUIRED.** A single existing file under
+  `src/modules/ROOT/pages/`, named by the user, eg. "entwine
+  event-sourcing.adoc". Accept a topic name too, and resolve it to the file
+  whose `=` title matches.
 
 ## Success criteria
 
-- Every link added has a one-line justification the user can
-  sanity-check.
+- Every link added MUST carry a one-line justification in the report, so the
+  user can sanity-check the connection without reading both entries.
 
-- No link was added without the user confirming the batch it belonged
-  to.
-
-- No new pages were created and no existing page's scope changed —
-  only links were added.
-
-- All new `xref:` targets resolve to real files in
+- Every `xref:` added MUST name a file that exists under
   `src/modules/ROOT/pages/`.
 
-## References
+- Each linked pair SHOULD be connected in both directions, unless the
+  relationship only reads naturally one way.
 
-None.
+- No entry MAY have been created or deleted, and no entry's scope MAY have
+  changed. Only links, and the clauses introducing them, are added.
+
+- Nothing MUST be staged, committed, or pushed.
+
+## Instructions
+
+1.  Build a map of the garden's concepts.
+
+    List every file under `src/modules/ROOT/pages/`, taking its `=` title
+    and opening paragraph as a summary of what it covers. This is the field
+    the target is compared against.
+
+2.  Find entries related to the target but not linked to it.
+
+    Look for entries that:
+
+    - Share a section or a parent with the target in
+      `src/modules/ROOT/pages/index.adoc`.
+
+    - Name the target's concept in plain prose, with no `xref:` and no
+      bracketed marker. A bracketed marker means the term is already
+      accounted for by a structural pass, so leave those alone.
+
+    - Are natural neighbors by domain knowledge, with no textual hint at
+      all. A reader of `circuit-breaker.adoc` likely wants `retry.adoc`,
+      whether or not either mentions the other.
+
+3.  Assess each candidate pair, and keep only those where the connection is
+    obvious enough to state in one line. Favor precision over volume: a
+    strained link is worse than a missing one.
+
+4.  Add the links.
+
+    For each pair kept, add an `xref:` in both directions where the
+    relationship reads naturally in each entry's context, and in one
+    direction otherwise. Place each link where it fits the existing prose
+    rather than bolting on a "See also" line when a natural spot exists in
+    a sentence already there. Follow `docs/style-guide.md`, wrapping every
+    `xref:` in `*...*`.
+
+5.  Report every link added, naming both files and giving the one-line
+    reason for the connection, along with the candidates you rejected and
+    why.
+
+## Rules
+
+- You MUST entwine one entry at a time.
+
+  Entwining links a single target into its neighborhood. A garden-wide
+  link-everything pass produces a diff too large to review, which defeats
+  the working tree as a review gate.
+
+- You MUST favor precision over volume.
+
+  A handful of well-justified links beats dozens of tenuous ones. Where a
+  relationship needs a paragraph to justify, it is too thin to link.
+
+- You MUST NOT link to a hub entry that already aggregates the target.
+
+  Hub entries such as `architecture-and-design.adoc` and
+  `computer-science.adoc` aggregate many topics by design. Entwining is
+  about missing sibling connections, not a redundant link back up to a hub
+  that already lists the target.
+
+- You MUST NOT repair existing links.
+
+  A broken `xref:` or a bracketed pseudo-link belongs to a structural pass.
+  Report any you notice and leave them.
+
+- You MUST NOT stage, commit, or push.
+
+  Leave every change in the Git working tree. Reviewing the diff is how the
+  user approves the work, so it stands in for any mid-flow prompt.
+
+## Edge cases
+
+- The target is already densely linked.
+
+  Say so and add nothing. A well-connected entry is the goal, and forcing
+  further links onto it only adds noise.
+
+- A related concept has no entry at all.
+
+  Do not create one. Report it as a candidate worth planting, and leave any
+  bracketed marker for that term as it stands.
+
+## Examples
+
+- Given `event-sourcing.adoc`, a good result reads: linked to `cqrs.adoc`,
+  commonly paired and already linking back; linked both ways with
+  `event-driven-architecture.adoc`, the parent pattern, which neither
+  previously referenced.

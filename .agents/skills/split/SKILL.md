@@ -1,160 +1,164 @@
 ---
 name: split
 description: >-
-  Split an overgrown garden entry that has drifted into covering two or more
-  distinct concepts back into separate atomic pages, cross-linked together. Use
-  when the user says "split this entry", "split X into separate pages", or
-  notices a page covering more than one idea.
-compatibility: requires Read, Grep, Write, Edit
+  Break up an overgrown entry that has drifted into covering two or more
+  distinct concepts, narrowing the original and planting a new cross-linked
+  entry for each concept extracted. Use when the user says "split this entry",
+  "split X into separate pages", or notices an entry covering more than one
+  idea. Do not use it to extract a concept that only the original entry would
+  ever link to.
+compatibility: >-
+  requires Read, Glob, Grep, Write, Edit
 license: CC0-1.0
 ---
 
 # Split
 
 Split an overgrown garden entry that has drifted into covering two or more
-distinct concepts back into separate atomic pages, cross-linked together. The
-original page is narrowed to its core concept, and each split-out concept gets
-its own new page.
+distinct concepts back into separate atomic entries, cross-linked together. The
+original is narrowed to its core concept, and each concept extracted gets its
+own entry.
 
-## Input
+## Parameters
 
-REQUIRED — a target page named by the user (eg. "split
-event-driven-architecture.adoc — it's covering both event sourcing and
-CQRS"). Do not block to ask the user questions. Make your proposed edits and
-leave them in the Git working tree for the user to decide what to do with
-them.
+Determine the following information from the surrounding context and
+environment. You MUST NOT prompt the user for clarification on this task's
+requirements. If you cannot determine the requirements, stop and alert the
+user with an error message.
 
-## Output
+- **Target entry — REQUIRED.** The single overgrown file under
+  `src/modules/ROOT/pages/`, named by the user, eg. "split
+  event-driven-architecture.adoc".
 
-The original page narrowed back to its core concept, one or more new `.adoc`
-pages for the concepts that were split out, all of them cross-linked to each
-other, and the new pages added to `index.adoc` and `nav.adoc`.
-
-This task runs non-interactively to completion. It does not block for user
-input. If in doubt about any of the requirements of this task, stop and
-print an error message.
-
-## Instructions
-
-1.  Read the target page in full.
-
-    Identify the distinct concepts it currently covers. A genuine split
-    candidate has sections that could each stand alone as a
-    self-contained entry, not just sub-points of one idea.
-
-2.  Propose the split.
-
-    Name the resulting pages: what stays under the original title, and
-    what becomes a new page for each split-out concept. Present this to
-    the user before editing — splitting is a structural decision the
-    original entry's title and scope depend on, and should be agreed
-    before content moves.
-
-3.  Check whether each split-out concept warrants its own page.
-
-    A split-out concept earns its own file only when it will be
-    cross-referenced from *multiple* other pages — that is the
-    atomicity criterion. If a concept would only be linked from the
-    original page, it belongs as a section of the original, not a new
-    entry. In that case, drop it from the split and keep it inline.
-    Apply this test to each proposed split-out concept before
-    creating anything.
-
-4.  Check for collisions.
-
-    Before creating any new page, check it doesn't already duplicate an
-    existing entry elsewhere in the garden (the same failure mode
-    [prune](../prune/SKILL.md) cleans up). If one already exists, merge
-    the split-out content into that page instead of creating a new one.
-
-5.  Create the new page(s).
-
-    For each split-out concept, create
-    `src/modules/ROOT/pages/<topic>.adoc` following the garden's
-    atomic-entry conventions (single `=` title, focused body, `xref:`
-    outward rather than re-explaining). Carry over the relevant content
-    from the original, rewritten to stand alone rather than assuming
-    the context of the rest of the original page.
-
-6.  Narrow the original.
-
-    Remove the split-out sections from the original page, leaving it
-    focused on its core concept. Add an `xref:` from the original to
-    each new page where the relationship is natural (eg. "see also").
-
-7.  Cross-link the new pages.
-
-    If the split-out concepts relate to each other as well as to the
-    original, link them to one another too.
-
-8.  Update the index.
-
-    Add each new page to `index.adoc` in its correct alphabetical
-    section, marked 🌱 Seedling (it's new content, even though it
-    originated from older material). Leave the original's existing
-    maturity label as-is unless the narrowing changes how complete it
-    looks — propose a change rather than applying one silently.
-
-9.  Update the nav.
-
-    Add each new page to `src/modules/ROOT/nav.adoc`, in the same
-    alphabetical position it occupies in `index.adoc`. Without this, the
-    new page has no ancestry and renders with no breadcrumb trail.
-
-10. Report back.
-
-    List the new files created, what moved from the original into each,
-    and every cross-link added.
-
-## Rules
-
-- Only split out a concept that will be cross-referenced from multiple pages.
-
-  This is the gate for splitting. A concept that would only be linked
-  from the original page is a section of that page, not a new entry. If
-  a proposed split-out concept fails this test, keep it inline and drop
-  it from the split. Splitting should reduce a page back to one concept
-  by extracting genuinely shared concepts — not fragment it into
-  single-link stubs.
-
-- Confirm the split before editing.
-
-  Unlike tend's mechanical fixes, a split changes the meaning and
-  boundaries of existing content — get the user's agreement on the
-  proposed split before moving any text.
-
-- Check for an existing page first.
-
-  A split-out concept might already have its own entry elsewhere in
-  the garden; don't create a duplicate that [prune](../prune/SKILL.md)
-  will later have to clean up.
-
-- Rewrite for standalone reading.
-
-  Content lifted out of the original page often refers back to it
-  implicitly ("as mentioned above"). Rewrite those references as
-  explicit `xref:` links or remove them — the new page must be
-  self-contained.
-
-- Do NOT commit your changes.
-
-  Make your edits in the working tree only. Staging, committing, and
-  pushing are the user's call.
+- **Concepts to extract — OPTIONAL.** The concepts the user wants lifted out,
+  eg. "it's covering both event sourcing and CQRS". Where none are given,
+  identify them yourself in step 1.
 
 ## Success criteria
 
-- The original page covers exactly one concept after the split.
+- The target entry MUST cover exactly one concept once the split is done.
 
-- Each new page is self-contained — readable without having read the
-  original first.
+- Each new entry MUST exist at
+  `src/modules/ROOT/pages/<title-kebab-case>.adoc` and MUST read
+  self-containedly, without the original for context.
 
-- All new pages are listed in `index.adoc` and `nav.adoc`.
+- Each new entry MUST be listed under the correct alphabetical sub-section of
+  "All topics" in `src/modules/ROOT/pages/index.adoc`, carrying the 🌱 emoji,
+  and at the matching alphabetical position in `src/modules/ROOT/nav.adoc`.
 
-- No new page duplicates an existing entry — checked against the
-  garden before creation.
+- The target and each new entry MUST be cross-linked, and every `xref:` you
+  add MUST name a file that exists under `src/modules/ROOT/pages/`.
 
-- The user confirmed the split plan before any content was moved.
+- No new entry MAY duplicate a topic the garden already covers, checked
+  against the file inventory before creation.
 
-## References
+- No maturity emoji on an entry that already existed MUST have changed.
 
-None.
+- Nothing MUST be staged, committed, or pushed.
+
+## Instructions
+
+1.  Read the target entry in full.
+
+    Identify the distinct concepts it currently covers. A genuine split
+    candidate has sections that could each stand alone; sub-points of a
+    single idea are not concepts.
+
+2.  Plan the split.
+
+    Name what stays under the original title and what becomes a new entry
+    for each concept extracted. Record this plan; it goes in your report,
+    and it is what the user checks the diff against.
+
+3.  Apply the atomicity criterion to each concept extracted.
+
+    A concept earns its own file only where it will be cross-referenced from
+    *multiple* other entries. One that only the original would ever link to
+    is a section of the original. Drop it from the plan and leave it inline.
+    Splitting should reduce an entry to one concept by extracting genuinely
+    shared ones, not fragment it into single-link stubs.
+
+4.  Check for collisions.
+
+    Before creating anything, search `src/modules/ROOT/pages/` for an entry
+    already covering each concept, including obvious synonyms and
+    singular/plural variants. Where one exists, fold the extracted content
+    into that entry instead of creating a near-duplicate.
+
+5.  Create the new entries.
+
+    For each concept extracted, create
+    `src/modules/ROOT/pages/<title-kebab-case>.adoc`, following the garden's
+    conventions for an atomic entry: a single `=` title, a focused body,
+    `xref:` outward rather than re-explaining. Carry over the relevant
+    content from the original, rewritten to stand alone. Follow
+    `docs/style-guide.md`, wrapping every `xref:` in `*...*`.
+
+6.  Narrow the original.
+
+    Remove the extracted sections, leaving the entry on its core concept,
+    and add an `xref:` to each new entry where the relationship reads
+    naturally.
+
+7.  Cross-link the new entries to one another, where they relate to each
+    other and not only to the original.
+
+8.  Update the index and nav.
+
+    Add each new entry to `src/modules/ROOT/pages/index.adoc` in its correct
+    alphabetical sub-section, marked 🌱 — it is a new entry, whatever the
+    age of the material in it — and to `src/modules/ROOT/nav.adoc` at the
+    matching alphabetical position. Without the nav listing an entry has no
+    ancestry and renders with no breadcrumb trail.
+
+9.  Report the files created, what moved from the original into each, and
+    every cross-link added.
+
+## Rules
+
+- A concept MUST NOT be extracted unless it will be cross-referenced from at
+  least two other entries.
+
+  This is the gate for splitting, and it is the same criterion that governs
+  planting a new entry. Without it, a split trades one overgrown entry for
+  several stubs nothing links to.
+
+- You MUST check for an existing entry before creating one.
+
+  A concept lifted out of an overgrown entry has often already been planted
+  elsewhere. Creating the duplicate makes work for a later drop.
+
+- You MUST rewrite extracted content to read standalone.
+
+  Content lifted out of an entry usually refers back to it implicitly, with
+  phrases like "as mentioned above". Turn those into explicit `xref:` links
+  or remove them, so the new entry is self-contained.
+
+- A newly created entry MUST be marked 🌱 Seedling in the index, and you
+  MUST NOT change the maturity emoji of the entry you split.
+
+  Maturity is an editorial judgment the user reserves. Where narrowing the
+  original leaves its label overstated, recommend a change in your report.
+
+- The index and the nav MUST be kept in step.
+
+  An entry added to one is added to the other, at the same alphabetical
+  position. An entry listed in only one of them is half-published.
+
+- You MUST NOT stage, commit, or push.
+
+  Leave every change in the Git working tree. Reviewing the diff is how the
+  user approves the work, so it stands in for any mid-flow prompt.
+
+## Edge cases
+
+- Every candidate concept fails the atomicity criterion.
+
+  Do not split. Report that the entry is long but singular, and suggest
+  tightening its prose instead.
+
+- The original is left thinner than the entries extracted from it.
+
+  That is expected where the overgrowth was the main event, and it is not a
+  reason to keep the concepts inline. Say so in the report, and note the
+  narrowed entry as a candidate for a later research-and-extend pass.

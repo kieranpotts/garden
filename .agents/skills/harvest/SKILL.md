@@ -1,49 +1,67 @@
 ---
 name: harvest
 description: >-
-  Produce a digest of recent garden activity — entries sown, fertilized, tended,
-  pruned, grafted, entwined, weeded, or uprooted over a given period — for
-  review or changelog purposes. Use when the user says "harvest the garden",
-  "what's changed recently", or asks for a summary/digest of recent garden
-  activity.
-compatibility: requires Bash (git log), Write
+  Summarize recent garden activity from the Git history — entries sown,
+  watered, fertilized, tended, pruned, grafted, split, entwined, cultivated,
+  trimmed, weeded, or uprooted — as a digest grouped by activity type. Use
+  when the user says "harvest the garden", "what's changed recently", or asks
+  for a summary of recent activity. Do not use it to fix what the digest finds.
+compatibility: >-
+  requires Read, Glob, Write, Bash (git log)
 license: CC0-1.0
 ---
 
 # Harvest
 
-Produce a digest of recent garden activity — entries sown, fertilized,
-tended, pruned, grafted, entwined, weeded, or uprooted over a given period —
-for review or changelog purposes. The digest is grouped by activity type and
-printed to the chat by default.
+Produce a digest of recent garden activity, grouped by activity type, for
+review or changelog purposes. Harvesting reads the Git history and reports.
+It never repairs what it finds.
 
-## Input
+## Parameters
 
-OPTIONAL — a time window or commit range (eg. "harvest the last 2 weeks",
-"harvest since v1.4"). Defaults to commits since the last harvest digest was
-produced, or the last 30 days if no prior digest exists. Do not block to ask
-the user questions. This skill is read-only unless the user explicitly asks
-for the digest to be saved.
+Determine the following information from the surrounding context and
+environment. You MUST NOT prompt the user for clarification on this task's
+requirements. If you cannot determine the requirements, stop and alert the
+user with an error message.
 
-## Output
+- **Window — OPTIONAL.** A time period or commit range, eg. "harvest the last
+  2 weeks", "harvest since v1.4". Where none is given, run from the date of
+  the most recent saved digest, or the last 30 days where no digest exists.
 
-A digest, grouped by activity type (sown / watered / fertilized / tended /
-pruned / grafted / split / entwined / cultivated / trimmed / weeded /
-uprooted / other), printed to the chat. If the user asks for it to be saved,
-write it to a dated entry, newest first, rather than overwriting prior
-digests.
+- **Digest store — OPTIONAL.** Where a saved digest is written, and where
+  step 1 looks for the previous one. This repository does not prescribe a
+  location, so resolve it from the user's request, then from the surrounding
+  context, then from any existing digest file in the workspace. Where no
+  store can be resolved, print the digest to the chat and say so — do not
+  invent a path.
 
-This task runs non-interactively to completion. It does not block for user
-input. If in doubt about any of the requirements of this task, stop and
-print an error message.
+## Success criteria
+
+- Every commit in the window MUST appear in the digest under one activity
+  type, with none silently dropped.
+
+- The digest MUST be grouped by activity type, not presented as a flat
+  chronological list.
+
+- Every commit whose type prefix is missing, legacy, or mismatched against
+  the files it touched MUST have been classified from its diff instead.
+
+- Each entry in the digest MUST carry the entry title, a one-line description
+  of what changed, and the commit's short hash.
+
+- No file in the repository MUST have been modified, unless the user asked
+  for the digest to be saved, in which case only the digest file MUST have
+  been written.
+
+- Nothing MUST be staged, committed, or pushed.
 
 ## Instructions
 
 1.  Determine the window.
 
-    If the user gave a range or date, use it. Otherwise, find the most
-    recent digest file (if any) and use commits since its date; if none
-    exists, default to the last 30 days.
+    Where the user gave a range or a date, use it. Otherwise look for the
+    most recent saved digest in the resolved digest store and start from its
+    date. Where neither is available, use the last 30 days.
 
 2.  Pull the commit log for the window.
 
@@ -51,124 +69,73 @@ print an error message.
     git log --since="<window-start>" --name-status --pretty=format:'%h %s'
     ```
 
-    This repo's commit messages are prefixed by type, and the
-    repository-specific types map directly onto garden activity: `sow:`,
-    `water:`, `tend:`, `fertilize:`, `prune:`, `graft:`, `split:`,
-    `entwine:`, `cultivate:`, `trim:`, `weed:`, `uproot:`. The `trim:`
-    type was formerly named `tidy:`, so older commits carry the legacy
-    `tidy:` prefix. Standard types (`chore:`, `format:`, `maintenance:`,
-    `landscape:`) fall under "other". Use the prefix as the primary
-    signal, but spot-check against the diff — a commit can be
-    mislabeled, and history predating this commit-type convention won't
-    have a matching prefix at all.
+3.  Classify each commit by its type prefix.
 
-3.  Classify each change.
+    This repository's commit types map onto garden activity directly:
+    `sow:` sown, `water:` watered, `fertilize:` fertilized, `tend:` tended,
+    `prune:` pruned, `graft:` grafted, `split:` split, `entwine:` entwined,
+    `cultivate:` cultivated, `trim:` trimmed, `weed:` weeded, `uproot:`
+    uprooted. The standard types `chore:`, `format:`, `maintenance:`, and
+    `landscape:` all fall under "other".
 
-    For each commit, use the type prefix as the primary signal:
+    Older history predates this convention and carries prefixes that no
+    longer exist. Map them by intent, checking the diff before you trust
+    them: `add:` is usually sown, `tidy:` trimmed, `style:` cultivated,
+    `fix:` weeded, `refactor:` other. `edit:` covers several activities and
+    MUST always be classified from its diff.
 
-    - Sown (`sow:`): a new `.adoc` page added under `pages/`, plus a
-      corresponding `index.adoc` addition and a matching `nav.adoc` entry.
+4.  Classify from the diff wherever the prefix is missing, legacy, or does
+    not match the files touched. The signatures are distinctive: a new file
+    under `pages/` plus index and nav additions is a sow; a file deleted with
+    inbound links repointed is a prune; one file shrinking as new ones appear
+    is a split; several files deleted into one growing file is a graft;
+    `xref:` additions with no other change is an entwine.
 
-    - Watered (`water:`): an existing page grown with freshly
-      researched depth, detail, or developments, staying on its
-      concept.
+5.  Build the digest.
 
-    - Fertilized (`fertilize:`): an existing page's content grew
-      substantially.
+    Group by activity type. Give each entry its entry title, a one-line
+    description of what changed, and the commit's short hash. Keep the
+    descriptions terse — this is a scannable digest, not a narrative.
 
-    - Tended (`tend:`): fixes to `xref:` targets, pseudo-links, or
-      index listings with no new concept introduced.
-
-    - Pruned (`prune:`): a redundant page dropped — deleted because
-      another page already covers its topic — with its inbound
-      references repointed to that page.
-
-    - Grafted (`graft:`): two or more pages were merged into one
-      broader page — the survivor grew while the absorbed pages were
-      deleted and their references repointed.
-
-    - Split (`split:`): one page's content shrank while one or more
-      new pages appeared in the same change, with cross-links between
-      them.
-
-    - Entwined (`entwine:`): new `xref:` links added between existing
-      pages, with no content otherwise changed.
-
-    - Cultivated (`cultivate:`): mechanical style-guide fixes (dashes,
-      colons, casing, bold usage) with no change to meaning.
-
-    - Trimmed (`trim:`, or legacy `tidy:` in older commits): freeform
-      trim within a page — trimmed waffle, smoothed phrasing, reordered
-      or de-duplicated content, with meaning left intact.
-
-    - Weeded (`weed:`): a factual error or other harmful content
-      corrected on an existing page.
-
-    - Uprooted (`uproot:`): a change reverted.
-
-    - Other: standard types (`chore:`, `format:`, `maintenance:`,
-      `landscape:`), and any commit predating this convention with no
-      matching prefix — list briefly, don't force a category.
-
-    For commits with no recognizable prefix (older history), fall back
-    to inspecting the files touched and classify by the same criteria
-    above.
-
-4.  Build the digest.
-
-    Group entries by category. For each entry, give the page title, a
-    one-line description of what changed, and the commit short-hash.
-    Keep descriptions terse — this is a scan-able digest, not a
-    narrative.
-
-5.  Present the digest.
-
-    Print it in the chat by default. Only write it to a file if the
-    user asks — and if so, append a new dated section rather than
-    overwriting any existing digest history.
+6.  Present the digest in the chat. Only write it to the digest store where
+    the user asked for it to be saved, and then as a new dated section,
+    newest first, leaving prior digests intact.
 
 ## Rules
 
-- Trust the commit type prefix, but spot-check.
+- You MUST verify a commit's type prefix against its diff whenever the two
+  could disagree.
 
-  `sow:`/`water:`/`tend:`/`fertilize:`/`prune:`/`graft:`/`split:`/`entwine:`/`cultivate:`/`trim:`
-  (and legacy `tidy:`) map directly onto these categories, but prefixes
-  can be wrong or absent in older history — fall back to inspecting the
-  diff when a prefix is missing or looks mismatched against the actual
-  files touched.
+  A prefix is a claim by the commit's author, not evidence. Most of this
+  repository's history predates the current types, so a run that trusts
+  prefixes blindly will miscount the older half of any long window.
 
-- Keep it a report, not an action.
+- You MUST report rather than repair.
 
-  If the digest surfaces something that looks broken or undone (eg. a
-  half-finished graft, a page added but never linked from the index),
-  name it as a finding for the user to send to [tend](../tend/SKILL.md)
-  — don't fix it inline.
+  Where the digest surfaces something broken or half-finished — an entry
+  added but never listed in the index, a graft that left dangling links —
+  name it as a finding for a structural pass. Fixing it here would put
+  unrelated content changes into what is meant to be a read-only survey.
 
-- Default to the chat, not a file.
+- You SHOULD default to the chat rather than a file.
 
-  Most uses of this skill are a quick check-in, not a permanent
-  changelog entry — only persist to disk on explicit request.
+  Most runs are a quick check-in, not a permanent changelog entry. Persist
+  to the digest store only on an explicit request.
 
-- Do NOT commit your changes.
+- You MUST NOT stage, commit, or push, even when saving a digest.
 
-  Even when the user asks for the digest to be saved to a file, this
-  skill only writes that file — never stage, commit, or push it.
+  Leave the digest file in the Git working tree. Reviewing the diff is how
+  the user approves the work.
 
-## Success criteria
+## Edge cases
 
-- Every commit in the window is classified into one of the categories,
-  with no commit silently dropped.
+- The window contains a merge commit with no meaningful diff of its own.
 
-- The digest is grouped by activity type, not presented as a flat
-  chronological list.
+  Classify it under "other" and keep it in the count. Dropping it silently
+  breaks the guarantee that every commit is accounted for.
 
-- Classification is checked against the actual diff whenever a commit's
-  type prefix is missing or looks mismatched against the files it
-  touched.
+- One commit spans several activities.
 
-- No garden file was modified by running this skill, unless the user
-  explicitly asked for the digest to be saved.
-
-## References
-
-None.
+  File it under the dominant one and note the rest in its one-line
+  description. Listing it twice would inflate the counts the digest is read
+  for.
