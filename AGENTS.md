@@ -35,6 +35,12 @@ SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
 - **[`docs/style-guide.md`](./docs/style-guide.md)**: Writing and AsciiDoc
   formatting conventions for garden entries..
 
+- **`digests/HARVEST.md`**: A cumulative log of garden activity, appended to
+  by the **[harvest](./.agents/skills/harvest/)** skill on request — a new
+  dated section per run, newest first. Not garden content itself, so it is
+  not listed in `index.adoc` or `nav.adoc`. Created on first save; absent
+  otherwise.
+
 - **`.github/workflows/`**: CI checks (stale-issue flagging, label sync, commit
   message validation).
 

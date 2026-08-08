@@ -29,11 +29,14 @@ user with an error message.
   the most recent saved digest, or the last 30 days where no digest exists.
 
 - **Digest store — OPTIONAL.** Where a saved digest is written, and where
-  step 1 looks for the previous one. This repository does not prescribe a
-  location, so resolve it from the user's request, then from the surrounding
-  context, then from any existing digest file in the workspace. Where no
-  store can be resolved, print the digest to the chat and say so — do not
-  invent a path.
+  step 1 looks for the previous one. It is one cumulative file, appended to
+  as a new dated section per run (see step 6), not one file per harvest.
+  Resolve it from the user's request, then from the surrounding context,
+  then from any existing digest file in the workspace. Where the user asked
+  to save but none of those settles it, default to `digests/HARVEST.md` at
+  this repository's root — this repository's own convention, not a general
+  one. Where the user did not ask to save at all, print the digest to the
+  chat instead — do not invent a path uninvited.
 
 ## Success criteria
 
