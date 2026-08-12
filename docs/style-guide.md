@@ -61,7 +61,9 @@ workflow, see [CONTRIBUTING.md](../CONTRIBUTING.md).
 - Prefer simple sentences to complex ones. If a sentence has multiple clauses,
   consider splitting it into two or more simple sentences.
 
-- Avoid semicolons in sentences. Split into multiple sentences instead.
+- Avoid semicolons in sentences. Split into multiple sentences instead. This
+  is a sentence-level rule. It does not reach into bullet lists, where a semicolon
+  chaining items into one flowing enumeration is fine.
 
 - Where a sentence needs a dash to set off a parenthetical or a pause, use an en
   dash (–), not a hyphen (-) or an em dash (—).
@@ -76,7 +78,7 @@ workflow, see [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## Bold text
 
-Only four things are ever bold in body text:
+Only five things are ever bold in body text:
 
 - Cross-references: `xref:target.adoc[Link text]`, eg.
   `xref:resilience.adoc[resilience]`. Use this for every mention of a concept
@@ -95,7 +97,22 @@ Only four things are ever bold in body text:
   `` Base models are known as *emergence*. `` or `` *LoRA (Low-Rank Adaptation)* is a fine-tuning technique that... ``. This marks the moment a term is defined, not ongoing emphasis — don't bold the same term again on subsequent mentions within the same page unless it's also an `xref:`
   or forage candidate.
 
+- A table-cell header label in an AsciiDoc table, eg. `|*Granularity*`. The
+  label sits in its own cell and the description that follows sits in the next
+  cell. This mirrors the glossary-style list-term convention, adapted to a
+  two-column table layout.
+
 Don't bold anything else. Bold is not used for general emphasis.
+
+## Titles
+
+- Book names and other publication titles are written in italics, eg.
+  `_The Pragmatic Programmer_`, not `*The Pragmatic Programmer*` or plain text.
+  This applies to books, papers, articles, and any other named publication
+  mentioned in body prose.
+
+- Italics are also used for foreign-word and pronunciation asides, eg.
+  `_kuh-NEV-in_`.
 
 ## Cross-references
 

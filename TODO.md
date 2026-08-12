@@ -8,21 +8,21 @@
   explicitly cover this list/citation idiom. Decide whether to codify it as an
   accepted pattern (and update the style guide + cultivate skill accordingly) or
   mechanically convert it. **Decision: Mechanically convert it.**
-- [ ] Bold table-cell header labels (eg. `microservices.adoc`'s comparison
+- [x] Bold table-cell header labels (eg. `microservices.adoc`'s comparison
   table: `|*Granularity*`, `|*Communication*`) — don't strictly match any of the
   four accepted bold conventions but mirror an established table-formatting
   pattern seen elsewhere. Decide whether this is a fifth accepted convention.
   **Decision: record as a fifth accepted convention for bold text**
-- [ ] `cynefin-framework.adoc` bolds its five domain names (*Clear*,
+- [x] `cynefin-framework.adoc` bolds its five domain names (*Clear*,
   *Complicated*, *Complex*, *Chaotic*, *Disorder*) as a glossary-style
   convention — borderline against "no general emphasis," left as-is pending a
   decision. **Decision: remove this emphasis in-place.**
-- [ ] Book titles in body prose (eg. `rubber-ducking.adoc` line 3 bolds
+- [x] Book titles in body prose (eg. `rubber-ducking.adoc` line 3 bolds
   `*The Pragmatic Programmer*`) — the style guide has no convention for
   book/publication titles at all (no italics rule, doesn't fit any of the four
   bold conventions). Decide on a convention (italics? bold? plain?) and codify
   it. **Decision: Codify as italics for book names and other titles.**
-- [ ] Semicolons used to chain list items into one flowing enumeration (seen in
+- [x] Semicolons used to chain list items into one flowing enumeration (seen in
   `spoofing.adoc` and `stepwise-refinement.adoc`) — stylistic list structure,
   not flagged as a sentence-level violation, but worth deciding if the "avoid
   semicolons" rule is meant to reach list-item punctuation too.

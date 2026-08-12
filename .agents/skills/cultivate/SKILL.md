@@ -64,16 +64,20 @@ user with an error message.
       "Capability Maturity Model".
 
     - Written style — prose paragraphs where prose belongs, simple
-      sentences, no semicolons, en dash for a sentence-level pause, colons
+      sentences, no semicolons in sentences (semicolons within a bullet list
+      chaining items are fine), en dash for a sentence-level pause, colons
       only before lists, colons rather than hyphens separating a list term
       from its description.
 
-    - Bold text — only four things are ever bold: an `xref:`
+    - Bold text — only five things are ever bold: an `xref:`
       cross-reference, a bracketed term marking a topic not yet planted, a
-      glossary-style list-term lead-in (`*Term*: Description.`), and a term
-      being defined for the first time in running prose. Check both
-      directions: every `xref:` is bold, and nothing else is bold unless it
-      fits one of the other three.
+      glossary-style list-term lead-in (`*Term*: Description.`), a term being
+      defined for the first time in running prose, and a table-cell header label
+      (`|*Term*`). Check both directions: every `xref:` is bold, and nothing else
+      is bold unless it fits one of the other four.
+
+    - Titles — book names and other publication titles are in italics
+      (`_Title_`), not bold.
 
     - Admonitions — used sparingly, and only for a genuinely secondary
       aside.
@@ -95,7 +99,9 @@ user with an error message.
     - An `xref:` that is not wrapped in `*...*` gets wrapped. Check every
       occurrence, not just the first in the entry.
 
-    - Bold markup fitting none of the four accepted conventions is unbolded.
+    - A book or publication title set in bold becomes italics (`_Title_`).
+
+    - Bold markup fitting none of the five accepted conventions is unbolded.
 
 4.  Report, rather than apply, the judgment calls:
 
