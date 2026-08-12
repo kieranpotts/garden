@@ -82,26 +82,28 @@ roughly by which skill would handle them.
 
 ## Naming / title inconsistencies (needs a decision, then tend or manual fix)
 
-- [ ] `ports-and-adapters.adoc` — page title says "Ports-and-adapters"
-  (hyphenated) but `index.adoc` lists it as "Ports and adapters" (no hyphens),
-  and both forms are used interchangeably in the prose. Pick one and make
-  consistent.
-- [ ] `phased-commit.adoc` — filename is singular ("phased-commit") but the page
-  title says "Phased commits (2PC, 3PC)" (plural) and `index.adoc` says "Phased
-  commit (2PC, 3PC)" (singular). Pick one form.
-- [ ] `adaptive-software-development.adoc` — body text says "Adaptive Software
-  Development (ASD)" in Title Case mid-sentence, inconsistent with the page's
-  own sentence-case title ("Adaptive software development (ASD)").
-- [ ] `specification-by-example.adoc` — page title is correctly sentence case
-  ("Specification by example") but `index.adoc` lists it as "Specification by
-  Example" (Title Case). Pick one and make consistent.
+- [x] `ports-and-adapters.adoc` — title changed to "Ports and adapters" (no
+  hyphens) to match `index.adoc` and `nav.adoc`. The filename
+  `ports-and-adapters.adoc` is the kebab-case of "Ports and adapters" and so
+  still matches. Hyphenated compound-adjective usage in the prose (eg. "the
+  ports-and-adapters pattern") left as-is — it is grammatically correct as a
+  modifier.
+- [x] `phased-commit.adoc` — title changed to "Phased commit (2PC, 3PC)"
+  (singular) to match the filename and `index.adoc`. Opening sentence adjusted
+  to "A phased commit is a way to implement..." and "is completed successfully".
+- [x] `adaptive-software-development.adoc` — body "Adaptive Software Development
+  (ASD)" changed to sentence case to match the page's own title.
+- [x] `specification-by-example.adoc` — `index.adoc` and `nav.adoc` link text
+  changed from "Specification by Example" to "Specification by example" to match
+  the sentence-case page title.
 
 ## Maturity labels missing (editorial call, not cultivate's job)
 
-- [ ] `raaml.adoc` — its `index.adoc` listing line has no maturity emoji
-  (🌱/🌿/🌳/🍂), unlike every sibling entry.
-- [ ] `robustness-principle.adoc` — same issue, no maturity emoji in its
-  `index.adoc` listing line.
+- [x] `raaml.adoc` — added 🌱 to its `index.adoc` line (it is a TODO stub, so
+  seedling is the correct default).
+- [x] `robustness-principle.adoc` — added 🌱 to its `index.adoc` line as the
+  safe default (maturity cannot be inferred without editorial judgment). **The
+  page is well-developed — the owner may want to promote it to 🌿 or 🌳.**
 
 ## Content defects (not style — needs a human edit)
 
@@ -113,20 +115,26 @@ roughly by which skill would handle them.
   fixed to "the value of a network".
 - [x] `modeling.adoc` line 71 — typo: "framworks" -> "frameworks" (actually at
   the IBM Rhapsody entry).
-- [ ] `modeling.adoc` line 41 — the RAAML glossary entry has no description,
-  unlike its sibling entries. (Left — needs a human-written description.)
-- [ ] `mythical-man-month.adoc` line 18 — `*blog post*` is bold with no link
-  attached; looks like a forgotten link target. (Left — needs the actual URL.)
+- [x] `modeling.adoc` — the RAAML glossary entry now has a description: "An OMG
+  standard modeling language for representing safety and risk analysis concepts,
+  built as an extension of UML."
+- [ ] `mythical-man-month.adoc` line 36 — `*blog post*` is bold with no link
+  attached ("See my *blog post* for a more detailed discussion..."). Still needs
+  the actual blog post URL — cannot be fixed without it.
 - [x] `processor-architectures.adoc` — "Related links" section listed the same
   Wikipedia IA-32 URL twice. Removed the duplicate.
 - [x] `linux.adoc` line 9 — minor grammar slip: "It is core component"
   fixed to "It is a core component".
-- [ ] Semicolons that are genuine "avoid semicolons" violations but need a
-  sentence rewrite (not a mechanical fix) rather than a silent split:
-  `rational-unified-process.adoc`, `replay-attack.adoc` (×2), `rest.adoc` (×4),
-  `system-design.adoc` line 43 (semicolon inside a long, nested parenthetical
-  aside about TCP vs UDP — risky to split mechanically without changing
-  meaning).
+- [x] Semicolons that are genuine "avoid semicolons" violations, now rewritten:
+  `rational-unified-process.adoc` (the three-amigos enumeration converted to a
+  bullet list), `replay-attack.adoc` (the sentence-level semicolon on line 11
+  split into two sentences), `rest.adoc` (all four split with periods, two in
+  prose and two in table cells), `system-design.adoc` (the parenthetical TCP/UDP
+  semicolon split with a period — meaning preserved).
+  Note: `replay-attack.adoc` also has two list-chaining semicolons (bullets for
+  nonces/timestamps/sequence numbers). Those are the "chain list items into one
+  flowing enumeration" pattern covered by the style-guide-gap decision below,
+  not sentence-level violations, so they were left as-is pending that decision.
 
 ## Style guide gaps worth deciding on (would feed back into docs/style-guide.md and the cultivate skill)
 
