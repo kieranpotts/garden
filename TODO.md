@@ -6,11 +6,11 @@ roughly by which skill would handle them.
 
 ## Duplicate / mergeable pages (prune)
 
-- [ ] `robustness-principle.adoc` substantially overlaps `postels-law.adoc`
+- [x] `robustness-principle.adoc` substantially overlaps `postels-law.adoc`
   (which is already documented as "aka the Robustness Principle").
   `robustness-principle.adoc`'s entire body is just "See
   xref:postels-law.adoc[Postel's law]." — likely a redirect stub that could be
-  merged/removed.
+  merged/removed. **Decision: leaving this as-is.**
 
 ## Broken or fake cross-references (tend)
 
