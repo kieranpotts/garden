@@ -15,7 +15,7 @@ Consistency is a key challenge in
 that all nodes in a distributed software system agree on the state of the
 overall system.
 
-As soon as you *[replicate]* data across multiple nodes – which you do to
+As soon as you *xref:replication.adoc[replicate]* data across multiple nodes – which you do to
 improve *xref:fault-tolerance.adoc[resilience]* and
 *xref:availability.adoc[availability]* – you introduce the possibility that the
 data on different nodes will be out of sync. You have to deal with the problem
@@ -33,9 +33,9 @@ For most systems, eventual consistency is good enough. The time that replicated
 data may be out of sync is often measured in milliseconds – the time is takes
 for messages to be relayed across a local network. But it is much harder when
 you have to deal with things like financial transactions, where consistency is
-critical for correct business operations. You have to factor *latency* (the time
+critical for correct business operations. You have to factor *xref:latency.adoc[latency]* (the time
 for network calls to be made) into your design, and think about potential issues
-like *race conditions*.
+like *[race conditions]*.
 
 There are several possible strategies to achieving eventual consistency, but an
 underlying principle is for all components of a system to agree on what is the
@@ -46,8 +46,8 @@ resolve potentially conflicts between different copies of the same data,
 something that is incredibly difficult to do, especially in distributed software
 where we can't rely on timestamps to represent the actual order of mutations.
 
-Supporting techniques include *chaos engineering* (testing how a system behaves
-under failure conditions) and using *idempotent operations* (allowing requests
+Supporting techniques include *xref:chaos-engineering.adoc[chaos engineering]* (testing how a system behaves
+under failure conditions) and using *xref:idempotent.adoc[idempotent operations]* (allowing requests
 to be repeated multiple times without changing the resulting state).
 
 == Conflict resolution

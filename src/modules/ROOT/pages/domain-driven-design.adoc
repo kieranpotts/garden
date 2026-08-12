@@ -95,7 +95,7 @@ Implementing domain-driven design in software projects requires a deep
 understanding of business needs and a clear strategy to effectively model the
 domain. This work is carried out as part of the *strategic design*, which is the
 first phase of a domain-driven approach to software design and which will
-typically be undertaken during a project's *[discovery phase]*.
+typically be undertaken during a project's *xref:discovery.adoc[discovery phase]*.
 
 Fundamentally, DDD is all about good *xref:domain-model.adoc[domain modeling]*.
 The goal of the strategic design is to end up with a high-level model of the
@@ -109,7 +109,7 @@ model of the problem space that makes sense to all the project's stakeholders.
 This is pure business exploration. Methodologies used to discover the domain may
 include *Big Picture*, *Process-Level Event Sourcing*, *Domain Storytelling*,
 and *xref:event-storming.adoc[EventStorming]*. The strategic design is normally
-an *[iterative and incremental]* process, because it is normally difficult to
+an *xref:iterative-and-incremental-development.adoc[iterative and incremental]* process, because it is normally difficult to
 create from the start a complete model that covers all of a business's needs.
 
 The objective of DDD is to produce software that the domain experts would make
@@ -525,7 +525,7 @@ As with entities, the values of value objects may be considered to be always
 unlike entities, value objects should be modeled to be immutable. Thus, if you
 need to change a value object, you create a new one.
 
-Entities may be *[composed]* from one or more value objects. For example, a
+Entities may be *xref:composition.adoc[composed]* from one or more value objects. For example, a
 subscriber may have a name, email address, and date of birth – all of which
 could be implemented as value objects. You could use the native types of the
 programming language to model these values, but by creating value objects you
@@ -691,7 +691,7 @@ interactions between domain objects.
 === Layered architecture
 
 Systems built around domain-driven design principles have a
-*[layered architecture*] consisting of four main *[conceptual layers]*:
+*xref:layered-architecture.adoc[layered architecture]* consisting of four main *[conceptual layers]*:
 
 image::ddd-layers.png[The domain driven design layers are: interface, application, domain, and infrastructure]
 
@@ -795,7 +795,7 @@ domain object and an `EmailTransportService`.)
 
 The domain layer should be isolated further by not having any direct
 dependencies on the infrastructure layer below it. This can be achieved by
-implementing *inversion of control* patterns at the boundary between the domain
+implementing *xref:inversion-of-control.adoc[inversion of control]* patterns at the boundary between the domain
 and infrastructure layers. *xref:interfaces.adoc[Interfaces]* and *[adapters]*
 are commonly used for this purpose. The interfaces belong to the layer above
 (the domain layer), and the adapters to the layer below (the infrastructure

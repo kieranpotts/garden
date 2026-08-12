@@ -14,31 +14,71 @@ roughly by which skill would handle them.
 
 ## Broken or fake cross-references (tend)
 
-- [ ] `bottom-up-design.adoc` — bare `[term]` pseudo-links: `[decomposition]`
-  and `[conceptual integrity]` have real target pages and should become real
-  `xref:`; `[evolutionary design]` and `[reusability]` have no target page yet.
-- [ ] `design-patterns.adoc` line 25 — malformed xref with a missing closing
+- [x] `bottom-up-design.adoc` — bare `[term]` pseudo-links: `[decomposition]`
+  and `[conceptual integrity]` converted to real `xref:`; `[evolutionary design]`
+  and `[reusability]` left as forage-candidate markers (`*[term]*`); also converted
+  `[architectural patterns]` to `xref:architectural-pattern.adoc` and marked
+  `[architectural style]` as a forage candidate.
+- [x] `design-patterns.adoc` line 25 — malformed xref with a missing closing
   parenthesis in the link text
   (`xref:layered-architecture.adoc[Layered architecture (aka. multi-tiered or n-tier architecture]`).
-- [ ] `kanban.adoc` line 9 — bare `[Scrum]` and `[Extreme Programming (XP)]`
-  mentions, neither real xrefs nor forage-candidate markers.
-- [ ] `makers-schedule.adoc` line 29 — plain-text "Deep work" See-also item;
-  should link to `deep-work.adoc` if that page exists.
-- [ ] `ontology.adoc` — bare `[Protégé]` and `[HybridMDSD]` bracket mentions,
-  inconsistent with the `*[term]*` forage-candidate convention.
-- [ ] `pert-chart.adoc` — bare `[Gantt charts]` bracket mention, same issue.
-- [ ] Widespread `*[bracketed term]*` pseudo-links across many C/D-section pages
-  (`cloud-computing`, `complexity`,
-  `continuous-deployment/integration/delivery`, `cqrs`, `crash-only`,
-  `cohesion`, `commit-early-commit-often`, `consistency`,
-  `consensus-algorithms`, `containerization`, `cynefin-framework`, `coupling`,
-  `crc-card`, `critical-path-analysis`, `cloud-service-providers`,
-  `distributed-system`, `domain-driven-design`, `domain-model`, `durability`) —
-  some targets already exist as real pages and could become genuine xrefs.
-- [ ] Several bolded terms that already have a dedicated page elsewhere but
-  aren't yet linked as `xref:` — eg. "coupling", "modular", "chaos engineering",
-  "idempotent operations" (seen in
-  `cohesion.adoc`/`coupling.adoc`/`consistency.adoc`).
+  Fixed: added the missing `)`.
+- [x] `kanban.adoc` line 9 — bare `[Scrum]` and `[Extreme Programming (XP)]`
+  mentions converted to real `xref:` (`scrum.adoc`, `extreme-programming.adoc`).
+- [x] `makers-schedule.adoc` line 29 — plain-text "Deep work" See-also item;
+  `deep-work.adoc` does not exist, so marked as a forage candidate (`*[Deep work]*`).
+  Plant a `deep-work.adoc` page to turn it into a real xref.
+- [x] `ontology.adoc` — bare `[Protégé]` and `[HybridMDSD]` bracket mentions
+  converted to forage-candidate markers (`*[term]*`), matching the convention.
+- [x] `pert-chart.adoc` — bare `[Gantt charts]` bracket mention converted to a
+  forage-candidate marker (`*[Gantt charts]*`).
+- [x] Widespread `*[bracketed term]*` pseudo-links across the C/D-section
+  pages — a pass has been run over all listed files. Markers whose topic has a
+  matching page were converted to real `xref:`; the rest were left as forage
+  candidates. Ambiguous cases (listed below) were left alone for a human decision.
+
+  Conversions made:
+  - `cloud-computing.adoc`: `*virtualization*`->`virtualization.adoc`,
+    `*[time-sharing]*`->`time-share-computing.adoc`.
+  - `complexity.adoc`: `*[monolithic software]*`->`monolith.adoc`.
+  - `continuous-deployment.adoc`: `*[delivery pipeline]*`->`deployment-pipeline.adoc`.
+  - `crash-only.adoc`: `*[fault-tolerant]*`->`fault-tolerance.adoc`.
+  - `cohesion.adoc`: `*[business domain]*`->`domain.adoc`, `*modular*`->`modular-design.adoc`,
+    `*coupling*`->`coupling.adoc`, `*domain modeling*`->`domain-model.adoc`.
+  - `consistency.adoc`: `*[replicate]*`->`replication.adoc`, `*latency*`->`latency.adoc`,
+    `*chaos engineering*`->`chaos-engineering.adoc`, `*idempotent operations*`->`idempotent.adoc`.
+  - `containerization.adoc`: `*[stateful]*`->`stateful.adoc`.
+  - `cynefin-framework.adoc`: `*[iterative and incremental]*`->`iterative-and-incremental-development.adoc`.
+  - `cloud-service-providers.adoc`: table row labels converted where a page
+    exists (container orchestration, block storage, file storage, DNS, load
+    balancing, firewalls, machine learning, event bus, message queues,
+    monitoring, infrastructure as code).
+  - `distributed-system.adoc`: `*[peer-to-peer networks]*`->`peer-to-peer-architecture.adoc`,
+    `*[client and server]*`->`client-server-architecture.adoc`, `*[scale]*`->`scalability.adoc`,
+    `*[resilient]*`->`resilience.adoc`, `*[Asynchronous communication patterns]*`->`asynchronous-communication.adoc`,
+    `*[replicate]*`->`replication.adoc`, `*[canary releases]*`->`canary-deployment.adoc`.
+  - `domain-driven-design.adoc`: `*[discovery phase]*`->`discovery.adoc`,
+    `*[iterative and incremental]*`->`iterative-and-incremental-development.adoc`,
+    `*[composed]*`->`composition.adoc`, `*[layered architecture]*`->`layered-architecture.adoc`,
+    `*inversion of control*`->`inversion-of-control.adoc`.
+  - `domain-model.adoc`: `*[essential complexity]*`->`complexity.adoc`.
+  - `durability.adoc`: `*[ACID properties]*`->`acid-principles.adoc`.
+
+  Left as forage candidates (no matching page): `*[practice]*` (continuous-*),
+  `*[pattern]*` (cqrs), `*[Erlang/OTP]*` (crash-only), `*[measure]*` (coupling),
+  `*[race conditions]*` (consistency), `*[firmware]*` and product names (containerization),
+  `*[problem]*` (complexity), and many DDD building-block terms in `domain-driven-design.adoc`.
+
+  Ambiguous (left alone — related page exists but term does not clearly match):
+  - `complexity.adoc` `*[qualities]*` — possibly `quality-attributes.adoc`.
+  - `consensus-algorithms.adoc` `*[asynchrony]*` — three async pages exist, none clearly covers the general concept.
+  - `cloud-service-providers.adoc` `*Serverless*`, `*Blob storage*`, `*RDBMS*`, `*NoSQL*` — synonyms/shorthand.
+  - `distributed-system.adoc` `*[points of failure]*`, `*temporal coupling*`, `*[asynchronous]*`.
+  - `domain-driven-design.adoc` `*[model-driven design]*`, `*bounded contexts*`, `*ubiquitous language*`, `*[adapters]*`.
+- [x] Several bolded terms that already have a dedicated page elsewhere but
+  weren't yet linked as `xref:` — converted: "coupling" and "modular"
+  (`cohesion.adoc`), "chaos engineering" and "idempotent operations"
+  (`consistency.adoc`).
 
 ## Naming / title inconsistencies (needs a decision, then tend or manual fix)
 
@@ -65,19 +105,22 @@ roughly by which skill would handle them.
 
 ## Content defects (not style — needs a human edit)
 
-- [ ] `archimate.adoc` — has a bare, unwrapped URL on its own line (not an
-  `xref:` or AsciiDoc link).
-- [ ] `metcalfes-law.adoc` line 3 — grammar typo: "the value is a network"
-  should read "the value of a network".
-- [ ] `modeling.adoc` line 71 — typo: "framworks" → "frameworks".
+- [x] `archimate.adoc` — had a bare, unwrapped URL on its own line. Wrapped as
+  an AsciiDoc link (`https://www.opengroup.org/archimate-forum/archimate-overview[ArchiMate overview]`).
+  Its placement (between title and body) is still awkward — a human may want to
+  move it to a See-also or remove it.
+- [x] `metcalfes-law.adoc` line 3 — grammar typo: "the value is a network"
+  fixed to "the value of a network".
+- [x] `modeling.adoc` line 71 — typo: "framworks" -> "frameworks" (actually at
+  the IBM Rhapsody entry).
 - [ ] `modeling.adoc` line 41 — the RAAML glossary entry has no description,
-  unlike its sibling entries.
+  unlike its sibling entries. (Left — needs a human-written description.)
 - [ ] `mythical-man-month.adoc` line 18 — `*blog post*` is bold with no link
-  attached; looks like a forgotten link target.
-- [ ] `processor-architectures.adoc` — "Related links" section lists the same
-  Wikipedia IA-32 URL twice.
-- [ ] `linux.adoc` line 9 — minor grammar slip: "It is core component" (missing
-  article "a").
+  attached; looks like a forgotten link target. (Left — needs the actual URL.)
+- [x] `processor-architectures.adoc` — "Related links" section listed the same
+  Wikipedia IA-32 URL twice. Removed the duplicate.
+- [x] `linux.adoc` line 9 — minor grammar slip: "It is core component"
+  fixed to "It is a core component".
 - [ ] Semicolons that are genuine "avoid semicolons" violations but need a
   sentence rewrite (not a mechanical fix) rather than a silent split:
   `rational-unified-process.adoc`, `replay-attack.adoc` (×2), `rest.adoc` (×4),
@@ -133,11 +176,10 @@ roughly by which skill would handle them.
 
 ## Structural inconsistency (minor, not yet actioned)
 
-- [ ] `feature-factory.adoc` line 33 — "See also" appears as plain bold-less
+- [x] `feature-factory.adoc` line 33 — "See also" appears as plain bold-less
   text instead of a `== See also` heading, unlike its siblings (`ecmascript`,
   `event-sourcing`, `execution-orchestrator`, `file-storage`, `feature-flags`
-  all use `== See also`).
-- [ ] `inter-process-communication.adoc` line 5 —
-  `*[shared memory] (eg. databases)*` has the parenthetical outside the `[...]`
-  brackets but inside the bold wrapper, a minor formatting oddity in the
-  forage-candidate convention.
+  all use `== See also`). Converted to a `== See also` heading.
+- [x] `inter-process-communication.adoc` line 5 —
+  `*[shared memory] (eg. databases)*` parenthetical moved inside the brackets:
+  `*[shared memory (eg. databases)]*`.

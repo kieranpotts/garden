@@ -3,7 +3,7 @@
 A distributed system is a general term for any network of computers working as
 one coherent system. Distributed systems include
 *xref:cloud-computing.adoc[cloud computing]* services and
-*[peer-to-peer networks]*.
+*xref:peer-to-peer-architecture.adoc[peer-to-peer networks]*.
 
 A computer program that is partitioned across multiple nodes in a distributed
 system is called a distributed program or distributed software. Components of a
@@ -16,7 +16,7 @@ Examples of distributed software include applications like Hadoop (for
 *xref:container-orchestration.adoc[container orchestration]*), and Cassandra (a
 *xref:distributed-databases.adoc[distributed database]*). Most
 *[web applications]* are also distributed programs. At the very least, web
-applications partition their processing between a *[client and server]*. The
+applications partition their processing between a *xref:client-server-architecture.adoc[client and server]*. The
 server-side application may be further partitioned into a
 *xref:service-oriented-architecture.adoc[service-oriented architecture]* such as
 *xref:microservices.adoc[microservices]*.
@@ -39,7 +39,7 @@ document.
 
 Most large-scale systems are naturally distributed. That's because
 *xref:monolith.adoc[monoliths]*, as they grow in scope and load, become ever
-harder to maintain, develop, operate, and *[scale]*. So the natural tendency is
+harder to maintain, develop, operate, and *xref:scalability.adoc[scale]*. So the natural tendency is
 toward breaking down monoliths into lots of smaller and simpler components that
 can each be developed, deployed, operated, scaled, and optimized independently.
 This process is known as *xref:decomposition.adoc[decomposition]*.
@@ -58,7 +58,7 @@ But distribution of processing and data has significant *[trade-offs]* in
 *xref:system-design.adoc[system design]*.
 
 Although individual units within a distributed system may be simpler and more
-*[resilient]* due to increased *xref:isolation.adoc[isolation]*, overall a
+more *xref:resilience.adoc[resilient]* due to increased *xref:isolation.adoc[isolation]*, overall a
 distributed system will always have more *[points of failure]* and a higher
 degree of *xref:complexity.adoc[accidental complexity]* than single-node systems
 with comparable functionality. Distributed software is inherently *[brittle]*
@@ -83,7 +83,7 @@ software are:
   designing each service in a way that it can tolerate failures in dependent
   services. For example, if an email service goes offline, emails should be
   queued for delivery and sent later when the email service comes back online.
-  *[Asynchronous communication patterns]* improve the fault tolerance of
+  *xref:asynchronous-communication.adoc[Asynchronous communication patterns]* improve the fault tolerance of
   distributed systems by reducing *temporal coupling* (where the availability of
   one service is dependent on the immediate availability of another). Design
   patterns such as *xref:circuit-breaker.adoc[circuit breakers]* and
@@ -108,7 +108,7 @@ software are:
   *xref:concurrency.adoc[concurrency]* and ensuring
   *xref:consistency.adoc[eventual consistency]* become key design concerns.
   *xref:cap-theorem.adoc[CAP theorem]* is relevant in distributed systems that
-  *[replicate]* data between nodes.
+  that *xref:replication.adoc[replicate]* data between nodes.
 
 * *Observability*: *xref:monitoring.adoc[Monitoring]*,
   *xref:logging.adoc[logging]*, and *[debugging]* all become much more complex
@@ -244,7 +244,7 @@ The eight fallacies are:
    application logic. Multiple strategies are needed to mitigate all these
    risks. *xref:monitoring.adoc[Monitoring]* and *xref:alerting.adoc[alerting]*
    are essential. *[Staging]* environments can be used to test changes before
-   they are deployed to production. And *[canary releases]* can be used to test
+   they are deployed to production. And *xref:canary-deployment.adoc[canary releases]* can be used to test
    new versions of software in production, with a small subset of users, before
    rolling out the changes to all users. All these things help, but there is no
    silver bullet here.
