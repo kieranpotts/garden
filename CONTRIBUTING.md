@@ -59,18 +59,14 @@ the allowed types ever change.
 - `tend`: Fix broken links, fake links, orphaned documents, etc.
 - `water`: Research and extend an existing entry.
 - `fertilize`: Expand a thin stub entry.
-- `prune`: Drop an entry already covered by another document.
+- `prune`: Freeform trim — trim, smooth, reorder within a document.
 - `graft`: Merge related-but-distinct entries into one document.
-- `split`: Split an overgrown entry into separate documents.
+- `divide`: Split an overgrown entry into separate documents.
 - `entwine`: Add missing cross-references between existing entries.
-- `cultivate`: Bring an entry into conformance with the style guide.
-- `trim`: Freeform trim — trim, smooth, reorder within a document.
-- `weed`: Fix something incorrect or harmful (the gardening equivalent of
-  `fix`).
-- `uproot`: Revert a change (the gardening equivalent of `revert`).
-- `landscape`: Restructure scripts/CI/tooling without changing behavior (the
-  gardening equivalent of `refactor`).
-- `chore`, `format`, `maintenance`: Standard types, for changes that aren't
+- `tidy`: Bring an entry into conformance with the style guide.
+- `uproot`: Drop an entry already covered by another document.
+- `fix`: Correct a factual error in an entry (standard TS-9 type).
+- `chore`, `maintenance`, `style`: Standard types, for changes that aren't
   about garden content (eg. CI config, dependency bumps, whitespace).
 
 Examples:
@@ -80,15 +76,13 @@ sow: add entry for event sourcing
 water: research and extend event-sourcing with recent developments
 fertilize: expand abstraction with examples and modular design xref
 tend: fix broken xref in agent.adoc
-prune: drop adapative-software-development, covered by adaptive-software-development
+prune: trim waffle and reorder sections in agent
 graft: merge retry, backoff and jitter into retry-strategies
-split: divide event-driven-architecture into event-sourcing and cqrs
+divide: break event-driven-architecture into event-sourcing and cqrs
 entwine: link circuit-breaker and retry as related resilience patterns
-cultivate: fix dash and colon usage in resilience
-trim: trim waffle and reorder sections in agent
-weed: correct factual error in acid-principles
-uproot: revert accidental merge of draft entry
-landscape: restructure commit validation hook for clarity
+tidy: fix dash and colon usage in resilience
+fix: correct factual error in acid-principles
+uproot: drop adaptive-software-development, covered by adaptive-software-development
 maintenance: update pre-commit hook versions
 ```
 

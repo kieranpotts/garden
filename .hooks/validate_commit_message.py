@@ -18,23 +18,21 @@ import sys
 VALID_TYPES = [
     # Subset of standard commit types:
     "chore",
+    "fix",
     "maintenance",
     "style",
 
-    # Repository-specific commit types:
+    # Repository-specific commit types (one per agent skill):
     "sow",        # plant a new entry
     "water",      # research and extend an existing entry
     "tend",       # fix broken links, fake links, orphaned documents, etc.
     "fertilize",  # expand a thin stub entry
-    "prune",      # drop an entry already covered by another document
+    "prune",      # freeform trim: trim, smooth, reorder within a document
     "graft",      # merge related-but-distinct entries into one document
-    "split",      # split an overgrown entry into separate documents
+    "divide",     # split an overgrown entry into separate documents
     "entwine",    # add missing cross-references between existing entries
-    "cultivate",  # bring an entry into conformance with the style guide
-    "trim",       # freeform trim: trim, smooth, reorder within a document
-    "weed",       # fix something incorrect or harmful (replaces fix)
-    "uproot",     # revert a change (replaces revert)
-    "landscape",  # shape things (replaces refactor)
+    "tidy",       # bring an entry into conformance with the style guide
+    "uproot",     # drop an entry already covered by another document
 ]
 
 PATTERN = rf"^({'|'.join(VALID_TYPES)}): [a-z0-9].*"
