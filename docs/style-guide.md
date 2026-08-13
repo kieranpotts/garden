@@ -44,7 +44,7 @@ Conventions for writing and formatting garden entries (`.adoc` files under
   `` The model supports three operations: create, read, and delete. `` Do not 
   use a colon to join two independent clauses that could each stand as a 
   sentence. Split them into two sentences instead. Do not use a colon to 
-  introduce a code block, list block, or an an admonition.
+  introduce a code block, list block, or an admonition.
 
 - Where a sentence needs a dash to set off a parenthetical or a pause, use an en
   dash (–), not a hyphen (-) or an em dash (—). But use this syntax sparingly. 
@@ -87,8 +87,8 @@ Conventions for writing and formatting garden entries (`.adoc` files under
 The following content is rendered as bold text.
 
 - **Cross-references.** Written in the form `` xref:target.adoc[*link text*] ``, 
-  eg. `` xref:resilience.adoc[*resilience*] ``. Use this for every mention of a 
-  concept that has its own page.
+  eg. `` xref:resilience.adoc[*resilience*] ``. Use this for the first mention of a 
+  concept that has its own page. Subsequent mentions are plain text.
 
 - **Technical terms** that don't yet have a dedicated topic page, but could 
   warrant one in the future, eg. `` *event-carried state transfer* ``. This is a 
@@ -107,7 +107,7 @@ The following content is rendered as bold text.
 - **UI elements** that the reader interacts with, such as button labels, menu
   items, and field names.
 
-- **Glossary-style lists** where each item is a term is followed by its definition,
+- **Glossary-style lists** where each item is a term followed by its definition,
    eg. `` * *Atomicity.* Transactions are fully completed, or not at all. ``. 
 
 - **A table-cell header label** in an AsciiDoc table, eg. `` |*Granularity* ``.
@@ -212,7 +212,7 @@ links".
 
 - Use AsciiDoc admonition blocks (`[NOTE]`, `[TIP]`, `[WARNING]`, `[IMPORTANT]`, 
   `[CAUTION]`) sparingly. Use them for asides that are genuinely secondary to 
-  the main flow  of the page, not for core content that belongs in a regular 
+  the main flow of the page, not for core content that belongs in a regular 
   paragraph.
 
 ## The index
@@ -244,7 +244,7 @@ See also the following technical standards, which apply.
   apply to any technical document.
 
 - [TS-28: AsciiDoc](https://kieranpotts.com/standards/028) \
-  AsciiDoc syntax  and tooling conventions (file extensions, attributes, 
+  AsciiDoc syntax and tooling conventions (file extensions, attributes, 
   includes, links, admonition block form, line wrapping).
 
 Where there is contradictory guidance between the various technical standards,
