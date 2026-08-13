@@ -50,6 +50,12 @@ Conventions for writing and formatting garden entries (`.adoc` files under
   dash (–), not a hyphen (-) or an em dash (—). But use this syntax sparingly. 
   Most of the time it will be better to split into multiple sentences.
 
+## Line wraps
+
+- Soft line wraps at 80 characters, but don't break within cross-references, 
+  bold or italic text, or other inline styling. Don't break titles and 
+  sub-headings over multiple lines.
+
 ## Title and headings
 
 - The document title (`` = Title ``) should be sentence case in most cases. 
