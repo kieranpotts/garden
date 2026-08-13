@@ -212,3 +212,6 @@ See also the following technical standards, which apply.
 - [TS-28: AsciiDoc](https://kieranpotts.com/standards/028) \
   AsciiDoc syntax  and tooling conventions (file extensions, attributes, 
   includes, links, admonition block form, line wrapping).
+
+Where there is contradictory guidance between the various technical standards,
+the style guide that's specific to the Digital Garden takes precedence.
