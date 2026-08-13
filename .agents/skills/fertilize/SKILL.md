@@ -3,9 +3,10 @@ name: fertilize
 description: >-
   Bring a thin stub entry up to strength — deepening its explanation,
   resolving its flagged gaps, and adding cross-references — without changing
-  what it is about. Use when the user says "fertilize X", "this needs growth",
-  "expand the stub on X", or asks to flesh out a short or underdeveloped page.
-  Do not use it on an entry that is already established.
+  what it is about. Use this skill when the user says something like
+  "fertilize the abstraction entry", "this entry needs more growth", or asks
+  to find and fertilize the weakest stub in the garden. Do not use it on an
+  entry that is already established.
 compatibility: >-
   requires Read, Glob, Grep, Edit, WebSearch, WebFetch
 license: CC0-1.0
@@ -25,10 +26,9 @@ environment. You MUST NOT prompt the user for clarification on this task's
 requirements. If you cannot determine the requirements, stop and alert the
 user with an error message.
 
-- **Target entry — OPTIONAL.** A single existing file under
-  `src/modules/ROOT/pages/`, named by the user, eg. "fertilize
-  abstraction.adoc". Where none is given, pick the weakest stub yourself, by
-  the ranking in step 1.
+- **Target entry — REQUIRED.** A single file under `src/modules/ROOT/pages/`.
+  The page may be referenced by its title, which you will need to resolve to
+  its kebab-case filename.
 
 ## Success criteria
 

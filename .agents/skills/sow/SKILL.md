@@ -3,9 +3,10 @@ name: sow
 description: >-
   Create a new entry in this AsciiDoc knowledgebase — researching the topic,
   writing a single-concept page, and cross-referencing it to related entries.
-  Use when the user says "sow a new entry for X", "plant a page on X", or asks
-  to add a new topic to the garden. Do not use it when the topic already has an
-  entry, which should be extended instead.
+  Use this skill when the user says something like "sow a new entry for event
+  sourcing", "plant a page on the circuit breaker pattern", or asks to add a
+  new topic to the garden. Do not use it when the topic already has an entry,
+  which should be extended instead.
 compatibility: >-
   requires Read, Glob, Grep, Write, Edit, WebSearch, WebFetch
 license: CC0-1.0

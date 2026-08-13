@@ -4,9 +4,9 @@ description: >-
   Check the garden's structural health — unresolvable cross-references, fake
   bracketed pseudo-links, entries missing from the index or nav, and maturity
   emoji that no longer match the content — then fix what is mechanical and
-  report the rest. Use when the user says "tend the garden", "check for broken
-  links", or asks for a general maintenance or health check. Do not use it to
-  write or reword an entry's prose.
+  report the rest. Use this skill when the user says something like "tend the
+  garden", "check for broken links", or asks to tend a particular subject
+  area. Do not use it to write or reword an entry's prose.
 compatibility: requires Read, Glob, Grep, Edit
 license: CC0-1.0
 ---

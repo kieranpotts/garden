@@ -2,9 +2,10 @@
 name: forage
 description: >-
   Find topics referenced or implied across the garden that have no entry of
-  their own, and rank them as candidates worth planting. Use when the user says
-  "forage the garden", "what topics are missing?", or asks what new entries are
-  worth creating. Do not use it to create or edit anything — it is read-only.
+  their own, and rank them as candidates worth planting. Use this skill when
+  the user says something like "forage the garden", "what topics are missing?",
+  or asks to forage around a particular subject area. Do not use it to create
+  or edit anything — it is read-only.
 compatibility: requires Read, Glob, Grep
 license: CC0-1.0
 ---
@@ -99,3 +100,12 @@ user with an error message.
 
   Foraging is pure discovery. Even a candidate you are certain about is
   reported for the user to act on, never planted inline.
+
+## Edge cases
+
+- No candidates are found.
+
+  Report an empty list and say so. A garden with no bracketed markers and no
+  recurring unlinked mentions has no detectable gaps — either it is complete
+  or its entries are too thinly cross-referenced for plain mentions to surface,
+  which is itself a finding worth reporting.

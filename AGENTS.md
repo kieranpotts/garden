@@ -35,12 +35,6 @@ SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
 - **[`docs/style-guide.md`](./docs/style-guide.md)**: Writing and AsciiDoc
   formatting conventions for garden entries..
 
-- **`digests/HARVEST.md`**: A cumulative log of garden activity, appended to
-  by the **[harvest](./.agents/skills/harvest/)** skill on request — a new
-  dated section per run, newest first. Not garden content itself, so it is
-  not listed in `index.adoc` or `nav.adoc`. Created on first save; absent
-  otherwise.
-
 - **`.github/workflows/`**: CI checks (stale-issue flagging, label sync, commit
   message validation).
 
@@ -79,7 +73,6 @@ and `nav.adoc`.
 
 ## Skills
 
-Skills specific to this project are installed in
-[.agents/skills/](./.agents/skills/). They are named with gardening metaphors:
-`sow`, `water`, `tend`, `fertilize`, `prune`, `graft`, `split`, `entwine`,
-`forage`, `harvest`, `cultivate`, `trim`.
+Skills specific to this project are in [.agents/skills/](./.agents/skills/). 
+See the [`README`](./.agents/skills/README.md) in that directory for the list
+of available skills.

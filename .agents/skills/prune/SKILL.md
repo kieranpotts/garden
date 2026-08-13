@@ -1,22 +1,22 @@
 ---
 name: prune
 description: >-
-  Drop one redundant entry whose topic another entry already covers, repointing
-  every reference to the covering entry and removing its index and nav
-  listings. Use when the user says "prune acid.adoc", "this entry is already
-  covered by X, drop it", or suspects an entry is redundant. Do not use it when
-  each entry carries distinct content, which calls for a merge instead.
-compatibility: >-
-  requires Read, Glob, Grep, Edit, Bash (git rm)
+  Make small, self-evident improvements to how one entry reads — cutting
+  waffle, smoothing awkward phrasing, dropping repetition, and moving a
+  paragraph to a better home — without changing what it says. Use this skill
+  when the user says something like "prune agent.adoc", "give this page a
+  once-over — prune the waffle and move things about", or asks to prune a
+  specific section of an entry. Do not use it to add content, fix links, or
+  apply style-guide rules.
+compatibility: requires Read, Edit
 license: CC0-1.0
 ---
 
 # Prune
 
-Drop a garden entry whose topic is already well covered by another, redirecting
-its inbound links to the covering entry. The covering entry survives; the
-redundant one goes. Where the target turns out to carry content of its own,
-nothing is deleted.
+Make small, self-evident improvements to how one entry reads. Pruning cuts
+waffle, smooths awkward phrasing, drops repetition, and moves a paragraph to a
+better home — changing how the entry reads, never what it says.
 
 ## Parameters
 
@@ -25,126 +25,89 @@ environment. You MUST NOT prompt the user for clarification on this task's
 requirements. If you cannot determine the requirements, stop and alert the
 user with an error message.
 
-- **Target entry — REQUIRED.** The single entry suspected of being
-  redundant, named by the user, eg. "prune acid.adoc".
+- **Target entry — REQUIRED.** A single file under `src/modules/ROOT/pages/`.
+  The page may be referenced by its title, which you will need to resolve to
+  its kebab-case filename.
 
-- **Covering entry — OPTIONAL.** The entry that already covers the target's
-  topic, where the user names it, eg. "acid.adoc is covered by
-  acid-principles.adoc". Where none is given, find it yourself in step 1.
+- **Focus — OPTIONAL.** A section of the entry the user wants pruned, eg.
+  "prune the section on AI agents". Defaults to the whole entry.
 
 ## Success criteria
 
-- The dropped entry's topic MUST be genuinely covered by the surviving
-  entry, with nothing unique lost.
+- The entry MUST read tighter and better ordered than before, with no waffle
+  or local repetition a careful read would still catch.
 
-- No `xref:` anywhere under `src/modules/ROOT/pages/` MAY still name the
-  deleted file.
+- The entry's meaning and voice MUST be unchanged. Only the expression and
+  the arrangement move.
 
-- `src/modules/ROOT/pages/index.adoc` and `src/modules/ROOT/nav.adoc` MUST no
-  longer list the dropped entry, and the covering entry's listings in both
-  MUST be intact.
+- No content MAY have moved to or from another entry, and no entry MAY have
+  been created, merged, or deleted.
 
-- Exactly one entry MAY have been deleted. Pruning drops a single target; it
-  is not a garden-wide duplicate sweep.
-
-- Where the target proved to carry distinct content, no file MUST have been
-  deleted, and the finding MUST be reported instead.
+- No `xref:` target, bracketed term, or maturity emoji MAY have changed.
+  These belong to structural and style passes, and mixing them into a
+  freeform diff makes the prune impossible to review.
 
 - Nothing MUST be staged, committed, or pushed.
 
 ## Instructions
 
-1.  Identify the covering entry.
+1.  Read the target entry in full, and understand what it is about before
+    touching it.
 
-    Where the user named it, use it. Otherwise search
-    `src/modules/ROOT/pages/` for the entry covering the same concept — a
-    similar title or filename, or overlapping content. Where nothing covers
-    it, stop and report: the topic is unique and should be kept.
+2.  Work through the entry applying small improvements in place. Keep each
+    change small enough that its merit is self-evident on reading the diff.
 
-2.  Confirm the target is genuinely redundant.
-
-    Read both entries in full. The target is a prune candidate only where
-    the covering entry already says everything the target does. Where the
-    target carries substantial content of its own — examples, nuance, a
-    distinct angle — it is not covered. Stop, delete nothing, and report the
-    pair as a merge candidate, or as two entries that simply want linking.
-
-3.  Salvage any stray detail.
-
-    Where the target holds only a scrap the covering entry lacks — a single
-    sentence, one example — fold it into the covering entry before deleting.
-    Anything larger than a scrap means the topic was not really covered:
-    return to step 2 and reclassify.
-
-4.  Repoint every reference.
-
-    Grep the whole garden for `xref:<target-file>.adoc` and replace each
-    with `xref:<covering-file>.adoc`, adjusting the link text so it still
-    reads sensibly in context. Where an entry ends up linking the covering
-    entry twice, collapse the duplicate.
-
-5.  Update the index and nav.
-
-    Remove the target's listing from `src/modules/ROOT/pages/index.adoc` and
-    `src/modules/ROOT/nav.adoc`, and confirm the covering entry's listings
-    in both are still correct.
-
-6.  Delete the redundant entry, once nothing references it.
-
-    ```sh
-    git rm src/modules/ROOT/pages/<target-file>.adoc
-    ```
-
-    Then unstage it, so the deletion sits in the working tree alongside your
-    other changes rather than in the index.
-
-    ```sh
-    git restore --staged src/modules/ROOT/pages/<target-file>.adoc
-    ```
-
-7.  Report which entry was dropped, which one now covers it, any scrap
-    salvaged, and every file where a reference was repointed.
+3.  Report the edits you made and why. Group them where it helps, eg.
+    pruned, smoothed, moved, de-duplicated.
 
 ## Rules
 
-- You MUST NOT delete an entry before every reference to it has been
-  repointed.
+- You SHOULD make only changes that are self-evidently improvements.
 
-  A dangling `xref:` left behind by a prune is worse than the redundant
-  entry it replaced, because nothing in the build catches it.
+  A prune is approved by reading the diff, so every edit must justify itself
+  at a glance. Anything needing an argument is too big for this pass.
 
-- You MUST drop rather than merge.
+- In scope: you MAY cut filler and padding, fix clumsy sentences and tangled
+  clauses, remove a sentence that repeats something said elsewhere in the
+  entry, reorder paragraphs for flow, pull a stray point into a section it
+  sits better in, merge two half-empty bullets, and split a run-on bullet.
 
-  Pruning removes an entry that adds nothing. Where two entries each carry
-  distinct content that should be combined, that is a merge, and doing it
-  here would silently widen this skill's remit into a destructive one.
+- Out of scope: you MUST NOT repair cross-references, pseudo-links, orphans,
+  or maturity emoji; you MUST NOT apply style-guide conventions such as dash,
+  colon, casing, or bold rules; and you MUST NOT add new content, even where
+  the entry is plainly a stub.
 
-- The covering entry MUST be the one that survives.
+  Each of those is a separate pass, and each produces a differently shaped
+  diff. Keeping them apart is what makes any of them reviewable.
 
-  Where the named target turns out to be the fuller of the two, do not
-  delete it. Report that the other entry is the redundant one and let the
-  user re-aim the skill.
+- You MUST NOT change meaning.
 
-- When in doubt, you MUST NOT drop.
+  Where tightening a sentence could shift what it asserts, leave the
+  sentence alone. A slightly baggy true statement beats a crisp wrong one.
 
-  Keep both entries and report them as candidates for linking instead.
-  Deleting an entry that was not really covered loses content; a redundant
-  entry left standing is harmless by comparison.
+- You SHOULD preserve the author's voice.
+
+  Match the existing tone and phrasing conventions rather than imposing your
+  own register.
+
+- You MUST stay within the target entry.
+
+  Do not edit any other file, and do not create, delete, or merge entries.
 
 - You MUST NOT stage, commit, or push.
 
-  Leave every change in the Git working tree, the deletion included, so the
-  user can restore the file with `git restore` after reading the diff.
-  Reviewing that diff is how the user approves the work.
+  Leave every change in the Git working tree. Reviewing the diff is how the
+  user approves the work, so it stands in for any mid-flow prompt.
 
 ## Edge cases
 
-- The target's body is nothing but a pointer to another entry.
+- The entry is too thin to prune.
 
-  This is a redirect stub, and it is the cleanest possible prune. Repoint
-  its inbound links and drop it, with no salvage step needed.
+  Say so and stop. A stub has no waffle to cut, and padding it out is a
+  different job with a different scope.
 
-- Three or more entries all cover the same topic.
+- A paragraph would sit better on a different entry entirely.
 
-  Prune one target per run, against one covering entry, and report the
-  others. Batching deletions produces a diff nobody can check.
+  Do not move it. Report it as a candidate for a linking or restructuring
+  pass — moving content between entries changes both, which is outside this
+  skill's single-entry boundary.

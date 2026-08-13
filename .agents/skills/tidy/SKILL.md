@@ -1,16 +1,17 @@
 ---
-name: cultivate
+name: tidy
 description: >-
   Review one entry against the garden's style guide — sentence-case titles,
   prose style, dash and colon usage, bold-text rules, admonition usage — then
-  apply the mechanical fixes and flag the judgment calls. Use when the user says
-  "cultivate agent.adoc", "check style on this entry", or asks for a
-  style-guide pass over one page. Do not use it to change what an entry says.
+  apply the mechanical fixes and flag the judgment calls. Use this skill when
+  the user says something like "tidy resilience.adoc", "check style on this
+  entry", or asks for a style-guide pass over one page. Do not use it to change
+  what an entry says.
 compatibility: requires Read, Edit
 license: CC0-1.0
 ---
 
-# Cultivate
+# Tidy
 
 Review a single garden entry against `docs/style-guide.md` and bring it into
 conformance. Unambiguous mechanical fixes are applied directly; anything that
@@ -23,10 +24,9 @@ environment. You MUST NOT prompt the user for clarification on this task's
 requirements. If you cannot determine the requirements, stop and alert the
 user with an error message.
 
-- **Target entry — REQUIRED.** A single existing file under
-  `src/modules/ROOT/pages/`, named by the user, eg. "cultivate
-  resilience.adoc". Accept a topic name too, and resolve it to the file whose
-  `=` title matches.
+- **Target entry — REQUIRED.** A single file under `src/modules/ROOT/pages/`.
+  The page may be referenced by its title, which you will need to resolve to
+  its kebab-case filename.
 
 ## Success criteria
 
@@ -43,7 +43,7 @@ user with an error message.
   reported rather than applied.
 
 - No `xref:` target, entry title, filename, or index listing MAY have
-  changed. Cultivating changes how prose is written, never what it says or
+  changed. Tidying changes how prose is written, never what it says or
   where it points.
 
 - Nothing MUST be staged, committed, or pushed.
@@ -122,7 +122,7 @@ user with an error message.
 
 ## Rules
 
-- You MUST cultivate one entry at a time.
+- You MUST tidy one entry at a time.
 
   A garden-wide style sweep produces a diff too large to review, which
   defeats the working tree as a review gate. Run the skill once per entry.
@@ -140,7 +140,7 @@ user with an error message.
 
 - You MUST NOT change content.
 
-  Cultivating neither expands a thin entry nor breaks up an overgrown one.
+  Tidying neither expands a thin entry nor breaks up an overgrown one.
   It changes only how the existing prose is written.
 
 - You MUST NOT stage, commit, or push.

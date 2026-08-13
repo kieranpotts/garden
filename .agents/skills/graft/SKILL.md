@@ -2,10 +2,12 @@
 name: graft
 description: >-
   Merge two or more related-but-distinct entries into one broader entry,
-  repointing every cross-reference and removing the absorbed files. Use when
-  the user says "graft these entries", "merge X and Y into one page", or notices
-  several thin entries that would read better as one concept. Do not use it when
-  one entry adds nothing the others lack, which calls for a drop instead.
+  repointing every cross-reference and removing the absorbed files. Use this
+  skill when the user says something like "graft retry.adoc, backoff.adoc and
+  jitter.adoc into one retry-strategies page", "these three entries really
+  cover one theme — merge them", or asks to merge one entry into another. Do
+  not use it when one entry adds nothing the others lack, which calls for a
+  drop instead.
 compatibility: >-
   requires Read, Glob, Grep, Write, Edit, Bash (git rm)
 license: CC0-1.0

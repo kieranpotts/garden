@@ -2,10 +2,11 @@
 name: water
 description: >-
   Research an established entry's topic afresh and extend the page with new
-  depth, detail, and developments, without widening its scope. Use when the
-  user says "water event-sourcing.adoc", "research and extend this entry", or
-  wants an established page grown further. Do not use it to rescue a thin stub
-  or to plant a topic that has no entry yet.
+  depth, detail, and developments, without widening its scope. Use this skill
+  when the user says something like "water event-sourcing.adoc", "research
+  and extend the resilience entry", or asks to grow an established page with
+  more depth. Do not use it to rescue a thin stub or to plant a topic that has
+  no entry yet.
 compatibility: >-
   requires Read, Glob, Grep, Edit, WebSearch, WebFetch
 license: CC0-1.0
@@ -24,14 +25,13 @@ environment. You MUST NOT prompt the user for clarification on this task's
 requirements. If you cannot determine the requirements, stop and alert the
 user with an error message.
 
-- **Target entry — REQUIRED.** A single existing file under
-  `src/modules/ROOT/pages/`, named by the user, eg. "water
-  event-sourcing.adoc". Accept a topic name too, and resolve it to the file
-  whose `=` title matches.
+- **Target entry — REQUIRED.** A single file under `src/modules/ROOT/pages/`.
+  The page may be referenced by its title, which you will need to resolve to
+  its kebab-case filename.
 
 - **Emphasis — OPTIONAL.** A particular angle the user wants grown, eg.
-  recent developments, worked examples, trade-offs. Defaults to whichever
-  facets the entry is thinnest on.
+  recent developments, worked examples, trade-offs. If not specified, default 
+  to whichever facets the entry is thinnest on.
 
 ## Success criteria
 
@@ -44,8 +44,8 @@ user with an error message.
 - Every `xref:` you add, in the target entry and in entries linking back to
   it, MUST name a file that exists under `src/modules/ROOT/pages/`.
 
-- No second concept MAY have been folded in. Anything that large is a
-  separate entry, or a case for breaking the entry up.
+- Additional concepts SHOULD NOT have been folded in. Separate concepts are 
+  separate entries.
 
 - No maturity emoji in `src/modules/ROOT/pages/index.adoc` MUST have
   changed.
@@ -54,37 +54,29 @@ user with an error message.
 
 ## Instructions
 
-1.  Read the target entry in full.
+1.  Read the target entry in full. Understand its current scope and claims, so 
+    new material extends the entry rather than repeating it.
 
-    Understand its current scope and claims, so new material extends the
-    entry rather than repeating it.
+2.  Check the entry is already well established, not a stub/seedling. A body of 
+    a few sentences, with unresolved `// TODO` markers, or almost no outbound 
+    links, means the entry needs rescuing rather than growing. Stop
+    and suggest the user invoke the `fertilize` skill instead.
 
-2.  Check the entry is established, not a stub.
+3.  Research the topic. Gather understanding beyond what the entry already 
+    carries: deeper detail, recent developments, additional facets, worked 
+    examples, trade-offs, common pitfalls. Prefer a small number of reliable 
+    sources over breadth.
 
-    A body of a few sentences, unresolved `// TODO` markers, or almost no
-    outbound links means the entry needs rescuing rather than growing. Stop
-    and report that instead.
+4.  Find adjacent topics already in the garden. Growth usually surfaces new 
+    cross-reference opportunities: related patterns, prerequisites, contrasting 
+    approaches. Search existing entries for concepts that should now be linked, 
+    outbound from this entry and inbound from those. Note their exact filenames. 
+    An AsciiDoc `xref:` target must match a real file.
 
-3.  Research the topic.
-
-    Gather understanding beyond what the entry already carries: deeper
-    detail, recent developments, additional facets, worked examples,
-    trade-offs, common pitfalls. Prefer a small number of reliable sources
-    over breadth. This is a knowledgebase entry, not a survey paper.
-
-4.  Find adjacent topics already in the garden.
-
-    Growth usually surfaces new cross-reference opportunities — related
-    patterns, prerequisites, contrasting approaches. Search existing entries
-    for concepts that should now be linked, outbound from this entry and
-    inbound from those. Note their exact filenames — an AsciiDoc `xref:`
-    target must match a real file.
-
-5.  Extend the entry.
-
-    Weave the new material into the existing structure, in place. Link out
-    via `xref:` rather than re-explaining a concept that has its own entry.
-    Follow `docs/style-guide.md`, wrapping every `xref:` in `*...*`.
+5.  Extend the entry. Weave the new material into the existing structure, in 
+    place. Link out via `xref:` rather than re-explaining a concept that has its 
+    own entry. Follow the [style guide](../../../docs/style-guide.md), wrapping 
+    every `xref:` in `*...*`.
 
 6.  Add the cross-references from step 4, in both directions where each
     reads naturally in its host entry's context.

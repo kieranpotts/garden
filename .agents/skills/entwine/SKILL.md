@@ -2,10 +2,10 @@
 name: entwine
 description: >-
   Find entries related to one target entry but not yet cross-referenced from
-  it, and add the missing links in both directions. Use when the user says
-  "entwine event-sourcing.adoc with its neighbors", "link this page to related
-  entries", or asks whether an entry is properly connected. Do not use it to
-  create entries or to repair links that are already broken.
+  it, and add the missing links in both directions. Use this skill when the user 
+  says something like "entwine event-sourcing.adoc with its neighbors", "link 
+  this page to related entries", or asks whether an entry is properly connected. 
+  Do not use it to create entries or to repair links that are already broken.
 compatibility: requires Read, Glob, Grep, Edit
 license: CC0-1.0
 ---
@@ -24,10 +24,9 @@ environment. You MUST NOT prompt the user for clarification on this task's
 requirements. If you cannot determine the requirements, stop and alert the
 user with an error message.
 
-- **Target entry — REQUIRED.** A single existing file under
-  `src/modules/ROOT/pages/`, named by the user, eg. "entwine
-  event-sourcing.adoc". Accept a topic name too, and resolve it to the file
-  whose `=` title matches.
+- **Target entry — REQUIRED.** A single file under `src/modules/ROOT/pages/`.
+  The page may be referenced by its title, which you will need to resolve to
+  its kebab-case filename.
 
 ## Success criteria
 
