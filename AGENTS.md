@@ -33,7 +33,7 @@ SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
   specific to maintaining this garden.
 
 - **[`docs/style-guide.md`](./docs/style-guide.md)**: Writing and AsciiDoc
-  formatting conventions for garden entries..
+  formatting conventions for garden entries.
 
 - **`.github/workflows/`**: CI checks (stale-issue flagging, label sync, commit
   message validation).

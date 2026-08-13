@@ -40,15 +40,18 @@ Conventions for writing and formatting garden entries (`.adoc` files under
 
 - Avoid semicolons in sentences. Split into multiple sentences instead.
 
-- Avoid colons everywhere. Do not use them to introduce code blocks or list
-  blocks. Don't use colons to join two clauses that could be split into two
-  sentences. The only valid use case for a colon is within a sentence that ends
-  with a short comma-separated list. For example,
-  `` The model supports three operations: create, read, and delete. ``
+- Colons may introduce short comma-separated lists within the same sentence, eg. 
+  `` The model supports three operations: create, read, and delete. `` Do not 
+  use a colon to join two independent clauses that could each stand as a 
+  sentence. Split them into two sentences instead. Do not use a colon to 
+  introduce a code block, list block, or an an admonition.
 
 - Where a sentence needs a dash to set off a parenthetical or a pause, use an en
   dash (–), not a hyphen (-) or an em dash (—). But use this syntax sparingly. 
   Most of the time it will be better to split into multiple sentences.
+
+- Use `eg.` (no full points, no comma) as the house abbreviation for "for
+  example", and `ie.` for "that is". Do not "correct" these to `e.g.` / `i.e.`.
 
 ## Line wraps
 
@@ -81,7 +84,7 @@ Conventions for writing and formatting garden entries (`.adoc` files under
 
 ## Bold text
 
-Only the following content is rendered as bold text. 
+The following content is rendered as bold text.
 
 - **Cross-references.** Written in the form `` xref:target.adoc[*link text*] ``, 
   eg. `` xref:resilience.adoc[*resilience*] ``. Use this for every mention of a 
@@ -92,10 +95,14 @@ Only the following content is rendered as bold text.
   deliberate signal marking a candidate for a future `sow`. The `forage`
   skill teaches agents to uncover these terms.
 
-- **A term being introduced for the first time** in running prose,  eg. 
-- `` This phenomenon is known as *emergence*. ``. Do not bold the same 
-  term again on subsequent mentions within the same page, except where it
-  is used in `xref:` link text.
+- **A term being introduced for the first time** in running prose, eg.
+  `` This phenomenon is known as *emergence*. `` Do not bold the same term
+  again on subsequent mentions within the same page, except where it is used
+  in `xref:` link text.
+
+- **An acronym spelled out on first use**, with the short form in parentheses.
+  The whole phrase is bold, eg. `` *event-driven architecture (EDA)* ``. See
+  the Acronyms section below.
 
 - **UI elements** that the reader interacts with, such as button labels, menu
   items, and field names.
@@ -117,6 +124,16 @@ Bold MUST NOT be used for general emphasis.
 - Italics are also used for foreign-word and pronunciation asides, eg.
   `` _kuh-NEV-in_ `` and `` _ad hoc_ ``.
 
+## Monospace
+
+- Use monospace (backticks) for text a reader might type or that a system might
+  output literally. File paths, commands, flags, environment variables, code
+  identifiers, and configuration keys all take backticks, eg. `` `ItemShipped` ``
+  or `` `LOG_LEVEL` ``. 
+
+- Do not apply monospace to concept names in prose. Use
+  bold for those.
+
 ## Cross-references
 
 - Link to other garden pages with `` xref:target.adoc[*link text*] ``. In each
@@ -124,7 +141,7 @@ Bold MUST NOT be used for general emphasis.
   Subsequent references to the same concept are plain text. 
 
 - Bold every `xref:`. Apply the bold syntax to the inner link text, eg.
-  `xref:foo.adoc[*Foo*]`.
+  `` xref:foo.adoc[*Foo*] ``. Do not use the outer `` *xref:foo.adoc[Foo]* `` form.
 
 - Cross-reference link text MUST match the natural reading of the sentence. 
   Cross-references follow the normal sentence case rules, so they start with a 
@@ -138,6 +155,23 @@ Bold MUST NOT be used for general emphasis.
   the whole in bold text, eg. `*event-driven architecture (EDA)*`. Subsequent 
   headings/text may use the acronym alone, in plain text.
 
+## See also and references sections
+
+An entry may end with one or both of two standard sections, in the following 
+order.
+
+- `` == See also ``. Cross-references to other garden pages, one bullet per line,
+  in the inner-bold xref form `` * xref:target.adoc[*Link text*] ``. List only
+  pages genuinely related to the entry's topic.
+
+- `` == References ``. External citations (books, papers, articles). Follow the
+  TS-26 referencing style (`<author> (<year>). _<title>_. <publication>`), one
+  bullet per entry. Hyperlink the title in hypermedia renderings.
+
+An entry that has neither section simply ends on its last content paragraph.
+Do not invent other closing-section names like "Further reading" or "External
+links".
+
 ## Block lists
 
 - Bullet lists are for genuine enumerations (examples, steps, trade-offs), not a
@@ -146,8 +180,8 @@ Bold MUST NOT be used for general emphasis.
 - Numbered lists are for sequences where the order is significant, or where 
   individual steps need to cross-reference each other.
 
-- Where a sentence leads into a list, prefer to use a period to terminate the 
-  sentence before the list. Do not use a colon or dash to set off  the list.
+- Where a sentence leads into a list, end the lead-in with a period. Never lead
+  in with a colon or dash.
 
 - Some lists may be used for glossary-style references, in which a term is 
   followed by its definition. The term should come first and be in bold text.
@@ -193,7 +227,7 @@ Bold MUST NOT be used for general emphasis.
 ## Maturity labels
 
 - Every entry carries one of four maturity markers, applied on its `index.adoc`
-  listing line: 🌱 seedling, 🌿 budding, 🌳 evergreen, or 🍂 rotting.
+  listing line: 🌱 seedling, 🌿 budding, 🌳 evergreen, or 🍂 decaying.
 
 - New entries are always sown as seedlings 🌱.
 
