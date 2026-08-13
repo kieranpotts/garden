@@ -51,40 +51,30 @@ user with an error message.
 
 ## Instructions
 
-1.  Pick the target.
-
-    Where the user named an entry, use it. Otherwise scan
+1.  Pick the target. Where the user named an entry, use it. Otherwise scan
     `src/modules/ROOT/pages/` and rank candidates by weakness: short body,
     `// TODO` markers present, few outbound `xref:` links, 🌱 or 🌿 maturity
     in the index. Take the top-ranked entry, and name your runners-up in the
     report so the user can redirect you.
 
-2.  Read the target entry in full.
+2.  Read the target entry in full. Understand its current scope and claims 
+    before adding anything. Fertilizing deepens the existing idea. It does not 
+    widen it into a different one.
 
-    Understand its current scope and claims before adding anything.
-    Fertilizing deepens the existing idea; it does not widen it into a
-    different one.
+3.  Research to fill the gaps. Identify what is missing: a clearer definition, 
+    examples, trade-offs, common pitfalls, or context on when and why the 
+    concept matters. Address each `// TODO` marker in the file — these are the 
+    gaps the original author knew about.
 
-3.  Research to fill the gaps.
+4.  Find adjacent topics already in the garden. Deepening usually surfaces new 
+    cross-reference opportunities — related patterns, prerequisites, contrasting 
+    approaches. Search existing entries for concepts that should now be linked, 
+    outbound from this entry and inbound from those. Note their exact filenames 
+    — an AsciiDoc `xref:` target must match a real file.
 
-    Identify what is missing: a clearer definition, examples, trade-offs,
-    common pitfalls, or context on when and why the concept matters. Address
-    each `// TODO` marker in the file — these are the gaps the original
-    author knew about.
-
-4.  Find adjacent topics already in the garden.
-
-    Deepening usually surfaces new cross-reference opportunities — related
-    patterns, prerequisites, contrasting approaches. Search existing entries
-    for concepts that should now be linked, outbound from this entry and
-    inbound from those. Note their exact filenames — an AsciiDoc `xref:`
-    target must match a real file.
-
-5.  Rewrite the entry.
-
-    Expand the body in place, keeping the original title and filename.
-    Remove each `// TODO` marker you resolved. Follow `docs/style-guide.md`,
-    wrapping every `xref:` in `*...*`.
+5.  Rewrite the entry. Expand the body in place, keeping the original title and 
+    filename. Remove each `// TODO` marker you resolved. Follow 
+    `docs/style-guide.md`, wrapping every `xref:` in `*...*`.
 
 6.  Add the cross-references from step 4, in both directions where each
     reads naturally in its host entry's context.
@@ -95,42 +85,33 @@ user with an error message.
 
 ## Rules
 
-- You MUST NOT change the entry's scope.
+- You MUST NOT change the entry's scope. If research reveals the topic really 
+  covers two ideas, report that and leave the second one out. Smuggling a second 
+  concept into a stub trades one problem for a worse one.
 
-  If research reveals the topic really covers two ideas, report that and
-  leave the second one out. Smuggling a second concept into a stub trades
-  one problem for a worse one.
+- You SHOULD resolve `// TODO` markers rather than delete them. They are the 
+  clearest signal of what the entry's author knew was missing. Where a marker 
+  cannot be resolved with confidence, leave it in place — an unanswered gap is 
+  better recorded than silently erased.
 
-- You SHOULD resolve `// TODO` markers rather than delete them.
+- You MUST link rather than duplicate. Where a concept is already explained 
+  elsewhere, `xref:` to it instead of re-explaining it. The value of the garden 
+  is in the connections between atomic notes, not in self-contained essays.
 
-  They are the clearest signal of what the entry's author knew was missing.
-  Where a marker cannot be resolved with confidence, leave it in place — an
-  unanswered gap is better recorded than silently erased.
+- You MUST NOT change an entry's maturity emoji in the index. Maturity is an 
+  editorial judgment the user reserves. Recommend a promotion in your report 
+  and leave the label as it stands.
 
-- You MUST link rather than duplicate.
-
-  Where a concept is already explained elsewhere, `xref:` to it instead of
-  re-explaining it. The value of the garden is in the connections between
-  atomic notes, not in self-contained essays.
-
-- You MUST NOT change an entry's maturity emoji in the index.
-
-  Maturity is an editorial judgment the user reserves. Recommend a promotion
-  in your report and leave the label as it stands.
-
-- You MUST NOT stage, commit, or push.
-
-  Leave every change in the Git working tree. Reviewing the diff is how the
-  user approves the work, so it stands in for any mid-flow prompt.
+- You MUST NOT stage, commit, or push. Leave every change in the Git working 
+  tree. Reviewing the diff is how the user approves the work, so it stands in 
+  for any mid-flow prompt.
 
 ## Edge cases
 
-- The entry is a redirect stub whose whole body points at another entry.
-
-  Do not fertilize it into a second entry on the same topic. Report it as a
+- The entry is a redirect stub whose whole body points at another entry. Do 
+  not fertilize it into a second entry on the same topic. Report it as a
   redundancy to be dropped, with the covering entry named.
 
-- The named target turns out to be substantial already.
-
-  Say so and stop. An established entry wants researching and extending, not
-  rescuing, and the two produce noticeably different diffs.
+- The named target turns out to be substantial already. Say so and stop. An 
+  established entry wants researching and extending, not rescuing, and the two 
+  produce noticeably different diffs.

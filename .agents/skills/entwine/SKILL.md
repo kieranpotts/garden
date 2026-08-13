@@ -46,24 +46,22 @@ user with an error message.
 
 ## Instructions
 
-1.  Build a map of the garden's concepts.
+1.  Build a map of the garden's concepts. List every file under 
+   `src/modules/ROOT/pages/`, taking its `=` title and opening paragraph as 
+    a summary of what it covers. This is the field the target is compared 
+    against.
 
-    List every file under `src/modules/ROOT/pages/`, taking its `=` title
-    and opening paragraph as a summary of what it covers. This is the field
-    the target is compared against.
+2.  Find entries related to the target but not linked to it. Look for entries 
+    that have the following properties.
 
-2.  Find entries related to the target but not linked to it.
-
-    Look for entries that:
-
-    - Share a section or a parent with the target in
+    - They share a section or a parent with the target in
       `src/modules/ROOT/pages/index.adoc`.
 
-    - Name the target's concept in plain prose, with no `xref:` and no
+    - They name the target's concept in plain prose, with no `xref:` and no
       bracketed marker. A bracketed marker means the term is already
       accounted for by a structural pass, so leave those alone.
 
-    - Are natural neighbors by domain knowledge, with no textual hint at
+    - They are natural neighbors by domain knowledge, with no textual hint at
       all. A reader of `circuit-breaker.adoc` likely wants `retry.adoc`,
       whether or not either mentions the other.
 
@@ -71,10 +69,8 @@ user with an error message.
     obvious enough to state in one line. Favor precision over volume: a
     strained link is worse than a missing one.
 
-4.  Add the links.
-
-    For each pair kept, add an `xref:` in both directions where the
-    relationship reads naturally in each entry's context, and in one
+4.  Add the links. For each pair kept, add an `xref:` in both directions where 
+    the relationship reads naturally in each entry's context, and in one
     direction otherwise. Place each link where it fits the existing prose
     rather than bolting on a "See also" line when a natural spot exists in
     a sentence already there. Follow `docs/style-guide.md`, wrapping every
@@ -86,49 +82,38 @@ user with an error message.
 
 ## Rules
 
-- You MUST entwine one entry at a time.
+- You MUST entwine one entry at a time. Entwining links a single target into 
+  its neighborhood. A garden-wide link-everything pass produces a diff too 
+  large to review, which defeats the working tree as a review gate.
 
-  Entwining links a single target into its neighborhood. A garden-wide
-  link-everything pass produces a diff too large to review, which defeats
-  the working tree as a review gate.
+- You MUST favor precision over volume. A handful of well-justified links beats 
+  dozens of tenuous ones. Where a relationship needs a paragraph to justify, it 
+  is too thin to link.
 
-- You MUST favor precision over volume.
-
-  A handful of well-justified links beats dozens of tenuous ones. Where a
-  relationship needs a paragraph to justify, it is too thin to link.
-
-- You MUST NOT link to a hub entry that already aggregates the target.
-
+- You MUST NOT link to a hub entry that already aggregates the target. 
   Hub entries such as `architecture-and-design.adoc` and
   `computer-science.adoc` aggregate many topics by design. Entwining is
   about missing sibling connections, not a redundant link back up to a hub
   that already lists the target.
 
-- You MUST NOT repair existing links.
+- You MUST NOT repair existing links. A broken `xref:` or a bracketed pseudo-link 
+  belongs to a structural pass. Report any you notice and leave them.
 
-  A broken `xref:` or a bracketed pseudo-link belongs to a structural pass.
-  Report any you notice and leave them.
-
-- You MUST NOT stage, commit, or push.
-
-  Leave every change in the Git working tree. Reviewing the diff is how the
-  user approves the work, so it stands in for any mid-flow prompt.
+- You MUST NOT stage, commit, or push. Leave every change in the Git working 
+  tree. Reviewing the diff is how the user approves the work, so it stands in
+  for any mid-flow prompt.
 
 ## Edge cases
 
-- The target is already densely linked.
+- The target is already densely linked. Say so and add nothing. A well-connected 
+  entry is the goal, and forcing further links onto it only adds noise.
 
-  Say so and add nothing. A well-connected entry is the goal, and forcing
-  further links onto it only adds noise.
-
-- A related concept has no entry at all.
-
-  Do not create one. Report it as a candidate worth planting, and leave any
-  bracketed marker for that term as it stands.
+- A related concept has no entry at all. Do not create one. Report it as a 
+  candidate worth planting, and leave any bracketed marker for that term as it stands.
 
 ## Examples
 
 - Given `event-sourcing.adoc`, a good result reads: linked to `cqrs.adoc`,
-  commonly paired and already linking back; linked both ways with
+  commonly paired and already linking back. Linked both ways with
   `event-driven-architecture.adoc`, the parent pattern, which neither
   previously referenced.

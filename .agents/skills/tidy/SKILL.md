@@ -14,7 +14,7 @@ license: CC0-1.0
 # Tidy
 
 Review a single garden entry against `docs/style-guide.md` and bring it into
-conformance. Unambiguous mechanical fixes are applied directly; anything that
+conformance. Unambiguous mechanical fixes are applied directly. Anything that
 would change meaning is flagged for the user instead.
 
 ## Parameters
@@ -50,13 +50,11 @@ user with an error message.
 
 ## Instructions
 
-1.  Read [`docs/style-guide.md`](../../../docs/style-guide.md) in full.
+1.  Read the [style guide](../../../docs/style-guide.md) in full. Do not work 
+    from a remembered or cached understanding of its rules. The guide changes, 
+    and a pass run against a stale copy quietly enforces the wrong conventions.
 
-    Do not work from a remembered or cached understanding of its rules. The
-    guide changes, and a pass run against a stale copy quietly enforces the
-    wrong conventions.
-
-2.  Check the entry against the guide, section by section:
+2.  Check the entry against the guide, section by section.
 
     - Titles and headings — sentence case, acronyms spelled out on first
       use, no over-structuring of a short entry. A formal proper noun keeps
@@ -84,7 +82,7 @@ user with an error message.
 
     - `// TODO` comments are legitimate, not style violations.
 
-3.  Apply the mechanical fixes directly:
+3.  Apply the mechanical fixes directly.
 
     - A hyphen or em dash used as a sentence-level pause becomes an en dash.
 
@@ -103,10 +101,10 @@ user with an error message.
 
     - Bold markup fitting none of the five accepted conventions is unbolded.
 
-4.  Report, rather than apply, the judgment calls:
+4.  Report, rather than apply, the judgment calls.
 
-    - A long or tangled sentence needing a rewrite. Propose the rewrite;
-      rephrasing moves meaning in a way punctuation does not.
+    - A long or tangled sentence needing a rewrite. Propose the rewrite.
+      Rephrasing moves meaning in a way punctuation does not.
 
     - An entry grown past a few short paragraphs and looking like it now
       covers more than one concept.
@@ -122,41 +120,32 @@ user with an error message.
 
 ## Rules
 
-- You MUST tidy one entry at a time.
+- You MUST tidy one entry at a time. A garden-wide style sweep produces a diff 
+  too large to review, which defeats the working tree as a review gate. Run the 
+  skill once per entry.
 
-  A garden-wide style sweep produces a diff too large to review, which
-  defeats the working tree as a review gate. Run the skill once per entry.
+- The style guide MUST be the only source of style authority. Do not enforce a 
+  preference that is not written in `docs/style-guide.md`. Where you think the 
+  guide is missing a rule, say so in the report rather than applying an 
+  unwritten one.
 
-- The style guide MUST be the only source of style authority.
+- You MUST NOT repair structural defects. Broken cross-references, fake 
+  pseudo-links, orphans, and maturity emoji belong to a structural pass. Mention 
+  any you notice, and leave them.
 
-  Do not enforce a preference that is not written in `docs/style-guide.md`.
-  Where you think the guide is missing a rule, say so in the report rather
-  than applying an unwritten one.
+- You MUST NOT change content. Tidying neither expands a thin entry nor breaks 
+  up an overgrown one. It changes only how the existing prose is written.
 
-- You MUST NOT repair structural defects.
-
-  Broken cross-references, fake pseudo-links, orphans, and maturity emoji
-  belong to a structural pass. Mention any you notice, and leave them.
-
-- You MUST NOT change content.
-
-  Tidying neither expands a thin entry nor breaks up an overgrown one.
-  It changes only how the existing prose is written.
-
-- You MUST NOT stage, commit, or push.
-
-  Leave every change in the Git working tree. Reviewing the diff is how the
-  user approves the work, so it stands in for any mid-flow prompt.
+- You MUST NOT stage, commit, or push. Leave every change in the Git working 
+  tree. Reviewing the diff is how the user approves the work, so it stands in 
+  for any mid-flow prompt.
 
 ## Edge cases
 
-- You cannot tell whether a term is a formal proper noun.
+- You cannot tell whether a term is a formal proper noun. Leave the 
+  capitalization as it stands and flag it. A wrongly de-capitalized standard or 
+  framework name is a factual error, which is worse than an inconsistent heading.
 
-  Leave the capitalization as it stands and flag it. A wrongly
-  de-capitalized standard or framework name is a factual error, which is
-  worse than an inconsistent heading.
-
-- A mechanical fix would change the sense of a sentence.
-
-  It is then not mechanical. Move it to the flagged list, with the proposed
-  wording, and leave the text alone.
+- A mechanical fix would change the sense of a sentence. It is then not 
+  mechanical. Move it to the flagged list, with the proposed wording, and leave 
+  the text alone.

@@ -45,33 +45,26 @@ user with an error message.
 
 ## Instructions
 
-1.  Inventory the garden.
+1.  Inventory the garden. List every `.adoc` file under `src/modules/ROOT/pages/`, 
+    with its `=` title. This is the ground truth for deciding what already has 
+    an entry.
 
-    List every `.adoc` file under `src/modules/ROOT/pages/`, with its `=`
-    title. This is the ground truth for deciding what already has an entry.
+2.  Collect bracketed markers. Search every entry for the `*[text]*` pattern,
+    ignoring lines inside `//` comments. This is the garden's convention for 
+    naming a topic that has no entry yet. Discard any whose term matches an 
+    entry in the inventory — including an obvious synonym or singular/plural 
+    variant — since those are broken markup for a structural pass to convert, 
+    not gaps. Keep the rest.
 
-2.  Collect bracketed markers.
+3.  Collect plain mentions. Some topics are named in prose with no markup at all, 
+    which makes them easy to miss. Search for technical multi-word phrases 
+    repeated across several entries that have neither a matching entry nor an 
+    `xref:`. This step is fuzzier than step 2, so favor precision and do not 
+    force a match to pad the list.
 
-    Search every entry for the `*[text]*` pattern, ignoring lines inside
-    `//` comments. This is the garden's convention for naming a topic that
-    has no entry yet. Discard any whose term matches an entry in the
-    inventory — including an obvious synonym or singular/plural variant —
-    since those are broken markup for a structural pass to convert, not
-    gaps. Keep the rest.
-
-3.  Collect plain mentions.
-
-    Some topics are named in prose with no markup at all, which makes them
-    easy to miss. Search for technical multi-word phrases repeated across
-    several entries that have neither a matching entry nor an `xref:`. This
-    step is fuzzier than step 2, so favor precision and do not force a match
-    to pad the list.
-
-4.  Aggregate and count.
-
-    Group the candidates from both steps by normalized name, treating
-    variants such as "CI/CD" and "CI/CD pipelines" as one candidate where
-    they clearly mean the same thing. For each, count the distinct entries
+4.  Aggregate and count. Group the candidates from both steps by normalized name, 
+    treating variants such as "CI/CD" and "CI/CD pipelines" as one candidate 
+    where they clearly mean the same thing. For each, count the distinct entries
     mentioning it and record which they are.
 
 5.  Rank by mention count, descending. A topic named across ten entries is a
@@ -83,29 +76,23 @@ user with an error message.
 
 ## Rules
 
-- Frequency MUST be treated as a signal, not a verdict.
-
-  A topic named many times may still be too narrow, too broad, or already
-  covered under another name. Flag the ambiguous cases rather than letting
-  the ranking imply a decision the count cannot support.
+- Frequency MUST be treated as a signal, not a verdict. A topic named many times 
+  may still be too narrow, too broad, or already covered under another name. 
+  Flag the ambiguous cases rather than letting the ranking imply a decision the 
+  count cannot support.
 
 - A bracketed marker with a matching entry MUST NOT be listed as a
-  candidate.
-
-  That is broken markup for a structural pass to convert into a real
+  candidate. That is broken markup for a structural pass to convert into a real
   `xref:`. Foraging is specifically about the gaps where nothing exists yet,
   and mixing the two makes both lists less useful.
 
-- You MUST NOT create, edit, or delete any file.
-
-  Foraging is pure discovery. Even a candidate you are certain about is
-  reported for the user to act on, never planted inline.
+- You MUST NOT create, edit, or delete any file. Foraging is pure discovery. 
+  Even a candidate you are certain about is reported for the user to act on, 
+  never planted inline.
 
 ## Edge cases
 
-- No candidates are found.
-
-  Report an empty list and say so. A garden with no bracketed markers and no
-  recurring unlinked mentions has no detectable gaps — either it is complete
-  or its entries are too thinly cross-referenced for plain mentions to surface,
-  which is itself a finding worth reporting.
+- No candidates are found. Report an empty list and say so. A garden with no 
+  bracketed markers and no recurring unlinked mentions has no detectable gaps — 
+  either it is complete or its entries are too thinly cross-referenced for plain 
+  mentions to surface, which is itself a finding worth reporting.

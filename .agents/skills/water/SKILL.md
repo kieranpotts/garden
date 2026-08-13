@@ -75,50 +75,39 @@ user with an error message.
 
 5.  Extend the entry. Weave the new material into the existing structure, in 
     place. Link out via `xref:` rather than re-explaining a concept that has its 
-    own entry. Follow the [style guide](../../../docs/style-guide.md), wrapping 
-    every `xref:` in `*...*`.
+    own entry.
 
-6.  Add the cross-references from step 4, in both directions where each
-    reads naturally in its host entry's context.
+6.  Add the cross-references in both directions.
 
 7.  Report what was added, which links were made, and whether the entry's
     maturity emoji now looks understated.
 
 ## Rules
 
-- You MUST keep the entry on its existing concept.
+- You MUST keep the entry focused on its existing concept. Watering grows an
+  established plant. If research surfaces a genuinely distinct concept, it 
+  belongs in a separate entry, cross-linked. Report it, rather than smuggling
+  in a second concept.
 
-  Watering grows the established plant. If research surfaces a genuinely
-  distinct concept, it belongs in a separate entry, cross-linked — or the
-  entry has outgrown itself and should be broken up. Either way, report it
-  rather than smuggling a second concept in here.
+- You MUST link, rather than duplicate. Where a concept is already explained 
+  elsewhere, `xref:` to it instead of re-explaining it. The value of the garden 
+  is in the connections between atomic notes, not in self-contained essays.
 
-- You MUST link rather than duplicate.
+- You MUST NOT change an entry's maturity emoji in the index.  Maturity is an 
+  editorial judgment the user reserves. Recommend a promotion in your report and 
+  leave the label as it stands.
 
-  Where a concept is already explained elsewhere, `xref:` to it instead of
-  re-explaining it. The value of the garden is in the connections between
-  atomic notes, not in self-contained essays.
-
-- You MUST NOT change an entry's maturity emoji in the index.
-
-  Maturity is an editorial judgment the user reserves. Recommend a promotion
-  in your report and leave the label as it stands.
-
-- You MUST NOT stage, commit, or push.
-
-  Leave every change in the Git working tree. Reviewing the diff is how the
-  user approves the work, so it stands in for any mid-flow prompt.
+- You MUST NOT stage, commit, or push. Leave every change in the Git working 
+  tree. The user will review the diff and decide what to do with it.
 
 ## Edge cases
 
-- Research contradicts something the entry already asserts.
+- Research contradicts something the entry already asserts. Do not quietly 
+  overwrite the claim. Correct it, and call the correction out explicitly in 
+  your report, naming the source — a factual fix is a different kind of change 
+  from growth, and the user will want to see it.
 
-  Do not quietly overwrite the claim. Correct it, and call the correction
-  out explicitly in your report, naming the source — a factual fix is a
-  different kind of change from growth, and the user will want to see it.
-
-- The entry is already long and well-developed.
-
-  Prefer depth over volume. Sharpen and extend the weakest facets rather
-  than padding an entry that is already at the limit of one concept, and say
-  in your report if the entry looks ready to be broken up instead.
+- The entry is already long and well-developed. Prefer depth over volume. 
+  Sharpen and extend the weakest facets rather than padding an entry that is 
+  already at the limit of one concept, and say in your report if the entry looks 
+  ready to be broken up instead.

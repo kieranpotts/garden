@@ -47,7 +47,7 @@ user with an error message.
   longer list the dropped entry, and the covering entry's listings in both
   MUST be intact.
 
-- Exactly one entry MAY have been deleted. Uprooting drops a single target; it
+- Exactly one entry MAY have been deleted. Uprooting drops a single target. It
   is not a garden-wide duplicate sweep.
 
 - Where the target proved to carry distinct content, no file MUST have been
@@ -57,40 +57,31 @@ user with an error message.
 
 ## Instructions
 
-1.  Identify the covering entry.
-
-    Where the user named it, use it. Otherwise search
-    `src/modules/ROOT/pages/` for the entry covering the same concept — a
+1.  Identify the covering entry. Where the user named it, use it. Otherwise 
+    search `src/modules/ROOT/pages/` for the entry covering the same concept — a
     similar title or filename, or overlapping content. Where nothing covers
     it, stop and report: the topic is unique and should be kept.
 
-2.  Confirm the target is genuinely redundant.
+2.  Confirm the target is genuinely redundant. Read both entries in full. The 
+    target is an uproot candidate only where the covering entry already says 
+    everything the target does. Where the target carries substantial content of 
+    its own — examples, nuance, a distinct angle — it is not covered. Stop, 
+    delete nothing, and report the pair as a merge candidate, or as two entries 
+    that simply want linking.
 
-    Read both entries in full. The target is an uproot candidate only where
-    the covering entry already says everything the target does. Where the
-    target carries substantial content of its own — examples, nuance, a
-    distinct angle — it is not covered. Stop, delete nothing, and report the
-    pair as a merge candidate, or as two entries that simply want linking.
+3.  Salvage any stray detail. Where the target holds only a scrap the covering 
+    entry lacks — a single sentence, one example — fold it into the covering 
+    entry before deleting. Anything larger than a scrap means the topic was 
+    not really covered. Return to step 2 and reclassify.
 
-3.  Salvage any stray detail.
+4.  Repoint every reference. Grep the whole garden for `xref:<target-file>.adoc` 
+    and replace each with `xref:<covering-file>.adoc`, adjusting the link text 
+    so it still reads sensibly in context. Where an entry ends up linking the 
+    covering entry twice, collapse the duplicate.
 
-    Where the target holds only a scrap the covering entry lacks — a single
-    sentence, one example — fold it into the covering entry before deleting.
-    Anything larger than a scrap means the topic was not really covered:
-    return to step 2 and reclassify.
-
-4.  Repoint every reference.
-
-    Grep the whole garden for `xref:<target-file>.adoc` and replace each
-    with `xref:<covering-file>.adoc`, adjusting the link text so it still
-    reads sensibly in context. Where an entry ends up linking the covering
-    entry twice, collapse the duplicate.
-
-5.  Update the index and nav.
-
-    Remove the target's listing from `src/modules/ROOT/pages/index.adoc` and
-    `src/modules/ROOT/nav.adoc`, and confirm the covering entry's listings
-    in both are still correct.
+5.  Update the index and nav. Remove the target's listing from 
+    `src/modules/ROOT/pages/index.adoc` and `src/modules/ROOT/nav.adoc`, and 
+    confirm the covering entry's listings in both are still correct.
 
 6.  Delete the redundant entry, once nothing references it.
 
@@ -111,43 +102,32 @@ user with an error message.
 ## Rules
 
 - You MUST NOT delete an entry before every reference to it has been
-  repointed.
+  repointed. A dangling `xref:` left behind by an uproot is worse than the 
+  redundant entry it replaced, because nothing in the build catches it.
 
-  A dangling `xref:` left behind by an uproot is worse than the redundant
-  entry it replaced, because nothing in the build catches it.
+- You MUST drop rather than merge. Uprooting removes an entry that adds nothing.
+  Where two entries each carry distinct content that should be combined, that 
+  is a merge, and doing it here would silently widen this skill's remit into a 
+  destructive one.
 
-- You MUST drop rather than merge.
+- The covering entry MUST be the one that survives. Where the named target turns 
+  out to be the fuller of the two, do not delete it. Report that the other 
+  entry is the redundant one and let the user re-aim the skill.
 
-  Uprooting removes an entry that adds nothing. Where two entries each carry
-  distinct content that should be combined, that is a merge, and doing it
-  here would silently widen this skill's remit into a destructive one.
+- When in doubt, you MUST NOT drop. Keep both entries and report them as 
+  candidates for linking instead. Deleting an entry that was not really covered 
+  loses content. A redundant entry left standing is harmless by comparison.
 
-- The covering entry MUST be the one that survives.
-
-  Where the named target turns out to be the fuller of the two, do not
-  delete it. Report that the other entry is the redundant one and let the
-  user re-aim the skill.
-
-- When in doubt, you MUST NOT drop.
-
-  Keep both entries and report them as candidates for linking instead.
-  Deleting an entry that was not really covered loses content; a redundant
-  entry left standing is harmless by comparison.
-
-- You MUST NOT stage, commit, or push.
-
-  Leave every change in the Git working tree, the deletion included, so the
-  user can restore the file with `git restore` after reading the diff.
-  Reviewing that diff is how the user approves the work.
+- You MUST NOT stage, commit, or push. Leave every change in the Git working 
+  tree, the deletion included, so the user can restore the file with `git restore` 
+  after reading the diff. Reviewing that diff is how the user approves the work.
 
 ## Edge cases
 
-- The target's body is nothing but a pointer to another entry.
+- The target's body is nothing but a pointer to another entry. This is a 
+  redirect stub, and it is the cleanest possible uproot. Repoint its inbound 
+  links and drop it, with no salvage step needed.
 
-  This is a redirect stub, and it is the cleanest possible uproot. Repoint
-  its inbound links and drop it, with no salvage step needed.
-
-- Three or more entries all cover the same topic.
-
-  Uproot one target per run, against one covering entry, and report the
-  others. Batching deletions produces a diff nobody can check.
+- Three or more entries all cover the same topic. Uproot one target per run, 
+  against one covering entry, and report the others. Don't be tempted to batch
+  the deletions. You'll prodce a bigger diff than the user expects.
