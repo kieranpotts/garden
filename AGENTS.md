@@ -16,30 +16,30 @@ SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
 
 ## Project structure
 
-- [**`src/modules/ROOT/pages/`**](./src/modules/ROOT/pages/) \
+- [`src/modules/ROOT/pages/`](./src/modules/ROOT/pages/) \
   One `.adoc` file per topic. Each is atomic — focused on a single idea or
   concept — and cross-references related topics with `xref:` rather than
   repeating content.
 
-- [**`src/modules/ROOT/pages/index.adoc`**](./src/modules/ROOT/pages/index.adoc) \
+- [`src/modules/ROOT/pages/index.adoc`](./src/modules/ROOT/pages/index.adoc) \
   The page listing — every entry MUST be listed here to be discoverable on the
   site.
 
-- [**`src/modules/ROOT/nav.adoc`**](./src/modules/ROOT/nav.adoc) \
+- [`src/modules/ROOT/nav.adoc`](./src/modules/ROOT/nav.adoc) \
   The Antora navigation file, which declares the page hierarchy and drives
   each page's breadcrumb trail. Every entry MUST be listed here too — a page
   missing from `nav.adoc` renders with no ancestry.
 
-- [**`src/antora.yml`**](./src/antora.yml) \
+- [`src/antora.yml`](./src/antora.yml) \
   Antora component descriptor.
 
-- [**`.agents/skills/`**](./.agents/skills/README.md) \
+- [`.agents/skills/`](./.agents/skills/README.md) \
   On-demand agent skills specific to maintaining this garden.
 
-- [**`docs/style-guide.md`**](./docs/style-guide.md) \
+- [`docs/style-guide.md`](./docs/style-guide.md) \
   Writing and AsciiDoc formatting conventions for garden entries.
 
-- [**`.github/workflows/`**](./.github/workflows/) \
+- [`.github/workflows/`](./.github/workflows/) \
   CI checks (stale-issue flagging, label sync, commit message validation).
 
 ## Tools
