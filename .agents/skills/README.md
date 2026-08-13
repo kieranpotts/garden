@@ -4,6 +4,7 @@ Agent skills for maintaining this digital garden. Each does one gardening task.
 
 | Skill                                  | Summary                                                                                 |
 | -------------------------------------- | --------------------------------------------------------------------------------------- |
+| [**cultivate**](./cultivate/README.md) | Read one entry and recommend which skills would improve it.                             |
 | [**divide**](./divide/README.md)       | Break up an overgrown entry that's drifted into covering several concepts.              |
 | [**entwine**](./entwine/README.md)     | Given one entry, find related entries and intertwine them with cross-references.        |
 | [**fertilize**](./fertilize/README.md) | Boost a struggling young plant (a thin stub entry) to strength.                         |

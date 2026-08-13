@@ -1,5 +1,8 @@
 .DEFAULT_GOAL := help
 
+cultivate: ## Refresh TODO.md with a per-entry triage table, walking every page, one PR
+	./run/cultivate
+
 divide: ## Run the divide skill on every page individually, one PR per page split
 	./run/divide
 
@@ -33,4 +36,4 @@ uproot: ## Run the uproot skill on every page individually, one PR per page drop
 help: ## Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: divide entwine fertilize forage graft prune sow tend tidy uproot help
+.PHONY: cultivate divide entwine fertilize forage graft prune sow tend tidy uproot help

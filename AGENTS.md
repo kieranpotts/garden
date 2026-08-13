@@ -49,7 +49,7 @@ must resolve to a real file, and every page must be listed in both `index.adoc`
 and `nav.adoc`.
 
 The [`Makefile`](./Makefile) wraps each `.agents/skills/` skill as a `make`
-target (`divide`, `entwine`, `fertilize`, `forage`, `graft`, `prune`, `sow`,
+target (`cultivate`, `divide`, `entwine`, `fertilize`, `forage`, `graft`, `prune`,
 `tend`, `tidy`, `uproot`), running it via the matching script in
 [`run/`](./run/). Run `make help` for the full list.
 
