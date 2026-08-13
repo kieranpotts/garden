@@ -59,3 +59,11 @@ garden::commit_push_pr() {
   gh pr create --base "$BASE_BRANCH" --head "$branch" --title "$title" --body "$body"
   git checkout "$BASE_BRANCH"
 }
+
+# garden::open_issue <title> <body-file>
+# Opens a GitHub issue with the given title and the contents of <body-file> as the body.
+# Used by read-only skills whose output is a report rather than a diff.
+garden::open_issue() {
+  local title="$1" body_file="$2"
+  gh issue create --title "$title" --body-file "$body_file"
+}

@@ -9,7 +9,7 @@ entwine: ## Run the entwine skill on every page individually, one PR per page li
 fertilize: ## Run the fertilize skill on every page individually, one PR per page expanded
 	./run/fertilize
 
-forage: ## Refresh TODO.md with per-entry candidate topics, walking every page, one PR
+forage: ## Open a GitHub issue suggesting entries to sow, foraging every page
 	./run/forage
 
 graft: ## Graft one dead-head entry into a target entry given on the command line
