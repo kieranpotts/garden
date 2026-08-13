@@ -20,5 +20,5 @@ Every skill instructs the agent to work on a single target entry in the digital
 garden. To work across multiple entries, write a prompt that lists the entries
 to work on, then instruct the agent to delegate each one to a sub-agent.
 
-Every skill instructs the agent to run non-interactively and to leave its 
+Every skill instructs the agent to run non-interactively and to leave its
 changes uncommitted in the Git working tree.

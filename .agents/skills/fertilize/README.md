@@ -4,7 +4,8 @@ Brings a thin stub entry up to strength, without changing what it's about.
 
 ## Interactivity
 
-The agent is instructed to do as much work as possible without blocking for input.
+The agent is instructed to do as much work as possible
+without blocking for input.
 This workload can be run in the background away-from-keyboard.
 
 ## How to invoke

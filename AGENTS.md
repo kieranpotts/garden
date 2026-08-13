@@ -1,8 +1,8 @@
 # Garden
 
-A personal digital garden — a curated knowledgebase of atomic notes on computer
-science topics, formatted in AsciiDoc. This repo has no build of its own. It's
-an Antora content module aggregated and built by the
+A personal digital garden — a curated knowledgebase of atomic notes on
+computer science topics, formatted in AsciiDoc. This repo has no build of its
+own. It's an Antora content module aggregated and built by the
 [`website`](https://github.com/kieranpotts/website) repo.
 
 The capitalized words REQUIRED, MUST, MUST NOT, RECOMMENDED, SHOULD,
@@ -11,7 +11,7 @@ SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
 
 ## Tech stack
 
-- **AsciiDoc**, structured as an Antora component (`src/antora.yml`).
+- AsciiDoc, structured as an Antora component (`src/antora.yml`).
 - No local build, test runner, or package manager — content only.
 
 ## Project structure
@@ -60,13 +60,13 @@ target (`divide`, `entwine`, `fertilize`, `forage`, `graft`, `prune`, `sow`,
 
 - Every page under `src/modules/ROOT/pages/` MUST be listed in both
   `index.adoc` (with its maturity emoji) and `nav.adoc` (the Antora navigation
-  file), in the correct alphabetical section. The two files are kept in sync: a
-  page added to one is added to the other, and a page removed from one is
+  file), in the correct alphabetical section. The two files are kept in sync.
+  A page added to one is added to the other, and a page removed from one is
   removed from the other.
 
-- New entries MUST be marked 🌱 Seedling. Maturity (🌱 Seedling, 🌿 Budding, 🌳
-  Evergreen, 🍂 Decaying) SHOULD only be promoted or demoted with explicit user
-  confirmation — it's an editorial judgment, not a mechanical one.
+- New entries MUST be marked 🌱 Seedling. Maturity (🌱 Seedling, 🌿 Budding,
+  🌳 Evergreen, 🍂 Decaying) SHOULD only be promoted or demoted with explicit
+  user confirmation — it's an editorial judgment, not a mechanical one.
 
 - Filenames MUST be kebab-case and match the page title.
 
@@ -77,8 +77,8 @@ target (`divide`, `entwine`, `fertilize`, `forage`, `graft`, `prune`, `sow`,
   [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
 - Agent skills in `.agents/skills/` MUST NOT commit or push changes. They edit
-  the working tree only; staging, committing, and pushing are always the user's
-  call.
+  the working tree only. Staging, committing, and pushing are always the
+  user's call.
 
 ## Skills
 
@@ -87,8 +87,8 @@ for managing this repository. See the [`README`](./.agents/skills/README.md) in
 that directory for descriptions of the available skills and the situations
 when you should use them.
 
-`.claude/skills` is a symlink to `.agents/skills` for auto-discovery by Claude
-Code.
+`.claude/skills` is a symlink to `.agents/skills` for auto-discovery by
+Claude Code.
 
 ## References
 

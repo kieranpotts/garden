@@ -30,7 +30,7 @@ user with an error message.
   its kebab-case filename.
 
 - **Emphasis — OPTIONAL.** A particular angle the user wants grown, eg.
-  recent developments, worked examples, trade-offs. If not specified, default 
+  recent developments, worked examples, trade-offs. If not specified, default
   to whichever facets the entry is thinnest on.
 
 ## Success criteria
@@ -44,7 +44,7 @@ user with an error message.
 - Every `xref:` you add, in the target entry and in entries linking back to
   it, MUST name a file that exists under `src/modules/ROOT/pages/`.
 
-- Additional concepts SHOULD NOT have been folded in. Separate concepts are 
+- Additional concepts SHOULD NOT have been folded in. Separate concepts are
   separate entries.
 
 - No maturity emoji in `src/modules/ROOT/pages/index.adoc` MUST have
@@ -54,27 +54,27 @@ user with an error message.
 
 ## Instructions
 
-1.  Read the target entry in full. Understand its current scope and claims, so 
+1.  Read the target entry in full. Understand its current scope and claims, so
     new material extends the entry rather than repeating it.
 
-2.  Check the entry is already well established, not a stub/seedling. A body of 
-    a few sentences, with unresolved `// TODO` markers, or almost no outbound 
+2.  Check the entry is already well established, not a stub/seedling. A body of
+    a few sentences, with unresolved `// TODO` markers, or almost no outbound
     links, means the entry needs rescuing rather than growing. Stop
     and suggest the user invoke the `fertilize` skill instead.
 
-3.  Research the topic. Gather understanding beyond what the entry already 
-    carries: deeper detail, recent developments, additional facets, worked 
-    examples, trade-offs, common pitfalls. Prefer a small number of reliable 
+3.  Research the topic. Gather understanding beyond what the entry already
+    carries: deeper detail, recent developments, additional facets, worked
+    examples, trade-offs, common pitfalls. Prefer a small number of reliable
     sources over breadth.
 
-4.  Find adjacent topics already in the garden. Growth usually surfaces new 
-    cross-reference opportunities: related patterns, prerequisites, contrasting 
-    approaches. Search existing entries for concepts that should now be linked, 
-    outbound from this entry and inbound from those. Note their exact filenames. 
+4.  Find adjacent topics already in the garden. Growth usually surfaces new
+    cross-reference opportunities: related patterns, prerequisites, contrasting
+    approaches. Search existing entries for concepts that should now be linked,
+    outbound from this entry and inbound from those. Note their exact filenames.
     An AsciiDoc `xref:` target must match a real file.
 
-5.  Extend the entry. Weave the new material into the existing structure, in 
-    place. Link out via `xref:` rather than re-explaining a concept that has its 
+5.  Extend the entry. Weave the new material into the existing structure, in
+    place. Link out via `xref:` rather than re-explaining a concept that has its
     own entry.
 
 6.  Add the cross-references in both directions.
@@ -85,29 +85,29 @@ user with an error message.
 ## Rules
 
 - You MUST keep the entry focused on its existing concept. Watering grows an
-  established plant. If research surfaces a genuinely distinct concept, it 
+  established plant. If research surfaces a genuinely distinct concept, it
   belongs in a separate entry, cross-linked. Report it, rather than smuggling
   in a second concept.
 
-- You MUST link, rather than duplicate. Where a concept is already explained 
-  elsewhere, `xref:` to it instead of re-explaining it. The value of the garden 
+- You MUST link, rather than duplicate. Where a concept is already explained
+  elsewhere, `xref:` to it instead of re-explaining it. The value of the garden
   is in the connections between atomic notes, not in self-contained essays.
 
-- You MUST NOT change an entry's maturity emoji in the index.  Maturity is an 
-  editorial judgment the user reserves. Recommend a promotion in your report and 
+- You MUST NOT change an entry's maturity emoji in the index.  Maturity is an
+  editorial judgment the user reserves. Recommend a promotion in your report and
   leave the label as it stands.
 
-- You MUST NOT stage, commit, or push. Leave every change in the Git working 
+- You MUST NOT stage, commit, or push. Leave every change in the Git working
   tree. The user will review the diff and decide what to do with it.
 
 ## Edge cases
 
-- Research contradicts something the entry already asserts. Do not quietly 
-  overwrite the claim. Correct it, and call the correction out explicitly in 
-  your report, naming the source — a factual fix is a different kind of change 
+- Research contradicts something the entry already asserts. Do not quietly
+  overwrite the claim. Correct it, and call the correction out explicitly in
+  your report, naming the source — a factual fix is a different kind of change
   from growth, and the user will want to see it.
 
-- The entry is already long and well-developed. Prefer depth over volume. 
-  Sharpen and extend the weakest facets rather than padding an entry that is 
-  already at the limit of one concept, and say in your report if the entry looks 
+- The entry is already long and well-developed. Prefer depth over volume.
+  Sharpen and extend the weakest facets rather than padding an entry that is
+  already at the limit of one concept, and say in your report if the entry looks
   ready to be broken up instead.

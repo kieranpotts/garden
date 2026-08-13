@@ -5,7 +5,8 @@ of their own, and produces a ranked list of candidates worth planting.
 
 ## Interactivity
 
-The agent is instructed to do as much work as possible without blocking for input.
+The agent is instructed to do as much work as possible
+without blocking for input.
 This workload can be run in the background away-from-keyboard.
 
 ## How to invoke

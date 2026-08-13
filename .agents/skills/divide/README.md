@@ -10,7 +10,8 @@ This workload can be run in the background away-from-keyboard.
 
 ## How to invoke
 
-> Divide event-driven-architecture.adoc — it's covering both event sourcing and CQRS.
+> Divide event-driven-architecture.adoc — it's covering both event
+> sourcing and CQRS.
 
 > This entry has grown to cover two ideas, divide it.
 

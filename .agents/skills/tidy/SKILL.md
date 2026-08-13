@@ -50,8 +50,8 @@ user with an error message.
 
 ## Instructions
 
-1.  Read the [style guide](../../../docs/style-guide.md) in full. Do not work 
-    from a remembered or cached understanding of its rules. The guide changes, 
+1.  Read the [style guide](../../../docs/style-guide.md) in full. Do not work
+    from a remembered or cached understanding of its rules. The guide changes,
     and a pass run against a stale copy quietly enforces the wrong conventions.
 
 2.  Check the entry against the guide, section by section.
@@ -120,32 +120,32 @@ user with an error message.
 
 ## Rules
 
-- You MUST tidy one entry at a time. A garden-wide style sweep produces a diff 
-  too large to review, which defeats the working tree as a review gate. Run the 
+- You MUST tidy one entry at a time. A garden-wide style sweep produces a diff
+  too large to review, which defeats the working tree as a review gate. Run the
   skill once per entry.
 
-- The style guide MUST be the only source of style authority. Do not enforce a 
-  preference that is not written in `docs/style-guide.md`. Where you think the 
-  guide is missing a rule, say so in the report rather than applying an 
+- The style guide MUST be the only source of style authority. Do not enforce a
+  preference that is not written in `docs/style-guide.md`. Where you think the
+  guide is missing a rule, say so in the report rather than applying an
   unwritten one.
 
-- You MUST NOT repair structural defects. Broken cross-references, fake 
-  pseudo-links, orphans, and maturity emoji belong to a structural pass. Mention 
+- You MUST NOT repair structural defects. Broken cross-references, fake
+  pseudo-links, orphans, and maturity emoji belong to a structural pass. Mention
   any you notice, and leave them.
 
-- You MUST NOT change content. Tidying neither expands a thin entry nor breaks 
+- You MUST NOT change content. Tidying neither expands a thin entry nor breaks
   up an overgrown one. It changes only how the existing prose is written.
 
-- You MUST NOT stage, commit, or push. Leave every change in the Git working 
-  tree. Reviewing the diff is how the user approves the work, so it stands in 
+- You MUST NOT stage, commit, or push. Leave every change in the Git working
+  tree. Reviewing the diff is how the user approves the work, so it stands in
   for any mid-flow prompt.
 
 ## Edge cases
 
-- You cannot tell whether a term is a formal proper noun. Leave the 
-  capitalization as it stands and flag it. A wrongly de-capitalized standard or 
+- You cannot tell whether a term is a formal proper noun. Leave the
+  capitalization as it stands and flag it. A wrongly de-capitalized standard or
   framework name is a factual error, which is worse than an inconsistent heading.
 
-- A mechanical fix would change the sense of a sentence. It is then not 
-  mechanical. Move it to the flagged list, with the proposed wording, and leave 
+- A mechanical fix would change the sense of a sentence. It is then not
+  mechanical. Move it to the flagged list, with the proposed wording, and leave
   the text alone.

@@ -5,7 +5,8 @@ repointing cross-references and removing the absorbed files.
 
 ## Interactivity
 
-The agent is instructed to do as much work as possible without blocking for input.
+The agent is instructed to do as much work as possible
+without blocking for input.
 This workload can be run in the background away-from-keyboard.
 
 ## How to invoke

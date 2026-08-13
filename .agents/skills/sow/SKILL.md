@@ -59,28 +59,28 @@ user with an error message.
 
 ## Instructions
 
-1.  Check for an existing entry. Search `src/modules/ROOT/pages/` by filename 
-    and by `=` title line for a topic already covering this ground, including 
-    obvious synonyms and singular/plural variants. If one exists, stop and 
+1.  Check for an existing entry. Search `src/modules/ROOT/pages/` by filename
+    and by `=` title line for a topic already covering this ground, including
+    obvious synonyms and singular/plural variants. If one exists, stop and
     report it — the topic should be extended rather than duplicated.
 
-2.  Decide whether the topic warrants its own entry. A topic earns its own file 
-    when it will be cross-referenced from *multiple* other entries. That is the
-    atomicity criterion. If the topic would only ever be linked from one place, 
+2.  Decide whether the topic warrants its own entry. A topic earns its own file
+    when it will be cross-referenced from _multiple_ other entries. That is the
+    atomicity criterion. If the topic would only ever be linked from one place,
     it belongs as a section of that entry. Stop and report that instead of sowing.
 
-3.  Research the topic. Gather enough understanding to write an accurate, 
-    concise explanation: what the concept is, why it matters, and how it relates 
-    to neighboring concepts already in the garden. Prefer a small number of 
-    reliable sources over breadth. This is a knowledgebase entry, not a survey 
+3.  Research the topic. Gather enough understanding to write an accurate,
+    concise explanation: what the concept is, why it matters, and how it relates
+    to neighboring concepts already in the garden. Prefer a small number of
+    reliable sources over breadth. This is a knowledgebase entry, not a survey
     paper.
 
-4.  Find adjacent topics already in the garden. Search existing entries for 
-    broader categories, sibling techniques, and prerequisites. These become the 
-    new entry's outbound `xref:` links. Note their exact filenames — an 
+4.  Find adjacent topics already in the garden. Search existing entries for
+    broader categories, sibling techniques, and prerequisites. These become the
+    new entry's outbound `xref:` links. Note their exact filenames — an
     AsciiDoc `xref:` target must match a real file.
 
-5.  Write the entry. Create `src/modules/ROOT/pages/<title-kebab-case>.adoc`, 
+5.  Write the entry. Create `src/modules/ROOT/pages/<title-kebab-case>.adoc`,
     following the structure of existing entries.
 
     - A single `=` title line matching the topic name.
@@ -94,16 +94,16 @@ user with an error message.
     Follow `docs/style-guide.md` — in particular, every `xref:` is wrapped in
     `*...*`.
 
-6.  Link the entry back in. For each adjacent topic from step 4, add an inbound 
-    `xref:` from that entry where it reads naturally. The garden is most useful 
+6.  Link the entry back in. For each adjacent topic from step 4, add an inbound
+    `xref:` from that entry where it reads naturally. The garden is most useful
     when paths run in both directions, not just outward from the new entry.
 
-7.  List the entry on the index. Add a line to `src/modules/ROOT/pages/index.adoc`, 
-    in the correct alphabetical sub-section under "All topics", following the 
+7.  List the entry on the index. Add a line to `src/modules/ROOT/pages/index.adoc`,
+    in the correct alphabetical sub-section under "All topics", following the
     existing `*xref:<file>.adoc[Title]* <emoji>` pattern, marked 🌱. Add it under
     "Hot topics 🔥" as well if the hot topic parameter says so.
 
-8.  Update the nav. Add the entry to `src/modules/ROOT/nav.adoc` at the same 
+8.  Update the nav. Add the entry to `src/modules/ROOT/nav.adoc` at the same
     alphabetical position it occupies in the index, following the existing
     `** xref:<file>.adoc[Title]` pattern, with no maturity emoji. Without
     this the entry has no ancestry and renders with no breadcrumb trail.
@@ -118,33 +118,33 @@ user with an error message.
   entry is a section of it, not an entry in its own right. When in doubt, prefer
   extending an existing entry over creating a new one.
 
-- You MUST link rather than duplicate. Where a concept is already explained 
-  elsewhere, `xref:` to it instead of re-explaining it. The value of the garden 
+- You MUST link rather than duplicate. Where a concept is already explained
+  elsewhere, `xref:` to it instead of re-explaining it. The value of the garden
   is in the connections between atomic notes, not in self-contained essays.
 
-- One file MUST cover one concept. If research surfaces a second distinct 
-  concept, that is a separate entry, cross-linked — not a second section here. 
+- One file MUST cover one concept. If research surfaces a second distinct
+  concept, that is a separate entry, cross-linked — not a second section here.
   Sow it separately only if it too meets the atomicity criterion above.
 
-- A newly sown entry MUST be marked 🌱 Seedling in the index. Maturity is 
+- A newly sown entry MUST be marked 🌱 Seedling in the index. Maturity is
   earned through later growth and maintenance, not assigned at creation.
 
-- The index and the nav MUST be kept in step. An entry added to one is added 
-  to the other, at the same alphabetical position. An entry listed in only one 
+- The index and the nav MUST be kept in step. An entry added to one is added
+  to the other, at the same alphabetical position. An entry listed in only one
   of them is half-published.
 
-- You MUST NOT stage, commit, or push. Leave every change in the Git working 
-  tree. Reviewing the diff is how the user approves the work, so it stands in 
+- You MUST NOT stage, commit, or push. Leave every change in the Git working
+  tree. Reviewing the diff is how the user approves the work, so it stands in
   for any mid-flow prompt.
 
 ## Edge cases
 
-- Research turns up no related entry anywhere in the garden. Sow the entry 
-  anyway, with no outbound `xref:`, and say so in the report. A genuinely 
-  novel topic in a young section of the garden is not a reason to refuse. 
+- Research turns up no related entry anywhere in the garden. Sow the entry
+  anyway, with no outbound `xref:`, and say so in the report. A genuinely
+  novel topic in a young section of the garden is not a reason to refuse.
   Note it as a candidate for a later linking pass.
 
-- The topic collides with an entry under a different name. Treat a synonym 
-  as an existing entry, not as a gap. Stop, name the entry you found, and 
-  report the collision rather than planting a near-duplicate that will later 
+- The topic collides with an entry under a different name. Treat a synonym
+  as an existing entry, not as a gap. Stop, name the entry you found, and
+  report the collision rather than planting a near-duplicate that will later
   need dropping.

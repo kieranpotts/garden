@@ -38,7 +38,7 @@ To add a new entry:
    fetches content sources from the `latest/dev` branch of the remote `garden`
    repository – it is not currently possible to preview local changes.)
 
-Alternatively, to preview a draft entry *before* merging its PR: push the draft
+Alternatively, to preview a draft entry _before_ merging its PR: push the draft
 to a branch in this repo, then manually run the `website` repo's
 `Netlify Preview` GitHub Actions workflow with that branch name. This builds the
 aggregated site against the draft branch, instead of `latest/dev`, and posts a

@@ -1,7 +1,7 @@
 # Garden
 
-**Source content for my digital garden**,
-published at https://kieranpotts.com/garden.
+Source content for my digital garden,
+published at <https://kieranpotts.com/garden>.
 
 ## Contributing
 
@@ -15,6 +15,6 @@ recent growth.
 
 See [docs/](./docs/README.md) for the style guide and other reference material.
 
------
+---
 
-Copyright © 2020-present Kieran Potts, [CC BY-SA 4.0 license](./LICENSE.txt)
+Copyright © 2020–present Kieran Potts, [CC BY-SA 4.0 license](./LICENSE.txt)
