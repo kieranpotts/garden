@@ -3,16 +3,16 @@
 divide: ## Run the divide skill on every page individually, one PR per page split
 	./run/divide
 
-entwine: ## Run the entwine skill as a single whole-garden pass, one PR for all links added
+entwine: ## Run the entwine skill on every page individually, one PR per page linked
 	./run/entwine
 
 fertilize: ## Run the fertilize skill on every page individually, one PR per page expanded
 	./run/fertilize
 
-forage: ## Regenerate TODO.md with topics mentioned but not yet sown, one PR
+forage: ## Refresh TODO.md with per-entry candidate topics, walking every page, one PR
 	./run/forage
 
-graft: ## Run the graft skill as a single whole-garden pass, one PR for all merges
+graft: ## Graft one dead-head entry into a target entry given on the command line
 	./run/graft
 
 prune: ## Run the prune skill on every page individually, one PR per page trimmed

@@ -1,19 +1,19 @@
 # Graft
 
-Merges two or more related-but-distinct entries into a single broader entry,
-repointing cross-references and removing the absorbed files.
+Absorbs one related-but-distinct entry — the dead-head — into a target entry,
+combining their content in the survivor, repointing every cross-reference to the
+target, and removing the dead-head file.
 
 ## Interactivity
 
-The agent is instructed to do as much work as possible
-without blocking for input.
+The agent is instructed to do as much work as possible without blocking for input.
 This workload can be run in the background away-from-keyboard.
 
 ## How to invoke
 
-> Graft retry.adoc, backoff.adoc and jitter.adoc into one retry-strategies page.
+> Graft backoff.adoc into retry.adoc.
 
-> These three entries really cover one theme — merge them.
+> Absorb jitter.adoc into retry-strategies.adoc.
 
 > Merge backoff.adoc into retry.adoc.
 

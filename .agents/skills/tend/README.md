@@ -1,22 +1,21 @@
 # Tend
 
-Walks the digital garden looking for withering content: broken cross-references,
-fake pseudo-links, entries missing from the index or nav, and maturity emoji
-that no longer match reality.
+Checks one target entry's structural health: broken cross-references, fake
+pseudo-links, a missing index or nav listing, and a maturity emoji that no
+longer matches the content.
 
 ## Interactivity
 
-The agent is instructed to do as much work as possible
-without blocking for input.
+The agent is instructed to do as much work as possible without blocking for input.
 This workload can be run in the background away-from-keyboard.
 
 ## How to invoke
 
-> Tend the garden.
+> Tend event-sourcing.adoc.
 
-> Check for broken links.
+> Check this entry for broken links.
 
-> Tend the AI topics.
+> Tend the resilience entry.
 
 ## Recommended models
 

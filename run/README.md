@@ -10,10 +10,10 @@ or Git — those operations are done by the wrapper scripts.
 | Script | Skill | Scope | Description |
 | --- | --- | --- | --- |
 | [`divide`](./divide) | [divide](../.agents/skills/divide/SKILL.md) | Per-page | Break a page into separate atomic pages, only if it unambiguously covers multiple concepts. |
-| [`entwine`](./entwine) | [entwine](../.agents/skills/entwine/SKILL.md) | Whole garden | Add missing cross-references between existing, related-but-unlinked pages. |
+| [`entwine`](./entwine) | [entwine](../.agents/skills/entwine/SKILL.md) | Per-page | Add missing cross-references between one page and its related-but-unlinked neighbours. |
 | [`fertilize`](./fertilize) | [fertilize](../.agents/skills/fertilize/SKILL.md) | Per-page | Expand a page into a fuller entry, only if it genuinely qualifies as a thin stub. |
-| [`forage`](./forage) | [forage](../.agents/skills/forage/SKILL.md) | Whole garden | Regenerate `TODO.md` with a ranked list of topics mentioned but not yet sown. |
-| [`graft`](./graft) | [graft](../.agents/skills/graft/SKILL.md) | Whole garden | Merge related-but-distinct thin entries into a single broader page. |
+| [`forage`](./forage) | [forage](../.agents/skills/forage/SKILL.md) | Per-page | Refresh `TODO.md` with candidate topics each page references that have no entry yet. |
+| [`graft`](./graft) | [graft](../.agents/skills/graft/SKILL.md) | Two entries (arguments) | Absorb one dead-head entry into a target entry, repointing references and removing the dead-head. |
 | [`prune`](./prune) | [prune](../.agents/skills/prune/SKILL.md) | Per-page | Make small, self-evidently-good trims and phrasing fixes within a page. |
 | [`sow`](./sow) | [sow](../.agents/skills/sow/SKILL.md) | Single topic (argument) | Plant a brand-new entry for the topic given on the command line. |
 | [`tend`](./tend) | [tend](../.agents/skills/tend/SKILL.md) | Per-page | Fix broken cross-references, fake pseudo-links, and orphaned pages, one page at a time. |

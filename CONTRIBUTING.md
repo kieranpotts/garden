@@ -60,7 +60,7 @@ the allowed types ever change.
 - `water`: Research and extend an existing entry.
 - `fertilize`: Expand a thin stub entry.
 - `prune`: Freeform trim — trim, smooth, reorder within a document.
-- `graft`: Merge related-but-distinct entries into one document.
+- `graft`: Absorb one entry (the dead-head) into another (the target).
 - `divide`: Split an overgrown entry into separate documents.
 - `entwine`: Add missing cross-references between existing entries.
 - `tidy`: Bring an entry into conformance with the style guide.
@@ -77,7 +77,7 @@ water: research and extend event-sourcing with recent developments
 fertilize: expand abstraction with examples and modular design xref
 tend: fix broken xref in agent.adoc
 prune: trim waffle and reorder sections in agent
-graft: merge retry, backoff and jitter into retry-strategies
+graft: merge backoff into retry
 divide: break event-driven-architecture into event-sourcing and cqrs
 entwine: link circuit-breaker and retry as related resilience patterns
 tidy: fix dash and colon usage in resilience
