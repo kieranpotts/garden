@@ -1,3 +1,54 @@
 = Active-active
 
-// TODO: https://www.mongodb.com/developer/products/mongodb/active-active-application-architectures/
+Active-active is a deployment topology in which multiple instances of a
+service, or multiple replicas of data, run simultaneously and all serve live
+traffic. It is the counterpart to *active-passive*, where one instance handles
+traffic while one or more standby replicas remain idle until they are needed
+for *xref:failover.adoc[failover]*.
+
+In an active-active setup, every node is hot. Requests are spread across the
+nodes by *xref:load-balancing.adoc[load balancing]*, so capacity scales with the
+number of replicas. When a node fails, the remaining nodes simply absorb its
+share of traffic. There is no promotion step and no interruption, which makes
+active-active attractive for systems that require high
+*xref:availability.adoc[availability]* and
+*xref:fault-tolerance.adoc[fault tolerance]*.
+
+Active-active is commonly applied at two layers:
+
+* *Application layer.* Multiple stateless service instances run behind a load
+  balancer. Because no instance holds exclusive state, any instance can handle
+  any request.
+
+* *Data layer.* Multiple database replicas accept writes concurrently, an
+  arrangement also known as multi-leader *xref:replication.adoc[replication]*.
+  Each replica serves local reads and writes, and changes propagate to the
+  others asynchronously.
+
+The data layer is where the trade-offs bite. With several nodes accepting
+writes at once, concurrent updates can conflict, and replicas converge only
+through *xref:eventual-consistency.adoc[eventual consistency]*. Resolving
+conflicts requires strategies such as last-write-wins, version vectors, or
+application-level merge logic. The coordination this demands sits at the heart
+of the *xref:cap-theorem.adoc[CAP theorem]* trade-off between availability and
+*xref:consistency.adoc[consistency]*.
+
+Active-active is most worthwhile in
+*xref:distributed-system.adoc[distributed software]* that cannot tolerate
+downtime during recovery, and in multi-region deployments where serving reads
+and writes from a node close to the user reduces
+*xref:latency.adoc[latency]*. The cost is operational complexity. Every node
+must be kept in sync, the system must detect and route around unhealthy nodes,
+and the infrastructure runs at full capacity around the clock rather than
+keeping reserve nodes idle.
+
+== See also
+
+* xref:failover.adoc[*Failover*]
+* xref:replication.adoc[*Replication*]
+* xref:load-balancing.adoc[*Load balancing*]
+* xref:availability.adoc[*Availability*]
+* xref:fault-tolerance.adoc[*Fault tolerance*]
+* xref:eventual-consistency.adoc[*Eventual consistency*]
+* xref:cap-theorem.adoc[*CAP theorem*]
+* xref:distributed-system.adoc[*Distributed system*]
