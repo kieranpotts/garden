@@ -48,11 +48,6 @@ No build, lint, or test commands. Validity is structural. Every `xref:` target
 must resolve to a real file, and every page must be listed in both `index.adoc`
 and `nav.adoc`.
 
-The [`Makefile`](./Makefile) wraps each `.agents/skills/` skill as a `make`
-target (`cultivate`, `divide`, `entwine`, `fertilize`, `forage`, `graft`, `prune`,
-`tend`, `tidy`, `uproot`), running it via the matching script in
-[`run/`](./run/). Run `make help` for the full list.
-
 ## Rules
 
 - Each `.adoc` file MUST cover exactly one topic. Use `xref:` to link rather
