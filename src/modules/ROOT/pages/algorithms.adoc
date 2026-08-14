@@ -1,9 +1,97 @@
 = Algorithms
 
-Algorithms are step-by-step procedures or formulas for solving problems. Common
-algorithms include sorting algorithms (like quicksort and mergesort), searching
-algorithms (like binary search), and graph algorithms (like Dijkstra's shortest
-path).
+An algorithm is a finite, well-defined sequence of computational steps that
+transforms some input into a corresponding output, in order to solve a problem
+or perform a computation. The term derives from the name of the 9th-century
+Persian scholar Muhammad ibn Musa al-Khwarizmi, whose work on systematic
+arithmetic methods gave the field its name.
 
-*xref:data-structures.adoc[Data structures]* and algorithms (DSA) are
-foundational topics in *xref:computer-science.adoc[computer science]*.
+An algorithm is distinct from the program that implements it. The same
+algorithm can be expressed in pseudocode, implemented in any programming
+language, or carried out by hand. What makes it an algorithm is the procedure
+itself — the ordered, unambiguous steps — not its embodiment in code.
+
+== Properties
+
+A well-formed algorithm is expected to satisfy several properties.
+
+* *Correctness.* For every valid input, the algorithm halts and produces the
+  correct output. Correctness is often established by reasoning about the
+  algorithm's *invariants* — conditions that hold before and after each step.
+* *Termination.* The algorithm reaches a final state after a finite number of
+  steps. Procedures that may run indefinitely, eg. an operating system's main
+  loop, are sometimes called *computational processes* rather than algorithms.
+* *Determinism.* Each step has a single, unambiguous next step. Nondeterministic
+  algorithms, which branch across several possibilities at once, are a useful
+  abstraction even though any physical execution must resolve the choices
+  somehow.
+
+These properties are ideals. In practice, an algorithm may be *partial* —
+correct only over a subset of possible inputs — or *probabilistic*, relying on
+random choices and correct only with high probability.
+
+== Analysis
+
+Algorithms are studied and compared primarily through their complexity: how
+their running time and memory usage grow as the input grows. This is expressed
+using *xref:big-o-notation.adoc[big O notation]*, which describes the
+asymptotic upper bound on resource use. Two algorithms solving the same problem
+may differ enormously in how they scale. An O(n log n) sort will outperform an
+O(n²) sort by orders of magnitude on large inputs, even if the latter has a
+smaller constant factor.
+
+There is often a trade-off between time and space. Caching intermediate
+results — a technique known as *memoization* — can reduce running time at the
+cost of additional memory. Correctness and efficiency can also trade off
+against each other, as in approximation algorithms that give up a guaranteed
+optimal answer in exchange for tractable running time on hard problems.
+
+== Design paradigms
+
+Many algorithms are constructed using one of a small number of recurring
+strategies.
+
+* *Brute force.* Enumerate all candidate solutions and select the best. Simple,
+  but often prohibitively slow — the travelling salesman problem solved this
+  way is O(2^n).
+* *Divide and conquer.* Split the problem into independent subproblems, solve
+  each recursively, and combine the results. Merge sort and binary search are
+  classic examples.
+* *Dynamic programming.* Solve overlapping subproblems once and reuse their
+  results, trading memory for time. Useful when a recursive decomposition would
+  otherwise recompute the same work many times.
+* *Greedy.* Build a solution incrementally by taking the locally best choice at
+  each step, without backtracking. Fast, but correct only when local choices
+  lead to a global optimum.
+* *Backtracking.* Explore the space of partial solutions, abandoning a branch
+  as soon as it is shown to be infeasible. Used for constraint satisfaction and
+  puzzle solving.
+
+== Relationship to data structures
+
+Algorithms operate on data, and the way that data is organized shapes which
+algorithms are practical. As Rob Pike observed, "data structures, not
+algorithms, are central to programming" — choosing the right
+*xref:data-structures.adoc[data structure]* often makes the algorithm that
+follows self-evident. The two are studied together as data structures and
+algorithms (DSA), and a given task is usually approached by selecting a data
+structure and an algorithm in tandem.
+
+== Classes of algorithm
+
+Algorithms are commonly grouped by the kind of problem they solve. Major
+classes include sorting and searching, graph algorithms (traversal, shortest
+path, spanning trees), string and pattern-matching algorithms, and numerical
+and geometric algorithms. *xref:consensus-algorithms.adoc[Consensus algorithms]*
+form a specialized class for agreeing on state across
+*xref:distributed-system.adoc[distributed systems]*.
+
+''''
+
+== See also
+
+* *xref:big-o-notation.adoc[Big O notation]*
+* *xref:complexity.adoc[Complexity]*
+* *xref:computer-science.adoc[Computer science]*
+* *xref:consensus-algorithms.adoc[Consensus algorithms]*
+* *xref:data-structures.adoc[Data structures]*
