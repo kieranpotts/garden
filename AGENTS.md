@@ -87,9 +87,13 @@ Claude Code.
 
 ## References
 
-The following technical standards apply.
+The following technical standards (TS) govern this project. Fetch and ingest
+the relevant standards as-and-when required for the task at hand.
 
-- [**TS-9: Version Control**](https://kieranpotts.com/standards/009)
-- [**TS-26: Technical Writing Style Guide**](https://kieranpotts.com/standards/026)
-- [**TS-28: AsciiDoc**](https://kieranpotts.com/standards/028)
-- [**TS-61: AI Tools**](https://kieranpotts.com/standards/061)
+- [**TS-26: Technical Writing Style Guide**](https://kieranpotts.com/standards/026) \
+  Use when writing or editing the prose of a technical document. Covers
+  tone-of-voice, headings, terminology, lists, and citations.
+
+- [**TS-28: AsciiDoc**](https://kieranpotts.com/standards/028) \
+  Use when writing or reviewing AsciiDoc documents or websites built using
+  Antora.
