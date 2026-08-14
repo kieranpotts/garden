@@ -6,7 +6,9 @@ the separation of command handling (write) logic from query (read) logic. It is
 an architectural application of *xref:command-query-separation.adoc[command query separation]*,
 lifting the method-level principle to the level of separate models. This
 allows for the independent optimization of both aspects, enhancing performance
-and scalability.
+and scalability. CQRS is most valuable when read and write
+*xref:access-patterns.adoc[access patterns]* differ significantly, so that
+optimizing them together would force compromises on one side.
 
 CQRS works well with *xref:event-sourcing.adoc[event sourcing]*, as queries can
 be constructed from events, allowing for:

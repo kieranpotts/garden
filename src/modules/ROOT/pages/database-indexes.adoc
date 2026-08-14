@@ -18,7 +18,10 @@ not need to scan the entire table to find the matching rows.
 There is a trade-off between the speed of read operations and the cost of
 maintaining indexes. Indexes speed up read operations but slow down write
 operations, as the database needs to update the index every time a row is
-inserted, updated, or deleted.
+inserted, updated, or deleted. The right balance depends on the system's
+*xref:access-patterns.adoc[access patterns]*. Indexes pay off most for
+read-heavy workloads, while write-heavy systems may be better served by fewer
+indexes.
 
 The most common types of indexes are:
 
