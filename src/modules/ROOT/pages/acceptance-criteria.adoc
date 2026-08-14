@@ -1,3 +1,66 @@
 = Acceptance criteria
 
-// TODO
+Acceptance criteria are the conditions a software deliverable must satisfy to be
+accepted by its stakeholders – typically the product owner, customer, or end
+user on whose behalf the work was commissioned. They are derived from
+*xref:requirements.adoc[requirements]*, both
+*xref:functional-requirements.adoc[functional]* and
+*xref:non-functional-requirements.adoc[non-functional]*, and translate an
+abstract requirement into a set of concrete, checkable statements that a
+*xref:acceptance-testing.adoc[acceptance test]* can verify.
+
+A set of acceptance criteria answers the question, "what would have to be true
+for us to consider this done?" They are usually written by the product owner or
+customer in collaboration with the development team, and are most commonly
+attached to a *xref:user-story.adoc[user story]* or *xref:use-case.adoc[use
+case]* as part of its *definition of done* – the shared checklist that
+distinguishes "finished" from "still in progress".
+
+== Qualities of good acceptance criteria
+
+Well-written acceptance criteria share the qualities of good requirements
+generally. Each one should be:
+
+* *Testable.* There is a clear procedure that yields a pass or fail result,
+  with no room for subjective interpretation.
+* *Unambiguous.* A reader cannot reasonably reach two different conclusions
+  about what the criterion means.
+* *Atomic.* Each criterion addresses one behavior or condition, so that a
+  single test can exercise it in isolation.
+* *Independent.* The criteria can be evaluated in any order, and one passing
+  or failing does not skew the evaluation of another.
+* *Written from the user's perspective.* They describe an observable outcome
+  of the system, not an implementation detail.
+
+Criteria that reference internal mechanics – a particular API endpoint, UI
+widget, or database column – tend to age poorly, because they couple the
+specification to a single technical solution that may later change.
+
+== Expressing acceptance criteria
+
+Acceptance criteria are most useful when they are concrete enough to drive
+tests. A common lightweight form is a simple bulleted list of conditions, each
+phrased as a statement that is either true or false of the delivered system.
+
+A more structured form expresses each criterion as a *scenario*, using
+*xref:gherkin.adoc[Gherkin]*'s Given/When/Then template. Each scenario states a
+starting context (Given), an action (When), and an expected outcome (Then).
+Scenarios written this way double as executable specifications – they can be
+fed directly into a behavior-driven development framework, automating the
+*xref:acceptance-testing.adoc[acceptance testing]* that confirms the criteria
+are met.
+
+Whatever the form, the value of acceptance criteria is that they make the
+boundary of a piece of work explicit and agreed-upon before the work is built,
+rather than negotiated after delivery. They give the team a shared,
+authoritative definition of when a story is complete.
+
+== See also
+
+* xref:requirements.adoc[*Requirements*]
+* xref:functional-requirements.adoc[*Functional requirements*]
+* xref:non-functional-requirements.adoc[*Non-functional requirements*]
+* xref:user-story.adoc[*User story*]
+* xref:use-case.adoc[*Use case*]
+* xref:gherkin.adoc[*Gherkin*]
+* xref:acceptance-testing.adoc[*Acceptance testing*]
