@@ -1,12 +1,58 @@
 = A/B testing
 
-A/B testing is a method of comparing two versions of a unit of functionality to
-determine which one performs better, based on predefined metrics.
+A/B testing is a controlled experiment in which two variants of a unit of
+functionality are compared to determine which one performs better against a
+predefined *xref:metrics.adoc[metric]*.
+
+The two variants are conventionally labeled A (the *control*, the existing
+version) and B (the *variant* or *treatment*, the new version). Users are
+randomly assigned to one variant or the other, and their behavior is recorded
+as the experiment runs. At the end of the experiment the measured outcomes are
+compared, and the variant that performs best against the target metric is
+declared the winner.
 
 A/B testing is typically used to evaluate graphical user interfaces (GUIs) and
-user experience (UX) design, such as a web interface. However, the strategy can
-be used to evaluate the relative merits of different implementations of all
-sorts of software features, including algorithms and machine learning models.
+user experience (UX) design, such as a web interface. In that setting it
+complements *xref:usability-testing.adoc[usability testing]*. Where usability
+testing is qualitative and observational, A/B testing is quantitative and
+statistical. The same strategy can also be used to evaluate the relative merits
+of different implementations of all sorts of software features, including
+algorithms and *xref:machine-learning.adoc[machine learning]* models.
+
+A/B testing is distinct from a
+*xref:canary-deployment.adoc[canary deployment]*, although both split traffic
+between two versions. A canary deployment is a release strategy whose goal is
+to limit the blast radius of a new version by exposing it to a small fraction
+of users first. A/B testing is an experiment whose goal is to compare outcomes
+between variants, and the two variants may run for the full duration at equal
+traffic shares. The two techniques are often combined, with a canary rollout
+providing the traffic split that an A/B test then measures.
 
 The implementation of A/B testing strategies may be supported by
-xref:feature-flags.adoc[*feature flag*] systems.
+*xref:feature-flags.adoc[feature flag]* systems, which can route users to
+variants and toggle variants on or off without a new deployment.
+
+== Statistical considerations
+
+A valid A/B test depends on random assignment and a large enough sample to
+distinguish a real difference from chance variation. The result is typically
+assessed with a *hypothesis test* that yields a *p-value* or a confidence
+interval, and a difference is only acted on when it reaches a predetermined
+threshold of *statistical significance*.
+
+Several pitfalls can invalidate an experiment. *Peeking* at the results before
+the planned sample size is reached inflates the false-positive rate. *Novelty
+effects* can make a new variant perform better (or worse) for a short period
+that does not reflect long-term behavior. *Selection bias* arises when the
+assignment is not truly random, eg. when users on mobile devices are
+systematically routed to one variant. *Simpson's paradox* can even reverse the
+apparent direction of the result when subgroups are unevenly represented
+between variants.
+
+== See also
+
+* *xref:feature-flags.adoc[Feature flags]*
+* *xref:canary-deployment.adoc[Canary deployment]*
+* *xref:metrics.adoc[Metrics]*
+* *xref:usability-testing.adoc[Usability testing]*
+* *xref:machine-learning.adoc[Machine learning]*
