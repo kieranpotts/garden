@@ -20,6 +20,81 @@ tools and data sources, while A2A connects agents to other agents. An
 *xref:agent-harness.adoc[agent harness]* may combine both — MCP to give each
 agent its capabilities, and A2A to let those agents collaborate.
 
+== Core concepts
+
+A2A is a client-server protocol. An *A2A client* is the application or agent
+that initiates a request on behalf of a user or another system. An *A2A server*,
+sometimes called a remote agent, exposes an A2A-compliant endpoint that
+processes requests and returns results.
+
+Every A2A server publishes an *Agent Card*, a JSON metadata document describing
+its identity, capabilities, skills, service endpoint, and authentication
+requirements. By convention the card is served at
+`/.well-known/agent-card.json`, so a client can discover a remote agent from its
+domain alone. The card may be signed with a JSON Web Signature so clients can
+verify its authenticity and integrity.
+
+The unit of work is a *Task*, identified by a server-generated ID and progressed
+through a defined lifecycle: submitted, working, completed, failed, canceled,
+rejected, or paused awaiting input or authorization. Tasks are stateful and
+long-running by design.
+
+Communication flows through *Messages*, each carrying one or more *Parts*. A
+part is the smallest unit of content and may be text, a file (by reference or
+inline bytes), or structured data. This makes A2A *modality agnostic*. The same
+protocol carries plain text, images, and machine-readable JSON. Task outputs are
+returned as *Artifacts*, composed of parts, keeping the distinction between
+conversation (messages) and results (artifacts) explicit.
+
+Because tasks can run for minutes or hours, A2A offers three update mechanisms.
+A client can poll a task with `GetTask`, subscribe to a live stream of status
+and artifact events, or register a webhook to receive push notifications when
+the task changes state. The choice is driven by the client's connectivity and
+latency needs.
+
+== Design principles
+
+A2A is deliberately *opaque*. Agents collaborate on the basis of declared
+capabilities and exchanged messages, without exposing their internal thoughts,
+plans, memory, or tool implementations. A remote agent is a black box; the
+protocol concerns itself only with what is requested and what is returned.
+
+It is *async first*. Operations return immediately with a task reference rather
+than blocking until completion, and human-in-the-loop pauses are first-class. A
+task can wait on additional input or authorization mid-flight.
+
+It reuses existing web standards rather than inventing new ones. A2A builds on
+HTTP, JSON-RPC 2.0, and Server-Sent Events, and aligns its security model with
+familiar enterprise practices such as OAuth 2.0, OpenID Connect, and mutual TLS.
+The goal is interoperability with the tooling and infrastructure organizations
+already run.
+
+== Protocol bindings
+
+The data model is defined in Protocol Buffers and mapped to three standard
+bindings: JSON-RPC 2.0 over HTTP, gRPC over HTTP/2, and a REST-style HTTP+JSON
+binding. An agent may expose several bindings at once, listed in preference
+order on its Agent Card, and all are required to behave equivalently. Custom
+bindings are permitted as long as they preserve the canonical data model and
+operations.
+
+Streaming uses Server-Sent Events over the HTTP-based bindings and server
+streaming RPCs over gRPC. JSON payloads use the `application/a2a+json` media
+type.
+
+== Security
+
+A2A treats agents as ordinary enterprise applications and pushes identity to the
+transport and protocol layers rather than into its own semantics. An Agent Card
+declares its supported security schemes, such as API keys, HTTP bearer tokens,
+OAuth 2.0, OpenID Connect, or mutual TLS, and clients present credentials over
+standard headers or metadata.
+
+A task may pause in an `auth-required` state when an agent needs authorization
+it does not hold, delegating the request back to the client or a human approver.
+Push notification webhooks are themselves authenticated, and agents are expected
+to validate webhook URLs to prevent server-side request forgery.
+
 == Governance
 
 In June 2025, Google transferred A2A to the Linux Foundation for vendor-neutral
@@ -29,10 +104,16 @@ fragmentation and vendor lock-in across AI agent ecosystems. IBM subsequently
 folded its parallel standards, the *Agent Communication Protocol (ACP)*, into
 A2A.
 
+Under the Linux Foundation's stewardship the specification reached its 1.0
+release, with SDKs maintained for several languages and generated from a single
+normative Protocol Buffer definition.
+
 ''''
 
 == See also
 
 * *xref:agent.adoc[Agent]*
+* *xref:agent-harness.adoc[Agent harness]*
+* *xref:agent-orchestration.adoc[Agent orchestration]*
 * *xref:large-language-model.adoc[Large language model (LLM)]*
 * *xref:model-context-protocol.adoc[Model Context Protocol]*
