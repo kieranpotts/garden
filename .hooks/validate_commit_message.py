@@ -23,6 +23,7 @@ VALID_TYPES = [
     "style",
 
     # Repository-specific commit types (one per agent skill):
+    "cultivate",  # triage one entry and recommend which skills would improve it
     "sow",        # plant a new entry
     "water",      # research and extend an existing entry
     "tend",       # fix broken links, fake links, orphaned documents, etc.
