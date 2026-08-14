@@ -1,25 +1,82 @@
 = ACID principles
 
-// TODO: https://redis.io/glossary/acid-transactions/
-// https://blog.algomaster.io/p/ecae03ba-1930-42ef-8796-83e2fa818989
+ACID is an acronym for four properties — atomicity, consistency, isolation, and
+durability — that database management systems guarantee for
+xref:transaction.adoc[*transactions*], in order to maintain
+xref:data-integrity.adoc[*data integrity*] even in the presence of errors,
+concurrent access, and system failures.
 
-ACID refers to a set of properties of database management systems that guarantee
-that database *xref:transaction.adoc[transactions]* are processed reliably and
-consistently, ensuring *xref:data-integrity.adoc[data integrity]*.
+The acronym was coined by Andreas Reuter and Theo Härder in 1983 as a memorable
+framework for the guarantees that a reliable transaction processing system must
+provide. The four properties are interdependent. Isolation and atomicity work
+together to keep concurrent transactions from corrupting one another, while
+durability and consistency ensure that committed results survive failures and
+respect the database's rules.
 
-ACID is an acronym for:
+* *Atomicity.* A transaction is treated as a single, indivisible unit of work.
+  Either all of its operations are applied, or none of them are. If any
+  operation fails, the database reverts to the state it was in before the
+  transaction began, discarding every change the transaction had made. This
+  *rollback* is what makes a transaction "all-or-nothing", and it is the
+  mechanism that prevents partial writes from leaving the database in an
+  inconsistent state.
 
-* Atomicity: Transactions are fully completed, or not at all. If one part of a
-  transaction fails, the entire transaction fails, and the database is left
-  unchanged.
+* *Consistency.* A transaction takes the database from one valid state to
+  another. "Valid" here is defined by the application's invariants — schemas,
+  constraints, triggers, and business rules — rather than by replicas being in
+  agreement. Every committed transaction must preserve these invariants, so the
+  database never holds data that violates its own rules. This is a narrower
+  notion of consistency than the
+  xref:consistency.adoc[*replica consistency*] that concerns distributed
+  systems, though the two are often conflated.
 
-* Consistency: Only transactions that abide by constraints and rules are written
-  to the database. This ensures that the database is always in a valid state. A
-  transaction will always result in the state of the database transitioning from
-  one valid state to another.
+* *Isolation.* Concurrent transactions do not interfere with one another. The
+  result of running several transactions at the same time must be the same as
+  if they had run one after another, in some serial order. In practice full
+  isolation is expensive, so databases offer a range of *isolation levels* that
+  trade correctness for performance, each permitting certain anomalies such as
+  dirty reads, non-repeatable reads, or phantom reads. Strict two-phase locking
+  and other xref:locking.adoc[*locking*] strategies are the common mechanisms
+  for enforcing isolation, while xref:concurrency.adoc[*concurrency*] control
+  more broadly governs how interleaved operations are kept coherent. This sense
+  of isolation is distinct from xref:isolation.adoc[*fault isolation*], which
+  is about containing failures rather than serializing access.
 
-* Isolation: Transactions are processed independently and securely, without
-  interference from other transactions.
+* *Durability.* Once a transaction has been committed, its effects persist even
+  if the system crashes immediately afterwards. Durability is typically achieved
+  by writing committed changes to non-volatile storage — and, in
+  fault-tolerant systems, by xref:replication.adoc[*replicating*] them to other
+  nodes — before acknowledging the commit. It is one of the
+  xref:quality-attributes.adoc[*quality attributes*] of an IT system.
 
-* Durability: Once a transaction has been committed, it will remain in the
-  system permanently, even in the event of a system failure.
+== Trade-offs and limits
+
+Strict ACID guarantees are easiest to provide in a single-node
+xref:relational-databases.adoc[*relational database*], where a single lock
+manager and write-ahead log can coordinate every transaction. They become
+progressively harder, and more expensive, to preserve as data is replicated and
+transactions span multiple nodes.
+
+A xref:distributed-transaction.adoc[*distributed transaction*] must coordinate
+atomicity and isolation across independent storage systems, which typically
+requires protocols such as xref:phased-commit.adoc[*two-phase commit*] that
+block participants and add latency. Because of these costs, many distributed
+and xref:nosql-databases.adoc[*NoSQL*] systems relax one or more ACID
+properties in exchange for xref:availability.adoc[*availability*] and
+xref:scalability.adoc[*scalability*]. The xref:cap-theorem.adoc[*CAP theorem*]
+frames the underlying trade-off between consistency and availability under
+partitions, and xref:eventual-consistency.adoc[*eventual consistency*]
+describes the weaker guarantee such systems usually adopt in place of ACID
+consistency. The xref:saga.adoc[*saga*] pattern is a common alternative for
+long-running transactions that span services, abandoning distributed atomicity
+in favour of compensating actions.
+
+== See also
+
+* xref:transaction.adoc[*Transactions*]
+* xref:relational-databases.adoc[*Relational database management systems*]
+* xref:transactional-databases.adoc[*Transactional databases*]
+* xref:distributed-transaction.adoc[*Distributed transactions*]
+* xref:cap-theorem.adoc[*CAP theorem*]
+* xref:eventual-consistency.adoc[*Eventual consistency*]
+* xref:saga.adoc[*Sagas*]
