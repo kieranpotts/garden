@@ -6,17 +6,21 @@ expected, as determined by pre-defined thresholds or conditions around system
 *xref:metrics.adoc[metrics]* or *xref:logging.adoc[logs]*.
 
 For example, alerts may be configured for sudden surges in traffic, high error
-rates, or a high number of consecutive failed login attempts. It is a
-requirement for such alerts to be delivered in near real-time.
+rates, or a high number of consecutive failed login attempts. Such alerts need
+to be delivered in near real-time so that responders can act before users are
+broadly affected. Delivery typically goes through dedicated channels – pagers,
+chat messages, SMS, or ticketing systems – rather than relying on engineers to
+notice a dashboard.
 
 Alerting systems tend to be built into *xref:monitoring.adoc[monitoring]* and
-*xref:observability.adoc[observability]* systems. For example, Prometheus has
-https://prometheus.io/docs/alerting/latest/overview/[Alert Manager], while
-Elasticsearch has
+*xref:observability.adoc[observability]* systems. For example, Prometheus ships
+with https://prometheus.io/docs/alerting/latest/overview/[Alertmanager], while
+Elasticsearch offers
 https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-getting-started.html[Watcher].
-However, there are a few standalone alerting systems that are designed to feed
-off data produced by monitoring and observability tools like Prometheus and the
-Elastic stack. Examples include:
+There are also standalone alerting and incident management systems that feed off
+data produced by monitoring and observability tools. They add capabilities the
+built-in tools often lack, such as on-call schedule management, escalation
+policies, alert grouping, and deduplication. Examples include the following.
 
 * https://www.pagerduty.com/[PagerDuty]: Alerting and incident management
   services.
@@ -24,3 +28,58 @@ Elastic stack. Examples include:
   management, part of the Atlassian suite.
 * VictorOps: Was an on-call management system and is now part of
   https://www.splunk.com/[Splunk].
+
+== Symptom-based versus cause-based alerting
+
+A long-standing best practice, popularized by
+*xref:site-reliability-engineering.adoc[site reliability engineering]*, is to
+alert on *symptoms* rather than *causes*. A symptom is a user-visible
+degradation, such as an elevated error rate, increased latency, or a failed
+*xref:system-health-checks.adoc[health check]*. A cause is an underlying
+condition that may produce that symptom, such as high CPU usage, low disk space,
+or a stuck queue.
+
+Symptom-based alerts are more stable and more actionable. They fire when
+something is actually broken for users, and they remain meaningful even as the
+underlying causes change. Cause-based alerts, by contrast, tend to be noisy. A
+high CPU reading may be benign under load, and the root cause of an outage may
+shift between incidents. The guidance is to page on symptoms, not on causes.
+
+== Alert fatigue
+
+Poorly tuned alerting generates noise. When engineers are paged for transient
+spikes, self-resolving blips, or conditions they cannot act on, they become
+desensitized. This phenomenon is known as *alert fatigue*. It is a primary
+concern of *xref:on-call.adoc[on-call]* practice and degrades both response
+quality and team well-being.
+
+Mitigations include tuning thresholds, retiring alerts that have no clear
+remediation, and routing low-priority notifications to dashboards or tickets
+instead of pagers. A useful test is that every page should be both actionable,
+meaning there is something a human can do, and urgent, meaning it cannot wait
+until business hours. Alerts that fail either test are better handled as records
+or warnings.
+
+== Alert design
+
+Well-designed alerts connect detection to response. Each alert should carry
+enough context for the responder to start investigating without first
+reproducing the problem: the affected service, the triggering condition, and a
+link to a *xref:runbook.adoc[runbook]*. Severity levels, such as the SEV1 to
+SEV4 scheme common in incident management, communicate urgency and drive
+escalation paths.
+
+In systems that track *service level objectives (SLOs)*, alerting is tied to
+error budgets rather than fixed thresholds. Multi-window, multi-burn-rate
+alerting pages when an SLO is burning through its error budget too quickly,
+while slower-burning breaches produce tickets. This keeps pages tied to user
+impact rather than to arbitrary thresholds.
+
+== See also
+
+* *xref:monitoring.adoc[Monitoring]*
+* *xref:observability.adoc[Observability]*
+* *xref:on-call.adoc[On-call]*
+* *xref:runbook.adoc[Runbook]*
+* *xref:site-reliability-engineering.adoc[Site reliability engineering]*
+* *xref:system-health-checks.adoc[System health checks]*
