@@ -4,14 +4,51 @@ A key consideration in *xref:system-design.adoc[system design]* is the access
 patterns of the data.
 
 Access patterns describe how data is read and written, and how it is queried.
-Systems may be read-heavy or write-heavy, or have a balanced mix of reads and
-writes. The access patterns of a system are influenced by its
-*xref:domain.adoc[domain]* and *xref:requirements.adoc[requirements]* such as
+They capture the ratio of reads to writes, the shapes of the queries, the
+frequency with which particular records are touched, and the locality of those
+accesses over time. Systems may be read-heavy or write-heavy, or have a
+balanced mix of reads and writes. The access patterns of a system are
+influenced by its *xref:domain.adoc[domain]* and *xref:requirements.adoc[requirements]* such as
 *xref:scalability.adoc[scalability]*, *xref:availability.adoc[availability]*,
 and *xref:consistency.adoc[consistency]*.
 
+Several dimensions characterize a system's access patterns.
+
+* *Read/write ratio.* Whether the workload is dominated by reads, writes, or a
+  balance of both.
+* *Query shape.* Point lookups by key, range scans over ordered data,
+  aggregations, or graph traversals.
+* *Access locality.* Whether requests concentrate on a small working set of
+  hot records or spread evenly across the data.
+* *Temporal patterns.* Bursts of traffic, diurnal cycles, or event-driven
+  spikes.
+
+These dimensions drive many downstream design decisions. A read-heavy workload
+favors *xref:database-indexes.adoc[indexes]*, *xref:caching.adoc[caching]*, and
+*xref:materialized-view.adoc[materialized views]* that accelerate reads at the
+cost of slower or more complex writes. A write-heavy workload favors
+append-only storage and *xref:sharding.adoc[sharding]* to distribute write
+load. Where read and write patterns diverge sharply,
+*xref:cqrs.adoc[command query responsibility segregation (CQRS)]* separates the
+read and write models so each can be optimized independently. The choice of
+*xref:data-modeling.adoc[data model]* and storage technology follows the same
+logic. *xref:relational-databases.adoc[Relational databases]* suit ad-hoc
+queries and complex joins, while *xref:nosql-databases.adoc[NoSQL databases]*
+are often selected for their fit to a specific, well-understood access pattern
+such as key-value lookup or wide-column reads.
+
 Access patterns can have a significant influence on the
 *xref:architecture-and-design.adoc[design]* of a system, but the patterns may
-not be fully understood until the system is in production. Therefore, optimizing
-the system design for its access patterns is a challenging constraint and may
-require iterative design improvements.
+not be fully understood until the system is in production. Real workloads often
+reveal *hot spots*, uneven concentrations of traffic, that were not visible in
+design-time assumptions. Therefore, optimizing the system design for its access
+patterns is a challenging constraint and may require iterative design
+improvements. *xref:load-testing.adoc[Load testing]* and production
+*xref:observability.adoc[observability]* help surface the true patterns so the
+design can be refined.
+
+== See also
+
+* *xref:denormalization.adoc[Denormalization]*
+* *xref:replication.adoc[Replication]*
+* *xref:throughput.adoc[Throughput]*
