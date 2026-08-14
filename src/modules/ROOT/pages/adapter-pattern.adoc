@@ -1,3 +1,71 @@
 = Adapter design pattern
 
-// TODO: https://www.geeksforgeeks.org/system-design/adapter-pattern/
+The adapter pattern is a *xref:design-patterns.adoc[design pattern]* that lets
+classes with incompatible *xref:interfaces.adoc[interfaces]* work together. It
+wraps an existing class with a new interface that a client expects, translating
+calls between the two.
+
+The pattern takes its name from the physical adapters that connect plugs and
+sockets of different shapes. A travel plug adapter does not change the device or
+the wall outlet. It converts one physical interface into another so the two can
+connect. A software adapter does the same for code.
+
+The adapter pattern is a *structural pattern*. Its purpose is to bridge
+interfaces, not to add new behavior. Where a *xref:strategy-pattern.adoc[strategy
+pattern]* swaps one algorithm for another behind a shared interface, an adapter
+leaves the underlying behavior intact and only reshapes how that behavior is
+reached.
+
+Three roles make up the pattern. The *target* is the interface the client
+expects to call. The *adaptee* is the existing class whose interface does not
+match. The *adapter* implements the target and holds a reference to the
+adaptee, delegating each call to it while converting the arguments and return
+values as needed.
+
+The client programs against the target interface, unaware that the object it
+receives is really an adapter forwarding to a different concrete type. This
+reliance on *xref:polymorphism.adoc[polymorphism]* is also what makes the pattern
+an application of *xref:dependency-inversion.adoc[dependency inversion]*. The
+client depends on an abstraction rather than on the adaptee's concrete
+interface.
+
+== Object and class adapters
+
+Two forms of the pattern are commonly distinguished. An *object adapter* uses
+*xref:composition.adoc[composition]* to hold the adaptee and implements the
+target interface. A *class adapter* inherits from both the target and the
+adaptee, which is only possible in languages that support multiple
+implementation inheritance.
+
+Object adapters are more common and more flexible. They work with any subclass
+of the adaptee and do not bind the adapter to a single concrete class. Class
+adapters, by contrast, can override parts of the adaptee's behavior directly,
+but only at the cost of that tight inheritance coupling.
+
+== When to use it
+
+The adapter pattern is useful when you want to reuse an existing class but its
+interface does not match what your code needs. Typical scenarios include
+integrating a third-party library, wrapping a legacy component, or unifying
+several classes that do similar work but expose different interfaces.
+
+An adapter should only translate interfaces, not change the adaptee's behavior.
+When a wrapper also simplifies or hides complexity behind a smaller interface,
+it becomes the *facade pattern*, a related structural pattern with a different
+intent.
+
+The *xref:ports-and-adapters.adoc[ports and adapters]* pattern borrows the
+adapter metaphor but applies it at an architectural level. Where the adapter
+pattern reconciles two specific interfaces in code, ports-and-adapters defines
+abstract ports for a whole application and plugs in adapters for external
+systems such as databases and message queues.
+
+== See also
+
+* *xref:design-patterns.adoc[Design patterns]*
+* *xref:interfaces.adoc[Interfaces]*
+* *xref:polymorphism.adoc[Polymorphism]*
+* *xref:composition.adoc[Composition]*
+* *xref:dependency-inversion.adoc[Dependency inversion]*
+* *xref:strategy-pattern.adoc[Strategy pattern]*
+* *xref:ports-and-adapters.adoc[Ports and adapters]*
