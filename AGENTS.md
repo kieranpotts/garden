@@ -1,4 +1,4 @@
-# Garden
+# Digital Garden
 
 A personal digital garden — a curated knowledgebase of atomic notes on
 computer science topics, formatted in AsciiDoc. This repo has no build of its

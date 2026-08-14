@@ -10,7 +10,7 @@ garden's legend:
 
 ## 0-9
 
-- [ ] 🌱 10x programmer — `10x-programmer.adoc`
+- [x] 🌱 10x programmer — `10x-programmer.adoc`
 - [ ] 🌱 12-factor app — `12-factor-app.adoc`
 
 ## A
