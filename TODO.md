@@ -213,7 +213,7 @@ Do NOT push your changes.
 - [x] 🌱 Decomposition — `decomposition.adoc` (fertilize)
 - [x] 🌱 Decoupling — `decoupling.adoc` (fertilize)
 - [x] 🌱 Denormalization — `denormalization.adoc` (fertilize)
-- [ ] 🌱 Dependency injection — `dependency-injection.adoc` (water)
+- [x] 🌱 Dependency injection — `dependency-injection.adoc` (water)
 - [ ] 🌱 Dependency inversion — `dependency-inversion.adoc` (water)
 - [ ] 🌱 Deployment pipeline — `deployment-pipeline.adoc` (entwine)
 - [ ] 🌱 Deployment strategies — `deployment-strategies.adoc` (none)
