@@ -176,7 +176,7 @@ Do NOT commit anything. Leave your changes dirty in the Git working tree.
 - [x] 🌱 Crash program — `crash-program.adoc` (entwine)
 - [x] 🌱 Class-Responsibility-Collaboration (CRC) card — `crc-card.adoc` (tend)
 - [x] 🌱 Critical path analysis — `critical-path-analysis.adoc` (tend)
-- [ ] 🌱 Cross-cutting concern — `cross-cutting-concern.adoc` (water)
+- [x] 🌱 Cross-cutting concern — `cross-cutting-concern.adoc` (water)
 - [ ] 🌱 Cross-functional teams — `cross-functional-teams.adoc` (fertilize)
 - [ ] 🌱 Cross-site scripting — `cross-site-scripting.adoc` (fertilize)
 - [ ] 🌱 Cryptography — `cryptography.adoc` (fertilize)
