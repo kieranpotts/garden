@@ -227,7 +227,7 @@ Do NOT push your changes.
 - [x] 🌱 Directed acyclic graph (DAG) — `directed-acyclic-graph.adoc` (none)
 - [x] 🌱 Disaster recovery — `disaster-recovery.adoc` (fertilize)
 - [x] 🌱 Discovery — `discovery.adoc` (fertilize)
-- [ ] 🌱 Distributed caching — `distributed-caching.adoc` (fertilize)
+- [x] 🌱 Distributed caching — `distributed-caching.adoc` (fertilize)
 - [ ] 🌱 Distributed databases — `distributed-databases.adoc` (fertilize)
 - [ ] 🌱 Distributed file systems — `distributed-file-systems.adoc` (fertilize)
 - [ ] 🌱 Distributed locking — `distributed-locking.adoc` (fertilize)
