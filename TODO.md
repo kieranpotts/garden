@@ -234,7 +234,7 @@ Do NOT push your changes.
 - [x] 🌱 Distributed system — `distributed-system.adoc` (tend)
 - [x] 🌱 Distributed transaction — `distributed-transaction.adoc` (tend)
 - [x] 🌱 DNS — `dns.adoc` (entwine)
-- [ ] 🌱 Do the simplest thing that could possibly work — `do-the-simplest-thing.adoc` (none)
+- [x] 🌱 Do the simplest thing that could possibly work — `do-the-simplest-thing.adoc` (none)
 - [ ] 🌱 Do what I mean (DWIM) — `do-what-i-mean.adoc` (fertilize)
 - [ ] 🌱 Docker — `docker.adoc` (prune)
 - [ ] 🌱 Document-oriented databases — `document-oriented-databases.adoc` (fertilize)
