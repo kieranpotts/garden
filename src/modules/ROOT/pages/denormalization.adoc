@@ -1,6 +1,108 @@
 = Denormalization
 
-// See *[normalization]*.
-// See *[database query optimization]*
+Denormalization is the deliberate introduction of redundancy into a database
+schema that has already been xref:normalization.adoc[*normalized*]. Where
+normalization removes duplicated data so that each fact lives in exactly one
+place, denormalization puts selected copies back so that reads can be served
+with fewer joins, less I/O, and simpler queries. It is a trade of write
+simplicity and storage economy for read speed, applied after the schema has
+first been cleaned up by normalization rather than instead of it.
+
+The two processes are not opposites to be chosen between. A mature
+xref:data-modeling.adoc[*data modeling*] workflow normalizes first to remove
+accidental redundancy, then denormalizes deliberately where access patterns
+justify it. Denormalizing a schema that was never normalized is usually just
+leaving mess in place.
+
+== Why denormalize
+
+The dominant cost in many read workloads is joining. A normalized order might
+spread a customer's name, their address, the product titles, and the prices
+across four tables, so rendering an invoice line means four joins. Each join
+multiplies the rows the engine must touch and the planning work the optimizer
+must do. xref:database-query-optimization.adoc[*Query optimization*] and
+xref:database-indexes.adoc[*indexes*] can reduce that cost, but they cannot
+eliminate it. Denormalization removes the joins altogether by copying the
+needed columns into the table that is read.
+
+The payoff is largest where the workload is read-heavy and the access patterns
+are stable and well understood. Reporting dashboards, list pages, and
+customer-facing screens that aggregate data from several entities are typical
+beneficiaries. It is also the default shape for analytical workloads, where
+the xref:analytical-databases.adoc[*analytical databases*] serving OLAP queries
+are routinely built as star or snowflake schemas with deliberately denormalized
+dimension tables.
+
+== Common forms
+
+* *Derived columns.* Store a value that could be computed from other columns,
+  eg. an order total persisted alongside its line items, so a report need not
+  re-aggregate them.
+* *Duplicated columns.* Copy a frequently read column from a parent table into
+  its child, eg. a customer's name stored on every order, so the order list can
+  avoid a join back to the customer table.
+* *Summary or aggregate tables.* Precompute grouped totals – sales by month by
+  region – and refresh them on a schedule or on write. These overlap with
+  xref:materialized-view.adoc[*materialized views*], which give the same benefit
+  with the database managing the refresh.
+* *Pre-joined tables.* Persist the result of a frequent join as a table in its
+  own right, updated when the underlying rows change.
+
+== Trade-offs
+
+Denormalization is not free, and the cost is paid on every write.
+
+* *Consistency burden.* Once a fact lives in two places, both copies must be
+  kept in step. Updating the customer's name now means updating every order that
+  carries it, or accepting that historical orders keep the name as it was at the
+  time of sale – a deliberate choice that must be encoded, not stumbled into.
+  This tension with xref:single-source-of-truth.adoc[*single source of truth*]
+  is the core cost of the technique.
+* *Write complexity.* Inserts and updates must maintain the redundant copies, in
+  application code, in triggers, or through a synchronization pipeline. The
+  extra logic is a source of bugs and a drag on write throughput.
+* *Integrity risk.* Redundant copies can drift out of agreement, weakening
+  xref:referential-integrity.adoc[*referential integrity*] and the broader
+  xref:data-integrity.adoc[*data integrity*] the schema was normalized to
+  protect. Constraints and checks must cover the copies as well as the
+  originals.
+* *Storage.* Extra copies consume extra disk and memory, though on modern
+  hardware this is usually the least of the costs.
+
+== When to denormalize, and when not
+
+Denormalize when reads dominate writes, when the hot queries are known and
+stable, and when the joins they require are the measured bottleneck. Match the
+schema to the xref:access-patterns.adoc[*access patterns*] rather than to a
+generic ideal of purity. A xref:cqrs.adoc[*CQRS*] read model is a natural home
+for denormalized shapes, since it is built specifically to serve queries and
+updated asynchronously from a separate write model.
+
+Do not denormalize speculatively. Redundancy introduced for a query that never
+becomes hot is pure cost, paying every write forever for a read that does not
+exist. It is easier to denormalize a measured bottleneck later than to remove
+redundancy that has already entangled the write paths. As with other forms of
+optimization, the discipline is to normalize first, profile, and denormalize
+only the specific paths the profile flags.
 
 image::normalized-vs-denormalized-data.png[]
+
+== See also
+
+* xref:access-patterns.adoc[*Access patterns*]
+* xref:analytical-databases.adoc[*Analytical databases*]
+* xref:cqrs.adoc[*Command query responsibility segregation (CQRS)*]
+* xref:database-indexes.adoc[*Database indexes*]
+* xref:database-query-optimization.adoc[*Database query optimization*]
+* xref:data-modeling.adoc[*Data modeling*]
+* xref:materialized-view.adoc[*Materialized view*]
+* xref:normalization.adoc[*Normalization*]
+* xref:referential-integrity.adoc[*Referential integrity*]
+* xref:single-source-of-truth.adoc[*Single source of truth*]
+
+== References
+
+* Connolly, T. and Begg, C. (2014). _Database Systems: A Practical Approach to
+  Design, Implementation, and Management_. 6th ed. Pearson.
+* Kimball, R. and Ross, M. (2013). _The Data Warehouse Toolkit: The Definitive
+  Guide to Dimensional Modeling_. 2nd ed. Wiley.

@@ -22,6 +22,12 @@ databases tend to be longer and involve more complex queries. That makes
 xref:database-query-optimization.adoc[*query optimization*] especially
 important for analytical workloads.
 
+Analytical schemas are typically denormalized. The star and snowflake schemas
+used in data warehousing deliberately duplicate dimensional data across fact
+table rows so that aggregate queries can be answered with few joins, trading
+xref:single-source-of-truth.adoc[*single source of truth*] for read speed. See
+xref:denormalization.adoc[*denormalization*] for the trade in general.
+
 Examples of relational analytical databases include Amazon Redshift, Teradata,
 and HP Vertica. Examples of non-relational analytical databases include Amazon
 Elastic MapReduce (EMR) and other Map Reduce databases.
