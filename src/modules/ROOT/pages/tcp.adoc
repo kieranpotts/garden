@@ -4,8 +4,9 @@ Transmission Control Protocol (TCP) is a *xref:internet-protocol.adoc[Layer 4]*
 transport protocol that provides reliable, ordered, and connection-oriented
 delivery of data between two hosts over an *xref:internet-protocol.adoc[IP]*
 network. It is one half of the TCP/IP suite that underpins most internet
-traffic, used by *xref:http.adoc[HTTP/HTTPS]*, email (SMTP), and file transfer
-(FTP).
+traffic, used by *xref:http.adoc[HTTP/HTTPS]*, email (SMTP), file transfer
+(FTP), and *xref:border-gateway-protocol.adoc[BGP]* (which runs BGP sessions
+on port 179).
 
 TCP adds reliability on top of IP's best-effort delivery. IP can drop packets,
 deliver them out of order, or duplicate them. TCP guarantees that the
@@ -26,8 +27,8 @@ application layer sees a continuous, correctly-ordered byte stream.
   packets, increased RTT) and reduces its send rate accordingly. Algorithms such
   as slow start, congestion avoidance, fast retransmit, and fast recovery
   (CUBIC, BBR in modern kernels) manage this automatically.
-* Error detection: Each TCP segment carries a checksum over the header and data.
-  Corrupted segments are discarded and retransmitted.
+* Error detection: Each TCP segment carries a *xref:checksum.adoc[checksum]*
+  over the header and data. Corrupted segments are discarded and retransmitted.
 * Full-duplex: Data can flow in both directions simultaneously over a single
   connection.
 
@@ -72,5 +73,6 @@ lookups – *xref:udp.adoc[UDP]* is preferred.
 
 * *xref:udp.adoc[UDP]*
 * *xref:internet-protocol.adoc[Internet Protocol (IP)]*
+* *xref:border-gateway-protocol.adoc[Border Gateway Protocol (BGP)]*
 * *xref:osi-model.adoc[OSI model]*
 * *xref:http.adoc[HTTP]*

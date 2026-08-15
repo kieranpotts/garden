@@ -79,8 +79,9 @@ Both IPv4 and IPv6 reserve certain address ranges for specific purposes:
 
 == CIDR notation
 
-IP networks are expressed in Classless Inter-Domain Routing (CIDR) notation: an
-address followed by a prefix length (e.g. `192.168.1.0/24`). The prefix length
+IP networks are expressed in
+*xref:cidr.adoc[Classless Inter-Domain Routing (CIDR)]* notation: an address
+followed by a prefix length (e.g. `192.168.1.0/24`). The prefix length
 specifies how many bits of the address identify the network (the rest identify
 individual hosts within it). `/24` means the first 24 bits are the network
 prefix, leaving 8 bits for 256 host addresses (254 usable, excluding network and
@@ -100,11 +101,15 @@ IP is the foundation on which other protocols operate:
   streaming, games).
 * *ICMP* (Internet Control Message Protocol): Carries diagnostic and error
   messages (used by `ping` and `traceroute`).
+* *BGP* (Border Gateway Protocol): The interdomain routing protocol that lets
+  autonomous systems exchange reachability information, building the routing
+  tables that IP forwards against.
 * *DNS*: Resolves human-readable hostnames to IP addresses.
 
 == See also
 
 * *xref:internet-protocol-address.adoc[IP address]*
 * *xref:tcp.adoc[TCP]*
+* *xref:border-gateway-protocol.adoc[Border Gateway Protocol (BGP)]*
 * *xref:osi-model.adoc[OSI model]*
 * *xref:http.adoc[HTTP]*

@@ -8,9 +8,11 @@ everything it needs supplied fresh. It is the counterpart to
 In distributed systems, statelessness is a key to
 *xref:horizontal-scaling.adoc[horizontal scaling]*. Any instance can handle any
 request, instances are interchangeable, and capacity is easy to add or remove.
-Because no instance holds state a caller depends on, failure of one instance
-just shifts work to another, which makes stateless designs fault-tolerant and
-friendly to *xref:load-balancing.adoc[load balancing]*.
+Because no instance holds state a caller depends on, failure of one
+instance just shifts work to another, which makes stateless designs
+fault-tolerant and friendly to *xref:load-balancing.adoc[load balancing]* and to
+*xref:active-active.adoc[active-active]* deployments where every replica serves
+live traffic.
 
 In *xref:agent.adoc[agent]* and *xref:large-language-model.adoc[LLM]* systems,
 the model is permanently stateless. Its parameters are frozen after training,
@@ -41,5 +43,6 @@ every time (cost and latency) and the inability to build on prior interaction.
 * *xref:agent.adoc[Agent]*
 * *xref:agent-memory.adoc[Agent memory]*
 * *xref:agent-handoff.adoc[Agent handoff]*
-* *xref:load-balancing.adoc[Load balancing]*
-* *xref:horizontal-scaling.adoc[Horizontal scaling]*
+* xref:load-balancing.adoc[*Load balancing*]
+* xref:horizontal-scaling.adoc[*Horizontal scaling*]
+* xref:active-active.adoc[*Active-active*]

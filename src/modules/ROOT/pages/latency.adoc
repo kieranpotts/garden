@@ -6,7 +6,8 @@ Latency refers to the time it takes for a single operation or request to
 complete, or to move data from one place to another.
 
 Low latency means faster response times and a more responsive system. High
-latency can lead to lag and poor user experience.
+latency can lead to lag and poor user experience. Elevated latency is a common
+target for *xref:alerting.adoc[symptom-based alerting]*.
 
 Latency is an important *xref:quality-attributes.adoc[quality attribute]* of IT
 systems, and required careful consideration in the
@@ -18,7 +19,9 @@ of data that can be processed over a period of time. For example, to increase
 throughput you might batch requests together, process data in
 *xref:parallelism.adoc[parallel]*, or spread load across multiple servers. But
 these strategies can have the effect of increasing the time individual requests
-spend waiting in queues, thereby increasing latency.
+spend waiting in queues, thereby increasing latency. The
+xref:access-patterns.adoc[*access patterns*] of the workload determine which of
+these trade-offs are even available.
 
 image::latency-vs-throughput.svg[]
 

@@ -18,6 +18,9 @@ hardware, and network components:
 * *Data redundancy*: Storing copies of the same data on multiple nodes.
 
 * *Software redundancy*: Deploying multiple instances of the same application.
+  An *xref:active-active.adoc[active-active]* topology puts every instance to
+  work serving live traffic, whereas an active-passive setup keeps the
+  duplicates idle as standby.
 
 * *Hardware redundancy*: Using additional hardware components, such as servers.
 
@@ -33,4 +36,6 @@ from them.
 about limiting the impact of failures so that they don't affect the entire
 system. For example, if the primary node for a service fails, and if its
 failovers fail too, the rest of the system should continue to operate (albeit
-with reduced functionality).
+with reduced functionality). *xref:cell-based-architecture.adoc[Cell-based
+architecture]* combines redundancy with partitioning to achieve this at the
+scale of a whole system.

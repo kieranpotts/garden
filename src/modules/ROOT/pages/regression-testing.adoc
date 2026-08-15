@@ -15,9 +15,13 @@ In practice, regression testing typically involves maintaining a suite of tests
 accumulated over the history of a project, which grows over time as new
 functionality is added and new bugs are discovered and fixed. Automation is
 particularly valuable here, since manually re-running a large test suite after
-every change would be prohibitively time-consuming. Continuous integration
-pipelines commonly trigger automated regression suites on each new build,
-providing rapid feedback to developers.
+every change would be prohibitively time-consuming. It is the canonical use
+case for xref:automated-testing.adoc[*automated testing*]. Continuous
+integration pipelines commonly trigger automated regression suites on each
+new build, providing rapid feedback to developers. Regression suites also
+anchor release stabilization periods such as a
+xref:code-freeze.adoc[*code freeze*], where the branch is closed to new
+features so the full suite can run against a fixed snapshot.
 
 While full regression testing can be resource-intensive, the cost of not
 performing it – shipping a release that silently breaks existing behavior – is
