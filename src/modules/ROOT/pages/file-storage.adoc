@@ -14,7 +14,10 @@ remote file system is mounted on the client and appears just like a local drive.
 Every client connected to the same server sees the same shared directory
 structure, and changes made by one client are visible to all others in real
 time. File-level locking is used to manage concurrent access and prevent
-conflicts when multiple users read or write the same file.
+conflicts when multiple users read or write the same file. Scaling that model
+across many servers produces a xref:distributed-file-systems.adoc[*distributed
+file system*], which spreads the namespace over a cluster while keeping the
+same file-and-directory interface.
 
 == Advantages
 
