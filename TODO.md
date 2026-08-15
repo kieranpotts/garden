@@ -232,7 +232,7 @@ Do NOT push your changes.
 - [x] 🌱 Distributed file systems — `distributed-file-systems.adoc` (fertilize)
 - [x] 🌱 Distributed locking — `distributed-locking.adoc` (fertilize)
 - [x] 🌱 Distributed system — `distributed-system.adoc` (tend)
-- [ ] 🌱 Distributed transaction — `distributed-transaction.adoc` (tend)
+- [x] 🌱 Distributed transaction — `distributed-transaction.adoc` (tend)
 - [ ] 🌱 DNS — `dns.adoc` (entwine)
 - [ ] 🌱 Do the simplest thing that could possibly work — `do-the-simplest-thing.adoc` (none)
 - [ ] 🌱 Do what I mean (DWIM) — `do-what-i-mean.adoc` (fertilize)
