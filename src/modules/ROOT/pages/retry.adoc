@@ -50,3 +50,7 @@ overwhelmed by retries in the meantime. Both retry mechanisms and circuit
 breakers are solutions for improving
 *xref:fault-tolerance.adoc[fault tolerance]*, and the two solutions may be used
 in conjunction with each other.
+
+When the retry threshold is exhausted, the message can be routed to a
+*xref:dead-letter-queue.adoc[dead letter queue]* for later inspection and
+replay, rather than being dropped or retried forever.

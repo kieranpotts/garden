@@ -57,3 +57,8 @@ tasks.
 
 Kafka's system of offsets can also handle messages being dropped, to some
 extent.
+
+Kafka has no built-in *xref:dead-letter-queue.adoc[dead letter queue]*. The
+usual convention is to write failed records to a separate dead-letter topic,
+which serves the same purpose of quarantining unprocessable messages for later
+inspection and replay.

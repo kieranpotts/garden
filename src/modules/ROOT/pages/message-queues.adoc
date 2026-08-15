@@ -62,6 +62,10 @@ confirmation that it has been sent.
 Anything that could be treated as a background *job* is a good candidate for a
 message queue.
 
+When a consumer repeatedly fails to process a message, the message can be
+diverted to a *xref:dead-letter-queue.adoc[dead letter queue]* so that it does
+not block the primary queue or consume retry budget indefinitely.
+
 ////
 
 Well-known message queue systems include: Apache Kafka, Apache ActiveMQ, Amazon Simple Queue Service (SQS), and RabbitMQ.
