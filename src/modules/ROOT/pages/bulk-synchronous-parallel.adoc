@@ -1,3 +1,102 @@
 = Bulk synchronous parallel
 
-// TODO: https://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html
+*Bulk synchronous parallel (BSP)* is a model for
+*xref:parallelism.adoc[parallel computing]* introduced by Leslie Valiant in 1990
+as a *bridging model* – a single abstraction that sits between the hardware and
+the algorithm, so that programs written against BSP run portably across many
+different parallel machines, and machines can be compared against a common
+target.
+
+A BSP machine is a set of processors, each with its own local memory,
+connected by a network that can route messages between any pair of processors.
+There is no shared memory and no global clock. Coordination is provided
+entirely by the model's structure.
+
+== Supersteps
+
+A BSP program runs as a sequence of *supersteps*. Each superstep has three
+phases.
+
+* *Local computation.* Every processor works on data in its own local memory,
+  independently of the others. There is no communication during this phase.
+* *Communication.* Processors exchange messages. A message sent during
+  superstep *s* is guaranteed to arrive at its destination before superstep
+  *s + 1* begins.
+* *Barrier synchronization.* A global barrier marks the end of the superstep.
+  No processor may start the next superstep until every processor has finished
+  the current one.
+
+The barrier is what makes the model synchronous in the bulk sense. Within a
+superstep the processors run independently and asynchronously, but the
+supersteps themselves are strictly ordered. A processor that finishes early
+sits idle at the barrier until the slowest one catches up.
+
+== Cost model
+
+BSP comes with a simple, analyzable cost model. The running time of a single
+superstep is the sum of three terms.
+
+* *w* – the maximum amount of local work done by any one processor. The
+  superstep is gated by the slowest processor, so this is the relevant cost of
+  the computation phase.
+* *g · h* – the communication cost. *h* is the maximum number of messages sent or
+  received by any single processor, and *g* is the cost per message, set by the
+  network's bandwidth. Their product is the cost of moving the data.
+* *l* – the barrier synchronization cost, a fixed
+  *xref:latency.adoc[latency]* the network charges to coordinate the barrier,
+  independent of how much work was done.
+
+The total cost of a program is the sum of its superstep costs. Because each
+term is a maximum over processors, the model rewards balance: keeping every
+processor equally busy and equally talkative, and keeping the number of
+supersteps small.
+
+== Realizations
+
+BSP began as a model for
+*xref:high-performance-computing.adoc[high-performance computing]* and
+scientific computing, and several libraries implement it directly, including
+BSPlib and the Oxford Bulk library.
+
+The model is better known today through frameworks that adopt its structure
+without naming it. Google's *xref:map-reduce.adoc[MapReduce]* is a restricted,
+two-superstep BSP: a *map* superstep, a barrier implemented by the *shuffle*,
+and a *reduce* superstep. Google's Pregel, and its open-source descendant
+Apache Giraph, apply the same superstep-and-barrier pattern to iterative
+*xref:batch-processing.adoc[batch processing]* of large graphs. Apache Spark's
+iterative model is closer still, looping many supersteps in place within a
+single job.
+
+== Trade-offs
+
+* *Predictable performance.* The cost model lets a program's running time be
+  estimated before it runs, which makes BSP a good fit for large, predictable
+  workloads.
+* *Simpler reasoning.* Because all communication completes before the next
+  superstep, a program never has to reason about message interleavings or
+  races. The barrier imposes a clean, deterministic structure.
+* *The barrier as a bottleneck.* The same barrier is the model's weakness. The
+  slowest processor in each superstep gates every other, so workloads with
+  *stragglers* – one slow task per superstep – spend most of their time idle at
+  the barrier. BSP suits coarse-grained, balanced workloads and is a poor fit
+  for irregular, fine-grained, or latency-bound ones.
+* *Coarse granularity.* BSP is designed around a small number of long
+  supersteps, not a great many short ones, because each one pays the fixed
+  barrier cost *l*.
+
+== See also
+
+* *xref:batch-processing.adoc[Batch processing]*
+* *xref:distributed-system.adoc[Distributed system]*
+* *xref:high-performance-computing.adoc[High-performance computing (HPC)]*
+* *xref:map-reduce.adoc[MapReduce]*
+* *xref:parallelism.adoc[Parallelism]*
+
+== References
+
+* Valiant, L. G. (1990). _A bridging model for parallel computation_.
+  Communications of the ACM, 33(8), 103-111.
+  https://dl.acm.org/doi/10.1145/79181.79182
+* Ho, R. (2010). _Scalable System Design Patterns_. Pragmatic Programming
+  Techniques (blog).
+  https://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html
