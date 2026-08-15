@@ -1,3 +1,100 @@
 = Automated testing
 
-// TODO
+Automated testing is the practice of using software to execute tests against a
+system under test, compare the actual outcomes against expected ones, and
+report the results, all without manual intervention. A test is _automated_ when
+its inputs, execution, and pass-or-fail verdict are encoded as code that can be
+re-run unchanged, rather than performed by a person each time.
+
+This contrasts with xref:manual-testing.adoc[*manual testing*], where a human
+follows a written procedure and judges the result by eye. The two are
+complementary rather than mutually exclusive. Automated tests excel at
+repeating the same checks cheaply and frequently, while manual and
+xref:exploratory-testing.adoc[*exploratory testing*] remain better suited to
+assessing usability, aesthetics, and behavior that is hard to assert
+mechanically.
+
+== Why automate
+
+The defining advantage of automation is repeatability. A test that runs itself
+can be executed after every change, by every developer, and in every
+environment, at negligible marginal cost. This turns a one-off check into a
+permanent regression guard. xref:regression-testing.adoc[*Regression testing*]
+is therefore one of the practices that benefits most from automation. Manually
+re-running a growing suite after every change would quickly become
+prohibitively slow.
+
+Frequent, automated execution also shortens the feedback loop between
+introducing a defect and discovering it. The
+xref:first-principles-of-testing.adoc[*FIRST principles of testing*] capture the
+qualities that make this work. Tests that are fast, isolated, repeatable,
+self-validating, and timely run often enough to catch defects while they are
+still cheap to fix.
+
+Because the verdict is produced by code, automated tests can run unattended –
+on a developer's machine, in a xref:ci-cd.adoc[*CI/CD*] pipeline, or on a
+schedule – and act as a gate on
+xref:continuous-delivery.adoc[*continuous delivery*]. This is what makes it
+practical to keep a codebase in a releasable state at all times.
+
+== How it works
+
+An automated test suite is driven by a xref:test-harness.adoc[*test harness*]:
+the runner that discovers and executes tests, the fixtures that put the system
+into a known state, and the stubs, mocks, and drivers that stand in for absent
+or slow collaborators. Each individual test follows a small structure –
+xref:arrange-act-assert.adoc[*Arrange, Act, Assert*] – that sets up a scenario,
+triggers a behavior, and asserts the result.
+
+== Levels of an automated suite
+
+Automated tests are conventionally organized into levels that trade scope for
+cost. The widely cited *test pyramid* places a broad base of fast, cheap
+xref:unit-testing.adoc[*unit tests*] at the bottom, a thinner layer of
+xref:integration-testing.adoc[*integration tests*] above it, and a small number
+of slow, expensive xref:system-testing.adoc[*end-to-end tests*] at the top. The
+shape reflects the economics. Lower-level tests run quickly and pinpoint
+failures precisely, while higher-level tests cover more of the system but are
+slower, harder to maintain, and more prone to flakiness. Performance and
+xref:load-testing.adoc[*load testing*] sit alongside this hierarchy, often run
+less frequently because of their resource cost.
+
+== Limitations
+
+Automated tests can only verify what they have been explicitly told to check.
+They are blind to unspecified behavior, and so do not replace human judgment
+about whether a feature is pleasant, accessible, or even correct in ways the
+author did not anticipate. A passing suite is evidence that the cases it covers
+still work, not that the system is correct.
+
+*Code coverage* measures which lines or branches a suite executes, but it says
+nothing about whether the assertions are meaningful.
+xref:mutation-testing.adoc[*Mutation testing*] addresses this by seeding
+deliberate defects and checking whether the suite catches them.
+xref:static-analysis.adoc[*Static analysis*] is complementary. It catches entire
+classes of issue – type errors, unreachable code, security flaws – without
+execution, and is typically run alongside automated tests in a CI/CD pipeline.
+
+A suite that produces intermittent, unexplained failures – _flaky tests_ –
+undermines the trust that automation depends on. When a test's result is not
+deterministic, developers learn to ignore red builds, and the safety net
+evaporates.
+
+== Relationship to development practices
+
+Automation is a capability, not a methodology.
+xref:test-driven-development.adoc[*Test-driven development*] is one discipline
+that produces automated tests as a by-product of writing them first.
+xref:behavior-driven-development.adoc[*Behavior-driven development*] and
+xref:acceptance-testing.adoc[*acceptance testing*] extend automated checks up to
+the requirements level. In every case the value of the tests comes from their
+being automated: written once, run forever.
+
+== See also
+
+* xref:testing.adoc[*Testing*]
+* xref:manual-testing.adoc[*Manual testing*]
+* xref:test-harness.adoc[*Test harness*]
+* xref:first-principles-of-testing.adoc[*FIRST principles of testing*]
+* xref:regression-testing.adoc[*Regression testing*]
+* xref:ci-cd.adoc[*CI/CD*]
