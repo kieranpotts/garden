@@ -228,7 +228,7 @@ Do NOT push your changes.
 - [x] 🌱 Disaster recovery — `disaster-recovery.adoc` (fertilize)
 - [x] 🌱 Discovery — `discovery.adoc` (fertilize)
 - [x] 🌱 Distributed caching — `distributed-caching.adoc` (fertilize)
-- [ ] 🌱 Distributed databases — `distributed-databases.adoc` (fertilize)
+- [x] 🌱 Distributed databases — `distributed-databases.adoc` (fertilize)
 - [ ] 🌱 Distributed file systems — `distributed-file-systems.adoc` (fertilize)
 - [ ] 🌱 Distributed locking — `distributed-locking.adoc` (fertilize)
 - [ ] 🌱 Distributed system — `distributed-system.adoc` (tend)

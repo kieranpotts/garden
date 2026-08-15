@@ -17,6 +17,8 @@ scheduling delivery, and sending a confirmation email. If any of these
 operations fail, the entire transaction should be rolled back to prevent
 inconsistent state.
 
+A xref:distributed-databases.adoc[*distributed database*] runs distributed
+transactions internally whenever a write touches more than one of its nodes.
 Some databases support distributed transactions natively, but otherwise
 implementation requires additional tools.
 *xref:phased-commit.adoc[Phased commits]*, such as the two-phase commit (2PC)
