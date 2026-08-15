@@ -1,3 +1,104 @@
 = Cell-based architecture
 
-// TODO:
+Cell-based architecture is a *xref:architectural-pattern.adoc[design pattern]* for
+*xref:distributed-system.adoc[distributed software]* in which the system is built
+from autonomous, self-contained units called *cells*. Each cell is a
+vertically-sliced deployment that carries every component it needs to serve its
+share of traffic: compute, storage, and its own data. Cells are redundant
+replicas of the same service, and traffic is partitioned across them rather than
+shared between them.
+
+The defining constraint is that a cell has no hard dependencies on any other
+cell. There is no shared database, no shared in-memory cache, and no call that
+one cell must make to another to serve a request. A failure inside one cell is
+therefore contained inside that cell, and the other cells keep serving. The
+pattern exists to limit the *blast radius* of any one failure to a single cell.
+
+== How cells contain failures
+
+Cell-based architecture is the
+*xref:bulkhead.adoc[bulkhead]* pattern applied at the scale of a whole system.
+Where a conventional bulkhead partitions a single shared resource such as a
+thread pool, a cell partitions the entire stack. Each cell runs its own
+processes, holds its own data, and owns its own capacity. Because nothing is
+shared, no cell can starve, corrupt, or crash another through resource
+exhaustion, a bad deployment, or a data layer outage.
+
+Partitioning is what makes the cells redundant without coupling them. A router
+in front of the cells directs each request to a single cell, typically by
+hashing a partition key such as a tenant identifier or a
+*xref:sharding.adoc[shard]* key. Every cell is sized to handle its share of
+peak load, and the set of cells together serves the whole. When a cell fails,
+only the tenants or data it owns are affected, and traffic to the failed cell
+can be shed or reassigned while the remaining cells stay unaffected.
+
+Because each cell is a complete, independent unit, cells can be deployed, scaled,
+and operated in isolation. A bad release goes out to one cell at a time, a
+*xref:deployment-strategies.adoc[canary deployment]* taken to its logical
+extreme. A noisy neighbor, a runaway query, or a storage failure is bounded by
+the cell boundary. The pattern realizes the broader design principle of
+*xref:isolation.adoc[isolation]* at the coarsest possible granularity.
+
+== Cells, redundancy, and sharding
+
+Cell-based architecture combines two ideas that are often kept separate:
+*xref:redundancy.adoc[redundancy]* and partitioning. Redundancy alone, as in an
+*xref:active-active.adoc[active-active]* deployment of identical instances,
+protects against node failure but not against failures that propagate through
+shared state. A bad row in a shared database will be read by every instance.
+Partitioning alone, as in *xref:sharding.adoc[database sharding]*, spreads data
+across nodes but does not by itself isolate the compute and storage of each
+shard into an independently operable unit.
+
+A cell fuses the two. Each cell holds a partition of the data and the full
+redundant stack needed to serve it, so failure isolation and data partitioning
+reinforce each other. The result is a system that scales
+*xref:horizontal-scaling.adoc[horizontally]* by adding cells, gains
+*xref:fault-tolerance.adoc[fault tolerance]* from the redundancy between them, and
+keeps *xref:availability.adoc[availability]* high by routing around any cell that
+goes bad.
+
+The pattern is especially common in large-scale
+*xref:multi-tenant.adoc[multi-tenant]* SaaS, where partitioning by tenant makes
+both the routing rule and the failure boundary natural. Each tenant lives in one
+cell, so an incident affecting one tenant's data or workload is contained to
+that tenant's cell. Cloudflare and several large cloud providers have publicly
+described their platforms in cell-based terms.
+
+== Trade-offs
+
+Cells trade resource efficiency for isolation. Every cell must be sized for its
+own peak demand, so the total provisioned capacity is the sum of the per-cell
+peaks rather than a single shared peak. As with any bulkhead, the system pays
+for resilience with idle capacity, and the cost grows with the number of cells.
+
+Partitioning the data and the routing introduces new constraints. Operations
+that span the whole dataset — global queries, cross-tenant analytics, or
+features that aggregate across all tenants — no longer have a single place to
+run. They must be answered with *xref:scatter-and-gather.adoc[scatter-and-gather]*
+across cells, replicated to a separate store, or served by a dedicated
+aggregation layer, each of which adds *xref:complexity.adoc[complexity]* and
+*xref:latency.adoc[latency]*.
+
+Operating many near-identical cells is its own burden. Each cell is a full stack
+to deploy, monitor, and patch, and a misconfiguration that affects all cells
+becomes a coordinated outage rather than a contained one. The discipline pays
+off when the failure modes being guarded against are catastrophic and
+correlated — a shared-state outage that would otherwise take down the whole
+system — and less so for smaller systems whose blast radius is already
+manageable through finer-grained bulkheads and conventional
+*xref:deployment-strategies.adoc[deployment strategies]*.
+
+== See also
+
+* xref:bulkhead.adoc[*Bulkhead*], of which cell-based architecture is the
+  whole-system application.
+* xref:isolation.adoc[*Isolation*], the design principle cells realize.
+* xref:sharding.adoc[*Sharding*], the data-partitioning counterpart to a cell's
+  compute isolation.
+* xref:redundancy.adoc[*Redundancy*], combined with partitioning inside each
+  cell.
+* xref:microservices.adoc[*Microservices*], a finer-grained decomposition that
+  cells are often built from.
+* xref:monolith.adoc[*Monolith*], the shared-everything extreme that cells are
+  the opposite of.
