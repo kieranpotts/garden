@@ -1,37 +1,72 @@
 = C4 model
 
-The https://c4model.com/[C4 model] is a framework for visualizing software
-architecture at different levels of abstraction.
+The https://c4model.com/[C4 model] is a lightweight framework for visualizing
+*xref:software-architecture.adoc[software architecture]* at different levels of
+abstraction. Created by https://simonbrown.je/[Simon Brown], it provides a small,
+shared vocabulary for architecture diagrams so that any team member, stakeholder,
+or new hire can read them the same way.
 
-The model consists of four levels:
+The model defines four zoom levels, each aimed at a different audience and
+trading detail for breadth.
 
-* *Context*: Shows how your system fits into the world, including external users
-  and systems it interacts with.
+* *Context.* Shows the system in its environment, alongside the people and
+  external systems it interacts with. This is the most important diagram and the
+  one teams most often skip. It answers "what does this system do, and who depends
+  on it?" for a non-technical audience.
 
-* *Container*: Depicts the high-level technology choices, showing applications,
-  databases, and services that make up the system. A container does not
-  necessarily map to a Docker container or virtual machine, but rather
-  represents an independently deployable or executable unit.
+* *Container.* Zooms inside the system to show the applications, data stores, and
+  services that make it up, plus the technology choices behind each. Here a
+  *container* is anything that executes code or hosts data, such as a web app, an
+  API, a database, or a message broker. It is not a Docker container, despite the
+  shared name. Each container is an independently deployable or executable unit.
 
-* *Component*: Zooms into individual containers to show their internal structure
-  and key components.
+* *Component.* Zooms inside a single container to show its internal building
+  blocks: components, their responsibilities, and their dependencies. This is
+  the level developers work at day to day.
 
-* *Code*: Shows how individual components are implemented.
+* *Code.* Zooms inside a component to show classes, interfaces, and packages.
+  This level is optional and is usually auto-generated from the codebase rather
+  than drawn by hand, because it drifts quickly as the code evolves.
 
-The "code" level is optional, and often auto-generated from actual code.
+The Google Maps zoom metaphor is deliberate. Just as a map lets you step from
+country to city to street, the C4 levels let you step from "the whole system and
+its surroundings" down to "the classes inside one component". Each level operates
+at a consistent level of abstraction, and diagrams at a given level never mix in
+elements that belong to another.
 
-The C4 model was created by https://simonbrown.je/[Simon Brown]. Google Maps
-served as inspiration. Just as Google Maps allows users to zoom in and out to
-see different levels of detail, the C4 model provides a way to zoom in and out
-of software architecture models, each operating at a different level of
-abstraction or granularity.
+C4 was a reaction against the notational weight of *xref:uml.adoc[UML]*, which
+Brown argued was poorly understood, inconsistently applied, and too often
+produced diagrams that no one could read. The C4 notation is intentionally
+minimal: boxes for people, software systems, containers, and components, plus
+lines for their relationships. It leaves runtime behavior, data flow, and
+deployment topology to supplementary notations such as sequence diagrams,
+rather than trying to cover them itself. The C4 levels map roughly onto the
+*xref:high-level-design.adoc[high-level design]* and low-level design split;
+context and container diagrams are the high-level view; component and code
+diagrams are the low-level view.
 
-The model's visual notation emphasizes simplicity, using basic boxes and lines,
-making the diagrams accessible to both technical and non-technical stakeholders.
+== Trade-offs
+
+* *Container name collision.* The word "container" predates Docker in this
+  model, but the term is now firmly associated with OS-level containerization.
+  Teams new to C4 routinely expect containers to mean Docker containers, and the
+  confusion never fully goes away.
+
+* *Structural scope only.* C4 describes the static structure of a system. It does
+  not model runtime behavior, data flow, deployment topology, or non-functional
+  properties. Brown recommends pairing it with other notations for those concerns
+  rather than stretching C4 to cover them.
+
+* *Level fit.* The four levels are a recommendation, not a law. Some teams add a
+  "system landscape" view above Context to map a portfolio of collaborating
+  systems, and many never draw the code level. But systems that don't decompose
+  into a clean container and component hierarchy can feel awkward to express.
 
 == C4 modeling tools
 
-See also *xref:modeling.adoc[Modeling]* for more modeling tools.
+See *xref:modeling.adoc[modeling]* for broader modeling tools, and
+*xref:diagrams-as-code.adoc[diagrams-as-code]* for the text-based approach that
+underpins several C4 tools.
 
 * https://structurizr.com/[Structurizr]: Developed by
   https://simonbrown.je/[Simon Brown], who also created the C4 model,
@@ -44,3 +79,15 @@ See also *xref:modeling.adoc[Modeling]* for more modeling tools.
   technical detail. Freemium SaaS. You create models of the first three levels
   of the C4 model: Context, container, component – and then at the bottom you
   can link to code in GitHub or other repositories.
+
+== See also
+
+* *xref:archimate.adoc[ArchiMate]*: A broader modeling language for enterprise
+  architecture, spanning strategy, business, application, and technology layers
+  across a whole enterprise, where the C4 model focuses on a single software
+  system.
+* *xref:modeling.adoc[Modeling]*
+* *xref:uml.adoc[Unified Modeling Language (UML)]*
+* *xref:diagrams-as-code.adoc[Diagrams-as-code]*
+* *xref:high-level-design.adoc[High-level design (HLD)]*
+* *xref:software-architecture.adoc[Software architecture]*
