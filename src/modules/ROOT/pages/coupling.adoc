@@ -1,10 +1,105 @@
 = Coupling
 
-Coupling is a *xref:design-principles.adoc[design principle]* and a *[measure]*
-of the dependencies between two or more modules or other components in a system.
-*xref:connascence.adoc[Connascence]* refines this idea by classifying the
-specific kinds of coupling and ranking them by strength.
+Coupling is a xref:design-principles.adoc[*design principle*] and a measure of
+the degree of interdependence between two or more modules or other components in
+a system. A module is coupled to another when a change to one forces a
+corresponding change to the other, or when one cannot be understood, tested, or
+reused without the other being present. The stronger and more numerous those
+dependencies, the higher the coupling.
 
-// TODO: Define loose and tight coupling.
+Coupling is the counterpart of xref:cohesion.adoc[*cohesion*]. The two are
+usually discussed together because they pull in the same direction: modules
+with high cohesion tend to depend on fewer outside concerns, and so tend to be
+loosely coupled to the rest of the system. Design guidance therefore favors
+high cohesion and low coupling as a single combined aim.
 
-See also *xref:stamp-coupling.adoc[stamp coupling]*.
+xref:connascence.adoc[*Connascence*] refines this idea by classifying the
+specific kinds of coupling and ranking them by strength. Where the classical
+vocabulary speaks only of "loose" or "tight", connascence names _how_ two
+modules are coupled and how far the coupling reaches.
+
+== Loose and tight coupling
+
+*Loose* (or *low*) coupling describes modules that interact through narrow,
+stable interfaces and share little else. A change inside one module rarely
+propagates past the boundary, and the modules can be substituted, tested, or
+reused independently. Loosely coupled modules are the goal of most
+xref:modular-design.adoc[*modular design*] and of patterns such as
+xref:dependency-inversion.adoc[*dependency inversion*], which routes
+dependencies through abstractions so that high-level policy does not bend to
+low-level detail.
+
+*Tight* (or *high*) coupling describes modules that know too much about each
+other. One module may reach into another's internal data, depend on the order
+of its operations, or assume the implementation of an algorithm it does not
+own. A change in the supplier then ripples to every consumer, often in ways the
+supplier's author cannot foresee. Tight coupling makes code harder to
+xref:refactoring.adoc[*refactor*], harder to test in isolation, and harder to
+reuse outside its original context.
+
+[IMPORTANT]
+--
+Coupling is a matter of degree, not a binary. Some dependency between modules
+is unavoidable: a system whose modules never interact does nothing. The aim is
+to keep coupling weak, narrow, and local – visible at a stable interface –
+rather than to eliminate it entirely. The connascence _locality heuristic_
+captures the same point: strong coupling is tolerable inside a single module
+and becomes a liability only when it crosses boundaries.
+--
+
+== The classical categories
+
+Structured design literature, notably Myers and the Stevens–Myers–Constantine
+paper, cataloged several grades of coupling from weakest to strongest. They are
+a coarser predecessor to connascence and remain widely cited.
+
+* *Data coupling* — modules share scalar data through parameters. The weakest
+  and generally acceptable form.
+* xref:stamp-coupling.adoc[*Stamp coupling*] — modules share a composite data
+  structure but only some of its fields are actually used.
+* *Control coupling* — one module passes a flag or value that controls the
+  internal logic of another, telling it _how_ to behave rather than _what_ to
+  do.
+* *Common coupling* — modules share a global data area. A change to the shared
+  area affects every module that reads or writes it.
+* *Content coupling* (also called pathological coupling) — one module reaches
+  into another's internals, reading or modifying its data directly. The
+  strongest form, and the one xref:encapsulation.adoc[*encapsulation*] exists to
+  prevent.
+
+Each of these can be expressed as one or more connascence types. Stamp coupling,
+for example, typically manifests as connascence of position or connascence of
+type, depending on whether the dependent module relies on the order of the
+structure's fields or merely its shape.
+
+== Reducing coupling
+
+Lowering coupling is the practice of xref:decoupling.adoc[*decoupling*].
+Concrete moves include narrowing interfaces, hiding implementation detail
+behind xref:encapsulation.adoc[*encapsulation*], replacing positional
+parameters with named structures, and routing dependencies through abstractions
+so that callers depend on what a module does rather than how it does it. The
+xref:law-of-demeter.adoc[*Law of Demeter*] is a heuristic for the same end: a
+module should talk to its immediate collaborators and not to their
+collaborators' collaborators, since each hop adds a hidden dependency.
+
+== See also
+
+* xref:cohesion.adoc[*Cohesion*]
+* xref:connascence.adoc[*Connascence*]
+* xref:decoupling.adoc[*Decoupling*]
+* xref:design-principles.adoc[*Design principles*]
+* xref:dependency-inversion.adoc[*Dependency inversion*]
+* xref:encapsulation.adoc[*Encapsulation*]
+* xref:law-of-demeter.adoc[*Law of Demeter*]
+* xref:modular-design.adoc[*Modular design*]
+* xref:refactoring.adoc[*Refactoring*]
+* xref:stamp-coupling.adoc[*Stamp coupling*]
+
+== References
+
+- Stevens, W., Myers, G., and Constantine, L. (1974). _Structured Design_.
+  IBM Systems Journal, 13(2).
+- Myers, Glenford (1978). _Composite/Structured Design_. Addison-Wesley.
+- Page-Jones, Meilir (1996). _What Every Programmer Should Know About
+  Object-Oriented Design_. Addison-Wesley.
