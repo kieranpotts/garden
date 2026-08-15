@@ -1,41 +1,96 @@
 = Design patterns
 
-Design patterns are general reusable solutions to common problems in software
-design. They are not finished designs that can be transformed directly into
-code, but rather templates for how to solve a generalized problem in a way that
-can be used in many different situations.
+Design patterns are general, reusable solutions to common problems in software
+design. They are not finished designs that can be translated directly into
+code. They are templates for how to solve a generalized problem in a way that
+can be adapted to many different situations.
 
-// TODO: https://en.wikipedia.org/wiki/Software_design_pattern
-// TODO: https://refactoring.guru/design-patterns
-// TODO: https://www.youtube.com/watch?v=YMAwgRwjEOQ
-// TODO: https://github.com/iluwatar/java-design-patterns
-// TODO: https://github.com/addyosmani/essential-js-design-patterns
+A pattern captures a proven solution to a recurring problem, together with the
+context in which it applies, the forces it resolves, and the consequences it
+introduces. Naming a pattern gives a team a shared vocabulary: saying "use an
+adapter here" conveys a whole design decision in two words. See
+xref:code-reuse.adoc[*code reuse*] for how patterns fit alongside other reuse
+strategies, and xref:design-principles.adoc[*design principles*] for the
+distinction between a reusable solution (a pattern) and a guiding maxim (a
+principle).
 
-// TODO: Add history, and pros and cons, of patterns - see https://refactoring.guru/design-patterns
+The term was popularized by _Design Patterns: Elements of Reusable
+Object-Oriented Software_ (1994), by Erich Gamma, Richard Helm, Ralph Johnson,
+and John Vlissides – the "Gang of Four". Their book catalogued 23
+object-oriented patterns and sorted them into three categories by intent:
+
+* *Creational patterns* abstract the process of object construction.
+* *Structural patterns* compose classes or objects into larger structures.
+* *Behavioral patterns* assign responsibility and shape how objects
+  communicate.
+
+The Gang of Four categories cover object-oriented design at the class and
+object level. Other families of pattern address different scales and domains:
+xref:architectural-pattern.adoc[*architectural patterns*] operate on whole
+systems, xref:communication-pattern.adoc[*communication patterns*] describe
+how components exchange data, and Martin Fowler's enterprise application
+patterns address the structure of business applications. The entries below
+collect the patterns this garden covers so far.
+
+== Creational patterns
+
+* xref:factory.adoc[*Factory*]
+* xref:singleton.adoc[*Singleton*]
 
 == Structural patterns
 
-* *xref:adapter-pattern.adoc[Adapter pattern]*
-* *xref:inversion-of-control.adoc[Inversion of control]*
-* *xref:ports-and-adapters.adoc[Ports and adapters]*
+* xref:adapter-pattern.adoc[*Adapter pattern*]
+* xref:inversion-of-control.adoc[*Inversion of control*]
+
+== Behavioral patterns
+
+* xref:observer-pattern.adoc[*Observer pattern*]
+* xref:publish-subscribe-pattern.adoc[*Publish-subscribe (pubsub) pattern*]
+* xref:strategy-pattern.adoc[*Strategy pattern*]
 
 == Architectural patterns
 
-* *xref:client-server-architecture.adoc[Client-server architecture]*
-* *xref:data-oriented-architecture.adoc[Data-oriented architecture]*
-* *xref:domain-driven-design.adoc[Domain-driven design]*
-* *xref:event-driven-architecture.adoc[Event-driven architecture]*
-* *xref:hexagonal-architecture.adoc[Hexagonal architecture]*
-* *xref:layered-architecture.adoc[Layered architecture (aka. multi-tiered or n-tier architecture)]*
-* *xref:message-driven-architecture.adoc[Message-driven architecture]*
-* *xref:microservices.adoc[Microservices]*
-* *xref:monolith.adoc[Monoliths]*
-* *xref:nanoservices.adoc[Nanoservices]*
-* *xref:reactive-programming.adoc[Reactive programming]*
-* *xref:request-response.adoc[Request-response]*
-* *xref:serverless-architecture.adoc[Serverless architecture]*
-* *xref:service-oriented-architecture.adoc[Service-oriented architecture]*
-* *xref:vertical-slice-architecture.adoc[Vertical-slice architecture]*
+* xref:client-server-architecture.adoc[*Client-server architecture*]
+* xref:data-oriented-architecture.adoc[*Data-oriented architecture*]
+* xref:domain-driven-design.adoc[*Domain-driven design*]
+* xref:event-driven-architecture.adoc[*Event-driven architecture*]
+* xref:hexagonal-architecture.adoc[*Hexagonal architecture*]
+* xref:layered-architecture.adoc[*Layered architecture*]
+* xref:message-driven-architecture.adoc[*Message-driven architecture*]
+* xref:microservices.adoc[*Microservices*]
+* xref:monolith.adoc[*Monoliths*]
+* xref:nanoservices.adoc[*Nanoservices*]
+* xref:ports-and-adapters.adoc[*Ports and adapters*]
+* xref:reactive-programming.adoc[*Reactive programming*]
+* xref:request-response.adoc[*Request-response*]
+* xref:serverless-architecture.adoc[*Serverless architecture*]
+* xref:service-oriented-architecture.adoc[*Service-oriented architecture*]
+* xref:strangler-fig-pattern.adoc[*Strangler fig pattern*]
+* xref:vertical-slice-architecture.adoc[*Vertical-slice architecture*]
 
-// TODO:
-// * Add Enterprise Application patterns: https://martinfowler.com/eaaCatalog/
+Architectural patterns are covered in more depth in
+xref:architectural-pattern.adoc[*architectural pattern*].
+
+Patterns are tools, not goals. Forcing a pattern onto a problem it does not fit
+adds indirection without earning the reuse it promises. A pattern earns its
+place only when the problem genuinely matches its context. See
+xref:anti-pattern.adoc[*anti-patterns*] for the failure modes this produces,
+and xref:yagni.adoc[*YAGNI*] for the broader caution against solving problems
+you do not yet have.
+
+== See also
+
+* xref:architectural-pattern.adoc[*Architectural pattern*]
+* xref:communication-pattern.adoc[*Communication pattern*]
+* xref:anti-pattern.adoc[*Anti-pattern*]
+* xref:design-principles.adoc[*Design principles*]
+* xref:code-reuse.adoc[*Code reuse*]
+* xref:software-architecture.adoc[*Software architecture*]
+* xref:system-design.adoc[*System design*]
+
+== References
+
+* Gamma, Helm, Johnson & Vlissides (1994). _Design Patterns: Elements of
+  Reusable Object-Oriented Software_. Addison-Wesley.
+* Fowler, M. (2002). _Patterns of Enterprise Application Architecture_.
+  Addison-Wesley.

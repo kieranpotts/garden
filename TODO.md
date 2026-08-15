@@ -217,7 +217,7 @@ Do NOT push your changes.
 - [x] 🌱 Dependency inversion — `dependency-inversion.adoc` (water)
 - [x] 🌱 Deployment pipeline — `deployment-pipeline.adoc` (entwine)
 - [x] 🌱 Deployment strategies — `deployment-strategies.adoc` (none)
-- [ ] 🌱 Design patterns — `design-patterns.adoc` (water)
+- [x] 🌱 Design patterns — `design-patterns.adoc` (water)
 - [ ] 🌱 Design principles — `design-principles.adoc` (none)
 - [ ] 🌱 Developer Certificate of Origin (DCO) — `developer-certificate-of-origin.adoc` (fertilize)
 - [ ] 🌱 DevOps — `devops.adoc` (fertilize)
