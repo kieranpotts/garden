@@ -209,7 +209,7 @@ Do NOT push your changes.
 - [x] 🌱 Database query optimization — `database-query-optimization.adoc` (water)
 - [x] 🌱 Dead letter queue — `dead-letter-queue.adoc` (fertilize)
 - [x] 🌱 Deadlock — `deadlock.adoc` (fertilize)
-- [ ] 🌱 Debugger — `debugger.adoc` (fertilize)
+- [x] 🌱 Debugger — `debugger.adoc` (fertilize)
 - [ ] 🌱 Decomposition — `decomposition.adoc` (fertilize)
 - [ ] 🌱 Decoupling — `decoupling.adoc` (fertilize)
 - [ ] 🌱 Denormalization — `denormalization.adoc` (fertilize)
