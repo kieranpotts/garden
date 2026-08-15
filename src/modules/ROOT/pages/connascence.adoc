@@ -1,39 +1,127 @@
 = Connascence
 
-// TODO: https://en.wikipedia.org/wiki/Connascence
+*Connascence* is a software quality metric and a taxonomy for the different
+kinds of xref:coupling.adoc[*coupling*] between code modules. Two components are
+connascent when a change to one would require a change to the other. Lower
+connascence means higher code quality. The concept was introduced by Meilir
+Page-Jones in _What Every Programmer Should Know About Object-Oriented Design_
+as a finer-grained successor to the older coupling and
+xref:cohesion.adoc[*cohesion*] vocabulary, which spoke only of "tight" or "loose"
+coupling without distinguishing _how_ the modules were coupled.
 
-*Connascence* is a software quality metric that describes different levels and
-dimensions of *xref:coupling.adoc[coupling]*. Two components are connascent when a
-change in one would require a change in the other as well. Lower connascence
-means higher code quality. The concept generalizes and extends the older
-*xref:coupling.adoc[coupling]* and *xref:cohesion.adoc[cohesion]* ideas, and was
-formalized by Meilir Page-Jones.
+Each instance of connascence is judged on three properties: strength, degree,
+and locality. *Strength* is the type of the connascence, ranked from weak to
+strong. Weaker connascence is preferable because it is easier to refactor.
+*Degree* is how many occurrences of the connascence exist between the
+components. *Locality* is how far apart the components are. Connascence between
+distant modules is worse than connascence within a single module.
 
-Each instance of connascence is considered on three axes, namely strength,
-degree, and locality. *Strength* is the type of the connascence, ranked from
-weak to strong. Weaker connascence is preferable because it is easier to change.
-*Degree* is how many occurrences of the connascence exist between the components.
-*Locality* is how far apart the components are. Connascence is worse when
-components are far apart.
+The most useful consequence of the three properties is the *locality heuristic*.
+Stronger forms of connascence are acceptable, even unavoidable, inside a single
+function or class where the coupling is visible in one place. The same forms
+become a liability when they cross module or codebase boundaries, where a change
+ripples to code the author may never see. The goal is not to eliminate
+connascence, which is impossible, but to keep it weak where it is far-reaching
+and allow it to be strong only where it is local.
 
-Connascence gives developers a vocabulary to talk about different types of
-coupling. The types, in increasing strength, are *Connascence of Name*,
-*Connascence of Type*, *Connascence of Meaning*, *Connascence of Position*,
-*Connascence of Algorithm*, *Connascence of Execution*, and *Connascence of
-Timing*. Stronger connascence is harder to change.
+== Static and dynamic connascence
 
-The weakest form, *Connascence of Name*, requires only that two components agree
-on the name of something. Renaming a method forces every caller to be updated,
-but nothing else about the callers need change. *Connascence of Position*,
-further up the scale, requires that components agree on the order of elements,
-such as the positional arguments to a function. A change in the order forces a
-matching change at every call site and is correspondingly more disruptive.
+The nine types of connascence divide into two families. *Static* connascences
+can be detected by reading the source: name, type, meaning, position, and
+algorithm. *Dynamic* connascences only become apparent at run time: execution,
+timing, value, and identity. Static connascences are weaker as a class, because
+the coupling is visible to xref:static-analysis.adoc[*static analysis*] and the
+compiler. Dynamic connascences require reasoning about behavior, which makes
+them harder to find and harder to refactor.
+
+== The types
+
+The types, in increasing strength, are as follows.
+
+* *Connascence of Name* requires only that two components agree on the name of
+  an entity. Renaming a method forces every caller to be updated, but nothing
+  else about the callers need change. It is the weakest form and is unavoidable,
+  since code refers to entities by label, which is why choosing good names
+  matters.
+
+* *Connascence of Type* requires that components agree on the type of an entity.
+  In a statically typed language the compiler catches most violations. In a
+  dynamically typed language the agreement is implicit, and a caller can silently
+  pass the wrong kind of value.
+
+* *Connascence of Meaning* (also called Connascence of Convention) requires that
+  components agree on the interpretation of a value. A magic number such as `2`
+  that means "administrator", or a `None` return that means "not found", couples
+  every reader to the same convention. Replacing the literal with a named
+  constant, or replacing a primitive with a dedicated type that
+  xref:encapsulation.adoc[*encapsulates*] its own meaning, weakens the
+  connascence. The smell of modeling a rich domain concept with a bare primitive
+  is known as *primitive obsession*.
+
+* *Connascence of Position* requires that components agree on the order of
+  elements, such as the items in a positional argument list or the fields of a
+  tuple. A change in the order forces a matching change at every call site.
+  Replacing positional arguments or tuple fields with a named structure weakens
+  the connascence to Connascence of Name.
+
+* *Connascence of Algorithm* requires that components agree on an algorithm. A
+  sender and receiver that must use the same checksum, the same character
+  encoding, or the same validation rule are connascent in algorithm. Duplicating
+  an algorithm across a database model, a web controller, and a front-end form
+  couples three distant sites to a single decision.
+
+* *Connascence of Execution* requires that the order of operations be respected.
+  Acquiring locks in one order and releasing them in another, or calling
+  `setSubject` after `send`, are execution connascences. They are dynamic: the
+  source may look innocuous while the run-time order is wrong.
+
+* *Connascence of Timing* requires that the timing of execution be respected,
+  such as a producer that must publish before a consumer reads, or a debounce
+  that must fire within a window. It is among the strongest forms because timing
+  bugs are intermittent and hard to reproduce.
+
+* *Connascence of Value* requires that several values change together. It often
+  appears between production code and tests: a test that asserts an object's
+  initial state breaks if that initial value changes. Introducing an indirection
+  – an `InitialState` alias, for example – lets both sides refer to the same
+  label instead of the same literal.
+
+* *Connascence of Identity* requires that several components reference the same
+  entity instance, such as two parts of a program that must operate on the same
+  singleton or the same cached object. It is the strongest form: the coupling is
+  not to a value or a name but to identity itself.
+
+== Reducing connascence
 
 The practical value of connascence is as a guide to
-*xref:decoupling.adoc[decoupling]*. Stronger forms can often be refactored into
-weaker ones. Passing values by position can be replaced by passing them by name.
-Hidden assumptions captured by *Connascence of Meaning* – where two components
-must agree on the interpretation of a value – can be made explicit through
-*xref:cohesion.adoc[cohesive]* types. Reducing the strength of connascence is a
-concrete way to honor the *xref:law-of-demeter.adoc[Law of Demeter]* and other
-*xref:design-principles.adoc[design principles]*.
+xref:decoupling.adoc[*decoupling*]. Stronger forms can often be
+xref:refactoring.adoc[*refactored*] into weaker ones. Passing values by position
+can be replaced by passing them by name. Hidden assumptions captured by
+Connascence of Meaning can be made explicit through named constants or dedicated
+types. A duplicated algorithm can be extracted to a single shared function.
+
+Reducing the strength of connascence is a concrete way to honor the
+xref:law-of-demeter.adoc[*Law of Demeter*] and other
+xref:design-principles.adoc[*design principles*]. The taxonomy also maps onto the
+traditional coupling categories such as xref:stamp-coupling.adoc[*stamp
+coupling*] and control coupling, but refines them. Each traditional flavor of
+coupling can exhibit several types of connascence, and connascence names the
+stronger or weaker way a given dependency is expressed.
+
+== See also
+
+* xref:coupling.adoc[*Coupling*]
+* xref:cohesion.adoc[*Cohesion*]
+* xref:decoupling.adoc[*Decoupling*]
+* xref:encapsulation.adoc[*Encapsulation*]
+* xref:law-of-demeter.adoc[*Law of Demeter*]
+* xref:refactoring.adoc[*Refactoring*]
+* xref:stamp-coupling.adoc[*Stamp coupling*]
+* xref:static-analysis.adoc[*Static analysis*]
+* xref:design-principles.adoc[*Design principles*]
+
+== References
+
+- Page-Jones, Meilir (1996). _What Every Programmer Should Know About
+  Object-Oriented Design_. Addison-Wesley.
+- connascence.io. _Connascence_. https://connascence.io
