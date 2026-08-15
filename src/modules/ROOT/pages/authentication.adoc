@@ -1,6 +1,111 @@
 = Authentication
 
-// TODO: With authorization, collectively known as Identity and Access
-// Management (IAM).
+*Authentication* is the process of verifying the identity of a user, device, or
+system. It answers the question "who are you?" by checking that a claimed
+identity is genuine. Authentication is distinct from
+*xref:authorization.adoc[authorization]*, which decides what an authenticated
+principal is allowed to do. The two are separate concerns, but so often
+implemented together that they are collectively known as *Identity and Access
+Management (IAM)*.
 
-// https://blog.bytebytego.com/p/mastering-modern-authentication-cookies
+== Authentication factors
+
+An authentication factor is a piece of evidence used to confirm identity. The
+three classical categories are:
+
+* *Knowledge.* Something the principal knows, eg. a password, PIN, or the
+  answer to a secret question.
+* *Possession.* Something the principal has, eg. a hardware security key, a
+  smart card, or a one-time code from an authenticator app.
+* *Inherence.* Something the principal is, eg. a fingerprint, a face scan, or
+  another biometric trait.
+
+*Multi-factor authentication (MFA)* requires evidence from two or more of these
+categories. The premise is that an attacker who compromises one factor – a
+leaked password, say – still cannot authenticate without the second.
+Two-factor authentication (2FA) is the most common special case.
+
+== Common mechanisms
+
+Authentication systems vary widely in how they collect and validate evidence.
+
+*Passwords* remain the dominant knowledge factor. Because users reuse and
+choose weak passwords, password-based systems almost always pair with
+secondary controls: *xref:rate-limiting.adoc[rate limiting]* to throttle
+brute-force guessing, *xref:salt.adoc[salt]* and slow hash functions to protect
+stored credentials, and MFA to compensate for the inherent weakness of
+memorized secrets.
+
+*Tokens* replace a long-lived credential with a short-lived proof of identity
+issued after an initial login. *xref:jwt.adoc[JSON Web Tokens]* carry signed
+claims about the user and are verified by the server without a session
+lookup, which makes them popular in distributed and
+*xref:api-gateway.adoc[API gateway]*-mediated architectures.
+
+*Certificates* rely on public-key cryptography. The principal proves
+possession of a private key whose corresponding public key is vouched for by a
+trusted certificate authority. Mutual TLS (mTLS) authenticates both ends of a
+connection this way and is common in service-to-service communication.
+
+*Federated protocols* delegate authentication to an external identity
+provider. OAuth 2.0 and OpenID Connect let a relying party accept an identity
+attested by a trusted authority, enabling *single sign-on (SSO)* – one login
+that works across many services.
+
+== Sessions versus tokens
+
+After a principal is authenticated, the server must remember that fact for the
+duration of the interaction. Two dominant models exist.
+
+*Session-based.* The server stores authenticated state and issues the client an
+opaque session identifier, typically carried in a cookie. Each request
+triggers a server-side lookup.
+
+*Token-based.* The server issues a self-contained, signed token (eg. a JWT)
+that the client presents on every request. The server validates the token's
+signature rather than looking up state.
+
+The trade-off is state versus revocation. Sessions are easy to revoke but
+require shared state in distributed deployments. Tokens scale horizontally but
+are hard to revoke before they expire, so they are usually short-lived and
+paired with longer-lived, revocable refresh tokens.
+
+[WARNING]
+Where a token is stored on the client matters. `localStorage` and
+`sessionStorage` are readable by any script on the page and so are vulnerable
+to *xref:cross-site-scripting.adoc[cross-site scripting (XSS)*]. HttpOnly
+cookies are not accessible to scripts and are safer against theft, but they
+require protection against cross-site request forgery (CSRF).
+
+== Common attacks and defenses
+
+* *Credential stuffing and brute force.* Automated attempts to validate large
+  sets of stolen credentials. Mitigated with rate limiting, account lockout
+  thresholds, and MFA.
+* *Phishing.* Deception that tricks a user into entering credentials on a fake
+  site. Mitigated with phishing-resistant factors such as hardware keys and
+  FIDO2, and with targeted user training.
+* *Session hijacking.* Theft of a valid session identifier or token. Mitigated
+  with HTTPS, short token lifetimes, and secure cookie attributes.
+* *Replay.* Re-transmission of a captured token or request. Mitigated with
+  nonces, timestamps, and short-lived tokens.
+
+A *xref:secure-by-design.adoc[secure by design]* approach treats these threats
+as design constraints from the outset rather than patches applied after
+deployment.
+
+== See also
+
+* *xref:authorization.adoc[Authorization]*
+* *xref:security.adoc[Security]*
+* *xref:jwt.adoc[JSON Web Token (JWT)]*
+* *xref:salt.adoc[Salt]*
+* *xref:api-gateway.adoc[API gateway]*
+* *xref:security-testing.adoc[Security testing]*
+* *xref:secure-by-design.adoc[Secure by design]*
+
+== References
+
+* ByteByteGo (2024). _Mastering Modern Authentication: Cookies, Sessions,
+  JWT, and PASETO_. ByteByteGo Newsletter.
+  https://blog.bytebytego.com/p/mastering-modern-authentication-cookies
