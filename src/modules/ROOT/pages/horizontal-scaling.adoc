@@ -11,7 +11,8 @@ load across multiple servers, rather than relying on a single server to handle
 all requests.
 
 Horizontal scaling is often used in cloud computing environments, where it is
-easy to add or remove servers as needed, often dynamically ("auto-scaling").
+easy to add or remove servers as needed, often dynamically through
+*xref:auto-scaling.adoc[auto-scaling]*.
 
 To allow for horizontal scaling of applications themselves – so allowing traffic
 to be load balanced between multiple replicas of the essentially the same
@@ -20,10 +21,15 @@ practical terms, this means moving data from the local file system to external
 (shared) file systems, and the same for databases. Thus the compute resources
 are left stateless – pure compute, with no state management.
 
+Horizontal scaling is the mechanism behind an *xref:active-active.adoc[active-active]*
+topology, where every replica serves live traffic and capacity grows with the
+number of nodes.
+
 ''''
 
 .See also
 ****
 * *xref:replication.adoc[Replication]*
 * *xref:load-balancing.adoc[Load balancing]*
+* *xref:active-active.adoc[Active-active]*
 ****
