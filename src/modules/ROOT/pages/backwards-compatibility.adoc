@@ -1,3 +1,82 @@
 = Backwards compatibility
 
-// TODO: breaking changes
+Backwards compatibility is the property of a system, interface, or data
+format that lets a newer version work with inputs, outputs, or artifacts
+produced by an older version. A backwards-compatible change is one that existing
+consumers can absorb without modification. Its opposite is a *breaking change*,
+an alteration that forces consumers to adapt before they can interoperate with
+the new version.
+
+The concept applies wherever a contract is shared between independently
+evolving parties. APIs, xref:network-protocols.adoc[*network protocols*], file
+formats, and serialized data all carry backwards-compatibility obligations. So
+does hardware: a new CPU that can no longer run binaries built for its
+predecessor has broken backwards compatibility.
+
+It is closely related to, but distinct from, forwards compatibility – the
+ability of an *old* version to accept input from a *new* one. The two together
+let a system evolve across versions in both directions. Forwards
+compatibility usually requires the newer side to leave room for extensions the
+older side can safely ignore, eg. unknown fields in a serialized message or
+reserved bits in a protocol header. xref:extensibility.adoc[*Extensibility*] is
+the design discipline that makes such room.
+
+== Breaking changes
+
+A breaking change is any modification that violates the contract existing
+consumers depend on. Common examples include removing a public operation,
+renaming a field, narrowing an accepted input range, or changing the type of a
+return value. Some changes are obviously breaking; others are subtle. Widening
+the range of accepted inputs is usually safe, but narrowing the set of outputs a
+caller might rely on is not.
+
+Breaking changes are sometimes unavoidable. The practical question is how to
+introduce them without abandoning the installed base. The usual tools are
+versioning, where the new behavior ships under a new version number or endpoint
+so old and new contracts coexist, and deprecation, where an old surface is
+documented as obsolete and given a removal date well in advance.
+xref:rollback.adoc[*Rolling back*] a botched change, where the deployment model
+allows it, is a last-resort remedy rather than a compatibility strategy.
+
+== Why it matters
+
+Backwards compatibility is a xref:quality-attributes.adoc[*quality attribute*]
+that trades off directly against the cost of change. Every compatibility
+guarantee a system upholds is a constraint on future evolution, and those
+constraints accumulate. Over time, supporting old clients and old data formats
+becomes a significant source of xref:technical-debt.adoc[*technical debt*] and a
+contributor to xref:software-rot.adoc[*software rot*].
+
+The xref:robustness-principle.adoc[*robustness principle*] is the design
+heuristic most often cited in support of backwards compatibility. It says to
+be conservative in what you send, and liberal in what you accept. Tolerant parsers
+and forgiving defaults let a system absorb input from older producers without
+coordinated upgrades. The same tolerance, applied carelessly, can mask real
+errors and widen a system's attack surface.
+
+== Techniques
+
+Maintaining backwards compatibility is mostly a matter of additive change. Add
+new fields, new operations, and new optional parameters rather than altering or
+removing existing ones. Give new behavior a new name rather than repurposing an
+old one. When an old surface must eventually go, deprecate it first and remove
+it only after a stated interval.
+
+Larger migrations use patterns that keep the old and new systems running side by
+side. The xref:strangler-fig-pattern.adoc[*strangler fig pattern*] wraps a legacy
+system and incrementally redirects traffic to a replacement, letting the two
+coexist until the old one can be retired. Design heuristics such as the
+xref:open-closed-principle.adoc[*open-closed principle*] aim for the same goal at
+the code level: keep modules open for extension but closed to the modification
+of existing, depended-upon behavior. Both are expressions of the broader
+xref:evolvability.adoc[*evolvability*] of a system.
+
+== See also
+
+* xref:robustness-principle.adoc[*Robustness principle*]
+* xref:extensibility.adoc[*Extensibility*]
+* xref:evolvability.adoc[*Evolvability*]
+* xref:open-closed-principle.adoc[*Open-closed principle*]
+* xref:strangler-fig-pattern.adoc[*Strangler fig pattern*]
+* xref:software-rot.adoc[*Software rot*]
+* xref:technical-debt.adoc[*Technical debt*]
