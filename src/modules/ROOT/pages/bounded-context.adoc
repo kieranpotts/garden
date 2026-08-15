@@ -1,9 +1,9 @@
 = Bounded context
 
-A bounded context is a *xref:domain-driven-design.adoc[domain-driven design]*
+A bounded context is a xref:domain-driven-design.adoc[*domain-driven design*]
 concept that defines the boundary within which a particular
-*xref:domain-model.adoc[domain model]* and its
-*xref:ubiquitous-language.adoc[ubiquitous language]* apply.
+xref:domain-model.adoc[*domain model*] and its
+xref:ubiquitous-language.adoc[*ubiquitous language*] apply.
 
 Inside a bounded context, every term has exactly one meaning and every entity
 has a consistent representation. Across bounded contexts, the same real-world
@@ -17,9 +17,12 @@ managing complexity in large domains. A complex business is decomposed into
 subdomains, and each subdomain (or group of closely related subdomains) is
 assigned a bounded context. The bounded context becomes the unit of autonomy. It
 maps to a team, a codebase, a
-*xref:deployment-pipeline.adoc[deployment pipeline]*, and potentially a set of
-*xref:microservices.adoc[microservices]*.
-*xref:service-oriented-architecture.adoc[Service-oriented architecture]*
+xref:deployment-pipeline.adoc[*deployment pipeline*], and potentially a set of
+xref:microservices.adoc[*microservices*]. Aligning the context boundary with the
+team boundary is an application of *xref:conways-law.adoc[Conway's law]*: the
+communication structure of the team is made to match the boundary the model
+needs.
+xref:service-oriented-architecture.adoc[*Service-oriented architecture*]
 benefits when service boundaries align with bounded contexts, since each service
 then owns a coherent slice of the domain.
 
@@ -27,11 +30,11 @@ The relationships between bounded contexts are described on a _context map_.
 Eric Evans defined a set of named patterns for these relationships – including
 _shared kernel_, _customer/supplier_, _conformist_, and _anti-corruption layer_
 – that characterize how one context's model relates to another's and how teams
-coordinate across the boundary. An anti-corruption layer (ACL) translates
+coordinate across the boundary. An *anti-corruption layer (ACL)* translates
 between the models of two contexts so that one context's terminology and
 assumptions do not leak into the other.
 
-In *xref:ontology.adoc[ontology]* terms, a bounded context defines the scope of
+In xref:ontology.adoc[*ontology*] terms, a bounded context defines the scope of
 an ontology – a coherent set of concepts and their relationships. A system's
 complexity grows not so much from the number of subdomains as from the number of
 bounded contexts and the complexity of the mappings between them. Keeping the
