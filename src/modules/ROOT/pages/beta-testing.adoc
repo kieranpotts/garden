@@ -1,3 +1,85 @@
 = Beta testing
 
-// TODO
+Beta testing is a form of xref:acceptance-testing.adoc[*acceptance testing*]
+in which a near-final build of a product is put into the hands of external
+users, who exercise it in their own environments under real operating
+conditions. It follows xref:alpha-testing.adoc[*alpha testing*], the in-house
+phase that checks whether the software works at all, and is typically
+performed on a xref:beta-version.adoc[*beta version*] that is feature-complete
+or nearly so.
+
+Where alpha testing is conducted at the developer's site under controlled
+conditions, beta testing moves the evaluation out into the field. The testers
+are real users rather than the development team, and they run the software on
+their own hardware, their own networks, and against their own data. This is
+precisely the point. Defects that depend on a specific operating environment,
+on scale, or on the unanticipated ways real users behave are what beta testing
+is meant to expose. They are the class of problems that
+xref:system-testing.adoc[*system testing*] and alpha testing, run inside the
+development organization, cannot reliably find.
+
+The work is largely xref:manual-testing.adoc[*manual*] and
+xref:exploratory-testing.adoc[*exploratory*] in character. Testers are not
+usually handed a scripted test plan; they use the product as they normally
+would and report what breaks, what confuses them, and what falls short of
+expectations. Because the testers approach the system from the outside, the
+exercise is effectively xref:black-box-testing.adoc[*black-box*]. The
+developers see inputs and reported outcomes rather than internal state. A
+common focus is xref:usability-testing.adoc[*usability*], since beta is often
+the first time the product meets genuine users in numbers.
+
+Beta programs come in two broad forms. A *closed beta*, sometimes called a
+private beta, is restricted to an invited group of testers, often customers
+under a non-disclosure agreement or early-access subscribers. The audience is
+small and selectable, which makes feedback easier to gather and lets the
+developers stay in contact with each tester. An *open beta* makes the build
+available to anyone who wants it, scaling the test population up to the
+general public. Open betas stress the software against a far wider range of
+environments and workloads than any internal team could assemble, and they
+double as a marketing exercise that builds awareness ahead of general
+availability. The trade-off is volume. An open beta can generate far more
+feedback than the team can triage, and much of it will be low-signal.
+
+Beta testing serves two related purposes. The first is validation,
+confirming that the product, as built, meets the needs and expectations of its
+intended users when run under realistic conditions. The second is defect
+discovery, surfacing the environmental, compatibility, and scale-dependent
+bugs that only appear outside the development lab. Beta feedback also tends
+to surface priorities the team undervalued, such as a workflow that real users
+find laborious, a default that surprises them, or a missing integration. These
+often shape the final stretch of work before release.
+
+The strengths of beta testing are also its weaknesses. Because the environment
+is uncontrolled, failures can be hard to reproduce and diagnose. Testers vary
+in how clearly they report problems, and the most useful feedback often comes
+from a small minority of engaged users. The software is, by definition, not
+yet released, so it carries reputational risk. A buggy or confusing beta can
+color perceptions of the final product. For the same reason, beta testing is
+not a substitute for earlier, structured test phases. It is a late-stage
+check that depends on the software already being substantially stable.
+
+In a xref:continuous-delivery.adoc[*continuous delivery*] setting the sharp
+line between beta testing and general availability blurs. Techniques that
+expose new code to a small fraction of real users in production, such as
+xref:canary-deployment.adoc[*canary deployments*] and
+xref:feature-flags.adoc[*feature flags*], serve a similar purpose to a closed
+beta but without a separate pre-release build. The beta program remains
+common for products that ship as installable artifacts or that benefit from
+explicit early-access signaling. The philosophy behind it, release early,
+release often, is now frequently expressed through gradual rollout rather
+than a discrete beta phase.
+
+== See also
+
+* xref:acceptance-testing.adoc[*Acceptance testing*]
+* xref:alpha-testing.adoc[*Alpha testing*]
+* xref:beta-version.adoc[*Beta version*]
+* xref:black-box-testing.adoc[*Black-box testing*]
+* xref:canary-deployment.adoc[*Canary deployment*]
+* xref:continuous-delivery.adoc[*Continuous delivery*]
+* xref:exploratory-testing.adoc[*Exploratory testing*]
+* xref:feature-flags.adoc[*Feature flags*]
+* xref:manual-testing.adoc[*Manual testing*]
+* xref:release-early-release-often.adoc[*Release early, release often*]
+* xref:system-testing.adoc[*System testing*]
+* xref:usability-testing.adoc[*Usability testing*]
