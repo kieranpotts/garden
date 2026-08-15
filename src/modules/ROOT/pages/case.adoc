@@ -1,3 +1,108 @@
 = Computer-Aided Software Engineering (CASE)
 
-// https://en.wikipedia.org/wiki/Computer-aided_software_engineering
+Computer-aided software engineering (CASE) is the use of software tools to
+support the analysis, design, construction, and maintenance of other software.
+CASE tools are analogous to the computer-aided design (CAD) tools used in
+hardware engineering, and aim to help teams produce high-quality, maintainable
+software with fewer defects.
+
+The term was most current in the 1980s and early 1990s, when it denoted a
+market of graphical modeling tools, code generators, and integrated
+repositories that together promised to industrialize software development.
+Although the "Big CASE" suites of that era have largely disappeared, the idea
+of tooling the software life cycle survives in modern
+*xref:integrated-development-environments.adoc[integrated development
+environments]*, *xref:automated-testing.adoc[automated testing]*, and
+model-driven approaches.
+
+== Upper and lower CASE
+
+CASE tools are commonly split into two tiers.
+
+*Upper CASE* tools support the front of the life cycle, requirements analysis
+and the graphical *xref:modeling.adoc[modeling]* of a system's structure and
+behavior. They produce entity-relationship diagrams, data-flow diagrams,
+structure charts, and similar notations.
+
+*Lower CASE* tools support the back of the life cycle, physical design, code
+generation, debugging, construction, testing, component integration,
+maintenance, and *xref:reverse-engineering.adoc[reverse engineering]*.
+
+Some activities, such as *xref:configuration-management.adoc[configuration
+management]* and project management, span the whole life cycle and apply to
+both tiers.
+
+== Tools, workbenches, and environments
+
+Fuggetta (1993) distinguishes three levels of integration.
+
+A *tool* automates a single task. A *workbench* integrates several tools behind
+a consistent interface, eg. an editor, debugger, and GUI builder bundled
+together. An *environment* goes further, attempting to support the complete
+software process through a shared repository and often a prescribed
+methodology.
+
+Environments are further classified as toolkits, loosely coupled tool
+collections; 4GL environments built around a specific language;
+language-centered environments; integrated environments with a shared
+repository and "round-trip engineering" between design and code; and
+process-centered environments that formally specify and drive the development
+process itself.
+
+== History
+
+The ISDOS project at the University of Michigan, begun in 1968, was an early
+influence. Daniel Teichroew's PSL/PSA tool let analysts describe a system in a
+Problem Statement Language and analyze it with a Problem Statement Analyzer. It
+was a CASE tool in everything but name.
+
+The commercial market took off in the 1980s with products such as Excelerator
+from Index Technology, Texas Instruments' IEF, and KnowledgeWare's toolset.
+CASE reached its peak around 1990, when over a hundred vendors offered nearly
+two hundred tools. IBM's AD/Cycle attempted to unify many of them around a
+shared repository on DB2.
+
+With the decline of the mainframe, the large integrated CASE suites died off.
+Many were absorbed by Computer Associates. A second wave followed the rise of
+*xref:object-oriented-programming.adoc[object-oriented]* methods, as the CASE
+vendors of the Booch, OMT, and OOSE camps each shipped their own modeling
+tools. These competing notations were eventually consolidated by the Object
+Management Group into the *xref:uml.adoc[Unified Modeling Language]*, and their
+accompanying processes into the *xref:unified-process.adoc[Unified Process]* and
+*xref:rational-unified-process.adoc[Rational Unified Process]*. The OMG's later
+*xref:model-driven-architecture.adoc[model-driven architecture]* standard
+extended the model-driven thread of CASE into the 2000s.
+
+== Decline and legacy
+
+CASE fell out of fashion for several reasons. The integrated suites were
+expensive, tightly coupled to a single methodology, and hard to adapt. They sat
+awkwardly against the *xref:big-design-up-front.adoc[big design up-front]*
+style of *xref:waterfall-model.adoc[waterfall]* development they were built to
+serve, which itself came under pressure from *xref:agile.adoc[agile]* and
+*xref:rad.adoc[rapid application development]* methods that favored working
+code over comprehensive models.
+
+What survived was the idea that development should be tooled. Modern IDEs
+descend from the CASE workbench concept, and
+*xref:diagrams-as-code.adoc[diagrams-as-code]* tools carry the graphical
+modeling thread forward in a lighter form.
+
+== See also
+
+* *xref:integrated-development-environments.adoc[Integrated development
+  environments]*
+* *xref:model-driven-architecture.adoc[Model-driven architecture (MDA)]*
+* *xref:uml.adoc[Unified Modeling Language (UML)]*
+* *xref:booch-method.adoc[Booch method]*
+* *xref:rad.adoc[Rapid application development (RAD)]*
+* *xref:automated-testing.adoc[Automated testing]*
+* *xref:modeling.adoc[Modeling]*
+* *xref:diagrams-as-code.adoc[Diagrams as code]*
+
+== References
+
+* Fuggetta, A. (1993). "A classification of CASE technology". _Computer_,
+  26(12), 25–38.
+* Kuhn, D.L. (1989). "Selecting and effectively using a computer aided software
+  engineering tool". _Annual Westinghouse Computer Symposium_.
