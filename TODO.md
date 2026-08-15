@@ -224,7 +224,7 @@ Do NOT push your changes.
 - [x] 🌱 DHCP — `dhcp.adoc` (fertilize)
 - [x] 🌱 Diagramming — `diagramming.adoc` (tend)
 - [x] 🌱 Diagrams-as-code — `diagrams-as-code.adoc` (tend)
-- [ ] 🌱 Directed acyclic graph (DAG) — `directed-acyclic-graph.adoc` (none)
+- [x] 🌱 Directed acyclic graph (DAG) — `directed-acyclic-graph.adoc` (none)
 - [ ] 🌱 Disaster recovery — `disaster-recovery.adoc` (fertilize)
 - [ ] 🌱 Discovery — `discovery.adoc` (fertilize)
 - [ ] 🌱 Distributed caching — `distributed-caching.adoc` (fertilize)
