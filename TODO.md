@@ -16,11 +16,19 @@ For each item:
 3. When the sub-agent completes, check the item off `[x]` and move on to the 
    next item.
 
+4. Stage the specific files you changed, including `TODO.md`: 
+  `git add <file1> <file2> ...`
+
+5. Commit your changes: `git commit -m "<skill>: <lowercase description>"`,
+   eg. `git commit -m "fertilize: 10x programmer"`
+
+Then proceed to the next item in the list.
+
 Do NOT run multiple sub-agents in parallel. Some skills instruct agents to 
 make changes across multiple topics, not only the specified target topic. 
 Therefore conflicts may arise due to parallel execution.
 
-Do NOT commit anything. Leave your changes dirty in the Git working tree.
+Do NOT push your changes.
 
 ## 0-9
 
