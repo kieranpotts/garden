@@ -1,8 +1,60 @@
 = Downtime
 
-Downtime is the time when a system is not operational. It is the opposite of
-*xref:uptime.adoc[uptime]*.
+Downtime is any period in which a system is not operational and unable to serve
+its users. It is the opposite of *xref:uptime.adoc[uptime]*. The two together
+account for the whole of a system's operating time, and both are expressed as
+measures of its *xref:availability.adoc[availability]*.
 
-Downtime is a measure of the *xref:availability.adoc[availability]* of a system.
-*xref:disaster-recovery.adoc[Disaster recovery]* planning aims to minimize the
-downtime that follows a major failure.
+An *outage* is the event that produces downtime. Downtime is the duration. A
+brief outage may cause only seconds of downtime, while a slow recovery turns a
+single outage into a sustained period of unavailability. The distinction
+matters because the techniques that reduce the frequency of outages are
+different from those that shorten their duration once a failure has occurred.
+
+== Planned and unplanned downtime
+
+Downtime falls into two broad categories.
+
+* *Planned downtime* is scheduled in advance. It covers routine maintenance,
+  backups, hardware upgrades, and releases that require taking the system
+  offline. Because users can be warned ahead of time, planned downtime is
+  usually the less damaging kind, and modern
+  *xref:deployment-strategies.adoc[deployment strategies]* aim to eliminate it
+  through zero-downtime releases.
+
+* *Unplanned downtime* results from failure, such as hardware faults, software
+  bugs, network outages, power loss, or dependency failures that cascade
+  through a system. It is the target of *xref:fault-tolerance.adoc[fault
+  tolerance]* and *xref:disaster-recovery.adoc[disaster recovery]* planning.
+
+The boundary is not always clean. A deployment that is meant to be routine can
+trigger an outage, turning planned downtime into unplanned.
+
+== Measuring downtime
+
+Because downtime is the complement of uptime, it follows directly from an
+availability target. A system with 99.9% availability (three nines) can be
+expected to be down for 8.76 hours per year; 99.99% (four nines) corresponds to
+52.56 minutes. Each additional nine shrinks the allowable downtime by roughly
+an order of magnitude, and the cost of achieving it rises steeply.
+
+Downtime is therefore one of the quantities captured in a
+*xref:service-level-agreement.adoc[service level agreement]*, where a provider
+commits to keeping it below a stated threshold over a billing period and faces
+penalties or service credits when that threshold is breached.
+
+== Reducing downtime
+
+Most techniques for reducing downtime work either by preventing failures from
+taking the system down or by restoring service quickly once a failure has
+occurred. *xref:redundancy.adoc[Redundancy]* and *xref:failover.adoc[failover]*
+keep a service running through a component failure by routing around it.
+Deployment strategies such as canary releases and rolling deployments prevent a
+bad release from causing a full outage. Where prevention is not enough,
+disaster recovery planning limits how long a failure keeps the system out of
+service.
+
+== See also
+
+* *xref:resilience.adoc[Resilience]*
+* *xref:recovery-testing.adoc[Recovery testing]*

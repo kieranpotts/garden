@@ -245,7 +245,7 @@ Do NOT push your changes.
 - [x] 🌱 Domain engineering — `domain-engineering.adoc` (fertilize)
 - [x] 🌱 Domain model — `domain-model.adoc` (water)
 - [x] 🌱 Domain-specific language (DSL) — `domain-specific-language.adoc` (none)
-- [ ] 🌱 Downtime — `downtime.adoc` (water)
+- [x] 🌱 Downtime — `downtime.adoc` (water)
 - [ ] 🌱 DRY – Don't Repeat Yourself — `dry.adoc` (entwine)
 - [ ] 🌱 DSDM — `dsdm.adoc` (fertilize)
 - [ ] 🌱 Durability — `durability.adoc` (water)
