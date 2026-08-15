@@ -241,7 +241,7 @@ Do NOT push your changes.
 - [x] 🌱 Document search — `document-search.adoc` (fertilize)
 - [x] 🌱 Domain — `domain.adoc` (none)
 - [x] 🌱 Domain-driven design — `domain-driven-design.adoc` (tend)
-- [ ] 🌱 Domain experts — `domain-experts.adoc` (none)
+- [x] 🌱 Domain experts — `domain-experts.adoc` (none)
 - [ ] 🌱 Domain engineering — `domain-engineering.adoc` (fertilize)
 - [ ] 🌱 Domain model — `domain-model.adoc` (water)
 - [ ] 🌱 Domain-specific language (DSL) — `domain-specific-language.adoc` (none)
