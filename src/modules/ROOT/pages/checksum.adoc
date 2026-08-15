@@ -1,14 +1,68 @@
 = Checksum
 
-// TODO: https://www.lifewire.com/what-does-checksum-mean-2625825
-// TODO: https://blog.algomaster.io/p/what-are-checksums
+A *checksum* is a small, fixed-size value computed from a block of data by a
+checksum algorithm and transmitted or stored alongside the data. The recipient
+recomputes the checksum over the received data and compares it to the original
+value. A match indicates the data is intact; a mismatch signals that the data
+was altered or damaged in transit.
 
-A checksum is a unique fingerprint attached to data before it is transmitted. It
-is used to verify the integrity of the data after transmission.
+Checksums exist to detect *accidental* corruption – bit flips, dropped or
+duplicated bytes, transmission noise – not deliberate tampering. Simple
+checksum algorithms have known collisions and can be forged by an attacker who
+knows the algorithm. Detecting intentional modification requires a
+*xref:cryptography.adoc[cryptographic hash]* keyed with a secret or signature.
 
-The checksum is calculated using a checksum algorithm and is used to verify the
-integrity of the data. If the data is altered in any way during transmission,
-the checksum will not match. Thus, when the data is received, the fingerprint
-may be recalculated to ensure it matches the original one. If the checksum is
-valid, the recipient node can be confident that the data was not modified or
-damaged during transmission.
+The algorithm is a form of *xref:hashing.adoc[hash function]*: it maps
+arbitrarily large input to a small, bounded output, so collisions are possible
+but made unlikely enough for the intended error-detection guarantee. The sender
+computes the value once, sends both the data and the checksum, and the receiver
+applies the same algorithm to the received data. If the two values agree, the
+data is accepted; otherwise it is discarded or requested again.
+
+== Common algorithms
+
+* *Sum and XOR checksums.* The simplest schemes add or XOR the data bytes
+  together. They are fast but weak, and miss many common errors such as
+  reordered bytes.
+* *Cyclic redundancy check (CRC).* A polynomial division over the data. CRC
+  variants such as CRC-32 and CRC-16 are widely used in network protocols and
+  storage because they detect burst errors well.
+* *Fletcher's checksum and Adler-32.* Used in zlib and other compression
+  formats; stronger than a plain sum while remaining cheap to compute.
+* *Cryptographic hashes.* Functions such as SHA-256 produce a strong digest
+  that resists deliberate tampering as well as accidental corruption. They are
+  the basis of the checksums published for file downloads and software
+  releases.
+
+== Where checksums appear
+
+* *Network protocols.* Both *xref:tcp.adoc[TCP]* and *xref:udp.adoc[UDP]* carry
+  a checksum over their header and payload so that corrupted segments are
+  detected and dropped.
+* *File verification.* Software distributions publish a checksum (often
+  SHA-256) alongside each file so that downloaders can confirm the file was not
+  altered.
+* *Storage.* Filesystems and RAID arrays checksum blocks to detect silent
+  corruption such as *bit rot* on disk.
+
+Checksums are one of the basic techniques for
+*xref:data-integrity.adoc[data integrity]*, alongside transactions and
+replication.
+
+== See also
+
+* *xref:hashing.adoc[Hashing]*: The family of functions checksum algorithms
+  belong to.
+* *xref:data-integrity.adoc[Data integrity]*: The broader goal checksums
+  serve.
+* *xref:cryptography.adoc[Cryptography]*: Cryptographic hash functions provide
+  tamper-resistant checksums.
+* *xref:tcp.adoc[TCP]*: Carries a checksum over every segment.
+* *xref:udp.adoc[UDP]*: Carries a checksum over every datagram.
+
+== References
+
+* Algomaster. _What are checksums?_.
+  https://blog.algomaster.io/p/what-are-checksums
+* Bradley Mitchell. _What does checksum mean?_. _Lifewire_.
+  https://www.lifewire.com/what-does-checksum-mean-2625825
