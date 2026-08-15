@@ -50,11 +50,10 @@ transactions, or external program launches, the CPU can allocate resources to
 another thread. This ensures the CPU remains productive, even when individual
 tasks are stalled.
 
-But there is a cost to the benefits provided by concurrency. Every context
-switch requires saving and restoring task states, which itself consumes time and
-resources. Excessive context switching can degrade performance by increasing CPU
-overhead. Thus, performance tends to degrade when the number of
-concurrently-running tasks increases.
+But concurrency comes at a cost. Every context switch requires saving and
+restoring task states, which itself consumes time and resources. Excessive
+context switching increases CPU overhead, so performance tends to degrade as the
+number of concurrently-running tasks grows.
 
 Nevertheless, concurrency can be useful for improving the responsiveness of
 software applications, by allowing them to handle multiple tasks without waiting
@@ -68,7 +67,7 @@ and handled concurrently. Other real world examples of applications that make
 extensive use of concurrency include:
 
 * *Client-side web applications*: The web platform implements concurrency to
-  allow for user actions such a clicks and scrolling, and the fetching of
+  allow for user actions such as clicks and scrolling, and the fetching of
   external resources like images and scripts, to be "non-blocking" of HTML and
   CSS rendering and repaints.
 
@@ -126,6 +125,7 @@ public class ConcurrencyExample {
 
 .See also
 ****
+* *xref:atomic-operation.adoc[Atomic operation]*
 * *xref:asynchronous-communication.adoc[Asynchronous communication]*
 * *xref:asynchronous-programming.adoc[Asynchronous programming]*
 * *xref:mechanical-sympathy.adoc[Mechanical sympathy]*
