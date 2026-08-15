@@ -9,7 +9,10 @@ arithmetic methods gave the field its name.
 An algorithm is distinct from the program that implements it. The same
 algorithm can be expressed in pseudocode, implemented in any programming
 language, or carried out by hand. What makes it an algorithm is the procedure
-itself — the ordered, unambiguous steps — not its embodiment in code.
+itself — the ordered, unambiguous steps — not its embodiment in code. This
+separation is what makes algorithms a subject of study in their own right: a
+sorting algorithm can be analyzed, compared, and proven correct before any line
+of code is written.
 
 == Properties
 
@@ -18,6 +21,9 @@ A well-formed algorithm is expected to satisfy several properties.
 * *Correctness.* For every valid input, the algorithm halts and produces the
   correct output. Correctness is often established by reasoning about the
   algorithm's *invariants* — conditions that hold before and after each step.
+  A typical proof proceeds by induction: show the invariant holds initially,
+  show each step preserves it, and show that when the algorithm halts the
+  invariant implies the desired result.
 * *Termination.* The algorithm reaches a final state after a finite number of
   steps. Procedures that may run indefinitely, eg. an operating system's main
   loop, are sometimes called *computational processes* rather than algorithms.
@@ -28,28 +34,41 @@ A well-formed algorithm is expected to satisfy several properties.
 
 These properties are ideals. In practice, an algorithm may be *partial* —
 correct only over a subset of possible inputs — or *probabilistic*, relying on
-random choices and correct only with high probability.
+random choices and correct only with high probability. A *randomized algorithm*
+such as quicksort with a random pivot trades a deterministic guarantee for a
+probabilistic one that is good enough in practice and often simpler or faster.
 
 == Analysis
 
 Algorithms are studied and compared primarily through their complexity: how
 their running time and memory usage grow as the input grows. This is expressed
-using *xref:big-o-notation.adoc[big O notation]*, which describes the
+using xref:big-o-notation.adoc[*big O notation*], which describes the
 asymptotic upper bound on resource use. Two algorithms solving the same problem
 may differ enormously in how they scale. An O(n log n) sort will outperform an
 O(n²) sort by orders of magnitude on large inputs, even if the latter has a
 smaller constant factor.
 
+Complexity is usually stated as a worst-case bound, but average-case and
+amortized analysis are often more representative of real behavior. Quicksort's
+worst case is O(n²), yet its average case is O(n log n) and it is among the
+fastest sorts in practice. Amortized analysis spreads the cost of occasional
+expensive operations, such as a hash table resize, across many cheap ones to
+give a truer picture of per-operation cost.
+
 There is often a trade-off between time and space. Caching intermediate
-results — a technique known as *memoization* — can reduce running time at the
-cost of additional memory. Correctness and efficiency can also trade off
-against each other, as in approximation algorithms that give up a guaranteed
-optimal answer in exchange for tractable running time on hard problems.
+results — a technique known as xref:memoization.adoc[*memoization*] — can
+reduce running time at the cost of additional memory. Correctness and
+efficiency can also trade off against each other, as in approximation algorithms
+that give up a guaranteed optimal answer in exchange for tractable running time
+on hard problems. A problem's *lower bound* sets a floor on how fast any
+algorithm can solve it; when an algorithm meets that bound it is asymptotically
+optimal, and further work can only improve constant factors.
 
 == Design paradigms
 
 Many algorithms are constructed using one of a small number of recurring
-strategies.
+strategies. *Recursion* is the engine behind several of them: a function that
+calls itself on a smaller instance of the same problem.
 
 * *Brute force.* Enumerate all candidate solutions and select the best. Simple,
   but often prohibitively slow — the travelling salesman problem solved this
@@ -67,12 +86,16 @@ strategies.
   as soon as it is shown to be infeasible. Used for constraint satisfaction and
   puzzle solving.
 
+The paradigms are not mutually exclusive. A single algorithm may combine them,
+eg. a recursive divide-and-conquer step that memoizes overlapping subproblems
+blurs the line between divide and conquer and dynamic programming.
+
 == Relationship to data structures
 
 Algorithms operate on data, and the way that data is organized shapes which
 algorithms are practical. As Rob Pike observed, "data structures, not
 algorithms, are central to programming" — choosing the right
-*xref:data-structures.adoc[data structure]* often makes the algorithm that
+xref:data-structures.adoc[*data structure*] often makes the algorithm that
 follows self-evident. The two are studied together as data structures and
 algorithms (DSA), and a given task is usually approached by selecting a data
 structure and an algorithm in tandem.
@@ -82,16 +105,20 @@ structure and an algorithm in tandem.
 Algorithms are commonly grouped by the kind of problem they solve. Major
 classes include sorting and searching, graph algorithms (traversal, shortest
 path, spanning trees), string and pattern-matching algorithms, and numerical
-and geometric algorithms. *xref:consensus-algorithms.adoc[Consensus algorithms]*
-form a specialized class for agreeing on state across
-*xref:distributed-system.adoc[distributed systems]*.
+and geometric algorithms. xref:hashing.adoc[*Hashing*] underpins one of the most
+widely used families of searching algorithms, achieving near-constant-time
+lookup through hash maps. xref:consensus-algorithms.adoc[*Consensus
+algorithms*] form a specialized class for agreeing on state across
+xref:distributed-system.adoc[*distributed systems*].
 
 ''''
 
 == See also
 
-* *xref:big-o-notation.adoc[Big O notation]*
-* *xref:complexity.adoc[Complexity]*
-* *xref:computer-science.adoc[Computer science]*
-* *xref:consensus-algorithms.adoc[Consensus algorithms]*
-* *xref:data-structures.adoc[Data structures]*
+* xref:big-o-notation.adoc[*Big O notation*]
+* xref:complexity.adoc[*Complexity*]
+* xref:computer-science.adoc[*Computer science*]
+* xref:consensus-algorithms.adoc[*Consensus algorithms*]
+* xref:data-structures.adoc[*Data structures*]
+* xref:hashing.adoc[*Hashing*]
+* xref:memoization.adoc[*Memoization*]
