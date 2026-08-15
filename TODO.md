@@ -9,7 +9,8 @@ For each item:
 
 1. Extract the skill name from the brackets on the end, eg. `fertilize`
    is suggested for the topic of the 10x programmer. If `none`, check the
-   item off `[x]` and move on to the next item.
+   item off `[x]`, commit that with the message "chore: update to-dos", and 
+   move on to the next item.
 
 2. Delegate a sub-agent to run that skill on that topic.
 
