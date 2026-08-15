@@ -198,7 +198,7 @@ Do NOT push your changes.
 - [x] 🌱 Data-driven programming — `data-driven-programming.adoc` (fertilize)
 - [x] 🌱 Data integrity — `data-integrity.adoc` (fertilize)
 - [x] 🌱 Data mesh — `data-mesh.adoc` (fertilize)
-- [ ] 🌱 Data modeling — `data-modeling.adoc` (water)
+- [x] 🌱 Data modeling — `data-modeling.adoc` (water)
 - [ ] 🌱 Data-oriented architecture — `data-oriented-architecture.adoc` (water)
 - [ ] 🌱 Data-oriented design — `data-oriented-design.adoc` (fertilize)
 - [ ] 🌱 Data retention — `data-retention.adoc` (fertilize)
