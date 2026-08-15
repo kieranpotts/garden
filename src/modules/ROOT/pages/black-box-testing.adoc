@@ -4,16 +4,16 @@ Black-box testing – sometimes called specification-based testing – is a soft
 testing methodology in which the tester evaluates the functionality of an
 application without any knowledge of, or reference to, its internal code
 structure, implementation details, or execution paths. The system-under-test is
-treated as an opaque "black box": the tester supplies inputs and observes
+treated as an opaque "black box". The tester supplies inputs and observes
 outputs, judging correctness entirely on the basis of whether the system
 behaves as expected, without concerning themselves with how that behavior is
 produced internally.
 
 Rather than examining source code, black-box testing relies on external
 descriptions of the system – such as requirements specifications, functional
-designs, and *xref:use-case.adoc[use cases]* – to determine what the correct
-behavior should be. Test cases are built around specifications and requirements:
-the tester selects both valid and invalid inputs and determines the expected
+designs, and xref:use-case.adoc[*use cases*] – to determine what the correct
+behavior should be. Test cases are built around specifications and requirements.
+The tester selects both valid and invalid inputs and determines the expected
 output, often with the help of a *test oracle* – a previous result known to be
 good, or some other source of truth against which observed output can be
 compared.
@@ -27,40 +27,41 @@ biases tend to differ from those of the developers who wrote the code, which
 often leads to different areas of functionality being emphasized.
 
 Black-box testing is applicable at virtually every level of
-*xref:testing.adoc[testing]*, from *xref:unit-testing.adoc[unit testing]* of
-individual component interfaces through *xref:integration-testing.adoc[integration
-testing]*, *xref:system-testing.adoc[system testing]*, and
-*xref:acceptance-testing.adoc[acceptance testing]*. It is also employed as a
-technique in *xref:penetration-testing.adoc[penetration testing]*, where an
+xref:testing.adoc[*testing*], from xref:unit-testing.adoc[*unit testing*] of
+individual component interfaces through
+xref:integration-testing.adoc[*integration testing*],
+xref:system-testing.adoc[*system testing*], and
+xref:acceptance-testing.adoc[*acceptance testing*]. It is also employed as a
+technique in xref:penetration-testing.adoc[*penetration testing*], where an
 ethical hacker simulates an external attack with no prior knowledge of the
 system being attacked.
 
 == Test design techniques
 
 A number of structured techniques are used to derive black-box test cases from a
-specification, each targeting a different way in which a system can fail:
+specification, each targeting a different way in which a system can fail.
 
-* *Equivalence partitioning*: Dividing the input domain into classes of inputs
+* *Equivalence partitioning.* Dividing the input domain into classes of inputs
 that the specification treats equivalently, so that a single representative from
 each class exercises the whole class.
-* *Boundary value analysis*: Targeting the edges of equivalence classes, where
+* *Boundary value analysis.* Targeting the edges of equivalence classes, where
 off-by-one and edge-case defects tend to cluster.
-* *Decision table testing*: Encoding the combinations of conditions and
+* *Decision table testing.* Encoding the combinations of conditions and
 resulting actions in a table, then deriving one test case per column.
-* *All-pairs testing* (pairwise): Exercising every pair of input parameters at
+* *All-pairs testing* (pairwise). Exercising every pair of input parameters at
 least once, a pragmatic compromise between full combinatorial coverage and test
 count.
-* *State transition testing*: Modeling the system as a set of states and
+* *State transition testing.* Modeling the system as a set of states and
 transitions between them, then traversing the model to test behavior across
 state changes.
-* *Cause–effect graphing*: Tracing the logical relationships between inputs
+* *Cause–effect graphing.* Tracing the logical relationships between inputs
 (causes) and outputs (effects) before deriving test cases from the graph.
-* *Error guessing*: Leveraging the tester's experience and intuition to
+* *Error guessing.* Leveraging the tester's experience and intuition to
 anticipate defects that formal techniques might miss.
-* *xref:use-case.adoc[Use case testing]* and
-*xref:user-story.adoc[user story testing]*: Deriving test scenarios from the
+* xref:use-case.adoc[*Use case testing*] and
+xref:user-story.adoc[*user story testing*]. Deriving test scenarios from the
 user-facing descriptions of required behavior.
-* *Syntax testing*: Validating that the system rejects malformed inputs
+* *Syntax testing.* Validating that the system rejects malformed inputs
 according to its input grammar.
 
 == Test coverage
@@ -68,7 +69,7 @@ according to its input grammar.
 Test coverage, in the black-box sense, is the percentage of specified
 requirements that are exercised by the test suite. This is distinct from *code
 coverage*, which measures how much of the source code is executed when the test
-suite runs and is a concern of *xref:white-box-testing.adoc[white-box testing]*.
+suite runs and is a concern of xref:white-box-testing.adoc[*white-box testing*].
 Requirements-based coverage is useful for spotting gaps where a specification
 has not been tested at all, and for pruning redundant tests that do not map to
 any requirement.
@@ -82,19 +83,20 @@ protects the tester from the implementer's bias also makes it easy to write many
 tests that exercise the same code path while leaving entire branches of the
 program untested, a situation often described as "a walk in a dark labyrinth
 without a flashlight". For this reason, black-box testing is usually complemented
-by *xref:white-box-testing.adoc[white-box testing]*, which brings visibility into
-the code's internal structure, and by *xref:mutation-testing.adoc[mutation
-testing]*, which probes the quality of the test suite itself.
+by xref:white-box-testing.adoc[*white-box testing*], which brings visibility
+into the code's internal structure, and by
+xref:mutation-testing.adoc[*mutation testing*], which probes the quality of the
+test suite itself.
 
 Black-box testing is conceptually similar to
-*xref:behavioral-testing.adoc[behavioral testing]*, and the two terms are often
+xref:behavioral-testing.adoc[*behavioral testing*], and the two terms are often
 used interchangeably. The distinction is mainly one of emphasis. Black-box
 testing is framed around what the tester cannot see, and behavioral testing
 around the behavior the tester is interested in.
 
-See also: *xref:exploratory-testing.adoc[exploratory testing]*,
-*xref:smoke-testing.adoc[smoke testing]*,
-*xref:regression-testing.adoc[regression testing]*,
-*xref:automated-testing.adoc[automated testing]*,
-*xref:security-testing.adoc[security testing]*,
-*xref:gray-box-testing.adoc[gray-box testing]*.
+See also: xref:exploratory-testing.adoc[*exploratory testing*],
+xref:smoke-testing.adoc[*smoke testing*],
+xref:regression-testing.adoc[*regression testing*],
+xref:automated-testing.adoc[*automated testing*],
+xref:security-testing.adoc[*security testing*],
+xref:gray-box-testing.adoc[*gray-box testing*].
