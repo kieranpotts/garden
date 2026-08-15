@@ -19,12 +19,15 @@ respect the database's rules.
   transaction began, discarding every change the transaction had made. This
   *rollback* is what makes a transaction "all-or-nothing", and it is the
   mechanism that prevents partial writes from leaving the database in an
-  inconsistent state.
+  inconsistent state. The name borrows the same notion of indivisibility as a
+  low-level xref:atomic-operation.adoc[*atomic operation*], lifted from a
+  single CPU instruction to a multi-statement transaction.
 
 * *Consistency.* A transaction takes the database from one valid state to
   another. "Valid" here is defined by the application's invariants — schemas,
-  constraints, triggers, and business rules — rather than by replicas being in
-  agreement. Every committed transaction must preserve these invariants, so the
+  constraints such as xref:referential-integrity.adoc[*referential integrity*],
+  triggers, and business rules — rather than by replicas being in agreement.
+  Every committed transaction must preserve these invariants, so the
   database never holds data that violates its own rules. This is a narrower
   notion of consistency than the
   xref:consistency.adoc[*replica consistency*] that concerns distributed
@@ -35,7 +38,11 @@ respect the database's rules.
   if they had run one after another, in some serial order. In practice full
   isolation is expensive, so databases offer a range of *isolation levels* that
   trade correctness for performance, each permitting certain anomalies such as
-  dirty reads, non-repeatable reads, or phantom reads. Strict two-phase locking
+  dirty reads, non-repeatable reads, or phantom reads. The SQL standard defines
+  four levels in increasing strictness. Read uncommitted permits every anomaly;
+  read committed forbids dirty reads; repeatable read also forbids non-repeatable
+  reads; and serializable forbids phantoms too, behaving as if transactions ran
+  one at a time. Strict two-phase locking
   and other xref:locking.adoc[*locking*] strategies are the common mechanisms
   for enforcing isolation, while xref:concurrency.adoc[*concurrency*] control
   more broadly governs how interleaved operations are kept coherent. This sense
@@ -54,8 +61,9 @@ respect the database's rules.
 Strict ACID guarantees are easiest to provide in a single-node
 xref:relational-databases.adoc[*relational database*], where a single lock
 manager and write-ahead log can coordinate every transaction. They become
-progressively harder, and more expensive, to preserve as data is replicated and
-transactions span multiple nodes.
+progressively harder, and more expensive, to preserve as data is replicated or
+xref:sharding.adoc[*sharded*] across nodes and transactions span more than one
+of them.
 
 A xref:distributed-transaction.adoc[*distributed transaction*] must coordinate
 atomicity and isolation across independent storage systems, which typically
