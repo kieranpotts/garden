@@ -1,3 +1,117 @@
 = Authorization
 
-// TODO
+*Authorization* is the process of deciding whether an authenticated principal
+may perform a given action on a given resource. It answers the question "what
+are you allowed to do?" and is evaluated after
+*xref:authentication.adoc[authentication]* has established *who* the principal
+is. The two are separate concerns, but so often implemented together that they
+are collectively known as *identity and access management (IAM)*.
+
+== The authorization decision
+
+Every authorization decision resolves four elements.
+
+* *Principal.* The actor requesting access, eg. a user, a service, a device,
+  or an automated agent.
+* *Action.* The operation the principal wants to perform, eg. `read`,
+  `write`, `delete`, or `execute`.
+* *Resource.* The object the action targets, eg. a file, a database row, an
+  API endpoint, or a finer-grained attribute of one.
+* *Context.* Environmental conditions that bear on the decision, eg. the time
+  of day, the caller's network location, or the device's posture.
+
+An *authorization policy* encodes the rules that map these inputs to a permit
+or deny verdict. How those rules are expressed and evaluated is what
+distinguishes the various access control models.
+
+== Access control models
+
+Several access control models organize the policy space, each trading
+expressiveness for operational simplicity.
+
+* *Discretionary access control (DAC).* Resource owners decide who may access
+  their resources. Unix file permissions and ACL-backed object stores are
+  familiar examples.
+* *Mandatory access control (MAC).* A central authority enforces policy that
+  principals cannot override, classifying resources and principals into
+  security levels. Common in government and military systems.
+* *Role-based access control.* Permissions are grouped into roles, and
+  principals are granted roles rather than individual permissions. This is the
+  dominant model in business software. See
+  *xref:role-based-access-controls.adoc[role-based access control]*.
+* *Attribute-based access control (ABAC).* Policies evaluate attributes of
+  the principal, resource, and context, allowing fine-grained rules such as
+  "a doctor may read a patient's record only during their shift and only if
+  the patient is under their care."
+
+== Principles
+
+Sound authorization rests on a few durable principles.
+
+* *Least privilege.* Grant the narrowest set of permissions needed to perform
+  a task, and no more. This limits the blast radius of a compromised principal.
+  See *xref:secure-by-design.adoc[secure by design]*.
+* *Deny by default.* In the absence of an explicit permit, deny. Whitelisting
+  is safer than blacklisting because new resources start protected.
+* *Separation of duties.* Split a sensitive operation across two or more
+  principals so that no single one can complete it alone. A classic example
+  is separating the person who approves a purchase from the one who executes
+  it.
+* *Fail secure.* If the authorization service is unreachable, fail closed
+  rather than open. A degraded system should deny rather than grant.
+
+== Enforcement
+
+Where the decision is made matters as much as how. Centralized enforcement
+uses a single policy decision point queried by every service, keeping rules
+consistent but introducing a chokepoint. Distributed enforcement pushes the
+check to each service, which is more resilient but risks drift as services
+implement the same policy differently.
+
+In *xref:multi-tenant.adoc[multi-tenant]* systems, enforcement must also
+isolate one tenant's principals from another's resources, even when they
+share infrastructure. Tenant identity becomes a non-negotiable part of the
+resource and context inputs.
+
+== Tokens and claims
+
+Stateless architectures often fold authorization into the credential itself.
+A *xref:jwt.adoc[JSON Web Token]* can carry claims such as `role`, `scope`, or
+`permissions` that the receiving service evaluates without a lookup. The
+trade-off is revocation. A short-lived token limits the window in which a
+stolen grant is useful, but a granted permission cannot easily be taken back
+before the token expires.
+
+== Common pitfalls
+
+*Broken access control* – failures that let a principal reach resources or
+actions it should not – has sat at or near the top of the OWASP Top 10 for
+years. Recurring failure modes include the following.
+
+* *Insecure direct object reference (IDOR).* The service checks that the
+  principal is authenticated but not that they own the object named in the
+  request, eg. `GET /orders/1234` returns any user's order.
+* *Privilege escalation.* A principal assumes a more powerful role than they
+  were granted, often through parameter tampering or by exploiting a flaw in
+  role assignment logic.
+* *Forced browsing.* Reaching unlisted URLs or API operations by guessing
+  paths, relying on the absence of a link rather than an explicit check.
+
+A *xref:secure-by-design.adoc[secure by design]* approach treats authorization
+as a design constraint from the outset. Every request path is reasoned about,
+and every resource is protected by an explicit check, rather than bolting on a
+layer once an incident exposes a gap.
+
+== See also
+
+* *xref:authentication.adoc[Authentication]*
+* *xref:security.adoc[Security]*
+* *xref:role-based-access-controls.adoc[Role-based access control]*
+* *xref:jwt.adoc[JSON Web Token (JWT)]*
+* *xref:multi-tenant.adoc[Multi-tenant]*
+* *xref:secure-by-design.adoc[Secure by design]*
+
+== References
+
+* OWASP Foundation (2021). _OWASP Top 10: A01 – Broken Access Control_. OWASP.
+  https://owasp.org/Top10/A01_2021-Broken_Access_Control/
