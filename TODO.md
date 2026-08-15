@@ -252,7 +252,7 @@ Do NOT push your changes.
 
 ## E
 
-- [ ] 🌱 ECMAScript — `ecmascript.adoc` (none)
+- [x] 🌱 ECMAScript — `ecmascript.adoc` (none)
 - [ ] 🌱 Edge proxy — `edge-proxy.adoc` (fertilize)
 - [ ] 🌱 Efficiency — `efficiency.adoc` (fertilize)
 - [ ] 🌱 Egoless programming — `egoless-programming.adoc` (fertilize)
