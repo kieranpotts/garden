@@ -206,7 +206,7 @@ Do NOT push your changes.
 - [x] 🌱 Database branching — `database-branching.adoc` (tend)
 - [x] 🌱 Databases — `databases.adoc` (water)
 - [x] 🌱 Database indexes — `database-indexes.adoc` (water)
-- [ ] 🌱 Database query optimization — `database-query-optimization.adoc` (water)
+- [x] 🌱 Database query optimization — `database-query-optimization.adoc` (water)
 - [ ] 🌱 Dead letter queue — `dead-letter-queue.adoc` (fertilize)
 - [ ] 🌱 Deadlock — `deadlock.adoc` (fertilize)
 - [ ] 🌱 Debugger — `debugger.adoc` (fertilize)

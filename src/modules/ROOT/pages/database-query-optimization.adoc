@@ -1,34 +1,132 @@
 = Database query optimization
 
-== Database query optimization benefits
+Database query optimization is the process of improving the efficiency with
+which a database management system executes queries. The aim is to return the
+same results while consuming less time, CPU, memory, and I/O. It is one of the
+most consequential levers over an application's
+xref:performance.adoc[*performance*], because a single poorly-chosen query can
+dominate the load on an otherwise well-provisioned system.
 
-* *Performance*: Optimized queries return results faster. This is particularly
-  important for applications with high traffic or large databases.
+== Why query optimization matters
 
-* *Availability*: Slow queries can lead to system bottlenecks and crashes.
-  Optimized queries help maintain system availability, reducing downtime.
+* *Latency.* Optimized queries return results faster, which matters for any
+  path with a tight xref:latency.adoc[*latency*] budget. A query that scans
+  millions of rows where an index lookup would do keeps users waiting and ties
+  up a connection for the duration.
+* *Throughput.* Faster queries free up connections, memory, and CPU, raising
+  the xref:throughput.adoc[*throughput*] the database can sustain on fixed
+  hardware.
+* *Availability.* Slow queries monopolize resources. Left unchecked they cause
+  queueing, timeouts, and cascading failures that threaten
+  xref:availability.adoc[*availability*].
+* *Cost.* Fewer CPU cycles, less memory, and less I/O translate directly into
+  lower infrastructure cost, especially for managed cloud databases billed on
+  compute and storage.
 
-* *Resource efficiency*: Efficient queries consume fewer CPU and memory
-  resources.
+For analytics workloads the stakes are higher still. The complex, long-running
+queries typical of xref:analytical-databases.adoc[*analytical databases*] can
+mean the difference between a report that returns in seconds and one that times
+out.
 
-* *Cost savings*: By minimizing resource usage, operational costs can be
-  reduced.
+== How a database executes a query
 
-For businesses relying heavily on data analytics, query optimization may provide
-more timely insights, potentially leading to better decision-making.
+To optimize a query it helps to know the stages a database goes through to run
+it. A query arrives as text, usually xref:sql.adoc[*SQL*], and passes through
+three phases.
 
-== Data query optimization techniques
+. *Parsing.* The engine checks the statement for syntax errors and builds a
+  parse tree. No optimization happens here.
+. *Planning.* The *query optimizer* translates the parse tree into one or more
+  *execution plans* – concrete recipes for reading and combining data. This is
+  where most optimization happens. The optimizer estimates the cost of
+  candidate plans using statistics about the data, such as row counts and value
+  distributions, and picks the cheapest.
+. *Execution.* The storage engine runs the chosen plan, reading pages from disk
+  into the buffer pool, applying filters and joins, and returning rows.
 
-* Implement *xref:database-indexes.adoc[database indexes]*
+The optimizer's decisions are only as good as its statistics. Most engines keep
+per-column statistics that are refreshed manually or automatically. Stale
+statistics are a common cause of plans that suddenly regress after a data
+change.
 
-* Reduce joins on read operations using
-  *xref:denormalization.adoc[denormalization]*.
+== Reading an execution plan
 
-* *xref:caching.adoc[Cache]* query results.
+The primary tool for optimization is the execution plan itself. Every major
+engine exposes it: `EXPLAIN` in PostgreSQL, MySQL, and SQLite, and graphical
+equivalents in Oracle and SQL Server. The plan shows, per step, the access
+method used (full scan, index scan, index seek), the join strategy (nested
+loop, hash join, merge join), estimated row counts, and cost.
 
-* Use *xref:sharding.adoc[partitioning]* to distribute data across multiple
-  storage devices.
+Reading the plan tells you *why* a query is slow, not merely *that* it is. Two
+rules guide the reading.
+
+* Look for *full table scans* on large tables. A scan where an index seek would
+  do is the most common single fix.
+* Compare *estimated* rows to *actual* rows. A wide divergence points to stale
+  or missing statistics, which mislead the optimizer into picking the wrong
+  plan.
+
+== Techniques
+
+* Add the right xref:database-indexes.adoc[*database indexes*]. Indexes turn
+  full scans into logarithmic lookups, an improvement
+  xref:big-o-notation.adoc[*big O notation*] captures as O(n) becoming O(log
+  n). The gain is largest on the columns that appear in `WHERE`, `JOIN`, and
+  `ORDER BY` clauses.
+* Write queries the optimizer can use. Wrapping an indexed column in a
+  function, eg. `WHERE UPPER(name) = 'SMITH'`, defeats an index on `name`. A
+  function-based index, or a stored normalized column, restores it.
+* Reduce joins on read paths with
+  xref:denormalization.adoc[*denormalization*], trading write complexity and
+  duplication for cheaper reads.
+* xref:caching.adoc[*Cache*] query results. For read-heavy workloads against
+  data that changes rarely, a cache removes the query from the hot path
+  entirely.
+* Distribute data with xref:sharding.adoc[*sharding*] so that a query touches
+  only the shard holding its data, cutting the volume scanned per request.
+* Match the schema to the xref:access-patterns.adoc[*access patterns*]. A
+  read-heavy workload favors precomputed summaries and indexes; a write-heavy
+  one favors fewer indexes and append-only storage.
+
+== Common pitfalls
+
+* *The N+1 problem.* An object-relational mapper issues one query for a
+  collection and then one further query per element to fetch a related entity,
+  producing N+1 round trips where a single join would do. The fix is usually
+  eager loading or an explicit join.
+* `SELECT *`. Fetching every column when only a few are needed wastes I/O and
+  prevents a *covering index* from answering the query from the index alone.
+* *Functions on indexed columns*, as above, which silently disable the index.
+* *Implicit type conversions.* Comparing a string column to a numeric literal,
+  or vice versa, can cast the column and prevent index use.
+* *Correlated subqueries* that re-execute per outer row can often be rewritten
+  as joins or windowed aggregations.
+* *Stale statistics* make the optimizer choose plans that were right for a
+  previous data distribution.
+* *Over-indexing.* Every index speeds some reads and slows every write, so the
+  right set depends on the workload's access patterns.
+
+== Trade-offs
+
+Optimization is rarely free. Indexes speed reads but slow writes and consume
+disk. Denormalization speeds reads but adds duplication and consistency
+burdens. Caching speeds reads but introduces staleness and invalidation
+complexity. Sharding cuts per-node load but complicates cross-shard joins and
+transactions. The right balance depends on the workload's access patterns and
+on whether reads or writes dominate.
 
 == See also
 
-* *xref:foreign-keys.adoc[Foreign keys]*
+* xref:access-patterns.adoc[*Access patterns*]
+* xref:analytical-databases.adoc[*Analytical databases*]
+* xref:big-o-notation.adoc[*Big O notation*]
+* xref:database-indexes.adoc[*Database indexes*]
+* xref:foreign-keys.adoc[*Foreign keys*]
+* xref:relational-databases.adoc[*Relational databases*]
+* xref:sql.adoc[*SQL*]
+
+== References
+
+* Marcus Winand (2014). link:https://use-the-index-luke.com/[_Use The Index,
+  Luke!_]. Self-published.
+* Dan Tow (2003). _SQL Tuning_. O'Reilly Media.
