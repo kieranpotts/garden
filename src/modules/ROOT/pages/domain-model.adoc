@@ -1,13 +1,61 @@
 = Domain model
 
 In *xref:domain-driven-design.adoc[domain-driven design]*, a domain model is a
-key artifact that captures the *xref:domain.adoc[domain]* of a software system,
-its subdomains, and the relationships between the subdomains.
+system of abstractions that captures the relevant aspects of a software
+system's *xref:domain.adoc[domain]*. It is the central artifact of DDD – the
+thing the methodology puts at the heart of the design.
 
-A domain model is a system of abstractions that describe all aspects of a
-domain, which itself consists of _selected_ features of the real world context
-that are relevant to the software requirements. A model should contain just
-enough information to be a useful reference point when solving problems in that
-domain using software.
+A domain model describes the concepts that matter in the domain, the
+relationships between them, the rules and invariants that govern them, and the
+behaviors they exhibit. It is a distilled representation, not an exhaustive
+one. A good model contains just enough detail to be a useful reference point
+when reasoning about and solving problems in the domain, and no more. This
+distillation is an act of *xref:abstraction.adoc[abstraction]*: stripping away
+incidental detail so the essentials can be named, discussed, and encoded.
 
-Models help us to deal with the *xref:complexity.adoc[essential complexity]* of software systems.
+The model is not handed down from a requirements document. It is discovered
+through *knowledge crunching*, a sustained conversation between developers and
+*xref:domain-experts.adoc[domain experts]* in which the team gradually
+distills a useful model from the experts' working knowledge of the business.
+The model is expressed in a *xref:ubiquitous-language.adoc[ubiquitous language]*,
+a shared vocabulary drawn from the domain's real-world terminology and used
+consistently in conversation, documentation, and code. Naming the model's
+concepts in the ubiquitous language is what keeps the model and the software
+aligned with the business they serve.
+
+A domain model is not a single unified description of an entire business. DDD
+holds that a large domain is best modeled as several partial models, each
+valid inside its own *xref:bounded-context.adoc[bounded context]*. Inside a
+bounded context, every term has one meaning and every concept has one
+representation. The same real-world entity may be modeled differently in
+another context, because each context keeps only what it needs. This is what
+lets each model stay internally consistent and small enough to reason about,
+rather than ballooning into one model that tries to satisfy every part of the
+business at once.
+
+Models are a tool for managing the *xref:complexity.adoc[essential complexity]*
+of a software system. The domain itself is intractably rich; the model is a
+deliberately simplified proxy that makes the domain's
+*xref:problem-space.adoc[problem space]* workable. By keeping the model focused
+and the bounded contexts small, a team can keep the essential complexity of the
+eventual system within the reach of human understanding.
+
+A domain model is not the same thing as a data model. A domain model captures
+behavior and rules as well as structure, and it is shaped by the domain rather
+than by storage technology. A *xref:data-modeling.adoc[data model]* describes
+how a system's data is stored and constrained, and is eventually implemented
+as a database schema. A domain model often informs a data model, but the two
+are distinct artifacts. Conflating them is what produces an *anemic domain
+model*, a model that holds data but none of the behavior and rules that make
+the domain meaningful.
+
+The term "domain model" is also used outside DDD, in
+*xref:domain-engineering.adoc[domain engineering]*, where it refers to a model
+of the common and variable features of a family of related systems rather than
+the model of a single business domain. The two senses share the idea of
+modeling a domain, but they serve different goals.
+
+== See also
+
+* *xref:modeling.adoc[Modeling]*: The broader practice of which domain modeling
+  is one kind.
