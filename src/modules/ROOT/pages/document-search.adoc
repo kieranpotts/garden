@@ -1,3 +1,83 @@
 = Document search
 
-// TODO: https://aws.amazon.com/what-is/document-search/
+Document search is the use of a *search engine* to retrieve documents – or
+passages within them – that best match a free-text query. The documents may be
+anything from a single paragraph to thousands of pages, and each carries both
+large blocks of unstructured prose and a set of metadata fields such as title,
+author, and publication date. The query is expressed in natural language
+rather than a structured predicate, and the engine's job is to return the
+*best* matches, ranked by relevance, not every match that satisfies a
+condition.
+
+That last point is the defining difference from a database query. A
+xref:relational-databases.adoc[*relational database*] stores
+xref:structured-data.adoc[*structured data*] in tables and returns all rows
+whose column values satisfy a `WHERE` clause. A search engine stores documents
+whose chief value is unstructured text, breaks that text into matchable
+*terms* using linguistic rules, and scores the matching documents so the most
+relevant rise to the top. Where a database retrieves *all* matching rows, a
+search engine retrieves the *best* matching documents.
+
+== The inverted index
+
+The data structure that makes this practical is the *inverted index*, a
+specialized form of xref:database-indexes.adoc[*index*] that maps each term to
+the list of documents that contain it. Given a query, the engine intersects
+the posting lists for the query terms, scores the resulting documents, and
+returns the top *k*. Building and maintaining that index is the bulk of a
+search engine's work, which is why a search deployment is often paired with an
+xref:etl.adoc[*ETL*]-style ingestion pipeline that cleanses, normalizes, and
+loads source text before it can be searched.
+
+== Relevance ranking
+
+Retrieval is only useful if the results are relevant. The classical scoring
+function is *Okapi BM25*, a probabilistic model that weights each term by its
+rarity across the corpus and its frequency in the matching document. Rarer
+terms and tighter matches score higher. BM25 is a strong default, but
+relevance is ultimately a judgment about the user's intent, and engines expose
+levers to tune it: field weighting, where a title match counts for more than a
+body match; freshness decay, so newer documents score higher; synonyms, so
+"tee" and "t-shirt" retrieve the same results; and faceted filters that let
+the user narrow results by metadata.
+
+== From keywords to meaning
+
+Keyword search matches terms, not meaning. A query for "8-foot sofa" finds
+documents containing "8", "foot", and "sofa", but a query for "comfy place to
+sit by the fire" finds nothing, even when the same sofa is the right answer.
+*Semantic search* closes that gap by representing documents and queries as
+vectors in a shared space and ranking by similarity rather than term overlap.
+A xref:vector-database.adoc[*vector database*] provides the nearest-neighbor
+lookup that makes this practical at scale, and the embeddings themselves are
+produced by xref:natural-language-processing.adoc[*natural language
+processing*] models trained on large text corpora. Semantic search does not
+replace keyword search. The two are combined, with BM25 handling exact matches
+and vector similarity capturing topical relatedness.
+
+== Search engines and document stores
+
+The documents a search engine indexes often originate in a
+xref:document-oriented-databases.adoc[*document-oriented database*] or another
+operational store, and the two are frequently deployed in tandem. The database
+serves the application's reads and writes. The search engine holds a
+denormalized, indexed projection of the same data, optimized for retrieval.
+This *query offloading* pattern trades duplication and ingestion complexity
+for low-latency, relevance-ranked search that a relational or document store
+cannot match on its own.
+
+Canonical open-source search engines are built on Apache Lucene, which
+provides the inverted index and query machinery. Elasticsearch, part of the
+xref:elastic-stack.adoc[*Elastic stack*], and OpenSearch are the most widely
+deployed. Apache Solr is the other major Lucene-based platform.
+
+== See also
+
+* xref:structured-data.adoc[*Structured data*]
+* xref:database-indexes.adoc[*Database indexes*]
+* xref:document-oriented-databases.adoc[*Document-oriented databases*]
+* xref:vector-database.adoc[*Vector database*]
+* xref:natural-language-processing.adoc[*Natural language processing*]
+* xref:etl.adoc[*Extract, transform, load (ETL)*]
+* xref:elastic-stack.adoc[*Elastic stack*]
+* xref:relational-databases.adoc[*Relational databases*]

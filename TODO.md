@@ -238,7 +238,7 @@ Do NOT push your changes.
 - [x] 🌱 Do what I mean (DWIM) — `do-what-i-mean.adoc` (fertilize)
 - [x] 🌱 Docker — `docker.adoc` (prune)
 - [x] 🌱 Document-oriented databases — `document-oriented-databases.adoc` (fertilize)
-- [ ] 🌱 Document search — `document-search.adoc` (fertilize)
+- [x] 🌱 Document search — `document-search.adoc` (fertilize)
 - [ ] 🌱 Domain — `domain.adoc` (none)
 - [ ] 🌱 Domain-driven design — `domain-driven-design.adoc` (tend)
 - [ ] 🌱 Domain experts — `domain-experts.adoc` (none)
