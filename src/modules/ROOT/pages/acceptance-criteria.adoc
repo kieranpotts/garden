@@ -32,21 +32,44 @@ generally. Each one should be:
 * *Written from the user's perspective.* They describe an observable outcome
   of the system, not an implementation detail.
 
-Criteria that reference internal mechanics – a particular API endpoint, UI
-widget, or database column – tend to age poorly, because they couple the
-specification to a single technical solution that may later change.
+Consider the criterion "the checkout page must load quickly". "Quickly" has no
+threshold and "load" is undefined, so two testers could reach opposite verdicts
+on the same build. Rewriting it as "the checkout page must render its primary
+content within one second on a 3G connection at the 90th percentile" makes it
+measurable, names an observable outcome, and draws an objective pass/fail line.
+
+A few pitfalls recur often enough to flag.
+
+* *Vague adjectives.* Words like "fast", "intuitive", or "robust" carry no shared
+  meaning. Replace them with a measurable threshold or an observable behavior.
+* *Disguised tasks.* "Implement a caching layer" describes work, not an outcome.
+  A criterion should state what the user observes, not what the team builds.
+* *Conflated behaviors.* "The user can log in and view their dashboard" bundles
+  two outcomes into one criterion, so a failure in either leaves the result
+  ambiguous. Split them.
+* *Implementation coupling.* Naming a particular API endpoint, UI widget, or
+  database column freezes the criterion to one solution. Phrase it in terms of
+  observable behavior so it survives a refactor.
 
 == Expressing acceptance criteria
 
 Acceptance criteria are most useful when they are concrete enough to drive
 tests. A common lightweight form is a simple bulleted list of conditions, each
 phrased as a statement that is either true or false of the delivered system.
+For the user story "As a returning shopper, I want to save my payment details
+so that I check out faster", a reasonable set of criteria reads as follows.
+
+* The payment form offers a "save card" checkbox.
+* When the box is checked, the card details persist across sessions.
+* Saved cards appear pre-selected on the next checkout.
+* The user can delete a saved card from their account settings.
 
 A more structured form expresses each criterion as a *scenario*, using
 *xref:gherkin.adoc[Gherkin]*'s Given/When/Then template. Each scenario states a
 starting context (Given), an action (When), and an expected outcome (Then).
-Scenarios written this way double as executable specifications – they can be
-fed directly into a behavior-driven development framework, automating the
+Scenarios written this way double as executable specifications in
+*xref:behavior-driven-development.adoc[behavior-driven development (BDD)]* –
+they can be fed directly into a BDD framework, automating the
 *xref:acceptance-testing.adoc[acceptance testing]* that confirms the criteria
 are met.
 
@@ -63,4 +86,5 @@ authoritative definition of when a story is complete.
 * xref:user-story.adoc[*User story*]
 * xref:use-case.adoc[*Use case*]
 * xref:gherkin.adoc[*Gherkin*]
+* xref:behavior-driven-development.adoc[*Behavior-driven development*]
 * xref:acceptance-testing.adoc[*Acceptance testing*]
