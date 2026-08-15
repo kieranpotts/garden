@@ -223,7 +223,7 @@ Do NOT push your changes.
 - [x] 🌱 DevOps — `devops.adoc` (fertilize)
 - [x] 🌱 DHCP — `dhcp.adoc` (fertilize)
 - [x] 🌱 Diagramming — `diagramming.adoc` (tend)
-- [ ] 🌱 Diagrams-as-code — `diagrams-as-code.adoc` (tend)
+- [x] 🌱 Diagrams-as-code — `diagrams-as-code.adoc` (tend)
 - [ ] 🌱 Directed acyclic graph (DAG) — `directed-acyclic-graph.adoc` (none)
 - [ ] 🌱 Disaster recovery — `disaster-recovery.adoc` (fertilize)
 - [ ] 🌱 Discovery — `discovery.adoc` (fertilize)
