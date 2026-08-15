@@ -1,3 +1,54 @@
 = Do what I mean (DWIM)
 
-// TODO: https://en.wikipedia.org/wiki/DWIM
+*Do what I mean (DWIM)* describes a style of user interface design in which a
+system tries to infer what the user intended and act on that, rather than
+executing the literal input verbatim. The system corrects trivial errors
+automatically, fills in omitted parameters with reasonable defaults, and picks
+an interpretation when the input is ambiguous.
+
+The term was coined by Warren Teitelman in his DWIM package for BBN Lisp,
+part of his PILOT system, in the mid-1960s. It was adopted and elaborated in
+Interlisp, where DWIM was less a single feature than a pervasive philosophy.
+At the user interface, the system should make reasonable interpretations of
+unrecognized input, default omitted parameters to sensible values, and let the
+user converse with it as if with an agent that reads context.
+
+The same idea survives in GNU Emacs. `comment-dwim` comments out a selected
+region if it is uncommented, and uncomments it when it is already commented,
+choosing comment syntax and indentation to suit the language at point. Magit's
+`magit-diff-dwim` shows changes for the thing at point, guessing what to diff
+from cursor position alone. In both cases the command name advertises the
+behaviour. The function does the obvious thing in context, without further
+prompting.
+
+== Trade-offs
+
+DWIM trades predictability for convenience. When the inference is right, the
+user is saved a step. When it is wrong, the system silently does something
+other than what was asked, and the user may not notice. Early critics of
+Teitelman's package joked that DWIM stood for "Do What Teitelman Means" or
+"Do What Interlisp Means", because the corrections were tuned to the mistakes
+its author happened to make and no others.
+
+This is the tension with the
+*xref:principle-of-least-astonishment.adoc[principle of least astonishment]*.
+A system that guesses intent can surprise the user when the guess is off. DWIM
+is best applied where the inference is cheap to verify and cheap to undo, and
+where the literal interpretation would be obviously wrong. It is risky where
+the wrong guess is destructive, hard to notice, or hard to reverse.
+
+The *xref:robustness-principle.adoc[robustness principle]* is a cousin. Be
+liberal in what you accept. DWIM extends that instinct from parsing to intent,
+guessing not just what the input said but what the user meant by it.
+
+== See also
+
+* *xref:principle-of-least-astonishment.adoc[Principle of least astonishment]*
+* *xref:robustness-principle.adoc[Robustness principle]*
+
+== References
+
+* Teitelman, W. (1966). _PILOT: A Step toward Man-Computer Symbiosis_. MIT
+  Ph.D. Dissertation, Project MAC MAC-TR-32.
+* Teitelman, W. and Masinter, L. (1981). _The Interlisp Programming
+  Environment_. Computer (IEEE) 14:4:25–33.
