@@ -246,7 +246,7 @@ Do NOT push your changes.
 - [x] 🌱 Domain model — `domain-model.adoc` (water)
 - [x] 🌱 Domain-specific language (DSL) — `domain-specific-language.adoc` (none)
 - [x] 🌱 Downtime — `downtime.adoc` (water)
-- [ ] 🌱 DRY – Don't Repeat Yourself — `dry.adoc` (entwine)
+- [x] 🌱 DRY – Don't Repeat Yourself — `dry.adoc` (entwine)
 - [ ] 🌱 DSDM — `dsdm.adoc` (fertilize)
 - [ ] 🌱 Durability — `durability.adoc` (water)
 
