@@ -211,7 +211,7 @@ Do NOT push your changes.
 - [x] 🌱 Deadlock — `deadlock.adoc` (fertilize)
 - [x] 🌱 Debugger — `debugger.adoc` (fertilize)
 - [x] 🌱 Decomposition — `decomposition.adoc` (fertilize)
-- [ ] 🌱 Decoupling — `decoupling.adoc` (fertilize)
+- [x] 🌱 Decoupling — `decoupling.adoc` (fertilize)
 - [ ] 🌱 Denormalization — `denormalization.adoc` (fertilize)
 - [ ] 🌱 Dependency injection — `dependency-injection.adoc` (water)
 - [ ] 🌱 Dependency inversion — `dependency-inversion.adoc` (water)
