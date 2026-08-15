@@ -204,7 +204,7 @@ Do NOT push your changes.
 - [x] 🌱 Data retention — `data-retention.adoc` (fertilize)
 - [x] 🌱 Data structures — `data-structures.adoc` (fertilize)
 - [x] 🌱 Database branching — `database-branching.adoc` (tend)
-- [ ] 🌱 Databases — `databases.adoc` (water)
+- [x] 🌱 Databases — `databases.adoc` (water)
 - [ ] 🌱 Database indexes — `database-indexes.adoc` (water)
 - [ ] 🌱 Database query optimization — `database-query-optimization.adoc` (water)
 - [ ] 🌱 Dead letter queue — `dead-letter-queue.adoc` (fertilize)
