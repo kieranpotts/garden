@@ -32,9 +32,10 @@ until 2012.
 
 Other real-world uses:
 
-* Akamai uses bloom filters to avoid caching one-off page accesses. A page is
-  only written to cache if the bloom filter indicates it has been seen before,
-  preventing the cache from filling with pages that are never revisited.
+* Akamai uses bloom filters to avoid xref:caching.adoc[*caching*] one-off page
+  accesses. A page is only written to cache if the bloom filter indicates it has
+  been seen before, preventing the cache from filling with pages that are never
+  revisited.
 * Google BigTable uses bloom filters to avoid unnecessary disk reads. When a key
   lookup arrives, the in-memory bloom filter is checked first. A definitive "not
   present" response saves a disk access entirely.
@@ -42,7 +43,7 @@ Other real-world uses:
 == How bloom filters work
 
 At its core, a bloom filter is a fixed-size array of bits, all initialized to
-`0`. It uses `k` independent hash functions.
+`0`. It uses `k` independent xref:hashing.adoc[*hash functions*].
 
 Adding an item: The item is passed through each of the `k` hash functions. Each
 hash value is taken modulo the array length to produce a bit position. All `k`
