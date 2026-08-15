@@ -226,7 +226,7 @@ Do NOT push your changes.
 - [x] 🌱 Diagrams-as-code — `diagrams-as-code.adoc` (tend)
 - [x] 🌱 Directed acyclic graph (DAG) — `directed-acyclic-graph.adoc` (none)
 - [x] 🌱 Disaster recovery — `disaster-recovery.adoc` (fertilize)
-- [ ] 🌱 Discovery — `discovery.adoc` (fertilize)
+- [x] 🌱 Discovery — `discovery.adoc` (fertilize)
 - [ ] 🌱 Distributed caching — `distributed-caching.adoc` (fertilize)
 - [ ] 🌱 Distributed databases — `distributed-databases.adoc` (fertilize)
 - [ ] 🌱 Distributed file systems — `distributed-file-systems.adoc` (fertilize)
