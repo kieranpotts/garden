@@ -195,7 +195,7 @@ Do NOT push your changes.
 ## D
 
 - [x] 🌱 DACI framework — `daci-framework.adoc` (entwine)
-- [ ] 🌱 Data-driven programming — `data-driven-programming.adoc` (fertilize)
+- [x] 🌱 Data-driven programming — `data-driven-programming.adoc` (fertilize)
 - [ ] 🌱 Data integrity — `data-integrity.adoc` (fertilize)
 - [ ] 🌱 Data mesh — `data-mesh.adoc` (fertilize)
 - [ ] 🌱 Data modeling — `data-modeling.adoc` (water)
