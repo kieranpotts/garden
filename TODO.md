@@ -203,7 +203,7 @@ Do NOT push your changes.
 - [x] 🌱 Data-oriented design — `data-oriented-design.adoc` (fertilize)
 - [x] 🌱 Data retention — `data-retention.adoc` (fertilize)
 - [x] 🌱 Data structures — `data-structures.adoc` (fertilize)
-- [ ] 🌱 Database branching — `database-branching.adoc` (tend)
+- [x] 🌱 Database branching — `database-branching.adoc` (tend)
 - [ ] 🌱 Databases — `databases.adoc` (water)
 - [ ] 🌱 Database indexes — `database-indexes.adoc` (water)
 - [ ] 🌱 Database query optimization — `database-query-optimization.adoc` (water)
