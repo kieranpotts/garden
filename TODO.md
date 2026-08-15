@@ -242,7 +242,7 @@ Do NOT push your changes.
 - [x] 🌱 Domain — `domain.adoc` (none)
 - [x] 🌱 Domain-driven design — `domain-driven-design.adoc` (tend)
 - [x] 🌱 Domain experts — `domain-experts.adoc` (none)
-- [ ] 🌱 Domain engineering — `domain-engineering.adoc` (fertilize)
+- [x] 🌱 Domain engineering — `domain-engineering.adoc` (fertilize)
 - [ ] 🌱 Domain model — `domain-model.adoc` (water)
 - [ ] 🌱 Domain-specific language (DSL) — `domain-specific-language.adoc` (none)
 - [ ] 🌱 Downtime — `downtime.adoc` (water)
