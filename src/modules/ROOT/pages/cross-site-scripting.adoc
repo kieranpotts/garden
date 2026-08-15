@@ -1,3 +1,102 @@
 = Cross-site scripting (XSS)
 
-// TODO
+*Cross-site scripting (XSS)* is a web security vulnerability in which an
+attacker injects malicious executable markup – usually *xref:javascript.adoc[JavaScript]* –
+into a web page that is then rendered in another user's browser. The injected
+script executes within the *security context of the vulnerable site*, not the
+attacker's, so it can read and act on data the browser would only expose to a
+legitimate origin: cookies, session tokens, DOM contents, and responses from
+same-origin API endpoints.
+
+XSS is an *injection* flaw, in the same family as
+*xref:sql-injection.adoc[SQL injection]*: both exploit code that concatenates
+untrusted data into an interpreter without adequate separation. The difference
+is the target interpreter – the browser's HTML/JS parser rather than the
+database engine. XSS has appeared on every edition of the
+*xref:owasp.adoc[OWASP]* Top Ten and remains one of the most prevalent
+web vulnerabilities in production applications.
+
+== How it works
+
+A browser cannot distinguish a script the application authored from one an
+attacker smuggled into the same document. Once markup is parsed into the page,
+the *same-origin policy* treats every script it contains as belonging to that
+origin, with full access to that origin's storage, cookies, and DOM. XSS is
+therefore a failure of *output encoding*: the application writes untrusted data
+into a response in a context where it is interpreted as code rather than text.
+
+== Types
+
+XSS is conventionally classified by how the payload reaches the victim.
+
+* *Stored (persistent) XSS.* The payload is persisted on the server – in a
+  database, comment thread, or message store – and served to every user who
+  views the affected page. A single injection can compromise many victims,
+  making stored XSS the most damaging variant.
+
+* *Reflected (non-persistent) XSS.* The payload is embedded in a link or form
+  submission and echoed back by the server in the immediate response. It
+  affects only the user who triggers it, so attackers typically deliver it via
+  *xref:spoofing.adoc[phishing]* or a crafted link.
+
+* *DOM-based XSS.* The payload never reaches the server. Client-side
+  JavaScript reads it from a sink such as
+  `location.hash` or `document.referrer` and writes it into the DOM through a
+  dangerous API like `innerHTML` or `eval()`. Because the round-trip is
+  entirely in the browser, server-side output encoding alone cannot prevent it.
+
+The categories overlap in practice – a single flaw can be both reflected and
+DOM-based – but the distinction matters because each demands a different
+defense.
+
+== Impact
+
+Because the script runs as the victim on the vulnerable origin, the impact is
+bounded only by what that user can do on the site. Common consequences include
+stealing session cookies to bypass *xref:authentication.adoc[authentication]*,
+performing actions on the user's behalf, scraping sensitive page content,
+redirecting to spoofed pages for credential harvesting,
+and using the compromised session as a pivot for further attacks. Where the
+victim is an administrator, XSS can escalate to full application compromise.
+
+== Defenses
+
+The primary control is *contextual output encoding*: escaping untrusted data
+for the specific sink it is entering – HTML body, attribute, JavaScript string,
+or URL – so it is rendered as text rather than executed. Modern front-end
+frameworks (React, Vue, Angular) perform this encoding automatically on their
+templating paths; raw, unescaped injection points such as `dangerouslySetInnerHTML`
+or `v-html` are the dangerous exceptions and must be handled explicitly.
+
+Layered defenses reduce residual risk:
+
+* *xref:input-validation.adoc[Input validation]* on untrusted input rejects
+  malformed data early, but it is a secondary measure – validation alone cannot
+  anticipate every encoding trick an attacker may use.
+
+* A *Content-Security-Policy* delivered through *xref:security-headers.adoc[security headers]*
+  restricts the scripts a page may execute, blocking inline and untrusted
+  sources. CSP does not fix the underlying injection but limits its blast
+  radius.
+
+* Marking session cookies `HttpOnly` prevents client-side scripts from reading
+  them, neutralizing the most common cookie-theft payload even when an XSS slip
+  occurs.
+
+[WARNING]
+Relying on blacklist-based input filtering as the sole defense is a common and
+dangerous anti-pattern. Attackers routinely evade blocklists through encoding,
+mutation, and browser quirks. Output encoding for the target context is the
+control that actually closes the gap.
+
+== See also
+
+* *xref:sql-injection.adoc[SQL injection]*
+* *xref:ssrf.adoc[Server-side request forgery (SSRF)]*
+* *xref:input-validation.adoc[Input validation]*
+* *xref:security-headers.adoc[Security headers]*
+* *xref:owasp.adoc[OWASP]*
+* *xref:javascript.adoc[JavaScript]*
+* *xref:authentication.adoc[Authentication]*
+* *xref:spoofing.adoc[Spoofing]*
+* *xref:security.adoc[Security]*
