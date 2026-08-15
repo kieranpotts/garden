@@ -210,7 +210,7 @@ Do NOT push your changes.
 - [x] 🌱 Dead letter queue — `dead-letter-queue.adoc` (fertilize)
 - [x] 🌱 Deadlock — `deadlock.adoc` (fertilize)
 - [x] 🌱 Debugger — `debugger.adoc` (fertilize)
-- [ ] 🌱 Decomposition — `decomposition.adoc` (fertilize)
+- [x] 🌱 Decomposition — `decomposition.adoc` (fertilize)
 - [ ] 🌱 Decoupling — `decoupling.adoc` (fertilize)
 - [ ] 🌱 Denormalization — `denormalization.adoc` (fertilize)
 - [ ] 🌱 Dependency injection — `dependency-injection.adoc` (water)
