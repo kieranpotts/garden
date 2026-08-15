@@ -13,7 +13,10 @@ of code deployments to production or other environments.
 
 Once the release of functionality is decoupled from the deployment of the code
 and configuration that enables the functionality, more sophisticated software
-release workflows become possible. For example, *[phased rollouts]* can be
+release workflows become possible. Decoupling the two also reduces reliance on
+xref:code-freeze.adoc[*code freezes*], since unfinished code can be deployed
+safely behind a toggle rather than held back from a release branch.
+For example, *[phased rollouts]* can be
 supported, in which new features are initially enabled for a small subset of
 users (*[canary testing]*) and then gradually rolled out to all users as
 confidence in the stability of the features increases. This technique reduces
