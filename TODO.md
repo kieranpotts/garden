@@ -188,7 +188,7 @@ Do NOT push your changes.
 - [x] 🌱 Cross-functional teams — `cross-functional-teams.adoc` (fertilize)
 - [x] 🌱 Cross-site scripting — `cross-site-scripting.adoc` (fertilize)
 - [x] 🌱 Cryptography — `cryptography.adoc` (fertilize)
-- [ ] 🌿 Crystal Clear — `crystal-clear.adoc` (entwine)
+- [x] 🌿 Crystal Clear — `crystal-clear.adoc` (entwine)
 - [x] 🌱 Curly's law — `curlys-law.adoc` (none)
 - [ ] 🌿 Cynefin framework — `cynefin-framework.adoc` (entwine)
 
