@@ -219,7 +219,7 @@ Do NOT push your changes.
 - [x] 🌱 Deployment strategies — `deployment-strategies.adoc` (none)
 - [x] 🌱 Design patterns — `design-patterns.adoc` (water)
 - [x] 🌱 Design principles — `design-principles.adoc` (none)
-- [ ] 🌱 Developer Certificate of Origin (DCO) — `developer-certificate-of-origin.adoc` (fertilize)
+- [x] 🌱 Developer Certificate of Origin (DCO) — `developer-certificate-of-origin.adoc` (fertilize)
 - [ ] 🌱 DevOps — `devops.adoc` (fertilize)
 - [ ] 🌱 DHCP — `dhcp.adoc` (fertilize)
 - [ ] 🌱 Diagramming — `diagramming.adoc` (tend)
