@@ -218,7 +218,7 @@ Do NOT push your changes.
 - [x] 🌱 Deployment pipeline — `deployment-pipeline.adoc` (entwine)
 - [x] 🌱 Deployment strategies — `deployment-strategies.adoc` (none)
 - [x] 🌱 Design patterns — `design-patterns.adoc` (water)
-- [ ] 🌱 Design principles — `design-principles.adoc` (none)
+- [x] 🌱 Design principles — `design-principles.adoc` (none)
 - [ ] 🌱 Developer Certificate of Origin (DCO) — `developer-certificate-of-origin.adoc` (fertilize)
 - [ ] 🌱 DevOps — `devops.adoc` (fertilize)
 - [ ] 🌱 DHCP — `dhcp.adoc` (fertilize)
