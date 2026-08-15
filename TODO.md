@@ -230,7 +230,7 @@ Do NOT push your changes.
 - [x] 🌱 Distributed caching — `distributed-caching.adoc` (fertilize)
 - [x] 🌱 Distributed databases — `distributed-databases.adoc` (fertilize)
 - [x] 🌱 Distributed file systems — `distributed-file-systems.adoc` (fertilize)
-- [ ] 🌱 Distributed locking — `distributed-locking.adoc` (fertilize)
+- [x] 🌱 Distributed locking — `distributed-locking.adoc` (fertilize)
 - [ ] 🌱 Distributed system — `distributed-system.adoc` (tend)
 - [ ] 🌱 Distributed transaction — `distributed-transaction.adoc` (tend)
 - [ ] 🌱 DNS — `dns.adoc` (entwine)

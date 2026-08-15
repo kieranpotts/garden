@@ -1,4 +1,99 @@
 = Distributed locking
 
-// TODO: https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html
-// TODO: https://github.com/mehdihadeli/awesome-software-architecture/blob/main/docs/distributed-locking.md
+*Distributed locking* is the practice of providing *xref:locking.adoc[locking]*
+across the nodes of a *xref:distributed-system.adoc[distributed system]*. A
+distributed lock ensures that, among several nodes that might try to do the same
+piece of work, only one does it at a time. The work might be writing to a shared
+store, performing an expensive computation, or calling an external API.
+
+A distributed lock is a coordination mechanism for
+*xref:synchronization.adoc[synchronization]* across independent processes that
+share no memory. Unlike a mutex in a multi-threaded program, a distributed lock
+cannot rely on the operating system to enforce mutual exclusion. It must contend
+with the defining hazards of distributed systems: nodes fail independently, the
+network delays or drops messages, and there is no shared global clock.
+
+== Efficiency or correctness
+
+Locks in distributed applications serve one of two purposes. The distinction
+matters, because it determines how strong the lock must be.
+
+* *Efficiency*. The lock prevents nodes from redundantly doing the same work,
+  such as repeating an expensive computation or sending a duplicate
+  notification. If the lock fails and two nodes do the work anyway, the cost is
+  wasted resources, not corrupted state.
+
+* *Correctness*. The lock prevents concurrent processes from corrupting shared
+  state. If the lock fails and two nodes write the same data at once, the result
+  is data loss, permanent inconsistency, or worse.
+
+For efficiency-only locks, an approximate lock is acceptable. A single
+*xref:redis.adoc[Redis]* instance, with a `SET NX` operation and a time-to-live,
+is a common and adequate implementation. For correctness locks, the lock must
+never grant access to two nodes at once, and the implementation must be held to
+a far higher standard.
+
+== The stale lock problem
+
+Even a perfect lock service cannot guarantee safety on its own. A client that
+acquires a lock may be paused for an arbitrarily long time before it finishes
+its work. A stop-the-world garbage collection pause, a page fault that waits on
+a slow disk, or a network delay can all suspend a process while its lock lease
+expires. When the process resumes, it may write to the shared resource believing
+it still holds the lock, when in fact another client has already acquired it.
+
+This is not a theoretical hazard. Network delays of a minute or more have been
+observed in production, and garbage collection pauses can last seconds. No check
+the client performs before writing can close the window, because the pause can
+occur between the check and the write itself.
+
+== Fencing tokens
+
+The standard fix is the *fencing token*. Every time a client acquires the lock,
+the lock service issues a number that strictly increases. The client includes
+this token with every write to the shared resource. The resource server rejects
+any request whose token is lower than the highest token it has already seen.
+
+Fencing tokens make the lock safe regardless of pauses or delays, because the
+resource itself enforces the ordering. A lock service that cannot generate
+monotonically increasing tokens cannot provide this guarantee. This is the
+central weakness of Redis-based Redlock, which has no facility for fencing
+tokens.
+
+== Implementations
+
+Distributed locks are commonly built on one of two foundations.
+
+* *Redis*. A single Redis instance provides a best-effort lock with `SET NX` and
+  a TTL. The Redlock algorithm extends this across multiple Redis nodes with
+  majority voting, in pursuit of fault tolerance. But Redlock's correctness
+  depends on assumptions about timing – bounded network delay, bounded process
+  pauses, and bounded clock error – that real systems do not guarantee. It is
+  suitable for efficiency locks, not for correctness locks.
+
+* *Consensus systems*. Tools built on
+  *xref:consensus-algorithms.adoc[consensus algorithms]*, such as ZooKeeper and
+  etcd, can generate monotonically increasing tokens (eg. ZooKeeper's znode
+  version numbers) and tolerate the asynchronous system model that real networks
+  exhibit. When correctness depends on the lock, a consensus-based service with
+  fencing tokens is the recommended approach.
+
+Distributed locks can also contribute to *xref:deadlock.adoc[deadlock]* when two
+or more nodes each hold a lock the other needs. The same cycle-detection and
+timeout strategies that apply to local deadlocks apply here, but across nodes
+and over the network.
+
+== See also
+
+* *xref:locking.adoc[Locking]*
+* *xref:synchronization.adoc[Synchronization]*
+* *xref:distributed-system.adoc[Distributed system]*
+* *xref:consensus-algorithms.adoc[Consensus algorithms]*
+* *xref:redis.adoc[Redis]*
+* *xref:deadlock.adoc[Deadlock]*
+
+== References
+
+* Kleppmann, M. (2016).
+  https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html[_How
+  to do distributed locking_].
