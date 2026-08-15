@@ -240,7 +240,7 @@ Do NOT push your changes.
 - [x] 🌱 Document-oriented databases — `document-oriented-databases.adoc` (fertilize)
 - [x] 🌱 Document search — `document-search.adoc` (fertilize)
 - [x] 🌱 Domain — `domain.adoc` (none)
-- [ ] 🌱 Domain-driven design — `domain-driven-design.adoc` (tend)
+- [x] 🌱 Domain-driven design — `domain-driven-design.adoc` (tend)
 - [ ] 🌱 Domain experts — `domain-experts.adoc` (none)
 - [ ] 🌱 Domain engineering — `domain-engineering.adoc` (fertilize)
 - [ ] 🌱 Domain model — `domain-model.adoc` (water)
