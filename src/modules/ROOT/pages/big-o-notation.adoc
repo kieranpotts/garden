@@ -4,12 +4,12 @@ Big O notation is a mathematical notation that describes how the resource
 requirements (time or memory) of an algorithm grow as the size of its input
 grows. It was introduced by the German mathematician Paul Bachmann in 1894 – the
 "O" stands for _Ordnung_, meaning "order" in German, reflecting that it
-characterises the _order of growth_ of a function.
+characterizes the _order of growth_ of a function.
 
 In *xref:computer-science.adoc[computer science]*, big O is used to classify
 *xref:algorithms.adoc[algorithms]* (and data structure operations) according to
 how their execution time or memory usage scales with input size. It provides an
-upper bound on that growth: where `f(n) = O(g(n))`, the function `f` grows no
+upper bound on that growth. Where `f(n) = O(g(n))`, the function `f` grows no
 faster than `g` as `n` tends towards infinity. Constants and lower-order terms
 are dropped, because at large input sizes they become irrelevant to the growth
 rate. For example, an algorithm that makes `3n + 5` operations is still `O(n)`,
@@ -23,7 +23,7 @@ reasoning about *xref:performance.adoc[performance]* and
 
 == Common complexity classes
 
-From slowest to fastest growth:
+From slowest to fastest growth.
 
 *O(1) – Constant time*:: The running time does not change with input size. A
                          direct array element lookup by index is O(1), and so is
@@ -70,7 +70,7 @@ From slowest to fastest growth:
 
 *O(2^n) – Exponential time*:: Running time doubles with each additional element
                               in the input. The brute-force solution to the
-                              travelling salesman problem is O(2^n). Exponential
+                              traveling salesman problem is O(2^n). Exponential
                               algorithms are effectively unusable for all but
                               very small inputs.
 
@@ -89,11 +89,11 @@ time complexity at the cost of increased space complexity.
 == Related notations
 
 Big O is part of a family of asymptotic notations. While big O gives an upper
-bound, two others are commonly encountered in computer science:
+bound, two others are commonly encountered in computer science.
 
-* Big Ω (Omega): A lower bound. Where `f(n) = Ω(g(n))`, the algorithm takes at
+* *Big Ω (Omega).* A lower bound. Where `f(n) = Ω(g(n))`, the algorithm takes at
   _least_ `g(n)` time.
-* Big Θ (Theta): A tight bound. Where `f(n) = Θ(g(n))`, the algorithm's time is
+* *Big Θ (Theta).* A tight bound. Where `f(n) = Θ(g(n))`, the algorithm's time is
   proportional to `g(n)` from both above and below. This is more precise than
   big O, but big O is more commonly used in practice when only the upper bound
   matters.
@@ -106,7 +106,7 @@ complexity. The same data structure can have very different complexities for
 different operations. For example, a singly-linked list supports O(1) insertion
 at the head but O(n) search; a hash table offers O(1) average-case search and
 insertion but O(n) worst-case (due to hash collisions). Choosing the right data
-structure for a problem depends on which operations dominate: if lookups are
+structure for a problem depends on which operations dominate. If lookups are
 frequent, prefer a hash table; if ordered traversal and insertion/deletion
 matter, consider a balanced tree.
 
@@ -115,16 +115,16 @@ sorting algorithms, see the https://www.bigocheatsheet.com/[Big-O Cheat Sheet].
 
 == Practical guidelines
 
-* Constants matter in practice: Big O ignores constant factors, but a
+* Constants matter in practice. Big O ignores constant factors, but a
   well-optimized O(n²) algorithm may outperform a poorly-optimized O(n log n)
   algorithm for small inputs. Profile before optimizing.
-* Avoid O(n) work inside loops: Calling a function with linear complexity inside
+* Avoid O(n) work inside loops. Calling a function with linear complexity inside
   another loop escalates the overall complexity to O(n²). Common culprits
   include `indexOf`, `includes`, and `filter` inside loops.
-* Prefer O(1) data structures for repeated lookups: Converting an array to a
+* Prefer O(1) data structures for repeated lookups. Converting an array to a
   `Set` or `Map` is an O(n) upfront cost, but subsequent lookups drop to O(1).
   This trade-off pays off when the number of lookups is large.
-* Know your language's built-in complexities: Standard library data structures
+* Know your language's built-in complexities. Standard library data structures
   and operations have documented complexities. Misunderstanding these is a
   common source of unintended O(n²) behavior.
 
