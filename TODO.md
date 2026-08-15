@@ -190,7 +190,7 @@ Do NOT push your changes.
 - [x] 🌱 Cryptography — `cryptography.adoc` (fertilize)
 - [x] 🌿 Crystal Clear — `crystal-clear.adoc` (entwine)
 - [x] 🌱 Curly's law — `curlys-law.adoc` (none)
-- [ ] 🌿 Cynefin framework — `cynefin-framework.adoc` (entwine)
+- [x] 🌿 Cynefin framework — `cynefin-framework.adoc` (entwine)
 
 ## D
 
