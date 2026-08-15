@@ -220,7 +220,7 @@ Do NOT push your changes.
 - [x] 🌱 Design patterns — `design-patterns.adoc` (water)
 - [x] 🌱 Design principles — `design-principles.adoc` (none)
 - [x] 🌱 Developer Certificate of Origin (DCO) — `developer-certificate-of-origin.adoc` (fertilize)
-- [ ] 🌱 DevOps — `devops.adoc` (fertilize)
+- [x] 🌱 DevOps — `devops.adoc` (fertilize)
 - [ ] 🌱 DHCP — `dhcp.adoc` (fertilize)
 - [ ] 🌱 Diagramming — `diagramming.adoc` (tend)
 - [ ] 🌱 Diagrams-as-code — `diagrams-as-code.adoc` (tend)
