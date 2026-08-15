@@ -1,14 +1,12 @@
 = Containerization
 
-Containerization is a type of *xref:virtualization.adoc[virtualization]* that is
-implemented at the level of the operating system, using features of the OS to
-allow for multiple user-space applications to be run entirely independently of
-one another.
+Containerization is a type of *xref:virtualization.adoc[virtualization]* implemented at the operating-system level, using OS features to run multiple
+user-space applications independently of one another.
 
 With the industry's rapid adoption of *xref:docker.adoc[Docker]* since its
 release in 2013, containerization has become the dominant paradigm for running
 applications in virtualized environments, especially in cloud computing. Docker
-continues to dominate in this space, but alternative container systems include
+remains dominant, though alternative container systems include
 *Podman*, *containerd*, *rkt*, and *LXC* – see *xref:docker.adoc[Docker]* for
 more notes on Docker alternatives.
 
@@ -34,12 +32,9 @@ a regular operating system). A hypervisor is responsible for sharing the CPU
 between multiple live operating systems. In containerization, the equivalent of
 the hypervisor is the *container engine*.
 
-A container engine works differently to a hypervisor. The main difference is
-that all the containers managed by a container engine will run on a shared OS
-kernel. Processes running in each container are highly isolated from each other,
-as they would be if they were running in separate
-*xref:virtual-machine.adoc[virtual machines]*. But, in container systems, a
-different set of technologies are used to implement this isolation.
+A container engine works differently to a hypervisor: the containers it
+manages all run on a shared OS kernel, and isolation between them is achieved
+with a different set of technologies.
 
 Isolation is achieved in containers using features of the host OS's kernel. An
 OS kernel is the part of an OS that is responsible for interacting with the
@@ -63,7 +58,7 @@ process ID space, network interfaces, mount points, and the user ID space. This
 means that processes running in different namespaces cannot interact with – and
 don't even have knowledge of – each other.
 
-Container systems use cgroups to manage the resources that containers can use,
+Container systems use cgroups to manage the resources containers can use,
 while namespaces restrict what containers can see and do. The end result is that
 the kernel, though shared, appears to each containerized application as though
 the application is the sole occupant of the operating system.
@@ -79,7 +74,7 @@ don't need to load a whole new kernel for each container that you run. Docker
 containers don't even have an init system by default.
 
 Because they're not booting a whole new operating system from scratch,
-containers start very quickly. Really, when you start a container, all you're
+containers start very quickly. When you start a container, all you're
 doing is starting a new isolated filesystem and running a particular process in
 the context of that filesystem.
 
@@ -102,13 +97,12 @@ kernel of the OS.
 image::vm-versus-container-virtualization.drawio.svg[]
 
 This design provides highly isolated and highly secure application runtime
-environments, but it is also resource heavy, and startup and shutdown times are
-much slower. VMs can also be more wasteful of resources. Typically, you must
-allocate a certain amount of RAM to each VM, whether they are making active use
-of it or not. Containers can have RAM limitations imposed upon them, too, but
-they don't require you do allocate RAM from the host OS in advance. Container
-systems will dynamically allocated resources as-and-when container processes
-need them.
+environments, but it is also resource heavy and slower to start up and shut
+down. VMs can be wasteful of resources: typically you must allocate a certain
+amount of RAM to each VM, whether it is in active use or not. Containers can
+have RAM limitations imposed upon them, too, but they don't require you to
+allocate RAM from the host OS in advance. Container systems will dynamically
+allocate resources as-and-when container processes need them.
 
 Historically, a trade-off of container systems was that you could only run
 containers that were compatible with the host OS kernel. For example, Docker was
@@ -136,27 +130,23 @@ of the VM.
 To create stateful containerized applications, the container must be linked to
 persistent external storage systems (eg. using volumes). Containers themselves
 are designed to be ephemeral – created, started, stopped, and destroyed, and
-quickly recreated again if needed. By contrast, VMs are more like fully-fledged
-application runtime environments. VMs tend to have much longer life spans and
-their use cases tend to favour stateful applications. See
+and quickly recreated if needed. By contrast, VMs are more like fully-fledged
+application runtime environments, with much longer life spans and use cases that
+tend to favour stateful applications. See
 *xref:virtual-machine.adoc[virtual machines]* for more notes on the common use
 cases for VMs.
 
 Containers are suited to applications where OS-level configuration is minimal
-and the focus is on setting up the application.
-
-The trade-off is that you have much less scope and flexibility over what you can
+and the focus is on setting up the application. The trade-off is that you have much less scope and flexibility over what you can
 containerize. Most container systems are based on Linux kernel technology, and
 running applications in Linux environments is still the dominant use case for
 containers. Because containers running on the same machine share a kernel with
-the host operating system, it is not possible to run a Windows containers
+the host operating system, it is not possible to run a Windows container
 alongside a BSD container, as you can with virtual machines.
 
-Also, you can't fake an entire Linux operating system, and you can't run
-different distros that use different versions of the Linux kernel. With
-containers, you're using the same underlying kernel for every container, and all
-you're really doing in the container itself is mounting a particular file
-system.
+You also can't fake an entire Linux operating system, or run different distros
+that use different versions of the Linux kernel – all you're really doing in the
+container itself is mounting a particular file system.
 
 Another trade-off is that adopting containers requires a steeper learning curve
 than VMs. With a VM, you just shell into the virtual machine, configure it with
