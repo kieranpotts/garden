@@ -1,3 +1,98 @@
 = Cleanroom
 
-// TODO: https://en.wikipedia.org/wiki/Cleanroom_software_engineering
+Cleanroom software engineering is a formal development process for producing
+high-reliability software, created at IBM in the 1980s by Harlan Mills and
+colleagues, most prominently Richard Linger and Michael Dyer. The name borrows
+from the *cleanroom* of semiconductor fabrication: just as dust is excluded
+from a chip foundry rather than scrubbed off finished wafers, defects are
+prevented during construction rather than caught and removed by later testing.
+
+The process rests on a single, demanding premise — that code should be correct
+the first time it is ever executed. Developers never compile or run the code
+they write. Instead, an independent test team compiles the system and subjects
+it to statistical usage testing, while the developers reason about correctness
+mathematically through design reviews and
+*xref:stepwise-refinement.adoc[stepwise refinement]*.
+
+== Specification and design: box structures
+
+Requirements are captured and refined using the *box structure method*. A
+system is described at three levels, each a refinement of the last.
+
+* *Black box.* The externally observable behavior, specified in terms of inputs
+  and outputs with no internal state.
+* *State box.* The behavior expressed as state transitions, adding internal
+  state to the black box description.
+* *Clear box.* The full implementation, describing the transition function with
+  *xref:structured-programming.adoc[structured programming]* control structures.
+
+Each refinement is verified against the previous level before the next is
+written. The discipline mirrors stepwise refinement and keeps the design
+traceable back to its specification, a property prized in
+*xref:high-integrity.adoc[high-integrity]* and
+*xref:safety-critical-system.adoc[safety-critical]* systems.
+
+== Correctness verification
+
+Rather than debugging, the development team proves each refinement step correct
+through *correctness questions* — a structured form of verification argument
+carried out in peer review. The arguments rest on the *correctness theorem for
+structured programs*, which holds that a program built from structured control
+primes (sequence, selection, and iteration) is correct if each prime satisfies
+its intended sub-function.
+
+This is a lightweight form of *xref:formal-methods.adoc[formal verification]*,
+traded for tractability. Full mechanized proof is rarely attempted, but the
+reasoning is disciplined and reviewable rather than informal.
+
+== Statistical usage testing
+
+The development team's code is handed to an independent test team, which does
+not run unit tests in the conventional sense. Instead, test cases are drawn at
+random from a model of the system's intended operational usage, typically a
+Markov chain describing how users are expected to exercise the software.
+
+Failures are treated as a sampling problem. The observed failure distribution
+is used to certify the software's reliability, expressed as a mean time between
+failures. This reframes testing from "does it work?" to "how reliable is it?"
+— a question of *xref:software-quality.adoc[software quality]* as a quantified
+attribute, consistent with the
+*xref:first-principles-of-testing.adoc[first principles of testing]* that
+testing can demonstrate the presence of failures but never their absence.
+
+== Reception and influence
+
+Cleanroom projects reported defect rates far below industry averages,
+frequently below one defect per thousand lines of code, and the method found a
+niche in high-integrity domains such as satellite control systems and IBM's
+COBOL restructuring tools.
+
+The method is demanding of mathematical maturity and process discipline, and
+its emphasis on up-front specification and the absence of developer-led
+debugging runs against the grain of *xref:agile.adoc[agile]* and
+*xref:test-driven-development.adoc[test-driven development]*. Its influence
+endures less as a practiced process than as a demonstration that very low defect
+rates are achievable through rigorous specification,
+*xref:static-analysis.adoc[static analysis]*, and treating reliability as
+something to be certified rather than hoped for.
+
+== See also
+
+* xref:formal-methods.adoc[*Formal methods*]
+* xref:stepwise-refinement.adoc[*Stepwise refinement*]
+* xref:structured-programming.adoc[*Structured programming*]
+* xref:high-integrity.adoc[*High integrity*]
+* xref:safety-critical-system.adoc[*Safety-critical system*]
+* xref:software-quality.adoc[*Software quality*]
+* xref:first-principles-of-testing.adoc[*First principles of testing*]
+* xref:static-analysis.adoc[*Static analysis*]
+* xref:test-driven-development.adoc[*Test-driven development*]
+* xref:agile.adoc[*Agile*]
+
+== References
+
+* Mills, H., Dyer, M., and Linger, R. (1987).
+  https://ieeexplore.ieee.org/document/1709059[_Cleanroom Software Engineering_].
+  _IEEE Software_, 4(5), 19–25.
+* Prowell, S., Trammell, C., Linger, R., and Poore, J. (1999).
+  _Cleanroom Software Engineering: Technology and Process_. Addison-Wesley.
