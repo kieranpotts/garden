@@ -237,7 +237,7 @@ Do NOT push your changes.
 - [x] 🌱 Do the simplest thing that could possibly work — `do-the-simplest-thing.adoc` (none)
 - [x] 🌱 Do what I mean (DWIM) — `do-what-i-mean.adoc` (fertilize)
 - [x] 🌱 Docker — `docker.adoc` (prune)
-- [ ] 🌱 Document-oriented databases — `document-oriented-databases.adoc` (fertilize)
+- [x] 🌱 Document-oriented databases — `document-oriented-databases.adoc` (fertilize)
 - [ ] 🌱 Document search — `document-search.adoc` (fertilize)
 - [ ] 🌱 Domain — `domain.adoc` (none)
 - [ ] 🌱 Domain-driven design — `domain-driven-design.adoc` (tend)
