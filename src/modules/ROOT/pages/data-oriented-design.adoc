@@ -1,3 +1,75 @@
 = Data-oriented design
 
-// TODO: https://en.wikipedia.org/wiki/Data-oriented_design
+*Data-oriented design* (DOD) is an approach to program design that organizes
+software around the data it processes and the transformations applied to that
+data, rather than around objects and their behavior. Its central question is
+not "what are the entities and their relationships?" but "how is the data laid
+out, and how will it be accessed?" The answer drives decisions about memory
+layout, iteration order, and the separation of state from logic.
+
+DOD emerged in the game development community as a reaction to
+*xref:object-oriented-programming.adoc[object-oriented programming]*.
+Object-oriented designs tend to scatter related fields across many
+heap-allocated objects connected by pointers. Iterating over them means
+chasing those pointers, which defeats the CPU cache. On modern hardware a
+cache miss can cost two to three orders of magnitude more than a cache hit, so
+memory layout, not algorithmic complexity, is often the dominant factor in
+*xref:performance.adoc[performance]*. DOD treats this as a first-class design
+constraint rather than an afterthought.
+
+The practical core of DOD is to lay out data in contiguous, homogeneous arrays
+so that logic can stream over it sequentially. A common technique is the
+*struct of arrays* (SoA) layout, where each field of a logical record is stored
+in its own array, as opposed to the conventional *array of structs* (AoS).
+When a system needs only one field — positions, say — SoA lets it walk a
+single tight array, touching no unrelated data and keeping the cache full of
+what it actually needs. The choice between AoS and SoA is dictated by the
+*xref:access-patterns.adoc[access patterns]* of the consuming code, not by the
+shape of the conceptual model.
+
+DOD also separates data from the behavior that acts on it. Where
+object-oriented code bundles state and methods into an object, DOD keeps plain
+data in compact *xref:data-structures.adoc[data structures]* and applies logic
+to whole batches at once. The program reads as a pipeline of data
+transformations: inputs flow in, are processed in bulk, and flow out. This
+suits batch-oriented and *xref:parallelism.adoc[parallel]* workloads, and pairs
+well with SIMD instructions that apply one operation to many values at once.
+
+DOD is an expression of *xref:mechanical-sympathy.adoc[mechanical sympathy]*:
+it works with the memory hierarchy rather than against it. But it is not a
+universal replacement for object-oriented design. It trades encapsulation and
+the readability of object models for raw throughput, and it pays off only in
+hot paths where data volume and access frequency make cache behavior the
+bottleneck. Applied indiscriminately, it adds procedural complexity without
+benefit. Like any optimization, it should be driven by profiling rather than
+by assumption.
+
+In game engines, the most common realization of DOD is the
+*xref:entity-component-system.adoc[entity component system]* pattern, which
+stores component data in contiguous arrays and runs systems that iterate over
+all entities having a given set of components.
+
+[NOTE]
+--
+Despite the similar name, data-oriented design is unrelated to
+*xref:data-oriented-architecture.adoc[data-oriented architecture]*. The former
+is a program-level design discipline concerned with memory layout and data
+transformation. The latter is a distributed-systems architectural style in
+which stateless services share a central data store.
+--
+
+== See also
+
+* xref:object-oriented-programming.adoc[*Object-oriented programming*]
+* xref:mechanical-sympathy.adoc[*Mechanical sympathy*]
+* xref:performance.adoc[*Performance*]
+* xref:access-patterns.adoc[*Access patterns*]
+* xref:data-structures.adoc[*Data structures*]
+* xref:entity-component-system.adoc[*Entity component system*]
+* xref:parallelism.adoc[*Parallelism*]
+* xref:data-oriented-architecture.adoc[*Data-oriented architecture*]
+
+== References
+
+- Wikipedia.
+  https://en.wikipedia.org/wiki/Data-oriented_design[_Data-oriented design_].

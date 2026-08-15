@@ -200,7 +200,7 @@ Do NOT push your changes.
 - [x] 🌱 Data mesh — `data-mesh.adoc` (fertilize)
 - [x] 🌱 Data modeling — `data-modeling.adoc` (water)
 - [x] 🌱 Data-oriented architecture — `data-oriented-architecture.adoc` (water)
-- [ ] 🌱 Data-oriented design — `data-oriented-design.adoc` (fertilize)
+- [x] 🌱 Data-oriented design — `data-oriented-design.adoc` (fertilize)
 - [ ] 🌱 Data retention — `data-retention.adoc` (fertilize)
 - [ ] 🌱 Data structures — `data-structures.adoc` (fertilize)
 - [ ] 🌱 Database branching — `database-branching.adoc` (tend)
