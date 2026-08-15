@@ -1,35 +1,87 @@
 = Database indexes
 
-// TODO: https://www.progress.com/tutorials/odbc/using-indexes
-// TODO: https://blog.algomaster.io/p/a-detailed-guide-on-database-indexes
-
 image::database-indexes.svg[]
 
-A database index is a super-efficient *lookup table* that allows a database to
-find data much faster.
+A database index is an auxiliary data structure that lets a database engine
+find rows without scanning the whole table. It holds the indexed column values
+in sorted order, each paired with a pointer back to the row it came from. The
+analogy is a book's index. Instead of flipping through every page to find a
+term, you look the term up in a sorted list and jump straight to the cited
+page.
 
-Indexes work by creating a sorted list of the values in a specific column or set
-of columns. This allows the database to quickly fetch the rows that match a
-given value. By following the pointers in the index, the database system does
-not need to scan the entire table to find the matching rows.
+Without an index, the database must perform a *full table scan*, reading and
+testing every row against the query condition. On a large table that is
+prohibitively slow. With an index, the engine follows the pointers in the
+index to fetch only the matching rows. What would be an O(n) scan becomes an
+O(log n) lookup, an improvement xref:big-o-notation.adoc[*big O notation*]
+captures precisely.
 
-// TODO: Diagram
+Indexes are built on standard xref:data-structures.adoc[*data structures*]. The
+default in most relational engines is a *B-tree* or its variant the *B+ tree*,
+which stays balanced as rows are inserted and deleted, keeps values sorted for
+range queries, and packs each node to match a disk block so few disk reads are
+needed. *Hash indexes* use a hash function to map keys to buckets, giving O(1)
+equality lookups but no support for ranges or ordering. *Bitmap indexes* use
+one bit per row per distinct value, and suit low-cardinality columns in
+analytical workloads.
 
-There is a trade-off between the speed of read operations and the cost of
-maintaining indexes. Indexes speed up read operations but slow down write
-operations, as the database needs to update the index every time a row is
-inserted, updated, or deleted. The right balance depends on the system's
-*xref:access-patterns.adoc[access patterns]*. Indexes pay off most for
+== Trade-offs
+
+Indexes speed up reads but slow down writes. Every insert, update, or delete
+must update the index as well as the table, so each extra index adds work to
+the write path. Indexes also consume disk space, sometimes more than the table
+itself. The right balance depends on the system's
+xref:access-patterns.adoc[*access patterns*]. Indexes pay off most for
 read-heavy workloads, while write-heavy systems may be better served by fewer
 indexes.
 
-The most common types of indexes are:
+== Choosing what to index
 
-* *Primary keys*: A unique identifier for each record.
+An index is only useful if a query can use it. A few rules of thumb:
 
-* *Secondary indexes*: Indexes on columns other than the primary key columns,
-  eg. to speed up searching for a user by email address.
+* Index columns that appear frequently in `WHERE`, `JOIN`, and `ORDER BY`
+  clauses.
+* Prefer high-cardinality columns. An index on a unique `customer_id` is far
+  more selective than one on a `gender` column with three values.
+* Match the index to the query exactly. Wrapping an indexed column in a
+  function, eg. `WHERE UPPER(last_name) = 'SMITH'`, prevents an index on
+  `last_name` from being used. A function-based index on `UPPER(last_name)` is
+  needed instead.
+* In a composite index, order columns from most to least selective. The index
+  serves queries that filter on its leading column or columns, but not those
+  that skip it.
 
-* *Composite indexes*: Indexes created on multiple columns, useful to optimize
-  queries that search those columns together, eg. finding a user by both first
-  name and last name.
+== Common types of indexes
+
+* *Primary key index.* Created automatically for the primary key, enforcing
+  uniqueness and giving fast lookups by that key.
+* *Clustered index.* Determines the physical storage order of the table's rows.
+  Only one clustered index can exist per table, so the table and the index are
+  effectively the same structure.
+* *Secondary index.* Any index on a non-primary-key column, eg. an index on
+  `email` to speed up login lookups.
+* *Composite index.* An index on multiple columns, useful for queries that
+  filter on those columns together, eg. finding a user by first and last name.
+* *Covering index.* An index that includes every column a query needs, so the
+  engine can answer the query from the index alone without touching the table.
+
+== See also
+
+* xref:access-patterns.adoc[*Access patterns*]
+* xref:big-o-notation.adoc[*Big O notation*]
+* xref:bloom-filter.adoc[*Bloom filter*]
+* xref:caching.adoc[*Caching*]
+* xref:database-query-optimization.adoc[*Database query optimization*]
+* xref:data-structures.adoc[*Data structures*]
+* xref:denormalization.adoc[*Denormalization*]
+* xref:foreign-keys.adoc[*Foreign keys*]
+* xref:relational-databases.adoc[*Relational databases*]
+
+== References
+
+* Ashish Pratap Singh (2024).
+  link:https://blog.algomaster.io/p/a-detailed-guide-on-database-indexes[_Database indexes: a detailed guide_].
+  AlgoMaster.
+* Progress Software (2024).
+  link:https://www.progress.com/tutorials/odbc/using-indexes[_How to implement and use database indexes_].
+  Progress DataDirect.
