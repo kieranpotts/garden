@@ -1,9 +1,9 @@
 = Container orchestration
 
 Container orchestration, also known as *container management*, refers to the
-automated management of *xref:containerization.adoc[containerized]*
+automated management of xref:containerization.adoc[*containerized*]
 applications. Container orchestration systems manage the lifecycle of
-*xref:container.adoc[containers]*, from deployment to destruction.
+xref:container.adoc[*containers*], from deployment to destruction.
 
 Docker is a well-known container system, while Kubernetes is a well-known
 container orchestration system. Docker provides a platform for developing,
@@ -11,24 +11,56 @@ shipping, and managing applications in containers. Kubernetes provides a
 platform for automating the deployment, scaling, and management of multiple
 containerized applications within a cloud environment.
 
-Features of container orchestration include:
+== Desired state and reconciliation
+
+The defining characteristic of a container orchestrator is that it operates on a
+*declarative* model. Operators declare the *desired state* of the system — how
+many replicas of each container should run, what resources they need, how they
+should be networked — and the orchestrator continuously works to make the
+*actual state* match it. This is achieved through *reconciliation loops*
+(sometimes called *control loops*). Controllers observe the current state,
+compare it against the declared desired state, and take corrective action
+whenever the two diverge.
+
+This is what separates orchestration from imperative scripting. A deployment
+script issues a sequence of commands and assumes the world obeys. An
+orchestrator treats the declaration as the source of truth and absorbs
+disturbances — a crashed container, a failed node, a surge in traffic — by
+converging back toward the declared state without further human intervention.
+The self-healing and auto-scaling behaviours listed below are consequences of
+this same loop, not separate mechanisms.
+
+Most orchestrators separate a *control plane*, which holds the desired state and
+makes scheduling and placement decisions, from *worker nodes* (sometimes called
+the *data plane*), which run the containers. In Kubernetes the desired state is
+persisted in a distributed key-value store (`etcd`), and a set of controllers
+drives the cluster toward it.
+
+== Features
+
+Container orchestration systems typically provide the following features.
 
 * *Deployment*: Automating the process of launching containers, potentially
   across multiple environments.
 
-* *Auto-scaling*: Adjusting the number of container instances dynamically based
-  on current demand or predefined policies.
+* xref:auto-scaling.adoc[*Auto-scaling*]: Adjusting the number of container
+  instances dynamically based on current demand or predefined policies.
 
 * *Service discovery*: Automatically detecting and registering new services.
 
 * *Networking*: Managing network connectivity between containers, allowing for
   cross-container communication.
 
-* *Load balancing*: Distributing *xref:load.adoc[workloads]* evenly across
+* *Load balancing*: Distributing xref:load.adoc[*workloads*] evenly across
   containers, to optimize resource use and performance.
 
-* *Scheduling*: Determining the most efficient location for container deployment
-  based on available resources.
+* *Scheduling*: Determining the most efficient placement of containers across
+  the cluster's nodes. This is a *bin-packing* problem — assigning workloads with
+  CPU, memory, and other resource demands to machines of finite capacity —
+  subject to constraints such as affinity rules, anti-affinity (keeping replicas
+  apart for xref:fault-tolerance.adoc[*fault tolerance*]), and data locality. It
+  is NP-hard in the general case, so orchestrators rely on heuristics rather than
+  seeking an optimal solution.
 
 * *Storage mounting*: Attaching storage volumes to containers as needed.
 
@@ -38,12 +70,16 @@ Features of container orchestration include:
 * *Self-healing*: Automatically detecting and restarting failed containers,
   maintaining high availability and reliability.
 
+== Implementations
+
 The most popular container orchestration system is
-*xref:kubernetes.adoc[Kubernetes]*. Others include:
+xref:kubernetes.adoc[*Kubernetes*]. Other well-known orchestrators include the
+following.
 
 * https://docs.docker.com/engine/swarm/[Docker Swarm]: Docker's native
-  clustering and orchestration tool. It is simple to set up and integrates
-  seamlessly with Docker, making it a good choice for smaller-scale deployments.
+  xref:clustering.adoc[*clustering*] and orchestration tool. It is simple to set
+  up and integrates seamlessly with Docker, making it a good choice for
+  smaller-scale deployments.
 
 * https://www.nomadproject.io/[Nomad]: Developed by HashiCorp, Nomad is designed
   to be an easier-to-use alternative to Kubernetes. It can be used to deploy and
@@ -60,7 +96,7 @@ The most popular container orchestration system is
   dynamically and efficiently. Supporting Docker, Mesos can be used to manage
   containerized applications.
 
-*xref:cloud-service-providers.adoc[Cloud service providers]* also offer managed
+xref:cloud-service-providers.adoc[*Cloud service providers*] also offer managed
 container orchestration services. Amazon's Elastic Container Service (ECS) is a
 container orchestration service that supports Docker containers. Amazon Elastic
 Kubernetes Service (EKS) is similar but is designed specifically for running
@@ -69,3 +105,54 @@ service, and Microsoft Azure Kubernetes Service (AKS) is Microsoft's equivalent.
 
 Kubernetes-as-a-Service platforms include https://www.rancher.com/[Rancher] and
 https://www.portainer.io/[Portainer].
+
+== Origins
+
+Container orchestration was popularized by Google, which had operated
+large-scale internal cluster managers — *Borg* and its successor *Omega* — for
+years before the practice reached the wider industry. Kubernetes, the dominant
+orchestrator today, was inspired by Borg and open-sourced by Google in 2014.
+Version 1.0 followed in 2015, when Google donated the project to the newly
+formed Cloud Native Computing Foundation (CNCF) as its seed technology. Unlike
+Borg, which was written in C++, Kubernetes is written in Go.
+
+== Trade-offs
+
+Container orchestration is powerful but operationally demanding. A production
+orchestrator brings its own control plane to secure and keep highly available,
+its own networking and storage models to learn, and its own upgrade cadence to
+track. Kubernetes in particular is widely criticized for its complexity — a
+complexity that has driven the growth of managed offerings and of
+xref:platform-engineering.adoc[*platform engineering*] teams that wrap the raw
+orchestrator behind simpler internal platforms.
+
+For small workloads or small teams, orchestration is often overkill. A single
+host running a few containers, managed with a process supervisor or a minimal
+tool such as Docker Swarm, can be simpler and cheaper to operate than a full
+cluster. Orchestration pays off when the number of containers is large enough,
+and the demand for xref:resilience.adoc[*resilience*] and elastic scaling high
+enough, that manual placement and recovery become unsustainable.
+
+The desired state is frequently stored in a version control repository and
+applied to the cluster by a
+xref:continuous-delivery.adoc[*continuous delivery*] pipeline — a practice known
+as *GitOps* — so that the cluster's configuration is auditable and reviewable
+like any other source code. This builds on
+xref:infrastructure-as-code.adoc[*infrastructure as code*] principles.
+
+Orchestrators manage the lifecycle and placement of containers but stop short of
+governing all service-to-service communication. A
+xref:service-mesh.adoc[*service mesh*] is often layered on top to handle traffic
+policy, retries, and xref:observability.adoc[*observability*] between services.
+
+== See also
+
+* xref:kubernetes.adoc[*Kubernetes*]
+* xref:containerization.adoc[*Containerization*]
+* xref:container.adoc[*Container*]
+* xref:auto-scaling.adoc[*Auto-scaling*]
+* xref:clustering.adoc[*Clustering*]
+* xref:service-mesh.adoc[*Service mesh*]
+* xref:platform-engineering.adoc[*Platform engineering*]
+* xref:infrastructure-as-code.adoc[*Infrastructure as code*]
+* xref:deployment-strategies.adoc[*Deployment strategies*]
