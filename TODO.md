@@ -177,7 +177,7 @@ Do NOT commit anything. Leave your changes dirty in the Git working tree.
 - [x] 🌱 Class-Responsibility-Collaboration (CRC) card — `crc-card.adoc` (tend)
 - [x] 🌱 Critical path analysis — `critical-path-analysis.adoc` (tend)
 - [x] 🌱 Cross-cutting concern — `cross-cutting-concern.adoc` (water)
-- [ ] 🌱 Cross-functional teams — `cross-functional-teams.adoc` (fertilize)
+- [x] 🌱 Cross-functional teams — `cross-functional-teams.adoc` (fertilize)
 - [ ] 🌱 Cross-site scripting — `cross-site-scripting.adoc` (fertilize)
 - [ ] 🌱 Cryptography — `cryptography.adoc` (fertilize)
 - [ ] 🌿 Crystal Clear — `crystal-clear.adoc` (entwine)
