@@ -19,7 +19,7 @@ UDP's lack of overhead is a feature in scenarios where:
 * *Latency matters more than reliability*: A retransmitted packet arriving late
   is useless in a live video call or a multiplayer game. It is better to drop a
   frame than to stall everything waiting for it.
-* *The application handles reliability itself*: DNS queries, for example,
+* *The application handles reliability itself*: xref:dns.adoc[*DNS queries*], for example,
   implement their own simple retry at the application layer. QUIC (the protocol
   underlying HTTP/3) implements reliability, ordering, and congestion control in
   userspace on top of UDP, giving more flexibility than TCP allows at the kernel
