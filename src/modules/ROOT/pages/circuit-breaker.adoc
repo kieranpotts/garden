@@ -13,17 +13,14 @@ service.
 
 Circuit breakers complement the *xref:retry.adoc[retry mechanism]*. Whereas a
 retry mechanism will keep retrying a failing service until it succeeds, a
-circuit breaker will trip when the error rate exceeds a configured threshold and
-it will prevent any further requests from being sent to the failing service for
-a configured period of time.
+circuit breaker will trip when the error rate exceeds a configured threshold.
 
-Both are solutions for improving *xref:fault-tolerance.adoc[fault tolerance]*,
-and the two solutions work particularly well in combination. If a service is
-failing, it is likely that it will continue to fail for a period of time, until
-its failure mode is resolved through
+Both improve *xref:fault-tolerance.adoc[fault tolerance]*, and work
+particularly well in combination. If a service is failing, it is likely to keep
+failing until its failure mode is resolved through
 *xref:disaster-recovery.adoc[disaster recovery]* mechanisms. While disaster
-recovery is ongoing, a circuit breaker will help to prevent the recovering
-system from being overwhelmed by retries.
+recovery is ongoing, a circuit breaker will help prevent the recovering system
+from being overwhelmed by retries. Circuit breakers are also commonly paired with *xref:bulkhead.adoc[bulkheads]*, which partition the resources used to call a dependency so that one failing call cannot exhaust the threads or connections available to other callers.
 
 ////
 
@@ -134,16 +131,6 @@ public class CircuitBreaker
 
   private void reset() => failureCount = 0;
 }
-----
-
-[source,java]
-----
-
-----
-
-[source,java]
-----
-
 ----
 
 [source,java]
