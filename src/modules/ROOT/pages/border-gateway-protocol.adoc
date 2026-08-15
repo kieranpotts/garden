@@ -1,3 +1,114 @@
 = Border Gateway Protocol (BGP)
 
-// TODO: https://aws.amazon.com/what-is/border-gateway-protocol/
+The *Border Gateway Protocol (BGP)* is the routing protocol that holds the
+internet together. It is how the roughly 70,000 networks that make up the
+internet – the *autonomous systems* – learn how to reach each other. Every time
+a packet crosses from one network operator to another, the path it takes was
+shaped by BGP.
+
+BGP is a *path-vector* protocol. It does not simply find the shortest path the
+way an interior gateway protocol such as OSPF does. Instead, each BGP
+advertisement carries the full sequence of autonomous systems a route has
+already traversed. A router that receives an advertisement in which its own AS
+already appears knows there is a loop, and discards it. This makes loop
+detection simple and scalable across a network of tens of thousands of
+participants.
+
+The protocol was first defined in 1989 and has been revised several times. The
+current version, BGP-4, is specified in RFC 4271. Its adoption of
+*xref:cidr.adoc[CIDR]* prefix advertisement in the mid-1990s was what allowed the
+internet to keep growing past the limits of the old classful addressing system.
+
+== How it works
+
+BGP speakers – the routers configured to run BGP – establish
+*xref:tcp.adoc[TCP]* connections with their peers on port 179. Because BGP rides
+on TCP, it inherits reliable, ordered delivery and does not need to implement
+its own fragmentation or retransmission. A peer relationship is called a
+*BGP session* and the two endpoints are *neighbors*.
+
+Once a session is established, peers exchange their full routing tables and
+then send only incremental updates as routes change. Each update advertises one
+or more prefixes (expressed in CIDR notation, eg. `203.0.113.0/24`) together
+with a set of *path attributes* that describe the route's properties. The most
+important attributes are:
+
+* *AS_PATH*: the ordered list of autonomous systems the advertisement has passed
+  through, used for loop detection and as a tie-breaker in route selection.
+* *NEXT_HOP*: the IP address of the next router to forward traffic to.
+* *LOCAL_PREF*: a locally administered preference that lets an AS favour one
+  route over another for its own outbound traffic.
+* *MULTI_EXIT_DISC (MED)*: a hint a neighbour can give about which of several
+  inter-AS links it would prefer traffic to enter on.
+* *Communities*: optional tags that let operators group and act on routes in
+  bulk, eg. to signal "do not advertise this prefix outside this AS".
+
+=== eBGP and iBGP
+
+BGP sessions come in two flavours. *External BGP (eBGP)* runs between routers in
+different autonomous systems and is what interconnects the internet. *Internal
+BGP (iBGP)* runs between routers inside the same AS, distributing the routes
+learned from eBGP throughout the organisation so every router can forward traffic
+consistently. The two use the same protocol but differ in a few rules – iBGP
+peers do not modify the NEXT_HOP attribute and do not prepend their own AS to
+the AS_PATH, so an iBGP mesh must be fully connected or rely on route
+reflectors to avoid O(n²) sessions.
+
+== Route selection
+
+When several peers advertise a path to the same prefix, BGP runs a deterministic
+decision process to pick one best path. The steps, simplified, are:
+
+. Prefer the highest LOCAL_PREF.
+. Prefer the shortest AS_PATH.
+. Prefer the lowest origin code.
+. Prefer the lowest MED (when comparing routes from the same neighbour AS).
+. Prefer eBGP over iBGP.
+. Prefer the route with the lowest IGP metric to the NEXT_HOP.
+. Prefer the route from the router with the lowest BGP identifier.
+
+Because LOCAL_PREF comes first, an operator can steer traffic by policy rather
+than by topology. This is the defining feature of BGP: it is a *policy-based*
+routing protocol. An AS can prefer a cheaper transit provider, avoid a peer it
+does not trust, or honour a commercial agreement – the shortest path is only
+one factor among many.
+
+== Anycast
+
+BGP makes *anycast* possible: the same prefix is announced from several
+geographically dispersed locations, and BGP delivers each packet to the
+"nearest" announcement by its routing metrics. This is how the DNS root
+nameservers and most *xref:content-delivery-networks.adoc[CDN]* edge networks
+route a user to a nearby server, and it is the mechanism behind global
+*xref:load-balancing.adoc[load balancing]* at the network layer.
+
+== Security
+
+BGP was designed in an era when the networks exchanging routes were few and
+largely trusted, so it has no built-in authentication of route origins. A
+misconfiguration – or a deliberate *route hijack* – can cause one AS to
+advertise a prefix it does not own, diverting traffic worldwide. The 2008
+Pakistan Telecom incident, which briefly blackholed YouTube globally, is the
+canonical example.
+
+Modern deployments mitigate this with the Resource Public Key Infrastructure
+(RPKI), which lets address holders cryptographically sign the prefixes they
+authorise specific ASes to originate. Route Origin Validation lets routers
+reject RPKI-invalid announcements before installing them. Full-path signing
+schemes such as BGPsec remain only partially deployed.
+
+== See also
+
+* *xref:internet-protocol.adoc[Internet Protocol (IP)]*
+* *xref:tcp.adoc[Transmission Control Protocol (TCP)]*
+* *xref:cidr.adoc[CIDR (Classless Inter-Domain Routing)]*
+* *xref:internet-protocol-address.adoc[IP address]*
+* *xref:osi-model.adoc[OSI model]*
+* *xref:content-delivery-networks.adoc[Content delivery networks (CDNs)]*
+* *xref:load-balancing.adoc[Load balancing]*
+
+== References
+
+* Rekhter, Y., Li, T., and Hares, S. (2006). _A Border Gateway Protocol 4
+  (BGP-4)_. RFC 4271, IETF.
+* Amazon Web Services (n.d.). _What is Border Gateway Protocol (BGP)?_. AWS.
