@@ -248,7 +248,7 @@ Do NOT push your changes.
 - [x] 🌱 Downtime — `downtime.adoc` (water)
 - [x] 🌱 DRY – Don't Repeat Yourself — `dry.adoc` (entwine)
 - [x] 🌱 DSDM — `dsdm.adoc` (fertilize)
-- [ ] 🌱 Durability — `durability.adoc` (water)
+- [x] 🌱 Durability — `durability.adoc` (water)
 
 ## E
 

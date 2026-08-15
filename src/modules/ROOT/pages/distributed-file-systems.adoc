@@ -24,7 +24,7 @@ Most distributed file systems separate *metadata* from *file data*. A metadata
 server, sometimes called a name node or master, tracks the directory tree, file
 names, permissions, and the mapping from each file to the nodes that store its
 contents. Data nodes hold the raw bytes, typically broken into fixed-size chunks
-and xref:replication.adoc[*replicated*] across several nodes for durability.
+and xref:replication.adoc[*replicated*] across several nodes for xref:durability.adoc[*durability*].
 
 Splitting metadata and data lets the system scale the two independently. Large
 sequential reads and writes stream directly between client and data node, while
