@@ -269,7 +269,7 @@ Do NOT push your changes.
 - [x] 🌱 Envelope encryption — `envelope-encryption.adoc` (fertilize)
 - [x] 🌱 ETL – Extract, Transform, Load — `etl.adoc` (fertilize)
 - [x] 🌱 Event bus — `event-bus.adoc` (fertilize)
-- [ ] 🌱 Event-based systems — `event-based-systems.adoc` (tend)
+- [x] 🌱 Event-based systems — `event-based-systems.adoc` (tend)
 - [ ] 🌱 Event-driven architecture — `event-driven-architecture.adoc` (tend)
 - [ ] 🌳 Event sourcing — `event-sourcing.adoc` (tend)
 - [ ] 🌱 Event storming — `event-storming.adoc` (tend)
