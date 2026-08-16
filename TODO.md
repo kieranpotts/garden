@@ -370,7 +370,7 @@ Do NOT push your changes.
 - [x] 🌱 JSON — `json.adoc` (fertilize)
 - [x] 🌱 JSON-LD — `json-ld.adoc` (fertilize)
 - [x] 🌱 JSON Schema — `json-schema.adoc` (fertilize)
-- [ ] 🌱 JWT — `jwt.adoc` (prune)
+- [x] 🌱 JWT — `jwt.adoc` (prune)
 
 ## K
 
