@@ -390,7 +390,7 @@ Do NOT push your changes.
 - [x] 🌱 Law of Demeter — `law-of-demeter.adoc` (fertilize)
 - [x] 🌱 Laws and principles — `laws-and-principles.adoc` (entwine)
 - [x] 🌱 Laws of software evolution — `laws-of-software-evolution.adoc` (fertilize)
-- [ ] 🌱 Layered architecture — `layered-architecture.adoc` (entwine)
+- [x] 🌱 Layered architecture — `layered-architecture.adoc` (entwine)
 - [ ] 🌱 Lazy loading — `lazy-loading.adoc` (fertilize)
 - [ ] 🌱 Leaky abstractions — `leaky-abstractions.adoc` (water)
 - [ ] 🌱 Lean software development — `lean-software-development.adoc` (fertilize)
