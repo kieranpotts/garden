@@ -347,7 +347,7 @@ Do NOT push your changes.
 - [x] 🌱 ICONIX — `iconix.adoc` (fertilize)
 - [x] 🌱 Idempotent — `idempotent.adoc` (fertilize)
 - [x] 🌱 Inception — `inception.adoc` (fertilize)
-- [ ] 🌱 Inheritance — `inheritance.adoc` (water)
+- [x] 🌱 Inheritance — `inheritance.adoc` (water)
 - [ ] 🌱 In-memory databases — `in-memory-databases.adoc` (fertilize)
 - [ ] 🌱 Infrastructure as code — `infrastructure-as-code.adoc` (fertilize)
 - [ ] 🌱 Input validation — `input-validation.adoc` (fertilize)
