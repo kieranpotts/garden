@@ -318,7 +318,7 @@ Do NOT push your changes.
 - [x] 🌱 Governance — `governance.adoc` (fertilize)
 - [x] 🌱 Graceful degradation — `graceful-degradation.adoc` (fertilize)
 > - [x] 🌱 Graph databases — `graph-databases.adoc` (fertilize)
-- [ ] 🌱 GraphML — `graphml.adoc` (fertilize)
+> - [x] 🌱 GraphML — `graphml.adoc` (fertilize)
 - [ ] 🌱 Graph Modelling Language (GML) — `gml.adoc` (fertilize)
 - [ ] 🌱 GraphQL — `graphql.adoc` (tend)
 - [ ] 🌱 GRASP — `grasp.adoc` (fertilize)
