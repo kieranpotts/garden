@@ -292,7 +292,7 @@ Do NOT push your changes.
 - [x] 🌱 Feature-driven development — `feature-driven-development.adoc` (fertilize)
 - [x] 🌱 Feature factory — `feature-factory.adoc` (tend)
 - [x] 🌱 Feature flags — `feature-flags.adoc` (tend)
-- [ ] 🌱 File storage — `file-storage.adoc` (water)
+- [x] 🌱 File storage — `file-storage.adoc` (water)
 - [ ] 🌱 Firewalls — `firewalls.adoc` (fertilize)
 - [ ] 🌱 FIRST principles of testing — `first-principles-of-testing.adoc` (water)
 - [ ] 🌱 Fitness function — `fitness-function.adoc` (fertilize)

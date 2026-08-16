@@ -6,18 +6,47 @@ files, files are grouped into folders, and folders are arranged in a
 hierarchical directory structure. This layout is intuitive and familiar, which
 makes file storage easy to manage for both users and applications.
 
+Under the hood, file storage is a file-system layer imposed on raw
+xref:block-storage.adoc[*block storage*]. The file system maintains the
+directory tree, filenames, and the index nodes (inodes) that map each file to
+the blocks that hold its bytes, and it enforces the permission and locking
+model. Applications and users address data by path rather than by block
+identifier, which is what makes the interface portable across programs.
+
+File storage spans two deployment styles. *Local file systems* reside on
+directly-attached disks and are managed by the host operating system, eg. ext4,
+XFS, Btrfs, and ZFS on Linux, NTFS and ReFS on Windows, APFS on macOS. *Network
+file systems* expose a server's file system to remote clients over a
+file-sharing protocol, so a single store can be shared across many machines.
+
 Each file comes with standard metadata: filename, size, permissions (read,
 write, execute), and timestamps. In networked environments, files are accessed
 via file-sharing protocols – typically *NFS* (Network File System) in Unix/Linux
-environments, or *SMB* (Server Message Block) in Windows environments. The
-remote file system is mounted on the client and appears just like a local drive.
+environments, or *SMB* (Server Message Block) in Windows environments. Modern
+revisions strengthen these protocols. NFSv4 adds stateful operations and
+Kerberos-based security, while SMB3 adds encryption and multichannel transfer.
+The remote file system is mounted on the client and appears just like a local
+drive.
 Every client connected to the same server sees the same shared directory
 structure, and changes made by one client are visible to all others in real
-time. File-level locking is used to manage concurrent access and prevent
-conflicts when multiple users read or write the same file. Scaling that model
-across many servers produces a xref:distributed-file-systems.adoc[*distributed
-file system*], which spreads the namespace over a cluster while keeping the
-same file-and-directory interface.
+time. xref:locking.adoc[*File-level locking*] is used to manage concurrent access and
+prevent conflicts when multiple users read or write the same file. Most file
+systems support advisory locks that cooperating processes honour, and
+byte-range locks that let writers claim a region of a file without blocking
+readers of the rest. Mandatory locking is rarer and is enforced by the
+operating system. Scaling that model across many servers produces a
+xref:distributed-file-systems.adoc[*distributed file system*], which spreads
+the namespace over a cluster while keeping the same file-and-directory
+interface.
+
+Durability of file storage rests on the underlying disk and, beyond a single
+node, on xref:replication.adoc[*replication*], snapshots, and backups. Network
+and clustered file systems typically mirror or stripe file data across disks
+and nodes so that the loss of one device does not destroy a file, and cloud
+offerings such as AWS EFS and Azure Files replicate within and across
+xref:availability-zone.adoc[*availability zones*] by default. The
+xref:durability.adoc[*durability*] guarantee is therefore a property of the
+deployment, not of the file-storage model itself.
 
 == Advantages
 
@@ -29,6 +58,9 @@ same file-and-directory interface.
 * *File-level access control*: Permissions can be applied at the file or folder
   level, giving fine-grained control over who can read or modify specific
   content.
+* *Snapshots and versioning*: Many modern file systems and NAS appliances
+  capture point-in-time snapshots of the directory tree, enabling fast recovery
+  from accidental deletion or corruption without a full backup restore.
 
 == Limitations
 
@@ -36,9 +68,14 @@ same file-and-directory interface.
   grows, lookups become slower and permission management becomes more complex.
 * *Basic metadata*: File systems support only standard metadata (name, size,
   timestamps, permissions). Unlike *xref:object-storage.adoc[object storage]*,
-  there is little support for custom or application-specific metadata.
-* *Protocol overhead*: NFS and SMB introduce latency, especially over wide area
-  networks (WANs), which can reduce throughput for remote access.
+  there is little support for custom or application-specific metadata. Extended
+  attributes in modern file systems narrow this gap, but they remain
+  filesystem-specific and are not exposed over NFS and SMB in a uniform way.
+* *Protocol overhead*: NFS and SMB introduce xref:latency.adoc[*latency*],
+  especially over wide area networks (WANs), which reduces
+  xref:throughput.adoc[*throughput*] for remote access. Small random reads and
+  deep metadata traversals suffer most, since each lookup may round-trip to the
+  server, whereas large sequential transfers amortize the per-operation cost.
 
 == Best for
 
@@ -53,11 +90,25 @@ or fine-grained access control is required. Common use cases include:
 * Content Management Systems (CMS) that organise files in structured
   directories.
 * Centralized log aggregation for analysis and monitoring.
+* Shared persistent volumes for containers, such as the ReadWriteMany access
+  mode in xref:kubernetes.adoc[*Kubernetes*], where multiple pods need
+  concurrent read-write access to the same files.
 
 Cloud implementations include AWS EFS (Elastic File System), Azure Files, and
 Google Filestore.
+
+File storage is less suited to workloads dominated by very large unstructured
+datasets, where object storage scales cheaper; to high-IOPS transactional
+databases, where block storage offers lower latency; and to big-data analytics
+across a cluster, where a distributed file system is the usual substrate. The
+shared namespace that makes file storage convenient for collaboration becomes a
+coordination bottleneck at very large scale.
 
 == See also
 
 * *xref:object-storage.adoc[Object storage]*
 * *xref:block-storage.adoc[Block storage]*
+* *xref:distributed-file-systems.adoc[Distributed file systems]*
+* *xref:durability.adoc[Durability]*
+* *xref:replication.adoc[Replication]*
+* *xref:locking.adoc[Locking]*
