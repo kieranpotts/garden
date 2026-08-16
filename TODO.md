@@ -295,7 +295,7 @@ Do NOT push your changes.
 - [x] 🌱 File storage — `file-storage.adoc` (water)
 - [x] 🌱 Firewalls — `firewalls.adoc` (fertilize)
 - [x] 🌱 FIRST principles of testing — `first-principles-of-testing.adoc` (water)
-- [ ] 🌱 Fitness function — `fitness-function.adoc` (fertilize)
+- [x] 🌱 Fitness function — `fitness-function.adoc` (fertilize)
 - [ ] 🌿 Flaccid agile — `flaccid-agile.adoc` (entwine)
 - [ ] 🌱 Forcing function — `forcing-function.adoc` (water)
 - [ ] 🌱 Foreign keys — `foreign-keys.adoc` (water)

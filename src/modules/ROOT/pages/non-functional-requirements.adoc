@@ -71,3 +71,8 @@ its concurrency target, rather than asserting it on every commit. Because
 there's an inherent degree of subjectivity in judging a system's quality
 attributes, runtime constraints are best treated as a guide to design and
 implementation, not as strict pass/fail rules.
+
+A powerful way to keep an NFR honest as the system evolves is to encode it as an
+xref:fitness-function.adoc[*fitness function*] – an automated check that fails
+when the constraint is violated, run continuously or on every change rather
+than only at scheduled assessment time.
