@@ -374,7 +374,7 @@ Do NOT push your changes.
 
 ## K
 
-- [ ] 🌱 Kafka — `kafka.adoc` (water)
+- [x] 🌱 Kafka — `kafka.adoc` (water)
 - [ ] 🌱 Kanban — `kanban.adoc` (water)
 - [ ] 🌱 Key-value cache (KV cache) — `key-value-cache.adoc` (tend)
 - [ ] 🌱 Key-value stores — `key-value-stores.adoc` (fertilize)
