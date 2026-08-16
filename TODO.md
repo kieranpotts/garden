@@ -274,7 +274,7 @@ Do NOT push your changes.
 - [x] 🌳 Event sourcing — `event-sourcing.adoc` (tend)
 - [x] 🌱 Event storming — `event-storming.adoc` (tend)
 - [x] 🌱 Event stream — `event-stream.adoc` (fertilize)
-- [ ] 🌱 Eventual consistency — `eventual-consistency.adoc` (fertilize)
+- [x] 🌱 Eventual consistency — `eventual-consistency.adoc` (fertilize)
 - [ ] 🌱 Evolvability — `evolvability.adoc` (tend)
 - [ ] 🌱 Execution model — `execution-model.adoc` (tend)
 - [ ] 🌱 Execution orchestrator — `execution-orchestrator.adoc` (tend)
