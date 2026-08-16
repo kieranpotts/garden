@@ -389,7 +389,7 @@ Do NOT push your changes.
 - [x] 🌱 Latency — `latency.adoc` (water)
 - [x] 🌱 Law of Demeter — `law-of-demeter.adoc` (fertilize)
 - [x] 🌱 Laws and principles — `laws-and-principles.adoc` (entwine)
-- [ ] 🌱 Laws of software evolution — `laws-of-software-evolution.adoc` (fertilize)
+- [x] 🌱 Laws of software evolution — `laws-of-software-evolution.adoc` (fertilize)
 - [ ] 🌱 Layered architecture — `layered-architecture.adoc` (entwine)
 - [ ] 🌱 Lazy loading — `lazy-loading.adoc` (fertilize)
 - [ ] 🌱 Leaky abstractions — `leaky-abstractions.adoc` (water)
