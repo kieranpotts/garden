@@ -384,7 +384,7 @@ Do NOT push your changes.
 
 ## L
 
-- [ ] 🌱 Language Server Protocol — `language-server-protocol.adoc` (fertilize)
+- [x] 🌱 Language Server Protocol — `language-server-protocol.adoc` (fertilize)
 - [ ] 🌳 Large language model (LLM) — `large-language-model.adoc` (none)
 - [ ] 🌱 Latency — `latency.adoc` (water)
 - [ ] 🌱 Law of Demeter — `law-of-demeter.adoc` (fertilize)
