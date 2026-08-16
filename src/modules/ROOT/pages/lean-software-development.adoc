@@ -1,3 +1,119 @@
 = Lean software development
 
-// TODO: https://en.wikipedia.org/wiki/Lean_software_development
+Lean software development is an *xref:agile.adoc[agile]* software development
+method that adapts the principles of lean manufacturing – most directly the
+*Toyota Production System (TPS)* – to software engineering. It treats
+development as a flow of value-adding work to the customer, and presses every
+practice toward the same end: shortening that flow by removing waste, smoothing
+interruptions, and deciding as late as evidence allows.
+
+The method was codified by Mary and Tom Poppendieck in _Lean Software
+Development: An Agile Toolkit_ (2003), which restated the manufacturing ideas
+behind TPS in terms that mapped onto a software team's daily work. The
+Poppendiecks' framing distinguished lean from the other agile methods emerging
+at the same time. Where *xref:scrum.adoc[Scrum]* prescribes iterations and
+ceremonies and *xref:extreme-programming.adoc[Extreme Programming (XP)]*
+prescribes technical practices, lean prescribes a way of thinking about the
+delivery system as a whole.
+
+== Origins in manufacturing
+
+The intellectual roots of lean software development are in postwar Japanese
+manufacturing. Taiichi Ohno, an engineer at Toyota, developed the Toyota
+Production System from the late 1940s onward. Its guiding idea was the relentless
+removal of _muda_ – waste in any form – and the redesign of work so that value
+flowed to the customer in small, pulled batches rather than large, pushed ones.
+Two allied ideas were _kaizen_, continuous incremental improvement, and _jidoka_,
+automation that stops the line when a defect appears.
+
+These ideas, refined over decades on the factory floor, were abstracted into a
+generic "lean" body of thought by researchers and popularizers outside Toyota,
+most prominently James Womack and Daniel Jones in _The Machine That Changed the
+World_ (1990) and _Lean Thinking_ (1996). The Poppendiecks' contribution was to
+translate that generic body of thought into software terms.
+
+== The seven principles
+
+The Poppendiecks distilled lean thinking into seven principles for software
+teams.
+
+* *Eliminate waste.* Anything that does not add value to the customer is waste.
+  The Poppendiecks adapt Ohno's categories to software: partially done work,
+  extra features, relearning, handoffs, task switching, delays, and defects.
+* *Amplify learning.* Development is a learning process. Short feedback loops,
+  *xref:prototyping.adoc[prototyping]*, and
+  *xref:iterative-and-incremental-development.adoc[iterative and incremental
+  development]* are how knowledge accumulates, not interruptions to it.
+* *Decide as late as possible.* Reversible decisions should be deferred until
+  they are forced by evidence. This is the lean counterpart to the argument
+  against *xref:big-design-up-front.adoc[big design up-front]*.
+* *Deliver as fast as possible.* Speed and delay-reduction are not at odds with
+  deciding late, because both follow from shortening the value stream. Small
+  batches and pull-based scheduling are the levers.
+* *Empower the team.* The people doing the work are best placed to decide how it
+  is done. This aligns with the agile principle of self-organizing teams.
+* *Build integrity in.* A product has _perceived integrity_ (it feels coherent
+  to its users) and _conceptual integrity_ (its internal design is coherent).
+  Both must be designed in, not inspected in.
+* *See the whole.* Local optimization of one stage – a faster build, a busier
+  team – rarely speeds the value stream. Optimize end-to-end, the way
+  *xref:value-stream-management.adoc[value stream management]* does.
+
+== Pull, flow, and small batches
+
+The operational ideas that distinguish lean from other agile methods are pull,
+flow, and small batches. Rather than pushing work into the system on a
+predicted schedule, work is pulled through in response to demand from the next
+stage. Rather than batching work into large releases, it is broken into the
+smallest economical unit and moved continuously. The effect, captured by
+Little's Law, is that constraining work-in-progress shortens lead time and
+surfaces bottlenecks.
+
+*xref:kanban.adoc[Kanban]* is the dominant method for operationalizing these
+ideas in software. Its boards and work-in-progress limits are the most common
+visualization layer for a lean value stream, and the Kanban Method's
+manufacturing lineage – Ohno's Toyota work, Anderson's software adaptation – is
+the same lineage as lean software development.
+
+== Relationship to agile and DevOps
+
+Lean predates the agile movement in its manufacturing form, and the Poppendiecks
+were signatories of the _Manifesto for Agile Software Development_. Lean is
+therefore both a member of the agile family and a source of ideas that other
+agile methods draw on. Its emphasis on small batches, fast feedback, and
+continuous improvement also shaped *xref:devops.adoc[DevOps]*, which extends the
+same flow-oriented thinking past the deployment boundary into release and
+operations.
+
+[CAUTION]
+======
+Lean is easily reduced to a slogan about "cutting waste". In practice the
+principles only deliver when the whole value stream is improved together.
+Trimming a single stage while leaving queues and handoffs elsewhere intact
+moves the bottleneck rather than removing it – the local optimization that
+"see the whole" warns against.
+======
+
+== See also
+
+* *xref:agile.adoc[Agile software development]*
+* *xref:kanban.adoc[Kanban]*
+* *xref:devops.adoc[DevOps]*
+* *xref:value-stream-management.adoc[Value stream management]*
+* *xref:iterative-and-incremental-development.adoc[Iterative and incremental development]*
+* *xref:extreme-programming.adoc[Extreme Programming (XP)]*
+* *xref:scrum.adoc[Scrum]*
+* *xref:big-design-up-front.adoc[Big design up-front]*
+* *xref:prototyping.adoc[Prototyping]*
+* *xref:ways-of-working.adoc[Ways of working]*
+
+== References
+
+* Poppendieck, Mary and Poppendieck, Tom (2003). _Lean Software Development: An
+  Agile Toolkit_. Addison-Wesley.
+* Womack, James P.; Jones, Daniel T.; Roos, Daniel (1990). _The Machine That
+  Changed the World_. Rawson Associates.
+* Womack, James P. and Jones, Daniel T. (1996). _Lean Thinking: Banish Waste
+  and Create Wealth in Your Corporation_. Simon &amp; Schuster.
+* Ohno, Taiichi (1988). _Toyota Production System: Beyond Large-Scale
+  Production_. Productivity Press.
