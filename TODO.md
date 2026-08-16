@@ -258,7 +258,7 @@ Do NOT push your changes.
 - [x] 🌱 Efficiency — `efficiency.adoc` (fertilize)
 - [x] 🌱 Egoless programming — `egoless-programming.adoc` (fertilize)
 - [x] 🌱 Elastic stack — `elastic-stack.adoc` (fertilize)
-- [ ] 🌱 Encapsulate what changes — `encapsulate-what-changes.adoc` (none)
+- [x] 🌱 Encapsulate what changes — `encapsulate-what-changes.adoc` (none)
 - [ ] 🌱 Encapsulation — `encapsulation.adoc` (entwine)
 - [ ] 🌱 Encryption — `encryption.adoc` (fertilize)
 - [ ] 🌱 Enterprise application software (EAS) — `enterprise-application-software.adoc` (fertilize)
