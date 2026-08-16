@@ -367,7 +367,7 @@ Do NOT push your changes.
 ## J
 
 - [x] 🌱 JavaScript — `javascript.adoc` (tend)
-- [ ] 🌱 JSON — `json.adoc` (fertilize)
+- [x] 🌱 JSON — `json.adoc` (fertilize)
 - [ ] 🌱 JSON-LD — `json-ld.adoc` (fertilize)
 - [ ] 🌱 JSON Schema — `json-schema.adoc` (fertilize)
 - [ ] 🌱 JWT — `jwt.adoc` (prune)
