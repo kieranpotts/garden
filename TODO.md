@@ -307,7 +307,7 @@ Do NOT push your changes.
 
 ## G
 
-- [ ] 🌱 Gail's law — `gails-law.adoc` (fertilize)
+- [x] 🌱 Gail's law — `gails-law.adoc` (fertilize)
 - [ ] 🌿 Garage startup — `garage-startup.adoc` (tend)
 - [ ] 🌱 Generative AI — `generative-ai.adoc` (tend)
 - [ ] 🌱 Geohashing — `geohashing.adoc` (tend)
