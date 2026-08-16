@@ -332,7 +332,7 @@ Do NOT push your changes.
 - [x] 🌱 Hashing — `hashing.adoc` (tend)
 - [x] 🌱 Heartbeat — `heartbeat.adoc` (fertilize)
 - [x] 🌱 Hexagonal architecture — `hexagonal-architecture.adoc` (tend)
-- [ ] 🌿 High integrity — `high-integrity.adoc` (tend)
+- [x] 🌿 High integrity — `high-integrity.adoc` (tend)
 - [ ] 🌱 High-level design — `high-level-design.adoc` (tend)
 - [ ] 🌱 High-performance computing (HPC) — `high-performance-computing.adoc` (fertilize)
 - [ ] 🌱 Hock principle — `hock-principle.adoc` (fertilize)
