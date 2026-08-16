@@ -256,7 +256,7 @@ Do NOT push your changes.
 - [x] 🌱 ECMAScript — `ecmascript.adoc` (none)
 - [x] 🌱 Edge proxy — `edge-proxy.adoc` (fertilize)
 - [x] 🌱 Efficiency — `efficiency.adoc` (fertilize)
-- [ ] 🌱 Egoless programming — `egoless-programming.adoc` (fertilize)
+- [x] 🌱 Egoless programming — `egoless-programming.adoc` (fertilize)
 - [ ] 🌱 Elastic stack — `elastic-stack.adoc` (fertilize)
 - [ ] 🌱 Encapsulate what changes — `encapsulate-what-changes.adoc` (none)
 - [ ] 🌱 Encapsulation — `encapsulation.adoc` (entwine)
