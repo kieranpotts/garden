@@ -10,16 +10,24 @@ for the broader principle of shielding a module's internal decisions from its
 callers, and is often described as *hiding implementation details*. The three
 names point at the same idea: a module exposes an interface and conceals
 everything behind it, so that callers depend only on what the interface promises
-and not on how it is built.
+and not on how it is built. When that boundary fails, the result is a
+*xref:leaky-abstractions.adoc[leaky abstraction]*.
 
 The purpose of encapsulation is to protect data from outside interference and
-misuse, and to free the implementation to change without forcing every caller to
-change with it. It is the foundation that makes
-*xref:coupling.adoc[loose coupling]* and *xref:composition.adoc[composition]*
-practical, since both rely on callers depending on
-xref:abstraction.adoc[*abstractions*] rather than on internals.
+misuse, and to free the implementation to change without forcing every caller
+to change with it — the discipline that
+*xref:encapsulate-what-changes.adoc[encapsulating what changes]* turns into a
+design rule. It is the foundation that makes *xref:coupling.adoc[loose coupling]*
+and *xref:composition.adoc[composition]* practical, since both rely on callers
+depending on xref:abstraction.adoc[*abstractions*] rather than on internals.
 
 By hiding the meaning of values behind a named interface, encapsulation also
 weakens xref:connascence.adoc[*connascence*], specifically connascence of
 meaning, where callers would otherwise have to agree on the interpretation of a
 raw value.
+
+== See also
+
+* xref:encapsulate-what-changes.adoc[*Encapsulate what changes*]
+* xref:decoupling.adoc[*Decoupling*]
+* xref:leaky-abstractions.adoc[*Leaky abstractions*]
