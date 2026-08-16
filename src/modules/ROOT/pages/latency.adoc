@@ -1,7 +1,5 @@
 = Latency
 
-// TODO: https://aws.amazon.com/compare/the-difference-between-throughput-and-latency/
-
 Latency refers to the time it takes for a single operation or request to
 complete, or to move data from one place to another.
 
@@ -12,8 +10,11 @@ target for *xref:alerting.adoc[symptom-based alerting]*.
 Latency is an important *xref:quality-attributes.adoc[quality attribute]* of IT
 systems, and required careful consideration in the
 *xref:system-design.adoc[design]* of
-*xref:distributed-system.adoc[distributed software]* especially. In high-volume
-systems, latency may need to be traded for higher
+*xref:distributed-system.adoc[distributed software]* especially. It is one facet
+of the broader quality of *xref:performance.adoc[performance]*, which measures
+how well a system responds to interactions overall.
+
+In high-volume systems, latency may need to be traded for higher
 *xref:throughput.adoc[throughput (aka. bandwidth)]*, ie. increasing the amount
 of data that can be processed over a period of time. For example, to increase
 throughput you might batch requests together, process data in
@@ -32,4 +33,140 @@ In general, in distributed software design, latency is often more problematic
 than bandwidth, which tends to be fairly easy to solve (by adding more resources
 – processing or network capacity). In addition, network bandwidth capacities
 have increased exponentially over the years, but the inherent latency of network
-communications has not improved at the same rate.
+communications has not improved at the same rate. The reasons for this
+asymmetry are laid out below: bandwidth can be enlarged almost without limit by
+adding more links, but the lower bound on latency is set by physics and
+geometry, not by engineering.
+
+== Latency and response time
+
+Latency is sometimes used interchangeably with *response time*, but the two are
+not the same. Response time is what the caller observes: the interval from
+sending a request to receiving the reply. Latency, in the stricter sense, is the
+time the request spends waiting or in flight before service actually begins.
+Response time therefore includes latency _plus_ the time the system spends doing
+the requested work, often called *processing time* or service time.
+
+The distinction matters when diagnosing slow requests. A long response time may
+be dominated by queueing latency rather than by slow processing, and the two
+have different remedies. Optimization aimed at the wrong component produces no
+improvement, which is why attribution through
+xref:tracing.adoc[*distributed tracing*] precedes any latency work.
+
+== Where latency comes from
+
+The latency of a request is not a single number but the sum of several
+contributions, each of which can dominate in different conditions.
+
+* *Propagation delay.* The time a signal takes to cross the physical distance
+  between two points, bounded below by the speed of light. No amount of
+  bandwidth reduces this floor. London to New York is roughly 70 ms round trip
+  even over a perfectly empty fiber link, because the light itself takes that
+  long to travel there and back. This is why locating compute close to its users
+  and its data – the principle behind
+  xref:content-delivery-networks.adoc[*content delivery networks*] and
+  co-location – is so effective at reducing latency.
+
+* *Transmission delay.* The time to push a message's bits onto the wire, equal
+  to the message size divided by the link's bandwidth. Large payloads over slow
+  links accumulate transmission delay; small payloads over fast links do not.
+
+* *Queuing delay.* The time a request spends waiting in a queue for a shared
+  resource that is busy. Queuing delay is the most variable component and the
+  one that grows nonlinearly as utilization approaches saturation. It is the
+  usual cause of latency spikes under load.
+
+* *Processing delay.* The time the system spends actually executing the
+  request, after it has been dequeued. This is where
+  xref:mechanical-sympathy.adoc[*mechanical sympathy*],
+  xref:caching.adoc[*caching*], and careful
+  xref:database-query-optimization.adoc[*query optimization*] pay off.
+
+The first two are dominated by the network; the last two by the systems at
+either end. Strategies that improve bandwidth address only transmission delay.
+Propagation delay is irreducible without moving the endpoints closer together,
+and queuing delay is irreducible without keeping resources below saturation –
+capacity, not speed, is what tames it.
+
+== Measuring latency
+
+Because latency is variable, a single sample says little. Latency is described
+with a distribution, and the shape of that distribution matters as much as its
+center. Production systems are therefore measured with *percentiles*: the p50
+(median), p90, p99, and p99.9 latencies, meaning the latency that 50%, 90%, 99%,
+and 99.9% of requests come in under.
+
+The mean is a poor summary of latency because the distribution is almost always
+right-skewed. A few very slow requests pull the average well above the
+experience of most users, while hiding the long tail that those same users hit
+often enough to notice. Percentiles make the tail visible. A service with a
+p50 of 50 ms and a p99 of 2 s is not "a 50 ms service with occasional outliers"
+– for one in a hundred requests it is a 2 s service, and that is the experience
+worth designing around.
+
+Tracking latency is the business of
+xref:application-performance-management.adoc[*application performance
+management*] and the broader practice of
+xref:observability.adoc[*observability*]. Service-level objectives usually set a
+latency target as a percentile, eg. "99% of requests complete in under 300 ms",
+and breaching that target is a common alerting condition. See
+xref:service-level-agreement.adoc[*service level agreements*].
+
+== Tail latency at scale
+
+The hardest latency problem in distributed systems is the *tail*: the slowest
+few percent of requests. Individual services may have modest tail latency on
+their own, but a single user request often fans out across many back-end
+services in parallel. The overall response cannot complete until the slowest
+of them does, so the tail of the aggregate is set by the worst of the
+constituents, not the average.
+
+This effect was articulated by Jeff Dean and Luiz André Barroso in _The Tail at
+Scale_. If a single component has a 1% chance of being slow on any given
+request, then a request that fans out across 100 such components will hit a
+slow one in roughly two thirds of calls. Tail latency therefore gets worse,
+often sharply, as a system grows in fan-out, even when every component behaves
+acceptably on its own.
+
+Mitigations accept the tail as a fact and work around it rather than denying
+it. Common techniques include hedged requests (issuing a second copy of a
+request after a short delay and taking whichever returns first), request
+timeouts paired with retries, and
+xref:circuit-breaker.adoc[*circuit breakers*] that stop sending work to a
+temporarily slow dependency. These trade extra load and complexity for shorter
+and more predictable response times.
+
+== Reducing latency
+
+Latency reduction works by attacking one or more of the four components above.
+Caching and *xref:preprocessing.adoc[preprocessing]* cut processing delay by
+doing work ahead of time. Content delivery networks cut transmission and
+propagation delay by moving data closer to where it is read.
+*xref:load-balancing.adoc[Load balancing]* and careful capacity provisioning cut
+queuing delay by keeping resources below saturation. And
+*xref:horizontal-scaling.adoc[horizontal scaling*] brings compute physically
+closer to users across regions, attacking the irreducible propagation floor.
+None of these is free; each trades some other quality, often cost or
+*xref:consistency.adoc[consistency]*, for lower latency.
+
+== See also
+
+* *xref:rtt.adoc[Round-trip time (RTT)]*
+* *xref:performance.adoc[Performance]*
+* *xref:throughput.adoc[Throughput (aka. bandwidth)]*
+* *xref:scalability.adoc[Scalability]*
+* *xref:mechanical-sympathy.adoc[Mechanical sympathy]*
+* *xref:application-performance-management.adoc[Application performance management]*
+* *xref:observability.adoc[Observability]*
+* *xref:content-delivery-networks.adoc[Content delivery networks]*
+* *xref:caching.adoc[Caching]*
+* *xref:load-balancing.adoc[Load balancing]*
+* *xref:premature-optimization.adoc[Premature optimization]*
+
+== References
+
+* Jeff Dean and Luiz André Barroso (2013).
+  https://research.google/pubs/the-tail-at-scale/[_The Tail at Scale_].
+  Communications of the ACM.
+* Amazon Web Services (n.d.).
+  https://aws.amazon.com/compare/the-difference-between-throughput-and-latency/[_The difference between throughput and latency_].
