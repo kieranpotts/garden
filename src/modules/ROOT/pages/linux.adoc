@@ -2,15 +2,57 @@
 
 // TODO: https://en.wikipedia.org/wiki/Comparison_of_Linux_distributions
 
-Linux is a family of open-source Unix-like operating systems based on the Linux
-kernel. It is typically packaged in a distribution, which is a particular
-configuration of software built around the Linux kernel.
+Linux is a family of open-source Unix-like operating systems built on the
+Linux kernel. Strictly, "Linux" names only the kernel itself; in everyday use
+the word also refers to the complete operating systems assembled around it and
+to the broader ecosystem of distributions, applications, and communities.
+Because the kernel alone is not a usable system, what people actually run is a
+*distribution* – a particular configuration of software packaged around the
+kernel, almost always including the GNU core utilities and C library that
+provide the Unix-like userspace. This combination is sometimes written
+GNU/Linux, a term favored by the GNU project to credit its contribution, though
+"Linux" remains the common shorthand.
+
+Linux is not UNIX-certified, but it implements the *xref:posix.adoc[POSIX]*
+interfaces and follows *xref:unix.adoc[Unix]* conventions, placing it firmly in
+the Unix-like family. It has become by far the most widely deployed member of
+that family, powering most web servers, cloud infrastructure, Android devices,
+and supercomputers.
 
 == Linux kernel
 
-The https://kernel.org/[Linux kernel] is a free and open-source Unix-like OS
-kernel, first released by Linus Torvalds in 1991. It is a core component of most
-Linux distributions and other operating systems such as Android.
+The https://kernel.org/[Linux kernel] is a free and open-source, Unix-like
+operating-system kernel first released by Linus Torvalds in 1991. It is the
+core component of every Linux distribution and of other operating systems such
+as Android. Written almost entirely in C, it is developed in the open under
+the GNU General Public License, version 2 only.
+
+The kernel is *monolithic*: it runs as a single large image in kernel space,
+in contrast to a microkernel design that keeps the core small and pushes
+services out into user-space processes. Linux nevertheless achieves modularity
+through *loadable kernel modules* (LKMs) – code that can be loaded and unloaded
+at runtime to add device drivers, filesystems, or other functionality without
+rebooting. Most device drivers live inside the kernel tree and ship with it,
+which is a major reason for Linux's broad hardware support.
+
+Responsibilities centralized in the kernel include process scheduling through
+its preemptive, priority-based CPU scheduler, memory management (virtual
+memory, paging, and the slab allocator), the virtual file system (VFS) that
+presents a uniform interface over many concrete filesystems, and the
+*xref:inter-process-communication.adoc[inter-process communication]* primitives
+such as pipes, signals, sockets, and shared memory. The same kernel also
+implements the namespace and control-group (cgroup) facilities that underpin
+*xref:containerization.adoc[containerization]*.
+
+The kernel follows a strict userspace-ABI stability policy, summarized by
+Torvalds as "we don't break userspace": a change that would break a previously
+working userspace program is treated as a bug. This is why binaries compiled
+years apart, on different distributions, can run on the same kernel. Releases
+are maintained through a stable and long-term support (LTS) process, with LTS
+branches kept for several years to give distributions a predictable base.
+Development happens in public on the Linux Kernel Mailing List (LKML),
+organized around subsystem maintainers whose trees are pulled into mainline by
+Torvalds.
 
 == Linux distributions
 
@@ -55,6 +97,30 @@ TODO (mainstream distros):
 - Salix
 
 ////
+
+A *distribution* (or *distro*) is a complete, installable operating system
+assembled around the Linux kernel. Beyond the kernel itself, a distribution
+typically bundles the GNU core utilities and C library, an init system, a
+package manager together with its repositories, a curated set of prebuilt
+software packages, and often a default desktop environment and an installer. The
+kernel is the same project everywhere; what distinguishes distributions is the
+choices made around it – the package format, the init system, the release
+cadence, the curated software set, and the intended audience.
+
+Distributions are commonly grouped into families that share an upstream and a
+package lineage. The Debian family (Debian, Ubuntu, Linux Mint, and many
+others) shares the `apt`/`dpkg` packaging stack. The Fedora/Red Hat family
+(Fedora, RHEL, CentOS Stream, Rocky Linux, AlmaLinux) shares `rpm`-based
+packaging and the `dnf`/`yum` tooling. The Arch family (Arch, Manjaro,
+EndeavourOS) shares `pacman` and a *xref:rolling-release.adoc[rolling release]*,
+bleeding-edge philosophy. A handful of distributions are independent, built
+from scratch rather than derived from another, Alpine and Void among them.
+
+Release model is another axis that cuts across families. Some distributions
+ship numbered point releases on a fixed cadence, such as Ubuntu's biannual
+releases; others follow a *xref:rolling-release.adoc[rolling release]* with no
+discrete versions at all. The trade-offs between the two are covered under
+rolling release.
 
 === Consumer-oriented distributions
 
@@ -143,34 +209,86 @@ contributes to its small footprint but means some commands may have slightly
 different options or behaviors than you'd expect on Debian or other mainstream
 distributions.
 
-// TODO: https://tails.net/[Tails] - portable live OS focused on privacy and anonymity (ethereal - load in RAM and run without touching the disk).
+NixOS takes a markedly different approach to package management. The entire
+system configuration – packages, services, and users – is declared in a single
+functional expression evaluated by the Nix package manager, which makes the
+system fully reproducible and upgrades atomic, with rollbacks available should
+a change go wrong.
 
-// TODO: https://www.kali.org/[Kali Linux] - Debian-based distribution focused on penetration testing and security auditing.
+https://tails.net/[Tails] is a portable, live distribution focused on privacy and
+anonymity. It is designed to boot from a USB stick, run entirely in RAM, and
+leave no trace on the host machine, routing all network traffic through the Tor
+network.
+
+https://www.kali.org/[Kali Linux] is a Debian-based distribution built for
+penetration testing and security auditing, preloaded with tools for
+vulnerability analysis, network sniffing, and exploitation.
 
 == Linux desktop environments
 
-// In computing, a desktop environment (DE) is an implementation of the desktop metaphor made of a bundle of programs running on top of a computer operating system that share a common graphical user interface (GUI), sometimes described as a graphical shell. While the term desktop environment originally described a style of user interfaces following the desktop metaphor, it has also come to describe the programs that realize the metaphor itself.[1] This usage has been popularized by projects such as the Common Desktop Environment, KDE, and GNOME.
+A *desktop environment* (DE) is the graphical layer that sits above the kernel
+and userspace to provide the familiar windows, icons, menus, and pointer
+desktop experience. It bundles a window manager, a file manager, settings
+panels, and a set of default applications. Most distributions ship a default DE
+but allow others to be installed, so the same distribution can be run under
+different DEs. The major DEs in the Linux ecosystem include:
 
-* Cinnamon (native desktop of Linux Mint):
-  https://en.wikipedia.org/wiki/Cinnamon_(desktop_environment)
-
-* MATE: https://en.wikipedia.org/wiki/MATE_(desktop_environment)
-
-* Xfce: https://en.wikipedia.org/wiki/Xfce
+* *GNOME.* The default on Fedora, Ubuntu, and others; a modern, opinionated
+  shell with a focus on keyboard-driven workflow and minimal chrome.
+* *KDE Plasma.* The default on Kubuntu, openSUSE, and others; highly
+  configurable and traditional in layout.
+* *Xfce.* A lightweight and stable DE suited to older or lower-spec hardware.
+* *Cinnamon.* Linux Mint's native DE, offering a Windows-like layout.
+* *MATE.* A continuation of the classic GNOME 2 line.
 
 == Linux package managers
 
-* APT (Ubuntu/Debian)
-* DNF (Fedora)
-* Pacman (Arch)
-* Zypper (openSUSE)
+Each distribution family ships its own native package manager, which fetches
+software from the distribution's curated repositories and resolves
+dependencies:
 
-// TODO:
-// https://www.reddit.com/r/linuxmint/comments/1rmnaoi/new_to_linux_when_to_use_apt_vs_flatpak/
-// https://www.reddit.com/r/Ubuntu/comments/1rm6l18/snap_vs_flatpak/
+* *APT.* Debian and its derivatives (Ubuntu, Mint).
+* *DNF.* Fedora and the Red Hat family.
+* *Pacman.* Arch and its derivatives.
+* *Zypper.* openSUSE.
+
+Alongside the distro-native managers, a newer generation of *universal*
+package formats – chiefly *Flatpak*, *Snap*, and *AppImage* – bundles an
+application together with its dependencies so that a single artifact runs
+across distributions. These trade the integration and shared-library
+efficiency of native packages for portability and sandboxing. Flatpak is
+oriented toward desktop applications and distributed through Flathub; Snap,
+backed by Canonical, covers both desktop and server workloads; AppImage is a
+single self-contained, runnable file. Their rise has eased cross-distribution
+packaging for application authors, at the cost of larger downloads and
+duplication of libraries. Nix, from NixOS, takes a different route still,
+managing packages as immutable store paths referenced by a functional
+configuration language.
 
 == Security layers
 
-* SELinux (Fedora, CentOS)
-* AppArmor (Ubuntu)
-* Immutable FS (Talos, Flatcar)
+Linux distributions commonly layer a mandatory access control (MAC) framework
+on top of the kernel's discretionary file permissions, confining programs with
+policies that the programs themselves cannot override:
+
+* *SELinux.* The default on Fedora, CentOS Stream, and RHEL; enforces
+  type-enforcement policies that label every process and object and govern the
+  interactions between them.
+* *AppArmor.* The default on Ubuntu and SUSE; confines programs with
+  path-based profiles, generally considered simpler to author than SELinux
+  policy.
+
+A complementary approach is taken by distributions such as Talos and Flatcar,
+which mount the system image read-only and apply changes only through atomic,
+verifiable updates. The running system cannot be tampered with at runtime,
+which makes the security story about immutability and reproducibility rather
+than runtime confinement.
+
+== See also
+
+* *xref:unix.adoc[Unix]*
+* *xref:posix.adoc[POSIX]*
+* *xref:bash.adoc[Bash]*
+* *xref:rolling-release.adoc[Rolling release]*
+* *xref:unix-philosophy.adoc[Unix philosophy]*
+* *xref:containerization.adoc[Containerization]*
