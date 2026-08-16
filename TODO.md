@@ -339,7 +339,7 @@ Do NOT push your changes.
 - [x] 🌱 Horizontal scaling — `horizontal-scaling.adoc` (none)
 - [x] 🌱 HTTP — `http.adoc` (tend)
 - [x] 🌿 HTTP API — `http-api.adoc` (tend)
-- [ ] 🌱 Hypervisor — `hypervisor.adoc` (tend)
+- [x] 🌱 Hypervisor — `hypervisor.adoc` (tend)
 
 ## I
 
