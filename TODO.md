@@ -396,7 +396,7 @@ Do NOT push your changes.
 - [x] 🌱 Lean software development — `lean-software-development.adoc` (fertilize)
 - [x] 🌱 Leetspeak — `leetspeak.adoc` (tend)
 - [x] 🌱 Lightweight text markup languages — `lightweight-text-markup-languages.adoc` (fertilize)
-- [ ] 🌱 Linting — `linting.adoc` (entwine)
+- [x] 🌱 Linting — `linting.adoc` (entwine)
 - [ ] 🌱 Linux — `linux.adoc` (water)
 - [ ] 🌱 Liskov substitution principle — `liskov-substitution-principle.adoc` (none)
 - [ ] 🌱 Literate programming — `literate-programming.adoc` (fertilize)
