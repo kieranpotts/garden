@@ -1,4 +1,96 @@
 = Interface definition language (IDL)
 
-// https://en.wikipedia.org/wiki/Interface_description_language
+An *interface definition language (IDL)* is a specification language that
+describes the interface of a software component in a form independent of any
+particular programming language. It declares the operations a component
+exposes, the parameters and return types of those operations, and the data
+structures they exchange. It says nothing about how the operations are
+implemented.
 
+The point of an IDL is to fix the contract between components separately from
+their implementations. A client written in Go can call a service written in
+Java because both sides agree on the same IDL description, and a toolchain
+translates that description into language-specific code on each side.
+
+== How an IDL is used
+
+An IDL source file is processed by an IDL compiler, sometimes called a
+stub/skeleton generator. The compiler emits three artifacts for each target
+language.
+
+* A *stub* (or proxy) on the client side that presents the remote operations as
+  ordinary local function calls.
+* A *skeleton* (or servant) on the server side that dispatches incoming calls
+  to the developer's implementation.
+* *Serialization code* that converts the IDL's data structures to and from a
+  wire format.
+
+The developer writes business logic against the generated interfaces. The
+generated code handles marshalling, transport framing, and dispatch. The same
+IDL file can be compiled into many languages, which is what makes IDLs the
+backbone of *xref:remote-procedure-call.adoc[RPC]* frameworks and polyglot
+*xref:microservices.adoc[microservice]* systems.
+
+== Where IDLs appear
+
+IDLs predate the web. The pattern was established by RPC systems in the 1980s
+and 1990s, when network protocols needed a language-neutral way to describe
+procedures and data.
+
+* *Sun RPC* used XDR (External Data Representation) as its IDL and
+  serialization format.
+* *DCE/RPC* defined its own IDL. Microsoft's MIDL extended it for COM and
+  DCOM.
+* *CORBA IDL*, standardized by the Object Management Group in 1991, became the
+  canonical object-oriented IDL and the reference point most later systems are
+  measured against.
+
+The web-services generation adapted the idea to XML. WSDL describes SOAP web
+services in XML, paired with XML Schema for the data types. XML Schema itself
+acts as an IDL for any XML document exchanged across a network.
+
+Modern systems mostly use IDLs designed for compact binary encoding and
+polyglot code generation.
+
+* *xref:protocol-buffers.adoc[Protocol Buffers]* is Google's IDL and binary
+  serialization format, and the IDL used by *xref:grpc.adoc[gRPC]*.
+* *Apache Thrift*, originated at Facebook, pairs an IDL with pluggable
+  serialization and transport.
+* *Apache Avro* uses a JSON-based schema as its IDL, designed for
+  *xref:event-driven-architecture.adoc[event-driven]* data pipelines.
+* *GraphQL SDL* is the schema language for *xref:graphql.adoc[GraphQL]* APIs.
+* *OpenAPI* and *xref:json-schema.adoc[JSON Schema]* describe REST and HTTP
+  APIs in a text format that tooling can generate client code from.
+
+The unifying idea across all of these is the same as CORBA's. Describe the
+interface in one place, in a form no single language owns, and generate the
+glue code from it.
+
+== Trade-offs
+
+An IDL trades flexibility for a strong, machine-checkable contract. The
+benefits are language interoperability, compile-time type safety across
+service boundaries, and a single source of truth that documentation, clients,
+and servers can all be generated from.
+
+The costs are a heavier toolchain – every build must run the IDL compiler –
+and tighter coupling between components. A change to the IDL ripples through
+every consumer that regenerates from it, so schema evolution has to be managed
+with backward- and forward-compatible rules. The most successful IDLs codify
+those rules directly into the format; Protocol Buffers is the canonical
+example.
+
+== See also
+
+* *xref:interfaces.adoc[Interfaces]*: the programming-language concept an IDL
+  describes in a language-neutral form.
+* *xref:remote-procedure-call.adoc[Remote procedure call (RPC)]*: the protocol
+  family IDLs were invented to support.
+* *xref:inter-process-communication.adoc[Inter-process communication (IPC)]*:
+  the broader category of mechanisms IDL-based systems run over.
+* *xref:protocol-buffers.adoc[Protocol Buffers]* and *xref:grpc.adoc[gRPC]*:
+  the dominant modern IDL and RPC pairing.
+* *xref:api-first-design.adoc[API-first design]*: a design approach that
+  treats interface definitions as the first artifact of a system.
+* *xref:microservices.adoc[Microservices]*: the architectural style where
+  language-neutral contracts matter most.
