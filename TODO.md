@@ -299,7 +299,7 @@ Do NOT push your changes.
 - [x] 🌿 Flaccid agile — `flaccid-agile.adoc` (entwine)
 - [x] 🌱 Forcing function — `forcing-function.adoc` (water)
 - [x] 🌱 Foreign keys — `foreign-keys.adoc` (water)
-- [ ] 🌱 Formal methods — `formal-methods.adoc` (fertilize)
+- [x] 🌱 Formal methods — `formal-methods.adoc` (fertilize)
 - [ ] 🌱 FTP — `ftp.adoc` (fertilize)
 - [ ] 🌱 Function-as-a-Service (FaaS) — `function-as-a-service.adoc` (fertilize)
 - [ ] 🌳 Functional requirements — `functional-requirements.adoc` (none)
