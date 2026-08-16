@@ -261,7 +261,7 @@ Do NOT push your changes.
 - [x] 🌱 Encapsulate what changes — `encapsulate-what-changes.adoc` (none)
 - [x] 🌱 Encapsulation — `encapsulation.adoc` (entwine)
 - [x] 🌱 Encryption — `encryption.adoc` (fertilize)
-- [ ] 🌱 Enterprise application software (EAS) — `enterprise-application-software.adoc` (fertilize)
+- [x] 🌱 Enterprise application software (EAS) — `enterprise-application-software.adoc` (fertilize)
 - [ ] 🌱 Enterprise architecture (EA) — `enterprise-architecture.adoc` (fertilize)
 - [ ] 🌱 Enterprise resource planning (ERP) — `enterprise-resource-planning.adoc` (fertilize)
 - [ ] 🌱 Entity Component System (ECS) — `entity-component-system.adoc` (tend)
