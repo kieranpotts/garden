@@ -265,7 +265,7 @@ Do NOT push your changes.
 - [x] 🌱 Enterprise architecture (EA) — `enterprise-architecture.adoc` (fertilize)
 - [x] 🌱 Enterprise resource planning (ERP) — `enterprise-resource-planning.adoc` (fertilize)
 - [x] 🌱 Entity Component System (ECS) — `entity-component-system.adoc` (tend)
-- [ ] 🌱 Entity-Relationship Diagram (ERD) — `entity-relationship-diagram.adoc` (fertilize)
+- [x] 🌱 Entity-Relationship Diagram (ERD) — `entity-relationship-diagram.adoc` (fertilize)
 - [ ] 🌱 Envelope encryption — `envelope-encryption.adoc` (fertilize)
 - [ ] 🌱 ETL – Extract, Transform, Load — `etl.adoc` (fertilize)
 - [ ] 🌱 Event bus — `event-bus.adoc` (fertilize)
