@@ -1,3 +1,118 @@
 = In-memory databases
 
-// TODO
+An *in-memory database* (IMDB, also called a *main-memory database*) is a
+*xref:databases.adoc[database]* management system that stores its working
+dataset primarily in main memory (RAM) rather than on disk or SSD. Reading from
+and writing to memory is orders of magnitude faster than accessing even the
+fastest solid-state storage, so an in-memory database delivers far lower
+*xref:latency.adoc[latency]* and higher *xref:throughput.adoc[throughput]* than
+a disk-based system serving the same workload.
+
+The term describes where the authoritative data lives, not a data model. An
+in-memory database can be
+*xref:relational-databases.adoc[relational]*,
+*xref:key-value-stores.adoc[key-value]*, or another shape entirely. It is
+orthogonal to the
+*xref:transactional-databases.adoc[transactional]* versus
+*xref:analytical-databases.adoc[analytical]* axis and to whether the system runs
+on one node or as a *xref:distributed-databases.adoc[distributed database]*.
+
+== Why hold data in memory
+
+Disk and SSD access is dominated by seek and transfer time. RAM access completes
+in nanoseconds, while even an NVMe SSD read takes tens of microseconds. A
+disk-based database spends much of its effort hiding this gap: buffer pools,
+page layouts tuned for sequential I/O, and B-tree indexes chosen because they
+minimise disk seeks rather than because they are the fastest structure in
+memory.
+
+An in-memory database dispenses with that machinery. It can use pointer-rich
+data structures – hash tables, skip lists, tries – that are optimal for CPU
+access but impractical on disk. It does not need a buffer pool, and its query
+plans do not need to estimate I/O cost. The result is sub-millisecond operations
+even at high concurrency.
+
+== Durability and persistence
+
+Memory is volatile. It loses its contents on power loss or process crash. This
+is the central trade-off of in-memory storage, and it bears directly on
+*xref:durability.adoc[durability]*, the D of the
+*xref:acid-principles.adoc[ACID properties]*. Without some additional mechanism,
+an in-memory database cannot promise that a committed write survives a failure.
+
+Most systems address this with one or more of the following.
+
+* *Snapshotting.* Periodic point-in-time copies of the dataset are written to
+  disk. Recovery loads the most recent snapshot, losing every write since.
+* *Write-ahead logging.* Every write is appended to an on-disk log before being
+  acknowledged, so the log can be replayed on restart. How often the log is
+  flushed tunes the durability/performance trade-off.
+* *xref:replication.adoc[Replication].* Writes are shipped to one or more
+  replicas, so the failure of one node does not lose the dataset. Replication
+  protects against node loss but not, on its own, against a simultaneous power
+  failure that takes down every replica.
+
+These mechanisms narrow the durability gap but do not close it entirely. Each
+adds work to the write path, eroding some of the latency advantage that
+motivated using memory in the first place.
+
+== Capacity and cost
+
+RAM is far more expensive per gigabyte than disk or SSD, and a dataset must fit
+in the available memory. This caps the size of dataset an in-memory database can
+hold economically, and it is the main reason in-memory storage is reserved for
+working sets that justify the cost.
+
+Techniques to stretch the cap include configurable eviction (dropping the least
+recently or least frequently used entries), tiering that keeps hot data in
+memory and cold data on disk, and sharding the dataset across a cluster of
+nodes. Each moves the ceiling upward at the price of more complexity.
+
+== In-memory databases versus caches
+
+An in-memory database overlaps with a *xref:caching.adoc[cache]* – both serve
+data from memory to reduce read latency – but the two are not the same thing. A
+cache holds a copy of data that lives authoritatively elsewhere, and a cache miss
+is expected and handled by falling back to the source. An in-memory database is
+the source of truth for the data it holds, and a miss is a failure.
+
+The distinction blurs in practice. *xref:redis.adoc[Redis]* is most often
+deployed as a cache in front of a slower persistent database, but it offers
+persistence, replication, and richer data structures than a plain cache, and is
+frequently used as the primary store for sessions, rate-limit counters, and
+real-time leaderboards.
+
+== Implementations
+
+* *xref:redis.adoc[Redis]* – an in-memory
+  *xref:key-value-stores.adoc[key-value store]* with optional persistence and a
+  rich set of data structures. The canonical example.
+* *Memcached* – a simpler in-memory key-value cache with no persistence,
+  designed for speed and simplicity.
+* *VoltDB* – a distributed, in-memory relational
+  *xref:transactional-databases.adoc[transactional database]* aimed at
+  high-throughput OLTP.
+* *SAP HANA* – an in-memory columnar
+  *xref:analytical-databases.adoc[analytical database]* that also handles
+  transactional workloads (HTAP).
+* *Hazelcast* and *Apache Ignite* – in-memory data grids that distribute a
+  key-value store across a cluster, often used as a
+  *xref:distributed-caching.adoc[distributed cache]*.
+* *SQLite* in-memory mode – a single-process relational database that runs
+  entirely in RAM, popular for tests and ephemeral workloads.
+
+== See also
+
+* xref:databases.adoc[*Databases*]
+* xref:caching.adoc[*Caching*]
+* xref:distributed-caching.adoc[*Distributed caching*]
+* xref:durability.adoc[*Durability*]
+* xref:acid-principles.adoc[*ACID principles*]
+* xref:latency.adoc[*Latency*]
+* xref:replication.adoc[*Replication*]
+* xref:redis.adoc[*Redis*]
+
+== References
+
+* Martin Kleppmann (2017). link:https://www.dataintensive.net/[_Designing
+  Data-Intensive Applications_]. O'Reilly.

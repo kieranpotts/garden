@@ -348,7 +348,7 @@ Do NOT push your changes.
 - [x] 🌱 Idempotent — `idempotent.adoc` (fertilize)
 - [x] 🌱 Inception — `inception.adoc` (fertilize)
 - [x] 🌱 Inheritance — `inheritance.adoc` (water)
-- [ ] 🌱 In-memory databases — `in-memory-databases.adoc` (fertilize)
+- [x] 🌱 In-memory databases — `in-memory-databases.adoc` (fertilize)
 - [ ] 🌱 Infrastructure as code — `infrastructure-as-code.adoc` (fertilize)
 - [ ] 🌱 Input validation — `input-validation.adoc` (fertilize)
 - [ ] 🌿 Installation testing — `installation-testing.adoc` (tend)
