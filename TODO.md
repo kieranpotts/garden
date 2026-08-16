@@ -380,7 +380,7 @@ Do NOT push your changes.
 - [x] 🌱 Key-value stores — `key-value-stores.adoc` (fertilize)
 - [x] 🌱 KISS principle — `kiss-principle.adoc` (fertilize)
 - [x] 🌱 Knowledge graph — `knowledge-graph.adoc` (fertilize)
-- [ ] 🌱 Kubernetes — `kubernetes.adoc` (fertilize)
+- [x] 🌱 Kubernetes — `kubernetes.adoc` (fertilize)
 
 ## L
 

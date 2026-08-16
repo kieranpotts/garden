@@ -1,25 +1,101 @@
 = Kubernetes (K8s)
 
 Kubernetes is an open-source
-*xref:container-orchestration.adoc[container orchestration]* platform that
-automates the deployment, scaling, and management of containerized applications.
-It was originally developed by Google and is now maintained by the Cloud Native
-Computing Foundation. Its design is built around declarative
-*xref:configuration-management.adoc[configuration management]*: operators
-express the desired cluster state in manifests, and the control plane
-continuously reconciles the cluster toward that state.
+xref:container-orchestration.adoc[*container orchestration*] platform that
+automates the deployment, scaling, and management of
+xref:containerization.adoc[*containerized*] applications. It was originally
+developed by Google and is now maintained by the Cloud Native Computing
+Foundation. Its design is built around declarative
+xref:configuration-management.adoc[*configuration management*]. Operators express
+the desired cluster state in manifests, and the control plane continuously
+reconciles the cluster toward that state. It has become the dominant runtime for
+xref:microservices.adoc[*microservices*] in cloud-native environments.
 
 Red Hat's
 https://www.redhat.com/en/technologies/cloud-computing/openshift[OpenShift] is
 built on top of Kubernetes, providing additional features and tools for
 developers and operators. https://knative.dev/[Knative] is another open-source
 project that extends Kubernetes, optimizing it for deployment of event-driven
-systems to *xref:serverless-computing.adoc[serverless]* platforms.
+systems to xref:serverless-computing.adoc[*serverless*] platforms.
 
-*xref:cloud-service-providers.adoc[Cloud service providers]* also offer managed
+xref:cloud-service-providers.adoc[*Cloud service providers*] also offer managed
 Kubernetes services, such as Amazon Elastic Kubernetes Service (EKS), Google
 Kubernetes Engine (GKE), and Microsoft's Azure Kubernetes Service (AKS).
 Kubernetes-as-a-Service platforms include https://www.rancher.com/[Rancher] and
 https://www.portainer.io/[Portainer].
 
-// TODO: https://aws.amazon.com/what-is/kubernetes-cluster/
+== Cluster architecture
+
+A Kubernetes deployment takes the form of a cluster, a set of machines that
+together form a single logical xref:clustering.adoc[*cluster*] managed by the
+platform. The cluster has two parts. The *control plane* (sometimes called the
+*master*) holds the desired state, makes scheduling and placement decisions, and
+exposes the API through which operators and automation interact with the
+cluster. The *worker nodes* run the actual workloads.
+
+The control plane's components include the API server (`kube-apiserver`), the
+scheduler (`kube-scheduler`), and a distributed key-value store (`etcd`) that
+persists the cluster's state. Each worker node runs a `kubelet` agent that
+reports to the control plane, a `kube-proxy` that handles networking, and a
+xref:container.adoc[*container*] runtime such as `containerd` or CRI-O. The split
+between control plane and worker nodes is the same pattern that container
+orchestration systems in general adopt — see container orchestration for the
+broader treatment.
+
+== The API object model
+
+Everything in Kubernetes is an object expressed in a manifest and managed through
+the API server. A *Pod* is the smallest deployable unit: one or more
+tightly-coupled containers that share storage and networking and are scheduled
+together. Higher-level abstractions build on pods. A *Deployment* manages a set
+of replica pods and drives rolling updates and rollbacks, the K8s expression of
+xref:deployment-strategies.adoc[*deployment strategies*]. A *Service* exposes a
+stable network endpoint that fronts a set of pods, and an *Ingress* routes
+external traffic into the cluster. Custom Resource Definitions (CRDs) extend the
+model with new object kinds, which is how ecosystem projects such as Knative and
+xref:service-mesh.adoc[*service meshes*] integrate with the platform rather than
+running alongside it.
+
+Because every object is declared rather than imperatively created, the desired
+state is typically stored in a version control repository and applied to the
+cluster by a xref:continuous-delivery.adoc[*continuous delivery*] pipeline. This
+practice, known as *GitOps*, builds on
+xref:infrastructure-as-code.adoc[*infrastructure as code*] principles. Tools such
+as Helm and the *Operator* pattern package manifests into reusable,
+parameterized units that can be applied consistently across environments.
+
+== Origins
+
+Kubernetes was inspired by *Borg*, Google's internal cluster manager, and its
+successor *Omega*, which Google had operated at large scale for years before the
+practice reached the wider industry. Google open-sourced Kubernetes in 2014 and
+donated it to the newly formed Cloud Native Computing Foundation (CNCF) as its
+seed technology in 2015, with version 1.0 following the same year. Unlike Borg,
+which was written in C++, Kubernetes is written in Go.
+
+== Trade-offs
+
+Kubernetes is powerful but operationally demanding. A production cluster brings
+its own control plane to secure and keep highly available, its own networking and
+storage models to learn, and its own upgrade cadence to track. This complexity
+has driven the growth of managed offerings and of
+xref:platform-engineering.adoc[*platform engineering*] teams that wrap the raw
+orchestrator behind simpler internal platforms. For small workloads or small
+teams, a single host running a few containers and managed with a process
+supervisor or a minimal tool such as Docker Swarm can be simpler and cheaper to
+operate than a full cluster. Kubernetes also governs the lifecycle and placement
+of containers but stops short of governing all service-to-service communication,
+which is why a service mesh is often layered on top.
+
+== See also
+
+* xref:container-orchestration.adoc[*Container orchestration*]
+* xref:containerization.adoc[*Containerization*]
+* xref:clustering.adoc[*Clustering*]
+* xref:microservices.adoc[*Microservices*]
+* xref:service-mesh.adoc[*Service mesh*]
+* xref:auto-scaling.adoc[*Auto-scaling*]
+* xref:deployment-strategies.adoc[*Deployment strategies*]
+* xref:infrastructure-as-code.adoc[*Infrastructure as code*]
+* xref:continuous-delivery.adoc[*Continuous delivery*]
+* xref:platform-engineering.adoc[*Platform engineering*]
