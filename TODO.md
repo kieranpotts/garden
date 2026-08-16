@@ -388,7 +388,7 @@ Do NOT push your changes.
 - [x] 🌳 Large language model (LLM) — `large-language-model.adoc` (none)
 - [x] 🌱 Latency — `latency.adoc` (water)
 - [x] 🌱 Law of Demeter — `law-of-demeter.adoc` (fertilize)
-- [ ] 🌱 Laws and principles — `laws-and-principles.adoc` (entwine)
+- [x] 🌱 Laws and principles — `laws-and-principles.adoc` (entwine)
 - [ ] 🌱 Laws of software evolution — `laws-of-software-evolution.adoc` (fertilize)
 - [ ] 🌱 Layered architecture — `layered-architecture.adoc` (entwine)
 - [ ] 🌱 Lazy loading — `lazy-loading.adoc` (fertilize)
