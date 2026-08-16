@@ -324,7 +324,7 @@ Do NOT push your changes.
 - [x] 🌱 GRASP — `grasp.adoc` (fertilize)
 - [x] 🌱 Gray-box testing — `gray-box-testing.adoc` (none)
 - [x] 🌱 gRPC — `grpc.adoc` (tend)
-- [ ] 🌱 Grug-brained developer — `grug-brained-developer.adoc` (tend)
+- [x] 🌱 Grug-brained developer — `grug-brained-developer.adoc` (tend)
 
 ## H
 
