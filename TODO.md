@@ -398,7 +398,7 @@ Do NOT push your changes.
 - [x] 🌱 Lightweight text markup languages — `lightweight-text-markup-languages.adoc` (fertilize)
 - [x] 🌱 Linting — `linting.adoc` (entwine)
 - [x] 🌱 Linux — `linux.adoc` (water)
-- [ ] 🌱 Liskov substitution principle — `liskov-substitution-principle.adoc` (none)
+- [x] 🌱 Liskov substitution principle — `liskov-substitution-principle.adoc` (none)
 - [ ] 🌱 Literate programming — `literate-programming.adoc` (fertilize)
 - [ ] 🌱 Load — `load.adoc` (fertilize)
 - [ ] 🌱 Load balancer — `load-balancer.adoc` (none)
