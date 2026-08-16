@@ -260,7 +260,7 @@ Do NOT push your changes.
 - [x] 🌱 Elastic stack — `elastic-stack.adoc` (fertilize)
 - [x] 🌱 Encapsulate what changes — `encapsulate-what-changes.adoc` (none)
 - [x] 🌱 Encapsulation — `encapsulation.adoc` (entwine)
-- [ ] 🌱 Encryption — `encryption.adoc` (fertilize)
+- [x] 🌱 Encryption — `encryption.adoc` (fertilize)
 - [ ] 🌱 Enterprise application software (EAS) — `enterprise-application-software.adoc` (fertilize)
 - [ ] 🌱 Enterprise architecture (EA) — `enterprise-architecture.adoc` (fertilize)
 - [ ] 🌱 Enterprise resource planning (ERP) — `enterprise-resource-planning.adoc` (fertilize)
