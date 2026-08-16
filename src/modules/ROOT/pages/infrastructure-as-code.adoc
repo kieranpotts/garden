@@ -1,7 +1,81 @@
 = Infrastructure as code (IaC)
 
-// TODO
+*Infrastructure as code* (IaC) is the practice of provisioning and managing
+computing infrastructure – networks, load balancers, storage, databases,
+compute instances, and the rest of the resources a cloud provider exposes –
+through machine-readable definition files rather than interactive, manual
+commands. The definitions are treated like any other source artifact. They live
+in a *xref:version-control.adoc[version control]* repository, are reviewed
+before merge, and are applied by a tool that converges the real infrastructure
+toward the declared state.
+
+IaC extends the declarative, version-controlled approach of
+*xref:configuration-management.adoc[configuration management]* from the
+configuration of machines that already exist to the provisioning of the
+infrastructure itself. The two disciplines overlap and the terms are sometimes
+used interchangeably, but the distinction is one of scope. Configuration
+management concerns the state of provisioned hosts and services. IaC concerns
+bringing those hosts and services into existence in the first place. Tools like
+Terraform, Pulumi, OpenTofu, AWS CloudFormation, and Azure Bicep sit primarily
+on the IaC side, while Chef, Puppet, and Ansible sit primarily on the CM side.
+
+Most IaC tools are *declarative*. The author describes the desired end state – a
+virtual network with three subnets, a managed database, two application
+instances – and the tool works out the sequence of API calls needed to reach
+it. A minority, such as Pulumi's programmatic model, let the author write
+imperative code that emits resources, but the resource graph the tool applies is
+still reconciled declaratively. The declarative model matters because cloud
+providers expose hundreds of resource types through idempotent control planes.
+Applying the same definition twice should produce the same infrastructure, not
+duplicate it.
+
+To reconcile declared state with real state, declarative IaC tools keep a
+*state file* that records which resources they created and their current
+attributes. On each run the tool refreshes the state against the provider's
+control plane, diffs it against the definitions, and produces a plan of the
+create, update, and destroy operations needed. The state file is itself an
+artifact that must be stored remotely, shared between collaborators, and locked
+to avoid concurrent runs corrupting it. Losing or corrupting the state file is
+the classic IaC failure mode, because the tool can no longer safely map its
+definitions onto real resources.
+
+The payoff is that entire environments become reproducible and disposable. A
+new staging environment is one `apply` away, and a drifted one can be torn down
+and rebuilt rather than nursed back to health. Because definitions are
+version-controlled, every change to infrastructure has a history, a review
+record, and a rollback path. This is what makes IaC a foundational practice of
+xref:devops.adoc[*DevOps*] and a precondition for
+xref:continuous-deployment.adoc[*continuous deployment*] at the environment
+level. A *xref:ci-cd.adoc[CI/CD]* pipeline can rebuild whole environments on
+every change only when the infrastructure itself is code.
+
+IaC is most at home in public clouds, where resources are provisioned through
+web APIs and billed by consumption. The major
+*xref:cloud-service-providers.adoc[cloud service providers]* each ship a native
+IaC service – AWS CloudFormation, Azure Resource Manager templates, and Google
+Cloud Deployment Manager – and cross-provider tools like Terraform, OpenTofu,
+and Pulumi abstract over them with provider plugins. The same declarative model
+also underlies *xref:container-orchestration.adoc[container orchestration]*. A
+Kubernetes manifest is infrastructure expressed as code, applied to a cluster's
+control plane rather than a cloud provider's.
+
+[WARNING]
+====
+State files routinely contain secrets – database passwords, access keys,
+session tokens – that the tool read out of the provider during a refresh.
+Storing state in plain text, or in a shared bucket without encryption and
+strict access control, leaks those secrets to anyone who can read the file.
+Most tools support remote state backends with encryption at rest and
+client-side encryption of sensitive values, and these should be the default,
+not an opt-in.
+====
 
 == See also
 
-* *xref:configuration-management.adoc[Configuration management]*
+* xref:configuration-management.adoc[*Configuration management*]
+* xref:version-control.adoc[*Version control*]
+* xref:devops.adoc[*DevOps*]
+* xref:ci-cd.adoc[*CI/CD*]
+* xref:continuous-deployment.adoc[*Continuous deployment*]
+* xref:cloud-service-providers.adoc[*Cloud service providers*]
+* xref:container-orchestration.adoc[*Container orchestration*]

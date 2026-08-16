@@ -349,7 +349,7 @@ Do NOT push your changes.
 - [x] 🌱 Inception — `inception.adoc` (fertilize)
 - [x] 🌱 Inheritance — `inheritance.adoc` (water)
 - [x] 🌱 In-memory databases — `in-memory-databases.adoc` (fertilize)
-- [ ] 🌱 Infrastructure as code — `infrastructure-as-code.adoc` (fertilize)
+- [x] 🌱 Infrastructure as code — `infrastructure-as-code.adoc` (fertilize)
 - [ ] 🌱 Input validation — `input-validation.adoc` (fertilize)
 - [ ] 🌿 Installation testing — `installation-testing.adoc` (tend)
 - [ ] 🌱 Integrated development environments — `integrated-development-environments.adoc` (entwine)
