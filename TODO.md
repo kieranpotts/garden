@@ -361,7 +361,7 @@ Do NOT push your changes.
 - [x] 🌱 Internet Protocol (IP) — `internet-protocol.adoc` (entwine)
 - [x] 🌱 Internet Protocol (IP) address — `internet-protocol-address.adoc` (fertilize)
 - [x] 🌱 Inversion of control — `inversion-of-control.adoc` (tend)
-- [ ] 🌱 Isolation — `isolation.adoc` (tend)
+- [x] 🌱 Isolation — `isolation.adoc` (tend)
 - [ ] 🌱 Iterative and incremental development — `iterative-and-incremental-development.adoc` (fertilize)
 
 ## J
