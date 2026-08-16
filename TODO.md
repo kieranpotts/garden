@@ -271,7 +271,7 @@ Do NOT push your changes.
 - [x] 🌱 Event bus — `event-bus.adoc` (fertilize)
 - [x] 🌱 Event-based systems — `event-based-systems.adoc` (tend)
 - [x] 🌱 Event-driven architecture — `event-driven-architecture.adoc` (tend)
-- [ ] 🌳 Event sourcing — `event-sourcing.adoc` (tend)
+- [x] 🌳 Event sourcing — `event-sourcing.adoc` (tend)
 - [ ] 🌱 Event storming — `event-storming.adoc` (tend)
 - [ ] 🌱 Event stream — `event-stream.adoc` (fertilize)
 - [ ] 🌱 Eventual consistency — `eventual-consistency.adoc` (fertilize)
