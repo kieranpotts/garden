@@ -402,7 +402,7 @@ Do NOT push your changes.
 - [x] 🌱 Literate programming — `literate-programming.adoc` (fertilize)
 - [x] 🌱 Load — `load.adoc` (fertilize)
 - [x] 🌱 Load balancer — `load-balancer.adoc` (none)
-- [ ] 🌱 Load balancing — `load-balancing.adoc` (water)
+- [x] 🌱 Load balancing — `load-balancing.adoc` (water)
 - [ ] 🌿 Load testing — `load-testing.adoc` (entwine)
 - [ ] 🌱 Local-first software — `local-first-software.adoc` (fertilize)
 - [ ] 🌱 Locking — `locking.adoc` (fertilize)
