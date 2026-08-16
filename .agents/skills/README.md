@@ -2,6 +2,12 @@
 
 Agent skills for maintaining this digital garden. Each does one gardening task.
 
+<!-- 
+TODO: Add skills - 
+- **classify** to determine if an entry is still a seedling, etc. 
+- **shape** to apply a consistent style to entries.
+-->
+
 | Skill                                  | Summary                                                                                 |
 | -------------------------------------- | --------------------------------------------------------------------------------------- |
 | [**cultivate**](./cultivate/README.md) | Read one entry and recommend which skills would improve it.                             |
