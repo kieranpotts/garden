@@ -403,7 +403,7 @@ Do NOT push your changes.
 - [x] 🌱 Load — `load.adoc` (fertilize)
 - [x] 🌱 Load balancer — `load-balancer.adoc` (none)
 - [x] 🌱 Load balancing — `load-balancing.adoc` (water)
-- [ ] 🌿 Load testing — `load-testing.adoc` (entwine)
+- [x] 🌿 Load testing — `load-testing.adoc` (entwine)
 - [ ] 🌱 Local-first software — `local-first-software.adoc` (fertilize)
 - [ ] 🌱 Locking — `locking.adoc` (fertilize)
 - [ ] 🌱 Logging — `logging.adoc` (water)
