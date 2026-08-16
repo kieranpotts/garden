@@ -400,7 +400,7 @@ Do NOT push your changes.
 - [x] 🌱 Linux — `linux.adoc` (water)
 - [x] 🌱 Liskov substitution principle — `liskov-substitution-principle.adoc` (none)
 - [x] 🌱 Literate programming — `literate-programming.adoc` (fertilize)
-- [ ] 🌱 Load — `load.adoc` (fertilize)
+- [x] 🌱 Load — `load.adoc` (fertilize)
 - [ ] 🌱 Load balancer — `load-balancer.adoc` (none)
 - [ ] 🌱 Load balancing — `load-balancing.adoc` (water)
 - [ ] 🌿 Load testing — `load-testing.adoc` (entwine)
