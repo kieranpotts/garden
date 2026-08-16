@@ -377,7 +377,7 @@ Do NOT push your changes.
 - [x] 🌱 Kafka — `kafka.adoc` (water)
 - [x] 🌱 Kanban — `kanban.adoc` (water)
 - [x] 🌱 Key-value cache (KV cache) — `key-value-cache.adoc` (tend)
-- [ ] 🌱 Key-value stores — `key-value-stores.adoc` (fertilize)
+- [x] 🌱 Key-value stores — `key-value-stores.adoc` (fertilize)
 - [ ] 🌱 KISS principle — `kiss-principle.adoc` (fertilize)
 - [ ] 🌱 Knowledge graph — `knowledge-graph.adoc` (fertilize)
 - [ ] 🌱 Kubernetes — `kubernetes.adoc` (fertilize)
