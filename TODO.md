@@ -394,7 +394,7 @@ Do NOT push your changes.
 - [x] 🌱 Lazy loading — `lazy-loading.adoc` (fertilize)
 - [x] 🌱 Leaky abstractions — `leaky-abstractions.adoc` (water)
 - [x] 🌱 Lean software development — `lean-software-development.adoc` (fertilize)
-- [ ] 🌱 Leetspeak — `leetspeak.adoc` (tend)
+- [x] 🌱 Leetspeak — `leetspeak.adoc` (tend)
 - [ ] 🌱 Lightweight text markup languages — `lightweight-text-markup-languages.adoc` (fertilize)
 - [ ] 🌱 Linting — `linting.adoc` (entwine)
 - [ ] 🌱 Linux — `linux.adoc` (water)
