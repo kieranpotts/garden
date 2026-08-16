@@ -1,3 +1,100 @@
 = Extensibility
 
-// TODO
+Extensibility is a xref:quality-attributes.adoc[*quality attribute*] of a
+system: the ease with which its behavior can be *extended* – augmented with new
+functionality – without modifying the code that already exists. An extensible
+system anticipates change along the axes its designers expect to move, and
+leaves deliberate *extension points* where new behavior can be plugged in.
+
+It is one facet of the broader xref:evolvability.adoc[*evolvability*] of a
+system. Evolvability is the general ability to change a system's design;
+extensibility is the narrower property that those changes can be made
+additively, by adding new code rather than rewriting old code. The two are
+closely related to xref:backwards-compatibility.adoc[*backwards compatibility*],
+which governs whether existing consumers keep working after such a change.
+
+== Extension versus modification
+
+The crux of extensibility is the distinction between *extending* a system and
+*modifying* it. To modify is to alter existing, depended-upon behavior –
+changing a function's signature, narrowing the inputs a service accepts, or
+replacing one implementation with another. To extend is to add new behavior
+alongside the old, leaving the old intact and callable. Extension is additive
+change; modification is not.
+
+This is the same distinction the
+xref:open-closed-principle.adoc[*open-closed principle*] draws: modules should
+be open for extension but closed for modification. The principle is the rule of
+thumb; extensibility is the property that following it produces.
+
+== How systems are made extensible
+
+Extensibility rarely comes for free. It is engineered into a system through a
+handful of recurring techniques, all of which trade present simplicity for
+future flexibility.
+
+- xref:abstraction.adoc[*Abstraction*] and
+  xref:interfaces.adoc[*interfaces*]. Coding to an interface rather than a
+  concrete implementation lets new implementations be added without touching the
+  callers that depend on the interface.
+
+- xref:polymorphism.adoc[*Polymorphism*] and
+  xref:composition.adoc[*composition*]. Dispatching through a shared interface,
+  and assembling behavior from interchangeable parts, lets new kinds be added
+  without editing the parts that use them. xref:inheritance.adoc[*Inheritance*]
+  provides one form of this, but composition is usually favored because it is
+  more flexible and produces less coupling between the extending and extended
+  code.
+
+- xref:dependency-injection.adoc[*Dependency injection*] and
+  xref:dependency-inversion.adoc[*dependency inversion*]. Deferring the choice of
+  collaborator to the caller, and depending on abstractions rather than
+  concretes, makes a component open to substitution.
+
+- Loose xref:coupling.adoc[*coupling*] and
+  xref:modular-design.adoc[*modular design*]. The less each part knows about the
+  others, the more room there is to extend one part without disturbing the rest.
+
+- *Extension points and hooks.* Explicit, named seams – plugin slots, event
+  hooks, middleware chains, compiler passes – where third-party or
+  after-the-fact code can attach.
+  xref:integrated-development-environments.adoc[*IDEs*] are the familiar example:
+  most of their capability arrives through plugins rather than the core.
+
+- *Reserved capacity in protocols and formats.* Unknown fields in a serialized
+  message, reserved bits in a protocol header, or optional parameters in an API
+  all leave room for future additions that older consumers can safely ignore.
+  This is the form extensibility takes in
+  xref:network-protocols.adoc[*network protocols*] and data formats, and it is
+  what makes *forwards compatibility* possible.
+
+== Trade-offs
+
+Extensibility is a design investment, and like any investment it can be
+misplaced. Designing extension points before the need for them is clear adds
+xref:complexity.adoc[*complexity*] and abstraction layers the system may never
+exercise. The cost of *premature extensibility* is the same as that of any other
+speculative generality. The xref:robustness-principle.adoc[*robustness
+principle*] cuts the other way here: tolerating unknown inputs is a cheap form
+of forwards compatibility, and is usually worth it even when richer extension
+points are not.
+
+Every extension point is also a future compatibility surface. Once a plugin
+interface, a webhook payload, or a protocol extension slot is published, it
+becomes a contract that xref:technical-debt.adoc[*technical debt*] accrues
+against. The more extensible a system, the more of its internals become public
+contract, and the harder wholesale change becomes. Extensibility and
+evolvability are therefore not the same thing in practice: a system can be so
+extensible in the directions its early designers foresaw that it cannot evolve
+in the directions they did not.
+
+== See also
+
+* xref:evolvability.adoc[*Evolvability*]
+* xref:open-closed-principle.adoc[*Open-closed principle*]
+* xref:backwards-compatibility.adoc[*Backwards compatibility*]
+* xref:quality-attributes.adoc[*Quality attributes*]
+* xref:coupling.adoc[*Coupling*]
+* xref:modular-design.adoc[*Modular design*]
+* xref:composition.adoc[*Composition*]
+* xref:technical-debt.adoc[*Technical debt*]
