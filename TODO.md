@@ -278,7 +278,7 @@ Do NOT push your changes.
 - [x] 🌱 Evolvability — `evolvability.adoc` (tend)
 - [x] 🌱 Execution model — `execution-model.adoc` (tend)
 - [x] 🌱 Execution orchestrator — `execution-orchestrator.adoc` (tend)
-- [ ] 🌿 Exploratory testing — `exploratory-testing.adoc` (entwine)
+- [x] 🌿 Exploratory testing — `exploratory-testing.adoc` (entwine)
 - [ ] 🌱 Extensibility — `extensibility.adoc` (fertilize)
 - [ ] 🌱 Extreme Programming (XP) — `extreme-programming.adoc` (entwine)
 
