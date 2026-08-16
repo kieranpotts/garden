@@ -1,3 +1,69 @@
 = Graceful degradation
 
-// TODO
+Graceful degradation is a design strategy in which a system continues to deliver
+useful, if reduced, functionality when some of its components or dependencies
+fail, rather than failing completely. The user experience gets worse, but it
+does not disappear. It is one of the ways a system exhibits
+xref:resilience.adoc[*resilience*] and a specific expression of
+xref:fault-tolerance.adoc[*fault tolerance*], focused on the behavior a user or
+caller observes after a fault has occurred rather than on the mechanisms that
+prevent or mask the fault itself.
+
+A familiar analogy is the escalator that becomes a plain staircase when its
+motor fails. It is still usable, just less convenient.
+
+The strategy applies across layers. On the web, a page that renders its content
+as HTML before any CSS or JavaScript loads, and that remains readable when
+either is absent or blocked, degrades gracefully in less capable or more
+restrictive browsers. Its mirror image is *progressive enhancement*, which
+starts from a universal baseline and layers on richer behavior where the
+platform supports it. A service that returns a cached or last-known-good value
+when its backing store is unreachable, and a client that falls back to a
+default when an optional dependency times out, are the same idea at the API and
+network layer.
+
+To degrade gracefully a system must know which of its functions are essential
+and which are optional, and have a defined fallback for each optional one. That
+usually means identifying a core path through the system, the minimum behavior
+that still delivers value, and treating everything else as a series of
+enhancements that can be dropped in priority order.
+xref:feature-flags.adoc[*Feature flags*] are a common way to switch those
+enhancements off at runtime when their backing services become unavailable.
+
+The strategy sits in tension with xref:fail-fast.adoc[*fail-fast*] design.
+Fail-fast favors surfacing errors immediately and halting. Graceful degradation
+favors absorbing them and carrying on. The two are complementary rather than
+contradictory. A component should fail fast on violations of its own invariants,
+such as a programming bug or a corrupt internal state, while degrading
+gracefully when an external dependency it can survive without becomes
+unavailable. Drawing that line at the right boundary is most of the design work.
+
+A related tension exists with the
+xref:robustness-principle.adoc[*robustness principle*]. Both counsel tolerance
+of imperfection, but the robustness principle is about accepting variations in
+input, while graceful degradation is about continuing to function despite
+partial failure. A system can apply both, accepting malformed but meaningful
+requests and still serving a reduced response when a downstream service is down.
+
+The main cost of graceful degradation is operational complexity. Every fallback
+path is a code path that must be written, tested, and kept working even though
+it runs rarely. A fallback that has never been exercised under load can itself
+fail when finally invoked, leaving the system worse off than if it had failed
+fast and visibly. Degraded modes can also mask the underlying failure from
+operators, allowing a partially broken system to limp on unnoticed. Pairing
+degradation with xref:monitoring.adoc[*monitoring*] and explicit alerts on
+fallback usage keeps the reduced mode visible while it lasts.
+
+xref:stand-in.adoc[*Stand-in*] systems apply the principle at the
+disaster-recovery scale. They are deliberately smaller alternative systems that
+take over and provide only the most critical services when the primary fails.
+
+== See also
+
+* xref:fault-tolerance.adoc[*Fault tolerance*]
+* xref:resilience.adoc[*Resilience*]
+* xref:robustness-principle.adoc[*Robustness principle*]
+* xref:fail-fast.adoc[*Fail-fast*]
+* xref:stand-in.adoc[*Stand-in*]
+* xref:feature-flags.adoc[*Feature flags*]
+* xref:monitoring.adoc[*Monitoring*]
