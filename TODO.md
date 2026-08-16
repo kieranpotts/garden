@@ -268,7 +268,7 @@ Do NOT push your changes.
 - [x] 🌱 Entity-Relationship Diagram (ERD) — `entity-relationship-diagram.adoc` (fertilize)
 - [x] 🌱 Envelope encryption — `envelope-encryption.adoc` (fertilize)
 - [x] 🌱 ETL – Extract, Transform, Load — `etl.adoc` (fertilize)
-- [ ] 🌱 Event bus — `event-bus.adoc` (fertilize)
+- [x] 🌱 Event bus — `event-bus.adoc` (fertilize)
 - [ ] 🌱 Event-based systems — `event-based-systems.adoc` (tend)
 - [ ] 🌱 Event-driven architecture — `event-driven-architecture.adoc` (tend)
 - [ ] 🌳 Event sourcing — `event-sourcing.adoc` (tend)
