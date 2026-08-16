@@ -276,7 +276,7 @@ Do NOT push your changes.
 - [x] 🌱 Event stream — `event-stream.adoc` (fertilize)
 - [x] 🌱 Eventual consistency — `eventual-consistency.adoc` (fertilize)
 - [x] 🌱 Evolvability — `evolvability.adoc` (tend)
-- [ ] 🌱 Execution model — `execution-model.adoc` (tend)
+- [x] 🌱 Execution model — `execution-model.adoc` (tend)
 - [ ] 🌱 Execution orchestrator — `execution-orchestrator.adoc` (tend)
 - [ ] 🌿 Exploratory testing — `exploratory-testing.adoc` (entwine)
 - [ ] 🌱 Extensibility — `extensibility.adoc` (fertilize)
