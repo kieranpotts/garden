@@ -287,7 +287,7 @@ Do NOT push your changes.
 - [x] 🌱 Factory — `factory.adoc` (fertilize)
 - [x] 🌱 Fail-fast — `fail-fast.adoc` (fertilize)
 - [x] 🌱 Failover — `failover.adoc` (fertilize)
-- [ ] 🌱 Fanout — `fanout.adoc` (fertilize)
+- [x] 🌱 Fanout — `fanout.adoc` (fertilize)
 - [ ] 🌱 Fault tolerance — `fault-tolerance.adoc` (tend)
 - [ ] 🌱 Feature-driven development — `feature-driven-development.adoc` (fertilize)
 - [ ] 🌱 Feature factory — `feature-factory.adoc` (tend)

@@ -1,4 +1,91 @@
 = Fanout
 
-// TODO: Fanout-on-write
-// TODO: Fanout-on-read
+Fanout is the act of propagating a single logical change to every derived store
+that depends on it. A write to one source of truth often has to reach several
+downstream representations: a xref:caching.adoc[*cache*], a
+xref:materialized-view.adoc[*materialized view*], a
+xref:denormalization.adoc[*denormalized*] copy, a search index, or the read
+side of a xref:cqrs.adoc[*CQRS*] system. How and when that propagation happens
+is the fanout question, and it has two canonical answers.
+
+The same word is used in messaging for a route that delivers one message to
+every subscribed consumer. This entry covers the data-systems sense: the
+trade-off between eager and lazy propagation of writes to derived stores.
+
+== Fanout-on-write
+
+Fanout-on-write is the *eager* strategy. At the moment a write is committed, the
+system updates every derived store that depends on the changed data. The
+xref:database-indexes.adoc[*database index*] is the familiar example. Each
+insert, update, or delete rewrites every index that covers the affected row. A
+xref:materialized-view.adoc[*materialized view*] refreshed on commit, a
+write-through cache, and a xref:denormalization.adoc[*denormalized*] table
+updated by a trigger all follow the same shape.
+
+The payoff is on the read side. Reads consult a single, ready-made
+representation and pay no aggregation or join cost, which keeps read
+xref:latency.adoc[*latency*] low and predictable. The cost moves to writes,
+which must touch every dependent store before they can return. Each extra
+derived store adds work to the write path and widens the surface that must stay
+xref:consistency.adoc[*consistent*].
+
+The main risks are write xref:throughput.adoc[*throughput*] and correctness. A
+write that must update five stores is slower and more failure-prone than one
+that updates one. If any update fails, the system is left with stale or
+contradictory copies, so the write path usually needs a transaction, a
+compensating action, or an acceptance of
+xref:eventual-consistency.adoc[*eventual consistency*]. Coupling also grows. The
+write model has to know about every downstream store, which works against a
+clean xref:single-source-of-truth.adoc[*single source of truth*].
+
+== Fanout-on-read
+
+Fanout-on-read is the *lazy* strategy. The write touches only the primary
+store, and derived representations are built, or gathered, at read time. A
+query that fans out issues several sub-queries, one per underlying source, and
+merges the results before returning them. A
+xref:scatter-and-gather.adoc[*scatter-and-gather*] read across sharded stores is
+a typical case, as is an application that assembles a view from multiple
+services on demand.
+
+The payoff is on the write side. Writes stay cheap and local, and the write
+model never has to know which read shapes exist. New read paths can be added
+without touching the write path. The cost moves to reads, which pay the
+aggregation, join, and network cost every time, and which become harder to keep
+fast as the number of fanned-out sources grows.
+
+The main risks are read latency and load. A single read can balloon into many
+downstream calls, and a popular read shape can place heavy load on the stores
+it fans out to. Because nothing is precomputed, there is no ready-made copy to
+fall back on, and caching the merged result is the usual mitigation.
+
+== Choosing between them
+
+Fanout-on-write and fanout-on-read are the two ends of a single read/write
+trade-off, and most real systems blend the two. The right balance depends on
+the xref:access-patterns.adoc[*access patterns*]. Writes that are rare relative
+to reads favor eager fanout, because the one-time write cost is amortized over
+many reads. Read shapes that are varied or unpredictable favor lazy fanout,
+because precomputing every possible read would be wasted work.
+
+xref:cqrs.adoc[*CQRS*] is the common framing for the hybrid. A write model
+handles commands, and read models are built from those writes, often
+asynchronously through xref:change-data-capture.adoc[*change data capture*] or
+xref:event-sourcing.adoc[*event sourcing*] projections. The read models are
+fanout-on-write outputs, but the fanout is deferred and decoupled from the write
+transaction, which trades a little freshness for a much simpler write path.
+
+== See also
+
+* xref:access-patterns.adoc[*Access patterns*]
+* xref:caching.adoc[*Caching*]
+* xref:change-data-capture.adoc[*Change data capture*]
+* xref:consistency.adoc[*Consistency*]
+* xref:cqrs.adoc[*Command query responsibility segregation (CQRS)*]
+* xref:database-indexes.adoc[*Database indexes*]
+* xref:denormalization.adoc[*Denormalization*]
+* xref:event-sourcing.adoc[*Event sourcing*]
+* xref:eventual-consistency.adoc[*Eventual consistency*]
+* xref:materialized-view.adoc[*Materialized view*]
+* xref:scatter-and-gather.adoc[*Scatter and gather*]
+* xref:single-source-of-truth.adoc[*Single source of truth*]
