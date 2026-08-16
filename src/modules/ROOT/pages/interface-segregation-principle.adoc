@@ -32,4 +32,71 @@ make the *xref:open-closed-principle.adoc[open-closed principle]* easier to
 satisfy, because a new client can get its own narrow interface rather than
 forcing changes to a shared one, and they support
 *xref:dependency-inversion.adoc[dependency inversion]*, which asks clients to
-depend on abstractions – but only on the abstractions they actually need.
+depend on abstractions – but only on the abstractions they actually need. They
+also protect the *xref:liskov-substitution-principle.adoc[Liskov substitution
+principle]*. A fat interface pressures every implementer into providing methods
+it cannot truly honor, which it can only do by stubbing them or throwing, and an
+implementer that throws for inputs the interface accepts is no longer a safe
+substitute for the type it declares.
+
+== A worked example
+
+The canonical illustration is a `Worker` interface with `work()` and `eat()`
+methods. A `Robot` that implements `Worker` is forced to provide `eat()`, which
+it can only stub or raise on, just to satisfy the type. Splitting `Worker` into
+a `Workable` interface for human and robot workers and an `Eatable` interface
+for the humans who also take lunch removes the burden. Each client, the
+scheduler that calls `work()` and the cafeteria that calls `eat()`, now depends
+only on the operations it actually uses.
+
+== Role and header interfaces
+
+Martin distinguishes two ways of drawing an interface. A *header interface*
+takes the public methods of a single class and exposes them verbatim, one
+interface per implementing type, mirroring its surface. Because it is shaped by
+the implementer rather than by any caller, a header interface tends to
+accumulate every method any client has ever needed and so drifts toward
+fatness. A *role interface*, by contrast, is extracted from the operations a
+particular client or role requires. It is narrow by construction, and the
+interface segregation principle is, in effect, the practice of preferring role
+interfaces over header interfaces.
+
+== Trade-offs
+
+Segregation is a matter of granularity, and the wrong granularity cuts in both
+directions. Splitting per method, one interface per operation, yields interface
+explosion: clients depend on a swarm of single-method types and the design
+gains indirection without insight. The useful unit is the *client* or *role*,
+not the individual method. Two clients that call the same cluster of operations
+should share one interface; a client that calls a distinct subset should get its
+own.
+
+Some languages soften the cost of a fat interface without addressing the design
+problem. Java `default` methods, C# extension methods, and traits or mixins in
+Scala and Rust let an interface supply a fallback implementation, so an
+implementer is no longer forced to stub methods it does not need. But the
+underlying coupling remains. The client still depends on a type that names
+operations it never calls, and a change to those operations still ripples to it.
+
+The tells of a violation are concrete. Implementers with methods that throw
+"not supported" or return no-ops, clients that depend on a large interface but
+call only a small subset of it, and clients that cast a reference down to a
+narrower type are all signs that an interface has been drawn for the
+implementer rather than for its callers.
+
+== See also
+
+* *xref:solid.adoc[SOLID]*
+* *xref:single-responsibility-principle.adoc[Single responsibility principle]*
+* *xref:open-closed-principle.adoc[Open-closed principle]*
+* *xref:liskov-substitution-principle.adoc[Liskov substitution principle]*
+* *xref:dependency-inversion.adoc[Dependency inversion]*
+* *xref:cohesion.adoc[Cohesion]*
+* *xref:coupling.adoc[Coupling]*
+* *xref:interfaces.adoc[Interfaces]*
+
+== References
+
+* Martin, Robert C. (1996). _The Interface Segregation Principle_. C++ Report.
+* Martin, Robert C. (2002). _Agile Software Development, Principles, Patterns,
+  and Practices_. Pearson.

@@ -356,7 +356,7 @@ Do NOT push your changes.
 - [x] 🌱 Integration testing — `integration-testing.adoc` (fertilize)
 - [x] 🌱 Inter-process communication — `inter-process-communication.adoc` (fertilize)
 - [x] 🌱 Interface definition language (IDL) — `interface-definition-language.adoc` (fertilize)
-- [ ] 🌱 Interface segregation principle — `interface-segregation-principle.adoc` (water)
+- [x] 🌱 Interface segregation principle — `interface-segregation-principle.adoc` (water)
 - [ ] 🌱 Interfaces — `interfaces.adoc` (fertilize)
 - [ ] 🌱 Internet Protocol (IP) — `internet-protocol.adoc` (entwine)
 - [ ] 🌱 Internet Protocol (IP) address — `internet-protocol-address.adoc` (fertilize)

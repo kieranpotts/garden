@@ -33,4 +33,8 @@ when extensions are additive rather than modifying, which is the goal of the
 *xref:open-closed-principle.adoc[open-closed principle]*. It also underpins
 *xref:dependency-inversion.adoc[dependency inversion]*, which relies on clients
 depending on abstractions whose concrete implementations are fully
-substitutable.
+substitutable. And it depends on interfaces being narrow enough that every
+implementer can honor the full contract, which is the concern of the
+*xref:interface-segregation-principle.adoc[interface segregation principle]*:
+a fat interface pressures implementers into stubbing or throwing on methods they
+cannot support, which is itself a substitution violation.
