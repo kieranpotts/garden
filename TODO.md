@@ -263,7 +263,7 @@ Do NOT push your changes.
 - [x] 🌱 Encryption — `encryption.adoc` (fertilize)
 - [x] 🌱 Enterprise application software (EAS) — `enterprise-application-software.adoc` (fertilize)
 - [x] 🌱 Enterprise architecture (EA) — `enterprise-architecture.adoc` (fertilize)
-- [ ] 🌱 Enterprise resource planning (ERP) — `enterprise-resource-planning.adoc` (fertilize)
+- [x] 🌱 Enterprise resource planning (ERP) — `enterprise-resource-planning.adoc` (fertilize)
 - [ ] 🌱 Entity Component System (ECS) — `entity-component-system.adoc` (tend)
 - [ ] 🌱 Entity-Relationship Diagram (ERD) — `entity-relationship-diagram.adoc` (fertilize)
 - [ ] 🌱 Envelope encryption — `envelope-encryption.adoc` (fertilize)
