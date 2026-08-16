@@ -1,3 +1,98 @@
 = Interfaces
 
-// TODO: https://softwaredominos.com/home/software-design-development-articles/interface-design-and-management-a-how-to-guide-for-system-engineers/
+An interface is the surface through which a software component exposes its
+capabilities to the rest of a system. It is the boundary a caller depends on,
+separating the *what*, the operations a component offers and the obligations
+they carry, from the *how*, the implementation that fulfills them. An interface
+is the public side of an *xref:abstraction.adoc[abstraction]*, and the
+implementation behind it is free to change as long as the interface still
+holds.
+
+An interface is more than a list of operation signatures. It also carries a
+*contract*: the preconditions each operation expects, the postconditions and
+return values it guarantees, and the invariants the component maintains across
+calls. A caller that respects the preconditions is entitled to rely on the
+postconditions. This behavioral promise is what lets a caller reason about a
+component without reading its implementation. When the contract is left
+implicit, callers come to depend on incidental behavior the implementer never
+meant to promise, and a change that should have been safe breaks them.
+
+The mechanism a language provides for declaring an interface varies. In
+*xref:object-oriented-programming.adoc[object-oriented programming]* languages
+an interface is often a first-class type. Java, C#, and TypeScript have the
+`interface` keyword, while Swift and Rust expose protocols and traits. An
+abstract class can serve the same role where a language offers no separate
+interface construct. Dynamically typed languages have no syntactic interface at
+all. The interface is implicit in the set of methods a caller uses, a style
+known as *duck typing*. In every case the underlying idea is the same. The
+caller names the operations it relies on, and any object that provides them can
+stand in.
+
+At larger scales the same idea recurs. A module or package has a public
+interface, its exported functions and types, distinct from its internal
+helpers. A service exposes an interface over a network, whether a REST API, an
+*xref:remote-procedure-call.adoc[RPC]* endpoint, or a message schema. Where the
+contract has to be machine-checkable and language-neutral, an
+*xref:interface-definition-language.adoc[interface definition language (IDL)]*
+describes it in a form tooling can generate code from. The unit changes, but
+the principle, fixing the contract while varying the implementation, does not.
+
+The value of an interface is that it lets implementations vary independently of
+their callers. A caller coded against an interface can be given any
+implementation that satisfies it, which is the basis of
+*xref:polymorphism.adoc[polymorphism]* and of
+*xref:decoupling.adoc[decoupling]* between modules. The same boundary keeps
+*xref:coupling.adoc[coupling]* weak and localized rather than diffused through
+the implementation. It is also what makes a component testable in isolation,
+since *xref:test-driven-development.adoc[test-driven development]* can
+substitute a fake for a real collaborator through the interface. The same
+substitution lets new behavior be added by supplying a new implementation
+rather than editing every caller, which is how interfaces support
+*xref:extensibility.adoc[extensibility]* and patterns such as the
+*xref:adapter-pattern.adoc[adapter]* that translate between incompatible
+interfaces.
+
+Designing an interface is a judgment about its callers. An interface shaped by
+what a particular client needs stays narrow and
+*xref:cohesion.adoc[cohesive]*, where one that mirrors everything an
+implementer happens to provide grows fat and couples every caller to the full
+surface. That judgment is the subject of the
+*xref:interface-segregation-principle.adoc[interface segregation principle]*.
+The other half of the discipline is keeping the interface stable once
+published, so the implementation can evolve without forcing every caller to
+change with it. This is the concern of
+*xref:backwards-compatibility.adoc[backwards compatibility]* and of
+*xref:dependency-inversion.adoc[dependency inversion]*, which asks both sides
+of a dependency to depend on the abstraction rather than on a concrete
+implementation. *xref:encapsulation.adoc[Encapsulation]* is what enforces the
+boundary, ensuring that changes behind the interface do not leak out through
+shared state or exposed internals.
+
+[IMPORTANT]
+An interface promises only what its contract states. Behavior a caller relies
+on that the contract never granted, whether a side effect, an ordering, or a
+performance characteristic, is a *xref:leaky-abstractions.adoc[leaky
+abstraction]* in the making, and the implementer is free to withdraw it without
+warning.
+
+== See also
+
+* *xref:abstraction.adoc[Abstraction]*
+* *xref:encapsulation.adoc[Encapsulation]*
+* *xref:polymorphism.adoc[Polymorphism]*
+* *xref:decoupling.adoc[Decoupling]*
+* *xref:coupling.adoc[Coupling]*
+* *xref:cohesion.adoc[Cohesion]*
+* *xref:interface-segregation-principle.adoc[Interface segregation principle]*
+* *xref:interface-definition-language.adoc[Interface definition language (IDL)]*
+* *xref:dependency-inversion.adoc[Dependency inversion]*
+* *xref:object-oriented-programming.adoc[Object-oriented programming]*
+* *xref:adapter-pattern.adoc[Adapter pattern]*
+* *xref:extensibility.adoc[Extensibility]*
+* *xref:backwards-compatibility.adoc[Backwards compatibility]*
+* *xref:leaky-abstractions.adoc[Leaky abstractions]*
+
+== References
+
+* Meyer, Bertrand (1997). _Object-Oriented Software Construction_ (2nd ed.).
+  Prentice Hall.
