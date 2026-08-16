@@ -293,7 +293,7 @@ subscribers running to keep up with the event stream at all times, so keeping
 *xref:latency.adoc[latency]* to a minimum. The trade-off here is that keeping
 lots of spare capacity on tap can be expensive.
 
-Another possible solution is to have publishers directly write to a *[cache]* in
+Another possible solution is to have publishers directly write to a *xref:caching.adoc[cache]* in
 front of dependent services where data consistency is critical. For example, the
 orders service may directly update the cache for the product inventory service
 when orders are placed. This way, consumers of the inventory service, which read
@@ -317,7 +317,7 @@ broker messages from its last checkpoint. It will not miss any messages that
 arrived in the broker while it was offline. But if publishers send duplicate
 messages to the broker, the broker would assume they are new messages,
 representing different events, and therefore the consumers will receive and
-process the duplicates. Implementing *[idempotency]* in the event schema can
+process the duplicates. Implementing *xref:idempotent.adoc[idempotency]* in the event schema can
 mitigate this issue.
 
 Finally, event brokers represent a
