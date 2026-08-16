@@ -31,7 +31,10 @@ application's responsibility, and producers and consumers can drift apart
 silently until reads fail at runtime. Most document stores therefore offer
 optional *schema validation* – a per-collection rule set that rejects
 non-conforming writes – as a middle ground between a fixed relational schema
-and no schema at all.
+and no schema at all. Many implement it with a
+xref:json-schema.adoc[*JSON Schema*]-based validator, such as MongoDB's
+`$jsonSchema`, so the same vocabulary that validates JSON at an API boundary
+can also guard the data written to the store.
 
 == Querying and access patterns
 
