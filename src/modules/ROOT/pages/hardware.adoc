@@ -1,9 +1,51 @@
 = Hardware
 
-*xref:mechanical-sympathy.adoc[Mechanical sympathy]* is the practice of
-designing software with an understanding of the hardware it runs on.
+Hardware is the physical, tangible machinery of a computing system: the
+processors, memory, storage, and interconnects that carry out computation. It is
+distinguished from *software*, the instructions that direct that machinery, and
+from *firmware*, the low-level software that controls specific devices. The
+boundary is not always sharp. Modern processors run microcode, and GPUs are
+programmed for general computation. But the distinction remains useful.
 
-== Related topics
+A typical computer is built from a few major classes of hardware.
 
-* *xref:processor-architectures.adoc[Processor architectures]*
-* *xref:mechanical-sympathy.adoc[Mechanical sympathy]*
+* *Processors.* The units that execute instructions. See
+  xref:processor-architectures.adoc[*processor architectures*].
+* *Memory.* Registers, caches, RAM, and other storage that holds data the
+  processor accesses directly. Its hierarchy and access patterns are central to
+  xref:caching.adoc[*caching*] and to
+  xref:memory-allocation.adoc[*memory allocation*].
+* *Storage.* Non-volatile media such as SSDs and disks that persist data across
+  power cycles.
+* *Interconnects and buses.* The channels that move data between processors,
+  memory, and devices. Their bandwidth and latency shape overall
+  xref:performance.adoc[*performance*].
+* *Networking hardware.* Network interface cards, switches, and links that
+  connect machines, the substrate of xref:network-protocols.adoc[*network
+  protocols*].
+
+Hardware characteristics are physical constraints, not implementation details.
+Processor cores share caches, memory is layered with widely varying latency,
+and buses have finite bandwidth. Software that ignores these realities works
+against the machine. xref:mechanical-sympathy.adoc[*Mechanical sympathy*] is the
+practice of designing with them in mind, and
+xref:data-oriented-design.adoc[*data-oriented design*] applies the same thinking
+to data layouts.
+
+Because hardware is complex and varies between machines, most software does not
+address it directly. Operating systems and device drivers present abstract
+interfaces, xref:virtualization.adoc[*virtualization*] and the
+xref:hypervisor.adoc[*hypervisor*] decouple workloads from specific machines, and
+cloud platforms hide the underlying hardware entirely. These abstractions make
+software portable, at the cost of hiding the characteristics that affect
+xref:performance.adoc[*performance*], xref:concurrency.adoc[*concurrency*], and
+xref:parallelism.adoc[*parallelism*].
+
+== See also
+
+* xref:mechanical-sympathy.adoc[*Mechanical sympathy*]
+* xref:processor-architectures.adoc[*Processor architectures*]
+* xref:memory-allocation.adoc[*Memory allocation*]
+* xref:caching.adoc[*Caching*]
+* xref:data-oriented-design.adoc[*Data-oriented design*]
+* xref:virtualization.adoc[*Virtualization*]
