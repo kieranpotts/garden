@@ -392,7 +392,7 @@ Do NOT push your changes.
 - [x] 🌱 Laws of software evolution — `laws-of-software-evolution.adoc` (fertilize)
 - [x] 🌱 Layered architecture — `layered-architecture.adoc` (entwine)
 - [x] 🌱 Lazy loading — `lazy-loading.adoc` (fertilize)
-- [ ] 🌱 Leaky abstractions — `leaky-abstractions.adoc` (water)
+- [x] 🌱 Leaky abstractions — `leaky-abstractions.adoc` (water)
 - [ ] 🌱 Lean software development — `lean-software-development.adoc` (fertilize)
 - [ ] 🌱 Leetspeak — `leetspeak.adoc` (tend)
 - [ ] 🌱 Lightweight text markup languages — `lightweight-text-markup-languages.adoc` (fertilize)
