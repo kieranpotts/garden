@@ -1,26 +1,138 @@
 = Gossip protocol
 
-// TODO: https://highscalability.com/gossip-protocol-explained/
+A gossip protocol is a decentralized communication protocol used in
+xref:distributed-system.adoc[*distributed software*] to spread information
+across all nodes. It is inspired by the way people share news by word of mouth:
+each node that learns a piece of information periodically shares it with a small
+random subset of peers, who do the same, until the information has reached every
+node. The protocol is also called an *epidemic protocol* because this is how an
+epidemic spreads through a population.
 
-Gossip protocol is a decentralized communication protocol used in
-*xref:distributed-system.adoc[distributed software]* to spread information
-across all nodes.
-
-It is inspired by the way humans share news by *word-of-mouth*, where each
-person who learns the information shares it with others, leading to widespread
-dissemination.
+Because each exchange involves only a node and a handful of random peers, gossip
+scales to very large clusters and tolerates node crashes and network partitions
+that would defeat a centralized coordinator. The price is
+xref:eventual-consistency.adoc[*eventual consistency*]: the system converges, but
+it does not promise when.
 
 == How it works
 
-1.  *Initialization*: A node in the system starts with a piece of information,
-    known as a *gossip*.
+1.  *Initialization.* A node starts with a piece of information, called a
+    *gossip*.
 
-2.  *Gossip exchange*: At regular intervals, each node randomly selects another
-    node and shares its current gossip. The receiving node then merges the
-    received gossip with its own.
+2.  *Gossip exchange.* At regular intervals, each node randomly selects a small
+    subset of peers and shares its current gossip with them. Each recipient
+    merges what it received with its own state.
 
-3.  *Propagation*: The process repeats, with each node spreading the gossip to
-    others.
+3.  *Propagation.* The recipients repeat the exchange with their own random
+    peers in the next round, and so on.
 
-4.  *Convergence*: Eventually, every node in the network will have received the
-    gossip, ensuring that all nodes have consistent information.
+4.  *Convergence.* Within `O(log n)` rounds — where _n_ is the number of nodes —
+    every node has received the gossip with high probability, leaving the cluster
+    in a consistent state.
+
+== Variants
+
+Three models are in common use.
+
+* *Anti-entropy.* Each node periodically compares its full state against a peer
+  and repairs any differences. This is the most reliable model but also the most
+  bandwidth-hungry, because it transmits the whole state even when nothing has
+  changed. Checksums, recent-update lists, and Merkle trees are used to send only
+  the delta.
+
+* *Rumor-mongering.* A node only gossips about updates it has recently learned,
+  and stops spreading a given rumor after a few rounds. It uses far less
+  bandwidth than anti-entropy but can leave a small residue of uninformed nodes,
+  which periodic anti-entropy rounds eventually mop up.
+
+* *Aggregation.* Nodes compute a cluster-wide value — an average, maximum, or
+  sum — by repeatedly exchanging and combining local samples.
+
+Within each model, a node can *push* its updates to peers, *pull* updates from
+peers, or do both. The push-pull hybrid converges fastest. Pushing is efficient
+early on, when few nodes hold the update, and pulling is efficient near the end,
+when most do.
+
+== Why it scales
+
+A node talks to a fixed number of peers each round regardless of cluster size, so
+per-node bandwidth stays bounded even as the cluster grows. Convergence is
+logarithmic in the number of nodes: doubling the *fanout* — the number of peers
+contacted per round — halves the number of rounds needed to reach everyone.
+
+Because exchanges are random and symmetric, the failure of any single node does
+not break the protocol. Its peers simply hear the gossip along another route.
+This makes gossip a natural fit for
+xref:fault-tolerance.adoc[*fault-tolerant*] systems built on a
+xref:peer-to-peer-architecture.adoc[*peer-to-peer*] topology.
+
+== Trade-offs
+
+Gossip trades strong guarantees for scalability and resilience.
+
+* *Eventual consistency.* The protocol only promises that all nodes will
+  converge, not when. Reads during convergence may return stale data, so gossip
+  suits workloads that tolerate lag rather than those that need
+  xref:consensus-algorithms.adoc[*consensus*] or strong consistency.
+
+* *Bandwidth.* The same update is retransmitted many times as it spreads, and
+  anti-entropy rounds exchange state even when it is unchanged. Bounded message
+  sizes and delta-encoding keep this manageable but never free.
+
+* *Latency.* An update must wait for the next gossip round before it propagates,
+  so dissemination is slower than a direct broadcast.
+
+* *Network-partition blindness.* Nodes on each side of a partition keep
+  gossiping among themselves, so the protocol does not detect the partition. It
+  merely keeps both halves eventually consistent once the partition heals.
+
+* *Hard to debug.* The randomness that makes gossip robust also makes its
+  behavior non-deterministic, so reproducing a failed propagation is notoriously
+  difficult.
+
+== Uses
+
+Gossip is the workhorse behind several distributed-systems mechanisms.
+
+* *Cluster membership and
+  xref:service-discovery.adoc[*service discovery*].* Nodes maintain a partial
+  view of the cluster and refresh it through gossip, so new members and
+  departures propagate without a central registry.
+
+* *Failure detection.* Each node carries a
+  xref:heartbeat.adoc[*heartbeat*] counter that increments on every exchange. A
+  node whose counter stops advancing is suspected dead once several peers
+  corroborate it.
+
+* xref:replication.adoc[*Replication*]. Anti-entropy gossip keeps replicas in
+  step, repairing the divergence introduced by
+  xref:cap-theorem.adoc[*CAP*]-style availability trade-offs.
+
+* *Leader election and consensus.* Some consensus schemes use gossip to
+  disseminate votes and membership changes.
+
+Real-world deployments include Apache Cassandra, Amazon Dynamo, Riak, Consul —
+which uses the SWIM variant — and CockroachDB. All of them rely on gossip for
+membership, metadata, or failure detection.
+
+== See also
+
+* xref:distributed-system.adoc[*Distributed system*]
+* xref:eventual-consistency.adoc[*Eventual consistency*]
+* xref:replication.adoc[*Replication*]
+* xref:peer-to-peer-architecture.adoc[*Peer-to-peer (P2P) architecture*]
+* xref:service-discovery.adoc[*Service discovery*]
+* xref:heartbeat.adoc[*Heartbeat*]
+* xref:consensus-algorithms.adoc[*Consensus algorithms*]
+* xref:fault-tolerance.adoc[*Fault tolerance*]
+* xref:cap-theorem.adoc[*CAP theorem*]
+
+== References
+
+* Demers, Alan, et al. (1987). _Epidemic algorithms for replicated database
+  maintenance_. Proceedings of the 4th ACM Symposium on Principles of
+  Distributed Computing (PODC).
+* Das, Abhinandan, Gupta, Indranil, and Motivala, Ashish (2002). _SWIM:
+  Scalable weakly-consistent infection-style process group membership protocol_.
+  Proceedings of the 2002 International Conference on Dependable Systems and
+  Networks (DSN).

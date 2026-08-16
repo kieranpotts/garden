@@ -16,3 +16,7 @@ distributed system, leading to:
 A missing heartbeat is itself a signal. *xref:alerting.adoc[Alerting]* systems
 can raise a dead man's switch alert when heartbeats stop arriving, catching
 total failures that value-based thresholds would miss.
+
+Heartbeat state can also be propagated through a
+xref:gossip-protocol.adoc[*gossip protocol*], so that every node eventually
+learns which peers have stopped heartbeating and can treat them as failed.

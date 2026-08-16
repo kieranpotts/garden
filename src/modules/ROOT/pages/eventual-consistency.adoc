@@ -82,6 +82,9 @@ Because eventual consistency allows replicas to diverge, the system must
 reconcile concurrent updates to the same data. Reconciliation strategies and
 the *anti-entropy* mechanisms that propagate updates between replicas are
 covered in xref:consistency.adoc[*consistency*], which treats them in detail.
+The dominant anti-entropy mechanism in practice is a
+xref:gossip-protocol.adoc[*gossip protocol*], which spreads updates through
+randomized peer-to-peer exchanges.
 
 A common way to tune the consistency/availability balance is quorum-based
 replication, as popularized by Amazon Dynamo and its descendants. Each data

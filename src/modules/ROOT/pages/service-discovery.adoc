@@ -26,3 +26,10 @@ services, which is a key design principle of the microservice architecture.
 
 There are numerous ways to implement service discovery, including DNS-based
 solutions and URL-based routing.
+
+A decentralized alternative is to propagate membership changes through a
+xref:gossip-protocol.adoc[*gossip protocol*]. Each node maintains a partial view
+of the cluster and refreshes it through random peer-to-peer exchanges, so new
+members and departures spread without a central registry. The trade-off is
+xref:eventual-consistency.adoc[*eventual consistency*]: a joining service is not
+discovered instantaneously, only after a few gossip rounds.

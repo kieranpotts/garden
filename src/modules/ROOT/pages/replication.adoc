@@ -59,6 +59,10 @@ Data synchronization can be achieved using either batch processes or
 *xref:event-stream.adoc[event streams]*. Some database systems also provide
 built-in support for data replication across multiple nodes.
 
+Leaderless and eventually-consistent stores often synchronize replicas with an
+anti-entropy xref:gossip-protocol.adoc[*gossip protocol*], which repairs
+divergence through randomized peer-to-peer exchanges.
+
 Data need not be replicated in the form of its
 *xref:single-source-of-truth.adoc[source of truth]*.
 *xref:materialized-view.adoc[Materialized views]* can be used to store

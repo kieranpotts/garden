@@ -314,7 +314,7 @@ Do NOT push your changes.
 - [x] 🌳 Gherkin — `gherkin.adoc` (none)
 - [x] 🌱 Goodhart's law — `goodharts-law.adoc` (fertilize)
 - [x] 🌱 Google Cloud Platform — `google-cloud-platform.adoc` (fertilize)
-- [ ] 🌱 Gossip Protocol — `gossip-protocol.adoc` (fertilize)
+> - [x] 🌱 Gossip Protocol — `gossip-protocol.adoc` (fertilize)
 - [ ] 🌱 Governance — `governance.adoc` (fertilize)
 - [ ] 🌱 Graceful degradation — `graceful-degradation.adoc` (fertilize)
 - [ ] 🌱 Graph databases — `graph-databases.adoc` (fertilize)
