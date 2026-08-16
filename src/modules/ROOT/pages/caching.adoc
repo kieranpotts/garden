@@ -106,13 +106,14 @@ image:masters/read-through-cache.png[]
   recently-written data. Best suited for large data objects that are updated
   infrequently.
 
-* *Cache-aside (aka. lazy loading)*: This is a common caching strategy in which
-  the application manages both the cache and the database directly. On a read,
-  the application first checks the cache. On a miss, it reads from the database
-  and writes the result to the cache. This allows for more nuanced control, as
-  different caching strategies may be implemented for different data types. The
-  trade-off is increased accidental complexity in the application code. Best
-  suited for read-heavy workloads, such as configuration data or user profiles.
+* *Cache-aside*: Also known as xref:lazy-loading.adoc[*lazy loading*], this is a
+  common caching strategy in which the application manages both the cache and the
+  database directly. On a read, the application first checks the cache. On a miss,
+  it reads from the database and writes the result to the cache. This allows for
+  more nuanced control, as different caching strategies may be implemented for
+  different data types. The trade-off is increased accidental complexity in the
+  application code. Best suited for read-heavy workloads, such as configuration
+  data or user profiles.
   +
 +
 image:masters/cache-aside.png[]
