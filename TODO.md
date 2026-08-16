@@ -323,7 +323,7 @@ Do NOT push your changes.
 - [x] 🌱 GraphQL — `graphql.adoc` (tend)
 - [x] 🌱 GRASP — `grasp.adoc` (fertilize)
 - [x] 🌱 Gray-box testing — `gray-box-testing.adoc` (none)
-- [ ] 🌱 gRPC — `grpc.adoc` (tend)
+- [x] 🌱 gRPC — `grpc.adoc` (tend)
 - [ ] 🌱 Grug-brained developer — `grug-brained-developer.adoc` (tend)
 
 ## H
