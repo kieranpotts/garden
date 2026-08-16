@@ -284,7 +284,7 @@ Do NOT push your changes.
 
 ## F
 
-- [ ] 🌱 Factory — `factory.adoc` (fertilize)
+- [x] 🌱 Factory — `factory.adoc` (fertilize)
 - [ ] 🌱 Fail-fast — `fail-fast.adoc` (fertilize)
 - [ ] 🌱 Failover — `failover.adoc` (fertilize)
 - [ ] 🌱 Fanout — `fanout.adoc` (fertilize)
