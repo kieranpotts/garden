@@ -329,7 +329,7 @@ Do NOT push your changes.
 ## H
 
 - [x] 🌱 Hardware — `hardware.adoc` (fertilize)
-- [ ] 🌱 Hashing — `hashing.adoc` (tend)
+- [x] 🌱 Hashing — `hashing.adoc` (tend)
 - [ ] 🌱 Heartbeat — `heartbeat.adoc` (fertilize)
 - [ ] 🌱 Hexagonal architecture — `hexagonal-architecture.adoc` (tend)
 - [ ] 🌿 High integrity — `high-integrity.adoc` (tend)
