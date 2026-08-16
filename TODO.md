@@ -296,7 +296,7 @@ Do NOT push your changes.
 - [x] 🌱 Firewalls — `firewalls.adoc` (fertilize)
 - [x] 🌱 FIRST principles of testing — `first-principles-of-testing.adoc` (water)
 - [x] 🌱 Fitness function — `fitness-function.adoc` (fertilize)
-- [ ] 🌿 Flaccid agile — `flaccid-agile.adoc` (entwine)
+- [x] 🌿 Flaccid agile — `flaccid-agile.adoc` (entwine)
 - [ ] 🌱 Forcing function — `forcing-function.adoc` (water)
 - [ ] 🌱 Foreign keys — `foreign-keys.adoc` (water)
 - [ ] 🌱 Formal methods — `formal-methods.adoc` (fertilize)
