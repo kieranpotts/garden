@@ -338,7 +338,7 @@ Do NOT push your changes.
 - [x] 🌱 Hock principle — `hock-principle.adoc` (fertilize)
 - [x] 🌱 Horizontal scaling — `horizontal-scaling.adoc` (none)
 - [x] 🌱 HTTP — `http.adoc` (tend)
-- [ ] 🌿 HTTP API — `http-api.adoc` (tend)
+- [x] 🌿 HTTP API — `http-api.adoc` (tend)
 - [ ] 🌱 Hypervisor — `hypervisor.adoc` (tend)
 
 ## I
