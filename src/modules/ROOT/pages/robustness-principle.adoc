@@ -56,6 +56,10 @@ maintained by different teams or even different organizations.
 
 However, this principle needs to be balanced against security considerations.
 Servers should avoid unintentionally accepting harmful or malicious input, for
-example.
+example. It also sits in tension with *xref:fail-fast.adoc[fail-fast]* design,
+which favors rejecting bad input immediately rather than tolerating it. The two
+are complementary rather than contradictory: strictness fits the inside of a
+component, where a bad input usually signals a defect, while the robustness
+principle fits the boundaries between independently-evolving components.
 
 See also *xref:backwards-compatibility.adoc[backwards compatibility]* and *xref:do-what-i-mean.adoc[do what I mean]*.
