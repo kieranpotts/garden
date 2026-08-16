@@ -320,7 +320,7 @@ Do NOT push your changes.
 - [x] 🌱 Graph databases — `graph-databases.adoc` (fertilize)
 - [x] 🌱 GraphML — `graphml.adoc` (fertilize)
 - [x] 🌱 Graph Modelling Language (GML) — `gml.adoc` (fertilize)
-- [ ] 🌱 GraphQL — `graphql.adoc` (tend)
+- [x] 🌱 GraphQL — `graphql.adoc` (tend)
 - [ ] 🌱 GRASP — `grasp.adoc` (fertilize)
 - [ ] 🌱 Gray-box testing — `gray-box-testing.adoc` (none)
 - [ ] 🌱 gRPC — `grpc.adoc` (tend)
