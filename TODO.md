@@ -321,7 +321,7 @@ Do NOT push your changes.
 - [x] 🌱 GraphML — `graphml.adoc` (fertilize)
 - [x] 🌱 Graph Modelling Language (GML) — `gml.adoc` (fertilize)
 - [x] 🌱 GraphQL — `graphql.adoc` (tend)
-- [ ] 🌱 GRASP — `grasp.adoc` (fertilize)
+- [x] 🌱 GRASP — `grasp.adoc` (fertilize)
 - [ ] 🌱 Gray-box testing — `gray-box-testing.adoc` (none)
 - [ ] 🌱 gRPC — `grpc.adoc` (tend)
 - [ ] 🌱 Grug-brained developer — `grug-brained-developer.adoc` (tend)
