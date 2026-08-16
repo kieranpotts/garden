@@ -312,7 +312,7 @@ Do NOT push your changes.
 - [x] 🌱 Generative AI — `generative-ai.adoc` (tend)
 - [x] 🌱 Geohashing — `geohashing.adoc` (tend)
 - [x] 🌳 Gherkin — `gherkin.adoc` (none)
-- [ ] 🌱 Goodhart's law — `goodharts-law.adoc` (fertilize)
+- [x] 🌱 Goodhart's law — `goodharts-law.adoc` (fertilize)
 - [ ] 🌱 Google Cloud Platform — `google-cloud-platform.adoc` (fertilize)
 - [ ] 🌱 Gossip Protocol — `gossip-protocol.adoc` (fertilize)
 - [ ] 🌱 Governance — `governance.adoc` (fertilize)
