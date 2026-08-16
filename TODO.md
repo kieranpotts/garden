@@ -289,7 +289,7 @@ Do NOT push your changes.
 - [x] 🌱 Failover — `failover.adoc` (fertilize)
 - [x] 🌱 Fanout — `fanout.adoc` (fertilize)
 - [x] 🌱 Fault tolerance — `fault-tolerance.adoc` (tend)
-- [ ] 🌱 Feature-driven development — `feature-driven-development.adoc` (fertilize)
+- [x] 🌱 Feature-driven development — `feature-driven-development.adoc` (fertilize)
 - [ ] 🌱 Feature factory — `feature-factory.adoc` (tend)
 - [ ] 🌱 Feature flags — `feature-flags.adoc` (tend)
 - [ ] 🌱 File storage — `file-storage.adoc` (water)
