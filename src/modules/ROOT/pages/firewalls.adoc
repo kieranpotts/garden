@@ -17,7 +17,8 @@ Traditional firewalls are *packet filters* that operate at Layer 3 and Layer 4
 of the *xref:osi-model.adoc[OSI model]*. Each packet is matched against rules
 that combine an *xref:internet-protocol.adoc[IP]* address range (often written
 in *xref:cidr.adoc[CIDR]* notation), a transport protocol such as
-*xref:tcp.adoc[TCP]* or *xref:udp.adoc[UDP]*, and a port number. A rule that
+*xref:tcp.adoc[TCP]* or *xref:udp.adoc[UDP]*, and a port number — or, for
+*xref:icmp.adoc[ICMP]*, a message type. A rule that
 permits `10.0.0.0/8` to reach `443/tcp` is a typical example. Stateless filters
 evaluate each packet in isolation. *Stateful* firewalls track the progress of
 connections and allow return traffic for an established flow without an explicit

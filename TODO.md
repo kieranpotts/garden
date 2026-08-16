@@ -343,7 +343,7 @@ Do NOT push your changes.
 
 ## I
 
-- [ ] 🌱 ICMP — `icmp.adoc` (fertilize)
+- [x] 🌱 ICMP — `icmp.adoc` (fertilize)
 - [ ] 🌱 ICONIX — `iconix.adoc` (fertilize)
 - [ ] 🌱 Idempotent — `idempotent.adoc` (fertilize)
 - [ ] 🌱 Inception — `inception.adoc` (fertilize)
