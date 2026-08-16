@@ -399,7 +399,7 @@ Do NOT push your changes.
 - [x] 🌱 Linting — `linting.adoc` (entwine)
 - [x] 🌱 Linux — `linux.adoc` (water)
 - [x] 🌱 Liskov substitution principle — `liskov-substitution-principle.adoc` (none)
-- [ ] 🌱 Literate programming — `literate-programming.adoc` (fertilize)
+- [x] 🌱 Literate programming — `literate-programming.adoc` (fertilize)
 - [ ] 🌱 Load — `load.adoc` (fertilize)
 - [ ] 🌱 Load balancer — `load-balancer.adoc` (none)
 - [ ] 🌱 Load balancing — `load-balancing.adoc` (water)
