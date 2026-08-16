@@ -301,7 +301,7 @@ Do NOT push your changes.
 - [x] 🌱 Foreign keys — `foreign-keys.adoc` (water)
 - [x] 🌱 Formal methods — `formal-methods.adoc` (fertilize)
 - [x] 🌱 FTP — `ftp.adoc` (fertilize)
-- [ ] 🌱 Function-as-a-Service (FaaS) — `function-as-a-service.adoc` (fertilize)
+- [x] 🌱 Function-as-a-Service (FaaS) — `function-as-a-service.adoc` (fertilize)
 - [ ] 🌳 Functional requirements — `functional-requirements.adoc` (none)
 - [ ] 🌱 Functional testing — `functional-testing.adoc` (fertilize)
 
