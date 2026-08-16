@@ -2,10 +2,82 @@
 
 // TODO: Move over from Firefox bookmarks.
 
+A lightweight text markup language is a plain-text format for authoring
+structured documents – headings, lists, emphasis, links, code, tables, and
+images – using a small set of punctuation conventions rather than the verbose
+tag syntax of HTML or the binary formats of word processors. The source is
+meant to be written and read directly by humans, then rendered to a richer
+presentation format such as HTML or PDF by a parser.
+
+Like other *xref:domain-specific-language.adoc[domain-specific languages]*,
+lightweight markup languages restrict themselves to one task – marking up
+prose – and trade expressive power for the concision and readability that task
+demands. The cost is standardization. No lightweight language has a single
+canonical specification, and the most widely used, Markdown, has splintered
+into many incompatible "flavors" – CommonMark, GitHub-Flavored Markdown,
+MultiMarkdown, and others – each adding features the original omitted, such
+as tables, fenced code blocks, footnotes, and task lists. Picking a flavor
+and a parser is part of adopting any lightweight markup.
+
 == Markdown
+
+Markdown, created by John Gruber in 2004, is the most widely adopted lightweight
+markup language. Its stated goal was to make the source text as readable as
+possible, with conversion to HTML a secondary concern. That minimalism is both
+its strength and the root of its fragmentation: the original syntax defines no
+tables, no fenced code blocks, and only loosely specifies how blocks nest,
+leaving every parser to fill the gaps.
+
+CommonMark is the principal effort to standardize Markdown's ambiguous core,
+and most modern parsers aim for CommonMark compatibility. GitHub-Flavored
+Markdown layers tables, task lists, autolinks, and strikethrough on top.
 
 === Markdown parsers
 
 * https://casual-effects.com/markdeep/[Markdeep]: Markdown-like lightweight
   text markup language that natively supports embedded diagrams, calendars, and
   equations – all written as ASCII art.
+
+* https://pandoc.org/[Pandoc]: Universal document converter that reads Markdown
+  and many other lightweight and heavyweight formats and writes to dozens of
+  output formats.
+
+* https://github.com/commonmark/cmark[cmark]: The C reference implementation of
+  CommonMark, used as the basis for many other Markdown parsers.
+
+== Other lightweight markup languages
+
+* https://asciidoc.org/[AsciiDoc]: More structured than Markdown, with native
+  support for tables, cross-references, admonitions, and document includes. It
+  is the basis of the https://docs.antora.org/[Antora] documentation platform.
+
+* https://docutils.sourceforge.io/rst.html[reStructuredText (reST)]: The
+  standard markup of the Python ecosystem and the
+  https://www.sphinx-doc.org/[Sphinx] documentation generator. More extensible
+  than Markdown, with an explicit directive syntax for roles and blocks.
+
+* https://orgmode.org/[Org mode]: A plain-text markup and outlining system
+  built into GNU Emacs, also used for task management and reproducible research.
+
+* https://textile.thresholdstate.com/[Textile]: An early lightweight markup
+  used by some blogging platforms and wikis.
+
+* https://www.mediawiki.org/wiki/Help:Formatting[MediaWiki markup]: The wikitext
+  syntax of MediaWiki, the software behind Wikipedia. Wiki-oriented rather than
+  document-oriented.
+
+* https://en.wikipedia.org/wiki/BBCode[BBCode]: A minimal tag-based markup used
+  in forum software.
+
+== Embedded diagrams
+
+A common extension point is embedding diagrams as fenced code blocks that a
+renderer converts to images. Mermaid, PlantUML, and other
+xref:diagrams-as-code.adoc[*diagrams-as-code*] tools integrate with Markdown and
+AsciiDoc this way, keeping diagrams in the same version-controlled plain text
+as the surrounding prose.
+
+== References
+
+* John Gruber (2004). _https://daringfireball.net/projects/markdown/[Markdown]_.
+  Daring Fireball.
