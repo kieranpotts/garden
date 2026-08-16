@@ -1,3 +1,94 @@
 = Functional testing
 
-// TODO
+Functional testing is a software testing methodology that verifies a system
+behaves as specified – that each of its functions operates in conformance with
+its xref:functional-requirements.adoc[*functional requirements*]. A "function"
+here is any user-visible behavior the system is meant to provide: a calculation
+performed, a record returned, a notification sent, a payment authorized. The
+tester drives the system through its public interfaces – a user interface, an
+API, or a command line – supplies inputs, and judges correctness against the
+expected outputs described in the specification, not against the internal code
+that produced them.
+
+Because it reasons about behavior rather than implementation, functional
+testing is an instance of xref:black-box-testing.adoc[*black-box testing*]. It
+is closely related to, and often used interchangeably with,
+xref:behavioral-testing.adoc[*behavioral testing*]. The nuance is one of
+framing. "Functional" points the work at the requirements catalog, while
+"behavioral" points it at the input-output behavior the tester is interested
+in.
+
+Functional testing is conventionally contrasted with non-functional testing,
+which addresses the xref:non-functional-requirements.adoc[*non-functional
+requirements*] – qualities such as performance, availability, and security –
+that are not captured by a list of functions. A functional test asks _does it
+do the right thing?_, while a non-functional test asks _does it do the thing
+well enough?_. The two are complementary. A system can pass every functional
+check and still fail under load or leak secrets, which is why functional and
+non-functional testing are run alongside one another rather than as
+alternatives.
+
+== Levels
+
+Functional testing is not tied to a particular level of
+xref:testing.adoc[*testing*]. The same orientation – driving the system through
+its public interfaces and asserting on observable outputs – can be applied at
+several scales.
+
+* xref:unit-testing.adoc[*Unit testing*] of a single component, asserting on
+the output of its public interface.
+* xref:integration-testing.adoc[*Integration testing*] of several components
+together, asserting on the behavior of their composition.
+* xref:system-testing.adoc[*System testing*] of the whole application end to
+end, asserting on user-visible outcomes.
+* xref:acceptance-testing.adoc[*Acceptance testing*], where the whole system's
+behavior is validated against stakeholder expectations and acceptance
+criteria.
+
+What makes a test functional is its orientation toward specified behavior, not
+the size of the unit under test.
+
+== Test design and oracles
+
+Because the tester works from a specification rather than the source,
+functional test cases are derived from descriptions of required behavior –
+xref:use-case.adoc[*use cases*], xref:user-story.adoc[*user stories*],
+xref:gherkin.adoc[*Gherkin*] feature files, and
+xref:acceptance-criteria.adoc[*acceptance criteria*] – using the structured
+black-box techniques such as equivalence partitioning and boundary value
+analysis. Each test needs a *test oracle*: a source of truth against which the
+observed output is compared. The specification itself is the most common
+oracle; a previous result known to be good, a reference implementation, or a
+business rule can serve the same role.
+
+== Automation and regression
+
+Functional tests are prime candidates for
+xref:automated-testing.adoc[*automation*]. Because they drive the system
+through stable public interfaces and assert on observable outcomes, they tend
+to outlive refactoring of the internals. That makes them well suited to
+xref:regression-testing.adoc[*regression testing*]: once a behavior is captured
+as a passing functional test, subsequent changes that break it are flagged
+automatically.
+
+The trade-off is the one shared by all black-box approaches. With no view of
+the internal logic, the tester cannot tell which execution paths have been
+exercised, and it is easy to write many tests that re-exercise the same paths
+while leaving branches untested. Functional testing is therefore usually
+complemented by xref:white-box-testing.adoc[*white-box testing*] and
+xref:gray-box-testing.adoc[*gray-box testing*], which bring visibility into
+the code's internal structure, and by non-functional testing for the qualities
+the requirements catalog does not capture.
+
+== See also
+
+* xref:testing.adoc[*Testing*]
+* xref:functional-requirements.adoc[*Functional requirements*]
+* xref:non-functional-requirements.adoc[*Non-functional requirements*]
+* xref:black-box-testing.adoc[*Black-box testing*]
+* xref:behavioral-testing.adoc[*Behavioral testing*]
+* xref:white-box-testing.adoc[*White-box testing*]
+* xref:gray-box-testing.adoc[*Gray-box testing*]
+* xref:acceptance-testing.adoc[*Acceptance testing*]
+* xref:regression-testing.adoc[*Regression testing*]
+* xref:automated-testing.adoc[*Automated testing*]

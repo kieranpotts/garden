@@ -303,7 +303,7 @@ Do NOT push your changes.
 - [x] 🌱 FTP — `ftp.adoc` (fertilize)
 - [x] 🌱 Function-as-a-Service (FaaS) — `function-as-a-service.adoc` (fertilize)
 - [x] 🌳 Functional requirements — `functional-requirements.adoc` (none)
-- [ ] 🌱 Functional testing — `functional-testing.adoc` (fertilize)
+- [x] 🌱 Functional testing — `functional-testing.adoc` (fertilize)
 
 ## G
 
