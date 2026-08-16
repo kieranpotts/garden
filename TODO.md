@@ -354,7 +354,7 @@ Do NOT push your changes.
 - [x] 🌿 Installation testing — `installation-testing.adoc` (tend)
 - [x] 🌱 Integrated development environments — `integrated-development-environments.adoc` (entwine)
 - [x] 🌱 Integration testing — `integration-testing.adoc` (fertilize)
-- [ ] 🌱 Inter-process communication — `inter-process-communication.adoc` (fertilize)
+- [x] 🌱 Inter-process communication — `inter-process-communication.adoc` (fertilize)
 - [ ] 🌱 Interface definition language (IDL) — `interface-definition-language.adoc` (fertilize)
 - [ ] 🌱 Interface segregation principle — `interface-segregation-principle.adoc` (water)
 - [ ] 🌱 Interfaces — `interfaces.adoc` (fertilize)
