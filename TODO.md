@@ -313,7 +313,7 @@ Do NOT push your changes.
 - [x] 🌱 Geohashing — `geohashing.adoc` (tend)
 - [x] 🌳 Gherkin — `gherkin.adoc` (none)
 - [x] 🌱 Goodhart's law — `goodharts-law.adoc` (fertilize)
-- [ ] 🌱 Google Cloud Platform — `google-cloud-platform.adoc` (fertilize)
+- [x] 🌱 Google Cloud Platform — `google-cloud-platform.adoc` (fertilize)
 - [ ] 🌱 Gossip Protocol — `gossip-protocol.adoc` (fertilize)
 - [ ] 🌱 Governance — `governance.adoc` (fertilize)
 - [ ] 🌱 Graceful degradation — `graceful-degradation.adoc` (fertilize)
