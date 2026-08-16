@@ -1,8 +1,55 @@
 = Internet Protocol (IP) address
 
-An IP address is a unique numerical label assigned to each device connected to a
-computer network. IP addresses are defined by the
-*xref:internet-protocol.adoc[Internet Protocol (IP)]*. A range of IP addresses is
-written in xref:cidr.adoc[*CIDR*] notation, eg. `192.168.1.0/24`. The
-*xref:dns.adoc[Domain Name System]* maps human-readable domain names to IP
-addresses.
+An IP address is a unique numerical label assigned to each host on a computer
+network. It both identifies the host and locates it within the network's address
+space, so that packets can be routed to and from it. IP addresses are defined by
+the xref:internet-protocol.adoc[*Internet Protocol (IP)*], which operates at
+Layer 3 of the xref:osi-model.adoc[*OSI model*]. Two address families are in
+active use, IPv4 and IPv6.
+
+== IPv4
+
+An IPv4 address is 32 bits wide, written as four decimal numbers called octets
+separated by periods, eg. `192.168.1.1`. Each octet ranges from 0 to 255. The
+32-bit space gives roughly 4.3 billion unique addresses, a limit that proved
+far too small as the internet grew. The resulting exhaustion drove the adoption
+of IPv6 and the widespread use of *Network Address Translation (NAT)* to share
+one public address among many private hosts.
+
+== IPv6
+
+An IPv6 address is 128 bits wide, written as eight groups of one to four
+hexadecimal digits separated by colons, eg.
+`2001:0db8:85a3:0000:0000:8a2e:0370:7334`. Consecutive groups of zeros can be
+collapsed with `::` once per address, and leading zeros within a group can be
+dropped, so the example shortens to `2001:0db8:85a3::8a2e:370:7334`. The 128-bit
+space provides about 3.4 × 10^38 addresses, which removes the exhaustion
+pressure that motivated IPv6's design.
+
+== Network and host portions
+
+An address carries two pieces of information: which network the host belongs to,
+and which host within that network. The address is split into a network prefix
+and a host identifier, and the boundary between them is recorded as a prefix
+length. A range of addresses is written in xref:cidr.adoc[*CIDR*] notation, eg.
+`192.168.1.0/24`, where `/24` marks the first 24 bits as the network prefix and
+the remaining 8 bits as the host identifier.
+
+== Assignment and resolution
+
+A host obtains its address either by static configuration or by leasing one
+dynamically from a xref:dhcp.adoc[*DHCP*] server. Because people rarely address
+hosts by number, the xref:dns.adoc[*Domain Name System*] maps human-readable
+domain names to IP addresses, letting applications refer to hosts by name.
+
+Both IPv4 and IPv6 reserve ranges for special purposes, including loopback,
+private, link-local, and multicast addresses. These are listed in the Internet
+Protocol entry, alongside the protocol-level differences between IPv4 and IPv6.
+
+== See also
+
+* xref:internet-protocol.adoc[*Internet Protocol (IP)*]
+* xref:cidr.adoc[*CIDR (Classless Inter-Domain Routing)*]
+* xref:dns.adoc[*Domain Name System (DNS)*]
+* xref:dhcp.adoc[*DHCP*]
+* xref:osi-model.adoc[*OSI model*]

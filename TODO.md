@@ -359,7 +359,7 @@ Do NOT push your changes.
 - [x] 🌱 Interface segregation principle — `interface-segregation-principle.adoc` (water)
 - [x] 🌱 Interfaces — `interfaces.adoc` (fertilize)
 - [x] 🌱 Internet Protocol (IP) — `internet-protocol.adoc` (entwine)
-- [ ] 🌱 Internet Protocol (IP) address — `internet-protocol-address.adoc` (fertilize)
+- [x] 🌱 Internet Protocol (IP) address — `internet-protocol-address.adoc` (fertilize)
 - [ ] 🌱 Inversion of control — `inversion-of-control.adoc` (tend)
 - [ ] 🌱 Isolation — `isolation.adoc` (tend)
 - [ ] 🌱 Iterative and incremental development — `iterative-and-incremental-development.adoc` (fertilize)
