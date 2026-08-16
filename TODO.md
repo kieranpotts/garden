@@ -335,7 +335,7 @@ Do NOT push your changes.
 - [x] 🌿 High integrity — `high-integrity.adoc` (tend)
 - [x] 🌱 High-level design — `high-level-design.adoc` (tend)
 - [x] 🌱 High-performance computing (HPC) — `high-performance-computing.adoc` (fertilize)
-- [ ] 🌱 Hock principle — `hock-principle.adoc` (fertilize)
+- [x] 🌱 Hock principle — `hock-principle.adoc` (fertilize)
 - [ ] 🌱 Horizontal scaling — `horizontal-scaling.adoc` (none)
 - [ ] 🌱 HTTP — `http.adoc` (tend)
 - [ ] 🌿 HTTP API — `http-api.adoc` (tend)
