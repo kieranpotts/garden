@@ -298,7 +298,7 @@ Do NOT push your changes.
 - [x] 🌱 Fitness function — `fitness-function.adoc` (fertilize)
 - [x] 🌿 Flaccid agile — `flaccid-agile.adoc` (entwine)
 - [x] 🌱 Forcing function — `forcing-function.adoc` (water)
-- [ ] 🌱 Foreign keys — `foreign-keys.adoc` (water)
+- [x] 🌱 Foreign keys — `foreign-keys.adoc` (water)
 - [ ] 🌱 Formal methods — `formal-methods.adoc` (fertilize)
 - [ ] 🌱 FTP — `ftp.adoc` (fertilize)
 - [ ] 🌱 Function-as-a-Service (FaaS) — `function-as-a-service.adoc` (fertilize)
