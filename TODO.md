@@ -352,7 +352,7 @@ Do NOT push your changes.
 - [x] 🌱 Infrastructure as code — `infrastructure-as-code.adoc` (fertilize)
 - [x] 🌱 Input validation — `input-validation.adoc` (fertilize)
 - [x] 🌿 Installation testing — `installation-testing.adoc` (tend)
-- [ ] 🌱 Integrated development environments — `integrated-development-environments.adoc` (entwine)
+- [x] 🌱 Integrated development environments — `integrated-development-environments.adoc` (entwine)
 - [ ] 🌱 Integration testing — `integration-testing.adoc` (fertilize)
 - [ ] 🌱 Inter-process communication — `inter-process-communication.adoc` (fertilize)
 - [ ] 🌱 Interface definition language (IDL) — `interface-definition-language.adoc` (fertilize)
