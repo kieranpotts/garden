@@ -22,4 +22,6 @@ guarantee correctness.
   accepted by a majority of the nodes.
 
 * *Raft*: Raft works by designating one node as the leader to manage log
-  replication, and ensure consistency across the cluster.
+  replication, and ensure consistency across the cluster. The leader stays in
+  authority by sending *xref:heartbeat.adoc[heartbeats]* to followers; a follower
+  that stops receiving them starts a new election.

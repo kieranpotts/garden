@@ -1,22 +1,66 @@
 = Heartbeat
 
-// TODO: https://martinfowler.com/articles/patterns-of-distributed-systems/heartbeat.html
-// TODO: https://blog.algomaster.io/p/heartbeats-in-distributed-systems
+In xref:distributed-system.adoc[*distributed systems*], a heartbeat is a
+*periodic message* sent between nodes to signal that the sender is alive and
+functioning. Each heartbeat carries little payload beyond a timestamp or
+sequence number, and is repeated at a fixed interval, typically seconds to
+minutes, depending on how quickly failures must be detected.
 
-In *xref:distributed-system.adoc[distributed systems]*, a heartbeat is a
-*periodic message* sent between nodes to monitor each other's health and status.
+The receiver treats the steady arrival of heartbeats as proof of liveness. If
+heartbeats stop arriving within a *timeout* window, usually a small multiple of
+the interval chosen to absorb normal xref:latency.adoc[*latency*] and jitter,
+the receiver declares the sender suspected or failed. The interval and timeout
+are a single trade-off. Too tight and a slow network produces false positives
+that mark healthy nodes dead. Too loose and detection lags, delaying recovery.
 
 Without a heartbeat mechanism, it's hard to quickly detect failures in a
-distributed system, leading to:
+distributed system. The consequences are as follows.
 
 * Delayed fault detection and recovery.
-* Increased *xref:downtime.adoc[downtime]* and errors.
+* Increased xref:downtime.adoc[*downtime*] and errors.
 * Decreased overall system reliability.
 
-A missing heartbeat is itself a signal. *xref:alerting.adoc[Alerting]* systems
+Once a missing heartbeat has flagged a node as failed, the system can take
+corrective action, most commonly a xref:failover.adoc[*failover*] that promotes
+a redundant peer to take the failed node's place. In this way heartbeats are the
+detection half of xref:fault-tolerance.adoc[*fault tolerance*]. They don't
+prevent failures, but they make failures visible fast enough for recovery
+mechanisms to keep the system running.
+
+A heartbeat is a narrower signal than a
+xref:system-health-checks.adoc[*system health check*]. A health check gathers
+metrics about a node's state, such as CPU, memory, and disk usage, whereas a
+heartbeat only asserts liveness. The two are complementary. Health checks say
+how a node is doing; heartbeats say whether it is doing anything at all.
+
+A missing heartbeat is itself a signal. xref:alerting.adoc[*Alerting*] systems
 can raise a dead man's switch alert when heartbeats stop arriving, catching
 total failures that value-based thresholds would miss.
 
 Heartbeat state can also be propagated through a
 xref:gossip-protocol.adoc[*gossip protocol*], so that every node eventually
-learns which peers have stopped heartbeating and can treat them as failed.
+learns which peers have stopped heartbeating and can treat them as failed. This
+scales failure detection to clusters too large for every node to probe every
+peer directly.
+
+Leaders elected by xref:consensus-algorithms.adoc[*consensus algorithms*] such
+as Raft send heartbeats to followers to maintain their authority. A follower
+that stops receiving them starts a new election. Here the heartbeat doubles as
+both a liveness signal and a lease on leadership.
+
+[CAUTION]
+A network xref:partition-tolerance.adoc[*partition*] can split a cluster so that
+each side stops receiving the other's heartbeats and declares its peers dead.
+Both sides may then promote standbys and diverge, a split-brain condition that
+heartbeats alone cannot resolve and that consensus protocols guard against with
+quorum requirements.
+
+== See also
+
+* xref:alerting.adoc[*Alerting*]
+* xref:consensus-algorithms.adoc[*Consensus algorithms*]
+* xref:downtime.adoc[*Downtime*]
+* xref:failover.adoc[*Failover*]
+* xref:fault-tolerance.adoc[*Fault tolerance*]
+* xref:gossip-protocol.adoc[*Gossip protocol*]
+* xref:system-health-checks.adoc[*System health checks*]
