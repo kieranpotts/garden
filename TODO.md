@@ -337,7 +337,7 @@ Do NOT push your changes.
 - [x] 🌱 High-performance computing (HPC) — `high-performance-computing.adoc` (fertilize)
 - [x] 🌱 Hock principle — `hock-principle.adoc` (fertilize)
 - [x] 🌱 Horizontal scaling — `horizontal-scaling.adoc` (none)
-- [ ] 🌱 HTTP — `http.adoc` (tend)
+- [x] 🌱 HTTP — `http.adoc` (tend)
 - [ ] 🌿 HTTP API — `http-api.adoc` (tend)
 - [ ] 🌱 Hypervisor — `hypervisor.adoc` (tend)
 
