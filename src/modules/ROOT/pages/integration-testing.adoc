@@ -1,3 +1,132 @@
 = Integration testing
 
-// TODO
+Integration testing is a software testing methodology that exercises the
+interactions between two or more components of a system after they have been
+*xref:unit-testing.adoc[unit tested]* in isolation. Where a unit test verifies a
+single component against its own contract, an integration test verifies that
+components behave correctly once they are wired together. It checks that their
+contracts mesh, that their combined behavior matches the specification, and that
+data flows across their boundaries as intended.
+
+The defects integration testing targets are precisely those that unit testing
+cannot reach. A component may pass every unit test and still fail when combined
+with a collaborator, because the two disagree on a data format, on the meaning of
+a return value, on the order of operations, or on the state of a shared resource.
+These are *integration defects*, and they can only surface when the components
+are exercised together.
+
+== What is being integrated
+
+The boundary between a unit test and an integration test is the *integration
+boundary* – the seam across which two independently developed components meet.
+What counts as a component depends on the system. In a monolithic application it
+might be a pair of classes, a module and the database it persists to, or a
+service and the message broker it publishes to. In a
+*xref:microservices.adoc[microservices]* system it is typically a service and one
+of its collaborators, or several services together.
+
+The breadth of the integration boundary is what distinguishes integration
+testing from the levels above and below it. A test that exercises one component
+in isolation, with collaborators replaced by *xref:test-harness.adoc[test
+doubles]*, is a unit test. A test that exercises the whole application end to
+end, through its external interfaces and including all of its collaborators, is
+*xref:system-testing.adoc[system testing]*. Integration testing occupies the
+middle ground: enough components are real to exercise their interactions, but the
+scope is held short of the full system.
+
+== Integration strategies
+
+Several strategies govern the order in which components are combined and tested.
+Each makes a different trade-off between the cost of scaffolding and the
+diagnostic value of a failure.
+
+* *Top-down integration.* High-level components are integrated first, with their
+lower-level dependencies replaced by stubs. Failures tend to localize to the
+control flow at the top of the call graph, but lower-level components are
+exercised only late.
+* *Bottom-up integration.* Low-level components are integrated first, with
+higher-level callers replaced by drivers. Defects in foundational components are
+caught early, but the overall control flow is not exercised until the top is
+reached.
+* *Sandwich integration.* A middle-out approach that integrates top-down and
+bottom-up simultaneously, meeting in the middle. It aims to combine the early
+feedback of bottom-up with the control-flow coverage of top-down, at the cost of
+more scaffolding.
+* *Big-bang integration.* All components are integrated at once and tested
+together. It minimizes scaffolding but localizes failures poorly, so a defect
+anywhere in the system can surface as a failure anywhere else. It is generally
+avoided except for very small systems.
+
+== Real dependencies versus test doubles
+
+A central decision in integration testing is how many of a component's
+collaborators to replace with test doubles such as stubs, mocks, and fakes, and
+how many to leave real. The choice trades confidence against speed and
+determinism.
+
+Integrating against a real database, file system, or external service gives the
+test a chance to catch defects that a double would hide: mismatches in schema,
+wire format, or transactional semantics, and failures that only appear under
+realistic load or ordering. The cost is that the test becomes slower, harder to
+set up, and more prone to *flakiness* from shared state, network latency, or the
+unavailability of a collaborator.
+
+Integrating against doubles keeps the test fast and self-contained, but it can
+only exercise the behavior the double has been told to produce. A double that
+misrepresents its collaborator lets integration defects pass undetected, and the
+suite can drift out of sync with the real system as that system evolves. This
+tension is particularly acute in distributed systems, where
+*xref:dependency-injection.adoc[dependency injection]* and
+*service virtualization* are commonly used to keep a subset of collaborators real
+while stubbing the rest.
+
+== Trade-offs
+
+Integration tests sit between unit and system tests in both cost and confidence.
+They run more slowly than unit tests because they exercise more code and often
+touch real collaborators, and they pinpoint failures less precisely. A failing
+integration test indicates that something is wrong across a boundary, but not
+which side. They are also more expensive to maintain, because they depend on the
+shape of the integration, which changes whenever a collaborator's contract
+changes.
+
+Against that, integration tests catch the class of defects that unit tests are
+structurally blind to, and they do so far more cheaply than
+*xref:system-testing.adoc[system tests]*, which require the whole application to
+be stood up. The *xref:automated-testing.adoc[test pyramid]* convention reflects
+this trade-off by calling for fewer integration tests than unit tests, but more
+than end-to-end tests. Each integration test should justify its cost by
+exercising an interaction that a unit test cannot.
+
+Integration tests are prime candidates for
+*xref:regression-testing.adoc[regression testing]*. Once an interaction has been
+captured as a passing integration test, subsequent changes that break it are
+flagged automatically, which makes them valuable guards during refactoring and
+*xref:ci-cd.adoc[CI/CD]*.
+
+== In distributed systems
+
+Integration testing is markedly harder across service boundaries than within a
+single process. Each collaborator may be owned by a different team, evolve on its
+own release cadence, and offer no access to its internals. Network behavior,
+eventual consistency, and partial failure modes add new ways for components to
+disagree. See *xref:microservices.adoc[microservices]* for the specific
+challenges and the testing strategies that address them.
+
+A *xref:walking-skeleton.adoc[walking skeleton]* is one common starting point. It
+is a thin end-to-end slice that links the main architectural components and is
+kept working from the start of a project, so that the integration path is
+exercised continuously rather than deferred to a late, big-bang integration
+phase.
+
+== See also
+
+* xref:testing.adoc[*Testing*]
+* xref:unit-testing.adoc[*Unit testing*]
+* xref:system-testing.adoc[*System testing*]
+* xref:automated-testing.adoc[*Automated testing*]
+* xref:test-harness.adoc[*Test harness*]
+* xref:regression-testing.adoc[*Regression testing*]
+* xref:gray-box-testing.adoc[*Gray-box testing*]
+* xref:microservices.adoc[*Microservices*]
+* xref:walking-skeleton.adoc[*Walking skeleton*]
