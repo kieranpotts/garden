@@ -317,7 +317,7 @@ Do NOT push your changes.
 - [x] 🌱 Gossip Protocol — `gossip-protocol.adoc` (fertilize)
 - [x] 🌱 Governance — `governance.adoc` (fertilize)
 - [x] 🌱 Graceful degradation — `graceful-degradation.adoc` (fertilize)
-- [ ] 🌱 Graph databases — `graph-databases.adoc` (fertilize)
+> - [x] 🌱 Graph databases — `graph-databases.adoc` (fertilize)
 - [ ] 🌱 GraphML — `graphml.adoc` (fertilize)
 - [ ] 🌱 Graph Modelling Language (GML) — `gml.adoc` (fertilize)
 - [ ] 🌱 GraphQL — `graphql.adoc` (tend)
