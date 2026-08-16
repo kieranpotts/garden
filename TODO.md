@@ -346,7 +346,7 @@ Do NOT push your changes.
 - [x] 🌱 ICMP — `icmp.adoc` (fertilize)
 - [x] 🌱 ICONIX — `iconix.adoc` (fertilize)
 - [x] 🌱 Idempotent — `idempotent.adoc` (fertilize)
-- [ ] 🌱 Inception — `inception.adoc` (fertilize)
+- [x] 🌱 Inception — `inception.adoc` (fertilize)
 - [ ] 🌱 Inheritance — `inheritance.adoc` (water)
 - [ ] 🌱 In-memory databases — `in-memory-databases.adoc` (fertilize)
 - [ ] 🌱 Infrastructure as code — `infrastructure-as-code.adoc` (fertilize)
