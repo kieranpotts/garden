@@ -454,7 +454,7 @@ Do NOT push your changes.
 - [x] 🌱 Natural language processing (NLP) — `natural-language-processing.adoc` (none)
 - [x] 🌱 Network protocols — `network-protocols.adoc` (fertilize)
 - [x] 🌱 Ninety-ninety rule — `ninety-ninety-rule.adoc` (fertilize)
-- [ ] 🌳 Non-functional requirements — `non-functional-requirements.adoc` (none)
+- [x] 🌳 Non-functional requirements — `non-functional-requirements.adoc` (none)
 - [ ] 🌱 Nonce — `nonce.adoc` (water)
 - [ ] 🌱 Normalization — `normalization.adoc` (fertilize)
 - [ ] 🌱 NoSQL databases — `nosql-databases.adoc` (water)
