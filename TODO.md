@@ -441,7 +441,7 @@ Do NOT push your changes.
 - [x] 🌱 Modeling — `modeling.adoc` (tend)
 - [x] 🌱 Modular design — `modular-design.adoc` (fertilize)
 - [x] 🌱 Modular monolith — `modular-monolith.adoc` (tend)
-- [ ] 🌱 Monitoring — `monitoring.adoc` (none)
+- [x] 🌱 Monitoring — `monitoring.adoc` (none)
 - [ ] 🌱 Monolith — `monolith.adoc` (tend)
 - [ ] 🌱 Multimodal AI — `multimodal-ai.adoc` (none)
 - [ ] 🌱 Multi-tenant — `multi-tenant.adoc` (fertilize)
