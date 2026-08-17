@@ -409,7 +409,7 @@ Do NOT push your changes.
 - [x] 🌱 Logging — `logging.adoc` (water)
 - [x] 🌱 Logic table — `logic-table.adoc` (water)
 - [x] 🌱 Long polling — `long-polling.adoc` (fertilize)
-- [ ] 🌱 Loop engineering — `loop-engineering.adoc` (none)
+- [x] 🌱 Loop engineering — `loop-engineering.adoc` (none)
 
 ## M
 
