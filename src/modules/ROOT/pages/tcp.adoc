@@ -24,7 +24,7 @@ application layer sees a continuous, correctly-ordered byte stream.
   can buffer – and the sender limits how much unacknowledged data it keeps in
   flight. This prevents a fast sender from overwhelming a slow receiver.
 * Congestion control: TCP monitors the network for signs of congestion (dropped
-  packets, increased RTT) and reduces its send rate accordingly. Algorithms such
+  packets, increased *xref:rtt.adoc[RTT]*) and reduces its send rate accordingly. Algorithms such
   as slow start, congestion avoidance, fast retransmit, and fast recovery
   (CUBIC, BBR in modern kernels) manage this automatically.
 * Error detection: Each TCP segment carries a *xref:checksum.adoc[checksum]*
@@ -76,3 +76,4 @@ lookups – *xref:udp.adoc[UDP]* is preferred.
 * *xref:border-gateway-protocol.adoc[Border Gateway Protocol (BGP)]*
 * *xref:osi-model.adoc[OSI model]*
 * *xref:http.adoc[HTTP]*
+* *xref:rtt.adoc[Round-trip time (RTT)]*

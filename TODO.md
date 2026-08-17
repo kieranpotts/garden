@@ -561,7 +561,7 @@ Do NOT push your changes.
 - [x] 🌱 Rollback — `rollback.adoc` (fertilize)
 - [x] 🌱 Rolling deployments — `rolling-deployments.adoc` (water)
 - [x] 🌱 Rolling release — `rolling-release.adoc` (none)
-- [ ] 🌱 Round-trip time (RTT) — `rtt.adoc` (fertilize)
+- [x] 🌱 Round-trip time (RTT) — `rtt.adoc` (fertilize)
 - [ ] 🌱 Rubber ducking — `rubber-ducking.adoc` (fertilize)
 - [ ] 🌱 Rule of least power — `rule-of-least-power.adoc` (fertilize)
 - [ ] 🌱 Runbook — `runbook.adoc` (entwine)
