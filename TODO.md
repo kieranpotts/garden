@@ -600,7 +600,7 @@ Do NOT push your changes.
 - [x] 🌱 Single point of failure (SPOF) — `single-point-of-failure.adoc` (tend)
 - [x] 🌱 Single responsibility principle — `single-responsibility-principle.adoc` (none)
 - [x] 🌱 Single source of truth — `single-source-of-truth.adoc` (fertilize)
-- [ ] 🌱 Singleton — `singleton.adoc` (fertilize)
+- [x] 🌱 Singleton — `singleton.adoc` (fertilize)
 - [ ] 🌱 Site reliability engineering (SRE) — `site-reliability-engineering.adoc` (fertilize)
 - [ ] 🌿 Smoke testing — `smoke-testing.adoc` (entwine)
 - [ ] 🌱 SMTP — `smtp.adoc` (fertilize)

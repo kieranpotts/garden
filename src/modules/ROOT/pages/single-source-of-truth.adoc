@@ -98,6 +98,12 @@ fact in two tables violates it.
 physical instance; the authoritative source can itself be replicated for
 availability, as long as one logical copy is designated as the writer.
 
+*SSOT is not a xref:singleton.adoc[*singleton*].* The "single" in SSOT refers
+to authoritative representation of data, not to the number of object
+instances. A singleton class that caches a value does not make that value the
+source of truth, and a single source of truth needs no singleton to enforce
+it.
+
 *SSOT is not free.* Designating a source of truth commits the system to
 building and maintaining the propagation path that keeps derived copies in
 step. Where that path is expensive or fragile, the principle may be traded
