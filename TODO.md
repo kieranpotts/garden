@@ -439,7 +439,7 @@ Do NOT push your changes.
 - [x] 🌱 Model-driven architecture (MDA) — `model-driven-architecture.adoc` (fertilize)
 - [x] 🌱 Model-driven development — `model-driven-development.adoc` (fertilize)
 - [x] 🌱 Modeling — `modeling.adoc` (tend)
-- [ ] 🌱 Modular design — `modular-design.adoc` (fertilize)
+- [x] 🌱 Modular design — `modular-design.adoc` (fertilize)
 - [ ] 🌱 Modular monolith — `modular-monolith.adoc` (tend)
 - [ ] 🌱 Monitoring — `monitoring.adoc` (none)
 - [ ] 🌱 Monolith — `monolith.adoc` (tend)
