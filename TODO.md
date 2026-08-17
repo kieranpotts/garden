@@ -435,7 +435,7 @@ Do NOT push your changes.
 - [x] 🌿 MIPS (Million Instructions per Second) — `mips.adoc` (entwine)
 - [x] 🌿 Mob programming — `mob-programming.adoc` (prune)
 - [x] 🌱 Model access layer — `model-access-layer.adoc` (tend)
-- [ ] 🌱 Model Context Protocol — `model-context-protocol.adoc` (none)
+- [x] 🌱 Model Context Protocol — `model-context-protocol.adoc` (none)
 - [ ] 🌱 Model-driven architecture (MDA) — `model-driven-architecture.adoc` (fertilize)
 - [ ] 🌱 Model-driven development — `model-driven-development.adoc` (fertilize)
 - [ ] 🌱 Modeling — `modeling.adoc` (tend)
