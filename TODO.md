@@ -467,7 +467,7 @@ Do NOT push your changes.
 - [x] 🌱 On-call — `on-call.adoc` (none)
 - [x] 🌱 Observability — `observability.adoc` (prune)
 - [x] 🌱 Observer pattern — `observer-pattern.adoc` (fertilize)
-- [ ] 🌱 Onion architecture — `onion-architecture.adoc` (fertilize)
+- [x] 🌱 Onion architecture — `onion-architecture.adoc` (fertilize)
 - [ ] 🌱 Ontology — `ontology.adoc` (tend)
 - [ ] 🌱 Open-closed principle — `open-closed-principle.adoc` (fertilize)
 - [ ] 🌱 Open-weight model — `open-weight-model.adoc` (none)
