@@ -532,7 +532,7 @@ Do NOT push your changes.
 - [x] 🌱 Rational Unified Process — `rational-unified-process.adoc` (prune)
 - [x] 🌱 Reactive programming — `reactive-programming.adoc` (water)
 - [x] 🌱 Reactive systems — `reactive-systems.adoc` (fertilize)
-- [ ] 🌿 Recovery testing — `recovery-testing.adoc` (none)
+- [x] 🌿 Recovery testing — `recovery-testing.adoc` (none)
 - [ ] 🌱 Recursive self-improvement (RSI) — `recursive-self-improvement.adoc` (none)
 - [ ] 🌱 Redis — `redis.adoc` (entwine)
 - [ ] 🌱 Redundancy — `redundancy.adoc` (water)
