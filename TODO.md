@@ -534,7 +534,7 @@ Do NOT push your changes.
 - [x] 🌱 Reactive systems — `reactive-systems.adoc` (fertilize)
 - [x] 🌿 Recovery testing — `recovery-testing.adoc` (none)
 - [x] 🌱 Recursive self-improvement (RSI) — `recursive-self-improvement.adoc` (none)
-- [ ] 🌱 Redis — `redis.adoc` (entwine)
+- [x] 🌱 Redis — `redis.adoc` (entwine)
 - [ ] 🌱 Redundancy — `redundancy.adoc` (water)
 - [ ] 🌱 Refactoring — `refactoring.adoc` (fertilize)
 - [ ] 🌱 Referential integrity — `referential-integrity.adoc` (none)
