@@ -458,7 +458,7 @@ Do NOT push your changes.
 - [x] 🌱 Nonce — `nonce.adoc` (water)
 - [x] 🌱 Normalization — `normalization.adoc` (fertilize)
 - [x] 🌱 NoSQL databases — `nosql-databases.adoc` (water)
-- [ ] 🌱 Not invented here! — `not-invented-here.adoc` (fertilize)
+- [x] 🌱 Not invented here! — `not-invented-here.adoc` (fertilize)
 
 ## O
 

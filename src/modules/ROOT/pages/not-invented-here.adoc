@@ -1,15 +1,41 @@
 = Not invented here!
 
-This refers to the principle that, when faced with a choice between building or
-buying something, we should err on the side of buying.
+*Not invented here* (NIH) is the cultural aversion to adopting work that was
+produced outside one's own team or organization. The same name is used for the
+countervailing principle that, when choosing between building something and
+buying it, we should err on the side of buying.
 
-Building something yourself is almost always more expensive than buying it. Not
-only do you pay for the initial development costs in the short term, but also
-the long term costs of maintenance and support.
+The instinct is understandable. Engineers are paid to build, and building is
+often more interesting than integrating. A team that writes its own version of
+something also gets full control over its behavior, its dependencies, and its
+roadmap. But the instinct is expensive. Building a component yourself pays not
+only the initial development cost but also the long-term cost of maintenance,
+support, and security patching. An external maintainer or vendor would
+otherwise absorb that work. You also forgo the field testing and edge-case
+fixes that an established, widely used alternative has already accumulated.
 
-A good principle if to limit custom development to core domain services – the
-services that are unique to your business and provide a competitive advantage.
+A useful rule is to limit custom development to core domain services, the parts
+of a system that are unique to your business and provide its competitive
+advantage. Everything else, from authentication to logging to message queues,
+is better adopted from a mature library, platform, or service and treated as a
+commodity. Time spent reinventing a commodity is time not spent on the
+differentiating parts of the product.
+
+NIH is most often named as an *xref:anti-pattern.adoc[anti-pattern]* because the
+rejection of outside work is driven by culture or ego rather than by a genuine
+technical mismatch. When the decision is made on the merits, because no
+existing option meets a hard requirement or because owning the component is
+strategically necessary, the same act of building is sound engineering rather
+than NIH. The distinguishing question is whether the team is building because
+it has weighed the alternatives and found them wanting, or because it refuses
+to trust work it did not produce.
+
+The cultural counterpart to healthy *xref:code-reuse.adoc[code reuse]* is a team
+that can reach for a dependable asset without re-implementing it. Reuse is most
+productive when that instinct is strong, and least productive when it curdles
+into refusing good work simply because it came from outside.
 
 == See also
 
+* xref:anti-pattern.adoc[*Anti-pattern*]
 * xref:code-reuse.adoc[*Code reuse*]
