@@ -596,7 +596,7 @@ Do NOT push your changes.
 - [x] 🌱 Shift left — `shift-left.adoc` (fertilize)
 - [x] 🌱 Shrinkwrap software — `shrinkwrap-software.adoc` (fertilize)
 - [x] 🌱 Structure and Interpretation of Computer Programs — `sicp.adoc` (entwine)
-- [ ] 🌱 Silver bullet — `silver-bullet.adoc` (fertilize)
+- [x] 🌱 Silver bullet — `silver-bullet.adoc` (fertilize)
 - [ ] 🌱 Single point of failure (SPOF) — `single-point-of-failure.adoc` (tend)
 - [ ] 🌱 Single responsibility principle — `single-responsibility-principle.adoc` (none)
 - [ ] 🌱 Single source of truth — `single-source-of-truth.adoc` (fertilize)
