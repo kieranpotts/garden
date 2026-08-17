@@ -552,7 +552,7 @@ Do NOT push your changes.
 - [x] 🌱 Resource-oriented architecture — `resource-oriented-architecture.adoc` (water)
 - [x] 🌱 REpresentational state transfer (REST) — `rest.adoc` (none)
 - [x] 🌱 Result cache — `result-cache.adoc` (fertilize)
-- [ ] 🌱 Retry — `retry.adoc` (none)
+- [x] 🌱 Retry — `retry.adoc` (none)
 - [ ] 🌱 Reverse engineering — `reverse-engineering.adoc` (fertilize)
 - [ ] 🌱 Reverse proxy — `reverse-proxy.adoc` (none)
 - [ ] 🌱 Ring zero escalation — `ring-zero-escalation.adoc` (fertilize)
