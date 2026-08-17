@@ -481,7 +481,7 @@ Do NOT push your changes.
 - [x] 🌱 PACELC theorem — `pacelc-theorem.adoc` (fertilize)
 - [x] 🌱 Pagination — `pagination.adoc` (fertilize)
 - [x] 🌱 Pair programming — `pair-programming.adoc` (fertilize)
-- [ ] 🌿 Parallelism — `parallelism.adoc` (tend)
+- [x] 🌿 Parallelism — `parallelism.adoc` (tend)
 - [ ] 🌱 Pareto principle — `pareto-principle.adoc` (fertilize)
 - [ ] 🌱 Parkinson's law — `parkinsons-law.adoc` (fertilize)
 - [ ] 🌱 Partition tolerance — `partition-tolerance.adoc` (none)
