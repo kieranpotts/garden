@@ -556,7 +556,7 @@ Do NOT push your changes.
 - [x] 🌱 Reverse engineering — `reverse-engineering.adoc` (fertilize)
 - [x] 🌱 Reverse proxy — `reverse-proxy.adoc` (none)
 - [x] 🌱 Ring zero escalation — `ring-zero-escalation.adoc` (fertilize)
-- [ ] 🌱 Robustness principle — `robustness-principle.adoc` (prune)
+- [x] 🌱 Robustness principle — `robustness-principle.adoc` (prune)
 - [ ] 🌱 Role-based access controls — `role-based-access-controls.adoc` (fertilize)
 - [ ] 🌱 Rollback — `rollback.adoc` (fertilize)
 - [ ] 🌱 Rolling deployments — `rolling-deployments.adoc` (water)
