@@ -408,7 +408,7 @@ Do NOT push your changes.
 - [x] 🌱 Locking — `locking.adoc` (fertilize)
 - [x] 🌱 Logging — `logging.adoc` (water)
 - [x] 🌱 Logic table — `logic-table.adoc` (water)
-- [ ] 🌱 Long polling — `long-polling.adoc` (fertilize)
+- [x] 🌱 Long polling — `long-polling.adoc` (fertilize)
 - [ ] 🌱 Loop engineering — `loop-engineering.adoc` (none)
 
 ## M
