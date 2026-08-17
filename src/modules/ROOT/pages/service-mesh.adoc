@@ -5,7 +5,10 @@ with service discovery and reliability (load balancing etc).
 
 A service mesh is a dedicated infrastructure layer that manages all aspects of
 service-to-service communication within
-*xref:distributed-system.adoc[distributed software]*.
+*xref:distributed-system.adoc[distributed software]*. It is most often deployed
+across a *xref:microservices.adoc[microservice]* estate, where the number of
+service-to-service hops makes per-service wiring of routing, security, and
+reliability concerns expensive to maintain in each application.
 
 Typically, a service mesh will encompass the following features:
 
@@ -16,8 +19,9 @@ Typically, a service mesh will encompass the following features:
 * *xref:service-discovery.adoc[Service discovery]*: Allowing services to find
   and communicate with each other, typically through a *service registry*.
 
-* *Routing*, *xref:retry.adoc[retries]*, *circuit breaking* and other traffic
-  management responsibilities.
+* *Routing*, *xref:retry.adoc[retries]*,
+  xref:circuit-breaker.adoc[*circuit breaking*] and other traffic management
+  responsibilities.
 
 * *xref:security.adoc[Security]*: Handling service-to-service authentication and
   authorization, and encryption of communication channels.
@@ -30,8 +34,66 @@ A service mesh is typically implemented by deploying an
 xref:edge-proxy.adoc[*edge proxy*] as a *sidecar* alongside each service,
 intercepting all inbound and outbound traffic.
 
+== Data plane and control plane
+
+A service mesh separates its responsibilities into two layers. The *data plane*
+is the set of proxies that sit in the request path and enforce policy on every
+service-to-service call. They handle routing, load balancing, retries, mutual
+TLS, and telemetry emission. The *control plane* is the management layer that
+configures those proxies, distributing routing rules, certificates, and traffic
+policy without touching the data path itself. This separation lets operators
+change behavior across the whole fleet from one place, while the per-hop proxies
+stay fixed in place.
+
+The sidecar model puts a data-plane instance alongside every service. Newer
+deployments move the proxy off the application pod entirely. Istio's *ambient
+mode* runs a shared node-level proxy, and Cilium's eBPF-based data plane pushes
+routing and policy into the kernel. Both remove the per-pod sidecar and its
+resource overhead, at the cost of a more specialized deployment that ties the
+mesh to a particular runtime.
+
+== North-south and east-west traffic
+
+The traffic a service mesh governs is *east-west*: calls between services inside
+the system. *North-south* traffic, from external clients to the system's
+perimeter, is the domain of an xref:api-gateway.adoc[*API gateway*] or edge
+proxy. The two layers are complementary. A request typically enters through an
+API gateway, which terminates client TLS and applies API-level policy, and then
+traverses the service mesh as it fans out across internal services. The mesh
+applies service-to-service authentication, retries, and tracing on each hop.
+
+== Security
+
+The canonical service-mesh security mechanism is *mutual TLS (mTLS)*, in which
+every data-plane proxy presents and verifies a certificate on both sides of a
+connection. This gives xref:encryption.adoc[*encrypted*],
+xref:authentication.adoc[*authenticated*] service-to-service channels without
+application code handling keys or certificates. The control plane issues and
+rotates the short-lived certificates, so the trust model is enforced uniformly
+across the fleet rather than per service.
+
+== Trade-offs
+
+A service mesh adds a proxy hop on every internal call, which adds
+xref:latency.adoc[*latency*] and consumes CPU and memory on every node. It also
+introduces a control plane that must itself be operated, upgraded, and made
+highly available, turning a xref:cross-cutting-concern.adoc[*cross-cutting
+concern*] into infrastructure that needs its own reliability story. Debugging
+failures is harder when a request passes through several proxies, and the
+additional moving parts can obscure the cause of a timeout or a 503. For smaller
+estates, the operational cost can outweigh the benefit of centralizing concerns
+that a handful of services could carry in application code or a shared library.
+
 Popular service mesh solutions include Istio and Linkerd. They are commonly
 deployed within xref:container-orchestration.adoc[*container orchestration*]
 platforms such as xref:kubernetes.adoc[*Kubernetes*], where they complement the
 orchestrator's own service-discovery and load-balancing capabilities by
 governing service-to-service traffic, retries, and policy.
+
+== See also
+
+* *xref:microservices.adoc[Microservices]*
+* *xref:api-gateway.adoc[API gateway]*
+* *xref:edge-proxy.adoc[Edge proxy]*
+* *xref:cross-cutting-concern.adoc[Cross-cutting concern]*
+* *xref:circuit-breaker.adoc[Circuit breaker]*

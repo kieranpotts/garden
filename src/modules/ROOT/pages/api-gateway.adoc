@@ -73,6 +73,12 @@ termination and static content caching, and an API gateway manages API security,
 routing, and transformation before passing requests to internal service load
 balancers.
 
+Where an API gateway governs north-south traffic from external clients to the
+system, a xref:service-mesh.adoc[*service mesh*] governs the east-west traffic
+between the internal services behind it. The two are commonly deployed
+together, with the gateway handling client-facing policy and the mesh handling
+service-to-service policy.
+
 == API gateway systems
 
 * https://konghq.com/products/kong-gateway[Kong Gateway]: Open-source API
@@ -84,3 +90,4 @@ balancers.
 * *xref:load-balancer.adoc[Load balancer]*
 * *xref:reverse-proxy.adoc[Reverse proxy]*
 * xref:edge-proxy.adoc[*Edge proxy*]
+* *xref:service-mesh.adoc[Service mesh]*

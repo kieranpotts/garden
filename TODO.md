@@ -588,7 +588,7 @@ Do NOT push your changes.
 - [x] 🌳 Serverless computing — `serverless-computing.adoc` (none)
 - [x] 🌱 Service discovery — `service-discovery.adoc` (water)
 - [x] 🌱 Service level agreement (SLA) — `service-level-agreement.adoc` (fertilize)
-- [ ] 🌱 Service mesh — `service-mesh.adoc` (water)
+- [x] 🌱 Service mesh — `service-mesh.adoc` (water)
 - [ ] 🌱 Server-Sent Events (SSE) — `server-sent-events.adoc` (none)
 - [ ] 🌱 Service-oriented architecture — `service-oriented-architecture.adoc` (none)
 - [ ] 🌱 Sharding — `sharding.adoc` (water)
