@@ -470,7 +470,7 @@ Do NOT push your changes.
 - [x] 🌱 Onion architecture — `onion-architecture.adoc` (fertilize)
 - [x] 🌱 Ontology — `ontology.adoc` (tend)
 - [x] 🌱 Open-closed principle — `open-closed-principle.adoc` (fertilize)
-- [ ] 🌱 Open-weight model — `open-weight-model.adoc` (none)
+- [x] 🌱 Open-weight model — `open-weight-model.adoc` (none)
 - [ ] 🌱 Optimize for deletion — `optimize-for-deletion.adoc` (none)
 - [ ] 🌱 Orthogonality — `orthogonality.adoc` (none)
 - [ ] 🌱 OSI model — `osi-model.adoc` (none)
