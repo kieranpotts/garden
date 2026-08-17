@@ -469,7 +469,7 @@ Do NOT push your changes.
 - [x] 🌱 Observer pattern — `observer-pattern.adoc` (fertilize)
 - [x] 🌱 Onion architecture — `onion-architecture.adoc` (fertilize)
 - [x] 🌱 Ontology — `ontology.adoc` (tend)
-- [ ] 🌱 Open-closed principle — `open-closed-principle.adoc` (fertilize)
+- [x] 🌱 Open-closed principle — `open-closed-principle.adoc` (fertilize)
 - [ ] 🌱 Open-weight model — `open-weight-model.adoc` (none)
 - [ ] 🌱 Optimize for deletion — `optimize-for-deletion.adoc` (none)
 - [ ] 🌱 Orthogonality — `orthogonality.adoc` (none)

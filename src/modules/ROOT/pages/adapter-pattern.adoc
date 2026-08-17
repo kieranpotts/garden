@@ -26,8 +26,11 @@ The client programs against the target interface, unaware that the object it
 receives is really an adapter forwarding to a different concrete type. This
 reliance on *xref:polymorphism.adoc[polymorphism]* is also what makes the pattern
 an application of *xref:dependency-inversion.adoc[dependency inversion]*. The
-client depends on an abstraction rather than on the adaptee's concrete
-interface.
+The client depends on an abstraction rather than on the adaptee's concrete
+interface. Wrapping rather than rewriting the adaptee also makes the pattern an
+application of the *xref:open-closed-principle.adoc[open-closed principle]*:
+callers can adopt a new dependency without altering their own code, and the
+adaptee gains a new interface without being modified.
 
 == Object and class adapters
 
@@ -68,4 +71,5 @@ systems such as databases and message queues.
 * *xref:composition.adoc[Composition]*
 * *xref:dependency-inversion.adoc[Dependency inversion]*
 * *xref:strategy-pattern.adoc[Strategy pattern]*
+* *xref:open-closed-principle.adoc[Open-closed principle]*
 * *xref:ports-and-adapters.adoc[Ports and adapters]*
