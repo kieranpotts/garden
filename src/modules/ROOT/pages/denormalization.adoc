@@ -28,6 +28,12 @@ xref:database-indexes.adoc[*indexes*] can reduce that cost, but they cannot
 eliminate it. Denormalization removes the joins altogether by copying the
 needed columns into the table that is read.
 
+The cost of joins is higher still when the data is
+xref:sharding.adoc[*sharded*], because a join across tables on different shard
+keys becomes a scatter-and-gather operation across the cluster. Denormalizing so
+that each shard holds everything a query needs is often the only practical way
+to keep reads local.
+
 The payoff is largest where the workload is read-heavy and the access patterns
 are stable and well understood. Reporting dashboards, list pages, and
 customer-facing screens that aggregate data from several entities are typical

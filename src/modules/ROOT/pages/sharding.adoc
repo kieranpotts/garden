@@ -35,6 +35,24 @@ for most xref:nosql-databases.adoc[*NoSQL databases*], which are designed from
 the outset to distribute data across a cluster rather than scale a single node
 upward.
 
+== The shard key
+
+The placement of every record is decided by a *shard key*, a column or set of
+columns whose value determines which shard owns the record. The choice of shard
+key is the single most consequential decision in a sharded system. It controls
+how evenly data distributes, whether queries can be answered from a single
+shard or must fan out across the cluster, and how prone the system is to hot
+spots.
+
+A good shard key aligns with the workload's access patterns and has high
+cardinality, so that hash or range partitioning spreads rows evenly across
+shards. A poor one concentrates writes on a single shard and recreates the
+bottleneck sharding was meant to relieve. Low-cardinality columns such as a
+region with a handful of values, or monotonically increasing timestamps, are
+common offenders. Composite keys, combining a high-cardinality column with a
+hash component, are a frequent way to balance even distribution with query
+locality.
+
 == Database partitioning methods
 
 There are three main partitioning methods:
@@ -59,6 +77,12 @@ Partitioning can be done on various criteria:
   *xref:consistent-hashing.adoc[consistent hashing]* is a common implementation
   technique.
 
+* *Range partitioning*, which assigns contiguous ranges of key values to each
+  partition. It suits range queries, which can be served by the shard owning
+  the relevant range. It is vulnerable to hot spots when traffic clusters at
+  one end of the key space, eg. timestamps that push all new writes onto the
+  newest shard.
+
 * *List partitioning*, in which each partition is assigned a list of values,
   storing data based on which list its key belongs to.
 
@@ -66,3 +90,54 @@ Partitioning can be done on various criteria:
   partitions in a circular order.
 
 * *Composite partitioning* combines two or more partitioning methods.
+
+== Cross-shard operations
+
+Sharding buys scale by keeping each query local to one shard. The cost is paid
+by any operation that cannot stay local.
+
+*Joins* are the first casualty. A query that joins two tables sharded on
+different keys must fan out to every shard, gather partial results, and combine
+them in a xref:scatter-and-gather.adoc[*scatter-and-gather*] pattern that
+scales poorly as the cluster grows. Many sharded systems avoid the problem by
+xref:denormalization.adoc[*denormalizing*] the schema so that the data a query
+needs lives on a single shard, copying joined columns into the sharded table at
+write time.
+
+*Secondary indexes* are the next. An index on a column other than the shard key
+cannot be served locally, because the indexed rows are spread across every
+shard. The usual answers are to partition the index per shard and fan out a
+query to all of them, or to maintain a separate, globally distributed
+xref:database-indexes.adoc[*index*]. The second option adds a whole new
+distribution dimension to the system.
+
+*Transactions* that span shards lose the simple ACID guarantees of a
+single-node database. A write that touches two shards becomes a
+xref:distributed-transaction.adoc[*distributed transaction*], with the latency
+and failure modes that implies. Some systems instead relax to
+xref:eventual-consistency.adoc[*eventual consistency*] or adopt a
+xref:saga.adoc[*saga*], breaking the write into a sequence of local steps each
+compensated on failure. ACID across shards is possible, as NewSQL systems such
+as Google Spanner demonstrate. The guarantee is expensive, though, and
+constrains how the data can be partitioned.
+
+== Rebalancing
+
+As data grows or access patterns shift, shards become uneven and must be
+rebalanced. Moving data between live shards is expensive. It locks the rows
+being moved, doubles their storage temporarily, and risks inconsistency if a
+node fails mid-move. Systems therefore try to minimize it. Consistent hashing
+is the standard answer, placing shards on a ring so that adding or removing one
+moves only the keys in the adjacent range rather than rehashing the whole
+dataset. Even so, resharding a large cluster is an operation planned in small,
+verifiable steps, often with double-write windows where both old and new shards
+accept traffic until the migration settles.
+
+== See also
+
+* xref:replication.adoc[*Replication*]
+* xref:distributed-databases.adoc[*Distributed databases*]
+* xref:consistent-hashing.adoc[*Consistent hashing*]
+* xref:horizontal-scaling.adoc[*Horizontal scaling*]
+* xref:vertical-scaling.adoc[*Vertical scaling*]
+* xref:nosql-databases.adoc[*NoSQL databases*]

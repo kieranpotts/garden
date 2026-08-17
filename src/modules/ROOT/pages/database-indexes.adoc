@@ -35,6 +35,12 @@ xref:access-patterns.adoc[*access patterns*]. Indexes pay off most for
 read-heavy workloads, while write-heavy systems may be better served by fewer
 indexes.
 
+Indexes also get harder in a xref:sharding.adoc[*sharded*] database. An index
+on the shard key stays local to each shard, but a secondary index on any other
+column either has to be partitioned per shard, forcing every lookup to fan out
+across the cluster, or maintained as a separate global structure, which adds a
+second distribution dimension on top of the data itself.
+
 == Choosing what to index
 
 An index is only useful if a query can use it. A few rules of thumb:

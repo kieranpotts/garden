@@ -591,7 +591,7 @@ Do NOT push your changes.
 - [x] 🌱 Service mesh — `service-mesh.adoc` (water)
 - [x] 🌱 Server-Sent Events (SSE) — `server-sent-events.adoc` (none)
 - [x] 🌱 Service-oriented architecture — `service-oriented-architecture.adoc` (none)
-- [ ] 🌱 Sharding — `sharding.adoc` (water)
+- [x] 🌱 Sharding — `sharding.adoc` (water)
 - [ ] 🌱 Shell — `shell.adoc` (prune)
 - [ ] 🌱 Shift left — `shift-left.adoc` (fertilize)
 - [ ] 🌱 Shrinkwrap software — `shrinkwrap-software.adoc` (fertilize)
