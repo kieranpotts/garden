@@ -4,28 +4,24 @@
 
 // TODO: https://www.architecture-weekly.com/p/when-logs-and-metrics-arent-enough
 
-Observability is both a *xref:quality-attributes.adoc[quality attribute]* or
-property of complex systems, and it is also a set of strategies and tools for
-understanding and managing complex systems. Observability is a subset of
-*xref:visibility.adoc[visibility]* and complements traditional
-*xref:monitoring.adoc[monitoring]* strategies.
+Observability is both a *xref:quality-attributes.adoc[quality attribute]* of
+complex systems and a set of strategies and tools for understanding and managing
+them. It is a subset of *xref:visibility.adoc[visibility]* and complements
+traditional *xref:monitoring.adoc[monitoring]* strategies.
 
-As a quality attribute, the observability of a system can be improved in many
-ways. If you add more logs and metrics, you will improve observability. And if
-you train your team in using monitoring tools, you will improve observability
-that way, too.
+As a quality attribute, a system's observability can be improved in many ways:
+adding more logs and metrics, or training a team to use monitoring tools.
 
 But more commonly we talk about observability as a set of tools and strategies
-that provide data and capabilities for us to be able to _ask questions_ about
-our systems – questions that, perhaps, we didn't know we needed to ask from
-_outside_ the system. With observability tools, you can _discover_ the questions
-you want to ask about your system by _exploring_ your system's telemetry data.
+that let us _ask questions_ about our systems – questions that, perhaps, we
+didn't know we needed to ask from _outside_ the system. With observability
+tools, you can _discover_ the questions to ask by _exploring_ your system's
+telemetry data.
 
-This is done by using *xref:telemetry.adoc[telemetry data]* to analyze how the
-internal state of a system changes over time, and to diagnose unexpected
-behaviors. The goal is to gain insights into how and why a system behaves in
-certain ways, enabling deeper analysis and supporting troubleshooting
-activities.
+This is done by analyzing *xref:telemetry.adoc[telemetry data]* to track how the
+internal state of a system changes over time and to diagnose unexpected
+behaviors. The goal is to understand how and why a system behaves as it does,
+supporting deeper analysis and troubleshooting.
 
 While monitoring helps us to deal with the known unknowns, observability helps
 us to discover the unknown unknowns.
@@ -33,18 +29,17 @@ us to discover the unknown unknowns.
 Observability strategies originated in
 *xref:distributed-system.adoc[distributed software]* design. In complex systems
 like distributed ones, failures often result from complex interactions between
-components rather than from isolated events. Distributed software fail in new
-and unexpected ways all the time. You are often dealing with "unknown unknowns",
-because the system is constantly evolving, with different teams incrementing
-different components of the system at different times. It is impossible to
-predict every way that such systems might fail.
+components rather than from isolated events. Distributed software fails in new and unexpected ways. You are often dealing
+with "unknown unknowns", because the system is constantly evolving, with
+different teams incrementing different components at different times. It is
+impossible to predict every way that such systems might fail.
 
 In such complex systems, it is necessary to collect and analyze data from
 multiple sources to gain a complete view of overall system behavior.
 
 Observability has been described as the
-_business intelligence of developer tools_. Specifically, observability
-encompasses three types of tools – known as the three pillars of observability:
+_business intelligence of developer tools_. It encompasses three types of tools
+– the three pillars of observability:
 
 * *xref:logging.adoc[Logging]*: Recording discrete events or states.
 
@@ -66,19 +61,17 @@ to track changing state through
 In a well-understood system, it may be sufficient to prioritize high quality
 metrics over detailed (and expensive) logs and complete traces. But the more
 complex the system, the more difficult it is to anticipate all the information
-you will need, and therefore to define the required metrics up-front. Therefore,
-visibility of such systems is going to lean more heavily on logs and traces, and
-less on monitoring and metrics.
+you will need, and so to define the required metrics up-front. Visibility of
+such systems therefore leans more heavily on logs and traces, and less on
+monitoring and metrics.
 
-Tracing is the solution to the difficulties associated with monitoring and
-debugging distributed software. Tracing helps us to understand the cause and
-effect of events in complex distributed software. What effect is there of a
-component publishing an event on the rest of the system? Likewise, how do you
-understand what happened upstream?
+Tracing addresses the difficulties of monitoring and debugging distributed
+software. It helps us understand cause and effect in complex distributed
+systems: what effect does a component publishing an event have on the rest of
+the system, and how do you understand what happened upstream?
 
-For this reason, the most important aspect of observability in a distributed,
-asynchronous system is distributed tracing. This is the most important of the
-three pillars.
+For this reason, the most important of the three pillars in a distributed,
+asynchronous system is distributed tracing.
 
 In most use cases, some combination of all three strategies – metrics, logging,
 and tracing – will be required. Add in traditional
@@ -102,18 +95,16 @@ can proactively resolve the issue before it happens next time.
 Besides the trade-offs between the three pillars of observability, there are
 also trade-offs to be made in the depth and breadth of the telemetry data
 collected. More data will provide greater insights, but with additional cost for
-storage and processing. In large-scale system, you may not be able to afford
+storage and processing. In large-scale systems, you may not be able to afford
 capturing every piece of available data, else you could end up with a
 https://newsletter.pragmaticengineer.com/p/datadogs-65myear-customer-mystery[US$65m bill].
-It may be necessary to strike a reasonable balance between the cost of
-collecting and analyzing some kinds of telemetry data, and the value it
-provides.
+You need to balance the cost of collecting and analyzing telemetry against the
+value it provides.
 
 The best approach, usually, is to start with a basic set of metrics, logs, and
-traces, and then iterate as you learn more about your system and its behavior.
-This iterative approach to monitoring and observability will help you to refine
-your strategy over time, and to ensure that you are collecting the most valuable
-data to understand and optimize your system.
+traces, and then iterate as you learn more about your system. This iterative
+approach helps you refine your strategy over time and collect the most valuable
+data for understanding and optimizing your system.
 
 == Observability tools
 
