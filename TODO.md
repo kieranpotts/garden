@@ -564,7 +564,7 @@ Do NOT push your changes.
 - [x] 🌱 Round-trip time (RTT) — `rtt.adoc` (fertilize)
 - [x] 🌱 Rubber ducking — `rubber-ducking.adoc` (fertilize)
 - [x] 🌱 Rule of least power — `rule-of-least-power.adoc` (fertilize)
-- [ ] 🌱 Runbook — `runbook.adoc` (entwine)
+- [x] 🌱 Runbook — `runbook.adoc` (entwine)
 
 ## S
 
