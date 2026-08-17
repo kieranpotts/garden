@@ -489,7 +489,7 @@ Do NOT push your changes.
 - [x] 🌱 Penetration testing — `penetration-testing.adoc` (fertilize)
 - [x] 🌱 Performance — `performance.adoc` (tend)
 - [x] 🌿 Performance testing — `performance-testing.adoc` (entwine)
-- [ ] 🌱 Persona — `persona.adoc` (fertilize)
+- [x] 🌱 Persona — `persona.adoc` (fertilize)
 - [ ] 🌱 PERT chart — `pert-chart.adoc` (tend)
 - [ ] 🌱 Phased commit (2PC, 3PC) — `phased-commit.adoc` (none)
 - [ ] 🌱 Pipe-and-filter — `pipe-and-filter.adoc` (fertilize)
