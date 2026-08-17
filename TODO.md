@@ -427,7 +427,7 @@ Do NOT push your changes.
 - [x] 🌱 Message broker — `message-broker.adoc` (fertilize)
 - [x] 🌱 Message-driven architecture — `message-driven-architecture.adoc` (none)
 - [x] 🌱 Message queues — `message-queues.adoc` (prune)
-- [ ] 🌱 Messaging protocols — `messaging-protocols.adoc` (water)
+- [x] 🌱 Messaging protocols — `messaging-protocols.adoc` (water)
 - [ ] 🌱 Metcalfe's Law — `metcalfes-law.adoc` (entwine)
 - [ ] 🌱 Metrics — `metrics.adoc` (entwine)
 - [ ] 🌱 Micro front-end — `micro-frontend.adoc` (fertilize)
