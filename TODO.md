@@ -424,7 +424,7 @@ Do NOT push your changes.
 - [x] 🌱 Mechanical sympathy — `mechanical-sympathy.adoc` (none)
 - [x] 🌱 Memoization — `memoization.adoc` (fertilize)
 - [x] 🌱 Memory allocation — `memory-allocation.adoc` (tend)
-- [ ] 🌱 Message broker — `message-broker.adoc` (fertilize)
+- [x] 🌱 Message broker — `message-broker.adoc` (fertilize)
 - [ ] 🌱 Message-driven architecture — `message-driven-architecture.adoc` (none)
 - [ ] 🌱 Message queues — `message-queues.adoc` (prune)
 - [ ] 🌱 Messaging protocols — `messaging-protocols.adoc` (water)

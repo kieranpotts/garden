@@ -1,3 +1,89 @@
 = Message broker
 
-// TODO: https://vivekbansal.substack.com/p/message-queues-vs-message-brokers
+A *message broker* is a piece of middleware that mediates
+*xref:asynchronous-communication.adoc[asynchronous]* communication between
+distributed software components. Producers hand messages to the broker, and the
+broker takes responsibility for routing, storing, and delivering those messages
+to the appropriate consumers. The broker sits between the two sides so that
+neither needs to know about the other, only about the broker itself.
+
+This indirection is the broker's main purpose. It decouples producers from
+consumers along three axes. *Time*, since the broker can retain a message
+until a consumer is ready. *Space*, since producers and consumers need not run
+on the same host or at the same time. *Identity*, since a producer does not
+need to know which components will consume its messages. The result is a
+system in which components can be added, replaced, or scaled independently,
+which is the foundation of
+*xref:message-driven-architecture.adoc[message-driven architecture]*.
+
+== Routing and distribution
+
+A broker supports one or more *message distribution patterns* for deciding
+where each message goes. The two most common are point-to-point delivery to a
+*xref:message-queues.adoc[message queue]*, in which each message is consumed by
+exactly one worker, and the
+*xref:publish-subscribe-pattern.adoc[publish-subscribe (pubsub)]* pattern, in
+which each message is fanned out to every subscriber of a topic. Many brokers
+support both, plus richer routing on top: content-based routing, message
+filtering, and request-reply. See message-driven architecture for a catalog of
+these patterns.
+
+An *xref:event-bus.adoc[event bus]* is a broker specialized for pubsub fan-out.
+A *xref:stream-processing-systems.adoc[stream processing system]* such as
+*xref:kafka.adoc[Kafka]* is a broker built around a durable, replayable log
+rather than a queue that is drained on read.
+
+== Broker responsibilities
+
+Beyond routing, a broker typically takes on several responsibilities that
+would otherwise fall on every producer and consumer.
+
+* *Durable storage.* Messages can be persisted so that they survive a broker
+  restart and are not lost while waiting for a consumer.
+* *Delivery guarantees.* Brokers offer configurable semantics, from
+  at-most-once fire-and-forget to at-least-once and, in some cases,
+  *xref:idempotent.adoc[idempotent]* or exactly-once delivery.
+* *Acknowledgement and retry.* Consumers acknowledge processed messages. If an
+  acknowledgement does not arrive in time, the broker redelivers the message, a
+  form of *xref:retry.adoc[retry]*.
+* *Dead-letter handling.* Messages that cannot be processed after repeated
+  attempts are diverted to a *xref:dead-letter-queue.adoc[dead letter queue]*,
+  keeping the primary flow moving.
+* *Protocol bridging.* Brokers often speak several
+  *xref:messaging-protocols.adoc[messaging protocols]*, letting components that
+  use different wire formats interoperate.
+
+== Message broker vs message queue
+
+The terms are often used interchangeably, but they describe different layers.
+A *xref:message-queues.adoc[message queue]* is a specific data structure and
+delivery model: a FIFO buffer in which each message is destined for one
+consumer and is removed once it has been acknowledged. A message broker is the
+broader category of middleware that mediates messaging between components. A
+broker may use queues internally, but it also supports pubsub, complex routing,
+transformation, and protocol translation, which a bare queue does not provide.
+
+In practice, the products commonly called message brokers —
+*xref:rabbitmq.adoc[RabbitMQ]*, ActiveMQ, and Amazon SQS — expose queues
+alongside exchanges, topics, and routing rules. The products commonly called
+message queues are usually the queue abstraction inside such a broker, or a
+hosted service that offers queue semantics directly. The distinction is useful
+when reasoning about capabilities, but the vocabulary in the field is loose.
+
+== See also
+
+* xref:message-queues.adoc[*Message queues*]
+* xref:message-driven-architecture.adoc[*Message-driven architecture*]
+* xref:publish-subscribe-pattern.adoc[*Publish-subscribe (pubsub) pattern*]
+* xref:event-bus.adoc[*Event bus*]
+* xref:stream-processing-systems.adoc[*Stream processing systems*]
+* xref:kafka.adoc[*Kafka*]
+* xref:rabbitmq.adoc[*RabbitMQ*]
+* xref:asynchronous-communication.adoc[*Asynchronous communication*]
+* xref:messaging-protocols.adoc[*Messaging protocols*]
+* xref:dead-letter-queue.adoc[*Dead letter queue*]
+
+== References
+
+* Vivek Bansal (2024). _Message queues v/s message brokers_. Curious Engineer.
+  https://vivekbansal.substack.com/p/message-queues-vs-message-brokers
