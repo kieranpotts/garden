@@ -511,7 +511,7 @@ Do NOT push your changes.
 - [x] 🌱 Programming paradigm — `programming-paradigm.adoc` (entwine)
 - [x] 🌱 Project paradox — `project-paradox.adoc` (entwine)
 - [x] 🌱 Protocol Buffers — `protocol-buffers.adoc` (fertilize)
-- [ ] 🌱 Prototyping — `prototyping.adoc` (none)
+- [x] 🌱 Prototyping — `prototyping.adoc` (none)
 - [ ] 🌱 Proxy server — `proxy-server.adoc` (fertilize)
 - [ ] 🌱 Publish-subscribe (pubsub) pattern — `publish-subscribe-pattern.adoc` (entwine)
 - [ ] 🌱 Pull architecture — `pull-architecture.adoc` (fertilize)
