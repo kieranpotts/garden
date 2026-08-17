@@ -457,7 +457,7 @@ Do NOT push your changes.
 - [x] 🌳 Non-functional requirements — `non-functional-requirements.adoc` (none)
 - [x] 🌱 Nonce — `nonce.adoc` (water)
 - [x] 🌱 Normalization — `normalization.adoc` (fertilize)
-- [ ] 🌱 NoSQL databases — `nosql-databases.adoc` (water)
+- [x] 🌱 NoSQL databases — `nosql-databases.adoc` (water)
 - [ ] 🌱 Not invented here! — `not-invented-here.adoc` (fertilize)
 
 ## O

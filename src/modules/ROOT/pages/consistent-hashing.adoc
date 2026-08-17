@@ -25,6 +25,10 @@ Using this technique, when new nodes are added to the cluster, or when existing
 nodes are removed, the volume of data that will need to be moved between nodes
 will be minimized.
 
+Consistent hashing is the partitioning foundation of many
+xref:nosql-databases.adoc[*NoSQL databases*], including Cassandra and Riak,
+which place keys on a hash ring to distribute load evenly across the cluster.
+
 image::consistent-hashing.png[]
 
 1.  *Hash space*: Imagine a fixed circular space or "ring", ranging from 0 to
