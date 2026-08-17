@@ -559,7 +559,7 @@ Do NOT push your changes.
 - [x] 🌱 Robustness principle — `robustness-principle.adoc` (prune)
 - [x] 🌱 Role-based access controls — `role-based-access-controls.adoc` (fertilize)
 - [x] 🌱 Rollback — `rollback.adoc` (fertilize)
-- [ ] 🌱 Rolling deployments — `rolling-deployments.adoc` (water)
+- [x] 🌱 Rolling deployments — `rolling-deployments.adoc` (water)
 - [ ] 🌱 Rolling release — `rolling-release.adoc` (none)
 - [ ] 🌱 Round-trip time (RTT) — `rtt.adoc` (fertilize)
 - [ ] 🌱 Rubber ducking — `rubber-ducking.adoc` (fertilize)
