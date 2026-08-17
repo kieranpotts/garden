@@ -483,7 +483,7 @@ Do NOT push your changes.
 - [x] 🌱 Pair programming — `pair-programming.adoc` (fertilize)
 - [x] 🌿 Parallelism — `parallelism.adoc` (tend)
 - [x] 🌱 Pareto principle — `pareto-principle.adoc` (fertilize)
-- [ ] 🌱 Parkinson's law — `parkinsons-law.adoc` (fertilize)
+- [x] 🌱 Parkinson's law — `parkinsons-law.adoc` (fertilize)
 - [ ] 🌱 Partition tolerance — `partition-tolerance.adoc` (none)
 - [ ] 🌱 Peer-to-peer (P2P) architecture — `peer-to-peer-architecture.adoc` (fertilize)
 - [ ] 🌱 Penetration testing — `penetration-testing.adoc` (fertilize)
