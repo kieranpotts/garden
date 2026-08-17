@@ -592,7 +592,7 @@ Do NOT push your changes.
 - [x] 🌱 Server-Sent Events (SSE) — `server-sent-events.adoc` (none)
 - [x] 🌱 Service-oriented architecture — `service-oriented-architecture.adoc` (none)
 - [x] 🌱 Sharding — `sharding.adoc` (water)
-- [ ] 🌱 Shell — `shell.adoc` (prune)
+- [x] 🌱 Shell — `shell.adoc` (prune)
 - [ ] 🌱 Shift left — `shift-left.adoc` (fertilize)
 - [ ] 🌱 Shrinkwrap software — `shrinkwrap-software.adoc` (fertilize)
 - [ ] 🌱 Structure and Interpretation of Computer Programs — `sicp.adoc` (entwine)
