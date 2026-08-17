@@ -407,7 +407,7 @@ Do NOT push your changes.
 - [x] 🌱 Local-first software — `local-first-software.adoc` (fertilize)
 - [x] 🌱 Locking — `locking.adoc` (fertilize)
 - [x] 🌱 Logging — `logging.adoc` (water)
-- [ ] 🌱 Logic table — `logic-table.adoc` (water)
+- [x] 🌱 Logic table — `logic-table.adoc` (water)
 - [ ] 🌱 Long polling — `long-polling.adoc` (fertilize)
 - [ ] 🌱 Loop engineering — `loop-engineering.adoc` (none)
 

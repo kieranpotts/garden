@@ -9,7 +9,10 @@ along with the resulting evaluation of the formula for that assignment.
 
 The rows are ordered by counting in binary, so a formula with three variables
 will produce eight rows (2³), progressing systematically through all
-combinations from `000` to `111`.
+combinations from `000` to `111`. More generally, a formula over *n* variables
+produces 2ⁿ rows, which is the table's central practical limitation: the form
+grows exponentially with the number of variables and quickly becomes unwieldy
+beyond a handful.
 
 Logic tables are a fundamental tool in propositional logic and digital circuit
 design. They make it straightforward to verify whether a formula is a tautology
@@ -19,9 +22,70 @@ in some cases and false in others).
 They are also used to compare formulas for logical equivalence: two formulas are
 equivalent if and only if their truth tables are identical.
 
-// TODO: Add an example.
-// TODO: Explain how this can be used to verify the correctness of algorithms in software design.
+== An example
+
+The table below evaluates two formulas over the variables `p` and `q`: the
+implication `p → q` and the disjunction `¬p ∨ q`. A third column records the
+formula `(p → q) ∧ p → q`, the shape of a *modus ponens* argument.
+
+|===
+| p | q | p → q | ¬p ∨ q | (p → q) ∧ p → q
+
+| T | T | T | T | T
+| T | F | F | F | T
+| F | T | T | T | T
+| F | F | T | T | T
+|===
+
+The `p → q` and `¬p ∨ q` columns are identical across every row, so the two
+formulas are logically equivalent. The rightmost column is true in every row,
+marking `(p → q) ∧ p → q` a tautology — it holds regardless of how `p` and `q`
+are assigned. A contradiction would present the opposite picture: a column that
+is false in every row.
+
+== Verifying decision logic
+
+Beyond their classical role in logic, truth tables underwrite a family of
+exhaustive-enumeration techniques for checking the correctness of decision logic
+in software and hardware. Any program fragment whose behavior depends only on a
+fixed set of boolean conditions — a guard clause, a permissions check, or the
+branching of a combinational circuit — can in principle be verified by
+enumerating every assignment of those conditions and confirming that the output
+matches the specification. The truth table is the canonical form of that
+enumeration.
+
+Each row of the table corresponds to one test case. Techniques such as modified
+condition/decision coverage (MC/DC) select rows from the implied truth table to
+exercise each condition's independent effect, rather than running all 2ⁿ
+combinations. This is a pragmatic response to the table's exponential growth,
+trading full exhaustion for a structured sample that still surfaces the
+interactions most likely to hide defects.
+
+At larger scales the same idea generalizes. xref:formal-methods.adoc[*Formal
+methods*] such as model checking exhaustively explore the state space of a
+finite system, checking a property against every reachable state – a truth
+table spun out over time as well as over inputs. SAT solvers, the workhorse of much
+automated verification, search for a single row that falsifies a claimed
+property, reporting *unsatisfiable* when no such row exists and the property is
+therefore valid. The exponential blowup that makes literal truth tables
+impractical beyond a handful of variables is the same state-explosion problem
+that limits exhaustive verification, and it is why practical verification leans
+on abstraction, symbolic methods, and heuristics rather than raw enumeration.
+
+Truth tables thus sit at the simple end of a spectrum that runs to
+xref:algorithms.adoc[*algorithms*] for SAT solving and on to full mechanized
+proof. They are exact but do not scale, and their value is pedagogical as much
+as practical: they make the meaning of a boolean formula and the limits of
+exhaustive verification concrete in a way that symbolic methods, for all their
+power, do not.
+
+== See also
+
+* xref:algorithms.adoc[*Algorithms*]
+* xref:formal-methods.adoc[*Formal methods*]
 
 == References
 
+* Enderton, H. B. (2001). _A Mathematical Introduction to Logic_, 2nd ed.
+  Academic Press.
 * https://doc.sagemath.org/html/en/reference/logic/sage/logic/logictable.html[SageMath Documentation — Logic Table]
