@@ -14,6 +14,9 @@ service.
 Circuit breakers complement the *xref:retry.adoc[retry mechanism]*. Whereas a
 retry mechanism will keep retrying a failing service until it succeeds, a
 circuit breaker will trip when the error rate exceeds a configured threshold.
+Where *xref:rate-limiting.adoc[rate limiting]* caps the rate of inbound requests
+to protect a service from its callers, a circuit breaker stops a caller from
+continuing to hit a service that is already failing.
 
 Both improve *xref:fault-tolerance.adoc[fault tolerance]*, and work
 particularly well in combination. If a service is failing, it is likely to keep

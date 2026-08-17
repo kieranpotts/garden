@@ -528,7 +528,7 @@ Do NOT push your changes.
 - [x] 🌱 RabbitMQ — `rabbitmq.adoc` (none)
 - [x] 🌱 RAD — `rad.adoc` (fertilize)
 - [x] 🌱 Rainbow table — `rainbow-table.adoc` (fertilize)
-- [ ] 🌱 Rate limiting — `rate-limiting.adoc` (fertilize)
+- [x] 🌱 Rate limiting — `rate-limiting.adoc` (fertilize)
 - [ ] 🌱 Rational Unified Process — `rational-unified-process.adoc` (prune)
 - [ ] 🌱 Reactive programming — `reactive-programming.adoc` (water)
 - [ ] 🌱 Reactive systems — `reactive-systems.adoc` (fertilize)
