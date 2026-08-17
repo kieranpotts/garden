@@ -1,7 +1,5 @@
 = Logging
 
-// TODO: https://www.geeksforgeeks.org/system-design/centralized-logging-systems-system-design/
-
 Logs are chronologically-ordered records of events that occur within a software
 application, system, or network. An event can be anything that is deemed
 important to record. Examples of common events are:
@@ -32,23 +30,7 @@ there are trade-offs to be made with performance (capturing data consumes
 additional resources) and security (capturing sensitive data increases the
 surface area through which that data may leak).
 
-Historically, log data has tended to be unstructured, which means entries do not
-follow a specific format or schema.
-
-----
-2021-01-01 12:00:00 [INFO] User 'john.doe' logged in from IP address
-----
-
-Logging has become more sophisticated and today structured data formats like
-JSON are preferred:
-
-----
-{
-  "timestamp": "2021-01-01 12:00:00",
-  "level": "INFO",
-  "message": "User 'john.doe' logged in from IP address"
-}
-----
+== Types of logs
 
 Applications generate a variety of logs, each serving a distinct purpose.
 Examples include, but are not limited to:
@@ -83,15 +65,83 @@ Examples include, but are not limited to:
 
 Logs should not all be treated the same way. For example, audit and security
 logs may be subject to regulatory requirements dictating how long they must be
-retained, a concern covered by *xref:data-retention.adoc[data retention]*. In contrast, debug logs may be purged more frequently to conserve
-storage resources. And other types of logs – typically those used to generate
-metrics – will never get looked at directly by humans, but instead will be
-aggregated and analyzed by algorithms.
+retained, a concern covered by *xref:data-retention.adoc[data retention]*. In
+contrast, debug logs may be purged more frequently to conserve storage resources.
+And other types of logs – typically those used to generate metrics – will never
+get looked at directly by humans, but instead will be aggregated and analyzed by
+algorithms. See also *xref:metrics.adoc[metrics]* and
+*xref:tracing.adoc[tracing]*, the other two pillars of
+*xref:observability.adoc[observability]* alongside logs.
+
+== Structured logging
+
+Historically, log data has tended to be unstructured, which means entries do not
+follow a specific format or schema.
+
+----
+2021-01-01 12:00:00 [INFO] User 'john.doe' logged in from IP address
+----
+
+Logging has become more sophisticated and today structured data formats like
+JSON are preferred:
+
+----
+{
+  "timestamp": "2021-01-01 12:00:00",
+  "level": "INFO",
+  "message": "User 'john.doe' logged in from IP address"
+}
+----
+
+Structured logs are machine-readable. Each field is queryable on its own, which
+makes them amenable to the indexing, filtering, and aggregation that a
+*centralized logging system* performs.
+Unstructured logs can still be searched, but only by expensive full-text scans,
+and any field-like information embedded in free text is easily lost to a typo or
+a format change. Structured logs trade a small serialization cost for a large
+gain in downstream utility.
+
+A well-formed structured log line carries a stable set of fields beyond the
+timestamp, level, and message. Common fields include the service or component
+that emitted the event, the host and process identifier, the trace and span
+identifiers propagated from the incoming request, a correlation or request ID,
+the build or version of the running code,
+and any business-relevant identifiers such as an order or customer ID. The trace
+and span identifiers are what let a log line be joined to the distributed trace
+that produced it, turning isolated events into a narrative of a single request's
+journey.
+
+OpenTelemetry is emerging as the unified standard for emitting logs alongside
+metrics and traces, with shared context so that a log record can be correlated
+with the span it occurred within without bespoke plumbing. Its
+https://opentelemetry.io/docs/specs/semconv/[semantic conventions] define a
+common vocabulary for the fields above, which reduces the per-vendor
+schema-mapping work that log pipelines have historically required.
 
 == Log levels
 
-RFC 5424 defines eight levels of log messages. However, in reality we use three
-of them for most things:
+RFC 5424 defines eight severity levels for log messages. They are ordered from
+most to least severe, and each carries a distinct intent.
+
+* `EMERG` (0). The system is unusable. A panicking condition, eg. a corrupted
+  primary data store.
+* `ALERT` (1). Action must be taken immediately, eg. a database replication
+  channel has broken and a failover is required.
+* `CRIT` (2). Critical conditions, eg. a service is down and customers are
+  affected.
+* `ERR` (3). Error conditions. The application has encountered an unexpected
+  error that prevented an operation from completing.
+* `WARNING` (4). Warning conditions. Something undesirable happened, but the
+  application recovered and continued.
+* `NOTICE` (5). Normal but significant events, eg. a configuration reload or a
+  failover that completed successfully.
+* `INFO` (6). Informational messages that describe normal operation, useful for
+  understanding the system's behavior at a glance.
+* `DEBUG` (7). Debug-level messages, the verbose output used during development
+  and troubleshooting.
+
+In practice most applications lean on three of these – `ERROR`, `INFO`, and
+`DEBUG` – with `WARNING` and `CRITICAL` used when the situation warrants.
 
 [source,php]
 ----
@@ -100,9 +150,119 @@ Log::error('Means the application has uncovered an unexpected error');
 Log::info('Information for developers, perhaps explaining why a particular scenario occurred');
 ----
 
-== Logging systems
+Severity is a statement about the event, not about the reader's interest.
+A common pitfall is to log at `ERROR` anything an operator might want to see,
+which inflates error budgets and triggers false
+*xref:alerting.adoc[alerts]*. Reserve `ERROR` for conditions that represent a
+real failure an operator may need to act on; emit expected, handled outcomes at
+`WARNING` or `INFO` instead. Conversely, logging at `DEBUG` in production by
+default is a frequent source of runaway volume and cost, which is why debug
+output is usually gated behind a flag or environment variable and enabled only
+for a window.
 
-The xref:elastic-stack.adoc[*Elastic stack*] is the canonical example of a
-centralized logging system. Logstash and Beats collect and process logs from
-applications and infrastructure, Elasticsearch stores and indexes them, and
-Kibana provides the visualization and analysis interface.
+== Centralized logging
+
+A centralized logging system collects logs from every process, host, and
+*xref:container.adoc[container]* in a deployment into a single store, where they
+can be indexed, searched, and visualized together. Without one, logs scattered
+across individual machines are effectively lost the moment that machine is
+replaced – a particular problem in
+*xref:distributed-system.adoc[distributed software]* and
+*xref:microservices.adoc[microservice]* deployments, where a single user request
+may traverse dozens of processes.
+
+A typical pipeline has four stages.
+
+* *Collection.* A shipper runs on or near each source and forwards log entries.
+  Examples include Beats, Fluentd, Fluent Bit, Vector, and Promtail. The
+  *xref:12-factor-app.adoc[12-factor]* discipline of writing logs to `stdout`
+  and leaving aggregation to the platform means the shipper often reads from a
+  container runtime's log driver rather than from application-owned files.
+
+* *Processing.* A transformer parses, enriches, and routes the stream – adding
+  fields, redacting secrets, dropping noisy records, or sampling. Logstash and
+  Fluentd are common choices at this stage.
+
+* *Storage and indexing.* The processed stream lands in a store optimized for
+  search, eg. a search engine such as Elasticsearch or a log-native store such
+  as Grafana Loki. This is also where retention and access policies are
+  enforced, tying back to data retention.
+
+* *Visualization and analysis.* A query and dashboarding layer, eg. Kibana or
+  Grafana, lets operators search the corpus, build saved views, and drive
+  alerts off log-derived signals.
+
+The xref:elastic-stack.adoc[*Elastic stack*] is the canonical example. Logstash
+and Beats collect and process logs from applications and infrastructure,
+Elasticsearch stores and indexes them, and Kibana provides the visualization and
+analysis interface. Other widely used stacks pair Grafana Loki with Promtail and
+Grafana, or ship logs to a managed service such as Datadog or Splunk.
+
+Two trade-offs dominate the design of a centralized logging system. The first is
+volume and cost. Logs are unbounded by default, and at scale the storage and
+ingest bill can dwarf the cost of the systems being observed. Mitigations
+include *sampling* (keeping only a fraction of high-volume events, or biasing the
+sample toward errors), *tiered storage* (moving older logs to cheaper, slower
+media), and aggressive retention windows for low-value categories such as debug
+logs. The second trade-off is latency versus durability. Shippers typically
+buffer locally and batch over the network, which means a process that crashes
+abruptly may lose its last few in-flight entries. Tuning the buffer and flush
+interval is a balance between throughput and the risk of losing the very events
+that explain a crash.
+
+== Log quality
+
+Good logs are written for a reader who arrives cold, during an incident, with no
+context beyond the line in front of them. A few habits make logs survive that
+test.
+
+* *Include enough context to act.* A message like `request failed` is almost
+  useless; `request failed: POST /orders, status 502, upstream timeout after
+  3000ms, order_id=123` lets someone start investigating immediately.
+
+* *One event per line.* Multi-line log entries break the parsers that shippers
+  and indexers run, and they fragment under truncation. Keep a single record on
+  a single line; attach structured fields rather than appending more prose.
+
+* *Do not log and rethrow.* If an exception is going to propagate, log it once at
+  a boundary handler that has the full context, not at every catch site on the
+  way up. Duplicate stack traces inflate volume and obscure the single
+  authoritative record.
+
+* *Never log secrets or personal data.* Tokens, passwords, full credit card
+  numbers, and *xref:privacy.adoc[personally identifiable information]* routinely
+  leak through naive logging of request bodies or headers. This is both a
+  *xref:security.adoc[security]* and a compliance failure. Redact at the
+  processing stage as a backstop, but the reliable fix is to never emit the
+  value in the first place.
+
+* *Beware log injection.* User-supplied text written verbatim into a log line can
+  forge new lines via carriage returns, or distort queries in downstream
+  systems. Sanitize or escape untrusted input before it reaches the logger.
+
+* *Resist the urge to log as a debugger.* Logs are for events an operator needs
+  to know about, not for tracing every variable assignment. For interactive
+  introspection, reach for a *xref:debugger.adoc[debugger]* or
+  *xref:profiling.adoc[profiler]* instead, and keep high-frequency diagnostic
+  output behind a `DEBUG` level that is off in production by default.
+
+== See also
+
+* *xref:alerting.adoc[Alerting]*
+* *xref:debugger.adoc[Debugger]*
+* *xref:distributed-system.adoc[Distributed system]*
+* *xref:elastic-stack.adoc[Elastic stack]*
+* *xref:metrics.adoc[Metrics]*
+* *xref:microservices.adoc[Microservices]*
+* *xref:observability.adoc[Observability]*
+* *xref:privacy.adoc[Privacy]*
+* *xref:security.adoc[Security]*
+* *xref:tracing.adoc[Tracing]*
+* *xref:12-factor-app.adoc[12-factor app]*
+
+== References
+
+* Gerhards, R. (2009).
+  https://www.rfc-editor.org/rfc/rfc5424[RFC 5424: The Syslog Protocol]. IETF.
+* OpenTelemetry Authors (2024).
+  https://opentelemetry.io/docs/concepts/signals/logs/[OpenTelemetry Logs].
