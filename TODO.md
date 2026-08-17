@@ -493,7 +493,7 @@ Do NOT push your changes.
 - [x] 🌱 PERT chart — `pert-chart.adoc` (tend)
 - [x] 🌱 Phased commit (2PC, 3PC) — `phased-commit.adoc` (none)
 - [x] 🌱 Pipe-and-filter — `pipe-and-filter.adoc` (fertilize)
-- [ ] 🌱 Platform-as-a-service (PaaS) — `platform-as-a-service.adoc` (tend)
+- [x] 🌱 Platform-as-a-service (PaaS) — `platform-as-a-service.adoc` (tend)
 - [ ] 🌱 Platform engineering — `platform-engineering.adoc` (fertilize)
 - [ ] 🌱 Polymorphism — `polymorphism.adoc` (fertilize)
 - [ ] 🌱 Ports and adapters — `ports-and-adapters.adoc` (tend)
