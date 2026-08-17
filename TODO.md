@@ -446,7 +446,7 @@ Do NOT push your changes.
 - [x] 🌱 Multimodal AI — `multimodal-ai.adoc` (none)
 - [x] 🌱 Multi-tenant — `multi-tenant.adoc` (fertilize)
 - [x] 🌿 Mutation testing — `mutation-testing.adoc` (tend)
-- [ ] 🌱 The Mythical Man-Month — `mythical-man-month.adoc` (tidy)
+- [x] 🌱 The Mythical Man-Month — `mythical-man-month.adoc` (tidy)
 
 ## N
 
