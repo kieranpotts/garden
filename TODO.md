@@ -492,7 +492,7 @@ Do NOT push your changes.
 - [x] 🌱 Persona — `persona.adoc` (fertilize)
 - [x] 🌱 PERT chart — `pert-chart.adoc` (tend)
 - [x] 🌱 Phased commit (2PC, 3PC) — `phased-commit.adoc` (none)
-- [ ] 🌱 Pipe-and-filter — `pipe-and-filter.adoc` (fertilize)
+- [x] 🌱 Pipe-and-filter — `pipe-and-filter.adoc` (fertilize)
 - [ ] 🌱 Platform-as-a-service (PaaS) — `platform-as-a-service.adoc` (tend)
 - [ ] 🌱 Platform engineering — `platform-engineering.adoc` (fertilize)
 - [ ] 🌱 Polymorphism — `polymorphism.adoc` (fertilize)
