@@ -576,7 +576,7 @@ Do NOT push your changes.
 - [x] 🌱 Scatter-and-gather — `scatter-and-gather.adoc` (fertilize)
 - [x] 🌱 Scope creep — `scope-creep.adoc` (none)
 - [x] 🌱 Scrum — `scrum.adoc` (none)
-- [ ] 🌱 Security — `security.adoc` (fertilize)
+- [x] 🌱 Security — `security.adoc` (fertilize)
 - [ ] 🌱 Security headers — `security-headers.adoc` (fertilize)
 - [ ] 🌿 Security testing — `security-testing.adoc` (entwine)
 - [ ] 🌱 Secure by design — `secure-by-design.adoc` (none)

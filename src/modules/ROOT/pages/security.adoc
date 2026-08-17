@@ -1,19 +1,63 @@
 = Security
 
-== Related topics
+*Security* is the discipline of protecting systems, information, and people
+from unauthorized access, damage, or disruption. In software engineering it
+is usually treated as a
+*xref:non-functional-requirements.adoc[non-functional requirement]* and a
+*xref:quality-attributes.adoc[quality attribute]*: a condition the system
+must satisfy, rather than a feature it provides.
+
+The conventional framing is the CIA triad — *confidentiality*, *integrity*,
+and *xref:availability.adoc[availability]*. Confidentiality limits who can
+read data, integrity ensures data and behavior are not altered improperly,
+and availability ensures the system remains reachable when needed. Most
+security controls map onto one or more of these axes, and debates about
+priorities are often debates about which leg of the triad matters most for a
+given system.
+
+Security is broader than any single mechanism. Technical controls such as
+*xref:authentication.adoc[authentication]*,
+*xref:authorization.adoc[authorization]*,
+*xref:encryption.adoc[encryption]*, and *xref:firewalls.adoc[firewalls]* are
+the most visible layer. But security also encompasses procedural and
+operational controls — access policy, patching, audit, and incident response
+— and the *xref:compliance.adoc[compliance]* regimes that make those
+obligations enforceable. *xref:cryptography.adoc[Cryptography]* is the
+mathematical foundation for much of it, but it is narrower than security as
+a whole. A system can use strong cryptography and still be insecure if its
+access controls or operational practices are weak.
+
+Security is often conflated with *xref:privacy.adoc[privacy]*. The two are
+distinct. Security protects data from unauthorized access; privacy governs
+what data is collected, how it is used, and on what basis. Good security is
+necessary for privacy but not sufficient: a system can be secure and still
+be invasive.
+
+Because systems will be attacked, modern practice favors
+*xref:secure-by-design.adoc[secure by design]* — building security in from
+the outset rather than retrofitting it after deployment. Effectiveness is
+verified through *xref:security-testing.adoc[security testing]* and
+*xref:penetration-testing.adoc[penetration testing]*, and priorities are
+informed by community catalogs such as the *xref:owasp.adoc[OWASP]* Top 10,
+which enumerate the risks that account for most real-world breaches.
+
+== See also
 
 * *xref:authentication.adoc[Authentication]*
 * *xref:authorization.adoc[Authorization]*
+* *xref:compliance.adoc[Compliance]*
 * *xref:cross-site-scripting.adoc[Cross-site scripting (XSS)]*
 * *xref:cryptography.adoc[Cryptography]*
 * *xref:encryption.adoc[Encryption]*
 * *xref:envelope-encryption.adoc[Envelope encryption]*
 * *xref:firewalls.adoc[Firewalls]*
 * *xref:input-validation.adoc[Input validation]*
+* *xref:owasp.adoc[OWASP – Open Worldwide Application Security Project]*
+* *xref:penetration-testing.adoc[Penetration testing]*
+* *xref:privacy.adoc[Privacy]*
 * *xref:rate-limiting.adoc[Rate limiting]*
 * *xref:ring-zero-escalation.adoc[Ring zero escalation]*
 * *xref:secure-by-design.adoc[Secure by design]*
 * *xref:security-headers.adoc[Security headers]*
-* *xref:owasp.adoc[OWASP – Open Worldwide Application Security Project]*
-* *xref:privacy.adoc[Privacy]*
+* *xref:security-testing.adoc[Security testing]*
 * *xref:sql-injection.adoc[SQL injection]*
