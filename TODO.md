@@ -553,7 +553,7 @@ Do NOT push your changes.
 - [x] 🌱 REpresentational state transfer (REST) — `rest.adoc` (none)
 - [x] 🌱 Result cache — `result-cache.adoc` (fertilize)
 - [x] 🌱 Retry — `retry.adoc` (none)
-- [ ] 🌱 Reverse engineering — `reverse-engineering.adoc` (fertilize)
+- [x] 🌱 Reverse engineering — `reverse-engineering.adoc` (fertilize)
 - [ ] 🌱 Reverse proxy — `reverse-proxy.adoc` (none)
 - [ ] 🌱 Ring zero escalation — `ring-zero-escalation.adoc` (fertilize)
 - [ ] 🌱 Robustness principle — `robustness-principle.adoc` (prune)
