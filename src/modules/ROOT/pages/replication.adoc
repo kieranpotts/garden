@@ -47,32 +47,56 @@ calls, data replication also improves the
 *xref:fault-tolerance.adoc[fault tolerance]* and
 *xref:availability.adoc[availability]* of
 *xref:distributed-system.adoc[distributed software]*, due to reduced
-dependencies between services.
+dependencies between services. Replicas also spread read load across nodes, so a
+hot primary is no longer the single bottleneck for queries, raising read
+*xref:throughput.adoc[throughput]* without changing the write path.
 
 Data replication is a useful strategy to support the re-architecture of system
 designs. For example, in the transition from monolithic services to more
 microservices, data replication can help to reduce the need for scheduled
-downtime while data migrations are run.
+downtime while data migrations are run. A new service can be run against a
+replicated copy of the monolith's tables while the cut-over is validated, so the
+legacy system keeps serving traffic. Once the new service is trusted, it takes
+ownership of its data and the legacy copy is retired, moving toward one source
+of truth per service.
 
 Trade-offs are made in terms of *xref:consistency.adoc[data consistency]*, and
 the increased system *xref:complexity.adoc[complexity]* required to manage the
-data replication and synchronization processes. Storage costs also increase.
+data replication and synchronization processes. Storage costs also increase,
+since every replica is another full copy of the data, and the bandwidth needed
+to keep copies in step grows with the write rate.
+
+The consistency trade-off is the heart of the
+xref:cap-theorem.adoc[*CAP theorem*]. Once data lives on more than one node, a
+network partition can force a choice between refusing writes to keep copies in
+step and accepting them at the cost of temporary divergence between replicas.
+Most replicated stores lean toward the latter, letting copies converge over time
+rather than blocking writes while a partition heals.
 
 Data synchronization can be achieved using either batch processes or
-*xref:event-stream.adoc[event streams]*. Some database systems also provide
-built-in support for data replication across multiple nodes.
+*xref:event-stream.adoc[event streams]*. Batch processes periodically dump and
+reload snapshots of the source data, which is simple to reason about but leaves
+replicas stale between runs. Event streams propagate each change as it happens,
+so replicas track the source with far less lag, at the cost of ordering,
+delivery, and replay machinery. Some database systems also provide built-in
+support for data replication across multiple nodes, typically by shipping their
+write-ahead log or replaying statements row by row. Built-in replication is
+transparent to applications but usually ties the replicas to the same database
+engine as the source.
 
 Leaderless and eventually-consistent stores often synchronize replicas with an
 anti-entropy xref:gossip-protocol.adoc[*gossip protocol*], which repairs
 divergence through randomized peer-to-peer exchanges.
 
 Data need not be replicated in the form of its
-*xref:single-source-of-truth.adoc[source of truth]*.
-*xref:materialized-view.adoc[Materialized views]* can be used to store
+*xref:single-source-of-truth.adoc[source of truth]*. A replica can hold a
+transformed or denormalized projection rather than a verbatim copy.
+*xref:materialized-view.adoc[Materialized views]* are the common case, storing
 pre-processed data that's optimized for specific use cases, such as reporting.
 
 == See also
 
+* xref:distributed-databases.adoc[*Distributed databases*]
 * xref:file-storage.adoc[*File storage*]
 * xref:kafka.adoc[*Kafka*]
 * xref:nosql-databases.adoc[*NoSQL databases*]

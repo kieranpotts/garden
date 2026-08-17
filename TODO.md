@@ -544,7 +544,7 @@ Do NOT push your changes.
 - [x] 🌱 Release model — `release-model.adoc` (fertilize)
 - [x] 🌱 Remote procedure call (RPC) — `remote-procedure-call.adoc` (water)
 - [x] 🌱 Replay attack — `replay-attack.adoc` (none)
-- [ ] 🌱 Replication — `replication.adoc` (water)
+- [x] 🌱 Replication — `replication.adoc` (water)
 - [ ] 🌱 Request-response communication — `request-response.adoc` (fertilize)
 - [ ] 🌱 Requirements — `requirements.adoc` (water)
 - [ ] 🌱 Requirements engineering — `requirements-engineering.adoc` (none)
