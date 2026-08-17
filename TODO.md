@@ -515,7 +515,7 @@ Do NOT push your changes.
 - [x] 🌱 Proxy server — `proxy-server.adoc` (fertilize)
 - [x] 🌱 Publish-subscribe (pubsub) pattern — `publish-subscribe-pattern.adoc` (entwine)
 - [x] 🌱 Pull architecture — `pull-architecture.adoc` (fertilize)
-- [ ] 🌱 Push architecture — `push-architecture.adoc` (fertilize)
+- [x] 🌱 Push architecture — `push-architecture.adoc` (fertilize)
 
 ## Q
 

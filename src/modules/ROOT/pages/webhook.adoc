@@ -7,7 +7,8 @@ HTTP POST request to that URL whenever a relevant event occurs.
 
 Webhooks invert the typical client-server request flow. Normally, a client
 requests data from a server — a *xref:pull-architecture.adoc[pull architecture]*.
-With webhooks, the server pushes data to the client. This makes webhooks an efficient tool for event-driven integrations,
+With webhooks, the server pushes data to the client — an instance of
+*xref:push-architecture.adoc[push architecture]*. This makes webhooks an efficient tool for event-driven integrations,
 eliminating the overhead and latency of polling.
 
 == How webhooks work
@@ -51,3 +52,9 @@ against spoofing and replay attacks. Common strategies include:
 * *Timestamp validation*: The producer includes a timestamp in the request. The
   consumer rejects payloads that are too old, mitigating replay attacks.
 * *TLS*: Webhook URLs should always use HTTPS to protect payloads in transit.
+
+== See also
+
+* xref:push-architecture.adoc[*Push architecture*]
+* xref:pull-architecture.adoc[*Pull architecture*]
+* xref:http.adoc[*HyperText Transfer Protocol (HTTP)*]
