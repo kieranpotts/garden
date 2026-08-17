@@ -1,14 +1,57 @@
 = Managed hosting
 
-A managed hosting service refers to a type of web hosting service in which the
-service provider takes care of all these technical aspects of running the
-infrastructure, including the system administration and maintenance, monitoring,
-security, backup and recovery, and scalability and other customizations.
+Managed hosting is an operational model in which a hosting provider takes
+responsibility for running and maintaining infrastructure on the customer's
+behalf. The provider handles the day-to-day work of keeping the system running:
+system administration and maintenance, patching,
+xref:monitoring.adoc[*monitoring*], security hardening, backup and recovery, and
+scaling. The customer supplies the application and its data, and consumes the
+running service rather than operating the platform underneath it.
+
+Managed hosting is best understood as an operational dimension that cuts across
+the xref:cloud-computing.adoc[*cloud computing*] service models, rather than as
+a layer in its own right.
+xref:platform-as-a-service.adoc[*Platform as a Service (PaaS)*] and
+xref:serverless-computing.adoc[*serverless computing*] are inherently managed:
+the provider runs the platform and the customer deploys only code.
+xref:cloud-service-providers.adoc[*Cloud service providers*] also offer managed
+forms of lower-layer services, such as managed databases and managed
+xref:kubernetes.adoc[*Kubernetes*] clusters, where the customer still shapes the
+resource but is relieved of the control-plane upkeep. At the other end,
+unmanaged hosting rents raw compute, storage, and network, and leaves every
+layer above that to the customer.
 
 Managed hosting services are offered by both cloud service providers and
 traditional hosting providers. A cloud-based example is Cloud Run, a
 xref:google-cloud-platform.adoc[*Google Cloud Platform*] service that runs
 containerized applications without exposing the underlying cluster. Managed
-hosting is ideal for businesses that want to leverage advanced technology
-without the complexity of managing it themselves, allowing them to focus on
-their core business activities.
+Kubernetes services such as Amazon EKS, Google GKE, and Azure AKS give the same
+treatment to container orchestration. Traditional providers, meanwhile, have
+long offered managed servers and managed private clouds for workloads not
+suited to the public cloud.
+
+Because the provider is responsible for keeping the service up, managed hosting
+is typically sold with a
+xref:service-level-agreement.adoc[*service level agreement (SLA)*] that commits
+to a target uptime and defines remedies when it is missed. This shifts
+operational risk from the customer to the provider, and is a large part of what
+the customer is paying for.
+
+The trade-off is control. Managed services are opinionated about configuration,
+patch cadence, and feature support, and moving between providers can be costly
+once an application is built around a particular managed API. They also command
+a price premium over equivalent self-managed resources. For businesses that want
+to leverage advanced technology without the complexity of running it themselves,
+though, managed hosting lets them treat infrastructure as a service and focus on
+their core product.
+
+== See also
+
+* xref:cloud-computing.adoc[*Cloud computing*]
+* xref:platform-as-a-service.adoc[*Platform as a Service (PaaS)*]
+* xref:serverless-computing.adoc[*Serverless computing*]
+* xref:cloud-service-providers.adoc[*Cloud service providers*]
+* xref:kubernetes.adoc[*Kubernetes*]
+* xref:service-level-agreement.adoc[*Service level agreement (SLA)*]
+* xref:monitoring.adoc[*Monitoring*]
+* xref:google-cloud-platform.adoc[*Google Cloud Platform*]
