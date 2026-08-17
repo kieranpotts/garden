@@ -419,7 +419,7 @@ Do NOT push your changes.
 - [x] 🌱 Management information systems (MIS) — `management-information-systems.adoc` (fertilize)
 - [x] 🌱 Manual testing — `manual-testing.adoc` (fertilize)
 - [x] 🌱 MapReduce — `map-reduce.adoc` (entwine)
-- [ ] 🌿 Mashup — `mashup.adoc` (entwine)
+- [x] 🌿 Mashup — `mashup.adoc` (entwine)
 - [ ] 🌱 Materialized view — `materialized-view.adoc` (fertilize)
 - [ ] 🌱 Mechanical sympathy — `mechanical-sympathy.adoc` (none)
 - [ ] 🌱 Memoization — `memoization.adoc` (fertilize)
