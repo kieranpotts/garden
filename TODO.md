@@ -491,7 +491,7 @@ Do NOT push your changes.
 - [x] 🌿 Performance testing — `performance-testing.adoc` (entwine)
 - [x] 🌱 Persona — `persona.adoc` (fertilize)
 - [x] 🌱 PERT chart — `pert-chart.adoc` (tend)
-- [ ] 🌱 Phased commit (2PC, 3PC) — `phased-commit.adoc` (none)
+- [x] 🌱 Phased commit (2PC, 3PC) — `phased-commit.adoc` (none)
 - [ ] 🌱 Pipe-and-filter — `pipe-and-filter.adoc` (fertilize)
 - [ ] 🌱 Platform-as-a-service (PaaS) — `platform-as-a-service.adoc` (tend)
 - [ ] 🌱 Platform engineering — `platform-engineering.adoc` (fertilize)
