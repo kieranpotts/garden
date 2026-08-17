@@ -3,16 +3,88 @@
 Platform engineering is a discipline that focuses on building and maintaining
 the underlying infrastructure and tools that enable software development teams
 to deliver applications and services more efficiently. It emerged from the
-*xref:devops.adoc[DevOps]* movement as a response to the cognitive load placed
-on product teams expected to own the full delivery and operations toolchain. It involves creating a
-software delivery platform that abstracts away the complexities of the
-underlying infrastructure, allowing developers to focus on writing code and
-delivering value to customers.
+xref:devops.adoc[*DevOps*] movement as a response to the cognitive load placed
+on product teams expected to own the full delivery and operations toolchain.
+A platform engineering team builds a software delivery platform that abstracts
+away the complexities of the underlying infrastructure, so developers can focus
+on writing code and delivering value to customers.
 
-// TODO: "Self-service" infrastructure.
+Where DevOps asks each product team to take ownership of build, deploy, and
+runtime concerns, platform engineering concentrates that ownership in a
+dedicated team that offers the rest of the organization a shared platform as a
+product. Product teams then consume the platform rather than each assembling
+their own toolchain. The platform is built on the same DevOps practices –
+xref:infrastructure-as-code.adoc[*infrastructure as code*],
+xref:ci-cd.adoc[*CI/CD*],
+xref:container-orchestration.adoc[*container orchestration*], and
+xref:observability.adoc[*observability*] – but exposes them through opinionated,
+higher-level interfaces that hide the moving parts. The discipline pays off most
+in larger organizations, where many product teams would otherwise re-derive the
+same pipelines, the same alerting, and the same security baseline.
 
-Especially in larger organizations, platform engineering can help to streamline
-the development process by providing a consistent and reliable environment for
-developers to work in. This can include everything from managing cloud resources
-and xref:container-orchestration.adoc[*container orchestration*] to providing
-CI/CD pipelines and monitoring tools.
+== Self-service and golden paths
+
+The defining property of an internal platform is self-service. A developer should
+be able to provision an environment, deploy a service, wire up a database, and
+attach monitoring without filing a ticket, waiting on an operations team, or
+learning the underlying tools in depth. Self-service is what distinguishes a
+platform from infrastructure that is merely shared. Without it, the platform
+becomes another silo and the handover problems DevOps set out to dissolve
+reappear.
+
+Self-service is delivered through *golden paths* (sometimes called paved roads):
+a small set of supported, opinionated routes through the platform that cover the
+common cases. A golden path bundles the approved compute model, runtime,
+deployment pipeline, secret management, and observability into a single,
+supported combination, so a team that follows it gets sensible defaults for
+free. Teams can step off the path when they need something the platform does not
+provide, but they then own the extra complexity they take on.
+
+The aim is to reduce cognitive load on product teams and to improve
+xref:developer-experience.adoc[*developer experience*] at scale. The platform
+team is also the natural home for xref:shift-left.adoc[*shift-left*] concerns –
+security scanning, policy enforcement, and compliance controls – which can be
+baked into the golden path once rather than re-implemented by each team.
+
+== Relationship to PaaS and SRE
+
+An internal platform is, in effect, a private
+xref:platform-as-a-service.adoc[*platform as a service*]. The difference is
+ownership and audience. A public PaaS serves many tenants on shared
+infrastructure; an internal platform serves one organization, is shaped by that
+organization's standards, and can be changed to meet its needs. Many platform
+teams build on top of a public PaaS or a
+xref:cloud-service-providers.adoc[*cloud service provider*] rather than raw
+infrastructure, treating the cloud as the substrate and the internal platform as
+the product their colleagues consume.
+
+Platform engineering also overlaps with
+xref:site-reliability-engineering.adoc[*site reliability engineering*]. SRE
+treats reliability as a software problem and governs it through error budgets;
+platform engineering treats the delivery toolchain itself as a software product.
+The two are complementary and often coexist in the same organization, with the
+platform team owning the paved road and the SRE team owning the reliability of
+the services that travel along it.
+
+[IMPORTANT]
+--
+A common failure mode is to build the platform and declare it mandatory without
+treating it as a product. A platform that product teams are forced to use but
+have no say in becomes a constraint rather than a service, and they will route
+around it. Successful platform teams treat their internal developers as
+customers, gather feedback, measure adoption, and keep the alternative of teams
+building their own tooling honestly in view.
+--
+
+== See also
+
+* xref:devops.adoc[*DevOps*]
+* xref:infrastructure-as-code.adoc[*Infrastructure as code*]
+* xref:ci-cd.adoc[*CI/CD*]
+* xref:container-orchestration.adoc[*Container orchestration*]
+* xref:observability.adoc[*Observability*]
+* xref:developer-experience.adoc[*Developer experience*]
+* xref:shift-left.adoc[*Shift left*]
+* xref:platform-as-a-service.adoc[*Platform as a service*]
+* xref:cloud-service-providers.adoc[*Cloud service providers*]
+* xref:site-reliability-engineering.adoc[*Site reliability engineering*]
