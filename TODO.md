@@ -586,7 +586,7 @@ Do NOT push your changes.
 - [x] 🌱 Separation of concerns — `separation-of-concerns.adoc` (fertilize)
 - [x] 🌳 Serverless architecture — `serverless-architecture.adoc` (none)
 - [x] 🌳 Serverless computing — `serverless-computing.adoc` (none)
-- [ ] 🌱 Service discovery — `service-discovery.adoc` (water)
+- [x] 🌱 Service discovery — `service-discovery.adoc` (water)
 - [ ] 🌱 Service level agreement (SLA) — `service-level-agreement.adoc` (fertilize)
 - [ ] 🌱 Service mesh — `service-mesh.adoc` (water)
 - [ ] 🌱 Server-Sent Events (SSE) — `server-sent-events.adoc` (none)
