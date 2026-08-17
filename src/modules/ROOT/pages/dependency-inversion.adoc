@@ -28,10 +28,12 @@ two arrows pointing toward the abstraction, which is what "inversion" names.
 A typical consequence is that the high-level module no longer mentions any
 concrete low-level type. Some other agent supplies a concrete implementation
 at the seam – a constructor, a xref:factory.adoc[*factory*], or an
-xref:dependency-injection.adoc[*dependency injection*] container. This is why
-dependency injection is the technique most often used to put the principle
-into practice, and why the principle is itself one form of
-xref:inversion-of-control.adoc[*inversion of control*].
+xref:dependency-injection.adoc[*dependency injection*] container. The high-level
+code continues to work because of xref:polymorphism.adoc[*polymorphism*]: every
+low-level implementation satisfies the shared interface, so the call dispatches
+to whichever one is supplied. This is why dependency injection is the technique
+most often used to put the principle into practice, and why the principle is
+itself one form of xref:inversion-of-control.adoc[*inversion of control*].
 
 == Why it matters
 
@@ -92,6 +94,7 @@ testability demands a seam, not as a blanket rule over every collaboration.
 * xref:coupling.adoc[*Coupling*]
 * xref:decoupling.adoc[*Decoupling*]
 * xref:composition.adoc[*Composition*]
+* xref:polymorphism.adoc[*Polymorphism*]
 * xref:encapsulation.adoc[*Encapsulation*]
 * xref:leaky-abstractions.adoc[*Leaky abstractions*]
 * xref:hexagonal-architecture.adoc[*Hexagonal architecture*]

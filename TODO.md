@@ -495,7 +495,7 @@ Do NOT push your changes.
 - [x] 🌱 Pipe-and-filter — `pipe-and-filter.adoc` (fertilize)
 - [x] 🌱 Platform-as-a-service (PaaS) — `platform-as-a-service.adoc` (tend)
 - [x] 🌱 Platform engineering — `platform-engineering.adoc` (fertilize)
-- [ ] 🌱 Polymorphism — `polymorphism.adoc` (fertilize)
+- [x] 🌱 Polymorphism — `polymorphism.adoc` (fertilize)
 - [ ] 🌱 Ports and adapters — `ports-and-adapters.adoc` (tend)
 - [ ] 🌱 POSIX — `posix.adoc` (entwine)
 - [ ] 🌱 Postel's law (aka. the Robustness Principle) — `postels-law.adoc` (uproot)
