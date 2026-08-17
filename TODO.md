@@ -500,7 +500,7 @@ Do NOT push your changes.
 - [x] 🌱 POSIX — `posix.adoc` (entwine)
 - [x] 🌱 Postel's law (aka. the Robustness Principle) — `postels-law.adoc` (uproot)
 - [x] 🌱 Premature optimization — `premature-optimization.adoc` (fertilize)
-- [ ] 🌱 Preprocessing — `preprocessing.adoc` (fertilize)
+- [x] 🌱 Preprocessing — `preprocessing.adoc` (fertilize)
 - [ ] 🌱 Principle of least astonishment — `principle-of-least-astonishment.adoc` (fertilize)
 - [ ] 🌱 Privacy — `privacy.adoc` (fertilize)
 - [ ] 🌿 Problem space — `problem-space.adoc` (tend)
