@@ -545,7 +545,7 @@ Do NOT push your changes.
 - [x] 🌱 Remote procedure call (RPC) — `remote-procedure-call.adoc` (water)
 - [x] 🌱 Replay attack — `replay-attack.adoc` (none)
 - [x] 🌱 Replication — `replication.adoc` (water)
-- [ ] 🌱 Request-response communication — `request-response.adoc` (fertilize)
+- [x] 🌱 Request-response communication — `request-response.adoc` (fertilize)
 - [ ] 🌱 Requirements — `requirements.adoc` (water)
 - [ ] 🌱 Requirements engineering — `requirements-engineering.adoc` (none)
 - [ ] 🌱 Resilience — `resilience.adoc` (none)
