@@ -568,7 +568,7 @@ Do NOT push your changes.
 
 ## S
 
-- [ ] 🌱 Safety-critical system — `safety-critical-system.adoc` (water)
+- [x] 🌱 Safety-critical system — `safety-critical-system.adoc` (water)
 - [ ] 🌱 Saga — `saga.adoc` (none)
 - [ ] 🌱 Salt — `salt.adoc` (fertilize)
 - [ ] 🌱 Scaffolding — `scaffolding.adoc` (water)

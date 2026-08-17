@@ -3,20 +3,68 @@
 A safety-critical system, also known as a *life-critical system* and
 historically a *man-rated system*, is a system whose failure or malfunction may
 result in death or serious injury to people, loss or severe damage to property
-or equipment, or environmental harm.
+or equipment, or environmental harm. The term is closely related to
+*xref:high-integrity.adoc[high integrity]*, which is often used as the umbrella
+classification for systems — including safety-critical, mission-critical, and
+life-critical systems — whose failure carries serious consequences.
 
-https://www.his-conference.co.uk/[High-integrity software] is software that is
-used in safety-critical systems. It is developed to a higher standard than
-normal software, with an extreme focus on reliability and safety. See also
-*xref:software-quality.adoc[software quality]* and
-*xref:software-assurance.adoc[software assurance]*.
+Safety-critical software is developed to a higher standard than ordinary
+commercial software, with an extreme focus on reliability, safety, and
+correctness. See also *xref:software-quality.adoc[software quality]* and
+*xref:software-assurance.adoc[software assurance]*. The development processes
+used to produce it, such as *xref:cleanroom.adoc[Cleanroom]* software
+engineering, favor rigorous specification, review, and certification over
+debug-and-patch iteration.
 
-The
-https://cwe.mitre.org/about/index.html[Common Weakness Enumeration (CWE) is a community-maintained list and categorization system of common software and hardware weaknesses, where a "weakness" is defined as any condition that could, under certain circumstances, contribute to vulnerabilities. The first release of the list and associated classification taxonomy was in 2006. CWE is maintained by the https://www.mitre.org/[MITRE Corporation],
-a not-for-profit organization that operates federally-funded research and
-development centers in the United States, such as the U.S. Department of
-Homeland Security's (DHS) Cybersecurity and Infrastructure Security Agency
-(CISA).
+== Standards and integrity levels
+
+Safety-critical systems are usually developed under a domain-specific safety
+standard, and *xref:compliance.adoc[compliance]* with the applicable standard is
+typically mandatory for certification. The principal frameworks are:
+
+* *DO-178C* — aviation software, with its *Design Assurance Level (DAL)* scale
+  from A (catastrophic failure) to E (no effect).
+* *IEC 61508* — the foundational standard for electrical, electronic, and
+  programmable electronic safety systems, introducing the *Safety Integrity
+  Level (SIL)* scale from 1 to 4.
+* *ISO 26262* — road-vehicle functional safety, derived from IEC 61508, with its
+  *Automotive Safety Integrity Level (ASIL)* scale from A to D.
+* *IEC 62304* — medical device software, classifying software by the severity of
+  injury its failure could cause.
+* *EN 50128* — railway control and protection software.
+
+Each standard defines a set of techniques that must be applied at the higher
+integrity levels, and traces them back to the hazards they mitigate. The
+*xref:raaml.adoc[Risk Analysis and Assessment Modeling Language (RAAML)]* gives
+tooling a shared, model-based notation for the analyses these standards demand.
+
+== Hazard and risk analysis
+
+Before code is written, the system's hazards must be identified and the risks
+they pose assessed and mitigated. Established techniques include *Failure Mode
+and Effects Analysis (FMEA)*, which enumerates the ways each component can fail
+and the consequences, and *Fault Tree Analysis (FTA)*, which works top-down from
+an undesired event to the combinations of faults that could cause it. Both are
+among the methods formalized in RAAML. The output is a *safety case* — a
+structured argument that residual risk has been reduced to an acceptable level.
+
+== Verification and validation
+
+Safety-critical development relies on verification that is stronger than
+conventional testing alone. *xref:formal-methods.adoc[Formal methods]* apply
+mathematical proof to show that a system satisfies its specification, and are
+mandated or strongly encouraged at the highest integrity levels of standards
+such as DO-178C. *xref:static-analysis.adoc[Static analysis]*, including sound
+analyzers built on abstract interpretation, is used to demonstrate the absence
+of whole classes of runtime error in embedded code. Testing remains necessary,
+but it supplements these arguments rather than standing alone.
+
+== Coding standards
+
+Restrictive coding standards are a common and inexpensive way to rule out
+constructs that defeat review or static analysis. Two of the most influential
+families target the C programming language, which remains widespread in
+embedded safety-critical systems.
 
 https://misra.org.uk/publications/[MISRA C] is a set of software development
 guidelines for the C programming language and whose aim is to facilitate code
@@ -46,6 +94,44 @@ The rules are:
 10. Compile with all possible warnings active. All warnings should then be
     addressed before release of the software.
 
- == See also
+The
+https://cwe.mitre.org/about/index.html[Common Weakness Enumeration (CWE)] is a
+community-maintained list and categorization system of common software and
+hardware weaknesses, where a "weakness" is any condition that could, under
+certain circumstances, contribute to vulnerabilities. The first release of the
+list and associated classification taxonomy was in 2006. CWE is maintained by
+the https://www.mitre.org/[MITRE Corporation], a not-for-profit organization
+that operates federally-funded research and development centers in the United
+States, such as the U.S. Department of Homeland Security's (DHS) Cybersecurity
+and Infrastructure Security Agency (CISA). In a safety-critical context, CWE
+gives developers and assessors a shared vocabulary for the weaknesses that
+secure coding standards such as MISRA C and the Power of 10 are meant to rule
+out.
 
- * xref:raaml.adoc[*Risk Analysis and Assessment Modeling language (RAAML)*]
+== Architectural mitigations
+
+Safety is not achieved by process alone. The architecture of a safety-critical
+system is expected to tolerate faults, so that the failure of a single component
+cannot propagate to a hazard. *xref:redundancy.adoc[Redundancy]* provides spare
+capacity so that a failed unit can be replaced; *xref:fault-tolerance.adoc[fault
+tolerance]* is the broader discipline of keeping the system operating correctly
+in the presence of failures; and eliminating
+*xref:single-point-of-failure.adoc[single points of failure]* is a basic
+expectation at the higher integrity levels. Common-mode failures — faults that
+defeat redundancy by striking "independent" channels through a shared dependency
+— are a particular concern, and the standards require evidence that redundant
+channels are genuinely independent.
+
+== See also
+
+* xref:raaml.adoc[*Risk Analysis and Assessment Modeling Language (RAAML)*]
+* xref:high-integrity.adoc[*High integrity*]
+* xref:formal-methods.adoc[*Formal methods*]
+* xref:static-analysis.adoc[*Static analysis*]
+* xref:cleanroom.adoc[*Cleanroom*]
+* xref:compliance.adoc[*Compliance*]
+* xref:fault-tolerance.adoc[*Fault tolerance*]
+* xref:redundancy.adoc[*Redundancy*]
+* xref:single-point-of-failure.adoc[*Single point of failure*]
+* xref:software-quality.adoc[*Software quality*]
+* xref:software-assurance.adoc[*Software assurance*]
