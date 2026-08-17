@@ -451,7 +451,7 @@ Do NOT push your changes.
 ## N
 
 - [x] 🌱 Nanoservices — `nanoservices.adoc` (fertilize)
-- [ ] 🌱 Natural language processing (NLP) — `natural-language-processing.adoc` (none)
+- [x] 🌱 Natural language processing (NLP) — `natural-language-processing.adoc` (none)
 - [ ] 🌱 Network protocols — `network-protocols.adoc` (fertilize)
 - [ ] 🌱 Ninety-ninety rule — `ninety-ninety-rule.adoc` (fertilize)
 - [ ] 🌳 Non-functional requirements — `non-functional-requirements.adoc` (none)
