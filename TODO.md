@@ -431,7 +431,7 @@ Do NOT push your changes.
 - [x] 🌱 Metcalfe's Law — `metcalfes-law.adoc` (entwine)
 - [x] 🌱 Metrics — `metrics.adoc` (entwine)
 - [x] 🌱 Micro front-end — `micro-frontend.adoc` (fertilize)
-- [ ] 🌱 Microservices — `microservices.adoc` (tend)
+- [x] 🌱 Microservices — `microservices.adoc` (tend)
 - [ ] 🌿 MIPS (Million Instructions per Second) — `mips.adoc` (entwine)
 - [ ] 🌿 Mob programming — `mob-programming.adoc` (prune)
 - [ ] 🌱 Model access layer — `model-access-layer.adoc` (tend)
