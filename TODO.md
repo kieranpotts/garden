@@ -420,7 +420,7 @@ Do NOT push your changes.
 - [x] 🌱 Manual testing — `manual-testing.adoc` (fertilize)
 - [x] 🌱 MapReduce — `map-reduce.adoc` (entwine)
 - [x] 🌿 Mashup — `mashup.adoc` (entwine)
-- [ ] 🌱 Materialized view — `materialized-view.adoc` (fertilize)
+- [x] 🌱 Materialized view — `materialized-view.adoc` (fertilize)
 - [ ] 🌱 Mechanical sympathy — `mechanical-sympathy.adoc` (none)
 - [ ] 🌱 Memoization — `memoization.adoc` (fertilize)
 - [ ] 🌱 Memory allocation — `memory-allocation.adoc` (tend)

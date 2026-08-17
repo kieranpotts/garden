@@ -79,6 +79,9 @@ rules guide the reading.
 * Reduce joins on read paths with
   xref:denormalization.adoc[*denormalization*], trading write complexity and
   duplication for cheaper reads.
+* Precompute expensive queries as xref:materialized-view.adoc[*materialized
+  views*], trading storage and refresh cost for read latency on repeated
+  aggregations and joins.
 * xref:caching.adoc[*Cache*] query results. For read-heavy workloads against
   data that changes rarely, a cache removes the query from the hot path
   entirely.
