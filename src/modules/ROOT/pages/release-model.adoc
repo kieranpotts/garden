@@ -1,11 +1,77 @@
 = Release model
 
-////
+A *release model* is the scheme by which a software product is packaged,
+versioned, and distributed to its users over time. It governs how new
+functionality reaches the people who run the software: as a sequence of
+discrete numbered releases, as a continuous stream of updates, or somewhere
+in between. The choice of release model is a product and distribution
+decision, distinct from the engineering practices that produce a release and
+the deployment techniques that put it into production.
 
-TODO:
+A release model is often confused with two neighbouring ideas, and the
+distinction matters. *xref:continuous-delivery.adoc[Continuous delivery]* and
+*xref:continuous-deployment.adoc[continuous deployment]* are development
+practices that keep a codebase always ready to ship, or always shipping. They
+say nothing in themselves about how the shipped artifacts are versioned or
+presented to end users. *xref:deployment-strategies.adoc[Deployment
+strategies]* describe how a new version is rolled out across production
+servers with controlled downtime and blast radius, not how a product is
+released to its audience. A project can practice continuous deployment behind
+a point-release model, or ship a rolling release through a canary deployment.
 
-Release models include:
+== Point release
 
-* xref:rolling-release.adoc[Rolling release]
+The traditional model is the *point release* (or *fixed release*), in which a
+product is shipped as a sequence of numbered versions that each replace their
+predecessor. New features accumulate between releases and land together at a
+scheduled cadence, while older versions receive only security and bugfix
+updates until they fall out of support. Point releases are the natural model
+for *xref:shrinkwrap-software.adoc[shrinkwrap software]* and other products
+distributed as discrete installable artifacts, where users must consciously
+upgrade and compatibility between versions is an explicit contract. See
+*xref:backwards-compatibility.adoc[backwards compatibility]* for the
+versioning and deprecation obligations that follow.
 
-////
+== Rolling release
+
+At the other end of the spectrum, a *xref:rolling-release.adoc[rolling
+release]* is installed once and then updated perpetually as a stream of small
+frequent updates, with no discrete numbered versions. The model trades the
+predictability and support windows of point releases for currency: users are
+always on the latest build, and the maintainers carry only one release at a
+time. It is most associated with cutting-edge *xref:linux.adoc[Linux]*
+distributions such as Arch and Gentoo.
+
+== Hosted and evergreen
+
+Hosted services dissolve the notion of a version almost entirely. A
+*xref:software-as-a-service.adoc[Software-as-a-service]* product is delivered
+as an evergreen service: the provider runs a single, continuously updated
+instance, and users see no version number at all. What would historically have
+been a release becomes a deployment to the provider's own infrastructure. The
+model shifts compatibility and upgrade concerns from the user to the
+provider, who can also stage changes with *xref:feature-flags.adoc[feature
+flags]* and *xref:canary-deployment.adoc[canary deployments]* without
+involving the customer in an upgrade step.
+
+== Trade-offs
+
+The models trade off along several axes. Currency favours rolling and hosted
+models; predictability and explicit compatibility contracts favour point
+releases. Support burden grows with the number of versions a maintainer must
+support simultaneously, which point releases multiply and rolling releases
+collapse. The model is also a cultural signal: a project that adopts a
+*xref:release-early-release-often.adoc[release early, release often]* cadence
+is leaning toward the rolling end, treating frequent delivery as a way to
+keep feedback loops short.
+
+== See also
+
+* xref:rolling-release.adoc[*Rolling release*]
+* xref:continuous-delivery.adoc[*Continuous delivery*]
+* xref:continuous-deployment.adoc[*Continuous deployment*]
+* xref:deployment-strategies.adoc[*Deployment strategies*]
+* xref:release-early-release-often.adoc[*Release early, release often*]
+* xref:software-as-a-service.adoc[*Software-as-a-service (SaaS)*]
+* xref:shrinkwrap-software.adoc[*Shrinkwrap software*]
+* xref:backwards-compatibility.adoc[*Backwards compatibility*]

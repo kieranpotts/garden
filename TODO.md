@@ -541,7 +541,7 @@ Do NOT push your changes.
 - [x] 🌿 Regression testing — `regression-testing.adoc` (entwine)
 - [x] 🌱 Relational database management systems (RDBMS) — `relational-databases.adoc` (water)
 - [x] 🌱 Release early, release often — `release-early-release-often.adoc` (fertilize)
-- [ ] 🌱 Release model — `release-model.adoc` (fertilize)
+- [x] 🌱 Release model — `release-model.adoc` (fertilize)
 - [ ] 🌱 Remote procedure call (RPC) — `remote-procedure-call.adoc` (water)
 - [ ] 🌱 Replay attack — `replay-attack.adoc` (none)
 - [ ] 🌱 Replication — `replication.adoc` (water)
