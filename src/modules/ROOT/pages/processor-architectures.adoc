@@ -1,30 +1,145 @@
 = Processor architectures
 
+A processor architecture, more precisely an *instruction set architecture*
+(ISA), is the contract between a processor and the software that runs on it. It
+defines the visible state — registers, memory addressing, program counter —
+and the instructions the processor recognises, together with their semantics,
+operand encoding, and observable effects. A compiler targets an ISA, not the
+silicon beneath it. Many different *microarchitectures* can implement the same
+ISA, trading off clock speed, cache sizes, pipeline depth, and power for the
+same programmer-visible behaviour.
+
+The dominant ISA families today are x86-64 in servers, desktops, and laptops,
+ARM in mobile and embedded devices and a growing share of servers, and RISC-V
+as an open standard increasingly used in custom silicon. Each descends from a
+different design philosophy: x86 carries a CISC legacy, while ARM and RISC-V
+are RISC designs. The distinction has blurred in practice, since modern x86
+chips translate their CISC instructions into RISC-like internal operations, but
+it still shapes the ISA's visible complexity and code density.
+
 == x86-64
 
-x86-64 architecture is also known as x86_64, x86-64, x64, or amd64. This refers
-to a family of processors based on the Intel 8086 and which are compatible with
-the 64-bit CPU architecture used in modern Intel and AMD processors.
+x86-64 is also known as x86_64, x64, or amd64. It refers to a family of
+processors descended from the Intel 8086 and compatible with the 64-bit CPU
+architecture used in modern Intel and AMD processors.
 
-x86 started out as a 16-bit instruction set for 16-bit processors, starting with
-the Intel 8086 launched in 1978, a 16-bit extension of Intel's early 8-bit
-microprocessors. Later this was extended to a 32-bit instruction set for 32-bit
-processors (80386 and 80486), and more recently to a 64-bit instruction set for
-64-bit processors.
+x86 started out as a 16-bit instruction set for 16-bit processors, beginning
+with the Intel 8086 launched in 1978, a 16-bit extension of Intel's earlier
+8-bit microprocessors. Later this was extended to a 32-bit instruction set for
+32-bit processors (80386 and 80486), and more recently to a 64-bit instruction
+set for 64-bit processors.
 
 It used to be written as "80x86" to reflect the changing value in the middle of
-the chip model numbers, but somewhere in time the 80 prefix was dropped leaving
+the chip model numbers, but at some point the 80 prefix was dropped, leaving
 just x86, referencing only the last two digits of the early successors to the
 Intel 8086. Confusingly, the same family of processors is sometimes also
-referred to as i386 or i686, while x64 is often used as shorthand for the modern
-64-bit versions, x86-64. Basically, all these terms refer to processors that use
+referred to as i386 or i686, while x64 is often used as shorthand for the
+modern 64-bit versions, x86-64. All of these terms refer to processors that use
 extensions of the original 8086 instruction set.
+
+The 64-bit extension itself was designed by AMD and published in 2000 as
+AMD64, and Intel later adopted an equivalent implementation it branded Intel 64
+(earlier EM64T). It was the first widely shipped 64-bit extension of x86. The
+extension doubled the general-purpose registers from 8 to 16, widened them to
+64 bits, and added a 64-bit virtual address space. In practice only the low 48
+bits are usable on most chips, and recent CPUs extend this to 57 bits with
+5-level paging; both enforce *canonical addressing*, which reserves the high
+bits of any non-canonical pointer and traps on dereference. The extension also
+made SSE2 part of the baseline ISA and introduced RIP-relative addressing,
+which makes position-independent code cheaper to generate.
+
+x86 is a CISC ISA: instructions are of variable length, from one byte to
+fifteen, and support rich memory addressing modes including memory operands
+for arithmetic. Modern x86 cores nonetheless decode these CISC instructions into
+internal *micro-operations* (μops) that flow through a RISC-like out-of-order
+engine. The architectural complexity lives mostly in the front-end decoders and
+in the microcode that handles the rarest legacy instructions. SIMD has grown
+through successive extensions — SSE, AVX, AVX2, and the wider AVX-512 — each
+adding register width and lanes, at the cost of compatibility and power
+trade-offs that have kept AVX-512 controversial.
+
+x86-64 has a comparatively strong memory model, x86-TSO (total store order). A
+store becomes visible to other cores in program order, and loads can be
+reordered only in limited ways. This is more forgiving than ARM's relaxed
+model, and is one reason concurrent code that works correctly on x86 can fail
+subtly when ported to ARM without the appropriate barriers.
+
+x86-64 remains dominant in servers, desktops, and laptops, and is the primary
+target of most general-purpose operating systems and language runtimes. Apple
+ended its use of x86 in Macs when it moved to its own ARM-based Apple Silicon in
+2020, and ARM-based CPUs have since gained a meaningful share of the server
+market, but x86-64 still ships in the majority of high-performance
+general-purpose systems.
+
+== ARM and AArch64
+
+ARM is a RISC ISA family originating in the Acorn RISC Machine design of the
+mid-1980s and later developed by Advanced RISC Machines, the company now known
+as Arm. The 64-bit profile, AArch64, was introduced with the ARMv8 architecture
+in 2011 and is the profile used in essentially all contemporary ARM
+application-class hardware. ARMv9, released in 2021, refines the architecture
+with the Scalable Vector Extension 2 (SVE2) and stronger security primitives,
+but keeps the same A64 instruction set as its baseline.
+
+AArch64 exposes 31 general-purpose 64-bit registers and a load/store design
+with fixed-width 32-bit instructions. Memory operands do not appear in
+arithmetic instructions; data must be loaded into registers first. This is
+characteristic of RISC and keeps the front-end simple, which is part of why
+ARM cores have historically delivered high performance per watt. ARM also has a
+relaxed memory model, weaker than x86-TSO: loads and stores may be reordered
+more freely, and correct concurrent code requires explicit acquire, release,
+and barrier instructions. Software written for x86 cannot be assumed to be
+correct on ARM without revisiting its memory ordering.
+
+Arm Holdings does not manufacture chips. It licenses the ISA and core designs
+to partners — Apple, Qualcomm, Samsung, Amazon, NVIDIA, and many others —
+who design or customise their own cores. This licensing model is the structural
+reason ARM dominates the mobile and embedded markets and reaches so far into
+custom silicon. Apple Silicon, beginning with the M1 in 2020, brought ARM into
+laptops and desktops with competitive single-thread performance and much higher
+efficiency than contemporary x86 parts. In servers, AWS Graviton and Ampere
+cores have made ARM a credible alternative to x86-64 for a range of workloads.
+
+== RISC-V
+
+RISC-V is an open ISA standard originated at UC Berkeley in 2010 and now
+stewarded by RISC-V International. Unlike x86-64 and ARM, the ISA is free to
+implement without per-chip licensing fees or NDAs, and the specification is
+published openly. This has made RISC-V attractive for research, education, and
+custom accelerators where the cost and opacity of proprietary ISAs are a
+barrier.
+
+The ISA is modular. A base integer core — RV32I, RV64I, or RV128I for 32, 64,
+or 128-bit addressing — defines the minimal instruction set, and implementers
+compose in only the extensions they need: M for integer multiply and divide, A
+for atomics, F and D for single and double precision floating point, C for
+compressed 16-bit encodings, and V for the vector extension. This modularity is
+central to RISC-V's value: a microcontroller can implement a tiny subset,
+while an application-class core can include the full vector and floating-point
+extensions.
+
+RISC-V is a specification, not an implementation. Multiple vendors and
+open-source projects produce cores that conform to it, including SiFive's
+commercial cores and a long list of open designs. Adoption has been strongest
+in embedded controllers and custom accelerators, and is growing into
+datacenter and AI accelerators where a free, extensible ISA is a strategic
+advantage over the locked-in alternatives.
 
 == See also
 
+* xref:hardware.adoc[*Hardware*]
+* xref:mechanical-sympathy.adoc[*Mechanical sympathy*]
 * xref:mips.adoc[*MIPS*]
 
-== Related links
+== References
 
-* http://en.wikipedia.org/wiki/IA-32
-* http://en.wikipedia.org/wiki/X86
+* Wikipedia contributors.
+  _https://en.wikipedia.org/wiki/X86[X86]_. Retrieved 2026-08-17.
+* Wikipedia contributors.
+  _https://en.wikipedia.org/wiki/IA-32[IA-32]_. Retrieved 2026-08-17.
+* Wikipedia contributors.
+  _https://en.wikipedia.org/wiki/X86-64[X86-64]_. Retrieved 2026-08-17.
+* Wikipedia contributors.
+  _https://en.wikipedia.org/wiki/AArch64[AArch64]_. Retrieved 2026-08-17.
+* Wikipedia contributors.
+  _https://en.wikipedia.org/wiki/RISC-V[RISC-V]_. Retrieved 2026-08-17.

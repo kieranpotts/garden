@@ -504,7 +504,7 @@ Do NOT push your changes.
 - [x] 🌱 Principle of least astonishment — `principle-of-least-astonishment.adoc` (fertilize)
 - [x] 🌱 Privacy — `privacy.adoc` (fertilize)
 - [x] 🌿 Problem space — `problem-space.adoc` (tend)
-- [ ] 🌱 Processor architectures — `processor-architectures.adoc` (water)
+- [x] 🌱 Processor architectures — `processor-architectures.adoc` (water)
 - [ ] 🌱 Product requirements document (PRD) — `product-requirements-document.adoc` (none)
 - [ ] 🌱 Profiling — `profiling.adoc` (fertilize)
 - [ ] 🌱 Prompt engineering — `prompt-engineering.adoc` (none)
