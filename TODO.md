@@ -464,7 +464,7 @@ Do NOT push your changes.
 
 - [x] 🌱 Object-oriented programming (OOP) — `object-oriented-programming.adoc` (fertilize)
 - [x] 🌱 Object storage — `object-storage.adoc` (none)
-- [ ] 🌱 On-call — `on-call.adoc` (none)
+- [x] 🌱 On-call — `on-call.adoc` (none)
 - [ ] 🌱 Observability — `observability.adoc` (prune)
 - [ ] 🌱 Observer pattern — `observer-pattern.adoc` (fertilize)
 - [ ] 🌱 Onion architecture — `onion-architecture.adoc` (fertilize)
