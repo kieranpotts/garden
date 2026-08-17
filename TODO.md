@@ -512,7 +512,7 @@ Do NOT push your changes.
 - [x] 🌱 Project paradox — `project-paradox.adoc` (entwine)
 - [x] 🌱 Protocol Buffers — `protocol-buffers.adoc` (fertilize)
 - [x] 🌱 Prototyping — `prototyping.adoc` (none)
-- [ ] 🌱 Proxy server — `proxy-server.adoc` (fertilize)
+- [x] 🌱 Proxy server — `proxy-server.adoc` (fertilize)
 - [ ] 🌱 Publish-subscribe (pubsub) pattern — `publish-subscribe-pattern.adoc` (entwine)
 - [ ] 🌱 Pull architecture — `pull-architecture.adoc` (fertilize)
 - [ ] 🌱 Push architecture — `push-architecture.adoc` (fertilize)
