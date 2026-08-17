@@ -26,7 +26,10 @@ such that all data belonging to one key is located on the same worker node.
 There are other functions, too, but those are main three. This
 map-shuffle-reduce structure is a restricted form of the
 xref:bulk-synchronous-parallel.adoc[*bulk synchronous parallel*] model, with the
-shuffle acting as the synchronization barrier between the map and reduce phases.
+shuffle acting as the synchronization barrier between the map and reduce phases,
+and a specialization of the xref:scatter-and-gather.adoc[*scatter and gather*]
+pattern: map scatters work across workers, reduce gathers and combines their
+output.
 
 Besides the programming model, MapReduce also specifies an infrastructure system
 that handles the distribution of tasks, manages data transfers, and provides
