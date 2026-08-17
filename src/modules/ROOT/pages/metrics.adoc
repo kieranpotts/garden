@@ -20,14 +20,16 @@ Low-cardinality data, such as boolean values and response times, is the most
 suitable for metrics.
 
 Metrics are particularly useful for pinpointing performance bottlenecks within
-an application's subsystems, for example by tracking latency (response times),
-throughput, and resource utilization. Logs can often be used for the same
-purpose, but given their detailed and context-rich nature, they are less
-efficient for this use case. Nevertheless, once a potential issue is identified
+an application's subsystems, for example by tracking
+xref:latency.adoc[*latency*] (response times), throughput, and resource
+utilization. xref:logging.adoc[*Logs*] can often be used for the same purpose,
+but given their detailed and context-rich nature, they are less efficient for
+this use case. Nevertheless, once a potential issue is identified
 through metrics, logs can then provide the detailed context needed to drill down
 into specific problematic requests or events.
 
-Metrics also offer a more efficient means of generating alerts compared to logs,
+Metrics also offer a more efficient means of generating
+xref:alerting.adoc[*alerts*] compared to logs,
 because querying a time-series database is typically much faster than querying
 log data. Metrics can also be useful during incidents, helping to quickly
 identify the scope and impact of an issue. On the other hand, due to metrics
@@ -35,10 +37,11 @@ being aggregated and reported in intervals, there is a lag in time between
 incidents occurring and them being detected in metrics. Logs, which provide
 real-time data, are often better suited for early warning alerting.
 
-Thus, logs and metrics (and traces too) are complementary. Metrics offer a
-high-level overview with limited context, ideal for monitoring and performance
-analysis across broad system components, while logs provide deep, contextual
-details for observability of specific events.
+Thus, logs and metrics (and xref:tracing.adoc[*traces*] too) are complementary.
+Metrics offer a high-level overview with limited context, ideal for
+xref:monitoring.adoc[*monitoring*] and performance analysis across broad system
+components, while logs provide deep, contextual details for
+xref:observability.adoc[*observability*] of specific events.
 
 Finally, there are other use cases for metrics in business intelligence and
 decision-making. Numbers related to user engagement, feature usage, and

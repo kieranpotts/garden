@@ -429,7 +429,7 @@ Do NOT push your changes.
 - [x] 🌱 Message queues — `message-queues.adoc` (prune)
 - [x] 🌱 Messaging protocols — `messaging-protocols.adoc` (water)
 - [x] 🌱 Metcalfe's Law — `metcalfes-law.adoc` (entwine)
-- [ ] 🌱 Metrics — `metrics.adoc` (entwine)
+- [x] 🌱 Metrics — `metrics.adoc` (entwine)
 - [ ] 🌱 Micro front-end — `micro-frontend.adoc` (fertilize)
 - [ ] 🌱 Microservices — `microservices.adoc` (tend)
 - [ ] 🌿 MIPS (Million Instructions per Second) — `mips.adoc` (entwine)
