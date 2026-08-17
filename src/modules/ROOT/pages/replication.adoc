@@ -40,8 +40,6 @@ replicated to wherever it is needed, so that discrete services are less reliant
 upon each other. Services therefore work faster by needing to use only local
 data.
 
-image::microservices-with-data-replication.svg[]
-
 Besides the *xref:performance.adoc[performance]* benefits of reducing network
 calls, data replication also improves the
 *xref:fault-tolerance.adoc[fault tolerance]* and
@@ -49,114 +47,76 @@ calls, data replication also improves the
 *xref:distributed-system.adoc[distributed software]*, due to reduced
 dependencies between services.
 
-Data replication is a useful strategy to support the re-architecture of system
-designs. For example, in the transition from monolithic services to more
-microservices, data replication can help to reduce the need for scheduled
-downtime while data migrations are run.
+Data replication also creates the foundation for
+*xref:failover.adoc[failover]* and
+*xref:disaster-recovery.adoc[*disaster recovery*]: a replica is a live copy that can take over instantly when the primary fails, rather than requiring you to restore from a backup.
 
-Trade-offs are made in terms of *xref:consistency.adoc[data consistency]*, and
-the increased system *xref:complexity.adoc[complexity]* required to manage the
-data replication and synchronization processes. Storage costs also increase.
+When planning replication, consider two key metrics:
+
+* *Recovery Point Objective (RPO).* The amount of data loss acceptable during a failure, measured as the oldest unreplicated change. Asynchronous replication with short lag gives low RPO; synchronous replication gives RPO = 0.
+* *Recovery Time Objective (RTO).* The maximum acceptable downtime after a failure, measured from detection to service restoration. Replicas enable fast failover, but a standby that hasn't kept pace with replication will reject writes during promotion.
+
+Trade-offs are made in terms of *xref:consistency.adoc[data consistency]*, the increased system *xref:complexity.adoc[complexity]* required to manage the data replication and synchronization processes, and storage costs. Storage costs scale with the number and size of replicas, so partial replication that caches only hot or localized data can reduce requirements.
 
 Data synchronization can be achieved using either batch processes or
 *xref:event-stream.adoc[event streams]*. Some database systems also provide
 built-in support for data replication across multiple nodes.
 
-Leaderless and eventually-consistent stores often synchronize replicas with an
-anti-entropy xref:gossip-protocol.adoc[*gossip protocol*], which repairs
-divergence through randomized peer-to-peer exchanges.
+*Change data capture (xref:change-data-capture.adoc[CDC])* is the most common
+technique for streaming replication. CDC monitors the database's transaction log
+and emits structured events for each change (INSERT, UPDATE, DELETE), preserving
+event order and minimizing impact on the primary. This technique underlies
+*xref:active-active.adoc[Active-Active Geo Distribution]* and multi-region
+replication patterns.
 
-Data need not be replicated in the form of its
+Leadership models determine the replication topology:
+
+* *Single-leader replication:* One node handles all writes. Changes propagate asynchronously to one or more read replicas. This is the simplest model, works well for read-heavy workloads, but introduces a single point of failure and writes go through a bottleneck.
+* *Multi-leader replication:* Multiple nodes accept writes concurrently. Each node replicates its changes to others. This provides high availability across regions and reduced write latency for local users, but requires conflict resolution.
+* *Leaderless replication:* Clients write directly to multiple nodes, and consistency is managed via *quorum reads/writes*. Popular in distributed databases like Cassandra and Dynamo.
+
+Replication timing introduces another trade-off:
+
+* *Synchronous replication:* The primary waits for confirmation that a write has been acknowledged and applied before responding to the client. This ensures strong consistency and RPO = 0, but adds round-trip latency to every write. Best for in-region deployments where network latency is low.
+* *Asynchronous replication:* The primary acknowledges the write immediately and propagates changes to replicas afterward. This eliminates write latency, but introduces *replication lag* — a window where replicas may be stale. In the worst case, a primary failure during this window can result in data loss, so the system must size replicas to handle the lag window.
+
+Many production systems use a hybrid approach: synchronous replication within a region for critical data, and asynchronous replication across regions for everything else.
+
+Conflict resolution is required when multiple nodes accept writes. Common strategies include:
+
+* *Last-write-wins:* Uses timestamps or sequence numbers to choose the most recent update.
+* *Version vectors:* Track the causality history of updates and merge deterministically.
+* *Application-level merge logic:* Custom business rules that resolve conflicts based on domain-specific needs.
+
+*Conflict-free replicated data types (CRDTs)* provide a mathematical guarantee of eventual convergence without explicit conflict resolution by using data structures that merge automatically. CRDTs are particularly useful in leaderless and multi-leader scenarios where avoiding conflicts at the data model level is desirable.
+
+Finally, data need not be replicated in the form of its
 *xref:single-source-of-truth.adoc[source of truth]*.
 *xref:materialized-view.adoc[Materialized views]* can be used to store
 pre-processed data that's optimized for specific use cases, such as reporting.
 
 == See also
 
-* xref:file-storage.adoc[*File storage*]
-* xref:kafka.adoc[*Kafka*]
+* xref:active-active.adoc[*Active-active*]
+* xref:change-data-capture.adoc[*Change data capture*]
+* xref:consistency.adoc[*Consistency*]
+* xref:consensus-algorithms.adoc[*Consensus algorithms*]
+* xref:disaster-recovery.adoc[*Disaster recovery*]
+* xref:failover.adoc[*Failover*]
+* xref:eventual-consistency.adoc[*Eventual consistency*]
+* xref:latency.adoc[*Latency*]
 * xref:nosql-databases.adoc[*NoSQL databases*]
+* xref:redundancy.adoc[*Redundancy*]
+* xref:single-source-of-truth.adoc[*Single source of truth*]
+* xref:sharding.adoc[*Sharding*]
+* xref:performance.adoc[*Performance*]
+* xref:complexity.adoc[*Complexity*]
+* xref:gossip-protocol.adoc[*Gossip protocol*]
+* xref:chaos-engineering.adoc[*Chaos engineering*]
+* xref:fault-tolerance.adoc[*Fault tolerance*]
+* xref:availability.adoc[*Availability*]
+* xref:distributed-databases.adoc[*Distributed databases*]
+* xref:distributed-system.adoc[*Distributed system*]
 
-////
-
-== Redundancy patterns
-
-Availability = failover + redundancy
-
-To keep your data available and consistent, you need replication, too.
-
-Failover helps you survive infrastructure failure. Replication helps you survive data loss and scale reads.
-
-Or:
-
-* Failover absorbs failure.
-* Replication protects data.
-
-Replication means keeping multiple copies of your data in sync across nodes. If one copy is lost, another can take over. If your read traffic spikes, replicas can help offload the pressure.
-
-There are two primary replication strategies:
-
-* Single-leader replication: one node handles all writes.
-* Multi-leader replication: multiple nodes accept writes.
-
-=== Single-leader replication
-
-In this pattern, only one node accepts writes (the leader). One or more read replicas sync from it asynchronously.
-
-Client can read from the leader or any replica, but all writes must go to the leader.
-
-Pros:
-
-* Simple to conceptualize.
-* Strong write consistency.
-* Works well with read-heavy workloads.
-
-Cons:
-
-* Single point of failure (without external failover logic).
-* Replication lag → stale reads.
-* Leader can become a write bottleneck under heavy load.
-* Failover requires promotion and reconfiguration.
-
-Use when you care about data consistency, simplicity, and read scalability. Common in OLTP systems, dashboards, and APIs where write throughput is moderate.
-
-=== Multi-leader replication
-
-In a multi-leader setup, multiple nodes can accept writes. Each node replicates its changes to the others.
-
-_Write locally, sync globally._
-
-Multi-leader setups are *eventually consistent* by default.
-
-You'll need logic to resolve conflicts, like "last write wins", version vectors, or CRTDs.
-
-Pros:
-
-* High availability across regions.
-* Local write performance (reduced latency for global users).
-* Avoids a single point of failure.
-
-Cons:
-
-* Complex conflict resolution.
-* Increased write latency due to cross-node sync.
-* Harder to figure out the data state.
-* Greater operational overhead.
-
-Use when you need multi-region write availability, or your system must remain writeable even during partial outages.
-
-Used in collaborative tools, messaging platforms, and edge-aware databases.
-
-=== Leaderless replication
-
-Some systems, eg. Cassandra and Dynamo, use leaderless replication. This is where clients write to multiple nodes directly, and consistency is managed via *quorum reads/writes*.
-
-Trade-offs vary, but typically:
-
-* Very high availability.
-* Eventual consistency unless tuned carefully.
-* Complex consistency guarantees.
-
-You'
-
+==== See also
 ////
