@@ -440,7 +440,7 @@ Do NOT push your changes.
 - [x] 🌱 Model-driven development — `model-driven-development.adoc` (fertilize)
 - [x] 🌱 Modeling — `modeling.adoc` (tend)
 - [x] 🌱 Modular design — `modular-design.adoc` (fertilize)
-- [ ] 🌱 Modular monolith — `modular-monolith.adoc` (tend)
+- [x] 🌱 Modular monolith — `modular-monolith.adoc` (tend)
 - [ ] 🌱 Monitoring — `monitoring.adoc` (none)
 - [ ] 🌱 Monolith — `monolith.adoc` (tend)
 - [ ] 🌱 Multimodal AI — `multimodal-ai.adoc` (none)

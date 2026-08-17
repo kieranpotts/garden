@@ -15,7 +15,7 @@ Although all the modules may run in the same process, they will typically
 communicate with each other more indirectly than in a traditional monolith, for
 example using *[events]*.
 
-When *[modeled]* at the *[conceptual]* and *[logical]* levels, the architectural
+When *xref:modeling.adoc[modeled]* at the *[conceptual]* and *[logical]* levels, the architectural
 blueprint of a modular monolith would look identical to the same solution
 designed as distributed software. Differences emerge only when you get down to
 level of the *[physical architecture]* and *[technical design]*; not until this
@@ -31,7 +31,7 @@ extracted into separate services.
 
 Achieving a high degree of xref:modular-design.adoc[*modularity*] in an otherwise
 monolithic system requires
-more emphasis on *[big up-front design]*, perhaps revolving around
+more emphasis on *xref:big-design-up-front.adoc[big up-front design]*, perhaps revolving around
 *[domain modeling]*. Modules within a modular monolith need to have
 clearly-defined public interfaces, and to hide their internal logic and data
 behind their interfaces. Taken to extremes, the modules of a modular monolith
@@ -43,14 +43,14 @@ optimal balance between the rapid development and deployment (time-to-market) of
 a monolith, and the scalability and maintainability of distributed software. In
 particular, a plan for scalability is baked into the design from the start, even
 if the system is not yet distributed. But there is a risk associated with
-*[prematurely optimizing]* for scalability problems that aren't yet known.
+*xref:premature-optimization.adoc[prematurely optimizing]* for scalability problems that aren't yet known.
 
 Modular monoliths capture some of the benefits of both single-node and
 distributed software, but also some of their downsides. Modular monoliths have
 the same low latency and high developer productivity as monoliths, but they also
 have some of the same scaling and fault tolerance issues. Modular monoliths
 inherit some of the added complexity of distributed software, but also similarly
-*[high cohesion]* in their design.
+*xref:cohesion.adoc[high cohesion]* in their design.
 
 Modular monoliths are a good starting point for many applications, especially
 when the system is small and the team is small. They can be a good way to
