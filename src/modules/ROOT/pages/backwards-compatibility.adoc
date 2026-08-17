@@ -28,7 +28,11 @@ consumers depend on. Common examples include removing a public operation,
 renaming a field, narrowing an accepted input range, or changing the type of a
 return value. Some changes are obviously breaking; others are subtle. Widening
 the range of accepted inputs is usually safe, but narrowing the set of outputs a
-caller might rely on is not.
+caller might rely on is not. By definition a breaking change astonishes the
+caller who wrote against the old contract, which is one reason the
+xref:principle-of-least-astonishment.adoc[*principle of least astonishment*]
+treats versioning and deprecation as the courtesy that lets the old and new
+contracts coexist.
 
 Breaking changes are sometimes unavoidable. The practical question is how to
 introduce them without abandoning the installed base. The usual tools are

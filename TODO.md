@@ -501,7 +501,7 @@ Do NOT push your changes.
 - [x] 🌱 Postel's law (aka. the Robustness Principle) — `postels-law.adoc` (uproot)
 - [x] 🌱 Premature optimization — `premature-optimization.adoc` (fertilize)
 - [x] 🌱 Preprocessing — `preprocessing.adoc` (fertilize)
-- [ ] 🌱 Principle of least astonishment — `principle-of-least-astonishment.adoc` (fertilize)
+- [x] 🌱 Principle of least astonishment — `principle-of-least-astonishment.adoc` (fertilize)
 - [ ] 🌱 Privacy — `privacy.adoc` (fertilize)
 - [ ] 🌿 Problem space — `problem-space.adoc` (tend)
 - [ ] 🌱 Processor architectures — `processor-architectures.adoc` (water)
