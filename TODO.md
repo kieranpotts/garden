@@ -422,7 +422,7 @@ Do NOT push your changes.
 - [x] 🌿 Mashup — `mashup.adoc` (entwine)
 - [x] 🌱 Materialized view — `materialized-view.adoc` (fertilize)
 - [x] 🌱 Mechanical sympathy — `mechanical-sympathy.adoc` (none)
-- [ ] 🌱 Memoization — `memoization.adoc` (fertilize)
+- [x] 🌱 Memoization — `memoization.adoc` (fertilize)
 - [ ] 🌱 Memory allocation — `memory-allocation.adoc` (tend)
 - [ ] 🌱 Message broker — `message-broker.adoc` (fertilize)
 - [ ] 🌱 Message-driven architecture — `message-driven-architecture.adoc` (none)

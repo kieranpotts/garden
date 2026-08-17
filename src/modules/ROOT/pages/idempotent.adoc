@@ -17,7 +17,9 @@ grows the log.
 In mathematics and pure functional programming, idempotence means `f(f(x)) =
 f(x)` for every input. A function such as `abs` is idempotent, because the
 absolute value of an absolute value is the same value. This form is exact and
-timeless, because pure functions have no side effects.
+timeless, because pure functions have no side effects. Their output is fixed
+by their inputs, which is also what makes them safe to memoize via
+xref:memoization.adoc[*memoization*].
 
 In distributed systems and API design the term is looser. It describes a
 side-effecting operation whose net effect on durable state is the same no
