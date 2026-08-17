@@ -99,7 +99,7 @@ to the header or payload will invalidate it.
   revoked before expiry. Common mitigations include using short-lived access
   tokens paired with longer-lived refresh tokens (which can be revoked
   server-side), or maintaining a token denylist keyed on the `jti` (JWT ID)
-  claim.
+  claim, which acts as a per-token *xref:nonce.adoc[nonce]*.
 * *Client storage*: `localStorage` and `sessionStorage` are vulnerable to
   cross-site scripting (XSS) attacks. HttpOnly cookies are safer from XSS but
   require CSRF protection. A common best practice is to keep access tokens in
@@ -109,3 +109,4 @@ to the header or payload will invalidate it.
 
 * *xref:authentication.adoc[Authentication]*
 * *xref:salt.adoc[Salt]*
+* *xref:nonce.adoc[Nonce]*

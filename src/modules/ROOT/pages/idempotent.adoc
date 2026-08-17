@@ -65,9 +65,10 @@ Many operations cannot be made naturally idempotent. Creating a payment,
 sending an email, or debiting an account has a different effect each time it
 runs. The workaround is the *idempotency key* pattern. The client attaches a
 unique key, typically a UUID, to each logical request, usually in an HTTP
-header. The server records the key alongside the result of the first request
-and, on receiving a repeat with the same key, returns the cached result
-instead of reprocessing.
+header. The key is effectively a *xref:nonce.adoc[nonce]* scoped to the
+request. The server records the key alongside the result of the first
+request and, on receiving a repeat with the same key, returns the cached
+result instead of reprocessing.
 
 This turns a non-idempotent operation into one that behaves idempotently for
 the duration the key is retained. The pattern is the basis of paid APIs such as
@@ -93,6 +94,7 @@ trace, and idempotent, so a retry after ambiguity is harmless.
 * xref:rest.adoc[*REST*]
 * xref:retry.adoc[*Retry*]
 * xref:atomic-operation.adoc[*Atomic operation*]
+* *xref:nonce.adoc[Nonce]*
 * xref:distributed-system.adoc[*Distributed system*]
 * xref:eventual-consistency.adoc[*Eventual consistency*]
 * xref:dead-letter-queue.adoc[*Dead letter queue*]

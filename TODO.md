@@ -455,7 +455,7 @@ Do NOT push your changes.
 - [x] 🌱 Network protocols — `network-protocols.adoc` (fertilize)
 - [x] 🌱 Ninety-ninety rule — `ninety-ninety-rule.adoc` (fertilize)
 - [x] 🌳 Non-functional requirements — `non-functional-requirements.adoc` (none)
-- [ ] 🌱 Nonce — `nonce.adoc` (water)
+- [x] 🌱 Nonce — `nonce.adoc` (water)
 - [ ] 🌱 Normalization — `normalization.adoc` (fertilize)
 - [ ] 🌱 NoSQL databases — `nosql-databases.adoc` (water)
 - [ ] 🌱 Not invented here! — `not-invented-here.adoc` (fertilize)
