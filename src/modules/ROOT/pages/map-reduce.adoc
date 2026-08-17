@@ -3,13 +3,15 @@
 // TODO: https://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html
 
 MapReduce is a model for processing and analyzing of large datasets across
-distributed software. It was introduced by Google in 2004 in a paper titled
+distributed software, and a foundational technique of
+xref:big-data.adoc[*big data*]. It was introduced by Google in 2004 in a paper titled
 "MapReduce: Simplified Data Processing on Large Clusters". The term "MapReduce"
 originally referred to Google's proprietary technology but it has since been
 generalized to refer to any technologies that implement the original model.
 
-MapReduce is a framework for parallel processing of large datasets across a
-large number of computers (nodes), collectively referred to as a cluster (if all
+MapReduce is a framework for xref:parallelism.adoc[*parallel*] processing of large
+datasets across a large number of computers (nodes), collectively referred to as
+a cluster (if all
 nodes are in the same local network) or a grid (if the nodes are shared across
 geographically- and administratively-distributed systems). Processing can be
 done on data stored in a filesystem or a database.
@@ -21,7 +23,10 @@ processes input data and writes the output to temporary storage, while the
 parallel. MapReduce adds another main function, `Shuffle`, which sees worker
 nodes redistribute data based on the output keys produced by the `Map` function,
 such that all data belonging to one key is located on the same worker node.
-There are other functions, too, but those are main three.
+There are other functions, too, but those are main three. This
+map-shuffle-reduce structure is a restricted form of the
+xref:bulk-synchronous-parallel.adoc[*bulk synchronous parallel*] model, with the
+shuffle acting as the synchronization barrier between the map and reduce phases.
 
 Besides the programming model, MapReduce also specifies an infrastructure system
 that handles the distribution of tasks, manages data transfers, and provides
@@ -30,8 +35,9 @@ redundancy and fault tolerance.
 Google had a proprietary implementation of MapReduce, which it used to rebuild
 its search index of the entire World Wide Web. As of 2014, Google is no longer
 using MapReduce as its primary big data processing model, having moved on to
-other technologies that offer streaming operations instead of
-*xref:batch-processing.adoc[batch processing]*, allowing integration of "live"
+other technologies that offer xref:stream-processing-systems.adoc[*streaming*]
+operations instead of *xref:batch-processing.adoc[batch processing]*, allowing
+integration of "live"
 search results without needing to rebuild the whole index.
 
 Open-source MapReduce implementations have been written in many programming

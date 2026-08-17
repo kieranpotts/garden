@@ -418,7 +418,7 @@ Do NOT push your changes.
 - [x] 🌱 Managed hosting — `managed-hosting.adoc` (fertilize)
 - [x] 🌱 Management information systems (MIS) — `management-information-systems.adoc` (fertilize)
 - [x] 🌱 Manual testing — `manual-testing.adoc` (fertilize)
-- [ ] 🌱 MapReduce — `map-reduce.adoc` (entwine)
+- [x] 🌱 MapReduce — `map-reduce.adoc` (entwine)
 - [ ] 🌿 Mashup — `mashup.adoc` (entwine)
 - [ ] 🌱 Materialized view — `materialized-view.adoc` (fertilize)
 - [ ] 🌱 Mechanical sympathy — `mechanical-sympathy.adoc` (none)
