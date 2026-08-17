@@ -509,7 +509,7 @@ Do NOT push your changes.
 - [x] 🌱 Profiling — `profiling.adoc` (fertilize)
 - [x] 🌱 Prompt engineering — `prompt-engineering.adoc` (none)
 - [x] 🌱 Programming paradigm — `programming-paradigm.adoc` (entwine)
-- [ ] 🌱 Project paradox — `project-paradox.adoc` (entwine)
+- [x] 🌱 Project paradox — `project-paradox.adoc` (entwine)
 - [ ] 🌱 Protocol Buffers — `protocol-buffers.adoc` (fertilize)
 - [ ] 🌱 Prototyping — `prototyping.adoc` (none)
 - [ ] 🌱 Proxy server — `proxy-server.adoc` (fertilize)
