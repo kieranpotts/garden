@@ -442,7 +442,7 @@ Do NOT push your changes.
 - [x] 🌱 Modular design — `modular-design.adoc` (fertilize)
 - [x] 🌱 Modular monolith — `modular-monolith.adoc` (tend)
 - [x] 🌱 Monitoring — `monitoring.adoc` (none)
-- [ ] 🌱 Monolith — `monolith.adoc` (tend)
+- [x] 🌱 Monolith — `monolith.adoc` (tend)
 - [ ] 🌱 Multimodal AI — `multimodal-ai.adoc` (none)
 - [ ] 🌱 Multi-tenant — `multi-tenant.adoc` (fertilize)
 - [ ] 🌿 Mutation testing — `mutation-testing.adoc` (tend)
