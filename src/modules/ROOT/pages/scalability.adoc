@@ -5,22 +5,41 @@
 // TODO: https://blog.alexpareto.com/p/scaling-100k
 // TODO: https://blog.algomaster.io/p/system-design-how-to-scale-a-database
 
-Scalability is a *xref:quality-attributes.adoc[quality attribute]* of an IT
+Scalability is a xref:quality-attributes.adoc[*quality attribute*] of an IT
 system. It refers to the property of a system to handle a growing amount of
-*xref:load.adoc[load]* – such as more data *xref:throughput.adoc[throughput]*, more
-concurrent users,
-or more operations and transactions – by adding resources to the system.
+xref:load.adoc[*load*] – such as more data xref:throughput.adoc[*throughput*],
+more concurrent users, or more operations and transactions – by adding resources
+to the system.
 
 A system that can continuously evolve, without major refactoring or
 re-architecting, to handle a growing workload, is said to be scalable.
 
-Scalability is required to maintain *xref:availability.adoc[availability]* and
-*xref:performance.adoc[performance]* as a system grows in its complexity, usage,
+Scalability is required to maintain xref:availability.adoc[*availability*] and
+xref:performance.adoc[*performance*] as a system grows in its complexity, usage,
 and data volume, and so on. Systems that do not have good scalability will tend
 to exhibit incrementally reduced performance (eg. increased
-*xref:latency.adoc[latency]*, poor availability, and a drastic increase in the
-number of incidents and outages) as
-the system grows.
+xref:latency.adoc[*latency*], poor availability, and a drastic increase in the
+number of incidents and outages) as the system grows.
+
+== Dimensions of growth
+
+A system can grow in several dimensions, and each stresses a different part of
+the architecture.
+
+* *Request volume.* More users, or more requests per user, pushes up the load on
+  front-end services and is usually the first pressure a growing product faces.
+* *Data volume.* More rows, documents, or events to store and query stresses
+  storage, indexing, and the data tier's ability to serve reads without
+  degrading.
+* *Feature and structural complexity.* New capabilities and integrations add
+  components and dependencies, and the architecture itself evolves, often toward
+  a xref:distributed-system.adoc[*distributed system*] broken into smaller parts.
+* *Geographic reach.* Serving users in new regions stresses latency and
+  regulatory placement, and calls for geo-distributed deployment.
+
+The four dimensions are independent. A system can have flat traffic but
+exploding data, or steady data but a global user base, and each combination
+points at different techniques.
 
 == Scalability techniques
 
@@ -30,34 +49,148 @@ you can add more instances of the same nodes, and spread the load between the
 redundant instances.
 
 These techniques are known as horizontal scaling and vertical scaling.
-*xref:vertical-scaling.adoc[Vertical scaling]* (aka. scaling up) means
-increasing the *xref:capacity.adoc[capacity]* of individual nodes, such as using a
-more powerful
-server. *xref:horizontal-scaling.adoc[Horizontal scaling]* (aka. scaling out)
-means adding more nodes to a system, such as adding more servers to a server
-farm.
+xref:vertical-scaling.adoc[*Vertical scaling*] (aka. scaling up) means
+increasing the xref:capacity.adoc[*capacity*] of individual nodes, such as using
+a more powerful server. xref:horizontal-scaling.adoc[*Horizontal scaling*] (aka.
+scaling out) means adding more nodes to a system, such as adding more servers to
+a server farm.
 
 // TODO: https://www.youtube.com/watch?v=xpDnVSmNFX0&list=PLMCXHnjXnTnvo6alSjVkgxV-VH6EPyvoX&index=7
 
 image::vertical-vs-horizontal-scaling.png[]
 
 Horizontal scaling has numerous benefits over vertical scaling. It is often more
-cost-effective and it also provides other qualities such as better
-*xref:fault-tolerance.adoc[fault tolerance]*. There is also a physical limit to
-how far you can scale vertically, whereas horizontal scalability has a lot more
-potential for growth – a quality that is known as *elasticity*. Elasticity is
-also one of the four defining traits of
-*xref:reactive-systems.adoc[reactive systems]*.
+cost-effective, and it also provides other qualities such as better
+xref:fault-tolerance.adoc[*fault tolerance*]. There is a physical limit to how
+far you can scale vertically, whereas horizontal scaling has far more headroom
+for growth. The related but distinct quality of *elasticity* is the ability to
+add and remove resources dynamically, often automatically in response to measured
+load, rather than merely having room to grow. Elasticity is one of the four
+defining traits of xref:reactive-systems.adoc[*reactive systems*], and in
+practice it is delivered through xref:auto-scaling.adoc[*auto-scaling*].
 
 However, it is not always possible to scale horizontally. This is especially
 difficult to achieve in legacy systems that were not designed to be distributed
 in the first place.
 
-The following strategies are also relevant:
+=== The scale cube
 
-* *xref:caching.adoc[Caching]*
-* *xref:failover.adoc[Failover]*
-* *xref:load-balancing.adoc[Load balancing]*
-* *xref:preprocessing.adoc[Preprocessing]*
-* *xref:replication.adoc[Replication]*
-* *xref:sharding.adoc[Sharding]*
+A useful framework, articulated by Martin Abbott and Michael Fisher in _The Art
+of Scalability_, separates scaling moves into three orthogonal axes.
+
+* *X-axis.* Run multiple identical instances of the service behind a
+  xref:load-balancing.adoc[*load balancer*], spreading requests across them. This
+  is plain horizontal scaling, and it demands that each instance be
+  xref:stateless.adoc[*stateless*] so that any instance can handle any request.
+* *Y-axis.* Split the application by capability into independently deployable
+  services, each scaled to its own load. This is the move toward
+  xref:microservices.adoc[*microservices*] and the
+  xref:service-oriented-architecture.adoc[*service-oriented architecture*]
+  family, and it depends on xref:decoupling.adoc[*decoupling*] between the
+  services.
+* *Z-axis.* Split the data, not the code, so that each node owns a slice of the
+  dataset. This is xref:sharding.adoc[*sharding*], with
+  xref:consistent-hashing.adoc[*consistent hashing*] as the usual mechanism for
+  assigning keys to slices and rebalancing when nodes are added or removed.
+
+The three axes compose. Most large systems combine X-axis cloning of stateless
+services, Y-axis decomposition by function, and Z-axis partitioning of the data
+tier.
+
+=== Other strategies
+
+Beyond the two fundamental directions and the scale cube, several other
+techniques extend a system's capacity. Each has its own entry and is linked here
+rather than re-explained.
+
+* xref:caching.adoc[*Caching*] and xref:distributed-caching.adoc[*distributed
+  caching*] absorb reads that would otherwise hit the origin.
+* xref:content-delivery-networks.adoc[*Content delivery networks (CDNs)*] scale
+  read serving geographically, moving static content close to users.
+* xref:replication.adoc[*Replication*] multiplies data so reads can be served
+  from any copy.
+* xref:preprocessing.adoc[*Preprocessing*] does work ahead of time so reads are
+  cheap when they arrive.
+* xref:failover.adoc[*Failover*] keeps capacity available when a node fails.
+
+== Scalability, performance, efficiency, and elasticity
+
+Scalability is often confused with neighboring qualities, but the distinctions
+matter.
+
+Scalability is about capacity under growth, how much more load the system can
+handle if you give it more resources. Performance is about what the system does
+right now, at its current size, its latency and throughput under a given load. A
+scalable system is not necessarily fast at small scale, and a fast system may not
+scale. The two are related but independent, and performance engineering and
+scalability engineering are different disciplines.
+
+xref:efficiency.adoc[*Efficiency*] is the ratio of useful work to resources
+consumed. Scaling a system by throwing ten times the hardware at it to get twice
+the throughput is scalable but not efficient. Efficiency can improve
+independently of scalability, and a system that scales poorly may still be
+efficient at its current size.
+
+Elasticity, as noted above, is the dynamic dimension, how readily the system adds
+and sheds resources in response to load. A system can be scalable in principle
+(there is room to grow) without being elastic (the growth is not automatic).
+Cloud platforms and auto-scaling are what make elasticity practical.
+
+== Trade-offs and limits
+
+Scaling a stateful system out turns it into a distributed system, and that
+brings the trade-offs of distribution. Coordinating replicas costs latency and
+introduces the consistency-versus-availability trade-off named by the
+xref:cap-theorem.adoc[*CAP theorem*]. The xref:pacelc-theorem.adoc[*PACELC
+theorem*] extends that trade-off to normal operation, not just partitions, so
+the latency-versus-consistency cost is paid every moment the system is running,
+not only when a network partition occurs. Scaling, therefore, is not free. Every
+added node is another point of coordination, and beyond a certain point the
+coordination cost eats into the capacity each new node was meant to add.
+
+This diminishing return has formal models. *Amdahl's law* bounds the speedup
+from parallelism by the fraction of work that must stay sequential. The
+*universal scalability law*, formulated by Neil Gunther, generalizes it by
+adding a contention term and a coherence term, and predicts that throughput can
+actually turn down as nodes are added, not merely plateau. Both are reminders
+that the bottleneck, not the average load, sets the ceiling. A single
+xref:single-point-of-failure.adoc[*single point of failure*] or an unsharded hot
+key will cap the whole system regardless of how many stateless front-ends sit in
+front of it.
+
+Scaling data stores is where these limits bite hardest, because data has state.
+A xref:databases.adoc[*database*] scales through the same techniques, sharding,
+replication, and caching of read models, plus
+xref:denormalization.adoc[*denormalization*] of schemas for read-heavy paths, and
+at sufficient scale becomes a xref:distributed-databases.adoc[*distributed
+database*] in its own right, inheriting the CAP and PACELC trade-offs above.
+
+== See also
+
+* xref:quality-attributes.adoc[*Quality attributes*]
+* xref:load.adoc[*Load*]
+* xref:capacity.adoc[*Capacity*]
+* xref:performance.adoc[*Performance*]
+* xref:efficiency.adoc[*Efficiency*]
+* xref:availability.adoc[*Availability*]
+* xref:horizontal-scaling.adoc[*Horizontal scaling*]
+* xref:vertical-scaling.adoc[*Vertical scaling*]
+* xref:auto-scaling.adoc[*Auto-scaling*]
+* xref:stateless.adoc[*Stateless design*]
+* xref:decoupling.adoc[*Decoupling*]
+* xref:cap-theorem.adoc[*CAP theorem*]
+* xref:pacelc-theorem.adoc[*PACELC theorem*]
+* xref:reactive-systems.adoc[*Reactive systems*]
+* xref:distributed-system.adoc[*Distributed system*]
+* xref:distributed-databases.adoc[*Distributed databases*]
+
+== References
+
+* Abbott, Martin and Fisher, Michael (2009).
+  _The Art of Scalability: Scalable Web Architecture, Processes, and Operations
+  for the Modern Enterprise_. Addison-Wesley.
+* Gunther, Neil (2007). _Guerrilla Capacity Planning: A Tactical Approach to
+  Planning for Highly Scalable Applications and Services_. Springer.
+* Singh, Ashish Pratap (2024).
+  https://blog.algomaster.io/p/scalability[_System design: what is scalability?_].
+  AlgoMaster.

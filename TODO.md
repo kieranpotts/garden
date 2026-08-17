@@ -572,7 +572,7 @@ Do NOT push your changes.
 - [x] 🌱 Saga — `saga.adoc` (none)
 - [x] 🌱 Salt — `salt.adoc` (fertilize)
 - [x] 🌱 Scaffolding — `scaffolding.adoc` (water)
-- [ ] 🌱 Scalability — `scalability.adoc` (water)
+- [x] 🌱 Scalability — `scalability.adoc` (water)
 - [ ] 🌱 Scatter-and-gather — `scatter-and-gather.adoc` (fertilize)
 - [ ] 🌱 Scope creep — `scope-creep.adoc` (none)
 - [ ] 🌱 Scrum — `scrum.adoc` (none)
