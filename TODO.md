@@ -503,7 +503,7 @@ Do NOT push your changes.
 - [x] 🌱 Preprocessing — `preprocessing.adoc` (fertilize)
 - [x] 🌱 Principle of least astonishment — `principle-of-least-astonishment.adoc` (fertilize)
 - [x] 🌱 Privacy — `privacy.adoc` (fertilize)
-- [ ] 🌿 Problem space — `problem-space.adoc` (tend)
+- [x] 🌿 Problem space — `problem-space.adoc` (tend)
 - [ ] 🌱 Processor architectures — `processor-architectures.adoc` (water)
 - [ ] 🌱 Product requirements document (PRD) — `product-requirements-document.adoc` (none)
 - [ ] 🌱 Profiling — `profiling.adoc` (fertilize)
