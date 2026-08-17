@@ -159,9 +159,11 @@ the API is public-facing and needs to be navigable by diverse, unknown clients.
 
 Because REST endpoints return fixed response shapes, clients often receive more
 data than they need (_over-fetching_) or must make multiple requests to assemble
-what they need (_under-fetching_). *xref:graphql.adoc[GraphQL]* was designed
-specifically to address these problems by letting clients declare exactly which
-fields they require.
+what they need (_under-fetching_). Collection endpoints are therefore almost
+always *xref:pagination.adoc[paginated]*, so a single `GET /books` returns one
+page of results rather than the whole catalog. *xref:graphql.adoc[GraphQL]* was
+designed specifically to address the over-fetching and under-fetching problems
+by letting clients declare exactly which fields they require.
 
 == Advantages
 

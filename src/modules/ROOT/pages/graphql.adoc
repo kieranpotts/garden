@@ -8,6 +8,12 @@ designed to address the over-fetching and under-fetching problems common in
 With GraphQL, clients declare exactly what data they need in each request. The
 server returns precisely that data – no more, no less – in a single response.
 
+Field selection addresses over-fetching of _shape_, but a list field could
+still return an unbounded number of items. GraphQL handles this with the
+_connections_ specification popularised by Relay, which standardises
+*xref:pagination.adoc[pagination]* of list fields through `edges`, `pageInfo`,
+and `first`/`after` arguments.
+
 == Schema and type system
 
 Every GraphQL API is defined by a _schema_ written in the Schema Definition
