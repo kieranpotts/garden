@@ -529,7 +529,7 @@ Do NOT push your changes.
 - [x] 🌱 RAD — `rad.adoc` (fertilize)
 - [x] 🌱 Rainbow table — `rainbow-table.adoc` (fertilize)
 - [x] 🌱 Rate limiting — `rate-limiting.adoc` (fertilize)
-- [ ] 🌱 Rational Unified Process — `rational-unified-process.adoc` (prune)
+- [x] 🌱 Rational Unified Process — `rational-unified-process.adoc` (prune)
 - [ ] 🌱 Reactive programming — `reactive-programming.adoc` (water)
 - [ ] 🌱 Reactive systems — `reactive-systems.adoc` (fertilize)
 - [ ] 🌿 Recovery testing — `recovery-testing.adoc` (none)
