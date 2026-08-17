@@ -466,7 +466,7 @@ Do NOT push your changes.
 - [x] 🌱 Object storage — `object-storage.adoc` (none)
 - [x] 🌱 On-call — `on-call.adoc` (none)
 - [x] 🌱 Observability — `observability.adoc` (prune)
-- [ ] 🌱 Observer pattern — `observer-pattern.adoc` (fertilize)
+- [x] 🌱 Observer pattern — `observer-pattern.adoc` (fertilize)
 - [ ] 🌱 Onion architecture — `onion-architecture.adoc` (fertilize)
 - [ ] 🌱 Ontology — `ontology.adoc` (tend)
 - [ ] 🌱 Open-closed principle — `open-closed-principle.adoc` (fertilize)
