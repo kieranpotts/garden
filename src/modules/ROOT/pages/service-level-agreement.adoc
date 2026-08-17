@@ -1,3 +1,79 @@
 = Service level agreement (SLA)
 
-// TODO
+A *service level agreement (SLA)* is a formal contract between a service
+provider and a customer that defines the level of service the provider commits
+to delivering. It sets measurable targets for qualities such as
+*xref:availability.adoc[availability]*, *xref:latency.adoc[latency]*, and
+*xref:throughput.adoc[throughput]*, the period over which they are measured,
+and the remedies – typically service credits or penalty payments – that apply
+when those targets are missed.
+
+An SLA is the externally visible, contractually binding form of a set of
+*xref:non-functional-requirements.adoc[non-functional requirements]*. Where an
+NFR is an internal engineering constraint, an SLA turns selected
+*xref:quality-attributes.adoc[quality attributes]* into commitments a customer
+can rely on and, where necessary, enforce.
+
+== Typical contents
+
+Most SLAs cover the following.
+
+* *Availability and uptime.* A target expressed as a percentage of
+  *xref:uptime.adoc[uptime]* over a billing period, eg. 99.9% ("three nines"),
+  with the corresponding allowable *xref:downtime.adoc[downtime]* budget. Each
+  additional nine shrinks the permissible downtime by roughly an order of
+  magnitude, and the cost of achieving it rises steeply.
+
+* *Performance.* Targets for response time or latency, usually stated as a
+  percentile, eg. "99% of requests complete in under 300 ms".
+
+* *Support responsiveness.* How quickly the provider acknowledges and resolves
+  support requests, often tiered by severity.
+
+* *Recovery objectives.* *xref:disaster-recovery.adoc[Recovery time and recovery
+  point objectives]* bounding how long an outage may last and how much recent
+  data may be lost.
+
+* *Exclusions.* Conditions under which the targets do not apply, such as
+  scheduled maintenance, force majeure, or customer-caused incidents.
+
+== SLIs, SLOs, and SLAs
+
+The *xref:site-reliability-engineering.adoc[site reliability engineering]*
+tradition distinguishes three related terms. A *service level indicator (SLI)*
+is a raw measurement of service behavior, such as the rate of successful
+requests or the p99 latency. A *service level objective (SLO)* is an internal
+target the team sets for one or more SLIs. An SLA is the external,
+contractual promise derived from (and looser than) the SLO, leaving the team a
+safety margin to absorb failures before the customer is affected. The gap
+between SLO and SLA is an *error budget* – a quantity of permitted unreliability
+the team can spend on risk-taking such as deployments.
+
+== Measuring compliance
+
+An SLA is only meaningful if compliance can be verified, which makes
+*xref:monitoring.adoc[monitoring]* and *xref:observability.adoc[observability]*
+prerequisites rather than optional extras. *xref:metrics.adoc[Metrics]* are
+collected continuously, compared against the agreed targets, and used to drive
+*xref:alerting.adoc[alerts]* that page the *xref:on-call.adoc[on-call]* engineer
+when a target is at risk of being breached.
+
+[IMPORTANT]
+====
+Promising 100% availability in an SLA is almost always a mistake. No
+*xref:distributed-system.adoc[distributed system]* can guarantee it, and the
+contract will be breached the first time a dependency fails. A target of 100%
+is a sign that the SLA was written for marketing rather than engineering.
+====
+
+== See also
+
+* *xref:availability.adoc[Availability]*
+* *xref:uptime.adoc[Uptime]*
+* *xref:downtime.adoc[Downtime]*
+* *xref:non-functional-requirements.adoc[Non-functional requirements]*
+* *xref:quality-attributes.adoc[Quality attributes]*
+* *xref:site-reliability-engineering.adoc[Site reliability engineering]*
+* *xref:disaster-recovery.adoc[Disaster recovery]*
+* *xref:monitoring.adoc[Monitoring]*
+* *xref:on-call.adoc[On-call]*
