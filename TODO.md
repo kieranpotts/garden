@@ -593,7 +593,7 @@ Do NOT push your changes.
 - [x] 🌱 Service-oriented architecture — `service-oriented-architecture.adoc` (none)
 - [x] 🌱 Sharding — `sharding.adoc` (water)
 - [x] 🌱 Shell — `shell.adoc` (prune)
-- [ ] 🌱 Shift left — `shift-left.adoc` (fertilize)
+- [x] 🌱 Shift left — `shift-left.adoc` (fertilize)
 - [ ] 🌱 Shrinkwrap software — `shrinkwrap-software.adoc` (fertilize)
 - [ ] 🌱 Structure and Interpretation of Computer Programs — `sicp.adoc` (entwine)
 - [ ] 🌱 Silver bullet — `silver-bullet.adoc` (fertilize)
