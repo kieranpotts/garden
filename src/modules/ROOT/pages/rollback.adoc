@@ -1,3 +1,82 @@
 = Rollback
 
-// TODO
+A rollback is the act of reverting a system to a previous, known-good state
+after a change has failed or produced an unwanted result. Rather than
+attempting to repair the faulty state in place, the system discards the
+effects of the change and resumes from the point it occupied before the
+change was applied. Rollback is therefore a
+xref:fault-tolerance.adoc[*fault tolerance*] mechanism. It restores service
+by retreating to a safe state rather than by diagnosing and fixing the fault
+forward.
+
+The concept appears in two main settings. In database management, rollback
+is one half of the xref:transaction.adoc[*transaction*] guarantee: if any
+operation in a transaction fails, the database undoes every change the
+transaction made so far, preserving the "all-or-nothing" property described
+by the xref:acid-principles.adoc[*ACID principles*]. In software deployment,
+rollback means restoring a previous release of a running service when a new
+release misbehaves, so that users are returned to a working version while
+the fault is investigated.
+
+== How rollback is achieved
+
+The mechanism depends on what kind of state is being reverted.
+
+In a database, rollback is driven by the transaction manager. As a
+transaction executes, the database records the before-image of every
+modified row in a write-ahead log. Aborting the transaction replays those
+records in reverse, restoring each row to its prior value. Because the log
+is durable, rollback can complete even if the failure was a crash that lost
+in-memory state.
+
+In deployment, rollback rests on keeping the previous release available to
+switch back to. A xref:blue-green-deployment.adoc[*blue-green deployment*]
+keeps the prior environment idle, so rollback is a traffic switch with no
+redeployment. A xref:canary-deployment.adoc[*canary deployment*] limits the
+exposure of a bad release from the outset, making rollback quick and narrow.
+xref:rolling-deployments.adoc[*Rolling deployments*] are slower to roll
+back, since the previous version is overwritten incrementally on each node.
+xref:feature-flags.adoc[*Feature flags*] offer a finer-grained form of
+rollback: a misbehaving feature can be disabled without redeploying at all.
+
+Stateless services are the simplest case. With no data to reconcile,
+rollback amounts to running the previous release again. Stateful systems
+are harder, because data written by the faulty release may have to be
+migrated backwards, and a backwards migration is rarely a clean inverse of
+the forward one. Where data changes are recorded as an append-only sequence,
+as in xref:event-sourcing.adoc[*event sourcing*], rollback can be performed
+by replaying events up to a chosen point rather than undoing individual
+writes.
+
+== Rollback as a last resort
+
+Rollback is a safety net, not a substitute for careful release. Frequent
+rollbacks erode confidence in the release process and can themselves
+introduce churn, especially when the rollback target is itself old relative
+to the failed release. xref:continuous-delivery.adoc[*Continuous delivery*]
+practice treats a fast, reliable rollback path as a precondition for
+frequent deployment: the safer it is to retreat, the cheaper it is to
+advance.
+
+Where backward-incompatible changes are involved, rollback may not be
+available at all. A release that migrates data to a new schema cannot always
+be reversed, so xref:backwards-compatibility.adoc[*backwards compatibility*]
+and forward-only migration paths reduce the dependence on rollback as a
+recovery strategy. For long-running, multi-service transactions that cannot
+rely on database rollback, the xref:saga.adoc[*saga*] pattern substitutes
+compensating actions for each step instead of a single atomic rollback.
+
+== See also
+
+* xref:fault-tolerance.adoc[*Fault tolerance*]
+* xref:transaction.adoc[*Transactions*]
+* xref:acid-principles.adoc[*ACID principles*]
+* xref:deployment-strategies.adoc[*Deployment strategies*]
+* xref:blue-green-deployment.adoc[*Blue-green deployment*]
+* xref:canary-deployment.adoc[*Canary deployment*]
+* xref:rolling-deployments.adoc[*Rolling deployments*]
+* xref:feature-flags.adoc[*Feature flags*]
+* xref:continuous-delivery.adoc[*Continuous delivery*]
+* xref:backwards-compatibility.adoc[*Backwards compatibility*]
+* xref:event-sourcing.adoc[*Event sourcing*]
+* xref:saga.adoc[*Sagas*]
