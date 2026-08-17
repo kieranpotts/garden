@@ -507,7 +507,7 @@ Do NOT push your changes.
 - [x] 🌱 Processor architectures — `processor-architectures.adoc` (water)
 - [x] 🌱 Product requirements document (PRD) — `product-requirements-document.adoc` (none)
 - [x] 🌱 Profiling — `profiling.adoc` (fertilize)
-- [ ] 🌱 Prompt engineering — `prompt-engineering.adoc` (none)
+- [x] 🌱 Prompt engineering — `prompt-engineering.adoc` (none)
 - [ ] 🌱 Programming paradigm — `programming-paradigm.adoc` (entwine)
 - [ ] 🌱 Project paradox — `project-paradox.adoc` (entwine)
 - [ ] 🌱 Protocol Buffers — `protocol-buffers.adoc` (fertilize)
