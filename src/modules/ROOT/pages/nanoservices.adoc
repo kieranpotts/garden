@@ -1,3 +1,79 @@
 = Nanoservices
 
-// TODO
+Nanoservices are an architectural pattern in which a system is decomposed into
+services finer-grained than xref:microservices.adoc[*microservices*], each
+scoped to a single operation or function. The term is used descriptively for the
+extreme end of the service-granularity spectrum, and pejoratively for the
+xref:anti-pattern.adoc[*anti-pattern*] that emerges when decomposition is pushed
+past the point of diminishing returns.
+
+A nanoservice typically wraps one operation behind its own network endpoint,
+deployment, and runtime. Where a microservice owns a business capability, a
+nanoservice owns a single callable behavior within that capability. The
+distinction is one of degree rather than kind, and there is no formal boundary
+between the two.
+
+The appeal is maximum independence. A single-operation service can be changed,
+tested, deployed, and scaled in isolation, with no coordination against any
+other service. Taken to its limit, this reasoning treats every function as a
+candidate for its own service.
+
+== The cost of fine grain
+
+Each service, however small, carries the full operational overhead of a deployed
+unit: a build pipeline, a deployment, network wiring, configuration, security,
+and xref:observability.adoc[*observability*]. In a nanoservice this overhead
+dwarfs the logic it surrounds. The ratio of incidental machinery to useful
+behavior is the core criticism of the pattern.
+
+The overhead also compounds across the system. A single user request that would
+be one in-process call in a xref:monolith.adoc[*monolith*] becomes a fan-out
+across many nanoservices, each adding a network hop. Latency rises, the
+xref:fault-tolerance.adoc[*failure*] surface widens, and the
+xref:distributed-system.adoc[*distributed*] interactions become harder to reason
+about than the code they replaced. The same xref:coupling.adoc[*coupling*] that
+lived inside one process has not disappeared. It has moved to the network, where
+it is more expensive to traverse and to change.
+
+xref:conways-law.adoc[*Conway's law*] makes the pattern hard to sustain
+organizationally. Microservices map services to teams. Nanoservices would map
+sub-team units of work to sub-team ownership, which real organizations do not
+form. A team that owns dozens of single-operation services gains little of the
+autonomy that motivates decomposition, and pays the coordination cost of all of
+them.
+
+== Where the pattern fits
+
+Nanoservices become practical when a platform absorbs the per-service
+operational overhead.
+xref:function-as-a-service.adoc[*Function-as-a-Service (FaaS)*] does exactly
+this. The platform supplies the deployment, scaling, lifecycle, and wiring,
+leaving each function as a single-operation unit invoked on demand. A FaaS
+function is, in effect, a nanoservice hosted by the platform. Outside such a
+platform, the pattern is rarely worth the cost.
+
+== Relation to over-decomposition
+
+Nanoservices are the service-granular form of
+xref:decomposition.adoc[*over-decomposition*]. They arise when the
+xref:single-responsibility-principle.adoc[*single responsibility principle*] is
+misread as "one operation per service" rather than "one reason to change".
+Responsibility tracks the actor served by a module, not the granularity of its
+methods, and the same correction applies at service boundaries.
+
+== See also
+
+* xref:microservices.adoc[*Microservices*]
+* xref:function-as-a-service.adoc[*Function-as-a-Service (FaaS)*]
+* xref:decomposition.adoc[*Decomposition*]
+* xref:single-responsibility-principle.adoc[*Single responsibility principle*]
+* xref:coupling.adoc[*Coupling*]
+* xref:distributed-system.adoc[*Distributed system*]
+* xref:conways-law.adoc[*Conway's law*]
+* xref:monolith.adoc[*Monolith*]
+
+== References
+
+* Fowler, Martin and Lewis, James (2014). _Microservices_.
+  https://martinfowler.com/articles/microservices.html.
+* Newman, Sam (2021). _Building Microservices_, 2nd ed. O'Reilly.
