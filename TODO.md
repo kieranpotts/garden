@@ -531,7 +531,7 @@ Do NOT push your changes.
 - [x] 🌱 Rate limiting — `rate-limiting.adoc` (fertilize)
 - [x] 🌱 Rational Unified Process — `rational-unified-process.adoc` (prune)
 - [x] 🌱 Reactive programming — `reactive-programming.adoc` (water)
-- [ ] 🌱 Reactive systems — `reactive-systems.adoc` (fertilize)
+- [x] 🌱 Reactive systems — `reactive-systems.adoc` (fertilize)
 - [ ] 🌿 Recovery testing — `recovery-testing.adoc` (none)
 - [ ] 🌱 Recursive self-improvement (RSI) — `recursive-self-improvement.adoc` (none)
 - [ ] 🌱 Redis — `redis.adoc` (entwine)
