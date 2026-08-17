@@ -413,7 +413,7 @@ Do NOT push your changes.
 
 ## M
 
-- [ ] 🌱 Machine learning — `machine-learning.adoc` (none)
+- [x] 🌱 Machine learning — `machine-learning.adoc` (none)
 - [ ] 🌱 Maker's schedule — `makers-schedule.adoc` (tend)
 - [ ] 🌱 Managed hosting — `managed-hosting.adoc` (fertilize)
 - [ ] 🌱 Management information systems (MIS) — `management-information-systems.adoc` (fertilize)
