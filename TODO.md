@@ -417,7 +417,7 @@ Do NOT push your changes.
 - [x] 🌱 Maker's schedule — `makers-schedule.adoc` (tend)
 - [x] 🌱 Managed hosting — `managed-hosting.adoc` (fertilize)
 - [x] 🌱 Management information systems (MIS) — `management-information-systems.adoc` (fertilize)
-- [ ] 🌱 Manual testing — `manual-testing.adoc` (fertilize)
+- [x] 🌱 Manual testing — `manual-testing.adoc` (fertilize)
 - [ ] 🌱 MapReduce — `map-reduce.adoc` (entwine)
 - [ ] 🌿 Mashup — `mashup.adoc` (entwine)
 - [ ] 🌱 Materialized view — `materialized-view.adoc` (fertilize)
