@@ -425,7 +425,7 @@ Do NOT push your changes.
 - [x] 🌱 Memoization — `memoization.adoc` (fertilize)
 - [x] 🌱 Memory allocation — `memory-allocation.adoc` (tend)
 - [x] 🌱 Message broker — `message-broker.adoc` (fertilize)
-- [ ] 🌱 Message-driven architecture — `message-driven-architecture.adoc` (none)
+- [x] 🌱 Message-driven architecture — `message-driven-architecture.adoc` (none)
 - [ ] 🌱 Message queues — `message-queues.adoc` (prune)
 - [ ] 🌱 Messaging protocols — `messaging-protocols.adoc` (water)
 - [ ] 🌱 Metcalfe's Law — `metcalfes-law.adoc` (entwine)
