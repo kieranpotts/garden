@@ -581,7 +581,7 @@ Do NOT push your changes.
 - [x] 🌿 Security testing — `security-testing.adoc` (entwine)
 - [x] 🌱 Secure by design — `secure-by-design.adoc` (none)
 - [x] 🌱 Self-contained system — `self-contained-system.adoc` (fertilize)
-- [ ] 🌱 Semantic diffusion — `semantic-diffusion.adoc` (entwine)
+- [x] 🌱 Semantic diffusion — `semantic-diffusion.adoc` (entwine)
 - [ ] 🌱 SEMAT — `semat.adoc` (fertilize)
 - [ ] 🌱 Separation of concerns — `separation-of-concerns.adoc` (fertilize)
 - [ ] 🌳 Serverless architecture — `serverless-architecture.adoc` (none)
