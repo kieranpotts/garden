@@ -487,7 +487,7 @@ Do NOT push your changes.
 - [x] 🌱 Partition tolerance — `partition-tolerance.adoc` (none)
 - [x] 🌱 Peer-to-peer (P2P) architecture — `peer-to-peer-architecture.adoc` (fertilize)
 - [x] 🌱 Penetration testing — `penetration-testing.adoc` (fertilize)
-- [ ] 🌱 Performance — `performance.adoc` (tend)
+- [x] 🌱 Performance — `performance.adoc` (tend)
 - [ ] 🌿 Performance testing — `performance-testing.adoc` (entwine)
 - [ ] 🌱 Persona — `persona.adoc` (fertilize)
 - [ ] 🌱 PERT chart — `pert-chart.adoc` (tend)
