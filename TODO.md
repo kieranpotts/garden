@@ -570,7 +570,7 @@ Do NOT push your changes.
 
 - [x] 🌱 Safety-critical system — `safety-critical-system.adoc` (water)
 - [x] 🌱 Saga — `saga.adoc` (none)
-- [ ] 🌱 Salt — `salt.adoc` (fertilize)
+- [x] 🌱 Salt — `salt.adoc` (fertilize)
 - [ ] 🌱 Scaffolding — `scaffolding.adoc` (water)
 - [ ] 🌱 Scalability — `scalability.adoc` (water)
 - [ ] 🌱 Scatter-and-gather — `scatter-and-gather.adoc` (fertilize)
