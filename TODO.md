@@ -546,7 +546,7 @@ Do NOT push your changes.
 - [x] 🌱 Replay attack — `replay-attack.adoc` (none)
 - [x] 🌱 Replication — `replication.adoc` (water)
 - [x] 🌱 Request-response communication — `request-response.adoc` (fertilize)
-- [ ] 🌱 Requirements — `requirements.adoc` (water)
+- [x] 🌱 Requirements — `requirements.adoc` (water)
 - [ ] 🌱 Requirements engineering — `requirements-engineering.adoc` (none)
 - [ ] 🌱 Resilience — `resilience.adoc` (none)
 - [ ] 🌱 Resource-oriented architecture — `resource-oriented-architecture.adoc` (water)
