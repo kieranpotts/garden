@@ -542,7 +542,7 @@ Do NOT push your changes.
 - [x] 🌱 Relational database management systems (RDBMS) — `relational-databases.adoc` (water)
 - [x] 🌱 Release early, release often — `release-early-release-often.adoc` (fertilize)
 - [x] 🌱 Release model — `release-model.adoc` (fertilize)
-- [ ] 🌱 Remote procedure call (RPC) — `remote-procedure-call.adoc` (water)
+- [x] 🌱 Remote procedure call (RPC) — `remote-procedure-call.adoc` (water)
 - [ ] 🌱 Replay attack — `replay-attack.adoc` (none)
 - [ ] 🌱 Replication — `replication.adoc` (water)
 - [ ] 🌱 Request-response communication — `request-response.adoc` (fertilize)
