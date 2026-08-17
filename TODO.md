@@ -497,7 +497,7 @@ Do NOT push your changes.
 - [x] 🌱 Platform engineering — `platform-engineering.adoc` (fertilize)
 - [x] 🌱 Polymorphism — `polymorphism.adoc` (fertilize)
 - [x] 🌱 Ports and adapters — `ports-and-adapters.adoc` (tend)
-- [ ] 🌱 POSIX — `posix.adoc` (entwine)
+- [x] 🌱 POSIX — `posix.adoc` (entwine)
 - [ ] 🌱 Postel's law (aka. the Robustness Principle) — `postels-law.adoc` (uproot)
 - [ ] 🌱 Premature optimization — `premature-optimization.adoc` (fertilize)
 - [ ] 🌱 Preprocessing — `preprocessing.adoc` (fertilize)
