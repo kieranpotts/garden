@@ -488,7 +488,7 @@ Do NOT push your changes.
 - [x] 🌱 Peer-to-peer (P2P) architecture — `peer-to-peer-architecture.adoc` (fertilize)
 - [x] 🌱 Penetration testing — `penetration-testing.adoc` (fertilize)
 - [x] 🌱 Performance — `performance.adoc` (tend)
-- [ ] 🌿 Performance testing — `performance-testing.adoc` (entwine)
+- [x] 🌿 Performance testing — `performance-testing.adoc` (entwine)
 - [ ] 🌱 Persona — `persona.adoc` (fertilize)
 - [ ] 🌱 PERT chart — `pert-chart.adoc` (tend)
 - [ ] 🌱 Phased commit (2PC, 3PC) — `phased-commit.adoc` (none)
