@@ -443,7 +443,7 @@ Do NOT push your changes.
 - [x] 🌱 Modular monolith — `modular-monolith.adoc` (tend)
 - [x] 🌱 Monitoring — `monitoring.adoc` (none)
 - [x] 🌱 Monolith — `monolith.adoc` (tend)
-- [ ] 🌱 Multimodal AI — `multimodal-ai.adoc` (none)
+- [x] 🌱 Multimodal AI — `multimodal-ai.adoc` (none)
 - [ ] 🌱 Multi-tenant — `multi-tenant.adoc` (fertilize)
 - [ ] 🌿 Mutation testing — `mutation-testing.adoc` (tend)
 - [ ] 🌱 The Mythical Man-Month — `mythical-man-month.adoc` (tidy)
