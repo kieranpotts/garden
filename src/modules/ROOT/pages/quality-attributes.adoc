@@ -1,39 +1,113 @@
 = Quality attributes
 
-Quality attributes are the
-*xref:cross-cutting-concern.adoc[cross-cutting concerns]* that affect the
-overall operation of a software system. They are the primary forces that drive
-the *xref:architecture-and-design.adoc[architecture and design]* of a system.
+Quality attributes are the measurable properties of a software system that
+describe _how well_ it behaves, as distinct from what it does. They manifest
+as the xref:cross-cutting-concern.adoc[*cross-cutting concerns*] that affect
+the overall operation of a system, and they are the primary forces that drive
+its xref:architecture-and-design.adoc[*architecture and design*]. Two systems
+with identical features can have very different architectures because one must
+return a result in 50ms and the other can take 50s. That difference is a
+quality attribute, and it changes the design.
 
 Quality attributes are specified as
-*xref:non-functional-requirements.adoc[non-functional requirements]* and
-include:
+xref:non-functional-requirements.adoc[*non-functional requirements*]. They
+include the following.
 
-* *xref:availability.adoc[Availability]*
-* *xref:capacity.adoc[Capacity]*
-* *xref:complexity.adoc[Complexity]*
-* *xref:compliance.adoc[Compliance]*
-* *xref:conceptual-integrity.adoc[Conceptual integrity]*
-* *xref:consistency.adoc[Consistency]*
-* *xref:data-integrity.adoc[Data integrity]*
-* *xref:data-retention.adoc[Data retention]*
-* *xref:disaster-recovery.adoc[Disaster recovery]*
-* *xref:durability.adoc[Durability]*
-* *xref:efficiency.adoc[Efficiency]*
-* *xref:evolvability.adoc[Evolvability]*
-* *xref:fault-tolerance.adoc[Fault tolerance]*
-* *xref:latency.adoc[Latency]*
-* *xref:observability.adoc[Observability]*
-* *xref:partition-tolerance.adoc[Partition tolerance]*
-* *xref:performance.adoc[Performance]*
-* *xref:privacy.adoc[Privacy]*
-* *xref:redundancy.adoc[Redundancy]*
-* *xref:scalability.adoc[Scalability]*
-* *xref:security.adoc[Security]*
-* *xref:visibility.adoc[Visibility]*
+* xref:availability.adoc[*Availability*]
+* xref:capacity.adoc[*Capacity*]
+* xref:complexity.adoc[*Complexity*]
+* xref:compliance.adoc[*Compliance*]
+* xref:conceptual-integrity.adoc[*Conceptual integrity*]
+* xref:consistency.adoc[*Consistency*]
+* xref:data-integrity.adoc[*Data integrity*]
+* xref:data-retention.adoc[*Data retention*]
+* xref:disaster-recovery.adoc[*Disaster recovery*]
+* xref:durability.adoc[*Durability*]
+* xref:efficiency.adoc[*Efficiency*]
+* xref:evolvability.adoc[*Evolvability*]
+* xref:fault-tolerance.adoc[*Fault tolerance*]
+* xref:latency.adoc[*Latency*]
+* xref:observability.adoc[*Observability*]
+* xref:partition-tolerance.adoc[*Partition tolerance*]
+* xref:performance.adoc[*Performance*]
+* xref:privacy.adoc[*Privacy*]
+* xref:redundancy.adoc[*Redundancy*]
+* xref:scalability.adoc[*Scalability*]
+* xref:security.adoc[*Security*]
+* xref:visibility.adoc[*Visibility*]
+
+Many of the most influential carry names ending in _-ility_ (availability,
+reliability, scalability, modifiability, portability, testability), which is
+why the collection is sometimes loosely called the *ilities*. A useful
+grouping, due to Bass, Clements, and Kazman, separates attributes observable
+while the system is running (performance, availability, security, usability)
+from those observable only as the system changes over time (modifiability,
+testability, portability, evolvability). The first set is judged against the
+running system. The second is judged against every release that follows.
+
+== Specifying quality attributes
+
+A quality attribute named only as a word ("scalable", "secure", "fast") is too
+vague to design for or to test. The established way to make one precise is the
+*quality attribute scenario*, a small specification with a *stimulus* (a
+request, a failure, a change request), an *environment* (peak load, normal
+operation, a degraded network), a *response* (latency, throughput, recovery
+time), and a *response measure* that judges it (eg. 99th-percentile latency
+under 500ms, recovery within 30s). Scenarios turn adjectives into questions
+the architecture can be evaluated against, and they are the raw material for
+xref:acceptance-criteria.adoc[*acceptance criteria*] and the automated checks
+that guard each attribute.
+
+These scenarios are elicited, written down, and reconciled as part of
+xref:requirements-engineering.adoc[*requirements engineering*]. The
+non-functional requirements entry covers the metric-and-target form they take
+in a specification.
+
+== Trade-offs between attributes
+
+Quality attributes rarely improve in isolation. Most are in tension with at
+least one other, and the work of architecture is largely the work of resolving
+those tensions. Hardening security usually costs performance. Maximizing
+availability adds redundancy that hurts conceptual integrity and
+maintainability. Strong consistency across a
+xref:distributed-system.adoc[*distributed system*] works against latency and
+availability.
+
+The xref:cap-theorem.adoc[*CAP theorem*] and its generalization the
+xref:pacelc-theorem.adoc[*PACELC theorem*] make one such trade-off precise: in
+replicated data stores, consistency, availability, and latency cannot all be
+maximized at once, and a system must declare which it sacrifices.
+
+Designers resolve these tensions with *architectural tactics*. These are
+catalogued design decisions known to move a particular attribute in a
+particular direction, such as caching for latency, replication for
+availability, or xref:rate-limiting.adoc[*rate limiting*] for stability under
+load. Each tactic trades one attribute for another, so choosing among them is
+the trade-off. Standards such as the ISO/IEC 25010 SQuaRE family name the
+attributes a tactic might target, giving the conversation a shared vocabulary.
+
+== Guarding attributes
 
 Once specified, quality attributes can be guarded by
 xref:fitness-function.adoc[*fitness functions*] – automated checks that fail
 when the system drifts away from the attribute's target value. The broader
-discipline of *xref:quality-assurance.adoc[quality assurance]* provides the
+discipline of xref:quality-assurance.adoc[*quality assurance*] provides the
 processes and evidence that a system in fact meets its specified attributes.
+
+== See also
+
+* xref:architecture-and-design.adoc[*Architecture and design*]
+* xref:non-functional-requirements.adoc[*Non-functional requirements*]
+* xref:cross-cutting-concern.adoc[*Cross-cutting concern*]
+* xref:requirements-engineering.adoc[*Requirements engineering*]
+* xref:cap-theorem.adoc[*CAP theorem*]
+* xref:pacelc-theorem.adoc[*PACELC theorem*]
+* xref:quality-assurance.adoc[*Quality assurance*]
+* xref:fitness-function.adoc[*Fitness function*]
+
+== References
+
+* Bass, L., Clements, P., and Kazman, R. (2021). _Software Architecture in
+  Practice_ (4th ed.). Addison-Wesley.
+* ISO/IEC (2023). _ISO/IEC 25010:2023 — Systems and software Quality
+  Requirements and Evaluation (SQuaRE) — Quality model_.
