@@ -574,7 +574,7 @@ Do NOT push your changes.
 - [x] 🌱 Scaffolding — `scaffolding.adoc` (water)
 - [x] 🌱 Scalability — `scalability.adoc` (water)
 - [x] 🌱 Scatter-and-gather — `scatter-and-gather.adoc` (fertilize)
-- [ ] 🌱 Scope creep — `scope-creep.adoc` (none)
+- [x] 🌱 Scope creep — `scope-creep.adoc` (none)
 - [ ] 🌱 Scrum — `scrum.adoc` (none)
 - [ ] 🌱 Security — `security.adoc` (fertilize)
 - [ ] 🌱 Security headers — `security-headers.adoc` (fertilize)
