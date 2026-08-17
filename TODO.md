@@ -530,7 +530,7 @@ Do NOT push your changes.
 - [x] 🌱 Rainbow table — `rainbow-table.adoc` (fertilize)
 - [x] 🌱 Rate limiting — `rate-limiting.adoc` (fertilize)
 - [x] 🌱 Rational Unified Process — `rational-unified-process.adoc` (prune)
-- [ ] 🌱 Reactive programming — `reactive-programming.adoc` (water)
+- [x] 🌱 Reactive programming — `reactive-programming.adoc` (water)
 - [ ] 🌱 Reactive systems — `reactive-systems.adoc` (fertilize)
 - [ ] 🌿 Recovery testing — `recovery-testing.adoc` (none)
 - [ ] 🌱 Recursive self-improvement (RSI) — `recursive-self-improvement.adoc` (none)
