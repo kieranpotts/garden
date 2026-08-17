@@ -478,7 +478,7 @@ Do NOT push your changes.
 
 ## P
 
-- [ ] 🌱 PACELC theorem — `pacelc-theorem.adoc` (fertilize)
+- [x] 🌱 PACELC theorem — `pacelc-theorem.adoc` (fertilize)
 - [ ] 🌱 Pagination — `pagination.adoc` (fertilize)
 - [ ] 🌱 Pair programming — `pair-programming.adoc` (fertilize)
 - [ ] 🌿 Parallelism — `parallelism.adoc` (tend)

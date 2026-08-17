@@ -96,7 +96,10 @@ characteristics, notably *xref:latency.adoc[latency]*, to consider, too. For
 example, you may able to achieve a high level of both consistency _and_
 availability, but at the cost of high latency (you would allow for some read
 operations to be slow while corresponding write operations are being
-replicated).
+replicated). The xref:pacelc-theorem.adoc[*PACELC theorem*] extends CAP to
+cover exactly this case, naming the latency-versus-consistency trade-off a
+replicated system makes while it is running normally, not only during
+partitions.
 
 The trade-off is most visible in practice in xref:nosql-databases.adoc[*NoSQL
 databases*], the distributed non-relational stores that emerged from the

@@ -1,3 +1,67 @@
 = PACELC theorem
 
-// TODO: https://en.wikipedia.org/wiki/PACELC_theorem
+The PACELC theorem extends the *xref:cap-theorem.adoc[CAP theorem]* to describe
+the trade-offs faced by *xref:distributed-system.adoc[distributed software]*
+that replicates data. It was formulated by Daniel Abadi in 2010, in response to
+a weakness in the CAP model.
+
+The CAP theorem only addresses what happens when a network
+xref:partition-tolerance.adoc[*partition*] occurs: the system must then choose
+between xref:consistency.adoc[*consistency*] and
+xref:availability.adoc[*availability*]. But partitions are comparatively rare.
+For the rest of the time, while the system runs normally, CAP has nothing to
+say. Yet a replicated store still has to make a trade-off — between the
+xref:latency.adoc[*latency*] of its requests and the consistency of its
+replicas — because keeping replicas in lockstep requires coordination that
+adds latency to every write and often to every read.
+
+PACELC names both cases. If a partition occurs (P), the system chooses
+availability (A) or consistency (C). Else, when there is no partition (E), it
+chooses latency (L) or consistency (C). The two choices are independent, so a
+system is described by a pair, eg. PA/EL or PC/EC.
+
+* *PA/EL.* Under a partition the system favors availability, and in normal
+  operation it favors low latency. This is the most common choice among
+  xref:nosql-databases.adoc[*NoSQL databases*] descended from Amazon Dynamo,
+  such as Cassandra and Voldemort. They serve requests from any replica
+  without coordination and accept
+  xref:eventual-consistency.adoc[*eventual consistency*].
+
+* *PC/EC.* Under a partition the system favors consistency, and in normal
+  operation it also favors consistency over latency. Stores built on
+  xref:consensus-algorithms.adoc[*consensus algorithms*], such as Bigtable,
+  HBase, and Spanner, sit here. They block or fail requests rather than serve
+  stale data, and they pay higher latency even when the network is healthy.
+
+* *PA/EC and PC/EL.* The crossed combinations are possible but uncommon. PNUTS,
+  a Yahoo research store, chose availability under partitions but consistency
+  in normal operation (PA/EC). PC/EL — consistent under partitions, latency
+  first otherwise — is rarer still, since the same coordination machinery that
+  preserves consistency during a partition usually governs normal operation
+  too.
+
+PACELC's value is descriptive rather than prescriptive. It does not say which
+choice is correct, and it does not address other qualities such as
+xref:throughput.adoc[*throughput*] or cost. Its point is that the consistency
+trade-off is not an emergency measure reserved for partitions. It is a standing
+decision a replicated system makes every moment it is running, and CAP hides
+that behind the partition case.
+
+== See also
+
+* xref:cap-theorem.adoc[*CAP theorem*]
+* xref:consistency.adoc[*Consistency*]
+* xref:availability.adoc[*Availability*]
+* xref:latency.adoc[*Latency*]
+* xref:partition-tolerance.adoc[*Partition tolerance*]
+* xref:eventual-consistency.adoc[*Eventual consistency*]
+* xref:consensus-algorithms.adoc[*Consensus algorithms*]
+* xref:nosql-databases.adoc[*NoSQL databases*]
+* xref:distributed-databases.adoc[*Distributed databases*]
+* xref:throughput.adoc[*Throughput*]
+
+== References
+
+* Abadi, Daniel (2012).
+  https://www.cs.umd.edu/~abadi/papers/abadi-pacelc.pdf[_Consistency tradeoffs
+  in modern distributed database system design_]. IEEE Computer.

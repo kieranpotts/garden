@@ -30,10 +30,11 @@ choose between availability and consistency. Eventual consistency is the
 consistency guarantee you accept when you choose availability: replicas are
 allowed to diverge temporarily, and reconciliation happens later.
 
-This trade-off is often expressed through the PACELC extension of CAP, which
-adds that even in the absence of partitions (E) the system chooses between
-*xref:latency.adoc[latency]* and consistency. Eventual consistency is the
-low-latency, high-availability end of that spectrum.
+This trade-off is captured by the xref:pacelc-theorem.adoc[*PACELC theorem*],
+which extends CAP to name the choice a replicated system makes even in the
+absence of partitions (E) between *xref:latency.adoc[latency]* and
+consistency. Eventual consistency is the low-latency, high-availability end
+of that spectrum.
 
 Application-level designs such as
 *xref:local-first-software.adoc[local-first software]* build on this guarantee,
