@@ -550,7 +550,7 @@ Do NOT push your changes.
 - [x] 🌱 Requirements engineering — `requirements-engineering.adoc` (none)
 - [x] 🌱 Resilience — `resilience.adoc` (none)
 - [x] 🌱 Resource-oriented architecture — `resource-oriented-architecture.adoc` (water)
-- [ ] 🌱 REpresentational state transfer (REST) — `rest.adoc` (none)
+- [x] 🌱 REpresentational state transfer (REST) — `rest.adoc` (none)
 - [ ] 🌱 Result cache — `result-cache.adoc` (fertilize)
 - [ ] 🌱 Retry — `retry.adoc` (none)
 - [ ] 🌱 Reverse engineering — `reverse-engineering.adoc` (fertilize)
