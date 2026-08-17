@@ -1,3 +1,83 @@
 = Model-driven architecture (MDA)
 
-// TODO: Related, newly-emerging concept: architecture-as-code.
+Model-driven architecture (MDA) is a software design approach standardized by
+the Object Management Group (OMG) and first published in 2001. It uses formal
+*xref:modeling.adoc[models]* as the primary artifacts of development, from
+which implementations are derived through a series of transformations. MDA is
+the best-known instance of the broader
+*xref:model-driven-development.adoc[model-driven development]* methodology, and
+a direct descendant of the *xref:case.adoc[computer-aided software engineering]*
+movement of the 1980s and 1990s.
+
+The central idea of MDA is to separate the specification of a system's
+behavior and structure from the particular technology platform that runs it.
+Models are written in a standardized modeling language, most commonly the
+*xref:uml.adoc[Unified Modeling Language]*, and organized into a stack of
+abstraction layers. The OMG defines three principal model types.
+
+* *Computation-independent model (CIM).* Describes the system's environment
+  and requirements in terms of the business domain, with no reference to
+  software or computation. It is closest to a *xref:domain-model.adoc[domain
+  model]*.
+
+* *Platform-independent model (PIM).* Describes the system's structure and
+  behavior at a level of abstraction that is independent of any specific
+  technology platform, eg. an application server, messaging middleware, or
+  programming language.
+
+* *Platform-specific model (PSM).* Tailors the PIM to a particular target
+  platform, binding abstract elements to concrete technologies from which
+  source code can be generated.
+
+The layers are connected by *model transformations*. A transformation maps
+the elements of a source model to elements in a target model, eg. PIM to PSM,
+according to defined rules. The OMG's Query/View/Transformation (QVT) family
+of standards specifies languages for expressing such transformations. When the
+transformations are reliable and repeatable, the PIM becomes the durable
+artifact and the PSM and code become generated outputs, much as
+*xref:infrastructure-as-code.adoc[infrastructure-as-code]* treats hand-edited
+templates as source and provisioned infrastructure as a build product.
+
+== Relationship to SOA
+
+MDA was conceived alongside the OMG's
+*xref:service-oriented-architecture.adoc[service-oriented architecture]* work
+and its CORBA-based middleware. A PIM describes services and their contracts
+without committing to a transport, and separate PSMs target different
+middleware, eg. CORBA, SOAP web services, or REST. The promise was that a
+single PIM could be deployed across multiple platforms without redesign.
+
+== Reception and legacy
+
+MDA attracted significant vendor and tooling investment in the early 2000s,
+but adoption fell short of its ambitions. Transformations between PIMs and
+PSMs were hard to write and harder to maintain, and the assumption that a
+platform-independent model could be projected onto a platform without losing
+fidelity did not hold in practice. The *xref:agile.adoc[agile]* movement's
+preference for working code over comprehensive models, which had already
+eroded CASE, eroded MDA for the same reasons.
+
+What survived is the underlying idea that models are first-class engineering
+artifacts, not just documentation. It lives on in modern
+*xref:modeling.adoc[modeling tools]* and in the smaller, more pragmatic
+*xref:diagrams-as-code.adoc[diagrams-as-code]* approaches that keep models in
+plain text under version control. The current drift toward treating
+architecture itself as declarative, version-controlled source —
+*architecture-as-code* — echoes MDA's separation of intent from platform,
+while abandoning its heavyweight, tool-mediated transformation pipeline.
+
+== See also
+
+* *xref:modeling.adoc[Modeling]*
+* *xref:model-driven-development.adoc[Model-driven development]*
+* *xref:uml.adoc[Unified Modeling Language (UML)]*
+* *xref:case.adoc[Computer-aided software engineering (CASE)]*
+* *xref:service-oriented-architecture.adoc[Service-oriented architecture (SOA)]*
+* *xref:diagrams-as-code.adoc[Diagrams as code]*
+
+== References
+
+* Object Management Group (2003). "MDA Guide Version 1.0.1".
+  https://www.omg.org/cgi-bin/doc?omg/03-06-01[omg/03-06-01].
+* Frankel, D.S. (2003). _Model Driven Architecture: Applying MDA to
+  Enterprise, Java, Web Services and the Enterprise_. John Wiley & Sons.

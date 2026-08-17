@@ -436,7 +436,7 @@ Do NOT push your changes.
 - [x] 🌿 Mob programming — `mob-programming.adoc` (prune)
 - [x] 🌱 Model access layer — `model-access-layer.adoc` (tend)
 - [x] 🌱 Model Context Protocol — `model-context-protocol.adoc` (none)
-- [ ] 🌱 Model-driven architecture (MDA) — `model-driven-architecture.adoc` (fertilize)
+- [x] 🌱 Model-driven architecture (MDA) — `model-driven-architecture.adoc` (fertilize)
 - [ ] 🌱 Model-driven development — `model-driven-development.adoc` (fertilize)
 - [ ] 🌱 Modeling — `modeling.adoc` (tend)
 - [ ] 🌱 Modular design — `modular-design.adoc` (fertilize)
