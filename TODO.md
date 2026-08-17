@@ -474,7 +474,7 @@ Do NOT push your changes.
 - [x] 🌱 Optimize for deletion — `optimize-for-deletion.adoc` (none)
 - [x] 🌱 Orthogonality — `orthogonality.adoc` (none)
 - [x] 🌱 OSI model — `osi-model.adoc` (none)
-- [ ] 🌱 OWASP – Open Worldwide Application Security Project — `owasp.adoc` (fertilize)
+- [x] 🌱 OWASP – Open Worldwide Application Security Project — `owasp.adoc` (fertilize)
 
 ## P
 
