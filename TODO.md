@@ -462,7 +462,7 @@ Do NOT push your changes.
 
 ## O
 
-- [ ] 🌱 Object-oriented programming (OOP) — `object-oriented-programming.adoc` (fertilize)
+- [x] 🌱 Object-oriented programming (OOP) — `object-oriented-programming.adoc` (fertilize)
 - [ ] 🌱 Object storage — `object-storage.adoc` (none)
 - [ ] 🌱 On-call — `on-call.adoc` (none)
 - [ ] 🌱 Observability — `observability.adoc` (prune)
