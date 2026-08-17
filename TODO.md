@@ -433,7 +433,7 @@ Do NOT push your changes.
 - [x] 🌱 Micro front-end — `micro-frontend.adoc` (fertilize)
 - [x] 🌱 Microservices — `microservices.adoc` (tend)
 - [x] 🌿 MIPS (Million Instructions per Second) — `mips.adoc` (entwine)
-- [ ] 🌿 Mob programming — `mob-programming.adoc` (prune)
+- [x] 🌿 Mob programming — `mob-programming.adoc` (prune)
 - [ ] 🌱 Model access layer — `model-access-layer.adoc` (tend)
 - [ ] 🌱 Model Context Protocol — `model-context-protocol.adoc` (none)
 - [ ] 🌱 Model-driven architecture (MDA) — `model-driven-architecture.adoc` (fertilize)
