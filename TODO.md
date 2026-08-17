@@ -548,7 +548,7 @@ Do NOT push your changes.
 - [x] 🌱 Request-response communication — `request-response.adoc` (fertilize)
 - [x] 🌱 Requirements — `requirements.adoc` (water)
 - [x] 🌱 Requirements engineering — `requirements-engineering.adoc` (none)
-- [ ] 🌱 Resilience — `resilience.adoc` (none)
+- [x] 🌱 Resilience — `resilience.adoc` (none)
 - [ ] 🌱 Resource-oriented architecture — `resource-oriented-architecture.adoc` (water)
 - [ ] 🌱 REpresentational state transfer (REST) — `rest.adoc` (none)
 - [ ] 🌱 Result cache — `result-cache.adoc` (fertilize)
