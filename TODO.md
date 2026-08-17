@@ -577,7 +577,7 @@ Do NOT push your changes.
 - [x] 🌱 Scope creep — `scope-creep.adoc` (none)
 - [x] 🌱 Scrum — `scrum.adoc` (none)
 - [x] 🌱 Security — `security.adoc` (fertilize)
-- [ ] 🌱 Security headers — `security-headers.adoc` (fertilize)
+- [x] 🌱 Security headers — `security-headers.adoc` (fertilize)
 - [ ] 🌿 Security testing — `security-testing.adoc` (entwine)
 - [ ] 🌱 Secure by design — `secure-by-design.adoc` (none)
 - [ ] 🌱 Self-contained system — `self-contained-system.adoc` (fertilize)
