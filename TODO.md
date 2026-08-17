@@ -536,7 +536,7 @@ Do NOT push your changes.
 - [x] 🌱 Recursive self-improvement (RSI) — `recursive-self-improvement.adoc` (none)
 - [x] 🌱 Redis — `redis.adoc` (entwine)
 - [x] 🌱 Redundancy — `redundancy.adoc` (water)
-- [ ] 🌱 Refactoring — `refactoring.adoc` (fertilize)
+- [x] 🌱 Refactoring — `refactoring.adoc` (fertilize)
 - [ ] 🌱 Referential integrity — `referential-integrity.adoc` (none)
 - [ ] 🌿 Regression testing — `regression-testing.adoc` (entwine)
 - [ ] 🌱 Relational database management systems (RDBMS) — `relational-databases.adoc` (water)

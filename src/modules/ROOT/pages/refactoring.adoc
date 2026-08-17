@@ -1,3 +1,84 @@
 = Refactoring
 
-// TODO: https://refactoring.guru/refactoring
+Refactoring is the discipline of changing the internal structure of existing
+code without changing its observable behavior. The aim is to improve the
+code's internal quality – its legibility, design, and maintainability – while
+preserving what it does for the rest of the system. A refactoring is a small,
+behavior-preserving transformation: rename a misleading method, extract a
+tangled function into two, move a responsibility to the module that owns it.
+Strung together, these small steps re-shape a codebase as understanding of the
+problem grows.
+
+The term was brought into mainstream software engineering by Martin Fowler's
+1999 book _Refactoring: Improving the Design of Existing Code_, which built on
+earlier work by William Opdyke and Ralph Johnson on behavior-preserving
+transformations in Smalltalk. Fowler's contribution was less the individual
+transformations than the framing. The design of working code is not fixed at
+first writing, and improving it is a legitimate, scheduled activity rather than
+an admission of failure.
+
+Software that is used does not stand still. As requirements shift and the
+system grows, the design that once fit starts to drag.
+xref:laws-of-software-evolution.adoc[*Lehman's laws of software evolution*]
+describe this from the other side: an E-type system that is not continually
+adapted becomes progressively less satisfactory. Refactoring is the disciplined
+response. It keeps the design aligned with what the code now needs to do,
+sustains xref:evolvability.adoc[*evolvability*], and pushes back against
+xref:software-rot.adoc[*software rot*].
+
+Refactoring is also how a team pays down
+xref:technical-debt.adoc[*technical debt*]. Ward Cunningham coined the debt
+metaphor precisely to explain to non-technical stakeholders why time spent
+restructuring working code is an investment, not a cost overrun. By his
+definition, the debt is the gap between the design as it stands and the design
+the team now knows it wants. That gap opens naturally as
+xref:iterative-and-incremental-development.adoc[*iterative and incremental
+development*] reveals more about the problem. Refactoring closes it.
+
+Behavior preservation is what distinguishes refactoring from rewriting. The
+guarantee is not made by care alone but by a safety net of automated tests. A
+comprehensive xref:regression-testing.adoc[*regression test*] suite catches
+unintended changes the moment a transformation steps out of line. This is why
+refactoring sits at the center of
+xref:test-driven-development.adoc[*test-driven development (TDD)*]. The
+red-green-refactor cycle treats refactoring as the third phase, where the code
+made correct by the tests is then cleaned up with the tests still green.
+
+Refactoring works best in small, committable steps. Each transformation leaves
+the build green, so any change can be reversed or bisected. Mixing a refactor
+with a new feature obscures which commit changed structure and which changed
+behavior. Martin Fowler's "two hats" metaphor captures this. When you refactor
+you change structure without changing behavior. When you add a feature you
+change behavior without changing structure. Switching between them deliberately
+keeps history legible and review easy.
+
+The trigger for a refactor is usually a *code smell*: a name that no longer
+fits, a function that does two things, a duplication that has drifted, a module
+that knows too much about another. The catalog of named refactorings – extract
+method, inline, move, rename, and so on – gives a vocabulary for the moves that
+resolve these smells. The xref:boy-scout-rule.adoc[*boy scout rule*] turns these
+triggers into a cadence: leave the code a little better than you found it, on
+every commit. The destination of that cadence is
+xref:clean-code.adoc[*clean code*], kept clean as the system grew rather than
+the day it was written.
+
+== See also
+
+* *xref:boy-scout-rule.adoc[Boy scout rule]*
+* *xref:clean-code.adoc[Clean code]*
+* *xref:evolvability.adoc[Evolvability]*
+* *xref:iterative-and-incremental-development.adoc[Iterative and incremental development]*
+* *xref:laws-of-software-evolution.adoc[Laws of software evolution]*
+* *xref:regression-testing.adoc[Regression testing]*
+* *xref:software-rot.adoc[Software rot]*
+* *xref:technical-debt.adoc[Technical debt]*
+* *xref:test-driven-development.adoc[Test-driven development (TDD)]*
+
+== References
+
+* Martin Fowler (1999). _Refactoring: Improving the Design of Existing Code_.
+  Addison-Wesley.
+* Martin Fowler (2018). _Refactoring: Improving the Design of Existing Code_,
+  2nd ed. Addison-Wesley.
+* Shvets, A. (2019). _Refactoring_. Refactoring.Guru.
+  https://refactoring.guru/refactoring
