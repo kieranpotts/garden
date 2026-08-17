@@ -579,7 +579,7 @@ Do NOT push your changes.
 - [x] 🌱 Security — `security.adoc` (fertilize)
 - [x] 🌱 Security headers — `security-headers.adoc` (fertilize)
 - [x] 🌿 Security testing — `security-testing.adoc` (entwine)
-- [ ] 🌱 Secure by design — `secure-by-design.adoc` (none)
+- [x] 🌱 Secure by design — `secure-by-design.adoc` (none)
 - [ ] 🌱 Self-contained system — `self-contained-system.adoc` (fertilize)
 - [ ] 🌱 Semantic diffusion — `semantic-diffusion.adoc` (entwine)
 - [ ] 🌱 SEMAT — `semat.adoc` (fertilize)
