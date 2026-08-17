@@ -1,13 +1,125 @@
 = Locking
 
+*Locking* is a mechanism for *mutual exclusion*, the practice of ensuring that
+only one thread or process can access a shared resource at a time. It is a
+foundation of xref:synchronization.adoc[*synchronization*] in
+xref:concurrency.adoc[*concurrent*] and xref:parallelism.adoc[*parallel*]
+programs. When several threads share mutable state, unsynchronized reads and
+writes can interleave and corrupt it. A lock serializes the
+xref:thread-safety.adoc[*thread-safe*] critical sections that touch that state,
+restoring the appearance of one-at-a-time execution even when work proceeds in
+parallel elsewhere.
+
+A lock has a simple lifecycle. A thread *acquires* the lock before entering the
+protected region, holds it for the duration of the critical section, and
+*releases* it on exit. While the lock is held, any other thread that tries to
+acquire it must wait. The guarantee is one of access control, not of ordering:
+locks decide who may proceed, not in what order, and a lock alone does not make
+a program correct if the critical section itself is wrong.
+
 == Pessimistic locking versus optimistic locking
 
-// TODO: https://blog.bytebytego.com/i/152345604/pessimistic-vs-optimistic-locking
+Locks come in two broad temperaments, distinguished by *when* they assume
+conflict will happen.
+
+*Pessimistic locking* assumes that concurrent access is likely to clash, and
+prevents the clash by taking a lock up front. The holder acquires the lock
+before reading or writing, blocks anyone else who wants it, and releases it
+only after committing the change. Database statements such as `SELECT ... FOR
+UPDATE` are pessimistic: the row is locked for the duration of the
+xref:transaction.adoc[*transaction*]. Pessimistic locking is simple to reason
+about and gives strong guarantees under contention, but it reduces
+parallelism, makes waiters block, and is the direct source of
+xref:deadlock.adoc[*deadlock*].
+
+*Optimistic locking* assumes that conflict is rare, and proceeds without taking
+a lock. The reader notes the current version of the resource (a version
+number, a timestamp, or a checksum), computes its update, and just before
+committing checks that the version is still the same. If it is, the write goes
+through. If another writer has since changed the resource, the update is
+rejected and the caller retries or aborts. The check is typically a
+xref:atomic-operation.adoc[*compare-and-swap*] in memory, or a `WHERE
+version = ?` clause in a database update.
+
+Optimistic locking shines under low contention, where the common case avoids
+any blocking and the rare retry is cheap. Under heavy contention it degrades
+badly, because most attempts collide and retry, wasting work. Pessimistic
+locking is the better choice when contention is high or when the cost of a
+failed attempt is large, such as a long computation whose result would have to
+be discarded. Many systems combine the two, using optimistic locking for
+short, read-heavy interactions and pessimistic locking for long-running writes.
+
+== Common lock types
+
+* *Mutex.* The simplest lock. It allows exactly one holder at a time and
+  blocks every other acquirer until the holder releases it.
+* *Reader-writer lock.* Distinguishes readers from writers. Many readers may
+  hold the lock simultaneously, but a writer excludes everyone. This improves
+  throughput for read-mostly data, at the cost of more state and a greater risk
+  of starving writers under a steady stream of readers.
+* *Spinlock.* A lock whose waiter *spins*, repeatedly re-attempting to acquire
+  it in a tight loop rather than yielding the CPU. Spinlocks are cheap when the
+  wait is shorter than a context switch, but waste cycles and starve other work
+  when the wait is long. They are built directly on hardware
+  xref:atomic-operation.adoc[*atomic operations*] such as test-and-set.
+* *Database locks.* Acquired on rows, ranges, pages, or whole tables, and
+  classified as *shared* (read) or *exclusive* (write). *Strict two-phase
+  locking*, in which a transaction takes all its locks before releasing any,
+  is the classical mechanism for enforcing the isolation level of the
+  xref:acid-principles.adoc[*ACID principles*].
+
+== Trade-offs and hazards
+
+Locking trades parallelism for safety, and the trade is not free.
+
+* *Contention.* Every lock is a serialization point. The more threads compete
+  for the same lock, the less of the available xref:parallelism.adoc[*parallelism*]
+  the program realizes. Reducing lock scope, sharding the locked resource, or
+  switching to finer-grained xref:atomic-operation.adoc[*atomic operations*] are
+  the usual responses.
+* *Deadlock.* When threads acquire locks in different orders, they can wait on
+  each other forever. Deadlock is a property of how locks are used, not of the
+  locks themselves, and it is covered in detail in
+  xref:deadlock.adoc[*Deadlock*].
+* *Priority inversion.* A high-priority thread can block behind a low-priority
+  one that holds a lock, and the scheduler has no way to know. The classic
+  remedy is *priority inheritance*, which temporarily lifts the holder's
+  priority to the waiter's.
+* *Convoy effect.* When a lock holder is descheduled — by a page fault, a
+  garbage collection pause, or an interrupt — the queue of waiters behind it
+  stalls, and once the lock is released they process one at a time rather than
+  in parallel. The lock becomes a serialization point that outlasts the
+  original pause.
+* *Overhead.* For a critical section that touches a single word, an atomic
+  operation is often cheaper than acquiring and releasing a mutex. Locks pay
+  off when the protected work is large enough to amortize that cost.
 
 == Distributed locking
 
 xref:distributed-locking.adoc[*Distributed locking*] extends mutual exclusion
 across the nodes of a distributed system, where no shared memory or operating
-system can enforce it.
+system can enforce it. The same trade-offs apply, but they are sharpened by
+independent failures, unbounded network delays, and the absence of a global
+clock, so a distributed lock that must guarantee correctness needs stronger
+foundations than a local mutex.
 
-// TODO: https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html
+== See also
+
+* xref:synchronization.adoc[*Synchronization*]
+* xref:concurrency.adoc[*Concurrency*]
+* xref:parallelism.adoc[*Parallelism*]
+* xref:atomic-operation.adoc[*Atomic operation*]
+* xref:thread-safety.adoc[*Thread safety*]
+* xref:deadlock.adoc[*Deadlock*]
+* xref:distributed-locking.adoc[*Distributed locking*]
+* xref:transaction.adoc[*Transactions*]
+* xref:acid-principles.adoc[*ACID principles*]
+
+== References
+
+* ByteByteGo (2023).
+  https://blog.bytebytego.com/i/152345604/pessimistic-vs-optimistic-locking
+  [_Pessimistic vs Optimistic Locking_].
+* Kleppmann, M. (2016).
+  https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html
+  [_How to do distributed locking_].

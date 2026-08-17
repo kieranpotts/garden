@@ -405,7 +405,7 @@ Do NOT push your changes.
 - [x] 🌱 Load balancing — `load-balancing.adoc` (water)
 - [x] 🌿 Load testing — `load-testing.adoc` (entwine)
 - [x] 🌱 Local-first software — `local-first-software.adoc` (fertilize)
-- [ ] 🌱 Locking — `locking.adoc` (fertilize)
+- [x] 🌱 Locking — `locking.adoc` (fertilize)
 - [ ] 🌱 Logging — `logging.adoc` (water)
 - [ ] 🌱 Logic table — `logic-table.adoc` (water)
 - [ ] 🌱 Long polling — `long-polling.adoc` (fertilize)
