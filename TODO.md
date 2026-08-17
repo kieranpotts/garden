@@ -583,7 +583,7 @@ Do NOT push your changes.
 - [x] 🌱 Self-contained system — `self-contained-system.adoc` (fertilize)
 - [x] 🌱 Semantic diffusion — `semantic-diffusion.adoc` (entwine)
 - [x] 🌱 SEMAT — `semat.adoc` (fertilize)
-- [ ] 🌱 Separation of concerns — `separation-of-concerns.adoc` (fertilize)
+- [x] 🌱 Separation of concerns — `separation-of-concerns.adoc` (fertilize)
 - [ ] 🌳 Serverless architecture — `serverless-architecture.adoc` (none)
 - [ ] 🌳 Serverless computing — `serverless-computing.adoc` (none)
 - [ ] 🌱 Service discovery — `service-discovery.adoc` (water)
