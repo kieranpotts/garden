@@ -537,7 +537,7 @@ Do NOT push your changes.
 - [x] 🌱 Redis — `redis.adoc` (entwine)
 - [x] 🌱 Redundancy — `redundancy.adoc` (water)
 - [x] 🌱 Refactoring — `refactoring.adoc` (fertilize)
-- [ ] 🌱 Referential integrity — `referential-integrity.adoc` (none)
+- [x] 🌱 Referential integrity — `referential-integrity.adoc` (none)
 - [ ] 🌿 Regression testing — `regression-testing.adoc` (entwine)
 - [ ] 🌱 Relational database management systems (RDBMS) — `relational-databases.adoc` (water)
 - [ ] 🌱 Release early, release often — `release-early-release-often.adoc` (fertilize)
