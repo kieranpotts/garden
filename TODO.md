@@ -421,7 +421,7 @@ Do NOT push your changes.
 - [x] 🌱 MapReduce — `map-reduce.adoc` (entwine)
 - [x] 🌿 Mashup — `mashup.adoc` (entwine)
 - [x] 🌱 Materialized view — `materialized-view.adoc` (fertilize)
-- [ ] 🌱 Mechanical sympathy — `mechanical-sympathy.adoc` (none)
+- [x] 🌱 Mechanical sympathy — `mechanical-sympathy.adoc` (none)
 - [ ] 🌱 Memoization — `memoization.adoc` (fertilize)
 - [ ] 🌱 Memory allocation — `memory-allocation.adoc` (tend)
 - [ ] 🌱 Message broker — `message-broker.adoc` (fertilize)
