@@ -519,7 +519,7 @@ Do NOT push your changes.
 
 ## Q
 
-- [ ] 🌱 Quality assurance — `quality-assurance.adoc` (fertilize)
+- [x] 🌱 Quality assurance — `quality-assurance.adoc` (fertilize)
 - [ ] 🌱 Quality attributes — `quality-attributes.adoc` (water)
 
 ## R

@@ -1,1 +1,78 @@
 = Quality assurance
+
+*Quality assurance (QA)* is the discipline of setting up the processes,
+standards, and feedback loops that prevent defects from entering a software
+system in the first place. It is a *process-focused* activity. QA concerns
+itself with how software is specified, designed, built, reviewed, and
+released, on the premise that a sound process produces fewer defects that
+have to be found and removed later.
+
+QA is often contrasted with *quality control (QC)*, the *product-focused*
+activity of inspecting outputs to detect defects that slipped through.
+*xref:testing.adoc[Testing]* is the most prominent QC technique, but it is
+only one of the tools QA draws on. Others include
+*xref:static-analysis.adoc[static analysis]*, code conventions enforced by
+*xref:linting.adoc[linters]*, *xref:automated-testing.adoc[automated test
+suites]* run as gates in *xref:ci-cd.adoc[CI/CD]*, code review, root-cause
+analysis of escaped defects, and the *xref:metrics.adoc[metrics]* that make
+any of it visible. The shorthand is that QA tries to prevent defects and QC
+tries to find them. In practice the same team often does both, and the
+boundary is more about intent than org chart.
+
+The target QA aims at is *xref:software-quality.adoc[software quality]*, the
+emergent property of a system meeting its stakeholders' needs. Quality is
+decomposed into *xref:quality-attributes.adoc[quality attributes]* – the
+*xref:non-functional-requirements.adoc[non-functional requirements]* such as
+*xref:availability.adoc[availability]*, *xref:performance.adoc[performance]*,
+and *xref:security.adoc[security]* that a system must satisfy. QA provides the
+practices that verify the system actually meets those targets, and the
+evidence – test results, audit trails, metrics – that it does so.
+
+In the traditional phase-gate model, QA was a separate department that handed
+work over to a testing group at the end of development. Two shifts have eroded
+that model. The first is *xref:shift-left.adoc[shift left]*, moving checking
+earlier in the lifecycle so defects are caught while they are still cheap to
+fix. The second is the *xref:agile.adoc[agile]* and *xref:devops.adoc[DevOps]*
+move toward cross-functional teams that own quality end to end, often under
+the label *quality engineering* rather than QA. In that model, QA becomes a
+coaching and tooling function that helps the team build quality in, rather
+than an inspector that checks it after the fact.
+
+The rigor of QA scales with the cost of failure. For ordinary commercial
+software, automated tests, code review, and CI gating are usually sufficient.
+For *xref:high-integrity.adoc[high-integrity]* and
+*xref:safety-critical-system.adoc[safety-critical]* systems – medical devices,
+avionics, automotive – QA expands into a regulated discipline with independent
+verification, formal reviews, traceability from *xref:requirements.adoc[requirements]* to implementation, and certification
+against standards such as DO-178C, IEC 62304, and ISO 26262. There it overlaps
+heavily with *xref:software-assurance.adoc[software assurance]*, the broader
+discipline of providing justified confidence that software will behave as
+intended.
+
+A number of process frameworks and standards formalize QA practice. The
+*xref:capability-maturity-model.adoc[capability maturity model]* and its
+successor CMMI assess an organization's process maturity against staged
+levels. ISO 9001 sets general quality-management requirements. The ISO/IEC
+25010 *SQuaRE* family defines a canonical set of quality characteristics that
+QA programs often measure against.
+
+A common pitfall is confusing QA with testing alone. A team that runs an
+extensive test suite but has no agreed conventions, no review discipline, and
+no *xref:refactoring.adoc[refactoring]* to retire
+*xref:technical-debt.adoc[technical debt]* is doing QC without QA, and will
+find the same defects recurring because the process that produced them has not
+changed. The reverse is also possible. A process-heavy QA program with little
+automated checking produces documents but no signal. Effective QA balances the
+two, and keeps its measures connected to the metrics that actually predict
+escaped defects.
+
+== See also
+
+* *xref:testing.adoc[Testing]*
+* *xref:software-quality.adoc[Software quality]*
+* *xref:software-assurance.adoc[Software assurance]*
+* *xref:quality-attributes.adoc[Quality attributes]*
+* *xref:shift-left.adoc[Shift left]*
+* *xref:ci-cd.adoc[CI/CD]*
+* *xref:high-integrity.adoc[High integrity]*
+* *xref:capability-maturity-model.adoc[Capability maturity model]*
