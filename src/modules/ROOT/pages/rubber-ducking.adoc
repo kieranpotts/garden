@@ -1,15 +1,59 @@
 = Rubber ducking
 
-Rubber ducking (or rubber duck debugging, or rubber duck programming) is a
-method of *xref:debugger.adoc[debugging]* code. The name is a reference to a story in the book
-_The Pragmatic Programmer_ in which a programmer would carry around a rubber
-duck and debug their code by forcing themselves to explain it, line-by-line, to
-the duck.
+Rubber ducking (also called rubber duck debugging) is a method of
+*xref:debugger.adoc[debugging]* in which the programmer explains their code, line
+by line, to an inanimate object – classically a rubber duck – in order to surface
+the fault themselves. The duck does nothing. The act of articulating the program
+out loud, in plain language, is what does the work.
 
-Explaining code to a colleague is the same idea taken a step further.
-*xref:pair-programming.adoc[Pair programming]* makes the duck a person, who can
-also ask questions and push back.
+== Origin
+
+The technique is named for a story in _The Pragmatic Programmer_ in which a
+programmer keeps a rubber duck on their desk and, when stuck, debugs by forcing
+themselves to explain the code to the duck, line by line. The book traces the
+practice to a university computer lab whose staff stationed a Teddy bear by the
+terminal and required students to explain their program to the bear before they
+were allowed to ask a human for help.
+
+== Why it works
+
+The technique exploits a feature of human reasoning known as the
+*self-explanation effect*. A programmer who silently reads code can skim past an
+implicit assumption – an off-by-one bound, a value that might be empty, a
+variable reused for two different purposes – because the flawed step is never
+made explicit. Explaining the same code aloud, to an audience that cannot fill in
+gaps on its own, forces each step to be stated. The steps that cannot be stated
+cleanly are the steps that are wrong.
+
+The duck matters only as a prop. Its role is to give the programmer an audience
+that cannot interrupt, judge, or supply the missing steps, so the explanation has
+to be complete. A *xref:pair-programming.adoc[pair programming]* partner, or a
+*xref:mob-programming.adoc[mob programming]* group, who can also ask questions and
+push back is a stronger version of the same idea, but is not always available.
+
+Because rubber ducking separates the programmer from their code, it also aligns
+with *xref:egoless-programming.adoc[egoless programming]*. Talking to a duck is a
+deliberately unglamorous act, and that low-stakes framing makes it easier to
+admit confusion and abandon a line of attack that is not working.
+
+== When it helps
+
+Rubber ducking is most useful for localized, logic-level faults: an unexpected
+return value, a loop that runs one time too many, a branch that is never taken.
+It is less help with problems that span processes or services, where the evidence
+is not visible in any single stretch of source and *xref:logging.adoc[logging]*,
+*xref:tracing.adoc[tracing]*, or a debugger are the better instruments. It is also
+a poor fit for faults rooted in *xref:concurrency.adoc[concurrency]*, where the
+bug is in the interleaving of executions rather than in any one line's logic.
 
 == See also
 
-* *xref:pair-programming.adoc[Pair programming]*
+* xref:debugger.adoc[*Debugger*]
+* xref:pair-programming.adoc[*Pair programming*]
+* xref:mob-programming.adoc[*Mob programming*]
+* xref:egoless-programming.adoc[*Egoless programming*]
+
+== References
+
+* Hunt, Andrew and Thomas, David (1999). _The Pragmatic Programmer: From
+  Journeyman to Master_. Addison-Wesley.
