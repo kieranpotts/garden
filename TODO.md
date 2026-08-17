@@ -525,7 +525,7 @@ Do NOT push your changes.
 ## R
 
 - [x] 🌱 RAAML - Risk Analysis and Assessment Modeling language — `raaml.adoc` (fertilize)
-- [ ] 🌱 RabbitMQ — `rabbitmq.adoc` (none)
+- [x] 🌱 RabbitMQ — `rabbitmq.adoc` (none)
 - [ ] 🌱 RAD — `rad.adoc` (fertilize)
 - [ ] 🌱 Rainbow table — `rainbow-table.adoc` (fertilize)
 - [ ] 🌱 Rate limiting — `rate-limiting.adoc` (fertilize)
