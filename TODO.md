@@ -691,7 +691,7 @@ Do NOT push your changes.
 
 ## V
 
-- [ ] 🌱 Value stream management — `value-stream-management.adoc` (tend)
+- [x] 🌱 Value stream management — `value-stream-management.adoc` (tend)
 - [ ] 🌱 Vector database — `vector-database.adoc` (fertilize)
 - [ ] 🌱 Vega — `vega.adoc` (fertilize)
 - [ ] 🌱 Version control — `version-control.adoc` (tend)
