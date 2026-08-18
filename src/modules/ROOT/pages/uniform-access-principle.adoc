@@ -1,3 +1,81 @@
 = Uniform access principle
 
-// TODO: https://en.wikipedia.org/wiki/Uniform_access_principle
+The uniform access principle is a
+xref:design-principles.adoc[*design principle*] formulated by Bertrand Meyer and
+set out in _Object-Oriented Software Construction_. It states that all services
+offered by a module should be available through a uniform notation, which does
+not betray whether they are implemented through storage or through
+computation. In its simplest form it asks for no syntactic difference between
+reading an attribute, a precomputed property, or a parameterless method on an
+object.
+
+The principle addresses a maintenance problem that recurs in large software
+projects. A class that exposes a value as a plain attribute may later need to
+compute that value on demand, eg. by deriving it from other state or fetching
+it from a cache. In most languages the syntax for accessing an attribute
+differs from the syntax for calling a method, `obj.size` versus `obj.size()`.
+Switching a stored field to a computed method therefore forces every caller to
+change call sites, in the module itself and in every client that depends on it.
+The reverse change, from method to attribute, is comparatively harmless because
+the method can be retained as a trivial accessor. The uniform access principle
+removes the asymmetry by giving both forms one notation.
+
+The benefit is a stable xref:interfaces.adoc[*interface*]. As long as the public
+surface looks the same, the implementation behind it can move between a stored
+field and a computed method without breaking client code. The principle is
+therefore a specific form of xref:encapsulation.adoc[*encapsulation*], applied to
+the question of how a module's properties are read and written. It is one of the
+rules that serve xref:encapsulate-what-changes.adoc[*encapsulating what changes*].
+The choice between storage and computation is exactly the kind of internal
+decision that ought to be hidden behind a stable interface. The principle also
+supports xref:backwards-compatibility.adoc[*backwards compatibility*] at the
+source level, since changing the implementation no longer forces a recompile of
+every caller.
+
+== Language support
+
+Languages differ in how far they enforce the principle. Eiffel, the language
+Meyer designed alongside the principle, makes attribute and parameterless method
+access syntactically identical, so the choice between storage and computation
+can be changed after the fact.
+
+Many languages approximate the principle with a *property* construct that lets a
+method be invoked with attribute syntax. Python's `@property` decorator, C#
+properties, and ECMAScript 5 getters and setters all take this route. They
+preserve a separate method-call syntax but allow attribute syntax to be bound to
+a method, so callers written against the attribute form keep working when a
+getter is added.
+
+Ruby takes a different route. Every attribute access is a method call, and
+`attr_accessor` simply generates the methods, so there is no syntactic
+distinction to bridge in the first place. Scala similarly blurs the line between
+fields and parameterless methods.
+
+Java and C++ do not support the principle. A field `size` and a method
+`getSize()` are syntactically distinct, so changing one into the other is a
+breaking change for every caller. Java libraries work around this by exposing
+only getters from the start, accepting the verbose call syntax as the price of
+future flexibility. C++ has the same constraint, and faking properties with
+templates and operator overloading is more complex than direct language
+support.
+
+[IMPORTANT]
+The principle hides only the syntactic difference between storage and
+computation. When a value is expensive to compute, triggers a side effect, or
+caches lazily, conflating it with a cheap attribute read can mislead callers
+about the cost. Uniform access is a contract about notation, not about behavior.
+
+== See also
+
+* xref:backwards-compatibility.adoc[*Backwards compatibility*]
+* xref:command-query-separation.adoc[*Command query separation*]
+* xref:design-principles.adoc[*Design principles*]
+* xref:encapsulate-what-changes.adoc[*Encapsulate what changes*]
+* xref:encapsulation.adoc[*Encapsulation*]
+* xref:interfaces.adoc[*Interfaces*]
+* xref:object-oriented-programming.adoc[*Object-oriented programming*]
+
+== References
+
+* Meyer, Bertrand (1997). _Object-Oriented Software Construction_ (2nd ed.).
+  Prentice Hall.
