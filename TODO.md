@@ -636,7 +636,7 @@ Do NOT push your changes.
 - [x] 🌱 Stream processing systems — `stream-processing-systems.adoc` (tend)
 - [x] 🌱 Stress testing — `stress-testing.adoc` (fertilize)
 - [x] 🌱 Structured data — `structured-data.adoc` (fertilize)
-- [ ] 🌱 Structured programming — `structured-programming.adoc` (none)
+- [x] 🌱 Structured programming — `structured-programming.adoc` (none)
 - [ ] 🌱 Surgical team — `surgical-team.adoc` (none)
 - [ ] 🌱 SWEBOK — `swebok.adoc` (fertilize)
 - [ ] 🌱 Synchronization — `synchronization.adoc` (fertilize)
