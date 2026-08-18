@@ -655,7 +655,7 @@ Do NOT push your changes.
 - [x] 🌱 Telemetry — `telemetry.adoc` (fertilize)
 - [x] 🌱 Tesler's law — `teslers-law.adoc` (fertilize)
 - [x] 🌱 Test-driven development — `test-driven-development.adoc` (tend)
-- [ ] 🌱 Test harness — `test-harness.adoc` (none)
+- [x] 🌱 Test harness — `test-harness.adoc` (none)
 - [ ] 🌱 Testing — `testing.adoc` (fertilize)
 - [ ] 🌱 Thread safety — `thread-safety.adoc` (fertilize)
 - [ ] 🌱 Throughput (aka. bandwidth) — `throughput.adoc` (tend)
