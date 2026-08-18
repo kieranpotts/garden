@@ -1,88 +1,139 @@
 = Software architecture
 
-// TODO: This will be another "tentpole" topic, linking out to lots of others.
+The *software architecture* of a system is the high-level structure of the
+system: the major components it is built from, the responsibilities assigned to
+each, the relationships and interactions between them, and the significant
+design decisions that shape that structure. It is the part of the design that
+is hardest to change once the system is built around it.
 
-// The following sections are based on the structure of the iSAQB Software Architecture – Foundation Level (CPSA-F) syllabus.
+Software architecture sits at the top of the design spectrum described in
+*xref:architecture-and-design.adoc[architecture and design]*. Where low-level
+*xref:design-patterns.adoc[design patterns]* and code-level constructs deal with
+individual classes and modules, architecture deals with the system as a whole
+and the boundaries between its major parts. The boundary between the two is not
+sharp, and what counts as an architectural decision in one system may be a
+routine design choice in another. A useful heuristic is that architecture is the
+set of decisions that are expensive to reverse.
 
-// == Basic concepts of software architecture
+== Two views of the same thing
 
-// == Roles and responsibilities of software architects
+Software architecture is described in two complementary ways, and most modern
+definitions blend the two.
 
-// * Tasks and responsibilities
-// * Desired skills
-// * Relationship to other roles/stakeholders
+* *Structure.* The system is decomposed into components – processing elements,
+  data elements, and connecting elements – together with the
+  *xref:architectural-pattern.adoc[architectural patterns]* and styles that
+  govern how they are composed. A *xref:layered-architecture.adoc[layered
+  architecture]*, a *xref:client-server-architecture.adoc[client-server
+  architecture]*, or a *xref:microservices.adoc[microservices]* system are all
+  descriptions of structure.
 
-// == Requirements, quality goals, and design constraints
+* *Decisions.* Architecture is also the set of significant decisions made early
+  in development, the rationale for them, and the trade-offs they imply.
+  Choosing a *xref:monolith.adoc[monolith]* over a distributed deployment,
+  deciding how data is partitioned, or settling on a particular
+  *xref:event-driven-architecture.adoc[event-driven]* style are architectural
+  decisions because they constrain almost everything that follows.
 
-// * System context
-// * Technological influencing factors
-// * Organizational influencing factors, Conway's Law
-// * Product-related influencing factors
-// * Quality requirements and attributes
+The structural view answers "what does the system look like?". The decision
+view answers "why does it look like that?". Both are needed: a diagram of
+boxes and arrows is only half an architecture until the decisions behind it are
+recorded.
 
-// == Design and development of software architectures
+== Why architecture matters
 
-// * Identifying uncertainty and risks
+Architecture matters because it is where the system's qualities are won or
+lost. Functional behavior can usually be achieved in many structures; the
+qualities the system must exhibit while behaving – the
+*xref:quality-attributes.adoc[quality attributes]* – are determined largely by
+the architecture. These qualities, captured as
+*xref:non-functional-requirements.adoc[non-functional requirements]*, include
+*xref:software-quality.adoc[availability]*, performance, scalability, security,
+modifiability, and testability. They are in frequent tension with one another,
+and reconciling them is the central work of architecture. See
+*xref:system-design.adoc[system design]* for a catalogue of the trade-offs that
+recur.
 
-// * Software architecture design principles
-// ** Information hiding, SoC, modularity
-// ** Loose coupling
-// ** High cohesion
-// ** KISS, YAGNI, DRY
-// ** Murphy's Law, Pastel's Law
-// ** Abstraction, Conceptual Integrity
-// ** SOLID principles
+Architecture is also the primary medium through which stakeholders
+communicate about the system. Different audiences need different views:
+*developers* need module structure, *operators* need deployment topology, and
+*sponsors* need to see how the design meets business goals. The
+*xref:architectural-knowledge-management.adoc[practice of recording
+architecture]* – decisions, views, and rationale, in artifacts such as
+*xref:c4-model.adoc[C4 models]* and architecture decision records – is what
+makes that communication possible and keeps the design legible to the people who
+inherit it.
 
-// * Software architecture patterns
-// ** Layers
-// ** Pipes and filters
-// ** Microservices
-// ** Dependency injection
+Finally, architecture is the bridge between *xref:requirements.adoc[requirements]*
+and implementation. It translates what the system must do into the structures
+that will do it, and it is the earliest point at which the consequences of the
+requirements can be reasoned about and assessed.
 
-// * Additional design considerations
-// ** Programming language features
-// ** Paradigms to reduce complexity
-// ** Annotations and aspect-oriented programming
-// ** Cross-cutting concerns and concepts
+== What makes a decision architectural
 
-// * Designing interfaces
+Not every design decision is architectural. A decision is architectural when it
+satisfies at least one of the following.
 
-// * Design strategies for achieving quality goals
-// ** Design strategies for achieving high performance
-// ** Design strategies for achieving adaptability and flexibility
-// ** Design strategies for achieving high availability
+* It is hard to reverse. The cost of changing it, once the system is built
+  around it, would be prohibitive.
+* It has system-wide effect. It shapes many components rather than one.
+* It is driven by a quality attribute rather than by functional behavior.
+* It resolves a significant *xref:requirements.adoc[requirement]* or constraint
+  and trades one quality against another.
 
-// * Design tactics to reduce coupling...
-// ** ... in structural dependencies
-// ** ... in instantiation dependencies
-// ** ... in call dependencies
-// ** Static versus dynamic coupling
+Decisions that are local, recoverable, or purely functional belong to design
+rather than architecture. The distinction is a judgment, and it shifts with the
+scale of the system.
 
-// * Design of data and data models
-// ** Data model types and notations
-// ** Data modeling process
-// ** Data modeling techniques
-// ** Products and sums in data modeling
+== The elements of an architecture
 
-// * Methods for architecture development
-// ** Iterative and incremental architecture development
-// ** View-based architecture development
-// ** Top-down versus bottom-up architecture development
+Most architectural descriptions are built from a small set of recurring
+elements.
 
-// == Specification and communication of software architectures
+* *Components* are the units that do the work – modules, services, layers,
+  processes, or subsystems. Each carries a coherent responsibility.
+* *Connectors* are the mechanisms by which components interact – procedure calls,
+  event buses, message queues, shared databases, or network protocols.
+* *Configurations* are the topological arrangements of components and
+  connectors – layered, pipe-and-filter, brokered, or event-driven.
+* *Properties* are the qualities the structure is intended to deliver, eg.
+  low *xref:coupling.adoc[coupling]*, high *xref:cohesion.adoc[cohesion]*, and
+  *xref:conceptual-integrity.adoc[conceptual integrity]*.
 
-// * Goals, benefits, and quality requirements of documentation
-// * Template-based documentation
-// * Document types, diagrams, and UML
-// * Documenting views and cross-cutting concerns
-// * Documenting interfaces and design decisions
-// * Documentation best practices
+These elements are realized through *xref:design-principles.adoc[design
+principles]* such as *xref:separation-of-concerns.adoc[separation of concerns]*,
+*xref:abstraction.adoc[abstraction]*, and *xref:encapsulation.adoc[encapsulation]*,
+which together keep the structure coherent as it grows.
 
-// == Analysis and assessment of software architectures (quality)
+== What shapes an architecture
 
-// * Software quality modeling
-// * Evaluation of software architecture
-// * Quantitative evaluation of software architecture and Goodhart's Law
-// * Qualitative assessment of software architecture and ATAM
+An architecture is shaped by more than its requirements. The forces that
+constrain and bias it include the organization that builds it –
+*xref:conways-law.adoc[Conway's law]* observes that systems mirror the
+communication structures of their organizations – the existing systems and
+*xref:technical-debt.adoc[technical debt]* it must accommodate, the available
+technology and the skills of the team. These forces are discussed in
+*xref:architecture-and-design.adoc[architecture and design]*.
 
-// == Examples of software architectures
+How much of the architecture is fixed up front, and how much is allowed to
+emerge, depends on the cost of change and the stability of the requirements.
+*xref:big-design-up-front.adoc[Big design up-front]* suits environments where
+change is expensive and requirements are stable;
+*xref:evolvability.adoc[evolvability]* suits uncertain ones. Most real systems
+blend the two and develop the architecture iteratively, refining it through
+*xref:stepwise-refinement.adoc[stepwise refinement]* as learning accumulates.
+
+== See also
+
+* *xref:architecture-and-design.adoc[Architecture and design]*
+* *xref:architectural-knowledge-management.adoc[Architectural knowledge
+  management]*
+* *xref:architectural-pattern.adoc[Architectural pattern]*
+* *xref:big-design-up-front.adoc[Big design up-front]*
+* *xref:conceptual-integrity.adoc[Conceptual integrity]*
+* *xref:conways-law.adoc[Conway's law]*
+* *xref:evolvability.adoc[Evolvability]*
+* *xref:non-functional-requirements.adoc[Non-functional requirements]*
+* *xref:quality-attributes.adoc[Quality attributes]*
+* *xref:system-design.adoc[System design]*
+* *xref:technical-debt.adoc[Technical debt]*
