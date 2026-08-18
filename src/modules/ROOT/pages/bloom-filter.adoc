@@ -36,9 +36,10 @@ Other real-world uses:
   accesses. A page is only written to cache if the bloom filter indicates it has
   been seen before, preventing the cache from filling with pages that are never
   revisited.
-* Google BigTable uses bloom filters to avoid unnecessary disk reads. When a key
-  lookup arrives, the in-memory bloom filter is checked first. A definitive "not
-  present" response saves a disk access entirely.
+* Google BigTable, the xref:wide-column-stores.adoc[*wide-column store*] that
+  defined the model, uses bloom filters to avoid unnecessary disk reads. When a
+  key lookup arrives, the in-memory bloom filter is checked first. A definitive
+  "not present" response saves a disk access entirely.
 
 == How bloom filters work
 
