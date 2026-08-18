@@ -697,7 +697,7 @@ Do NOT push your changes.
 - [x] 🌱 Version control — `version-control.adoc` (tend)
 - [x] 🌱 Vertical scaling — `vertical-scaling.adoc` (fertilize)
 - [x] 🌱 Vertical-slice architecture — `vertical-slice-architecture.adoc` (tend)
-- [ ] 🌱 Vibe coding — `vibe-coding.adoc` (tend)
+- [x] 🌱 Vibe coding — `vibe-coding.adoc` (tend)
 - [ ] 🌱 Virtual machine — `virtual-machine.adoc` (tend)
 - [ ] 🌱 Virtualization — `virtualization.adoc` (tend)
 - [ ] 🌱 Visibility — `visibility.adoc` (water)
