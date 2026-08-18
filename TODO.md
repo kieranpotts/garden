@@ -625,7 +625,7 @@ Do NOT push your changes.
 - [x] 🌱 Stack language — `stack-language.adoc` (none)
 - [x] 🌱 Stamp coupling — `stamp-coupling.adoc` (water)
 - [x] 🌱 Stand-in — `stand-in.adoc` (entwine)
-- [ ] 🌱 State — `state.adoc` (fertilize)
+- [x] 🌱 State — `state.adoc` (fertilize)
 - [ ] 🌱 Stateful — `stateful.adoc` (none)
 - [ ] 🌱 Stateless — `stateless.adoc` (none)
 - [ ] 🌱 Static analysis — `static-analysis.adoc` (none)
