@@ -612,7 +612,7 @@ Do NOT push your changes.
 - [x] 🌿 Software craftsmanship — `software-craftsmanship.adoc` (water)
 - [x] 🌱 Software quality — `software-quality.adoc` (fertilize)
 - [x] 🌱 Software rot — `software-rot.adoc` (water)
-- [ ] 🌱 SOLID — `solid.adoc` (fertilize)
+- [x] 🌱 SOLID — `solid.adoc` (fertilize)
 - [ ] 🌱 Spatial databases — `spatial-databases.adoc` (water)
 - [ ] 🌱 Specification by example — `specification-by-example.adoc` (fertilize)
 - [ ] 🌱 Spiral model — `spiral-model.adoc` (fertilize)
