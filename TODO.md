@@ -669,7 +669,7 @@ Do NOT push your changes.
 - [x] 🌱 Transaction — `transaction.adoc` (fertilize)
 - [x] 🌱 Transformer architecture — `transformer.adoc` (tend)
 - [x] 🌱 Trivial Graph Format (TGF) — `tgf.adoc` (fertilize)
-- [ ] 🌱 TPS report — `tps-report.adoc` (entwine)
+- [x] 🌱 TPS report — `tps-report.adoc` (entwine)
 - [ ] 🌱 Trunk-based development — `trunk-based-development.adoc` (none)
 - [ ] 🌱 TypeScript — `typescript.adoc` (tend)
 
