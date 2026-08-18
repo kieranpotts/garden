@@ -56,7 +56,9 @@ only needs to know that an email has been queued for delivery, not wait for
 confirmation that it has been sent.
 
 Anything that could be treated as a background *job* is a good candidate for a
-message queue.
+message queue. When the queue's purpose is to execute computational units of
+work rather than route data between services, the higher-level abstraction is a
+*xref:task-queue.adoc[task queue]*.
 
 When a consumer repeatedly fails to process a message, the message can be
 diverted to a *xref:dead-letter-queue.adoc[dead letter queue]* so that it does

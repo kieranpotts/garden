@@ -649,7 +649,7 @@ Do NOT push your changes.
 
 ## T
 
-- [ ] 🌱 Task queue — `task-queue.adoc` (water)
+- [x] 🌱 Task queue — `task-queue.adoc` (fertilize)
 - [ ] 🌱 TCP — `tcp.adoc` (tidy)
 - [ ] 🌱 Technical debt — `technical-debt.adoc` (fertilize)
 - [ ] 🌱 Telemetry — `telemetry.adoc` (water)
