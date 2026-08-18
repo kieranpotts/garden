@@ -653,7 +653,7 @@ Do NOT push your changes.
 - [x] 🌱 TCP — `tcp.adoc` (tidy)
 - [x] 🌱 Technical debt — `technical-debt.adoc` (fertilize)
 - [x] 🌱 Telemetry — `telemetry.adoc` (fertilize)
-- [ ] 🌱 Tesler's law — `teslers-law.adoc` (fertilize)
+- [x] 🌱 Tesler's law — `teslers-law.adoc` (fertilize)
 - [ ] 🌱 Test-driven development — `test-driven-development.adoc` (tend)
 - [ ] 🌱 Test harness — `test-harness.adoc` (none)
 - [ ] 🌱 Testing — `testing.adoc` (fertilize)
