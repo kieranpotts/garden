@@ -616,7 +616,7 @@ Do NOT push your changes.
 - [x] 🌱 Spatial databases — `spatial-databases.adoc` (fertilize)
 - [x] 🌱 Specification by example — `specification-by-example.adoc` (fertilize)
 - [x] 🌱 Spiral model — `spiral-model.adoc` (fertilize)
-- [ ] 🌱 Spoofing — `spoofing.adoc` (tend)
+- [x] 🌱 Spoofing — `spoofing.adoc` (tend)
 - [ ] 🌱 Spring Framework — `spring-framework.adoc` (entwine)
 - [ ] 🌱 SQL — `sql.adoc` (water)
 - [ ] 🌱 SQL injection — `sql-injection.adoc` (fertilize)
