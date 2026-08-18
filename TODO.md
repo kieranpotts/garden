@@ -711,7 +711,7 @@ Do NOT push your changes.
 - [x] 🌱 Ways of working — `ways-of-working.adoc` (water)
 - [x] 🌱 Web-oriented architecture — `web-oriented-architecture.adoc` (water)
 - [x] 🌱 Webhook — `webhook.adoc` (entwine)
-- [ ] 🌱 WebSockets — `websockets.adoc` (none)
+- [x] 🌱 WebSockets — `websockets.adoc` (none)
 - [ ] 🌱 WebRTC (Web Real-Time Communication) — `webrtc.adoc` (tend)
 - [ ] 🌿 White-box testing — `white-box-testing.adoc` (prune)
 - [ ] 🌱 Wicked problem — `wicked-problem.adoc` (entwine)
