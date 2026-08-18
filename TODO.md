@@ -696,7 +696,7 @@ Do NOT push your changes.
 - [x] 🌱 Vega — `vega.adoc` (fertilize)
 - [x] 🌱 Version control — `version-control.adoc` (tend)
 - [x] 🌱 Vertical scaling — `vertical-scaling.adoc` (fertilize)
-- [ ] 🌱 Vertical-slice architecture — `vertical-slice-architecture.adoc` (tend)
+- [x] 🌱 Vertical-slice architecture — `vertical-slice-architecture.adoc` (tend)
 - [ ] 🌱 Vibe coding — `vibe-coding.adoc` (tend)
 - [ ] 🌱 Virtual machine — `virtual-machine.adoc` (tend)
 - [ ] 🌱 Virtualization — `virtualization.adoc` (tend)
