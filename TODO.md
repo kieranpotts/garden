@@ -639,7 +639,7 @@ Do NOT push your changes.
 - [x] 🌱 Structured programming — `structured-programming.adoc` (none)
 - [x] 🌱 Surgical team — `surgical-team.adoc` (none)
 - [x] 🌱 SWEBOK — `swebok.adoc` (fertilize)
-- [ ] 🌱 Synchronization — `synchronization.adoc` (fertilize)
+- [x] 🌱 Synchronization — `synchronization.adoc` (fertilize)
 - [ ] 🌱 Synchronous communication — `synchronous-communication.adoc` (water)
 - [ ] 🌱 Systems Modeling Language (SysML) — `sysml.adoc` (fertilize)
 - [ ] 🌱 System design — `system-design.adoc` (none)
