@@ -1,25 +1,129 @@
 = User story
 
-A short, conversational way to capture a
-*xref:functional-requirements.adoc[functional requirement]*, as distinct from
-the more structured *xref:use-case.adoc[use case]*.
+A user story is a short, plain-language description of a piece of desired
+functionality, told from the perspective of the person who wants or needs it.
+It is a conversational way to capture a
+*xref:functional-requirements.adoc[functional requirement]*, as distinct from the
+more structured *xref:use-case.adoc[use case]*.
+
+The form originated in *xref:extreme-programming.adoc[Extreme Programming (XP)]*
+in the late 1990s, where Kent Beck proposed the story card as a lighter-weight
+alternative to heavyweight requirements specifications. The practice was
+codified for a wider audience by Mike Cohn in _User Stories Applied_ (2004) and
+is now one of the standard artifacts of
+*xref:agile.adoc[agile software development]*.
+
+== The canonical template
 
 The canonical template – "As a <role>, I want <capability>, so that <benefit>"
 – often names a *xref:persona.adoc[persona]* as the role, tying the story to a
-researched user rather than an abstract one.
+researched user rather than an abstract one. The template is sometimes called
+the Connextra format, after the UK consultancy where it was invented in 2001.
 
-// TODO
+----
+As a conference attendee,
+I want to filter sessions by topic,
+so that I can quickly find the sessions most relevant to me.
+----
 
-== Related links
+The template is a thinking aid, not a formality. Its three parts – who the
+story is for, what they need, and why it matters – surface the questions a team
+must answer to have a productive conversation. The written sentence is a
+reminder of that conversation; the full requirement emerges through it.
 
-* https://codingsans.com/blog/user-stories-with-templates[User Stories with Templates]
+== The three Cs
 
-* Mike Cohn's writing on user stories:
+Ron Jeffries characterized a user story by three things, often called the
+three Cs.
 
-** https://www.amazon.com/gp/product/0321205685/[User Stories Applied: For Agile Software Development]
+* *Card.* The written sentence itself – originally a physical index card, now
+  just as often a backlog item in a tracker.
+* *Conversation.* The discussion among product owner, developers, testers,
+  designers, and stakeholders that fleshes out the requirement: the user's
+  goals, the business rules, the edge cases, and the design options.
+* *Confirmation.* The shared, checkable statement of what must be true for the
+  story to be considered done, typically expressed as
+  *xref:acceptance-criteria.adoc[acceptance criteria]*.
 
-** https://www.mountaingoatsoftware.com/presentations/introduction-to-user-stories[Introduction to User Stories]
+A story that is only a card – a sentence on a tracker with no conversation
+behind it – has lost most of its value. The card is the trigger for
+collaboration, not a substitute for it.
 
-** https://www.mountaingoatsoftware.com/agile/user-stories[User Stories and User Story Examples]
+== Good stories
 
-** https://www.mountaingoatsoftware.com/articles/advantages-of-user-stories-for-requirements[Advantages of User Stories for Requirements]
+Bill Wake proposed the INVEST checklist for judging whether a story is well
+formed.
+
+* *Independent.* It can be scheduled and delivered in any order relative to
+  other stories.
+* *Negotiable.* It leaves room for the team to discuss and shape the solution.
+* *Valuable.* It delivers an outcome someone – a user, customer, or business –
+  cares about.
+* *Estimable.* The team can size it well enough to plan around it.
+* *Small.* It can be completed within a single iteration.
+* *Testable.* There is a clear way to confirm it is done.
+
+A story that fails one of these is usually too large, too vague, or framed as
+a task rather than an outcome.
+
+== Epics and splitting
+
+A story that cannot be finished in one iteration is an *epic* – a large story
+held in the backlog as a placeholder until enough is known to split it. The goal
+of splitting is not to multiply backlog items but to produce work the team can
+finish and learn from. Vertical slicing – splitting along the user-journey or
+business-rule axis rather than by technical layer – keeps each resulting story
+independently valuable, so that delivering it is real progress rather than a
+partially complete feature.
+
+== Stories, acceptance criteria, and executable specifications
+
+A story rarely stands alone. The *confirmation* part of the three Cs is most
+often a set of acceptance criteria attached to the story, sometimes written as
+*xref:gherkin.adoc[Gherkin]* Given/When/Then scenarios. Scenarios written this
+way double as executable specifications in
+*xref:behavior-driven-development.adoc[behavior-driven development (BDD)]* and
+*xref:specification-by-example.adoc[specification by example]*, which formalize
+the conversation around the story into living documentation that the build can
+verify.
+
+== Pitfalls
+
+The most common failure is treating the written story as the requirement. The
+card is a reminder; the requirement emerges from the conversation it prompts. A
+backlog full of terse "As a user, I want X, so that Y" sentences, with no
+accompanying discussion or acceptance criteria, is a specification document in
+disguise – and a thin one.
+
+Other recurring pitfalls include writing stories from the product owner's
+perspective when the product owner is not the user, splitting stories along
+technical layers (frontend, backend, database) so that no slice is
+independently deliverable, and forcing every backlog item into story form when
+technical work, spikes, or chores are better named for what they are.
+
+== See also
+
+* xref:functional-requirements.adoc[*Functional requirements*]
+* xref:use-case.adoc[*Use case*]
+* xref:persona.adoc[*Persona*]
+* xref:acceptance-criteria.adoc[*Acceptance criteria*]
+* xref:behavior-driven-development.adoc[*Behavior-driven development*]
+* xref:gherkin.adoc[*Gherkin*]
+* xref:specification-by-example.adoc[*Specification by example*]
+* xref:extreme-programming.adoc[*Extreme Programming (XP)*]
+* xref:agile.adoc[*Agile software development*]
+* xref:requirements-engineering.adoc[*Requirements engineering*]
+
+== References
+
+* Cohn, M. (2004). _User Stories Applied: For Agile Software Development_.
+  Addison-Wesley.
+* Jeffries, R. (2001).
+  https://ronjeffries.com/xprog/articles/expcardconversationconfirmation/[Card,
+  Conversation, Confirmation].
+* Wake, W. (2003).
+  https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/[INVEST in
+  Good Stories and Smart Tasks].
+* Cohn, M. _User Stories_.
+  https://www.mountaingoatsoftware.com/agile/user-stories[Mountain Goat
+  Software].
