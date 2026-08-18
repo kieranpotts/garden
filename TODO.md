@@ -651,7 +651,7 @@ Do NOT push your changes.
 
 - [x] 🌱 Task queue — `task-queue.adoc` (fertilize)
 - [x] 🌱 TCP — `tcp.adoc` (tidy)
-- [ ] 🌱 Technical debt — `technical-debt.adoc` (fertilize)
+- [x] 🌱 Technical debt — `technical-debt.adoc` (fertilize)
 - [ ] 🌱 Telemetry — `telemetry.adoc` (water)
 - [ ] 🌱 Tesler's law — `teslers-law.adoc` (fertilize)
 - [ ] 🌱 Test-driven development — `test-driven-development.adoc` (tend)
