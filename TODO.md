@@ -608,7 +608,7 @@ Do NOT push your changes.
 - [x] 🌱 Software architecture — `software-architecture.adoc` (fertilize)
 - [x] 🌱 Software-as-a-service (SaaS) — `software-as-a-service.adoc` (none)
 - [x] 🌱 Software assurance — `software-assurance.adoc` (fertilize)
-- [ ] 🌱 Software bloat — `software-bloat.adoc` (none)
+- [x] 🌱 Software bloat — `software-bloat.adoc` (none)
 - [ ] 🌿 Software craftsmanship — `software-craftsmanship.adoc` (water)
 - [ ] 🌱 Software quality — `software-quality.adoc` (fertilize)
 - [ ] 🌱 Software rot — `software-rot.adoc` (water)
