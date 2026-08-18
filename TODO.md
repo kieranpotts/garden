@@ -694,7 +694,7 @@ Do NOT push your changes.
 - [x] 🌱 Value stream management — `value-stream-management.adoc` (tend)
 - [x] 🌱 Vector database — `vector-database.adoc` (fertilize)
 - [x] 🌱 Vega — `vega.adoc` (fertilize)
-- [ ] 🌱 Version control — `version-control.adoc` (tend)
+- [x] 🌱 Version control — `version-control.adoc` (tend)
 - [ ] 🌱 Vertical scaling — `vertical-scaling.adoc` (fertilize)
 - [ ] 🌱 Vertical-slice architecture — `vertical-slice-architecture.adoc` (tend)
 - [ ] 🌱 Vibe coding — `vibe-coding.adoc` (tend)
