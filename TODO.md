@@ -603,7 +603,7 @@ Do NOT push your changes.
 - [x] 🌱 Singleton — `singleton.adoc` (fertilize)
 - [x] 🌱 Site reliability engineering (SRE) — `site-reliability-engineering.adoc` (fertilize)
 - [x] 🌿 Smoke testing — `smoke-testing.adoc` (entwine)
-- [ ] 🌱 SMTP — `smtp.adoc` (fertilize)
+- [x] 🌱 SMTP — `smtp.adoc` (fertilize)
 - [ ] 🌱 Snapshot tests — `snapshot-tests.adoc` (fertilize)
 - [ ] 🌱 Software architecture — `software-architecture.adoc` (fertilize)
 - [ ] 🌱 Software-as-a-service (SaaS) — `software-as-a-service.adoc` (none)

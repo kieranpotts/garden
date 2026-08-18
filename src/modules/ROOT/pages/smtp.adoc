@@ -1,13 +1,105 @@
 = SMTP
 
-////
+The *Simple Mail Transfer Protocol (SMTP)* is an application-layer protocol
+for transmitting electronic mail between hosts over a TCP/IP network. It is a
+xref:osi-model.adoc[*Layer 7*] protocol that runs over xref:tcp.adoc[*TCP*],
+and it governs only the *push* side of email: a client, typically a mail
+transfer agent, sends messages to a server for onward delivery or final
+handoff to a recipient's mailbox. SMTP does not retrieve mail from a mailbox,
+nor does it render or display messages to a user.
 
-𝗦𝗠𝗧𝗣
-𝗪𝗵𝗮𝘁: Simple Mail Transfer Protocol enables email transmission.
-𝗛𝗼𝘄:
-- Works alongside POP3 and IMAP for email delivery and retrieval.
-- Implements security features like SPF, DKIM, and DMARC.
-𝗪𝗵𝗲𝗿𝗲:
-- Operates on ports 25 (standard) and 587 (TLS) for secure email communication.
+SMTP was first defined in RFC 788 in 1981 and stabilized in its modern form by
+RFC 5321. It predates the web and remains the only widely deployed protocol
+for inter-domain email exchange on the internet. Every message that crosses
+from one mail provider to another, from a company mail server to a public
+provider, travels as a sequence of SMTP transactions between mail transfer
+agents (MTAs).
 
-////
+== Role in the email pipeline
+
+Email delivery is split across several protocols, and SMTP occupies the
+transmission stage only.
+
+* *Submission.* A mail client, a mail user agent (MUA), hands a message to an
+  outgoing MTA. This submission step uses SMTP, conventionally on port 587,
+  authenticated with the sender's credentials.
+* *Relay.* The sender's MTA looks up the recipient domain's mail exchanger
+  (MX) records via xref:dns.adoc[*DNS*] and opens an SMTP connection to the
+  destination MTA to transfer the message.
+* *Final delivery.* The destination MTA writes the message into the
+  recipient's mailbox. From here SMTP's job is done.
+* *Retrieval.* The recipient's MUA fetches the message from the mailbox using
+  a separate protocol, traditionally *POP3* or *IMAP*, never SMTP.
+
+The split is deliberate. SMTP is a one-way push protocol with no notion of a
+mailbox a client can read from, so retrieval is left to POP3 and IMAP, which
+are themselves outside SMTP's scope.
+
+== Conversation model
+
+An SMTP session is a text-based, request-and-response conversation on a
+single TCP connection, closer in spirit to xref:http.adoc[*HTTP*] than to a
+binary wire format. The client issues commands such as `HELO` or `EHLO`,
+`MAIL FROM`, `RCPT TO`, and `DATA`, and the server replies with
+three-digit status codes whose first digit indicates the class of response.
+The message body is sent as a block terminated by a line containing a single
+period, with lines beginning with a period byte-stuffed to avoid premature
+termination.
+
+== Ports
+
+SMTP is associated with three well-known ports, each tied to a distinct
+purpose rather than to versions of the protocol.
+
+* Port `25` is the classic MTA-to-MTA port, used for relay between mail
+  servers. It carries unencrypted SMTP by default and is the port that
+  xref:firewalls.adoc[*firewalls*] and mail providers most heavily filter to
+  deter unsolicited bulk email.
+* Port `587` is the submission port, used by MUAs to hand messages to their
+  outgoing MTA. It expects xref:authentication.adoc[*authentication*] and is
+  the modern default for clients sending mail.
+* Port `465` carries SMTP over TLS, the SMTPS wrapper, and is the implicit-TLS
+  counterpart to the STARTTLS upgrade used on ports 25 and 587.
+
+The cleartext default on port 25 reflects the protocol's 1980s origin.
+STARTTLS allows an SMTP connection to negotiate TLS in-band, upgrading an
+existing cleartext connection to an encrypted one, and is the mechanism by
+which ports 25 and 587 gain confidentiality in modern deployments.
+
+== Sender authentication and anti-spoofing
+
+SMTP itself carries no built-in guarantee that a message's `From` address
+reflects who actually sent it. The protocol's original trust model assumed
+cooperative operators, which is inadequate on the open internet and is the
+reason email xref:spoofing.adoc[*spoofing*] and phishing are possible at all.
+Three layered standards, none of them part of SMTP proper, close that gap by
+letting a receiving MTA verify that a message genuinely originated from the
+domain it claims to.
+
+* *SPF* (Sender Policy Framework) lets a domain publish, via DNS TXT records,
+  the set of IP addresses authorized to send mail on its behalf. The receiver
+  checks the connecting IP against that policy.
+* *DKIM* (DomainKeys Identified Mail) attaches a cryptographic signature to
+  selected message headers and body, keyed to a public key published in DNS.
+  The receiver verifies the signature to confirm the message was sent by the
+  domain and was not altered in transit.
+* *DMARC* (Domain-based Message Authentication, Reporting, and Conformance)
+  ties SPF and DKIM together with a published policy that tells receivers what
+  to do when authentication fails: report, quarantine, or reject. DMARC also
+  adds alignment checks between the visible `From` domain and the
+  authenticated domains.
+
+The three are complementary. SPF authenticates the transmission path, DKIM
+authenticates the message content, and DMARC specifies the receiving policy
+and feeds back reports to the sending domain. None is sufficient alone, and
+large providers increasingly reject mail that fails these checks.
+
+== See also
+
+* xref:tcp.adoc[*TCP*]
+* xref:osi-model.adoc[*OSI model*]
+* xref:http.adoc[*HTTP*]
+* xref:dns.adoc[*DNS*]
+* xref:firewalls.adoc[*Firewalls*]
+* xref:authentication.adoc[*Authentication*]
+* xref:spoofing.adoc[*Spoofing*]
