@@ -617,7 +617,7 @@ Do NOT push your changes.
 - [x] 🌱 Specification by example — `specification-by-example.adoc` (fertilize)
 - [x] 🌱 Spiral model — `spiral-model.adoc` (fertilize)
 - [x] 🌱 Spoofing — `spoofing.adoc` (tend)
-- [ ] 🌱 Spring Framework — `spring-framework.adoc` (entwine)
+- [x] 🌱 Spring Framework — `spring-framework.adoc` (entwine)
 - [ ] 🌱 SQL — `sql.adoc` (water)
 - [ ] 🌱 SQL injection — `sql-injection.adoc` (fertilize)
 - [ ] 🌱 SSADM — `ssadm.adoc` (fertilize)
