@@ -676,7 +676,7 @@ Do NOT push your changes.
 ## U
 
 - [x] 🌱 Ubiquitous language — `ubiquitous-language.adoc` (fertilize)
-- [ ] 🌱 UDP — `udp.adoc` (tend)
+- [x] 🌱 UDP — `udp.adoc` (tend)
 - [ ] 🌱 Unified Modeling Language (UML) — `uml.adoc` (fertilize)
 - [ ] 🌱 Unified Process — `unified-process.adoc` (fertilize)
 - [ ] 🌱 Uniform access principle — `uniform-access-principle.adoc` (fertilize)
