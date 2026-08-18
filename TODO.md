@@ -702,7 +702,7 @@ Do NOT push your changes.
 - [x] 🌱 Virtualization — `virtualization.adoc` (tend)
 - [x] 🌱 Visibility — `visibility.adoc` (water)
 - [x] 🌱 Voice-to-text — `voice-to-text.adoc` (fertilize)
-- [ ] 🌱 Vulnerability databases — `vulnerability-databases.adoc` (fertilize)
+- [x] 🌱 Vulnerability databases — `vulnerability-databases.adoc` (fertilize)
 
 ## W
 
