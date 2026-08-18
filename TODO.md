@@ -709,7 +709,7 @@ Do NOT push your changes.
 - [x] 🌱 Walking skeleton — `walking-skeleton.adoc` (tend)
 - [x] 🌱 Waterfall (aka. stepwise) model — `waterfall-model.adoc` (fertilize)
 - [x] 🌱 Ways of working — `ways-of-working.adoc` (water)
-- [ ] 🌱 Web-oriented architecture — `web-oriented-architecture.adoc` (water)
+- [x] 🌱 Web-oriented architecture — `web-oriented-architecture.adoc` (water)
 - [ ] 🌱 Webhook — `webhook.adoc` (entwine)
 - [ ] 🌱 WebSockets — `websockets.adoc` (none)
 - [ ] 🌱 WebRTC (Web Real-Time Communication) — `webrtc.adoc` (tend)

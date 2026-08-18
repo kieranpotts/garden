@@ -1,10 +1,19 @@
 = Web-oriented architecture (WOA)
 
-Web-oriented architecture was coined in 2006 by Nick Gall of the Gartner Group.
-It is described as an extension of
-*xref:service-oriented-architecture.adoc[service-oriented architecture (SOA)]*
+Web-oriented architecture (WOA) was coined in 2006 by Nick Gall of the Gartner
+Group. It is described as an extension of
+xref:service-oriented-architecture.adoc[*service-oriented architecture (SOA)*]
 but scoped specifically to web-based applications, of which
-*xref:mashup.adoc[mashups]* are a characteristic example.
+xref:mashup.adoc[*mashups*] are a characteristic example. Gall condensed the
+style into the shorthand formula "WOA = SOA + WWW + REST".
+
+WOA emerged as a counterweight to the WS-* family of specifications (SOAP,
+WSDL, UDDI and their successors) that dominated enterprise SOA in the
+mid-2000s. Gartner argued that those specifications prioritised *implementation
+neutrality* – abstracting away the details of specific middleware – at the
+expense of *application neutrality*, the property that makes interfaces
+genuinely shareable across unrelated systems. Gall titled the blog post that
+introduced the published research "WOA: Putting the Web Back in Web Services".
 
 [quote, Nick Gall, https://web.archive.org/web/20081220010701/http://blogs.gartner.com/nick_gall/2008/11/19/woa-putting-the-web-back-in-web-services/]
 ____
@@ -20,15 +29,96 @@ global network effects through five fundamental generic interface constraints:
 5. Application neutrality.
 ____
 
-The five interface constraints are an extension of the constraints of the
-*uniform interface* of REST as described in
+== The five interface constraints
+
+The first four constraints are the *uniform interface* of
+xref:rest.adoc[*Representational State Transfer (REST)*] as described in
 https://web.archive.org/web/20081218043754/http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm#sec_5_1_5[Roy Fielding's thesis].
-"Application neutrality" is a new constraint, but one that the Gartner team
-considered to be implicit in REST.
+The fifth, application neutrality, is WOA's own addition, though the Gartner
+team considered it implicit in REST and important enough to make a first-class
+constraint.
 
-Thus, web-oriented architecture could be described as a blend of SOA and REST
-constraints. In addition, WOA leverages *xref:http.adoc[HTTP]* and other web
-standards.
+== Application neutrality
 
-*xref:resource-oriented-architecture.adoc[Resource-oriented architecture (ROA)]*
-is a similar architectural style that is also based on REST principles.
+Application neutrality holds that an interface should generalise away
+application-specific details, exposing only generic, application-neutral
+operations. The more application-specific a protocol is, the less shareable it
+is; with sufficient generality, the most powerful kind of reuse becomes
+possible – *serendipitous reuse*, in which an interface is put to a use its
+designers never anticipated. Tim Berners-Lee captured the idea as "Unexpected
+reuse is the value of the Web", and Fielding as "Engineer for serendipity".
+
+Gartner framed the distinction through its *hourglass model* of identifiers,
+formats and protocol operations (IFaPs). Application neutrality widens the top
+of the hourglass – the generic application protocols that consumers see – while
+implementation neutrality widens the bottom – the portable implementation
+protocols that producers hide behind. A wide top, Gartner argued, matters more
+for network effects than a wide bottom. The Atom Publishing Protocol and
+Google's GData Protocol were cited as examples of application-neutral protocols;
+the WS-* stack was the cautionary example, optimised for the bottom of the
+hourglass.
+
+The practical design rule Gall drew from this is *nested generality*: build on
+generic interfaces, and build up interfaces that are only slightly less generic
+than the ones they extend. Embedding application-specific schemas or identifiers
+in a generic envelope – whether Atom or SOAP – defeats the goal.
+
+== The WOA stack
+
+Dion Hinchcliffe gave WOA concrete shape by describing it as a layered stack of
+web technologies, each layer building on the one below.
+
+* *Transfer methods.* REST over xref:http.adoc[*HTTP*], plus peers such as
+  BitTorrent for bulk transfer.
+* *Data representation.* xref:json.adoc[*JSON*], Atom, and similar formats for
+  encoding resource state.
+* *Data portability.* XML, RDF, and related formats that let data move between
+  systems without loss of meaning.
+* *Security.* SSL/TLS for transport security, OpenID for federated identity.
+* *Composition.* Hypermedia and xref:mashup.adoc[*mashups*] that assemble
+  resources from many sources into a single experience.
+* *Distribution.* HTTP and web feeds that carry resources to clients and
+  intermediaries.
+
+The stack illustrates why WOA is described as a blend of SOA and REST
+constraints rather than a new invention. Every layer is an existing web
+standard, and the architecture's contribution is the insistence that they be
+used together, generically.
+
+== Relationship to other styles
+
+xref:resource-oriented-architecture.adoc[*Resource-oriented architecture (ROA)*]
+is a similar architectural style that is also based on REST principles. The two
+terms overlap heavily. WOA was coined from an analyst's perspective and
+emphasises global network effects and mashups, while ROA was framed by
+practitioners (Leonard Richardson and Sam Ruby) as a how-to recipe for building
+RESTful web services with HTTP and URIs.
+
+The REST-over-HTTP approach WOA advocates became the de facto default for
+public web APIs and, by extension, the default external interface of many
+xref:microservices.adoc[*microservice*] systems. The style underpins the API
+economy that emerged in the 2010s, in which exposing data and services
+programmatically creates value not just for direct users but for the wider
+ecosystem of developers who build on top of them.
+
+== See also
+
+* xref:service-oriented-architecture.adoc[*Service-oriented architecture (SOA)*]:
+  the parent style that WOA extends.
+* xref:rest.adoc[*Representational State Transfer (REST)*]: the source of WOA's
+  first four interface constraints.
+* xref:resource-oriented-architecture.adoc[*Resource-oriented architecture (ROA)*]:
+  a practitioner-framed sibling, also built on REST.
+* xref:mashup.adoc[*Mashups*]: the characteristic composition pattern of WOA.
+* xref:http.adoc[*HyperText Transfer Protocol (HTTP)*]: the transfer layer of
+  the WOA stack.
+* xref:microservices.adoc[*Microservices*]: a modern architectural style whose
+  public-facing APIs are typically WOA-shaped.
+* xref:rule-of-least-power.adoc[*Rule of least power*]: the broader principle
+  behind WOA's generic interfaces.
+
+== References
+
+* Nick Gall (2008).
+  https://web.archive.org/web/20081220010701/http://blogs.gartner.com/nick_gall/2008/11/19/woa-putting-the-web-back-in-web-services/_WOA: Putting the Web Back in Web Services_.
+  Gartner Blog Network.
