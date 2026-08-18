@@ -6,7 +6,11 @@ migration strategies, which involve incremental transitions.
 
 Generally, big bang migrations should be avoided due to the high costs and
 risks. However, sometimes they are unavoidable – for example, if a system is
-being recreated on an entirely different technology stack.
+being recreated on an entirely different technology stack. The usual
+alternative is the xref:strangler-fig-pattern.adoc[*strangler fig pattern*],
+which replaces a legacy system slice by slice while the old system keeps
+running, trading a longer migration for a cutover that can fail safely at any
+step.
 
 == Big bang as a deployment pattern
 

@@ -631,7 +631,7 @@ Do NOT push your changes.
 - [x] 🌱 Static analysis — `static-analysis.adoc` (none)
 - [x] 🌱 Stepwise refinement — `stepwise-refinement.adoc` (none)
 - [x] 🌱 Story-driven modeling — `story-driven-modeling.adoc` (fertilize)
-- [ ] 🌱 Strangler fig pattern — `strangler-fig-pattern.adoc` (water)
+- [x] 🌱 Strangler fig pattern — `strangler-fig-pattern.adoc` (fertilize)
 - [ ] 🌱 Strategy pattern — `strategy-pattern.adoc` (fertilize)
 - [ ] 🌱 Stream processing systems — `stream-processing-systems.adoc` (tend)
 - [ ] 🌱 Stress testing — `stress-testing.adoc` (fertilize)

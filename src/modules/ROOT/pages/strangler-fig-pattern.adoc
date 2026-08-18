@@ -1,14 +1,117 @@
 = Strangler fig pattern
 
 The strangler fig pattern is an
-*xref:architectural-pattern.adoc[architectural pattern]* used in programming to
-manage risk when modernizing or rewriting large, monolithic systems. It involves
-wrapping old code and redirecting it to newer code, or logging its use.
+xref:architectural-pattern.adoc[*architectural pattern*] for incrementally
+modernizing or replacing a legacy system. Rather than rebuilding the whole
+system in one go, new functionality is built alongside the old, and traffic is
+redirected to it piece by piece until the legacy system has nothing left to do
+and can be retired.
 
-The name comes from the strangler fig plant, which grows on trees and eventually
-kills them.
+The name comes from the strangler fig, a tropical plant that germinates in the
+upper branches of a host tree, sends aerial roots down to the ground, and
+gradually enlarges until it surrounds and eventually replaces its host. Martin
+Fowler coined the pattern's name in a 2004 essay, having watched a fig strangle
+a tree in his own garden, and proposed it as a metaphor for the way a new
+application can grow around a legacy one and ultimately take it over.
 
-See also xref:backwards-compatibility.adoc[*backwards compatibility*], which the
-pattern preserves by keeping the legacy system running alongside its
-replacement, and xref:micro-frontend.adoc[*micro front-ends*], which are often
-introduced to a legacy front-end through a strangler-fig migration.
+== How it works
+
+The pattern hinges on an interception layer that sits between callers and the
+legacy system. In a web system this is most often a
+xref:reverse-proxy.adoc[*reverse proxy*] or an
+xref:api-gateway.adoc[*API gateway*]; in a single-process application it may be
+an in-process facade or xref:decomposition.adoc[*decomposition*] seam. The
+interception layer is the "fig". Each request that arrives is either routed to
+the new system, for functionality that has already been migrated, or allowed to
+fall through to the legacy system, for everything else.
+
+Migration then proceeds in small, vertical slices. A slice of functionality is
+selected, implemented in the new system, and the routing rules are updated so
+that requests for that slice no longer reach the legacy code. The legacy
+implementation stays in place but goes quiet, until enough slices have moved
+that the legacy system can be deleted. The order in which slices are migrated
+is itself a design decision. Starting with low-risk, high-value slices
+builds confidence in the new system. Leaving the hardest slices (often those
+with the most tangled data) until last risks painting the team into a corner.
+
+== Incremental cutover and rollback
+
+Each migrated slice is an independent cutover, and because the legacy system
+keeps running behind the interception layer, every step is reversible. If a
+slice misbehaves in production, the routing rule that directed traffic to the
+new code can be reverted, and requests fall back to the legacy implementation.
+xref:feature-flags.adoc[*Feature flags*] and traffic-shifting rules let the
+team expose the new slice to a small fraction of users first, expanding
+gradually as confidence grows, in the same spirit as a
+xref:canary-deployment.adoc[*canary deployment*].
+
+This incremental, reversible cutover is the pattern's core advantage over a
+xref:big-bang.adoc[*big-bang*] rewrite. A big-bang cutover concentrates all
+the risk into a single event. The new system must be complete, correct, and
+operationally ready before any of it is useful, and a failure means rolling
+the entire system back to the old one. The strangler fig spreads that risk
+across many small cutovers, each of which can fail safely.
+
+== Trade-offs
+
+The pattern is not free. Running two systems in parallel for the duration of
+the migration roughly doubles operational cost, and the interception layer
+itself is a new component to build, operate, and keep highly available. Some
+legacy systems have no single ingress point to intercept, which makes the
+pattern hard to apply without first introducing one.
+
+The hardest part is usually data. Where the old and new systems share a
+database, or where the new system must produce the same persistent effects as
+the old, the two have to stay consistent while the migration runs. This often
+requires temporary dual-write logic, read-through fallbacks, or a separate
+data migration track, and the strangler fig pattern itself says little about
+how to do that work. xref:event-sourcing.adoc[*Event sourcing*] and the
+*transactional outbox* pattern are sometimes combined with it for exactly this
+reason.
+
+The pattern also rewards patience. Because the legacy system is only removed
+once its last slice has been migrated, a migration that stalls leaves the
+organization paying for two systems indefinitely. The discipline of treating
+retirement of the legacy code as a first-class milestone is what keeps the
+"strangling" from running out of momentum.
+
+== Where it is used
+
+The pattern is most often associated with the front-end, where
+xref:micro-frontend.adoc[*micro front-ends*] are introduced to a legacy
+single-page application by routing new routes to new fragments while the old
+application serves the rest. It applies equally to back-end
+xref:monolith.adoc[*monoliths*]. Strangling a legacy monolith one service at
+a time is a common route to a xref:modular-monolith.adoc[*modular monolith*]
+or a xref:microservices.adoc[*microservices*] deployment.
+
+By keeping the legacy system running alongside its replacement, the pattern
+preserves xref:backwards-compatibility.adoc[*backwards compatibility*]
+throughout the migration, and it is one of the practical techniques by which a
+system keeps its xref:evolvability.adoc[*evolvability*] over a long lifetime
+rather than succumbing to xref:software-rot.adoc[*software rot*].
+
+== See also
+
+* xref:architectural-pattern.adoc[*Architectural pattern*]
+* xref:big-bang.adoc[*Big bang*]
+* xref:reverse-proxy.adoc[*Reverse proxy*]
+* xref:api-gateway.adoc[*API gateway*]
+* xref:decomposition.adoc[*Decomposition*]
+* xref:rollback.adoc[*Rollback*]
+* xref:feature-flags.adoc[*Feature flags*]
+* xref:canary-deployment.adoc[*Canary deployment*]
+* xref:micro-frontend.adoc[*Micro front-end*]
+* xref:microservices.adoc[*Microservices*]
+* xref:monolith.adoc[*Monolith*]
+* xref:modular-monolith.adoc[*Modular monolith*]
+* xref:backwards-compatibility.adoc[*Backwards compatibility*]
+* xref:evolvability.adoc[*Evolvability*]
+* xref:software-rot.adoc[*Software rot*]
+* xref:event-sourcing.adoc[*Event sourcing*]
+
+== References
+
+* Fowler, Martin (2004).
+  https://martinfowler.com/bliki/StranglerFigApplication.html[_StranglerFigApplication_].
+  martinfowler.com.
