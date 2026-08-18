@@ -661,7 +661,7 @@ Do NOT push your changes.
 - [x] 🌱 Throughput (aka. bandwidth) — `throughput.adoc` (tend)
 - [x] 🌱 Time series databases — `time-series-databases.adoc` (water)
 - [x] 🌱 Time-share computing — `time-share-computing.adoc` (fertilize)
-- [ ] 🌱 TOGAF – The Open Group Architecture Framework — `togaf.adoc` (water)
+- [x] 🌱 TOGAF – The Open Group Architecture Framework — `togaf.adoc` (water)
 - [ ] 🌱 Top-down design — `top-down-design.adoc` (tend)
 - [ ] 🌱 Traceability — `traceability.adoc` (fertilize)
 - [ ] 🌱 Tracing — `tracing.adoc` (prune)
