@@ -640,7 +640,7 @@ Do NOT push your changes.
 - [x] 🌱 Surgical team — `surgical-team.adoc` (none)
 - [x] 🌱 SWEBOK — `swebok.adoc` (fertilize)
 - [x] 🌱 Synchronization — `synchronization.adoc` (fertilize)
-- [ ] 🌱 Synchronous communication — `synchronous-communication.adoc` (water)
+- [x] 🌱 Synchronous communication — `synchronous-communication.adoc` (fertilize)
 - [ ] 🌱 Systems Modeling Language (SysML) — `sysml.adoc` (fertilize)
 - [ ] 🌱 System design — `system-design.adoc` (none)
 - [ ] 🌱 System requirements specification (SRS) — `system-requirements-specification.adoc` (water)
