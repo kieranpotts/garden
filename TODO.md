@@ -700,7 +700,7 @@ Do NOT push your changes.
 - [x] 🌱 Vibe coding — `vibe-coding.adoc` (tend)
 - [x] 🌱 Virtual machine — `virtual-machine.adoc` (tend)
 - [x] 🌱 Virtualization — `virtualization.adoc` (tend)
-- [ ] 🌱 Visibility — `visibility.adoc` (water)
+- [x] 🌱 Visibility — `visibility.adoc` (water)
 - [ ] 🌱 Voice-to-text — `voice-to-text.adoc` (fertilize)
 - [ ] 🌱 Vulnerability databases — `vulnerability-databases.adoc` (fertilize)
 
