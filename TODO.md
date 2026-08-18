@@ -713,7 +713,7 @@ Do NOT push your changes.
 - [x] 🌱 Webhook — `webhook.adoc` (entwine)
 - [x] 🌱 WebSockets — `websockets.adoc` (none)
 - [x] 🌱 WebRTC (Web Real-Time Communication) — `webrtc.adoc` (tend)
-- [ ] 🌿 White-box testing — `white-box-testing.adoc` (prune)
+- [x] 🌿 White-box testing — `white-box-testing.adoc` (prune)
 - [ ] 🌱 Wicked problem — `wicked-problem.adoc` (entwine)
 - [ ] 🌱 Wide-column stores — `wide-column-stores.adoc` (fertilize)
 - [ ] 🌿 Wirth's law — `wirths-law.adoc` (tend)

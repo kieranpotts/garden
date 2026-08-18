@@ -11,7 +11,7 @@ analogous to in-circuit testing of nodes on a circuit board.
 
 Because the tester must read and reason about the source code directly, a
 working knowledge of the implementation is a prerequisite. White-box testing
-uses structural techniques as guidelines to examine the code, with the core
+uses structural techniques to examine the code, with the core
 advantage of knowing exactly which lines and branches are being executed and
 what the correct output should be at each point.
 
@@ -64,7 +64,7 @@ testing]* as code changes.
 
 White-box testing's main strength – visibility into the code – is also its main
 cost. Tests written against a specific implementation are tightly coupled to
-when the code is *xref:refactoring.adoc[refactored]*, the tests tend to fail
+it: when the code is *xref:refactoring.adoc[refactored]*, the tests tend to fail
 even when the behavior they describe has not changed, and must be updated to
 match. There is also a risk that the code is rewritten in a way that invalidates
 the assumptions baked into the tests, producing either unnecessary failures or,
@@ -74,7 +74,7 @@ discovered – a gap that black-box testing, driven by specifications rather tha
 code, is better placed to find.
 
 White-box testing also adds complexity to the test effort. It requires at least
-one team member with a deep understanding of the program at the code level, and
+one team member with a deep understanding of the program, and
 exhaustively testing every condition is rarely realistic. On the upside, that
 same code-level visibility makes bottlenecks and side effects easy to spot,
 gives developers introspection into their own logic, and is straightforward to
@@ -93,7 +93,7 @@ audit, closely related to *xref:static-analysis.adoc[static analysis]* and
 == A modern view
 
 A more modern view holds that the dichotomy between white-box and black-box
-testing has blurred and is becoming less relevant. Tests are now derived from
+testing has blurred and is becoming less relevant. Tests are now drawn from
 many documents at varying levels of abstraction – source code, requirements,
 input space descriptions, or design models – and the real question is what
 level of abstraction an abstract test structure (an input space, a graph,
