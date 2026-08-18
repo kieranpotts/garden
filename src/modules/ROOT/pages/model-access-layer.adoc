@@ -153,16 +153,26 @@ LM Studio is a desktop GUI application that provides an "all-in-one" visual
 interface for discovering, downloading, and chatting. While it also provides a
 local server for API access, like Ollama, its primary value is its user-friendly
 dashboard that allows you to tweak hardware settings (like GPU offloading),
-monitor system resources in real-time, and chat with models without needing a
-terminal or other front-end integration. LM Studio integrates with the Hugging
-Face model library, allowing easy access with every available open-weight model.
+monitor system resources in real-time, and chat directly with models without
+needing a terminal or other front-end integration.
+
+LM Studio integrates with the Hugging Face model library, allowing easy access
+with every available open-weight model. Ollama offers a smaller, curated
+selection of open-weight models. Many of the models in its library have been
+optimized for running on different hardware. Ollama is particularly well
+regarded for the way its model management system automatically handles
+quantization — ie. automatically compressing models to run optimally on
+your hardware.
 
 Both Ollama and LM Studio use llama.cpp as their underlying inference engine.
+Ollama is better suited for integration into other applications, offering a
+convenient higher abstraction than llama.cpp. LM Studio is not really intended
+for integration into other applications.
 
 A related but distinct tool is https://openwebui.com/[Open WebUI] — a
 self-hosted, extensible web _front-end_ for LLMs rather than a model manager in
 its own right. It provides a polished, ChatGPT-like browser interface and
-connects to a backend (most commonly Ollama, or any OpenAI-compatible API) to
+connects to a back-end (most commonly Ollama, or any OpenAI-compatible API) to
 serve the actual models. It is often run alongside Ollama to give a local model
 stack a clean, multi-user web UI.
 
