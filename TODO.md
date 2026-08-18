@@ -635,7 +635,7 @@ Do NOT push your changes.
 - [x] 🌱 Strategy pattern — `strategy-pattern.adoc` (fertilize)
 - [x] 🌱 Stream processing systems — `stream-processing-systems.adoc` (tend)
 - [x] 🌱 Stress testing — `stress-testing.adoc` (fertilize)
-- [ ] 🌱 Structured data — `structured-data.adoc` (fertilize)
+- [x] 🌱 Structured data — `structured-data.adoc` (fertilize)
 - [ ] 🌱 Structured programming — `structured-programming.adoc` (none)
 - [ ] 🌱 Surgical team — `surgical-team.adoc` (none)
 - [ ] 🌱 SWEBOK — `swebok.adoc` (fertilize)

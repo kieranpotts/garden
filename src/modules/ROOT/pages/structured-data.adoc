@@ -1,3 +1,72 @@
 = Structured data
 
-// TODO: https://aws.amazon.com/what-is/structured-data/
+*Structured data* is data that is organized according to a predefined schema,
+so that every record conforms to a known shape. The schema fixes the fields,
+their data types, and the relationships between them before any data is
+written, and the store enforces it on every insert and update. The classic
+form is *tabular* data, arranged into rows and columns, but the defining
+trait is the up-front, machine-readable schema rather than any particular
+storage shape.
+
+Structured data is one of three conventional classifications of digital
+data, alongside *semi-structured data*, which carries a self-describing
+shape that can vary from record to record, and *unstructured data*, which
+has no predefined schema at all. The three sit on a spectrum rather than
+behind hard borders, but the structured end is the one a machine can parse
+without first having to infer the shape.
+
+== Where it lives
+
+Structured data is the native form of the
+xref:relational-databases.adoc[*relational database*], which stores records
+as rows in tables linked by foreign keys and queried with
+xref:sql.adoc[*SQL*]. A xref:databases.adoc[*database*] more generally is an
+organized collection of structured or semi-structured data, so the
+classification lines up with the most mature and widely deployed storage
+family. Spreadsheets, CSV files, and fixed-width legacy formats carry the
+same shape outside a database engine.
+
+The schema is what unlocks the guarantees relational systems are built
+around. Because every column has a known type and every row obeys it, the
+store can validate input, enforce xref:data-integrity.adoc[*data integrity*]
+and xref:referential-integrity.adoc[*referential integrity*], and offer the
+xref:acid-principles.adoc[*ACID*] transactional guarantees that
+ad-hoc data shapes cannot. It can also build
+xref:database-indexes.adoc[*indexes*] on columns it knows to exist, which
+is what makes structured data cheap to search by predicate.
+
+== Trade-offs
+
+The price of an up-front schema is rigidity. Adding a field means altering
+the schema, migrating existing rows, and updating every system that reads
+them. Data that does not fit the columns — free text, nested records,
+images — either has to be shoehorned into a blob column or pushed out to a
+less structured store. For workloads that change shape often, or that mix
+many formats, the xref:nosql-databases.adoc[*schema-on-read*] model of NoSQL
+systems is usually the better fit, and the xref:big-data.adoc[*big data*]
+ecosystem is built around platforms that accept structured, semi-structured,
+and unstructured data side by side.
+
+The flip side of that flexibility is that the structured store's guarantees
+are lost. Validation moves to the application, indexes and query planning
+get harder, and the optimizer can no longer rely on a known column shape.
+The choice between structured and less-structured storage is a trade
+between integrity and agility, not a question of one being strictly better.
+
+== See also
+
+* xref:relational-databases.adoc[*Relational databases*]
+* xref:sql.adoc[*SQL*]
+* xref:databases.adoc[*Databases*]
+* xref:nosql-databases.adoc[*NoSQL databases*]
+* xref:data-integrity.adoc[*Data integrity*]
+* xref:acid-principles.adoc[*ACID principles*]
+* xref:database-indexes.adoc[*Database indexes*]
+* xref:big-data.adoc[*Big data*]
+* xref:document-search.adoc[*Document search*]
+* xref:json.adoc[*JSON*]
+
+== References
+
+* Amazon Web Services (n.d.). _What is structured data?_
+  https://aws.amazon.com/what-is/structured-data/
