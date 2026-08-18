@@ -1,3 +1,67 @@
 = YAGNI
 
-// TODO: https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it
+YAGNI – short for "you aren't gonna need it" – is a principle of software
+development that holds a programmer should not add functionality until it is
+actually necessary. The acronym comes from
+*xref:extreme-programming.adoc[Extreme Programming (XP)]*, where it is paired
+with the heuristic *xref:do-the-simplest-thing.adoc[do the simplest thing that
+could possibly work]*. Ron Jeffries, a co-founder of XP, framed it as:
+"Always implement things when you actually need them, never when you just
+foresee that you [will] need them."
+
+The principle is a counterweight to speculative generality. It is tempting to
+anticipate future requirements, generalize early, or build in flexibility for
+scenarios that may never arrive. Each speculative abstraction is code that has
+to be read, tested, and maintained now, in exchange for a benefit that may
+never materialize. *xref:abstraction.adoc[Abstractions]* built ahead of demand
+are usually wrong in shape as well as premature in timing, because the second
+use case that would have informed them has not yet appeared. YAGNI argues for
+letting the next problem reveal itself before paying for its solution.
+
+YAGNI is part of a family of pragmatic *xref:design-principles.adoc[design
+principles]* that share an instinct for deferred commitment. The
+*xref:kiss-principle.adoc[KISS principle]* names simplicity as a goal in its
+own right. *xref:dry.adoc[DRY]* warns against duplicating knowledge.
+*xref:premature-optimization.adoc[Premature optimization]* makes the same
+argument about performance. All four push the cost of generality,
+duplication, and tuning past the point at which the need is real.
+
+The principle depends on supporting practices. XP couples YAGNI with
+continuous *xref:refactoring.adoc[refactoring]*, automated unit testing, and
+*xref:continuous-integration.adoc[continuous integration]*. The point is not to
+write the smallest possible code once and leave it. It is to write the minimal
+code that works now, then reshape it as understanding grows. Used without
+refactoring, YAGNI leads to code accreting in whatever shape it was first
+written, which becomes *xref:technical-debt.adoc[technical debt]* rather than
+simplicity. The discipline is in the loop, not in the cut.
+
+YAGNI is also misread in the other direction. "You aren't gonna need it" is
+not a claim that the need will never arrive, only that building for it now is
+the wrong bet. Some capabilities – security controls,
+*xref:backwards-compatibility.adoc[backwards compatibility]* boundaries,
+hard-to-retrofit architectural seams – are expensive or impossible to add
+later, and YAGNI is not a license to ignore them. The principle asks whether
+the cost is justified by a real requirement, not whether the requirement is
+possible to imagine.
+
+== See also
+
+* xref:abstraction.adoc[*Abstraction*]
+* xref:design-principles.adoc[*Design principles*]
+* xref:do-the-simplest-thing.adoc[*Do the simplest thing that could possibly work*]
+* xref:dry.adoc[*DRY*]
+* xref:extreme-programming.adoc[*Extreme Programming (XP)*]
+* xref:kiss-principle.adoc[*KISS principle*]
+* xref:premature-optimization.adoc[*Premature optimization*]
+* xref:refactoring.adoc[*Refactoring*]
+* xref:technical-debt.adoc[*Technical debt*]
+
+== References
+
+* Ron Jeffries, Ann Anderson, Chet Hendrickson (2001). _Extreme Programming
+  Installed_. Addison-Wesley.
+* Kent Beck, Cynthia Andres (2004). _Extreme Programming Explained: Embrace
+  Change_ (2nd ed.). Addison-Wesley.
+* Wikipedia contributors.
+  https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it[_You aren't gonna
+  need it_]. Retrieved 2026-08-18.

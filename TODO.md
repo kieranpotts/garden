@@ -721,5 +721,5 @@ Do NOT push your changes.
 
 ## Y
 
-- [ ] 🌱 YAGNI — `yagni.adoc` (fertilize)
+- [x] 🌱 YAGNI — `yagni.adoc` (fertilize)
 - [ ] 🌳 Yak shaving — `yak-shaving.adoc` (none)
