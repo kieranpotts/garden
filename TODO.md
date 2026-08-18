@@ -665,7 +665,7 @@ Do NOT push your changes.
 - [x] 🌱 Top-down design — `top-down-design.adoc` (tend)
 - [x] 🌱 Traceability — `traceability.adoc` (fertilize)
 - [x] 🌱 Tracing — `tracing.adoc` (prune)
-- [ ] 🌱 Transactional databases — `transactional-databases.adoc` (water)
+- [x] 🌱 Transactional databases — `transactional-databases.adoc` (water)
 - [ ] 🌱 Transaction — `transaction.adoc` (fertilize)
 - [ ] 🌱 Transformer architecture — `transformer.adoc` (tend)
 - [ ] 🌱 Trivial Graph Format (TGF) — `tgf.adoc` (fertilize)
