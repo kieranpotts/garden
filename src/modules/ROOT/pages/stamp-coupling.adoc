@@ -3,12 +3,84 @@
 Stamp coupling is a type of *xref:coupling.adoc[coupling]* in software design
 where a module is dependent on a data structure or a composite data type, making
 the module dependent on a specific structure of data rather than just the data
-itself.
+itself. The term comes from the structured design literature of Myers and the
+Stevens–Myers–Constantine paper, which also labels it *data-structure
+coupling*. It sits between data coupling, the weakest acceptable form in which
+modules share only the scalar values they actually use, and the stronger
+control and common coupling, in which one module dictates another's logic or
+both reach into a shared global area.
 
-Stamp coupling is considered a weak form of coupling, but it can still lead to
-issues if not managed properly.
+The defining feature is that the dependent module receives a whole composite
+structure, such as a record, struct, or object, but uses only some of its
+fields. It is coupled not to the data it needs but to the shape of the larger
+structure that happens to carry it. Any change to that structure, even to
+fields the module never reads, can force a recompile, a retest, or a matching
+edit at the call site. The module also gains access to data it has no reason to
+see, which is a small breach of *xref:encapsulation.adoc[encapsulation]* and a
+quiet encouragement to start using that data later and so tighten the coupling
+further.
+
+A typical example is a shipping-cost function that takes a full `Customer`
+record but reads only `Customer.address`. It now depends on every field of
+`Customer`, including billing details, account status, and marketing
+preferences, even though none of them enter the calculation. When `Customer`
+grows a new field, the function is rebuilt along with it. The same shape
+appears whenever a group of fields travels from call to call as a bundle, a
+*data clump*, the smell that the same cluster of parameters is begging to be
+extracted into a named type.
 
 xref:connascence.adoc[*Connascence*] refines this idea further. Stamp coupling
-typically manifests as connascence of position or connascence of type, depending
-on whether the dependent module relies on the order of the structure's fields or
-merely its shape.
+typically manifests as connascence of position or connascence of type,
+depending on whether the dependent module relies on the order of the
+structure's fields or merely its shape. A function that reads the third field
+of a tuple is connascent in position. One that pattern-matches on a record's
+named fields is connascent only in type. Connascence of type is weaker and
+easier to refactor. Adding a new field to the record does not break existing
+callers, but removing or renaming one does.
+
+== Reducing stamp coupling
+
+The usual remedy is to pass only the data the consumer needs. The shipping-cost
+function should take an `Address`, or just the city and country strings, rather
+than a whole `Customer`. That narrows the dependency to the smallest structure
+that carries the required data, the data-structure analog of the
+xref:interface-segregation-principle.adoc[*interface segregation principle*],
+which asks clients to depend only on the operations they use. Where several
+callers share the same narrow bundle, extracting a small value object for the
+bundle turns a repeated *data clump* into a named type and keeps the coupling
+local to it.
+
+A second move is to relocate behavior into the structure itself, so that
+callers ask the object to act rather than reading its fields and computing on
+them. This is the *tell, don't ask* idiom of
+xref:object-oriented-programming.adoc[*object-oriented programming*]. A
+`Customer` that exposes `shippingCost()` instead of handing out its address
+lets callers depend on a method, not on the shape of the record behind it, and
+the structure is free to change as long as the method's contract holds. Both
+moves are concrete acts of xref:decoupling.adoc[*decoupling*] and are applied
+through ordinary xref:refactoring.adoc[*refactoring*].
+
+Some forms of stamp coupling are deliberate. A *data transfer object* in a
+distributed system bundles many fields for a single crossing of a process or
+network boundary, where the cost of serialization dwarfs the cost of passing
+one extra field and a narrow message would only multiply the round trips. The
+coupling is real but contained, and the structure is owned by the boundary
+rather than by any single consumer.
+
+== See also
+
+* xref:coupling.adoc[*Coupling*]
+* xref:connascence.adoc[*Connascence*]
+* xref:decoupling.adoc[*Decoupling*]
+* xref:encapsulation.adoc[*Encapsulation*]
+* xref:interface-segregation-principle.adoc[*Interface segregation principle*]
+* xref:object-oriented-programming.adoc[*Object-oriented programming*]
+* xref:refactoring.adoc[*Refactoring*]
+
+== References
+
+- Stevens, W., Myers, G., and Constantine, L. (1974). _Structured Design_.
+  IBM Systems Journal, 13(2).
+- Myers, Glenford (1978). _Composite/Structured Design_. Addison-Wesley.
+- Page-Jones, Meilir (1996). _What Every Programmer Should Know About
+  Object-Oriented Design_. Addison-Wesley.
