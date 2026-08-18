@@ -43,6 +43,13 @@ payload format for webhook messages.
 
 == Security considerations
 
+A webhook producer that delivers to user-supplied URLs is also an SSRF surface.
+Because the server issues outbound requests to whatever callback URL a consumer
+registered, *xref:ssrf.adoc[server-side request forgery (SSRF)]* can be used to
+make it fetch internal targets. Producers should validate and restrict
+destination hostnames before sending, not only validate the consumer's
+signature on the way in.
+
 Since webhook endpoints are publicly accessible URLs, they need to be protected
 against spoofing and replay attacks. Common strategies include:
 
