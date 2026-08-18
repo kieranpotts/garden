@@ -717,7 +717,7 @@ Do NOT push your changes.
 - [x] 🌱 Wicked problem — `wicked-problem.adoc` (entwine)
 - [x] 🌱 Wide-column stores — `wide-column-stores.adoc` (fertilize)
 - [x] 🌿 Wirth's law — `wirths-law.adoc` (tend)
-- [ ] 🌱 Worse is better — `worse-is-better.adoc` (none)
+- [x] 🌱 Worse is better — `worse-is-better.adoc` (none)
 
 ## Y
 
