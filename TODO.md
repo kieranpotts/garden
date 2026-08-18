@@ -706,7 +706,7 @@ Do NOT push your changes.
 
 ## W
 
-- [ ] 🌱 Walking skeleton — `walking-skeleton.adoc` (tend)
+- [x] 🌱 Walking skeleton — `walking-skeleton.adoc` (tend)
 - [ ] 🌱 Waterfall (aka. stepwise) model — `waterfall-model.adoc` (fertilize)
 - [ ] 🌱 Ways of working — `ways-of-working.adoc` (water)
 - [ ] 🌱 Web-oriented architecture — `web-oriented-architecture.adoc` (water)
