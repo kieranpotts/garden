@@ -602,7 +602,7 @@ Do NOT push your changes.
 - [x] 🌱 Single source of truth — `single-source-of-truth.adoc` (fertilize)
 - [x] 🌱 Singleton — `singleton.adoc` (fertilize)
 - [x] 🌱 Site reliability engineering (SRE) — `site-reliability-engineering.adoc` (fertilize)
-- [ ] 🌿 Smoke testing — `smoke-testing.adoc` (entwine)
+- [x] 🌿 Smoke testing — `smoke-testing.adoc` (entwine)
 - [ ] 🌱 SMTP — `smtp.adoc` (fertilize)
 - [ ] 🌱 Snapshot tests — `snapshot-tests.adoc` (fertilize)
 - [ ] 🌱 Software architecture — `software-architecture.adoc` (fertilize)
