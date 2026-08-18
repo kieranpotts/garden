@@ -680,7 +680,7 @@ Do NOT push your changes.
 - [x] 🌱 Unified Modeling Language (UML) — `uml.adoc` (fertilize)
 - [x] 🌱 Unified Process — `unified-process.adoc` (fertilize)
 - [x] 🌱 Uniform access principle — `uniform-access-principle.adoc` (fertilize)
-- [ ] 🌿 Unit testing — `unit-testing.adoc` (entwine)
+- [x] 🌿 Unit testing — `unit-testing.adoc` (entwine)
 - [ ] 🌱 Unix — `unix.adoc` (tend)
 - [ ] 🌱 Unix philosophy — `unix-philosophy.adoc` (fertilize)
 - [ ] 🌱 Uptime — `uptime.adoc` (fertilize)
