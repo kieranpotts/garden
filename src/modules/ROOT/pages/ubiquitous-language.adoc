@@ -1,18 +1,64 @@
 = Ubiquitous language
 
-*xref:domain-driven-design.adoc[Domain-driven design]* gives us the concept of a
-ubiquitous language, which is like a consistent *xref:ontology.adoc[ontology]*
-for software projects.
+The *ubiquitous language* is one of the core ideas of
+xref:domain-driven-design.adoc[*domain-driven design*]. It is a shared
+vocabulary that all of a project's stakeholders agree on and use consistently,
+drawn from the xref:domain.adoc[*domain's*] real-world terminology rather than
+from the technical jargon of any one group.
 
-The idea is that all of a project's stakeholders agree on a common language.
-Rather than the domain experts and the technical experts each using their own
-industry jargon, a shared vocabulary is developed that all parties understand.
+The purpose of the ubiquitous language is to close the gap between how domain
+experts think about the business and how developers encode it. Without a
+shared language the two groups translate constantly, and meaning drifts in
+every handoff. A domain expert says "the policy lapses when a premium goes
+unpaid"; a developer hears "the `Policy` entity transitions to
+`status=LAPSED` when `outstandingBalance > 0`". The two sentences describe the
+same rule, but the second is already a translation, and each further
+restatement risks losing part of the original intent. The ubiquitous language
+makes one set of terms do duty in conversation, requirements, diagrams, tests,
+and source code, so that no translation step is needed and the code reads back
+to the business in its own words.
 
-This common language is sourced from the *xref:domain.adoc[domain's]* real-world
-concepts and terminology, and it is applied ubiquitously throughout the project,
-from the system diagrams via the test suites to objects that make up the source
-code itself. The ubiquitous language is the medium in which the
-*xref:domain-model.adoc[domain model]* is expressed.
+The language is not handed down at the start of a project. It is built up
+through sustained conversation between xref:domain-experts.adoc[*domain
+experts*] and developers – the knowledge-crunching practice through which the
+xref:domain-model.adoc[*domain model*] itself is discovered. Terms are
+proposed, tested against real scenarios, refined, and occasionally discarded
+as the team's understanding deepens. Because the language and the model
+co-evolve, a change in understanding shows up as a renamed class, a reworded
+test, and a new word in the next conversation – all at once.
 
-The ubiquitous language need be nothing more complicated than a glossary of
-nouns and verbs that can be used together to describe all aspects of the domain.
+The "ubiquitous" in the name is the point. The same term is used everywhere:
+in spoken conversation, in documentation, in system diagrams, in test names,
+and in the identifiers of the source code. A concept named `Order` in the
+model is `Order` in the code, `Order` in the tests, and "order" when the team
+talks about it. It is not renamed `OrderEntity` for the database,
+`ProcessOrderService` for the application layer, or `PURCH_0042` in a legacy
+table. Renaming a concept for a technical audience breaks the chain between
+the model and the business, and is exactly what the ubiquitous language exists
+to prevent.
+
+Concretely, the language need be nothing more than a glossary of nouns and
+verbs that together describe the domain: the things that exist, the actions
+that happen, and the rules that govern them. Its value comes not from its
+formality but from its disciplined, ubiquitous use.
+
+A ubiquitous language is scoped to a xref:bounded-context.adoc[*bounded
+context*]. Inside one context a term has one meaning; the same word may carry
+a different meaning in a neighbouring context. "Customer" in a sales context
+and "customer" in a support context can be different model concepts that share
+a name, and that is acceptable as long as each stays within its boundary. The
+ubiquitous language is therefore plural in any non-trivial system: one per
+context, not one for the whole business.
+
+In spirit it resembles a formal xref:ontology.adoc[*ontology*], but it is kept
+lightweight and operational rather than formal and machine-readable. It is
+also distinct from a xref:domain-specific-language.adoc[*domain-specific
+language*], which is a specialized programming or markup syntax – the
+ubiquitous language is a shared vocabulary expressed in whatever language the
+code happens to be written in.
+
+== See also
+
+* xref:domain-driven-design.adoc[*Domain-driven design*]
+* xref:domain-model.adoc[*Domain model*]
+* xref:bounded-context.adoc[*Bounded context*]
