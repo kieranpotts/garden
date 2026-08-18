@@ -654,7 +654,7 @@ Do NOT push your changes.
 - [x] 🌱 Technical debt — `technical-debt.adoc` (fertilize)
 - [x] 🌱 Telemetry — `telemetry.adoc` (fertilize)
 - [x] 🌱 Tesler's law — `teslers-law.adoc` (fertilize)
-- [ ] 🌱 Test-driven development — `test-driven-development.adoc` (tend)
+- [x] 🌱 Test-driven development — `test-driven-development.adoc` (tend)
 - [ ] 🌱 Test harness — `test-harness.adoc` (none)
 - [ ] 🌱 Testing — `testing.adoc` (fertilize)
 - [ ] 🌱 Thread safety — `thread-safety.adoc` (fertilize)
