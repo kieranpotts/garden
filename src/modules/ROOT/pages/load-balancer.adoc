@@ -39,11 +39,12 @@ Load balancers can operate at different layers of the
 
 === Health checks
 
-Load balancers continuously monitor the health of backend servers. If a server
-becomes unresponsive, slow, or returns errors, the load balancer removes it from
-rotation and stops sending it traffic. This is how load balancers provide
-automatic *xref:failover.adoc[failover]*: when a server fails, requests are
-rerouted to the remaining healthy instances with no visible impact on users.
+Load balancers continuously run *xref:system-health-checks.adoc[*health checks*]*
+against backend servers. If a server becomes unresponsive, slow, or returns
+errors, the load balancer removes it from rotation and stops sending it
+traffic. This is how load balancers provide automatic
+*xref:failover.adoc[failover]*: when a server fails, requests are rerouted to
+the remaining healthy instances with no visible impact on users.
 
 === Session persistence
 

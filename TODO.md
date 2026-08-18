@@ -644,7 +644,7 @@ Do NOT push your changes.
 - [x] 🌱 Systems Modeling Language (SysML) — `sysml.adoc` (fertilize)
 - [x] 🌱 System design — `system-design.adoc` (none)
 - [x] 🌱 System requirements specification (SRS) — `system-requirements-specification.adoc` (fertilize)
-- [ ] 🌱 System health checks — `system-health-checks.adoc` (water)
+- [x] 🌱 System health checks — `system-health-checks.adoc` (fertilize)
 - [ ] 🌱 System testing (aka end-to-end or e2e testing) — `system-testing.adoc` (fertilize)
 
 ## T
