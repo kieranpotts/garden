@@ -1,21 +1,110 @@
 = Strategy pattern
 
-// TODO: https://www.geeksforgeeks.org/system-design/strategy-pattern-set-1/
+The strategy pattern is a xref:design-patterns.adoc[*design pattern*] that
+defines a family of interchangeable algorithms, encapsulates each one behind a
+common xref:interfaces.adoc[*interface*], and lets the algorithm a client uses be
+selected and swapped at runtime. It is a behavioral pattern in the Gang of Four
+catalogue, where its intent is to "define a family of algorithms, encapsulate
+each one, and make them interchangeable".
 
-The strategy pattern is a *xref:design-patterns.adoc[design pattern]* used to
-define a series of interchangeable algorithms that can be selected and changed
-at runtime according to business needs. It allows an application to dynamically
-adapt and apply different behaviors under different conditions.
+The pattern turns a varying behavior into a pluggable collaborator, an instance
+of xref:encapsulate-what-changes.adoc[*encapsulating what changes*]. Where a
+class would otherwise branch on some condition to choose how to act, it instead
+holds a strategy object and delegates the work to it. The class no longer
+contains the algorithms it uses, only the knowledge that it has one. Which
+concrete strategy is in place can change between invocations or over the
+object's lifetime, without the surrounding code noticing.
 
-For example, consider a logistics system that can use different shipping cost
-calculation strategies depending on the region and urgency of the shipment. You
-could have a `ShippingCalculationStrategy` interface with several
-implementations like `StandardShipping`, `ExpressShipping`, and
-`InternationalShipping`. The system can dynamically change the shipping
-calculation strategy depending on the destination and delivery speed selected by
-the customer.
+== Mechanism
 
-The strategy pattern is a direct application of the
-*xref:open-closed-principle.adoc[open-closed principle]*. A new algorithm is
-added as a new strategy class, while the context that invokes the strategy is
-closed to modification and never needs to be edited to accept it.
+Three roles make up the pattern. The *strategy interface* declares the operation
+the algorithms share, with a single method in its simplest form. Each *concrete
+strategy* implements that interface with one algorithm. The *context* holds a
+reference to a strategy typed by the interface, delegates the work to it, and is
+the object the rest of the system interacts with.
+
+The context never names a concrete strategy. It is written against the
+abstraction, so which implementation runs is decided by
+xref:polymorphism.adoc[*polymorphism*] and dynamic dispatch at the moment the
+call is made, not by a branch the context maintains. This is the seam that lets
+a new strategy be added without the context being edited, and it is why the
+pattern is a direct application of the
+xref:open-closed-principle.adoc[*open-closed principle*]. A new algorithm arrives
+as a new strategy class, while the context that invokes it stays closed to
+modification.
+
+The strategy is usually supplied to the context by
+xref:dependency-injection.adoc[*dependency injection*], through the context's
+constructor or a setter. Constructor injection fixes the strategy for the
+object's lifetime. Setter injection lets it be reselected at runtime, which is
+the pattern's defining flexibility. A xref:factory.adoc[*factory*] is often
+paired with the strategy to centralize the selection of which concrete strategy
+to instantiate from the inputs that drive the choice.
+
+== Strategy over subclassing
+
+The Gang of Four present the pattern as an alternative to
+xref:inheritance.adoc[*inheritance*]. The naive way to vary an algorithm is to
+subclass the context for each variant and override the method that performs it.
+That scatters the variants across the type hierarchy, fixes the choice at
+construction time rather than at runtime, and forces every new variant to add a
+new subclass, which is exactly the modification the open-closed principle tries
+to avoid.
+
+The strategy pattern keeps the variants as separate objects held by
+xref:composition.adoc[*composition*]. The context has one type rather than one
+per variant, the variants can be exchanged at runtime, and a new variant is a
+new class that implements the strategy interface rather than a new subclass of
+the context. The trade-off is that the context must expose the data the
+algorithm needs through its interface or pass it as arguments, where a subclass
+would have had it by inheritance, so the pattern tends to widen the context's
+surface for the strategies it hosts.
+
+== Example
+
+Consider a logistics system that calculates shipping cost by different rules
+depending on the region and urgency of a shipment. A `ShippingCostStrategy`
+interface declares a single `calculate(shipment)` method, with implementations
+such as `StandardShipping`, `ExpressShipping`, and `InternationalShipping`. An
+`Order` context holds a `ShippingCostStrategy` and delegates the calculation to
+whatever it has been given. The system selects the strategy from the destination
+and delivery speed the customer chose, and the calculation can change between
+orders without the `Order` class being edited.
+
+== Trade-offs
+
+The pattern's cost is the number of small classes it introduces. Every variant
+becomes its own strategy class, plus the interface and the context's delegation.
+For a behavior with only one or two variants that rarely change, this is more
+structure than the problem earns, the kind of speculative generality
+xref:yagni.adoc[*YAGNI*] warns against. A conditional in the context is simpler
+when the variation is small and stable.
+
+The context and its strategies also need to agree on the data they exchange. A
+strategy that needs details the context does not expose forces the context's
+interface to widen. A strategy interface shaped to fit one concrete strategy
+will not accept a second without being edited. An honest interface that carries
+only what the algorithms genuinely need keeps the pattern open to new strategies
+rather than quietly closed by xref:leaky-abstractions.adoc[*leaky abstractions*].
+
+== See also
+
+* xref:design-patterns.adoc[*Design patterns*]
+* xref:open-closed-principle.adoc[*Open-closed principle*]
+* xref:polymorphism.adoc[*Polymorphism*]
+* xref:composition.adoc[*Composition*]
+* xref:inheritance.adoc[*Inheritance*]
+* xref:dependency-injection.adoc[*Dependency injection*]
+* xref:factory.adoc[*Factory*]
+* xref:encapsulate-what-changes.adoc[*Encapsulate what changes*]
+* xref:interfaces.adoc[*Interfaces*]
+* xref:leaky-abstractions.adoc[*Leaky abstractions*]
+* xref:yagni.adoc[*YAGNI*]
+
+== References
+
+* Gamma, Helm, Johnson & Vlissides (1994). _Design Patterns: Elements of
+  Reusable Object-Oriented Software_. Addison-Wesley. The behavioral patterns
+  chapter defines the Strategy pattern.
+* Shvets, A. (2019). _Strategy_. Refactoring.Guru.
+  https://refactoring.guru/design-patterns/strategy
