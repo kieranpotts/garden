@@ -638,7 +638,7 @@ Do NOT push your changes.
 - [x] 🌱 Structured data — `structured-data.adoc` (fertilize)
 - [x] 🌱 Structured programming — `structured-programming.adoc` (none)
 - [x] 🌱 Surgical team — `surgical-team.adoc` (none)
-- [ ] 🌱 SWEBOK — `swebok.adoc` (fertilize)
+- [x] 🌱 SWEBOK — `swebok.adoc` (fertilize)
 - [ ] 🌱 Synchronization — `synchronization.adoc` (fertilize)
 - [ ] 🌱 Synchronous communication — `synchronous-communication.adoc` (water)
 - [ ] 🌱 Systems Modeling Language (SysML) — `sysml.adoc` (fertilize)
