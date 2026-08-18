@@ -1,3 +1,106 @@
 = Systems Modeling Language (SysML)
 
-// TODO
+The Systems Modeling Language (SysML) is a general-purpose
+*xref:modeling.adoc[modeling]* language for systems engineering. It is an
+Object Management Group (OMG) standard, developed jointly with the
+International Council on Systems Engineering (INCOSE), for specifying,
+analyzing, designing, and verifying systems that may include hardware,
+software, information, processes, personnel, and facilities.
+
+SysML is defined as an extension of a subset of the
+*xref:uml.adoc[Unified Modeling Language (UML)]*. It reuses seven of UML's
+diagram kinds and drops the diagrams that are software-centric, such as
+object, communication, deployment, component, composite structure, and
+timing diagrams. Two new diagram kinds are added for systems engineering
+work: the *requirement diagram*, which captures requirements and their
+relationships to the parts of the system that satisfy, verify, or derive
+them, and the *parametric diagram*, which expresses quantitative
+constraints for performance and other engineering analyses. The result is a
+smaller language than UML, with nine diagram types in all.
+
+The central structural concept in SysML is the *block*, a more general unit
+than UML's class. Blocks model any system element — a physical component, a
+software subsystem, a person, a facility — and the relationships between
+them. Block definition diagrams describe the structure of blocks and their
+relationships, while internal block diagrams show the parts and connections
+internal to a single block.
+
+== History
+
+The SysML initiative began in January 2001, when an INCOSE working group on
+model-driven systems design decided to customize UML for systems engineering.
+INCOSE and OMG jointly chartered a Systems Engineering Domain Special
+Interest Group later that year, with the ISO AP 233 workgroup also
+contributing. The SysML Partners, an open source specification team led by
+Cris Kobryn, produced the first draft (v0.9) in January 2005, and the v1.0
+alpha followed in November 2005.
+
+OMG adopted SysML in July 2006 and issued the v1.0 specification as an
+Available Specification in September 2007. The line continued through v1.6,
+issued in November 2019. SysML was also published by the International
+Organization for Standardization as ISO/IEC 19514:2017.
+
+A Request for Proposals for SysML v2 was issued by OMG in December 2017,
+alongside a parallel RFP for a v2 API and services. OMG approved final
+adoption of SysML v2.0 in July 2025 and published the specification in
+September 2025. SysML v2 is a substantial redesign. It replaces the
+UML-profile foundation of v1 with a new metamodel, and it specifies both a
+textual notation and a graphical notation, where v1 was graphical only. The
+textual notation aims to make models easier to author, diff, and manipulate
+programmatically.
+
+== Use in model-based systems engineering
+
+SysML is the dominant modeling language for *model-based systems engineering
+(MBSE)*, the practice of making a formal model of the system the shared
+reference artifact throughout its lifecycle — analysis, design,
+implementation, verification, and validation. The requirement diagram in
+particular supports *xref:requirements-engineering.adoc[requirements
+engineering]* by capturing functional, performance, and interface
+requirements in the same model as the design, and by recording
+*xref:traceability.adoc[traceability]* relationships between requirements and
+the blocks that realize or test them. This is a notable contrast with the
+conventional split between a
+*xref:system-requirements-specification.adoc[system requirements specification
+(SRS)]* document and a separate design.
+
+Because SysML is itself a UML profile in v1, other OMG profiles can sit on
+top of it. The *xref:raaml.adoc[Risk Analysis and Assessment Modeling Language
+(RAAML)]* is published as a SysML profile for safety, reliability, and
+security analyses, and is most relevant to teams building
+*xref:safety-critical-system.adoc[safety-critical systems]* where structured
+analyses must be maintained alongside the design.
+
+== Relationship to other OMG modeling standards
+
+SysML is one of a family of modeling standards maintained by OMG. Its parent
+language, UML, is oriented toward the design of software systems.
+*xref:model-driven-architecture.adoc[Model-driven architecture (MDA)]* is the
+OMG's framework for deriving implementations from UML models through
+transformations, and is concerned with software platforms rather than whole
+engineered systems. SysML complements these by addressing the system as a
+whole, including its non-software parts and the engineering analyses that
+constrain them. Models are exchanged between tools using OMG's XML Metadata
+Interchange (XMI) standard.
+
+== See also
+
+* *xref:modeling.adoc[Modeling]*
+* *xref:uml.adoc[Unified Modeling Language (UML)]*
+* *xref:model-driven-architecture.adoc[Model-driven architecture (MDA)]*
+* *xref:raaml.adoc[Risk Analysis and Assessment Modeling Language (RAAML)]*
+* *xref:safety-critical-system.adoc[Safety-critical system]*
+* *xref:requirements-engineering.adoc[Requirements engineering]*
+* *xref:system-requirements-specification.adoc[System requirements specification (SRS)]*
+* *xref:traceability.adoc[Traceability]*
+
+== References
+
+* Object Management Group (2007). _OMG Systems Modeling Language (OMG SysML)
+  v1.0_. https://www.omg.org/spec/SysML/1.0/
+* International Organization for Standardization (2017). _ISO/IEC 19514:2017 —
+  Information technology — Object management group systems modeling
+  language_.
+* Balmelli, L. (2007). _An Overview of the Systems Modeling Language for
+  Products and Systems Development_. Journal of Object Technology, vol. 6,
+  no. 6, pp. 149–177.
