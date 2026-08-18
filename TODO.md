@@ -699,7 +699,7 @@ Do NOT push your changes.
 - [x] 🌱 Vertical-slice architecture — `vertical-slice-architecture.adoc` (tend)
 - [x] 🌱 Vibe coding — `vibe-coding.adoc` (tend)
 - [x] 🌱 Virtual machine — `virtual-machine.adoc` (tend)
-- [ ] 🌱 Virtualization — `virtualization.adoc` (tend)
+- [x] 🌱 Virtualization — `virtualization.adoc` (tend)
 - [ ] 🌱 Visibility — `visibility.adoc` (water)
 - [ ] 🌱 Voice-to-text — `voice-to-text.adoc` (fertilize)
 - [ ] 🌱 Vulnerability databases — `vulnerability-databases.adoc` (fertilize)
