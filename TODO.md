@@ -685,7 +685,7 @@ Do NOT push your changes.
 - [x] 🌱 Unix philosophy — `unix-philosophy.adoc` (fertilize)
 - [x] 🌱 Uptime — `uptime.adoc` (fertilize)
 - [x] 🌿 Usability testing — `usability-testing.adoc` (tend)
-- [ ] 🌳 Use case — `use-case.adoc` (entwine)
+- [x] 🌳 Use case — `use-case.adoc` (entwine)
 - [ ] 🌱 User-centered design — `user-centered-design.adoc` (fertilize)
 - [ ] 🌱 User story — `user-story.adoc` (fertilize)
 
