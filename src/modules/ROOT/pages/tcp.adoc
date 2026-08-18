@@ -1,11 +1,11 @@
 = Transmission Control Protocol (TCP)
 
-Transmission Control Protocol (TCP) is a *xref:internet-protocol.adoc[Layer 4]*
+Transmission Control Protocol (TCP) is a xref:internet-protocol.adoc[*Layer 4*]
 transport protocol that provides reliable, ordered, and connection-oriented
-delivery of data between two hosts over an *xref:internet-protocol.adoc[IP]*
+delivery of data between two hosts over an xref:internet-protocol.adoc[*IP*]
 network. It is one half of the TCP/IP suite that underpins most internet
-traffic, used by *xref:http.adoc[HTTP/HTTPS]*, email (SMTP), file transfer
-(*xref:ftp.adoc[FTP]*), and *xref:border-gateway-protocol.adoc[BGP]* (which runs
+traffic, used by xref:http.adoc[*HTTP/HTTPS*], email (SMTP), file transfer
+(xref:ftp.adoc[*FTP*]), and xref:border-gateway-protocol.adoc[*BGP*] (which runs
 BGP sessions on port 179).
 
 TCP adds reliability on top of IP's best-effort delivery. IP can drop packets,
@@ -14,29 +14,29 @@ application layer sees a continuous, correctly-ordered byte stream.
 
 == Key features
 
-* Reliable delivery: Every segment is acknowledged by the receiver. If an
+* *Reliable delivery.* Every segment is acknowledged by the receiver. If an
   acknowledgement is not received within a timeout, the sender retransmits the
   segment.
-* Ordered delivery: Each byte is assigned a sequence number. The receiver
+* *Ordered delivery.* Each byte is assigned a sequence number. The receiver
   buffers out-of-order segments and delivers data to the application in the
   correct order.
-* Flow control: The receiver advertises a receive window – the amount of data it
+* *Flow control.* The receiver advertises a receive window – the amount of data it
   can buffer – and the sender limits how much unacknowledged data it keeps in
   flight. This prevents a fast sender from overwhelming a slow receiver.
-* Congestion control: TCP monitors the network for signs of congestion (dropped
-  packets, increased *xref:rtt.adoc[RTT]*) and reduces its send rate accordingly. Algorithms such
+* *Congestion control.* TCP monitors the network for signs of congestion (dropped
+  packets, increased xref:rtt.adoc[*RTT*]) and reduces its send rate accordingly. Algorithms such
   as slow start, congestion avoidance, fast retransmit, and fast recovery
   (CUBIC, BBR in modern kernels) manage this automatically.
-* Error detection: Each TCP segment carries a *xref:checksum.adoc[checksum]*
+* *Error detection.* Each TCP segment carries a xref:checksum.adoc[*checksum*]
   over the header and data. Corrupted segments are discarded and retransmitted.
-* Full-duplex: Data can flow in both directions simultaneously over a single
+* *Full-duplex.* Data can flow in both directions simultaneously over a single
   connection.
 
 == Connection lifecycle
 
 === Three-way handshake (connection establishment)
 
-Before data can be exchanged, a connection is established:
+Before data can be exchanged, a connection is established.
 
 . SYN: Client sends a segment with the SYN flag set and its initial sequence
   number (ISN). . SYN-ACK: Server acknowledges the client's ISN and sends its
@@ -67,13 +67,13 @@ pair.
 TCP's reliability comes at a cost. The handshake, acknowledgements, and
 retransmissions all add latency and overhead. For applications where timeliness
 matters more than guaranteed delivery – real-time audio/video, gaming, DNS
-lookups – *xref:udp.adoc[UDP]* is preferred.
+lookups – xref:udp.adoc[*UDP*] is preferred.
 
 == See also
 
-* *xref:udp.adoc[UDP]*
-* *xref:internet-protocol.adoc[Internet Protocol (IP)]*
-* *xref:border-gateway-protocol.adoc[Border Gateway Protocol (BGP)]*
-* *xref:osi-model.adoc[OSI model]*
-* *xref:http.adoc[HTTP]*
-* *xref:rtt.adoc[Round-trip time (RTT)]*
+* xref:udp.adoc[*UDP*]
+* xref:internet-protocol.adoc[*Internet Protocol (IP)*]
+* xref:border-gateway-protocol.adoc[*Border Gateway Protocol (BGP)*]
+* xref:osi-model.adoc[*OSI model*]
+* xref:http.adoc[*HTTP*]
+* xref:rtt.adoc[*Round-trip time (RTT)*]
