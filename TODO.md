@@ -627,7 +627,7 @@ Do NOT push your changes.
 - [x] 🌱 Stand-in — `stand-in.adoc` (entwine)
 - [x] 🌱 State — `state.adoc` (fertilize)
 - [x] 🌱 Stateful — `stateful.adoc` (none)
-- [ ] 🌱 Stateless — `stateless.adoc` (none)
+- [x] 🌱 Stateless — `stateless.adoc` (none)
 - [ ] 🌱 Static analysis — `static-analysis.adoc` (none)
 - [ ] 🌱 Stepwise refinement — `stepwise-refinement.adoc` (none)
 - [ ] 🌱 Story-driven modeling — `story-driven-modeling.adoc` (water)
