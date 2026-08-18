@@ -634,7 +634,7 @@ Do NOT push your changes.
 - [x] 🌱 Strangler fig pattern — `strangler-fig-pattern.adoc` (fertilize)
 - [x] 🌱 Strategy pattern — `strategy-pattern.adoc` (fertilize)
 - [x] 🌱 Stream processing systems — `stream-processing-systems.adoc` (tend)
-- [ ] 🌱 Stress testing — `stress-testing.adoc` (fertilize)
+- [x] 🌱 Stress testing — `stress-testing.adoc` (fertilize)
 - [ ] 🌱 Structured data — `structured-data.adoc` (fertilize)
 - [ ] 🌱 Structured programming — `structured-programming.adoc` (none)
 - [ ] 🌱 Surgical team — `surgical-team.adoc` (none)

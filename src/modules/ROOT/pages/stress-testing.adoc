@@ -1,3 +1,70 @@
 = Stress testing
 
-// TODO
+Stress testing is a *xref:performance-testing.adoc[performance testing]*
+technique that subjects a system to load beyond its designed
+*xref:capacity.adoc[capacity]* in order to find where, and how, it breaks.
+Where *xref:load-testing.adoc[load testing]* progressively raises demand to
+establish the maximum level the system can sustain while still meeting its
+performance requirements, stress testing pushes past that ceiling
+deliberately, holding the system under extreme conditions to expose its
+failure modes.
+
+The questions stress testing answers are different from those of load
+testing. Load testing asks "how much can it handle?". Stress testing asks
+"what happens when it can handle no more?". The aim is not to validate normal
+behavior but to characterize the system at and beyond its limits: which
+component fails first, how the failure propagates, whether the system degrades
+*xref:graceful-degradation.adoc[gracefully]* or catastrophically, and how long
+it takes to recover once the load is removed.
+
+[IMPORTANT]
+====
+A stress test is only meaningful if the system is observed while it fails.
+Without *xref:observability.adoc[observability]* – *xref:metrics.adoc[metrics]*,
+*xref:monitoring.adoc[monitoring]* and *xref:tracing.adoc[tracing]* – the test
+reveals only that the system broke, not why. The same instrumentation that
+underpins *xref:chaos-engineering.adoc[chaos engineering]* experiments is a
+prerequisite here.
+====
+
+Stress conditions can take several forms. The most common is sustained
+overload: driving concurrent users, request rates, or data volumes beyond the
+system's rated limits and holding them there. *Spike testing* applies an
+abrupt surge rather than a gradual ramp, exposing how the system copes with
+sudden traffic bursts. *Soak testing*, or endurance testing, holds load at or
+near capacity for an extended period, surfacing slow-onset problems such as
+memory leaks, resource exhaustion, or data growth that a short run would miss.
+
+The recovery phase is as much a part of the result as the failure itself. A
+system that breaks but recovers cleanly, within its
+*xref:availability.adoc[availability]* targets, may be acceptable; one that
+breaks and cannot recover without manual intervention is not. For this reason
+stress testing overlaps with *xref:recovery-testing.adoc[recovery testing]*,
+which specifically evaluates how a system returns to a healthy state after a
+failure.
+
+Stress testing is sometimes confused with
+*xref:chaos-engineering.adoc[chaos engineering]*. The two are complementary but
+distinct. Stress testing probes the system's response to excessive load; chaos
+engineering probes its response to failure of its components. A stress test
+that survives confirms the system handles overload; a chaos experiment that
+holds its steady state confirms it handles failure. Together with load
+testing they describe a system's *xref:resilience.adoc[resilience]* more
+completely than any one of them alone.
+
+The results of stress testing inform decisions about
+*xref:scalability.adoc[scalability]*, *xref:auto-scaling.adoc[auto-scaling]*
+policy, *xref:rate-limiting.adoc[rate limiting]* thresholds, and the headroom a
+service must hold in reserve. They also expose whether protective mechanisms
+such as *xref:circuit-breaker.adoc[circuit breakers]*,
+*xref:bulkhead.adoc[bulkheads]* and graceful degradation actually engage when
+they should, or whether they exist only on paper.
+
+== See also
+
+* *xref:performance-testing.adoc[Performance testing]*
+* *xref:load-testing.adoc[Load testing]*
+* *xref:capacity.adoc[Capacity]*
+* *xref:recovery-testing.adoc[Recovery testing]*
+* *xref:chaos-engineering.adoc[Chaos engineering]*
+* *xref:resilience.adoc[Resilience]*
