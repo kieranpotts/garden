@@ -657,7 +657,7 @@ Do NOT push your changes.
 - [x] 🌱 Test-driven development — `test-driven-development.adoc` (tend)
 - [x] 🌱 Test harness — `test-harness.adoc` (none)
 - [x] 🌱 Testing — `testing.adoc` (fertilize)
-- [ ] 🌱 Thread safety — `thread-safety.adoc` (fertilize)
+- [x] 🌱 Thread safety — `thread-safety.adoc` (fertilize)
 - [ ] 🌱 Throughput (aka. bandwidth) — `throughput.adoc` (tend)
 - [ ] 🌱 Time series databases — `time-series-databases.adoc` (water)
 - [ ] 🌱 Time-share computing — `time-share-computing.adoc` (fertilize)
