@@ -610,7 +610,7 @@ Do NOT push your changes.
 - [x] 🌱 Software assurance — `software-assurance.adoc` (fertilize)
 - [x] 🌱 Software bloat — `software-bloat.adoc` (none)
 - [x] 🌿 Software craftsmanship — `software-craftsmanship.adoc` (water)
-- [ ] 🌱 Software quality — `software-quality.adoc` (fertilize)
+- [x] 🌱 Software quality — `software-quality.adoc` (fertilize)
 - [ ] 🌱 Software rot — `software-rot.adoc` (water)
 - [ ] 🌱 SOLID — `solid.adoc` (fertilize)
 - [ ] 🌱 Spatial databases — `spatial-databases.adoc` (water)
