@@ -645,7 +645,7 @@ Do NOT push your changes.
 - [x] 🌱 System design — `system-design.adoc` (none)
 - [x] 🌱 System requirements specification (SRS) — `system-requirements-specification.adoc` (fertilize)
 - [x] 🌱 System health checks — `system-health-checks.adoc` (fertilize)
-- [ ] 🌱 System testing (aka end-to-end or e2e testing) — `system-testing.adoc` (fertilize)
+- [x] 🌱 System testing (aka end-to-end or e2e testing) — `system-testing.adoc` (fertilize)
 
 ## T
 
