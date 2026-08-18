@@ -622,7 +622,7 @@ Do NOT push your changes.
 - [x] 🌱 SQL injection — `sql-injection.adoc` (fertilize)
 - [x] 🌱 SSADM — `ssadm.adoc` (fertilize)
 - [x] 🌱 SSRF (Server-Side Request Forgery) — `ssrf.adoc` (fertilize)
-- [ ] 🌱 Stack language — `stack-language.adoc` (none)
+- [x] 🌱 Stack language — `stack-language.adoc` (none)
 - [ ] 🌱 Stamp coupling — `stamp-coupling.adoc` (water)
 - [ ] 🌱 Stand-in — `stand-in.adoc` (entwine)
 - [ ] 🌱 State — `state.adoc` (fertilize)
