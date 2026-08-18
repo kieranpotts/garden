@@ -682,7 +682,7 @@ Do NOT push your changes.
 - [x] 🌱 Uniform access principle — `uniform-access-principle.adoc` (fertilize)
 - [x] 🌿 Unit testing — `unit-testing.adoc` (entwine)
 - [x] 🌱 Unix — `unix.adoc` (tend)
-- [ ] 🌱 Unix philosophy — `unix-philosophy.adoc` (fertilize)
+- [x] 🌱 Unix philosophy — `unix-philosophy.adoc` (fertilize)
 - [ ] 🌱 Uptime — `uptime.adoc` (fertilize)
 - [ ] 🌿 Usability testing — `usability-testing.adoc` (tend)
 - [ ] 🌳 Use case — `use-case.adoc` (entwine)
