@@ -686,7 +686,7 @@ Do NOT push your changes.
 - [x] 🌱 Uptime — `uptime.adoc` (fertilize)
 - [x] 🌿 Usability testing — `usability-testing.adoc` (tend)
 - [x] 🌳 Use case — `use-case.adoc` (entwine)
-- [ ] 🌱 User-centered design — `user-centered-design.adoc` (fertilize)
+- [x] 🌱 User-centered design — `user-centered-design.adoc` (fertilize)
 - [ ] 🌱 User story — `user-story.adoc` (fertilize)
 
 ## V
