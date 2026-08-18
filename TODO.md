@@ -667,7 +667,7 @@ Do NOT push your changes.
 - [x] 🌱 Tracing — `tracing.adoc` (prune)
 - [x] 🌱 Transactional databases — `transactional-databases.adoc` (water)
 - [x] 🌱 Transaction — `transaction.adoc` (fertilize)
-- [ ] 🌱 Transformer architecture — `transformer.adoc` (tend)
+- [x] 🌱 Transformer architecture — `transformer.adoc` (tend)
 - [ ] 🌱 Trivial Graph Format (TGF) — `tgf.adoc` (fertilize)
 - [ ] 🌱 TPS report — `tps-report.adoc` (entwine)
 - [ ] 🌱 Trunk-based development — `trunk-based-development.adoc` (none)
