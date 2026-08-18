@@ -21,8 +21,9 @@ A typical webhook flow looks like this:
    describing the event.
 4. The consumer processes the payload and returns an HTTP response.
 
-If the consumer returns a non-success status code (or does not respond), the
-producer will typically retry delivery using an exponential backoff strategy.
+If the consumer returns a non-success status code (or does not respond),
+the producer will typically retry delivery using an
+*xref:retry.adoc[exponential backoff strategy]*.
 
 == Conventions
 
@@ -51,7 +52,8 @@ destination hostnames before sending, not only validate the consumer's
 signature on the way in.
 
 Since webhook endpoints are publicly accessible URLs, they need to be protected
-against spoofing and replay attacks. Common strategies include:
+against spoofing and *xref:replay-attack.adoc[replay attacks]*. Common strategies
+include:
 
 * *Signature verification*: The producer signs the payload using a shared secret
   (typically via HMAC-SHA256) and includes the signature in a request header.
@@ -65,3 +67,4 @@ against spoofing and replay attacks. Common strategies include:
 * xref:push-architecture.adoc[*Push architecture*]
 * xref:pull-architecture.adoc[*Pull architecture*]
 * xref:http.adoc[*HyperText Transfer Protocol (HTTP)*]
+* xref:long-polling.adoc[*Long polling*]

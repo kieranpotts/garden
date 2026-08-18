@@ -710,7 +710,7 @@ Do NOT push your changes.
 - [x] 🌱 Waterfall (aka. stepwise) model — `waterfall-model.adoc` (fertilize)
 - [x] 🌱 Ways of working — `ways-of-working.adoc` (water)
 - [x] 🌱 Web-oriented architecture — `web-oriented-architecture.adoc` (water)
-- [ ] 🌱 Webhook — `webhook.adoc` (entwine)
+- [x] 🌱 Webhook — `webhook.adoc` (entwine)
 - [ ] 🌱 WebSockets — `websockets.adoc` (none)
 - [ ] 🌱 WebRTC (Web Real-Time Communication) — `webrtc.adoc` (tend)
 - [ ] 🌿 White-box testing — `white-box-testing.adoc` (prune)
