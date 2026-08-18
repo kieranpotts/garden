@@ -629,7 +629,7 @@ Do NOT push your changes.
 - [x] 🌱 Stateful — `stateful.adoc` (none)
 - [x] 🌱 Stateless — `stateless.adoc` (none)
 - [x] 🌱 Static analysis — `static-analysis.adoc` (none)
-- [ ] 🌱 Stepwise refinement — `stepwise-refinement.adoc` (none)
+- [x] 🌱 Stepwise refinement — `stepwise-refinement.adoc` (none)
 - [ ] 🌱 Story-driven modeling — `story-driven-modeling.adoc` (water)
 - [ ] 🌱 Strangler fig pattern — `strangler-fig-pattern.adoc` (water)
 - [ ] 🌱 Strategy pattern — `strategy-pattern.adoc` (fertilize)
