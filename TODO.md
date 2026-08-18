@@ -664,7 +664,7 @@ Do NOT push your changes.
 - [x] 🌱 TOGAF – The Open Group Architecture Framework — `togaf.adoc` (water)
 - [x] 🌱 Top-down design — `top-down-design.adoc` (tend)
 - [x] 🌱 Traceability — `traceability.adoc` (fertilize)
-- [ ] 🌱 Tracing — `tracing.adoc` (prune)
+- [x] 🌱 Tracing — `tracing.adoc` (prune)
 - [ ] 🌱 Transactional databases — `transactional-databases.adoc` (water)
 - [ ] 🌱 Transaction — `transaction.adoc` (fertilize)
 - [ ] 🌱 Transformer architecture — `transformer.adoc` (tend)

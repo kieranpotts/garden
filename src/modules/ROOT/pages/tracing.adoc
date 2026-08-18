@@ -4,8 +4,8 @@
 
 Tracing is the third pillar of *xref:observability.adoc[observability]*.
 
-A *trace* is like a breadcrumb that follows a single request, and its returning
-response, as it travels through a system.
+A *trace* is like a breadcrumb that follows a single request and its response
+as it travels through a system.
 
 In *xref:distributed-system.adoc[distributed software]*, a trace connects the
 dots between services, tracking the full path of a request as it hops between
@@ -17,20 +17,13 @@ from disparate services.
 
 A single trace ID typically tracks the end-to-end flow of a complete
 *[request-response cycle]*. But it doesn't have to be this way. A trace
-represents a *discrete unit of work*, or a discrete business process, which may
-or may not correlate to a single, complete request-response cycle.
+represents a *discrete unit of work*, or a business process, which may or may
+not correlate to a single, complete request-response cycle.
 
 A trace is composed of one or more *spans*. Each span represents the time taken
 to complete a single, specific operation within the trace. Each span has a
 unique identifier. A span may cover multiple services/components, but more
 commonly each span is associated with an operation within a single service.
-
-____
-┌─────────────────────────┐ └─────────────────────────┘ ┌─────────────────┐
-└─────────────────┘ ┌───────────────────────────┐ └───────────────────────────┘
-┌───────┐ └───────┘ ┌────┐┌──┐ └────┘└──┘ ┌────────────┐ └────────────┘ ┌──┐┌──┐
-└──┘└──┘
-____
 
 Spans can also have *attributes* or *tags*, which add *context* to the span.
 These attributes are what allow you to ask questions of the system.
@@ -67,7 +60,7 @@ critical to understanding the flow of a request.
 Some tracing policies also record a subset of transactions, thus *sampling* only
 a fraction of all the requests made to a system. The aim here would be to
 achieve a representative sample of all requests, enough to provide a good
-overview of system performance and behavior, but without the ability of being
+overview of system performance and behavior, but without being
 able to diagnose issues that occur in any single request.
 
 Thus, use cases for tracing systems vary. Sometimes the business requires that
@@ -76,13 +69,8 @@ understand all the state changes that resulted in a particular outcome. This may
 be necessary for *xref:compliance.adoc[compliance]* reasons, for example. In
 other cases, the business may be more interested in understanding the overall
 performance of the system, and how different services interact with each other.
-In this case, a sampling approach to tracing may be more appropriate.
-
-Tracing is incredibly useful for understanding and optimizing complex software
-systems. It can be particularly useful to retrofit tracing into legacy systems
-that are inherited by new teams. Selective tracing can provide valuable insights
-into the operational dynamics of an application, without needing to gather large
-volumes of data. Developers can use traces to understand how a system behaves in
-the messy real world of production environments, including interactions with
-databases, caches, and external services, and how these things impact the
-overall performance of the system.
+In this case, a sampling approach to tracing may be more appropriate. Tracing can
+also be retrofitted into legacy systems that are inherited by new teams, giving
+those teams a window into how the system behaves in production — including
+interactions with databases, caches, and external services — without needing to
+instrument everything at once.
