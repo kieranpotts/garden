@@ -611,7 +611,7 @@ Do NOT push your changes.
 - [x] 🌱 Software bloat — `software-bloat.adoc` (none)
 - [x] 🌿 Software craftsmanship — `software-craftsmanship.adoc` (water)
 - [x] 🌱 Software quality — `software-quality.adoc` (fertilize)
-- [ ] 🌱 Software rot — `software-rot.adoc` (water)
+- [x] 🌱 Software rot — `software-rot.adoc` (water)
 - [ ] 🌱 SOLID — `solid.adoc` (fertilize)
 - [ ] 🌱 Spatial databases — `spatial-databases.adoc` (water)
 - [ ] 🌱 Specification by example — `specification-by-example.adoc` (fertilize)
