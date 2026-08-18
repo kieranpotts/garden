@@ -707,7 +707,7 @@ Do NOT push your changes.
 ## W
 
 - [x] 🌱 Walking skeleton — `walking-skeleton.adoc` (tend)
-- [ ] 🌱 Waterfall (aka. stepwise) model — `waterfall-model.adoc` (fertilize)
+- [x] 🌱 Waterfall (aka. stepwise) model — `waterfall-model.adoc` (fertilize)
 - [ ] 🌱 Ways of working — `ways-of-working.adoc` (water)
 - [ ] 🌱 Web-oriented architecture — `web-oriented-architecture.adoc` (water)
 - [ ] 🌱 Webhook — `webhook.adoc` (entwine)
