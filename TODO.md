@@ -716,7 +716,7 @@ Do NOT push your changes.
 - [x] 🌿 White-box testing — `white-box-testing.adoc` (prune)
 - [x] 🌱 Wicked problem — `wicked-problem.adoc` (entwine)
 - [x] 🌱 Wide-column stores — `wide-column-stores.adoc` (fertilize)
-- [ ] 🌿 Wirth's law — `wirths-law.adoc` (tend)
+- [x] 🌿 Wirth's law — `wirths-law.adoc` (tend)
 - [ ] 🌱 Worse is better — `worse-is-better.adoc` (none)
 
 ## Y
