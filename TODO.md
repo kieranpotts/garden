@@ -614,7 +614,7 @@ Do NOT push your changes.
 - [x] 🌱 Software rot — `software-rot.adoc` (water)
 - [x] 🌱 SOLID — `solid.adoc` (fertilize)
 - [x] 🌱 Spatial databases — `spatial-databases.adoc` (fertilize)
-- [ ] 🌱 Specification by example — `specification-by-example.adoc` (fertilize)
+- [x] 🌱 Specification by example — `specification-by-example.adoc` (fertilize)
 - [ ] 🌱 Spiral model — `spiral-model.adoc` (fertilize)
 - [ ] 🌱 Spoofing — `spoofing.adoc` (tend)
 - [ ] 🌱 Spring Framework — `spring-framework.adoc` (entwine)
