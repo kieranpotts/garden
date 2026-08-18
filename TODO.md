@@ -619,7 +619,7 @@ Do NOT push your changes.
 - [x] 🌱 Spoofing — `spoofing.adoc` (tend)
 - [x] 🌱 Spring Framework — `spring-framework.adoc` (entwine)
 - [x] 🌱 SQL — `sql.adoc` (fertilize)
-- [ ] 🌱 SQL injection — `sql-injection.adoc` (fertilize)
+- [x] 🌱 SQL injection — `sql-injection.adoc` (fertilize)
 - [ ] 🌱 SSADM — `ssadm.adoc` (fertilize)
 - [ ] 🌱 SSRF (Server-Side Request Forgery) — `ssrf.adoc` (water)
 - [ ] 🌱 Stack language — `stack-language.adoc` (none)
