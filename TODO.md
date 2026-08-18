@@ -663,7 +663,7 @@ Do NOT push your changes.
 - [x] 🌱 Time-share computing — `time-share-computing.adoc` (fertilize)
 - [x] 🌱 TOGAF – The Open Group Architecture Framework — `togaf.adoc` (water)
 - [x] 🌱 Top-down design — `top-down-design.adoc` (tend)
-- [ ] 🌱 Traceability — `traceability.adoc` (fertilize)
+- [x] 🌱 Traceability — `traceability.adoc` (fertilize)
 - [ ] 🌱 Tracing — `tracing.adoc` (prune)
 - [ ] 🌱 Transactional databases — `transactional-databases.adoc` (water)
 - [ ] 🌱 Transaction — `transaction.adoc` (fertilize)
