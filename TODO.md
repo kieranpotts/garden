@@ -712,7 +712,7 @@ Do NOT push your changes.
 - [x] 🌱 Web-oriented architecture — `web-oriented-architecture.adoc` (water)
 - [x] 🌱 Webhook — `webhook.adoc` (entwine)
 - [x] 🌱 WebSockets — `websockets.adoc` (none)
-- [ ] 🌱 WebRTC (Web Real-Time Communication) — `webrtc.adoc` (tend)
+- [x] 🌱 WebRTC (Web Real-Time Communication) — `webrtc.adoc` (tend)
 - [ ] 🌿 White-box testing — `white-box-testing.adoc` (prune)
 - [ ] 🌱 Wicked problem — `wicked-problem.adoc` (entwine)
 - [ ] 🌱 Wide-column stores — `wide-column-stores.adoc` (fertilize)
