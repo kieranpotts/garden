@@ -624,7 +624,7 @@ Do NOT push your changes.
 - [x] 🌱 SSRF (Server-Side Request Forgery) — `ssrf.adoc` (fertilize)
 - [x] 🌱 Stack language — `stack-language.adoc` (none)
 - [x] 🌱 Stamp coupling — `stamp-coupling.adoc` (water)
-- [ ] 🌱 Stand-in — `stand-in.adoc` (entwine)
+- [x] 🌱 Stand-in — `stand-in.adoc` (entwine)
 - [ ] 🌱 State — `state.adoc` (fertilize)
 - [ ] 🌱 Stateful — `stateful.adoc` (none)
 - [ ] 🌱 Stateless — `stateless.adoc` (none)

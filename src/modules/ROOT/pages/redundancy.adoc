@@ -78,7 +78,10 @@ application instances are not truly independent if they read the same
 configuration, run on the same host, depend on the same network switch, or
 share a single *xref:load-balancer.adoc[load balancer]* in front of them.
 Genuine redundancy requires *xref:isolation.adoc[isolation]* between the
-redundant units, or the single point of failure simply moves.
+redundant units, or the single point of failure simply moves. A
+xref:stand-in.adoc[*stand-in*] takes this isolation to the disaster-recovery
+scale: a separate system with different code, data, and infrastructure, so a
+software bug in the primary cannot cascade into it.
 
 Isolation is a complementary design principle. It is about limiting the impact
 of failures so that they don't affect the entire system. For example, if the
