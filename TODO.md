@@ -722,4 +722,4 @@ Do NOT push your changes.
 ## Y
 
 - [x] 🌱 YAGNI — `yagni.adoc` (fertilize)
-- [ ] 🌳 Yak shaving — `yak-shaving.adoc` (none)
+- [x] 🌳 Yak shaving — `yak-shaving.adoc` (none)
