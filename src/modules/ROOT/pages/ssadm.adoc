@@ -1,3 +1,133 @@
 = SSADM
 
-// TODO: https://en.wikipedia.org/wiki/Structured_systems_analysis_and_design_method
+*Structured Systems Analysis and Design Method (SSADM)* is a structured,
+document-led method for analyzing and designing information systems. It was
+developed from 1980 onwards for the Central Computer and Telecommunications
+Agency (CCTA), a UK government office responsible for the use of technology
+across government, and for most of the 1980s and 1990s it was a mandatory
+method for new information system developments in the UK public sector.
+
+SSADM is a particular instance of the wider family of
+xref:structured-programming.adoc[*structured analysis*] and design methods that
+emerged in the 1970s and 1980s. It draws on Larry Constantine's structured
+design, Edward Yourdon's structured method, Michael A. Jackson's Jackson
+Structured Programming, and Tom DeMarco's structured analysis, and it adapted
+their techniques into a single, prescriptive process. It is the most widely
+used expression of the plan-driven, xref:waterfall-model.adoc[*waterfall*]
+approach to systems development that dominated public-sector IT in that era,
+and is often cited as a high-water mark of the
+xref:big-design-up-front.adoc[*big design up-front*] style of working.
+
+The names "Structured Systems Analysis and Design Method" and "SSADM" are
+registered trademarks of the Office of Government Commerce (OGC), a UK Treasury
+office that absorbed the CCTA. The method was developed by consultants at
+Learmonth & Burchett Management Systems, led by John Hall. After Hall and
+Keith Robinson left to found Model Systems, LBMS continued the work under the
+proprietary name LSDM, while the CCTA version evolved in the open as SSADM.
+
+== Stages
+
+SSADM prescribes a fixed sequence of stages, each producing a defined set of
+documents that feed the next. The version 4 standard, published in 1990 and
+the form most practitioners mean by "SSADM", is structured around the following
+stages.
+
+* *Feasibility study.* A condensed analysis and design exercise that asks
+  whether the project is technically possible, financially affordable,
+  organizationally compatible, and ethically acceptable. The output is a
+  formal feasibility study document.
+* *Investigation of the current environment.* The analyst comes to a full
+  understanding of the system as it exists at the start of the project, through
+  interviews, questionnaires, observation, and existing documentation.
+* *Business system options.* A set of candidate directions for the new
+  system, varying from doing nothing to replacing the old system wholesale, is
+  generated and presented to users. The users and analyst together select a
+  single business option.
+* *Requirements specification.* The most complex stage. The analyst builds a
+  full, implementation-independent logical specification of what the new system
+  must do, free from error, ambiguity, and inconsistency.
+* *Technical system options.* Candidate physical implementations are
+  generated and narrowed to two or three for user selection, considering
+  hardware, software, cost, staffing, distribution, and the human-computer
+  interface.
+* *Logical design.* The implementation-independent requirements are refined
+  into a logical design specifying the main methods of interaction, including
+  user dialogues and the update and inquiry processes.
+* *Physical design.* The logical specification is converted into a physical
+  description in terms of real hardware and software, with the data structure
+  optimized to meet size and performance requirements.
+
+== Techniques
+
+SSADM rests on three modeling techniques, applied across the stages above.
+
+*Logical data modelling* identifies, models, and documents the data
+requirements of the system. The result is a
+xref:entity-relationship-diagram.adoc[*data model*] of entities, attributes,
+and relationships – in SSADM terminology the *logical data structure*, which
+other methods would call an entity-relationship diagram. The technique is an
+instance of xref:data-modeling.adoc[*data modeling*].
+
+*Data flow modelling* documents how data moves around the information system.
+It examines the processes that transform data, the data stores that hold it,
+the external entities that send or receive it, and the data flows that connect
+them, drawn as *data flow diagrams*. Data flow modelling complements the
+data-centric logical data model with a behavioral view of the system.
+
+*Entity event modelling* is a two-stranded technique. Entity behavior
+modelling identifies the events that affect each entity and the life history
+in which they occur. Event modelling designs, for each event, the process that
+coordinates the affected entity life histories. The two strands together
+describe the system's dynamic behavior in terms of what it stores.
+
+== Decline and legacy
+
+SSADM was a creature of the mainframe and minicomputer era, and of a public
+procurement model that rewarded comprehensive up-front specification. It sat
+awkwardly against the xref:case.adoc[*computer-aided software engineering
+(CASE)*] tooling built to support it, which was expensive, tightly coupled to
+the method, and slow to adapt. As xref:rad.adoc[*rapid application development
+(RAD)*] methods spread in the early 1990s, the CCTA looked for a successor that
+retained structure without SSADM's heavyweight up-front commitment. In 1995 the
+agency adopted xref:dsdm.adoc[*DSDM*] as its recommended framework for
+RAD-based delivery, and the broader xref:agile.adoc[*agile software
+development*] movement displaced the plan-driven tradition SSADM represented.
+
+The object-oriented wave of the same period also overtook SSADM's
+data-flow-centric modeling. The notations of the Booch, OMT, and OOSE camps
+were consolidated by the Object Management Group into the
+xref:uml.adoc[*Unified Modeling Language (UML)*], and their accompanying
+processes into the Unified Process, leaving SSADM's data flow diagrams and
+entity life histories as artifacts of an earlier tradition. In 2000 the CCTA
+repackaged SSADM as the more modular "Business System Development", but by then
+the method's influence was largely historical.
+
+SSADM's lasting contribution is less the method itself than the discipline it
+imposed. The three-technique model – data, behavior, and process, kept
+consistent against one another and against the requirements – survives in
+modern xref:requirements-engineering.adoc[*requirements engineering*] practice,
+even when the documents and stages that carried it have fallen out of use.
+
+== See also
+
+* xref:waterfall-model.adoc[*Waterfall model*]
+* xref:big-design-up-front.adoc[*Big design up-front*]
+* xref:case.adoc[*Computer-aided software engineering (CASE)*]
+* xref:rad.adoc[*Rapid application development (RAD)*]
+* xref:dsdm.adoc[*DSDM*]
+* xref:agile.adoc[*Agile software development*]
+* xref:data-modeling.adoc[*Data modeling*]
+* xref:entity-relationship-diagram.adoc[*Entity relationship diagram (ERD)*]
+* xref:uml.adoc[*Unified Modeling Language (UML)*]
+* xref:requirements-engineering.adoc[*Requirements engineering*]
+* xref:structured-programming.adoc[*Structured programming*]
+
+== References
+
+* Goodland, Mike; Riha, Karel (1999). "History of SSADM". _SSADM – an
+  Introduction_.
+* Downs, Ed; Clare, Peter; Coe, Ian (1992). _Structured Systems Analysis and
+  Design Method: Application and Context_. Prentice Hall. ISBN 9780138536985.
+* Weaver, Philip L.; Lambrou, Nick; Walkley, Matthew (2002). _Practical SSADM
+  Version 4+: A Complete Tutorial Guide_ (3rd ed.). Pitman Publishing.
+  ISBN 9780273655756.
