@@ -658,7 +658,7 @@ Do NOT push your changes.
 - [x] 🌱 Test harness — `test-harness.adoc` (none)
 - [x] 🌱 Testing — `testing.adoc` (fertilize)
 - [x] 🌱 Thread safety — `thread-safety.adoc` (fertilize)
-- [ ] 🌱 Throughput (aka. bandwidth) — `throughput.adoc` (tend)
+- [x] 🌱 Throughput (aka. bandwidth) — `throughput.adoc` (tend)
 - [ ] 🌱 Time series databases — `time-series-databases.adoc` (water)
 - [ ] 🌱 Time-share computing — `time-share-computing.adoc` (fertilize)
 - [ ] 🌱 TOGAF – The Open Group Architecture Framework — `togaf.adoc` (water)
