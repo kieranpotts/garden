@@ -1,0 +1,31 @@
+= You Only Look Once (YOLO)
+
+*You Only Look Once (YOLO)* is a family of real-time xref:computer-vision.adoc[*object detection*] models that locate and classify multiple objects in a single forward pass of a neural network. Joseph Redmon and colleagues introduced it in 2016 as a break from the two-stage detectors that dominated the field at the time, which first proposed candidate regions and then classified each one separately. YOLO instead treats detection as a single regression problem, predicting bounding boxes and class probabilities directly from the whole image in one pass – hence the name.
+
+== How it works
+
+YOLO divides the input image into a grid. Each grid cell is responsible for predicting a fixed number of bounding boxes, a confidence score for each box reflecting how likely it is to contain an object, and the class probabilities for whatever it does contain. Because every cell makes its predictions from the same single pass over the full image, the network has visibility of global context that region-proposal methods lack, which reduces the rate at which it mistakes background patterns for objects.
+
+This single-pass design is the source of YOLO's defining trade-off. Earlier detectors such as R-CNN and its successors traded speed for accuracy, running a classifier over thousands of proposed regions per image. YOLO sacrifices some of that per-object accuracy, particularly on small or overlapping objects, in exchange for the speed to run well above video frame rates on suitable hardware, making it practical for live video rather than only static images.
+
+== Evolution
+
+The architecture has been through many revisions since the original paper, commonly labelled YOLOv1 through the version numbers in current use, developed by a mix of the original authors and other open-source contributors after Redmon stepped back from the work. Successive versions have improved accuracy and added features, such as anchor boxes and, later, anchor-free prediction, while keeping the single-pass philosophy that defines the family. This makes "YOLO" as much a lineage of models sharing an architectural approach as it is one fixed network.
+
+== Applications
+
+Real-time detection speed makes YOLO a common choice wherever a system must react to what it sees without perceptible lag: autonomous vehicles identifying pedestrians and other vehicles, robotics, security and surveillance systems, live video analytics, and retail applications such as shelf and inventory monitoring. Where the task can tolerate slower inference in exchange for higher accuracy, such as offline analysis of medical scans, a two-stage detector may still be preferred over a single-pass model like YOLO.
+
+''''
+
+== See also
+
+* xref:computer-vision.adoc[*Computer vision*]
+* xref:machine-learning.adoc[*Machine learning*]
+* xref:algorithms.adoc[*Algorithms*]
+
+== References
+
+* Redmon, Divvala, Girshick & Farhadi (2016).
+  https://arxiv.org/abs/1506.02640[_You Only Look Once: Unified, Real-Time Object Detection_].
+  arXiv:1506.02640.
