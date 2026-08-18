@@ -1,1 +1,92 @@
 = Time-share computing
+
+Time-share computing is an early computing model in which a single expensive
+mainframe is shared among many users, each given a short slice of processor time
+in turn. By rapidly multiplexing the CPU across users, the system gives each one
+the impression of having the machine to themselves. Time-sharing was the model
+that first made computing *interactive*: a user typed at a terminal and got a
+response back in seconds, rather than submitting a job and waiting hours for
+the result.
+
+The model emerged in the late 1950s and 1960s as a reaction against
+*xref:batch-processing.adoc[batch processing]*, the dominant paradigm of the day.
+Under batch processing, a programmer punched cards, handed the deck to an
+operator, and waited for the next batch run to see the output. Turnaround was
+measured in hours, and a single typo cost another full wait. Time-sharing
+replaced that loop with a terminal session. The user typed, the system
+responded, and the edit-run cycle collapsed to minutes.
+
+Several landmark systems established the model.
+
+* *MIT's Compatible Time-Sharing System (CTSS)*, first demonstrated in 1961 on an
+  IBM 709, was the first time-sharing system to be used productively. It showed
+  that one machine could serve multiple interactive users at once.
+
+* *The Dartmouth Time-Sharing System (DTSS)*, launched in 1964, brought
+  time-sharing to a broad academic audience and introduced the BASIC language,
+  designed for students rather than professional programmers.
+
+* *Multics*, begun in 1964 as a joint project of MIT, Bell Labs, and General
+  Electric, pushed the idea to its logical extreme: a *computer utility* that
+  would serve a whole city of users the way an electricity utility serves
+  households. Multics was ambitious and never widely commercialized, but its
+  design – a hierarchical file system, rings of privilege, an almost obsessive
+  emphasis on security – became foundational. Fernando Corbató's leadership on
+  CTSS and Multics earned him the 1990 Turing Award.
+
+The systems that succeeded Multics carried its lessons outward.
+*xref:unix.adoc[Unix]*, written at Bell Labs after the team there withdrew from
+Multics, kept its multiprogramming and interactive character while stripping away
+its complexity.
+
+Time-sharing demanded a cluster of innovations that later became standard
+operating-system machinery. *Scheduling* – the algorithm that decides which user
+or process runs next – was essential, and the notion of a time slice or *quantum*
+comes straight from this era. *Virtual memory* was pioneered on CTSS and Multics
+to give each user the illusion of a large private address space on a machine
+whose physical memory was far smaller. *Preemptive multitasking*, in which the
+operating system can take the CPU back from a running program, was invented to
+enforce the time-slicing discipline that time-sharing required. The same
+mechanism now underpins every general-purpose operating system, as discussed
+under *xref:concurrency.adoc[concurrency]*.
+
+The physical setup was a central mainframe – see *xref:hardware.adoc[hardware]* –
+wired to many *terminals*, each little more than a keyboard and a screen. The
+terminal did no real processing; it was the user's window onto the shared
+machine. This terminal-and-mainframe layout is the direct ancestor of
+*xref:client-server-architecture.adoc[client-server architecture]*, in which a
+central server does the work and a thinner client presents the result.
+
+Time-sharing also blurred into *xref:virtualization.adoc[virtualization]*. IBM's
+CP/CMS, a time-sharing system built in the late 1960s, gave each user their own
+virtual machine rather than a mere process, so that the time-sharing layer and
+the virtualization layer became the same thing. That line of work produced the
+hypervisor and the *xref:virtual-machine.adoc[virtual machine]* as we now know
+them.
+
+The personal computer era of the 1980s pushed computation back onto the desktop
+and made the time-share model look obsolete. It returned in a different form with
+*xref:cloud-computing.adoc[cloud computing]*, which is in essence time-sharing as
+a service. Many tenants share a pool of compute, billed by use, accessed over a
+network. The vocabulary has changed, but the underlying economics – a shared,
+expensive resource multiplexed among many users – is the same one that motivated
+CTSS and Multics sixty years ago.
+
+== See also
+
+* xref:batch-processing.adoc[*Batch processing*]
+* xref:concurrency.adoc[*Concurrency*]
+* xref:client-server-architecture.adoc[*Client-server architecture*]
+* xref:cloud-computing.adoc[*Cloud computing*]
+* xref:unix.adoc[*Unix*]
+* xref:virtualization.adoc[*Virtualization*]
+* xref:virtual-machine.adoc[*Virtual machine*]
+* xref:hardware.adoc[*Hardware*]
+
+== References
+
+* Corbató, F. J. (1991). _On building systems that will be used_. Communications
+  of the ACM. The 1990 Turing Award lecture.
+* Corbató, F. J., Merwin-Daggett, M., and Daley, R. C. (1962). _An experimental
+  time-sharing system_. Proceedings of the AFIPS Spring Joint Computer
+  Conference.
