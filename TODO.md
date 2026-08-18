@@ -606,7 +606,7 @@ Do NOT push your changes.
 - [x] 🌱 SMTP — `smtp.adoc` (fertilize)
 - [x] 🌱 Snapshot tests — `snapshot-tests.adoc` (fertilize)
 - [x] 🌱 Software architecture — `software-architecture.adoc` (fertilize)
-- [ ] 🌱 Software-as-a-service (SaaS) — `software-as-a-service.adoc` (none)
+- [x] 🌱 Software-as-a-service (SaaS) — `software-as-a-service.adoc` (none)
 - [ ] 🌱 Software assurance — `software-assurance.adoc` (fertilize)
 - [ ] 🌱 Software bloat — `software-bloat.adoc` (none)
 - [ ] 🌿 Software craftsmanship — `software-craftsmanship.adoc` (water)
