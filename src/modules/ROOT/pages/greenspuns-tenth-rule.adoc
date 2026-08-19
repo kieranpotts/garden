@@ -1,0 +1,27 @@
+= Greenspun's tenth rule
+
+Greenspun's tenth rule is a wry observation, coined by the programmer Philip
+Greenspun, that *any sufficiently complicated C or Fortran program contains an
+ad hoc, informally-specified, bug-ridden, slow implementation of half of
+Common Lisp*.
+
+The rule is a joke with a serious point. Lisp popularized features such as
+closures, garbage collection, dynamic dispatch, and a powerful macro system
+decades before mainstream languages adopted them. Greenspun's claim is that
+any program complex enough eventually needs those same capabilities, so a
+codebase written in a language that lacks them ends up reinventing rough,
+under-specified, and buggy versions of them from scratch: a bespoke object
+system, a homemade macro-like code generator, a hand-rolled garbage-collected
+cache.
+
+The rule is invoked today well beyond its original C and Fortran targets, as
+a general jab at any codebase that has organically grown its own
+half-formed version of a well-established language feature or paradigm,
+rather than adopting a language or library that already provides it properly.
+It is a caution about *xref:not-invented-here.adoc[reinventing the wheel]*
+under pressure, where the wheel in question is often a well-understood
+language feature rather than a whole subsystem.
+
+== See also
+
+* xref:laws-and-principles.adoc[*Laws and principles*]
