@@ -1,0 +1,40 @@
+= Scaling laws
+
+Scaling laws are empirical relationships describing how the performance of a
+*xref:machine-learning.adoc[machine learning]* model improves, in a
+predictable and roughly power-law fashion, as compute, training data, and
+parameter count are increased. First characterized in detail for
+*xref:large-language-model.adoc[large language models]* by researchers at
+OpenAI (Kaplan et al., 2020) and later refined by DeepMind (Hoffmann et al.,
+2022, the "Chinchilla" paper), scaling laws established that model quality is,
+within a wide range, a predictable function of these three inputs rather than
+a matter of architectural cleverness alone.
+
+The practical consequence has been to turn scale itself into a dependable
+engineering lever. Given a fixed compute budget, scaling laws let researchers
+predict in advance the optimal split between model size and training data
+volume, rather than discovering it by trial and error. The Chinchilla paper's
+main finding, that many earlier large models were substantially
+undertrained relative to their parameter count, changed how subsequent models
+were sized and trained.
+
+Scaling laws are the empirical backbone behind
+*xref:bitter-lesson.adoc[the Bitter Lesson]*: the observation that general
+methods which exploit growing computation tend to outperform approaches that
+encode domain-specific knowledge. Where the Bitter Lesson is a qualitative
+claim about research strategy, scaling laws are its quantitative expression,
+describing how much a given increase in compute is expected to buy.
+
+== See also
+
+* xref:laws-and-principles.adoc[*Laws and principles*]
+* xref:bitter-lesson.adoc[*The Bitter Lesson*]
+* xref:large-language-model.adoc[*Large language model (LLM)*]
+* xref:machine-learning.adoc[*Machine learning*]
+
+== References
+
+* Kaplan, J. et al. (2020). https://arxiv.org/abs/2001.08361[_Scaling Laws for
+  Neural Language Models_]. arXiv.
+* Hoffmann, J. et al. (2022). https://arxiv.org/abs/2203.15556[_Training
+  Compute-Optimal Large Language Models_]. arXiv.
