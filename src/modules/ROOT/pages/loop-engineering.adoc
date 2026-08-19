@@ -12,6 +12,19 @@ execution and self-running loops.
 The term and framework come from Peter Steinberger, Boris Cherny, and Addy
 Osmani's paper
 _https://asixiv.org/pdf/curated/2606.00001[Loop Engineering: The Anthropic Playbook for Designing Systems That Prompt Your Agents]_.
+Cherny, an Anthropic engineer, has summarized the shift in practice it names:
+"I don't prompt Claude anymore. I have loops running that prompt Claude and
+figuring out what to do. My job is to write loops."
+
+The technique predates the paper's terminology. Geoffrey Huntley's "Ralph
+Wiggum" pattern — named for the _The Simpsons_ character, for its relentless,
+uncomprehending persistence — ran roughly a year earlier and reduces to a
+single shell loop: `while :; do cat PROMPT.md | agent ; done`. Each pass feeds
+the same prompt back to a fresh agent invocation, which rereads the
+accumulated state on disk and picks up where the last pass left off. It is the
+minimal case loop engineering formalizes: no scheduler, no persistence layer
+beyond the filesystem, no verification stage beyond whatever the prompt asks
+the agent to check for itself.
 
 Don't confuse this with the *xref:agent-loop.adoc[agent loop]*, which is the
 cycle within which an agent runs. Loop engineering operates at a higher level of
@@ -139,6 +152,61 @@ agentic workflows declaratively as a
 expressed in YAML or JSON — where each node is a task or specialized
 *xref:agent.adoc[agent]* and each edge is a dependency.
 
+== Layers
+
+Cobus Greyling's
+https://cobusgreyling.substack.com/p/loop-engineering-playbook[Loop Engineering
+Playbook] organizes loop implementations into three operational layers, which
+correspond to how far a loop has moved from an interactive session toward
+unattended execution:
+
+* *Harness layer*: An interactive surface — a terminal-based coding agent with
+  a built-in `/loop` command, skills, and sub-agents in a single environment.
+  This is the *xref:agent-harness.adoc[harness]* itself taking on scheduling
+  duties. It suits a solo developer at a keyboard, running loops on demand
+  rather than unattended.
+
+* *Runtime layer*: Production infrastructure providing scheduled execution,
+  state persistence, sandboxed isolation, and tool access independent of any
+  one terminal session. This is what unattended, *xref:away-from-keyboard.adoc[AFK]*
+  operation requires — a loop that fires at 3 a.m., survives a crash, and
+  resumes correctly after a multi-day pause needs somewhere to run that isn't
+  a laptop with a terminal left open.
+
+* *Integration layer*: Connectors — including
+  *xref:model-context-protocol.adoc[MCP]* servers — that bridge the loop to
+  external systems: issue trackers, monitoring alerts, chat platforms.
+  *Discovery* and *delegation* both depend on this layer, since a loop cannot
+  find work in a queue or an inbox it has no connector to.
+
+A loop's *xref:agent-memory.adoc[memory]* pattern splits along a similar axis.
+A *stateful* loop reuses the same thread or session identifier across runs, so
+the agent's history accumulates — suited to nightly research or ongoing
+monitoring, where each run should know what the last one found. A *stateless*
+loop starts a fresh thread per execution — suited to batch operations and
+one-off sweeps, where cross-run history would only add noise. Persistence, as
+a concern, is the choice between these two patterns as much as it is the choice
+of where state is written.
+
+== Cost and safety controls
+
+An unattended loop can run up an unbounded bill or cause unbounded damage if
+nothing bounds it. Recurring controls in practice:
+
+* *Iteration caps*: A fixed retry budget — three attempts, then escalate to a
+  human — rather than looping indefinitely against a check that never passes.
+* *Cheap triage before expensive verification*: A single fast model pass to
+  decide whether a change warrants the full generator/evaluator split above,
+  rather than running that more expensive review on every iteration
+  regardless of stakes.
+* *Conditional sub-agent spawning*: Delegating to a sub-agent only when a
+  discovery signal changes state, rather than spawning one on every tick of
+  the schedule.
+
+These are cost and safety defaults, distinct from the verification layering
+below — they bound how much a loop is allowed to spend, not whether its output
+is trustworthy.
+
 == Implementations
 
 * https://github.com/microsoft/conductor[Microsoft Conductor]
@@ -150,6 +218,52 @@ common schema for defining agents declaratively. It is strictly linear and
 cannot orchestrate multiple agents or complex workflows involving a mix of
 agentic and deterministic steps. It is unclear how widely this has been
 implemented as of July 2026.
+
+By May 2026, several harnesses — Codex, Hermes, and Claude Code among them —
+had shipped a `/goal` command that collapses much of the manual setup above
+into a single instruction. Rather than hand-wiring discovery, scheduling, and
+a stop condition, a goal declares the outcome and the harness keeps invoking
+the agent until it holds. OpenAI's own framing: "A Goal says: keep working
+until this outcome is true." This is a harness-layer convenience over the same
+five concerns, not a different architecture.
+
+== Trade-offs and critique
+
+Practitioner reporting on loop engineering has surfaced doubts alongside the
+adoption:
+
+* *Drift*: across many unattended iterations, an agent can wander from the
+  original intent, each pass compounding a small deviation from the last
+  rather than converging on the goal.
+
+* *Cost*: token spend scales with iteration count, and a loop with a loose or
+  absent stop condition can run up a bill disproportionate to the value of the
+  work — informally, "tokenmaxxing." This is what the cost controls above are
+  for.
+
+* *Comprehension debt*: speed can outpace understanding. Gergely Orosz's
+  newsletter frames it as a new counterpart to technical debt — a team ships
+  faster via loops than it can build a mental model of what shipped,
+  accumulating a gap that surfaces later as the cost of finally understanding
+  code nobody on the team read closely the first time. The corrective is to
+  engineer loops "like someone who intends to stay the engineer": keeping
+  *xref:agent-handoff.adoc[human review]* and judgement in the loop rather than
+  treating unattended operation as license to stop paying attention.
+
+* *A possibly temporary workaround*: distinguished engineer Max Kanat-Alexander
+  has argued that loop engineering substantially compensates for a limited
+  context window — an agent forgets or drifts within a single long session, so
+  the loop restarts it with a trimmed, refreshed context. On this view, as
+  underlying context windows and long-horizon coherence improve, some of what
+  loop engineering solves today may need less scaffolding tomorrow. Whether
+  that holds depends on how much of the five-concern framework is really about
+  context limits versus genuinely separate concerns — discovery and
+  verification, for instance, do not obviously shrink as context windows grow.
+
+Given these costs, Orosz's newsletter suggests loop engineering is a
+specialism most developers can defer: for engineers outside AI infrastructure
+roles, depth in *xref:context-engineering.adoc[context engineering]* pays off
+sooner than depth in loop engineering.
 
 ''''
 
@@ -171,4 +285,5 @@ implemented as of July 2026.
 * *xref:agent-orchestration.adoc[Agent orchestration]*
 * *xref:context-engineering.adoc[Context engineering]*
 * *xref:agent-skills.adoc[Agent skills]*
+* *xref:agent-memory.adoc[Agent memory]*
 * *xref:directed-acyclic-graph.adoc[Directed acyclic graph (DAG)]*
