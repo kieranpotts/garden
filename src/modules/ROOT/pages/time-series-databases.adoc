@@ -44,8 +44,9 @@ Because timestamps within a series are monotonically increasing and arrive at a
 roughly steady cadence, they compress extremely well. *Delta-of-delta* encoding
 stores the difference between successive timestamp deltas rather than the
 timestamps themselves, so a regular one-second cadence collapses to a small
-fixed code. Floating-point values compress well with XOR encoding, which stores
-only the bits that change between consecutive samples. These two techniques,
+fixed code. xref:floating-point-arithmetic.adoc[*Floating-point*] values
+compress well with XOR encoding, which stores only the bits that change
+between consecutive samples. These two techniques,
 described in the _Gorilla_ paper, underpin the in-storage compression of several
 modern systems, and the same idea is the basis of
 *xref:in-memory-databases.adoc[in-memory]* time series engines that hold hot data
