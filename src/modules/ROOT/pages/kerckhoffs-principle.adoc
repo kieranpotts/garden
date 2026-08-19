@@ -1,0 +1,31 @@
+= Kerckhoffs's principle
+
+Kerckhoffs's principle states that *a cryptographic system should be secure
+even if everything about the system, except the key, is public knowledge*.
+It was formulated by the Dutch cryptographer Auguste Kerckhoffs in an 1883
+essay, as one of six design requirements for military cryptosystems.
+
+The principle draws a sharp line between secrecy that is designed into a
+system's key material and secrecy that depends on an adversary not knowing
+how the system works. A cipher whose strength depends on its algorithm
+remaining secret fails as soon as that algorithm leaks, is reverse-engineered,
+or is guessed, and modern cryptography treats the algorithm as public and puts
+all of the system's secrecy into the key.
+
+The principle is the reason modern cryptographic standards, such as AES and
+the algorithms behind TLS, are published in the open and subjected to public
+scrutiny by cryptanalysts, rather than kept proprietary. A published algorithm
+that survives years of attempted attacks by the cryptographic community is
+trusted precisely because its design has been exposed to that scrutiny, where
+a secret algorithm has had no comparable test.
+
+Kerckhoffs's principle is often summarized by the aphorism "no *security
+through obscurity*," though that later slogan, coined independently, is a
+looser popularization rather than Kerckhoffs's original six-point
+formulation.
+
+== See also
+
+* xref:laws-and-principles.adoc[*Laws and principles*]
+* xref:cryptography.adoc[*Cryptography*]
+* xref:secure-by-design.adoc[*Secure by design*]
