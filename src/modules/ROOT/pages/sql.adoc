@@ -41,12 +41,7 @@ differs from the order in which they are written.
 
 [source,sql]
 ----
-SELECT name, count(*)           -- projection
-FROM orders                     -- source
-JOIN customers USING (cust_id)  -- combination
-WHERE status = 'shipped'        -- filter
-GROUP BY name                   -- aggregation
-HAVING count(*) > 1             -- post-aggregation filter
+SELECT name, count(*)           -- projection FROM orders                     -- source JOIN customers USING (cust_id)  -- combination WHERE status = 'shipped'        -- filter GROUP BY name                   -- aggregation HAVING count(*) > 1             -- post-aggregation filter
 ORDER BY name;                  -- sort
 ----
 
@@ -117,8 +112,7 @@ reading of the NoSQL label.
 == References
 
 * Chamberlin, D. D. and Boyce, R. F. (1974). "SEQUEL: A structured English query
-  language". _Proc. ACM SIGFIDET Workshop on Data Description, Access and
-  Control_, 249–264.
+  language". _Proc. ACM SIGFIDET Workshop on Data Description, Access and Control_, 249–264.
 * Codd, E. F. (1970). "A relational model of data for large shared data banks".
   _Communications of the ACM_, 13(6), 377–387.
 * ISO/IEC 9075 (1987–). _Information technology – Database languages – SQL_.

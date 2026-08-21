@@ -120,8 +120,7 @@ services in parallel. The overall response cannot complete until the slowest
 of them does, so the tail of the aggregate is set by the worst of the
 constituents, not the average.
 
-This effect was articulated by Jeff Dean and Luiz André Barroso in _The Tail at
-Scale_. If a single component has a 1% chance of being slow on any given
+This effect was articulated by Jeff Dean and Luiz André Barroso in _The Tail at Scale_. If a single component has a 1% chance of being slow on any given
 request, then a request that fans out across 100 such components will hit a
 slow one in roughly two thirds of calls. Tail latency therefore gets worse,
 often sharply, as a system grows in fan-out, even when every component behaves

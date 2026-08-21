@@ -25,8 +25,7 @@ conflict will happen.
 *Pessimistic locking* assumes that concurrent access is likely to clash, and
 prevents the clash by taking a lock up front. The holder acquires the lock
 before reading or writing, blocks anyone else who wants it, and releases it
-only after committing the change. Database statements such as `SELECT ... FOR
-UPDATE` are pessimistic: the row is locked for the duration of the
+only after committing the change. Database statements such as `SELECT ... FOR UPDATE` are pessimistic: the row is locked for the duration of the
 xref:transaction.adoc[*transaction*]. Pessimistic locking is simple to reason
 about and gives strong guarantees under contention, but it reduces
 parallelism, makes waiters block, and is the direct source of
@@ -38,8 +37,7 @@ number, a timestamp, or a checksum), computes its update, and just before
 committing checks that the version is still the same. If it is, the write goes
 through. If another writer has since changed the resource, the update is
 rejected and the caller retries or aborts. The check is typically a
-xref:atomic-operation.adoc[*compare-and-swap*] in memory, or a `WHERE
-version = ?` clause in a database update.
+xref:atomic-operation.adoc[*compare-and-swap*] in memory, or a `WHERE version = ?` clause in a database update.
 
 Optimistic locking shines under low contention, where the common case avoids
 any blocking and the rare retry is cheap. Under heavy contention it degrades
@@ -63,8 +61,7 @@ short, read-heavy interactions and pessimistic locking for long-running writes.
   when the wait is long. They are built directly on hardware
   xref:atomic-operation.adoc[*atomic operations*] such as test-and-set.
 * *Database locks.* Acquired on rows, ranges, pages, or whole tables, and
-  classified as *shared* (read) or *exclusive* (write). *Strict two-phase
-  locking*, in which a transaction takes all its locks before releasing any,
+  classified as *shared* (read) or *exclusive* (write). *Strict two-phase locking*, in which a transaction takes all its locks before releasing any,
   is the classical mechanism for enforcing the isolation level of the
   xref:acid-principles.adoc[*ACID principles*].
 

@@ -66,8 +66,7 @@ shared caches, longer than the browser TTL.
 
 When a cached object reaches its TTL it becomes stale. The next request triggers
 a revalidation. The edge sends a conditional request to the origin
-(`If-None-Match` or `If-Modified-Since`), and the origin replies `304 Not
-Modified` if the content is unchanged, refreshing the TTL without re-transferring
+(`If-None-Match` or `If-Modified-Since`), and the origin replies `304 Not Modified` if the content is unchanged, refreshing the TTL without re-transferring
 the body. The `stale-while-revalidate` directive lets the edge serve stale
 content while it refreshes in the background, hiding revalidation latency from
 the user.
@@ -105,10 +104,8 @@ Modern CDNs do more than cache files. Common edge capabilities include:
 == Security at the edge
 
 Because a CDN sits in the path of every request, it is a natural place to apply
-security controls. CDNs absorb and filter volumetric *distributed
-denial-of-service (DDoS)* attacks at the edge, where the attack capacity is,
-before traffic reaches the origin. Many CDNs host a *web application firewall
-(WAF)*, apply bot management, and inject xref:security-headers.adoc[*security headers*] into responses. TLS
+security controls. CDNs absorb and filter volumetric *distributed denial-of-service (DDoS)* attacks at the edge, where the attack capacity is,
+before traffic reaches the origin. Many CDNs host a *web application firewall (WAF)*, apply bot management, and inject xref:security-headers.adoc[*security headers*] into responses. TLS
 termination at the edge also enforces HTTPS and modern cipher suites
 consistently.
 

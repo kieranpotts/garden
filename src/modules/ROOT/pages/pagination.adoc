@@ -31,8 +31,7 @@ unbounded one.
   and `startCursor`/`endCursor`), and a `first`/`after` argument pair that
   requests N items after a given cursor.
 * *Databases.* Result sets are paginated at the query level with `LIMIT` and
-  `OFFSET`, or with keyset predicates such as `WHERE id > ? ORDER BY id LIMIT
-  ?`. The choice of strategy has a large effect on cost, described below.
+  `OFFSET`, or with keyset predicates such as `WHERE id > ? ORDER BY id LIMIT ?`. The choice of strategy has a large effect on cost, described below.
 * *User interfaces.* Lists, tables, and feeds render one page at a time and
   fetch more as the user advances. *Infinite scroll* is a UI variant in which
   the next page is fetched automatically as the user nears the bottom, hiding
@@ -56,8 +55,7 @@ of the next page is expressed.
   is the strategy favoured by xref:graphql.adoc[*GraphQL*] connections and by
   most large-scale APIs.
 * *Seek.* A hybrid in which the client passes the sort value of the last row
-  on the previous page (eg. `WHERE created_at < ? ORDER BY created_at DESC
-  LIMIT ?`) rather than an opaque cursor. It achieves the stability of
+  on the previous page (eg. `WHERE created_at < ? ORDER BY created_at DESC LIMIT ?`) rather than an opaque cursor. It achieves the stability of
   keyset pagination while keeping the predicate inspectable.
 
 == Trade-offs

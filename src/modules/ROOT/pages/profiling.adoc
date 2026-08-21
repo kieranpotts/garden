@@ -4,8 +4,7 @@ Profiling is a form of *dynamic program analysis* that measures how a program
 uses resources while it runs. A *profiler* instruments or samples the target
 program and attributes the cost – CPU time, memory allocation, I/O, lock
 contention, cache misses – to the specific functions, lines, or instructions
-that incur it. Where a xref:debugger.adoc[*debugger*] answers *why is this
-wrong?*, a profiler answers *where is the time going?*.
+that incur it. Where a xref:debugger.adoc[*debugger*] answers *why is this wrong?*, a profiler answers *where is the time going?*.
 
 Profiling is the empirical foundation of optimization work. Optimizing without
 a profile is guesswork, and the guess is usually wrong: hot paths are rarely
@@ -20,8 +19,7 @@ A profiler attributes one or more resource costs to the program's call stack
 over time.
 
 * *CPU profiling* records where the program spends wall-clock or on-CPU time.
-  The result is a breakdown of cost by function, often presented as a *call
-  tree* or a *flame graph*.
+  The result is a breakdown of cost by function, often presented as a *call tree* or a *flame graph*.
 
 * *Allocation profiling* tracks where memory is allocated, which matters
   especially in languages with a garbage collector. Allocation pressure drives
@@ -48,8 +46,7 @@ may be undercounted, and very rare events may be missed entirely.
 *Instrumenting profilers* insert measurement code into the program, either at
 the source level or by rewriting bytecode or machine code at load time. They
 count every call and time every function exactly, at the cost of much higher
-overhead – often enough to distort the behavior being measured. The *observer
-effect* is the central pitfall of profiling: a heavy profiler slows the
+overhead – often enough to distort the behavior being measured. The *observer effect* is the central pitfall of profiling: a heavy profiler slows the
 program, changes scheduling, and can mask the very costs the developer set out
 to find, a profiler's analogue of the *Heisenbug*.
 

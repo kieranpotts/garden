@@ -94,8 +94,7 @@ Producers choose an `acks` setting to trade latency against durability.
 for the entire ISR, which guards against a leader failing before its data has
 been copied. Pairing `acks=all` with a `min.insync.replicas` setting lets a topic
 refuse writes when too few replicas are healthy, preferring a failed write over a
-lossy one. Allowing an out-of-sync follower to become leader, known as *unclean
-leader election*, keeps a partition available after a total ISR loss, at the
+lossy one. Allowing an out-of-sync follower to become leader, known as *unclean leader election*, keeps a partition available after a total ISR loss, at the
 cost of acknowledged data being overwritten. Disabling it favors
 xref:durability.adoc[*durability*] over xref:availability.adoc[*availability*].
 

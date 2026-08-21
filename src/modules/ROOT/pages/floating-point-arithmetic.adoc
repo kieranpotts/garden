@@ -14,8 +14,7 @@ into a finite bit pattern. Most values, including simple decimals such as
 `0.1`, have no exact binary representation and must be rounded to the nearest
 representable value. Every arithmetic operation on floating-point numbers can
 therefore introduce a small *rounding error*, measured in *ulps* (units in the
-last place) or as a *relative error* expressed as a multiple of *machine
-epsilon* — the gap between 1.0 and the next representable value. These errors
+last place) or as a *relative error* expressed as a multiple of *machine epsilon* — the gap between 1.0 and the next representable value. These errors
 are individually tiny, but they compound. Subtracting two nearly equal
 floating-point numbers can trigger *catastrophic cancellation*, where the
 result retains almost none of the original precision, because the leading
@@ -53,8 +52,7 @@ Floating point underpins numeric types in almost every programming language
 and data format; xref:json.adoc[*JSON*], for instance, has a single `number`
 type that does not distinguish integers from floating-point values, leaving
 the distinction to the consuming application. It is also central to
-performance-sensitive domains. xref:high-performance-computing.adoc[*High-performance computing*] systems are ranked in *floating-point operations per second
-(FLOPS)*, and processor instruction set architectures, such as
+performance-sensitive domains. xref:high-performance-computing.adoc[*High-performance computing*] systems are ranked in *floating-point operations per second (FLOPS)*, and processor instruction set architectures, such as
 xref:processor-architectures.adoc[*RISC-V*], define dedicated single- and
 double-precision floating-point extensions. Storage systems exploit the
 structure of floating-point bit patterns too; xref:time-series-databases.adoc[*time-series databases*] commonly use XOR-based encoding that stores only the bits that

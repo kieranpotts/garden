@@ -14,8 +14,7 @@ grows the log.
 
 == Pure functions versus stateful operations
 
-In mathematics and pure functional programming, idempotence means `f(f(x)) =
-f(x)` for every input. A function such as `abs` is idempotent, because the
+In mathematics and pure functional programming, idempotence means `f(f(x)) = f(x)` for every input. A function such as `abs` is idempotent, because the
 absolute value of an absolute value is the same value. This form is exact and
 timeless, because pure functions have no side effects. Their output is fixed
 by their inputs, which is also what makes them safe to memoize via
@@ -34,8 +33,7 @@ idempotent by definition in the xref:rest.adoc[*REST*] model: repeating them
 leaves the resource in the same state as a single call. `PUT /books/42` sets
 book 42 to a fixed representation, so calling it twice yields the same book.
 `DELETE /books/42` removes the book, and a second call finds nothing to remove
-but leaves the state unchanged. `POST` and `PATCH` are not idempotent. `POST
-/books` creates a new book each time it is called, and `PATCH` applies a
+but leaves the state unchanged. `POST` and `PATCH` are not idempotent. `POST /books` creates a new book each time it is called, and `PATCH` applies a
 relative delta whose cumulative effect depends on how many times it runs.
 
 HTTP's idempotence guarantee is a contract about method semantics, not a
