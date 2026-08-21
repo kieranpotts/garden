@@ -1,5 +1,11 @@
 = Alerting
 
+:link-alertmanager: https://prometheus.io/docs/alerting/latest/overview/
+:link-es-watcher:   https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-getting-started.html
+:link-pagerduty:    https://www.pagerduty.com/
+:link-opsgenie:     https://www.atlassian.com/software/opsgenie
+:link-splunk:       https://www.splunk.com/
+
 Alerting is an extension of xref:monitoring.adoc[*monitoring*] activities. It is the process of
 notifying responsible parties when a system is not behaving as expected, as determined by
 pre-defined thresholds or conditions around system xref:metrics.adoc[*metrics*] or
@@ -16,17 +22,17 @@ notice a dashboard.
 
 Alerting systems tend to be built into xref:monitoring.adoc[*monitoring*] and
 xref:observability.adoc[*observability*] systems. For example, Prometheus ships with
-https://prometheus.io/docs/alerting/latest/overview/[Alertmanager], while Elasticsearch offers
-https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-getting-started.html[Watcher].
+{link-alertmanager}[Alertmanager], while Elasticsearch offers
+{link-es-watcher}[Watcher].
 There are also standalone alerting and incident management systems that feed off data produced by
 monitoring and observability tools. They add capabilities the built-in tools often lack, such as
 on-call schedule management, escalation policies, alert grouping, and deduplication. Examples
 include the following.
 
-* https://www.pagerduty.com/[PagerDuty]: Alerting and incident management services.
-* https://www.atlassian.com/software/opsgenie[OpsGenie]: Alerting and on-call management, part of
+* {link-pagerduty}[PagerDuty]: Alerting and incident management services.
+* {link-opsgenie}[OpsGenie]: Alerting and on-call management, part of
   the Atlassian suite.
-* VictorOps: Was an on-call management system and is now part of https://www.splunk.com/[Splunk].
+* VictorOps: Was an on-call management system and is now part of {link-splunk}[Splunk].
 
 == Symptom-based versus cause-based alerting
 

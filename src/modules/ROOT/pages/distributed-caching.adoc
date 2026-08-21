@@ -1,5 +1,7 @@
 = Distributed caching
 
+:link-memcached: https://memcached.org/
+
 Distributed caching is a xref:caching.adoc[*caching*] technique in which cached data is spread
 across multiple nodes (servers) rather than held in a single machine. It lets a cache
 xref:horizontal-scaling.adoc[*scale horizontally*] to match the needs of large,
@@ -65,7 +67,7 @@ mitigations are described in xref:caching.adoc[*caching*].
 == Implementations
 
 The two most widely used distributed caches are xref:redis.adoc[*Redis*] (run as a Redis Cluster)
-and https://memcached.org/[Memcached]. Redis Cluster shards data across nodes using a hash-slot
+and {link-memcached}[Memcached]. Redis Cluster shards data across nodes using a hash-slot
 scheme and supports replication and automatic failover. Memcached is simpler: a pure in-memory
 key-value cache with no persistence, relying on the client library to hash keys across a pool of
 servers.

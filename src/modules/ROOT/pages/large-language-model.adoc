@@ -2,6 +2,24 @@
 :toc: macro
 :toc-title: Contents
 
+:link-attention-paper:  https://research.google/pubs/attention-is-all-you-need/
+:link-musk-distillation: https://www.semafor.com/article/05/01/2026/elon-musk-admits-xai-distilled-openai-models
+:link-wolfram-chatgpt:  https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/
+:link-perplexity:       https://www.perplexity.ai/
+:link-openai-evals:     https://github.com/openai/evals
+:link-cuda:             https://developer.nvidia.com/cuda-toolkit
+:link-rocm:             https://www.amd.com/en/products/software/rocm.html
+:link-opencl:           https://www.khronos.org/opencl/
+:link-llama-cpp:        https://github.com/ggml-org/llama.cpp
+:link-vllm:             https://github.com/vllm-project/vllm
+:link-openai-cookbook:  https://cookbook.openai.com/
+:link-llm-eng-handbook: https://github.com/SylphAI-Inc/LLM-engineer-handbook
+:link-ai-coding-dict:   https://github.com/mattpocock/dictionary-of-ai-coding
+:link-raschka-book:     https://www.manning.com/books/build-a-large-language-model-from-scratch
+:link-alammar-book:     https://www.llm-book.com/
+:link-iusztin-book:     https://www.packtpub.com/en-us/product/llm-engineers-handbook-9781836200079
+:link-burkov-book:      https://www.thelmbook.com/
+
 A large language model (LLM) is a xref:machine-learning.adoc[*deep learning*] model trained on vast
 amounts of text.
 
@@ -39,7 +57,7 @@ toc::[]
 
 Modern LLMs are built on the xref:transformer.adoc[*transformer architecture*], which was introduced
 in Google's 2017 research paper
-"https://research.google/pubs/attention-is-all-you-need/[Attention Is All You Need]".
+"{link-attention-paper}[Attention Is All You Need]".
 
 The core innovation of the transformer architecture is the *attention mechanism*. This is what
 allows a model to weigh the relevance of every token against every other token in the current
@@ -313,7 +331,7 @@ Black-box distillation of a competitor's proprietary model is contentious. It ge
 terms of service of the model being copied, and has become a flashpoint in the industry. DeepSeek R1
 — the first highly-capable open-weight frontier reasoning model — was widely suspected of distilling
 OpenAI's models. During the Musk versus Altman trial in 2026, Elon Musk
-https://www.semafor.com/article/05/01/2026/elon-musk-admits-xai-distilled-openai-models[acknowledged that xAI had distilled OpenAI's models]
+{link-musk-distillation}[acknowledged that xAI had distilled OpenAI's models]
 while training Grok.
 
 == Inference
@@ -580,7 +598,7 @@ computer, such as multiplying two large numbers, while succeeding at tasks that 
 hard for computers to do, such as writing a coherent essay. It turns out that essay writing is more
 statistically patterned (and computationally shallower) than exact step-by-step computation.
 
-https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/[Stephen Wolfram calls this property]
+{link-wolfram-chatgpt}[Stephen Wolfram calls this property]
 *computational irreducibility*.
 
 This is one reason xref:agent.adoc[*agentic systems*] pair LLMs with external tools such as
@@ -606,7 +624,7 @@ then generates a response grounded in that retrieved context, rather than relyin
 learned during training.
 
 RAG is widely used to build knowledge-aware applications — internal document Q&A systems, customer
-support bots, and AI search engines. https://www.perplexity.ai/[Perplexity] is a prominent consumer
+support bots, and AI search engines. {link-perplexity}[Perplexity] is a prominent consumer
 example. It uses live web search to answer questions with cited sources in real time. See
 xref:ai-assistant.adoc[*AI assistants*] for other examples.
 
@@ -629,7 +647,7 @@ directly affects the user experience. They are often cited as the most critical,
 overlooked, practice in building reliable AI products.
 
 Open-source frameworks supply ready-made evaluation harnesses and shareable test suites.
-https://github.com/openai/evals[OpenAI Evals], for example, is a framework for evaluating LLMs
+{link-openai-evals}[OpenAI Evals], for example, is a framework for evaluating LLMs
 paired with an open registry of reusable evals that anyone can contribute to.
 
 The public leaderboards and benchmarks for models are created from standardized evals run across
@@ -644,15 +662,15 @@ The dominant *GPU programming frameworks* are listed below. These are the softwa
 programs like llama.cpp or vLLM (see below) to access GPUs for general compute, rather than purely
 for graphics workloads.
 
-* https://developer.nvidia.com/cuda-toolkit[CUDA]: NVIDIA's proprietary parallel computing platform,
+* {link-cuda}[CUDA]: NVIDIA's proprietary parallel computing platform,
   dominant in AI/ML workloads due to its maturity and deep integration with frameworks like PyTorch
   and TensorFlow. Requires NVIDIA hardware.
 
-* https://www.amd.com/en/products/software/rocm.html[ROCm]: AMD's open-source GPU computing
+* {link-rocm}[ROCm]: AMD's open-source GPU computing
   platform, their equivalent of CUDA for AMD hardware. Growing PyTorch and TensorFlow support, but
   still lags behind CUDA in ecosystem maturity.
 
-* https://www.khronos.org/opencl/[OpenCL]: An open standard for parallel computing across
+* {link-opencl}[OpenCL]: An open standard for parallel computing across
   heterogeneous hardware (CPUs, GPUs, FPGAs) from any vendor. More portable than CUDA but less
   widely adopted in the AI ecosystem.
 
@@ -664,12 +682,12 @@ Studio (see below) are built on top of them.
 
 The two most widely used inference engines for open-weight models are:
 
-* https://github.com/ggml-org/llama.cpp[llama.cpp]: A C/C++ library optimized for running quantized
+* {link-llama-cpp}[llama.cpp]: A C/C++ library optimized for running quantized
   models on consumer hardware, including CPU-only machines, Apple Silicon, and devices with limited
   VRAM. This is the engine that powers Ollama and LM Studio (see below). The design prioritizes
   broad hardware compatibility over maximizing throughput.
 
-* https://github.com/vllm-project/vllm[vLLM]: A Python-based inference engine designed for
+* {link-vllm}[vLLM]: A Python-based inference engine designed for
   high-throughput via one or more GPUs. The key differentiating feature is that vLLM supports
   multi-GPU tensor parallelism, which means workloads are more evenly distributed across multiple
   GPUs. This efficiency shows up in better throughput metrics. The key innovation is
@@ -797,30 +815,30 @@ particular provider or use case. See xref:model-access-layer.adoc[*model access 
 
 == References
 
-* https://cookbook.openai.com/[OpenAI Cookbook], OpenAI: Example code, recipes, and best practices
+* {link-openai-cookbook}[OpenAI Cookbook], OpenAI: Example code, recipes, and best practices
   for working with the OpenAI APIs.
 
-* https://github.com/SylphAI-Inc/LLM-engineer-handbook[LLM Engineer Handbook]: Curated collection of
+* {link-llm-eng-handbook}[LLM Engineer Handbook]: Curated collection of
   links and resources for AI engineers.
 
-* https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/[What Is ChatGPT Doing … and Why Does It Work?],
+* {link-wolfram-chatgpt}[What Is ChatGPT Doing … and Why Does It Work?],
   Stephen Wolfram: Accessible first-principles explanation of next-token prediction, embeddings, and
   the transformer's attention mechanism, plus the concept of computational irreducibility.
 
-* https://github.com/mattpocock/dictionary-of-ai-coding[Dictionary of AI Coding], Matt Pocock:
+* {link-ai-coding-dict}[Dictionary of AI Coding], Matt Pocock:
   Plain-English glossary of the vocabulary of AI coding: models, context windows, tokens, harnesses,
   tools, failure modes, handoffs, and patterns of work.
 
 === Books
 
-* https://www.manning.com/books/build-a-large-language-model-from-scratch[Build a Large Language Model (from Scratch)],
+* {link-raschka-book}[Build a Large Language Model (from Scratch)],
   Sebastian Raschka: Builds a transformer in raw PyTorch, layer by layer.
 
-* https://www.llm-book.com/[Hands-On Large Language Models], Jay Alammar & Maarten Grootendorst:
+* {link-alammar-book}[Hands-On Large Language Models], Jay Alammar & Maarten Grootendorst:
   Visual, practical guide to LLM applications.
 
-* https://www.packtpub.com/en-us/product/llm-engineers-handbook-9781836200079[LLM Engineer's Handbook],
+* {link-iusztin-book}[LLM Engineer's Handbook],
   Paul Iusztin & Maxime Labonne: Production LLMOps: fine-tuning, quantization, serving.
 
-* https://www.thelmbook.com/[The Hundred-Page Language Models Book], Andriy Burkov: Concise,
+* {link-burkov-book}[The Hundred-Page Language Models Book], Andriy Burkov: Concise,
   math-grounded path from n-grams to transformers.

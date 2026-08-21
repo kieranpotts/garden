@@ -1,5 +1,34 @@
 = Model access layer
 
+:link-ollama:                https://ollama.com/
+:link-lm-studio:             https://lmstudio.ai/
+:link-nginx:                 https://nginx.org/
+:link-digitalocean:          https://www.digitalocean.com/
+:link-runpod:                https://www.runpod.io/
+:link-aws-sagemaker:         https://aws.amazon.com/sagemaker/
+:link-google-vertex:         https://cloud.google.com/products/gemini-enterprise-agent-platform
+:link-azure-ml:              https://azure.microsoft.com/en-us/products/machine-learning
+:link-groq:                  https://groq.com/
+:link-together-ai:           https://www.together.ai/
+:link-fireworks-ai:          https://fireworks.ai/
+:link-replicate:             https://replicate.com/
+:link-openrouter:            https://openrouter.ai/
+:link-huggingface-inference: https://huggingface.co/inference-api
+:link-anthropic-docs:        https://docs.anthropic.com/
+:link-openai-platform:       https://platform.openai.com/
+:link-google-gemini-api:     https://ai.google.dev/
+:link-webllm:                https://github.com/mlc-ai/web-llm
+:link-apple-mlx:             https://github.com/ml-explore/mlx
+:link-mlc-llm:               https://github.com/mlc-ai/mlc-llm
+:link-llama-cpp:             https://github.com/ggml-org/llama.cpp
+:link-transformers-js:       https://huggingface.co/docs/transformers.js
+:link-anannas:               https://anannas.ai/
+:link-nvidia-build:          https://build.nvidia.com/models
+:link-perplexity:            https://www.perplexity.ai/
+:link-litellm:               https://github.com/BerriAI/litellm
+:link-opencode-zen:          https://opencode.ai/docs/zen/
+:link-openwebui:             https://openwebui.com/
+
 Although it is possible to interact with a xref:large-language-model.adoc[*large language model*]
 directly, for most use cases you reach it via an access layer, which handles authentication,
 response formatting, and other details specific to a particular provider or use case.
@@ -16,23 +45,23 @@ There are five broad patterns for running and accessing LLMs, spanning a spectru
 control to fully managed services:
 
 * *Local*: The model runs on your own machine, with direct access to your data. Model managers such
-  as https://ollama.com/[Ollama] https://lmstudio.ai/[LM Studio], and Open Web UI (see
+  as {link-ollama}[Ollama] {link-lm-studio}[LM Studio], and Open Web UI (see
   *Model managers*, below) handle downloading, hardware management, and serving a local API. Best
   for privacy, offline use, and experimentation, with no per-token cost — but you are limited by
   your own hardware.
 
 * *VPS + rented GPU*: You run your own models on infrastructure you rent, then expose them over an
-  API (for example, Ollama behind an https://nginx.org/[Nginx] reverse proxy). Hosting providers
-  include https://www.digitalocean.com/[DigitalOcean] and https://www.runpod.io/[RunPod]. You keep
+  API (for example, Ollama behind an {link-nginx}[Nginx] reverse proxy). Hosting providers
+  include {link-digitalocean}[DigitalOcean] and {link-runpod}[RunPod]. You keep
   full control over the model and the data path while offloading the hardware, but you own the
   operations — scaling, uptime, and security. Higher up-front costs, but cheaper in the long term
   than managed cloud.
 
 * *Managed cloud*: Your model runs on a cloud provider's managed ML platform, which handles
   provisioning, scaling, and serving. Examples include
-  https://aws.amazon.com/sagemaker/[Amazon SageMaker], AWS Bedrock,
-  https://cloud.google.com/products/gemini-enterprise-agent-platform[Google Vertex AI],
-  https://azure.microsoft.com/en-us/products/machine-learning[Azure ML], Modal, and Beam. Well
+  {link-aws-sagemaker}[Amazon SageMaker], AWS Bedrock,
+  {link-google-vertex}[Google Vertex AI],
+  {link-azure-ml}[Azure ML], Modal, and Beam. Well
   suited to organizations already invested in a particular cloud, and to enterprise governance and
   data-residency requirements. Also good for unpredictable workloads, and for deploying fine-tune
   custom models with autoscaling. Trade-offs: complex setup, steep learning curve, and high costs
@@ -40,15 +69,15 @@ control to fully managed services:
 
 * *Managed inference API*: You call a provider's hosted endpoint with just an API key, choosing from
   _their_ model library and paying per use or by subscription. Examples include
-  https://groq.com/[Groq], https://www.together.ai/[Together AI],
-  https://fireworks.ai/[Fireworks AI], https://replicate.com/[Replicate],
-  https://openrouter.ai/[OpenRouter], and the
-  https://huggingface.co/inference-api[Hugging Face Inference API]. There is no infrastructure to
+  {link-groq}[Groq], {link-together-ai}[Together AI],
+  {link-fireworks-ai}[Fireworks AI], {link-replicate}[Replicate],
+  {link-openrouter}[OpenRouter], and the
+  {link-huggingface-inference}[Hugging Face Inference API]. There is no infrastructure to
   manage, but you have the least control over where and how the model runs. Great for indie hackers
   and shipping fast. Free tiers are available, and you can experiment with lots of model variants.
   (*Model gateways*, below, are the tooling for this pattern.)
-+ The *first-party APIs of the frontier labs* — https://docs.anthropic.com/[Anthropic],
-https://platform.openai.com/[OpenAI], and https://ai.google.dev/[Google's Gemini API] — are a
++ The *first-party APIs of the frontier labs* — {link-anthropic-docs}[Anthropic],
+{link-openai-platform}[OpenAI], and {link-google-gemini-api}[Google's Gemini API] — are a
 variant of this pattern. The difference is that you are calling the lab's own proprietary model
 directly, rather than choosing an (often open-weight) model from a third party's library. This is
 typically the only way to access the very latest frontier models, but it ties you to a single
@@ -56,9 +85,9 @@ vendor.
 
 * *Edge / on-device*: The model is embedded directly into your application and ships to your users'
   devices, running entirely client-side with no server. Tooling includes
-  https://github.com/mlc-ai/web-llm[WebLLM], https://github.com/ml-explore/mlx[Apple MLX],
-  https://github.com/mlc-ai/mlc-llm[MLC LLM], https://github.com/ggml-org/llama.cpp[llama.cpp], ONNX
-  Runtime, and https://huggingface.co/docs/transformers.js[Transformers.js]. Best for privacy, low
+  {link-webllm}[WebLLM], {link-apple-mlx}[Apple MLX],
+  {link-mlc-llm}[MLC LLM], {link-llama-cpp}[llama.cpp], ONNX
+  Runtime, and {link-transformers-js}[Transformers.js]. Best for privacy, low
   latency, and offline support, but constrained by the capabilities of the user's device —
   typically, you're looking at ultra-light models, 1-3B parameters maximum.
 
@@ -70,29 +99,29 @@ provider's SDK and managing separate authentication, response formats, and failo
 developers integrate once with the gateway, which handles routing, fallback, cost optimization, and
 observability across providers.
 
-* https://openrouter.ai/[OpenRouter]: Unified API for 300+ models across multiple providers, with
+* {link-openrouter}[OpenRouter]: Unified API for 300+ models across multiple providers, with
   per-request routing, cost tracking, and usage rankings.
 
-* https://anannas.ai/[Anannas]: OpenAI-compatible API gateway with intelligent routing, automatic
+* {link-anannas}[Anannas]: OpenAI-compatible API gateway with intelligent routing, automatic
   failover, and real-time cost dashboards.
 
-* https://huggingface.co/inference-api[Hugging Face Inference API]: Managed inference endpoints for
+* {link-huggingface-inference}[Hugging Face Inference API]: Managed inference endpoints for
   models hosted on Hugging Face, with serverless and dedicated deployment options.
 
-* https://build.nvidia.com/models[Nvidia's Build] site includes free endpoints to access open-weight
+* {link-nvidia-build}[Nvidia's Build] site includes free endpoints to access open-weight
   models.
 
-* https://www.perplexity.ai/[Perplexity]: AI-native search engine and general-purpose
+* {link-perplexity}[Perplexity]: AI-native search engine and general-purpose
   xref:ai-assistant.adoc[*AI assistant*]. Provides access to a large number of models, and you can
   even experiment with multiple models simultaneously, feeding them the same inputs.
 
-* https://github.com/BerriAI/litellm[LiteLLM]: Open-source gateway that exposes 100+ providers
+* {link-litellm}[LiteLLM]: Open-source gateway that exposes 100+ providers
   (OpenAI, Anthropic, Gemini, Bedrock, Azure, and more) through a single OpenAI-format API.
   Available as a Python SDK for direct integration, or as a self-hosted proxy server (its "AI
   Gateway") for organization-wide access, with virtual API keys, per-project cost tracking,
   automatic fallbacks, and load balancing. Unlike the hosted services above, you run it yourself.
 
-* https://opencode.ai/docs/zen/[OpenCode Zen]: Curated gateway from the OpenCode team offering a
+* {link-opencode-zen}[OpenCode Zen]: Curated gateway from the OpenCode team offering a
   vetted set of coding-benchmarked models (OpenAI, Anthropic, Google, Qwen, DeepSeek, and others)
   with pay-as-you-go per-token pricing and bring-your-own-key support. Integrates as an optional
   provider inside the xref:ai-coding-assistant.adoc[*OpenCode*] coding agent.
@@ -118,8 +147,8 @@ models across multiple cloud providers.
 
 The two most popular model managers are:
 
-* https://ollama.com/[Ollama]
-* https://lmstudio.ai/[LM Studio]
+* {link-ollama}[Ollama]
+* {link-lm-studio}[LM Studio]
 
 Ollama is designed to run LLMs as a background service (daemon) on your machine. It provides a clean
 CLI for managing models and a local API (compatible with OpenAI's API) that allows other
@@ -143,7 +172,7 @@ Both Ollama and LM Studio use llama.cpp as their underlying inference engine. Ol
 suited for integration into other applications, offering a convenient higher abstraction than
 llama.cpp. LM Studio is not really intended for integration into other applications.
 
-A related but distinct tool is https://openwebui.com/[Open WebUI] — a self-hosted, extensible web
+A related but distinct tool is {link-openwebui}[Open WebUI] — a self-hosted, extensible web
 _front-end_ for LLMs rather than a model manager in its own right. It provides a polished,
 ChatGPT-like browser interface and connects to a back-end (most commonly Ollama, or any
 OpenAI-compatible API) to serve the actual models. It is often run alongside Ollama to give a local

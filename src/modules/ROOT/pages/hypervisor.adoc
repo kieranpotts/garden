@@ -1,5 +1,10 @@
 = Hypervisor
 
+:link-proxmox:    https://www.proxmox.com/
+:link-hyper-v:    https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/hyper-v-overview
+:link-vmware:     https://www.vmware.com/
+:link-virtualbox: https://www.virtualbox.org/
+
 A hypervisor, also known as a *virtual machine monitor*, is a technology that makes
 xref:virtualization.adoc[*virtualization*] possible.
 
@@ -12,15 +17,15 @@ There are two main types of hypervisor:
 * *Type 1, native, bare-metal, platform, or hardware-assisted hypervisors*: This type of hypervisor
   is *[firmware]* that runs directly on real hardware. It does not require a host operating system.
   This design offers the best performance and efficiency, because the hypervisor has direct access
-  to the physical hardware. Examples include https://www.proxmox.com/[Proxmox] and
-  https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/hyper-v-overview[Hyper-V].
+  to the physical hardware. Examples include {link-proxmox}[Proxmox] and
+  {link-hyper-v}[Hyper-V].
 
 * *Type 2, or hosted hypervisors*: This type of hypervisor is a regular *application* that runs
   within a standard operating system. The hypervisor relies on the OS below it to do the hard work
   of managing the CPU, memory, etc. A type 2 hypervisor does the same job of creating virtual
   environments in which other applications can be run, but rather than managing shared access to the
   real underlying hardware, the focus instead is on _simulation_ of hardware environments. Examples
-  include https://www.vmware.com/[VMWare] and https://www.virtualbox.org/[VirtualBox].
+  include {link-vmware}[VMWare] and {link-virtualbox}[VirtualBox].
 
 A type 2 hypervisor should not be confused for a *[hardware emulator]*. This is a different concept.
 In a hypervisor, the user-space application runs on the real CPU. In an emulator, it would run on a

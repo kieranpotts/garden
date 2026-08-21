@@ -1,5 +1,8 @@
 = Webhook
 
+:link-standard-webhooks: https://github.com/standard-webhooks/standard-webhooks
+:link-cloudevents:       https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md
+
 A webhook is a mechanism for one system to send real-time notifications to another system over
 xref:http.adoc[*HTTP*]. Instead of polling for updates, a consumer registers a callback URL with a
 producer, and the producer sends an HTTP POST request to that URL whenever a relevant event occurs.
@@ -28,10 +31,10 @@ There is no formal standard for webhooks. Implementations tend to follow standar
 using POST requests, JSON payloads, and standard status codes – but otherwise follow proprietary
 conventions for payload structure, authentication, and retry behavior.
 
-https://github.com/standard-webhooks/standard-webhooks[Standard Webhooks] is the closest thing to a
+{link-standard-webhooks}[Standard Webhooks] is the closest thing to a
 shared specification. It defines conventions for signatures, payload formats, and retry policies.
 
-https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md[CloudEvents] is an alternative
+{link-cloudevents}[CloudEvents] is an alternative
 specification from the CNCF that defines a common envelope format for event data. CloudEvents is
 broader in scope than webhooks – it covers event-driven messaging in general – but it can be used as
 the basis for the payload format for webhook messages.

@@ -1,5 +1,7 @@
 = Crash-only software
 
+:link-let-it-crash: https://wiki.c2.com/?LetItCrash
+
 Crash-only software is an architectural design philosophy in which a program has only two meaningful
 operations: crashing (an abrupt, uncontrolled stop) and recovering (a controlled restart). There is
 no graceful shutdown path. The only way to stop the software is to crash it, and the only way to
@@ -23,7 +25,7 @@ component is simply restarted, and the rest of the system continues to operate.
 
 The approach is closely associated with xref:fault-tolerance.adoc[*fault-tolerant*] distributed
 systems design and shares philosophical ground with the
-"https://wiki.c2.com/?LetItCrash[let it crash]" principle popularized by the *[Erlang/OTP]*
+"{link-let-it-crash}[let it crash]" principle popularized by the *[Erlang/OTP]*
 programming model. It is the architectural extreme of xref:fail-fast.adoc[*fail-fast*] design: where
 fail-fast surfaces errors as early as possible, crash-only makes "halt and restart" the routine,
 cheap response to that surfacing.

@@ -1,5 +1,13 @@
 = Task queue
 
+:link-celery:      https://docs.celeryq.dev/
+:link-rq:          https://python-rq.org/
+:link-dramatiq:    https://dramatiq.io/
+:link-sidekiq:     https://sidekiq.org/
+:link-bullmq:      https://docs.bullmq.io/
+:link-masstransit: https://masstransit.io/
+:link-hangfire:    https://www.hangfire.io/
+
 A task queue is a system that receives units of computational work — *tasks* — together with their
 arguments, dispatches those tasks to be executed, and returns the results to the application. It is
 a higher-level abstraction than a xref:message-queues.adoc[*message queue*]: where a message queue
@@ -111,17 +119,17 @@ A task queue sits between two neighbouring concepts, and the boundary is worth d
 
 == Examples
 
-https://docs.celeryq.dev/[Celery] is the canonical distributed task queue for Python. Tasks are
+{link-celery}[Celery] is the canonical distributed task queue for Python. Tasks are
 defined as ordinary Python functions and executed either synchronously (in the foreground, for
 instant execution) or asynchronously (in the background). Celery is commonly paired with
 xref:rabbitmq.adoc[*RabbitMQ*] as its broker, but it can also use Amazon SQS,
 xref:redis.adoc[*Redis*], or a database. Its communication protocol has been reimplemented in other
 languages, with libraries available for JavaScript, TypeScript, and PHP.
 
-The same pattern appears across most language ecosystems: https://python-rq.org/[RQ] and
-https://dramatiq.io/[Dramatiq] for Python, https://sidekiq.org/[Sidekiq] for Ruby,
-https://docs.bullmq.io/[BullMQ] for Node.js, and https://masstransit.io/[MassTransit] and
-https://www.hangfire.io/[Hangfire] for .NET. Cloud platforms offer hosted equivalents such as Google
+The same pattern appears across most language ecosystems: {link-rq}[RQ] and
+{link-dramatiq}[Dramatiq] for Python, {link-sidekiq}[Sidekiq] for Ruby,
+{link-bullmq}[BullMQ] for Node.js, and {link-masstransit}[MassTransit] and
+{link-hangfire}[Hangfire] for .NET. Cloud platforms offer hosted equivalents such as Google
 Cloud Tasks and Amazon SQS with xref:function-as-a-service.adoc[*serverless functions*], which
 remove the operational burden of running workers at the cost of less control over the worker model
 and the result backend.

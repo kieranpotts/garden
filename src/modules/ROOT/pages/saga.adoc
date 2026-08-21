@@ -1,5 +1,7 @@
 = Saga
 
+:link-temporal: https://temporal.io/
+
 In distributed systems, a saga is a design pattern used to manage long-running, multi-step
 xref:distributed-transaction.adoc[*distributed transactions*]. It is an alternative approach to
 xref:phased-commit.adoc[*two-phase or three-phase commit (2PC, 3PC)*] protocols.
@@ -56,7 +58,7 @@ particular – becomes crucial.
 
 == Implementations
 
-https://temporal.io/[Temporal] is a popular platform for implementing orchestrated sagas. Each step
+{link-temporal}[Temporal] is a popular platform for implementing orchestrated sagas. Each step
 in the saga is modelled as a Temporal *Activity* – a function with built-in retry and timeout
 semantics. The saga itself is a Temporal *Workflow*, which is a durable, fault-tolerant function
 that coordinates the Activities in sequence.

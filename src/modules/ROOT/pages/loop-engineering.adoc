@@ -1,5 +1,14 @@
 = Loop engineering
 
+:link-loop-engineering-paper: https://asixiv.org/pdf/curated/2606.00001
+:link-cobus-greyling:         https://cobusgreyling.substack.com/p/loop-engineering-playbook
+:link-microsoft-conductor:    https://github.com/microsoft/conductor
+:link-github-seclab-taskflow: https://github.com/GitHubSecurityLab/seclab-taskflow-agent
+:link-agent-loop-repo:        https://github.com/ohitslaurence/agent-loop
+:link-open-agent-spec:        https://www.openagentspec.dev/
+:link-ibm-loop-engineering:   https://www.ibm.com/think/topics/loop-engineering
+:link-pragmatic-engineer:     https://newsletter.pragmaticengineer.com/p/what-is-loop-engineering
+
 Loop engineering is the practice of designing self-running systems in which an
 xref:agent.adoc[*agent*] operates repeatedly, with minimal human involvement, on a recurring cadence
 rather than a single request-response turn.
@@ -9,7 +18,7 @@ coordinates agents over repeated turns and long-running goals, but with a narrow
 unattended execution and self-running loops.
 
 The term and framework come from Peter Steinberger, Boris Cherny, and Addy Osmani's paper
-_https://asixiv.org/pdf/curated/2606.00001[Loop Engineering: The Anthropic Playbook for Designing Systems That Prompt Your Agents]_.
+_{link-loop-engineering-paper}[Loop Engineering: The Anthropic Playbook for Designing Systems That Prompt Your Agents]_.
 Cherny, an Anthropic engineer, has summarized the shift in practice it names: "I don't prompt Claude
 anymore. I have loops running that prompt Claude and figuring out what to do. My job is to write
 loops."
@@ -134,7 +143,7 @@ dependency.
 == Layers
 
 Cobus Greyling's
-https://cobusgreyling.substack.com/p/loop-engineering-playbook[Loop Engineering Playbook] organizes
+{link-cobus-greyling}[Loop Engineering Playbook] organizes
 loop implementations into three operational layers, which correspond to how far a loop has moved
 from an interactive session toward unattended execution:
 
@@ -179,11 +188,11 @@ much a loop is allowed to spend, not whether its output is trustworthy.
 
 == Implementations
 
-* https://github.com/microsoft/conductor[Microsoft Conductor]
-* https://github.com/GitHubSecurityLab/seclab-taskflow-agent[GitHub Security Lab Taskflow Agent]
-* https://github.com/ohitslaurence/agent-loop[Laurence Davies' agent-loop]
+* {link-microsoft-conductor}[Microsoft Conductor]
+* {link-github-seclab-taskflow}[GitHub Security Lab Taskflow Agent]
+* {link-agent-loop-repo}[Laurence Davies' agent-loop]
 
-The https://www.openagentspec.dev/[Open Agent Spec] is an attempt to define a common schema for
+The {link-open-agent-spec}[Open Agent Spec] is an attempt to define a common schema for
 defining agents declaratively. It is strictly linear and cannot orchestrate multiple agents or
 complex workflows involving a mix of agentic and deterministic steps. It is unclear how widely this
 has been implemented as of July 2026.
@@ -230,13 +239,13 @@ xref:context-engineering.adoc[*context engineering*] pays off sooner than depth 
 
 == References
 
-* https://asixiv.org/pdf/curated/2606.00001[Loop Engineering: The Anthropic Playbook for Designing Systems That Prompt Your Agents]
+* {link-loop-engineering-paper}[Loop Engineering: The Anthropic Playbook for Designing Systems That Prompt Your Agents]
 
-* https://cobusgreyling.substack.com/p/loop-engineering-playbook[Cobus Greyling: Loop Engineering Playbook]
+* {link-cobus-greyling}[Cobus Greyling: Loop Engineering Playbook]
 
-* https://www.ibm.com/think/topics/loop-engineering[IBM: Loop Engineering]
+* {link-ibm-loop-engineering}[IBM: Loop Engineering]
 
-* https://newsletter.pragmaticengineer.com/p/what-is-loop-engineering[Gergely Orosz: What is "loop engineering"?]
+* {link-pragmatic-engineer}[Gergely Orosz: What is "loop engineering"?]
 
 == See also
 

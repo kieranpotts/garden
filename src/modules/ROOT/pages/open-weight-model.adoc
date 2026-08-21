@@ -1,5 +1,21 @@
 = Open-weight model
 
+:link-nemotron-3:      https://research.nvidia.com/labs/nemotron/Nemotron-3/
+:link-huggingface:     https://huggingface.co/
+:link-ollama-search:   https://ollama.com/search
+:link-vram-calculator: https://logarithmicspirals.com/tools/local-ai-vram-calculator-gpu-planner/
+:link-dgx-spark:       https://www.nvidia.com/en-gb/products/workstations/dgx-spark/
+:link-llama:           https://llama.meta.com/
+:link-gemma:           https://ai.google.dev/gemma
+:link-qwen:            https://qwenlm.github.io/
+:link-mistral:         https://mistral.ai/
+:link-phi:             https://azure.microsoft.com/en-us/products/phi/
+:link-gpt-oss:         https://huggingface.co/openai
+:link-kimi:            https://huggingface.co/moonshotai
+:link-glm:             https://huggingface.co/zai-org
+:link-deepseek:        https://www.deepseek.com/
+:link-minimax:         https://www.minimax.io/
+
 *Open-weight* models are xref:large-language-model.adoc[*large language models*] (or other machine
 learning models) whose trained weights are published for anyone to download and run. This is
 distinct from *open-source*, which would also require the training data and code used to produce the
@@ -15,7 +31,7 @@ or bias issues.
 
 A smaller but growing category is *truly open-source* models, which release the weights _and_ the
 training data and methodology. The standout example is Nvidia's
-https://research.nvidia.com/labs/nemotron/Nemotron-3/[*Nemotron 3*] family, announced alongside a
+{link-nemotron-3}[*Nemotron 3*] family, announced alongside a
 partnership with Palantir in July 2026. Nvidia published not just the model weights but the training
 recipes and roughly ten trillion tokens of the underlying training data. That level of openness
 makes it possible to inspect, reproduce, and modify the full pipeline, not just the final artifact.
@@ -37,10 +53,10 @@ Licensing terms vary between open-weight models. Some permit unrestricted commer
 2.0, MIT). Others carry custom licenses that restrict commercial use, redistribution, or use above a
 certain scale (eg. Meta's Llama community license).
 
-https://huggingface.co/[Hugging Face] is the primary hub for discovering and downloading open-weight
+{link-huggingface}[Hugging Face] is the primary hub for discovering and downloading open-weight
 models, hosting over two million models contributed by individuals, research labs, and major
 organizations. The other major resource in this space is
-https://ollama.com/search[Ollama's model database], which is a more curated library of models that
+{link-ollama-search}[Ollama's model database], which is a more curated library of models that
 are proven to be stable with the Ollama model manager (see
 xref:model-access-layer.adoc[*model access layer*]).
 
@@ -79,13 +95,13 @@ having different minimal hardware requirements:
 ======
 To estimate whether your own hardware can run a given model — accounting for quantization level
 (Q4–F16), context length, and expected token throughput (TPS) — try the
-https://logarithmicspirals.com/tools/local-ai-vram-calculator-gpu-planner/[Local AI VRAM Calculator & GPU Planner].
+{link-vram-calculator}[Local AI VRAM Calculator & GPU Planner].
 It maps a hardware setup and use case to model recommendations, with the caveat that the figures are
 planning estimates, not performance guarantees.
 ======
 
 Custom hardware like the
-https://www.nvidia.com/en-gb/products/workstations/dgx-spark/[Nvidia DGX Spark] give you the ability
+{link-dgx-spark}[Nvidia DGX Spark] give you the ability
 to run _and train_ large language models on your own hardware.
 
 == Open-weight model families
@@ -93,55 +109,55 @@ to run _and train_ large language models on your own hardware.
 As of 2026, some notable open-weight model families include (several use a
 xref:large-language-model.adoc#_mixture_of_experts[*mixture-of-experts (MoE)*] architecture):
 
-* https://llama.meta.com/[*Llama*] models from Meta. The Llama family did much to kick-start the
+* {link-llama}[*Llama*] models from Meta. The Llama family did much to kick-start the
   open-weight era, and its widespread adoption has made the underlying architecture a de facto
   reference point that many other open models build on. The Scout variant is known for its massive
   10-million token context window. Released under Meta's community license, which permits commercial
   use but imposes some restrictions (including for very large deployments).
 
-* https://ai.google.dev/gemma[*Gemma*] models from Google. These are Google's open-weight
+* {link-gemma}[*Gemma*] models from Google. These are Google's open-weight
   counterparts to its proprietary, frontier Gemini models. Gemma models are optimized to run on
   consumer hardware.
 
-* https://qwenlm.github.io/[*Qwen*] models from Alibaba Cloud are available in a wide range of
+* {link-qwen}[*Qwen*] models from Alibaba Cloud are available in a wide range of
   sizes, so there'll always be one variant that you can run on your hardware.
 
-* https://mistral.ai/[*Mistral*] models from Mistral AI, a French company that produces both
+* {link-mistral}[*Mistral*] models from Mistral AI, a French company that produces both
   open-weight models and proprietary models accessible via web service APIs. Their Mixtral models
   helped popularize the mixture-of-experts (MoE) architecture in open models.
 
-* https://azure.microsoft.com/en-us/products/phi/[*Phi*] models from Microsoft. A family of small
+* {link-phi}[*Phi*] models from Microsoft. A family of small
   language models (SLMs) that punch well above their size on reasoning and maths, achieved largely
   by training on high-quality, "textbook-quality" filtered and synthetic data rather than sheer
   scale. Optimized for on-device and edge use, and released under the permissive MIT license. Recent
   releases include Phi-4 (14B) and the compact Phi-4-mini, with multimodal variants.
 
-* https://huggingface.co/openai[*gpt-oss*] models from OpenAI. `gpt-oss-120b` and `gpt-oss-20b`,
+* {link-gpt-oss}[*gpt-oss*] models from OpenAI. `gpt-oss-120b` and `gpt-oss-20b`,
   released under the permissive Apache 2.0 license in August 2025, were OpenAI's first open-weight
   models since GPT-2.
 
-* https://huggingface.co/moonshotai[*Kimi*] models from Moonshot AI. Kimi K2.5 (released January
+* {link-kimi}[*Kimi*] models from Moonshot AI. Kimi K2.5 (released January
   2026) is an open-weight mixture-of-experts model with 1T total parameters (32B activated per
   token) and a 256K-token context window. It matches frontier models on several benchmarks and is
   multimodal across text, code, image, and video (understanding only, no generation). Kimi 2.5 leads
   in mathematical reasoning and is optimized for "agent swarming".
 
-* https://huggingface.co/zai-org[*GLM*] models from Z.ai (formerly Zhipu AI). The GLM-4.5 and
+* {link-glm}[*GLM*] models from Z.ai (formerly Zhipu AI). The GLM-4.5 and
   GLM-4.6 releases are strong open-weight MoE models, well-regarded for their "interleaved thinking"
   and demonstrated capabilities in both agentic and vibe coding workflows.
 
-* https://www.deepseek.com/[*DeepSeek*] models from DeepSeek AI. This AI lab made waves in early
+* {link-deepseek}[*DeepSeek*] models from DeepSeek AI. This AI lab made waves in early
   2025 when DeepSeek-R1 demonstrated near-frontier reasoning performance at a fraction of the
   training compute cost that had previously been assumed was necessary to develop frontier models.
   Its "engram" memory system has been proven to maintain high coding performance across 1M+ token
   contexts.
 
-* https://www.minimax.io/[*MiniMax*] models from MiniMax AI, which also develops closed-weight
+* {link-minimax}[*MiniMax*] models from MiniMax AI, which also develops closed-weight
   models. MiniMax M2.5 is well-regarded, posting near-frontier agentic and coding scores (~80% on
   SWE-Bench Verified) at an exceptionally low cost.
 
 Nvidia continues to expand its open-weight offerings, most recently with the
-https://research.nvidia.com/labs/nemotron/Nemotron-3/[*Nemotron 3*] family (Nano, Super, and Ultra
+{link-nemotron-3}[*Nemotron 3*] family (Nano, Super, and Ultra
 variants).
 
 == Open-weight coding models

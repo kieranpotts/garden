@@ -1,5 +1,28 @@
 = Agent
 
+:link-langchain:                  https://github.com/langchain-ai/langchain
+:link-pydantic-ai:                https://ai.pydantic.dev/
+:link-pocketflow:                 https://github.com/The-Pocket/PocketFlow
+:link-semantic-kernel:            https://github.com/microsoft/semantic-kernel
+:link-autogen:                    https://github.com/microsoft/autogen
+:link-llamaindex:                 https://github.com/run-llama/llama_index
+:link-haystack:                   https://haystack.deepset.ai/
+:link-docling:                    https://github.com/docling-project/docling
+:link-claude-agent-sdk:           https://docs.claude.com/en/api/agent-sdk/overview
+:link-openai-agents-sdk:          https://developers.openai.com/api/docs/guides/agents-sdk
+:link-google-adk:                 https://google.github.io/adk-docs/
+:link-microsoft-agent-fw:         https://github.com/microsoft/agent-framework
+:link-n8n:                        https://n8n.io/
+:link-n8n-starter-kit:            https://docs.n8n.io/hosting/starter-kits/ai-starter-kit/
+:link-openclaw:                   https://openclaw.ai/
+:link-hermes-agent:               https://hermes-agent.nousresearch.com/
+:link-pi-dev:                     https://pi.dev/
+:link-terminal-bench:             https://www.tbench.ai/
+:link-anthropic-effective-agents: https://www.anthropic.com/engineering/building-effective-agents
+:link-openai-agents-guide:        https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf
+:link-kaggle-agents:              https://www.kaggle.com/whitepaper-agents
+:link-kaggle-agents-companion:    https://www.kaggle.com/whitepaper-agent-companion
+
 *Agentic systems* are xref:large-language-model.adoc[*LLM*]-based systems that can act autonomously
 to achieve goals. *Agents*, also known as *AI agents* and *software agents*, are a key component of
 many AI applications, from personal assistants to autonomous vehicles and software automation.
@@ -158,69 +181,69 @@ _write_ agent code or an environment to _run_ agents.
 
 General-purpose agent development frameworks include:
 
-* https://github.com/langchain-ai/langchain[LangChain]: Code library for building agents and
+* {link-langchain}[LangChain]: Code library for building agents and
   LLM-powered applications. Emphasizes model interoperability, rapid prototyping, and an extensive
   ecosystem of integrations. Available in Python and JavaScript/TypeScript. Its LangGraph component
   handles xref:agent-orchestration.adoc[*multi-agent orchestration*].
 
-* https://ai.pydantic.dev/[Pydantic AI]: Typed agent framework from the team behind Pydantic. Uses
+* {link-pydantic-ai}[Pydantic AI]: Typed agent framework from the team behind Pydantic. Uses
   Pydantic models to enforce safe, predictable, structured outputs from LLMs. Python.
 
-* https://github.com/The-Pocket/PocketFlow[PocketFlow]: Deliberately minimalist agent framework
+* {link-pocketflow}[PocketFlow]: Deliberately minimalist agent framework
   whose core is around 100 lines of code. Models agentic applications as a graph of nodes, with no
   heavy dependencies.
 
-* https://github.com/microsoft/semantic-kernel[Microsoft Semantic Kernel]: Code library for building
+* {link-semantic-kernel}[Microsoft Semantic Kernel]: Code library for building
   and orchestrating AI agents and multi-agent systems. Emphasizes plugin architecture and enterprise
   features. Available in Python, .NET, and Java.
 
-* https://github.com/microsoft/autogen[AutoGen]: Code library for multi-agent conversation, built
+* {link-autogen}[AutoGen]: Code library for multi-agent conversation, built
   around `UserProxyAgent` and `AssistantAgent` components that collaborate and refine solutions
   together. Unlike the other frameworks in this list, AutoGen also runs the multi-agent conversation
   loop itself, so it blurs the line toward being a harness rather than a pure development framework.
 
 Data and RAG frameworks include:
 
-* https://github.com/run-llama/llama_index[LlamaIndex]: Code library specialized in data ingestion,
+* {link-llamaindex}[LlamaIndex]: Code library specialized in data ingestion,
   organization, and retrieval-augmented generation (RAG). Bridges enterprise data and LLM
   capabilities with 300+ integration packages.
 
-* https://haystack.deepset.ai/[Haystack]: Open-source framework for building search, RAG, and agent
+* {link-haystack}[Haystack]: Open-source framework for building search, RAG, and agent
   pipelines from modular, swappable components. Python.
 
-* https://github.com/docling-project/docling[Docling]: Document-ingestion library that parses PDF,
+* {link-docling}[Docling]: Document-ingestion library that parses PDF,
   DOCX, HTML, and other formats into structured output for RAG pipelines. A building block rather
   than an agent framework in its own right.
 
 There are also vendor-specific SDKs and harnesses:
 
-* https://docs.claude.com/en/api/agent-sdk/overview[Claude Agent SDK]: Code library from Anthropic
+* {link-claude-agent-sdk}[Claude Agent SDK]: Code library from Anthropic
   for building agents with Claude, providing the harness primitives (context management, tools,
   permissions, subagents) that power Claude Code itself.
 
-* https://developers.openai.com/api/docs/guides/agents-sdk[OpenAI Agents SDK]: Code library from
+* {link-openai-agents-sdk}[OpenAI Agents SDK]: Code library from
   OpenAI for building agents with their models.
 
-* https://google.github.io/adk-docs/[Google Agent Development Kit (ADK)]: Code library from Google
+* {link-google-adk}[Google Agent Development Kit (ADK)]: Code library from Google
   for agent development.
 
-* https://github.com/microsoft/agent-framework[Microsoft Agent Framework]: Production-grade harness
+* {link-microsoft-agent-fw}[Microsoft Agent Framework]: Production-grade harness
   for running multi-agent workflows. Includes workflow orchestration, observability, YAML-based
   agent definitions, and cloud deployment options. Available in Python and C#/.NET.
 
 Low-code platforms and foundations:
 
-* https://n8n.io/[n8n]: Low-code automation harness with
-  https://docs.n8n.io/hosting/starter-kits/ai-starter-kit/[AI starter kit] for bootstrapping and
+* {link-n8n}[n8n]: Low-code automation harness with
+  {link-n8n-starter-kit}[AI starter kit] for bootstrapping and
   running agent workflows.
 
-* https://openclaw.ai/[OpenClaw]: Open-source, self-hosted agent harness with 15+ messaging channel
+* {link-openclaw}[OpenClaw]: Open-source, self-hosted agent harness with 15+ messaging channel
   integrations and support for 40+ LLM providers.
 
-* https://hermes-agent.nousresearch.com/[Hermes Agent]: OpenClaw-like agent harness, regarded for
+* {link-hermes-agent}[Hermes Agent]: OpenClaw-like agent harness, regarded for
   its speed and self-improving capabilities.
 
-* https://pi.dev/[Pi]: Code library providing minimal core components for building custom agents.
+* {link-pi-dev}[Pi]: Code library providing minimal core components for building custom agents.
   Requires extensions like `pi-schedule-prompt` and `@pi-agents/loop` to implement autonomous tasks
   through recurring prompts, cron-style jobs, and dynamic pacing. Can also be used as a basic
   terminal-based coding assistant out-of-the-box.
@@ -237,7 +260,7 @@ CrewAI, LangGraph, MetaGPT, and SuperAGI. See xref:agent-orchestration.adoc[*age
 
 == Benchmarks
 
-* https://www.tbench.ai/[Terminal Bench] benchmarks AI agent front-ends (user interfaces) for
+* {link-terminal-bench}[Terminal Bench] benchmarks AI agent front-ends (user interfaces) for
   terminal environments, backed by various models.
 
 ''''
@@ -260,15 +283,15 @@ CrewAI, LangGraph, MetaGPT, and SuperAGI. See xref:agent-orchestration.adoc[*age
 
 == References
 
-* https://www.anthropic.com/engineering/building-effective-agents[Building Effective Agents],
+* {link-anthropic-effective-agents}[Building Effective Agents],
   Anthropic: Patterns, pitfalls, and tradeoffs for designing AI agents.
 
-* https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf[A Practical Guide to Building Agents],
+* {link-openai-agents-guide}[A Practical Guide to Building Agents],
   OpenAI: Practical guide to building agents (PDF).
 
-* https://www.kaggle.com/whitepaper-agents[Agents], Google: Whitepaper on building AI agents.
+* {link-kaggle-agents}[Agents], Google: Whitepaper on building AI agents.
 
-* https://www.kaggle.com/whitepaper-agent-companion[Agents Companion], Google: Companion whitepaper
+* {link-kaggle-agents-companion}[Agents Companion], Google: Companion whitepaper
   to the above.
 
 * _The New SDLC With Vibe Coding_, Addy Osmani, Shubham Saboo & Sokratis Kartakis (2026).

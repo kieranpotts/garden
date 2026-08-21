@@ -1,5 +1,19 @@
 = AI agent orchestration
 
+:link-langchain-repo:      https://github.com/langchain-ai/langchain
+:link-claude-cowork:       https://claude.com/product/cowork
+:link-ace-zero-alignment:  https://maggieappleton.com/zero-alignment
+:link-ag2:                 https://github.com/ag2ai/ag2
+:link-crewai:              https://www.crewai.com/
+:link-mastra:              https://mastra.ai/
+:link-metagpt:             https://github.com/geekan/MetaGPT
+:link-superagi:            https://superagi.com/
+:link-multica:             https://multica.ai/
+:link-openai-symphony:     https://github.com/openai/symphony
+:link-paperclip:           https://github.com/paperclipai/paperclip
+:link-warp-oz:             https://www.warp.dev/oz
+:link-warp-oz-video:       https://www.youtube.com/watch?v=RWT3sh68PWE
+
 Agent orchestration platforms sit above individual xref:agent.adoc[*agent*] frameworks. Rather than
 providing tools to build a single agent, they coordinate _teams_ of agents working together toward
 shared goals — managing scheduling, delegation, budgets, and xref:governance.adoc[*governance*]
@@ -41,18 +55,18 @@ deploying chains as production APIs.
 LangChain is sometimes criticized for over-abstraction — its layers can obscure what is underneath a
 relatively simple sequence of model calls — and some teams prefer to call model APIs directly for
 production systems. It remains a popular starting point and a useful tool for rapid prototyping.
-(https://github.com/langchain-ai/langchain[Repo].)
+({link-langchain-repo}[Repo].)
 
 == Other orchestration platforms
 
-* https://claude.com/product/cowork[Claude Cowork]: Anthropic's agentic AI for knowledge work. It
+* {link-claude-cowork}[Claude Cowork]: Anthropic's agentic AI for knowledge work. It
   runs on the desktop, connecting to local files and applications to complete multi-step tasks end
   to end. Built on the Claude Code stack, it dynamically writes orchestration scripts that run tens
   to hundreds of parallel subagents in a single session, checking its own work. Aimed at
   researchers, analysts, and operations, legal, and finance teams, with enterprise plugin
   marketplaces.
 
-* https://maggieappleton.com/zero-alignment[Ace]: A research prototype from the GitHub Next team
+* {link-ace-zero-alignment}[Ace]: A research prototype from the GitHub Next team
   (forthcoming, not yet a production tool). A _multiplayer_ development workspace blending
   communication, coding, and cloud compute: Slack-like shared sessions backed by isolated microVMs
   on separate git branches, where several people can prompt agents simultaneously, edit code in real
@@ -60,43 +74,43 @@ production systems. It remains a popular starting point and a useful tool for ra
   cheap, the bottleneck shifts to team _alignment_ — agreeing on what to build before agents
   execute. (Described in Maggie Appleton's essay _Zero Alignment_.)
 
-* https://github.com/ag2ai/ag2[AG2]: Open-source framework for building multi-agent systems through
+* {link-ag2}[AG2]: Open-source framework for building multi-agent systems through
   structured conversations between agents. The community-driven successor to Microsoft's AutoGen, it
   supports conversational agents, group chats, and human-in-the-loop workflows.
 
-* https://www.crewai.com/[CrewAI]: Open-source Python framework for orchestrating role-playing
+* {link-crewai}[CrewAI]: Open-source Python framework for orchestrating role-playing
   autonomous agents. Agents are organized into "crews" with defined roles, goals, and tools,
   collaborating on tasks through sequential or hierarchical processes.
 
-* https://mastra.ai/[Mastra]: JS/TS-first framework for building and orchestrating agents, with
+* {link-mastra}[Mastra]: JS/TS-first framework for building and orchestrating agents, with
   workflows, agent memory, RAG, and evals built in.
 
-* https://github.com/geekan/MetaGPT[MetaGPT]: Multi-agent framework that assigns role-based agents
+* {link-metagpt}[MetaGPT]: Multi-agent framework that assigns role-based agents
   (product manager, architect, engineer, QA) to collaborate like a simulated software company,
   turning a single requirement into designs, code, and tests.
 
-* https://superagi.com/[SuperAGI]: Open-source, developer-first framework and platform for building,
+* {link-superagi}[SuperAGI]: Open-source, developer-first framework and platform for building,
   deploying, and managing autonomous agents, with a GUI, a tool ecosystem, and support for running
   multiple agents concurrently.
 
-* https://multica.ai/[Multica]: Open-source, self-hosted platform for managing a mixed human +
+* {link-multica}[Multica]: Open-source, self-hosted platform for managing a mixed human +
   AI-agent workforce. Assign tasks to coding agents (Claude, Copilot, Gemini, and others), track
   progress in real time over WebSocket streaming, and build a shared library of reusable skills that
   any teammate — human or agent — can apply.
 
-* https://github.com/openai/symphony[OpenAI Symphony]: Open-source orchestration framework
+* {link-openai-symphony}[OpenAI Symphony]: Open-source orchestration framework
   (reference implementation in Elixir, plus a spec) that monitors a work queue such as Linear,
   spawns an autonomous agent per task, and returns each completed task as a validated deliverable
   with proof of work (CI status, PR feedback). Shifts the model from supervising individual agents
   to managing work; designed for codebases built on xref:agent-harness.adoc[*harness-engineering*]
   principles.
 
-* https://github.com/paperclipai/paperclip[Paperclip]: Open-source, self-hosted platform for running
+* {link-paperclip}[Paperclip]: Open-source, self-hosted platform for running
   organizations of AI agents, with org charts, heartbeat-based scheduling, per-agent cost budgets,
   and full audit logging.
 
-* https://www.warp.dev/oz[Warp Oz]: Built into the Warp agentic terminal, Oz orchestrates and tracks
-  fleets of agents to automate work. https://www.youtube.com/watch?v=RWT3sh68PWE[Intro video.]
+* {link-warp-oz}[Warp Oz]: Built into the Warp agentic terminal, Oz orchestrates and tracks
+  fleets of agents to automate work. {link-warp-oz-video}[Intro video.]
 
 ''''
 

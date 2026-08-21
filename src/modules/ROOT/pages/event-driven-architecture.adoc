@@ -1,5 +1,9 @@
 = Event-driven architecture (EDA)
 
+:link-cloudevents:   https://github.com/cloudevents/spec
+:link-opentelemetry: https://opentelemetry.io/docs/specs/semconv/general/events/
+:link-eventcatalog:  https://www.eventcatalog.dev/
+
 // TODO: https://www.confluent.io/learn/event-driven-architecture/
 
 Event-driven architecture is a design pattern in which the components of a system communicate by
@@ -123,9 +127,9 @@ We should be suspicious of technical or tactical events, and instead focus on de
 events that are meaningful to the business.
 
 A number of standards exist for defining the schema of events. The
-https://github.com/cloudevents/spec[CloudEvents Specification] is one such event schema
+{link-cloudevents}[CloudEvents Specification] is one such event schema
 specification. Its event objects include an *[idempotency key]* and *trace ID*.
-https://opentelemetry.io/docs/specs/semconv/general/events/[OpenTelemetry] also publishes a set of
+{link-opentelemetry}[OpenTelemetry] also publishes a set of
 design conventions, which it calls "semantic conventions", for event and message formats.
 
 The documentation of event types and their schemas is also important, especially in large-scale
@@ -134,7 +138,7 @@ this case, some kind of central registry of all events available within the syst
 that individual teams can maintain their service's event dependencies.
 
 Unfortunately, there are few tools dedicated to documenting event-driven systems.
-https://www.eventcatalog.dev/[Event Catalog] is an open-source project that provides a rich GUI to
+{link-eventcatalog}[Event Catalog] is an open-source project that provides a rich GUI to
 explore and discover events and their relationships. Observability tools can also provide a way to
 discover and explore the events emitted within a system. As long as events get logged in the context
 of traces, then you can discover all the events in a system by analyzing its tracing data.

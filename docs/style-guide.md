@@ -152,6 +152,31 @@ Bold MUST NOT be used for general emphasis.
   The link text does not necessarily need to match exactly the page's title,
   eg. `... xref:asynchronous-communication.adoc[*asynchronously interacts*] with ... `.
 
+## External links
+
+- Define every external link as a document attribute, immediately after the
+  `= Title` line, one per line, aligned so the URLs start at a common column,
+  eg.:
++
+[source,asciidoc]
+----
+= Title
+
+:link-example-source: https://example.com/some/long-path
+:link-wikipedia:      https://en.wikipedia.org/wiki/Example
+----
++
+Reference the attribute inline as `` {link-example-source}[link text] ``.
+Do not write a bare `` https://...[link text] `` inline in the body.
+
+- Attribute names are short, kebab-case, mnemonic labels for the source (the
+  publication, organization, or topic), not derived mechanically from the URL,
+  eg. `link-wikipedia`, `link-nist`, `link-rfc-2119`. Keep them unique within
+  the page.
+
+- Order the attribute definitions in the order the links first appear in the
+  body.
+
 ## Acronyms
 
 - Acronyms are spelled out on first use, with the acronym in parentheses, and

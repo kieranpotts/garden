@@ -1,5 +1,10 @@
 = Reactive programming
 
+:link-reactivex:          https://reactivex.io/intro.html
+:link-reactive-manifesto: https://www.reactivemanifesto.org/
+:link-rxjava:             https://github.com/ReactiveX/RxJava
+:link-reactive-streams:   https://www.reactive-streams.org/
+
 Reactive programming is a xref:programming-paradigm.adoc[*programming paradigm*] based on the
 asynchronous propagation of changes. It is a declarative style of programming, in the same family as
 *functional programming* and *dataflow programming*. The paradigm first emerged in the earliest
@@ -40,7 +45,7 @@ implementation of the xref:observer-pattern.adoc[*observer pattern*].
 
 The term *reactive programming* itself was coined in the late 1990s. The modern, stream-oriented
 form of the paradigm is generally credited to Erik Meijer and colleagues at Microsoft, whose
-https://reactivex.io/intro.html[Reactive Extensions (Rx)] library for .NET, released in 2009,
+{link-reactivex}[Reactive Extensions (Rx)] library for .NET, released in 2009,
 introduced the now-standard vocabulary of observables, operators, and schedulers, and showed that
 the model could be applied beyond GUIs to general-purpose asynchronous programming.
 
@@ -72,7 +77,7 @@ Today, the reactive programming paradigm has been extended to many other types o
 notably distributed cloud systems. In these systems, the events are not just user input, but
 messages from other systems, changes in the state of the system, or other environmental changes.
 
-The Reactive Manifesto is an https://www.reactivemanifesto.org/[online document] authored in 2014 by
+The Reactive Manifesto is an {link-reactive-manifesto}[online document] authored in 2014 by
 Jonas Bonér, Dave Farley, Roland Kuhn, and Martin Thompson. It outlines the principles of
 *reactive systems* – an architectural style for highly scalable
 xref:distributed-system.adoc[*distributed software*]. The manifesto characterises such systems as
@@ -101,18 +106,18 @@ traits if its components are synchronously coupled, brittle, or unable to scale 
 
 == Reactive programming libraries and standards
 
-In Java, https://github.com/ReactiveX/RxJava[RxJava] – Reactive Extensions (Rx) in Java – was one of
+In Java, {link-rxjava}[RxJava] – Reactive Extensions (Rx) in Java – was one of
 the first open-source libraries to implement the reactive programming model. Its API is similar to
 Java 8 Streams, but is designed to be more fluent and expressive.
 
-RxJava is part of the larger https://reactivex.io/intro.html[ReactiveX] project, which provides
+RxJava is part of the larger {link-reactivex}[ReactiveX] project, which provides
 equivalent libraries for many other languages, all sharing a common API. *RxJS*, the JavaScript
 implementation, is widely used in browser-side frameworks and is bundled with Angular.
 *Akka Streams* implements the same model on the JVM atop the Akka actor toolkit.
 
 ReactiveX has become something of a _de facto_ standard for implementing reactive programming.
 There's a separate initiative to standardize the API of the event streams themselves, called
-https://www.reactive-streams.org/[Reactive Streams]. Reactive Streams is a small specification, just
+{link-reactive-streams}[Reactive Streams]. Reactive Streams is a small specification, just
 four interfaces (`Publisher`, `Subscriber`, `Subscription`, and `Processor`), that defines
 asynchronous stream processing with non-blocking backpressure. It was adopted into the Java platform
 in Java 9 (2017) as the `java.util.concurrent.Flow` class, giving the JVM a standard, interoperable

@@ -1,5 +1,9 @@
 = Logging
 
+:link-otel-semconv: https://opentelemetry.io/docs/specs/semconv/
+:link-rfc-5424:     https://www.rfc-editor.org/rfc/rfc5424
+:link-otel-logs:    https://opentelemetry.io/docs/concepts/signals/logs/
+
 Logs are chronologically-ordered records of events that occur within a software application, system,
 or network. An event can be anything that is deemed important to record. Examples of common events
 are:
@@ -99,7 +103,7 @@ journey.
 
 OpenTelemetry is emerging as the unified standard for emitting logs alongside metrics and traces,
 with shared context so that a log record can be correlated with the span it occurred within without
-bespoke plumbing. Its https://opentelemetry.io/docs/specs/semconv/[semantic conventions] define a
+bespoke plumbing. Its {link-otel-semconv}[semantic conventions] define a
 common vocabulary for the fields above, which reduces the per-vendor schema-mapping work that log
 pipelines have historically required.
 
@@ -230,6 +234,6 @@ line in front of them. A few habits make logs survive that test.
 
 == References
 
-* Gerhards, R. (2009). https://www.rfc-editor.org/rfc/rfc5424[RFC 5424: The Syslog Protocol]. IETF.
+* Gerhards, R. (2009). {link-rfc-5424}[RFC 5424: The Syslog Protocol]. IETF.
 * OpenTelemetry Authors (2024).
-  https://opentelemetry.io/docs/concepts/signals/logs/[OpenTelemetry Logs].
+  {link-otel-logs}[OpenTelemetry Logs].

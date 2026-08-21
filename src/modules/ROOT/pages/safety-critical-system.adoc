@@ -1,5 +1,11 @@
 = Safety-critical system
 
+:link-misra:          https://misra.org.uk/publications/
+:link-jpl-coding-std: https://web.archive.org/web/20111015064908/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf
+:link-power-of-10:    https://web.eecs.umich.edu/~imarkov/10rules.pdf
+:link-cwe:            https://cwe.mitre.org/about/index.html
+:link-mitre:          https://www.mitre.org/
+
 A safety-critical system, also known as a *life-critical system* and historically a
 *man-rated system*, is a system whose failure or malfunction may result in death or serious injury
 to people, loss or severe damage to property or equipment, or environmental harm. The term is
@@ -60,13 +66,13 @@ Restrictive coding standards are a common and inexpensive way to rule out constr
 review or static analysis. Two of the most influential families target the C programming language,
 which remains widespread in embedded safety-critical systems.
 
-https://misra.org.uk/publications/[MISRA C] is a set of software development guidelines for the C
+{link-misra}[MISRA C] is a set of software development guidelines for the C
 programming language and whose aim is to facilitate code safety, security, and reliability in the
 context of embedded systems. The NASA Jet Propulsion Laboratory's
-https://web.archive.org/web/20111015064908/http://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf[C Coding Standards (2009)]
+{link-jpl-coding-std}[C Coding Standards (2009)]
 are based on MISRA-C:2004.
 
-https://web.eecs.umich.edu/~imarkov/10rules.pdf[The Power of 10] is a set of 10 coding rules for the
+{link-power-of-10}[The Power of 10] is a set of 10 coding rules for the
 C programming language, which complement the MISRA C guidelines. The Power of 10 was devised by
 Gerard J. Holzmann of the NASA Jet Propulsion Laboratory for Reliable Software and published by IEEE
 Computer Society in 2006. The rules are intended to avoid certain anti-patterns in programs written
@@ -85,11 +91,11 @@ in C, which make it difficult to statically analyze the code. The rules are:
 10. Compile with all possible warnings active. All warnings should then be addressed before release
     of the software.
 
-The https://cwe.mitre.org/about/index.html[Common Weakness Enumeration (CWE)] is a
+The {link-cwe}[Common Weakness Enumeration (CWE)] is a
 community-maintained list and categorization system of common software and hardware weaknesses,
 where a "weakness" is any condition that could, under certain circumstances, contribute to
 vulnerabilities. The first release of the list and associated classification taxonomy was in 2006.
-CWE is maintained by the https://www.mitre.org/[MITRE Corporation], a not-for-profit organization
+CWE is maintained by the {link-mitre}[MITRE Corporation], a not-for-profit organization
 that operates federally-funded research and development centers in the United States, such as the
 U.S. Department of Homeland Security's (DHS) Cybersecurity and Infrastructure Security Agency
 (CISA). In a safety-critical context, CWE gives developers and assessors a shared vocabulary for the
