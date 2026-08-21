@@ -167,7 +167,8 @@ Bold MUST NOT be used for general emphasis.
 ----
 +
 Reference the attribute inline as `` {link-example-source}[link text] ``.
-Do not write a bare `` https://...[link text] `` inline in the body.
+Do not write a bare `` https://...[link text] `` inline in the body. The one
+exception is a `// TODO` comment, which keep bare URLs.
 
 - Attribute names are short, kebab-case, mnemonic labels for the source (the
   publication, organization, or topic), not derived mechanically from the URL,
