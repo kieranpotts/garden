@@ -1,14 +1,14 @@
 = DHCP
 
 The Dynamic Host Configuration Protocol (DHCP) is an application-layer protocol
-that automatically assigns *xref:internet-protocol-address.adoc[IP addresses]*
+that automatically assigns xref:internet-protocol-address.adoc[*IP addresses*]
 and other network configuration parameters to devices joining a network. It
-runs over *xref:udp.adoc[UDP]* and sits at the application layer of the
-*xref:osi-model.adoc[OSI model]*.
+runs over xref:udp.adoc[*UDP*] and sits at the application layer of the
+xref:osi-model.adoc[*OSI model*].
 
 Without DHCP, every host on a network would need to be configured manually with
 a unique IP address, a subnet mask, a default gateway, and the addresses of one
-or more *xref:dns.adoc[DNS]* servers. On any network larger than a handful of
+or more xref:dns.adoc[*DNS*] servers. On any network larger than a handful of
 fixed hosts, manual configuration is error-prone and hard to keep consistent.
 DHCP centralizes that configuration in a server, handing parameters out to
 clients as they join.
@@ -41,7 +41,7 @@ pool and can be reassigned.
 
 Leasing rather than assigning is what lets DHCP serve far more clients than a
 network has addresses. A home router with a `/24` subnet, expressed in
-*xref:cidr.adoc[CIDR]* notation, has only 254 usable addresses, but the devices
+xref:cidr.adoc[*CIDR*] notation, has only 254 usable addresses, but the devices
 coming and going on a guest Wi-Fi network can number in the thousands over a
 week. Only the currently connected hosts hold a lease at any one time.
 
@@ -61,7 +61,7 @@ giving specific hosts a stable address.
 == IPv4 and IPv6
 
 DHCP was originally defined for IPv4 in RFC 2131. DHCPv6, defined in RFC 3315,
-serves the same purpose for *xref:internet-protocol.adoc[IPv6]* but is not the
+serves the same purpose for xref:internet-protocol.adoc[*IPv6*] but is not the
 only option. IPv6 also supports Stateless Address Autoconfiguration (SLAAC), in
 which hosts derive addresses from router advertisements without a DHCP server.
 The two mechanisms coexist, and which one a network uses depends on how it is
@@ -69,9 +69,9 @@ configured.
 
 == See also
 
-* *xref:internet-protocol.adoc[Internet Protocol (IP)]*
-* *xref:internet-protocol-address.adoc[IP address]*
-* *xref:udp.adoc[UDP]*
-* *xref:osi-model.adoc[OSI model]*
-* *xref:dns.adoc[DNS]*
-* *xref:cidr.adoc[CIDR]*
+* xref:internet-protocol.adoc[*Internet Protocol (IP)*]
+* xref:internet-protocol-address.adoc[*IP address*]
+* xref:udp.adoc[*UDP*]
+* xref:osi-model.adoc[*OSI model*]
+* xref:dns.adoc[*DNS*]
+* xref:cidr.adoc[*CIDR*]

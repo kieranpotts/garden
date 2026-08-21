@@ -1,7 +1,7 @@
 = Agent harness
 
 An *agent harness* is the execution environment and control framework that wraps
-an *xref:agent.adoc[AI agent]* so it can operate reliably against tools,
+an xref:agent.adoc[*AI agent*] so it can operate reliably against tools,
 systems, and tasks.
 
 *Agent harness engineering* is the discipline of designing, building, and
@@ -28,8 +28,8 @@ that lets it act – the scaffolding around the model that handles:
 * *Task orchestration*: Retry logic, planning, branching, checkpoints.
 
 The term is borrowed from the concept of the
-*xref:test-harness.adoc[test harness]*, which is the
-*xref:scaffolding.adoc[scaffolding]* of drivers, stubs, and fixtures that wraps
+xref:test-harness.adoc[*test harness*], which is the
+xref:scaffolding.adoc[*scaffolding*] of drivers, stubs, and fixtures that wraps
 a unit of code so it can be exercised in isolation – supplying its inputs,
 invoking it repeatedly, and capturing its outputs for inspection. An agent
 harness plays the same role for a model. It wraps the model in a controlled,
@@ -47,7 +47,7 @@ There are two broad categories of agent harness in practice:
   tests, and reading documentation. The developer specifies a goal, and the
   harness plans and executes a sequence of steps to reach it autonomously.
   Examples include Claude Code, OpenCode, and Aider. These are distinct from
-  *xref:ai-coding-assistant.adoc[IDE coding assistants]* (GitHub Copilot,
+  xref:ai-coding-assistant.adoc[*IDE coding assistants*] (GitHub Copilot,
   Cursor), which are inline tools where the developer drives the interaction at
   a fine-grained level. Developer-facing harnesses operate at the task level.
   IDE assistants operate at the line or block level.
@@ -61,14 +61,14 @@ There are two broad categories of agent harness in practice:
 For production and multi-agent systems, *harness engineering* broadens into
 something close to platform engineering for agents: defining agent lifecycles,
 enforcing permission boundaries, wiring observability pipelines, and
-*xref:agent-orchestration.adoc[orchestrating]* multi-agent workflows. The
+xref:agent-orchestration.adoc[*orchestrating*] multi-agent workflows. The
 concern is the reliability, governance, and operational characteristics of
 agentic systems, rather than the raw capability of the underlying model. It is
 an emerging discipline, analogous to platform engineering in the DevOps world.
 
 == The factory model
 
-In *xref:agentic-engineering.adoc[agentic engineering]* the developer's primary
+In xref:agentic-engineering.adoc[*agentic engineering*] the developer's primary
 output is not code but the system that produces code – specifications and context
 that define what to build, agents that translate specifications into
 implementation, tests and quality gates that verify correctness, feedback loops
@@ -93,12 +93,12 @@ constraints set the boundaries before work begins. In implementation it runs –
 sandboxes, execution environments, and tools keep the model focused, secure, and
 productive. In testing and QA it is the feedback loop – the orchestration runs
 tests in a sandboxed terminal, captures failure output, and routes it back to
-the model, the *xref:agent-loop.adoc[think-act-observe loop]*. In code review,
+the model, the xref:agent-loop.adoc[*think-act-observe loop*]. In code review,
 deployment, and maintenance it is observed – deterministic hooks block bad
 commits, and observability tracks token cost, latency, and drift so engineers
 can audit why an agent made a specific decision. See
-*xref:loop-engineering.adoc[loop engineering]* and
-*xref:automated-testing.adoc[automated testing]*.
+xref:loop-engineering.adoc[*loop engineering*] and
+xref:automated-testing.adoc[*automated testing*].
 
 === Model routing
 
@@ -107,8 +107,8 @@ advanced models handle requirements, architecture, and hard implementation;
 smaller, faster, cheaper models handle test generation, code review, and CI/CD
 monitoring. Orchestrating a multi-model ecosystem maintains quality while
 driving down operational token cost. See
-*xref:large-language-model.adoc[large language models]* for model tiers and
-*xref:agent-orchestration.adoc[agent orchestration]* for routing.
+xref:large-language-model.adoc[*large language models*] for model tiers and
+xref:agent-orchestration.adoc[*agent orchestration*] for routing.
 
 == Environment, filesystem, and tools
 
@@ -124,14 +124,14 @@ snapshots, each accurate when taken. If a file changes after the agent read it,
 the agent keeps reasoning from the stale copy until something prompts a re-read.
 The environment is the layer that persists. It is always stateful. A session's
 context is gone when the session ends, but files remain for the next session.
-You decide how big the environment is – a *xref:sandbox.adoc[sandbox]* shrinks
-it, adding a tool extends it. See also *xref:agent-memory.adoc[agent memory]*
+You decide how big the environment is – a xref:sandbox.adoc[*sandbox*] shrinks
+it, adding a tool extends it. See also xref:agent-memory.adoc[*agent memory*]
 (how the agent carries information across a session) and
-*xref:agent-handoff.adoc[agent handoff]* (how work survives across sessions).
+xref:agent-handoff.adoc[*agent handoff*] (how work survives across sessions).
 
 A *filesystem* is a tree of files and directories the agent reads, writes, and
 executes within – the default kind of environment for a coding agent. `AGENTS.md`,
-*xref:agent-skills.adoc[skills]*, source code, build scripts, and tool configs
+xref:agent-skills.adoc[*skills*], source code, build scripts, and tool configs
 all live in a filesystem. The agent touches it only through tool calls. Some
 harnesses load the current directory's filenames into context by default (not
 contents, just the tree) as context pointers. A filesystem is shared with you –
@@ -144,10 +144,10 @@ file operations are a natural interface. It gives the agent a workspace to read
 data, code, and documentation, and lets it offload information that does not fit
 in the context window rather than holding everything in working memory. Work
 can be incrementally added and intermediate outputs stored, so state outlasts a
-single session — see *xref:agent-handoff.adoc[agent handoff]* and
-*xref:agent-memory.adoc[agent memory]*. The filesystem is also a natural
+single session — see xref:agent-handoff.adoc[*agent handoff*] and
+xref:agent-memory.adoc[*agent memory*]. The filesystem is also a natural
 collaboration surface: multiple agents and humans can coordinate through shared
-files, which is what *xref:agent-orchestration.adoc[agent teams]* rely on.
+files, which is what xref:agent-orchestration.adoc[*agent teams*] rely on.
 Adding git lets an agent track work, roll back errors, and branch experiments,
 and lets a fresh agent quickly get up to speed on a project's history.
 
@@ -172,10 +172,10 @@ model worse at picking the right one. Large tool outputs also clutter the
 context window — harnesses mitigate this *tool-call offloading* by keeping the
 head and tail tokens of a result and offloading the full output to the
 filesystem, where the model can retrieve it if needed (see
-*xref:large-language-model.adoc[context rot]*). See
-*xref:model-context-protocol.adoc[Model Context Protocol]* for plugging in
-outside tools, *xref:agent-loop.adoc[agent loop]* for the call/result lifecycle,
-and *xref:large-language-model.adoc[large language model]* for the model
+xref:large-language-model.adoc[*context rot*]). See
+xref:model-context-protocol.adoc[*Model Context Protocol*] for plugging in
+outside tools, xref:agent-loop.adoc[*agent loop*] for the call/result lifecycle,
+and xref:large-language-model.adoc[*large language model*] for the model
 provider request.
 
 == Permissions and modes
@@ -215,7 +215,7 @@ over a task. Changing costs nothing.
 
 *Agent experience (AX)* is how well the environment is set up for an agent to do
 good work in a codebase – the agent-facing counterpart to
-*xref:developer-experience.adoc[developer experience]* (DX). When the same
+xref:developer-experience.adoc[*developer experience*] (DX). When the same
 agent performs well in one repo and badly in another (same model, same
 harness), the difference is usually AX. Three dimensions matter:
 
@@ -229,15 +229,15 @@ harness), the difference is usually AX. Three dimensions matter:
 AX and DX overlap – good checks and clean architecture help both – but they
 diverge. Humans tolerate tribal knowledge, slow CI, and "ask Sarah"; agents
 cannot. Don't treat AX as a synonym for DX. See also
-*xref:agent-memory.adoc[agent memory]* and
-*xref:automated-testing.adoc[automated testing]*.
+xref:agent-memory.adoc[*agent memory*] and
+xref:automated-testing.adoc[*automated testing*].
 
 == Guides and sensors
 
 A well-built outer harness combines two kinds of control. *Guides* are
 feedforward controls: they anticipate the agent's behaviour and steer it before
 it acts, increasing the probability of a good first attempt. `AGENTS.md`,
-*xref:agent-skills.adoc[skills]*, code-mod tools, and bootstrap scripts are all
+xref:agent-skills.adoc[*skills*], code-mod tools, and bootstrap scripts are all
 guides. *Sensors* are feedback controls: they observe after the agent acts and
 help it self-correct. They are most powerful when they produce signals optimised
 for LLM consumption — custom linter messages that include the fix instruction, a
@@ -253,7 +253,7 @@ Each control is either *computational* (deterministic and fast, run on the CPU
 — tests, linters, type checkers, structural analysis) or *inferential* (semantic,
 run on a GPU or NPU — AI code review, LLM-as-judge; slower and more
 non-deterministic, but able to add semantic judgement). The verification
-layering in *xref:loop-engineering.adoc[loop engineering]* maps onto this:
+layering in xref:loop-engineering.adoc[*loop engineering*] maps onto this:
 automated checks are computational sensors, automated review is an inferential
 sensor.
 
@@ -273,7 +273,7 @@ overengineering, or misunderstood instructions — correctness is outside any
 sensor's remit if the human didn't clearly specify what they wanted.
 * *Architecture fitness harness*: guides and sensors that define and check the
 architecture characteristics of the application — essentially
-*xref:fitness-function.adoc[fitness functions]*. Skills that feed forward
+xref:fitness-function.adoc[*fitness functions*]. Skills that feed forward
 performance requirements, performance tests that feed back, logging standards
 with debugging instructions that ask the agent to reflect on log quality.
 * *Behaviour harness*: how to guide and sense whether the application
@@ -293,7 +293,7 @@ agent need not worry about and so implicitly raise its chance of success.
 Without those properties the controls aren't available to build. Ned Letcher
 calls the structural properties that make an environment legible, navigable, and
 tractable to agents *ambient affordances*. This is the deeper form of
-*xref:developer-experience.adoc[agent experience]* (AX): greenfield teams can
+xref:developer-experience.adoc[*agent experience*] (AX): greenfield teams can
 bake harnessability in from day one, while legacy teams face the harder problem
 that the harness is most needed where it is hardest to build.
 
@@ -346,13 +346,13 @@ agent coherent over a long task.
 The filesystem and git track work across sessions — an agent produces millions
 of tokens over a long task, and the filesystem durably captures progress so a
 fresh agent can pick up where the last left off (see
-*xref:agent-handoff.adoc[agent handoff]*). A *Ralph Loop* is a harness pattern
+xref:agent-handoff.adoc[*agent handoff*]). A *Ralph Loop* is a harness pattern
 for continuing work: a hook intercepts the model's attempt to exit and reinjects
 the original prompt into a clean context window, forcing the agent to continue
 toward a completion goal. Each iteration starts with fresh context but reads
 state from the previous iteration via the filesystem — a way to push past early
-stopping and context-window limits (see *xref:away-from-keyboard.adoc[AFK]*
-work and *xref:loop-engineering.adoc[loop engineering]*).
+stopping and context-window limits (see xref:away-from-keyboard.adoc[*AFK*]
+work and xref:loop-engineering.adoc[*loop engineering*]).
 
 Planning and self-verification keep the agent on track. The harness can prompt
 the model to decompose a goal into steps and maintain a plan file in the
@@ -379,8 +379,8 @@ significantly in the rankings.
 
 As models grow more capable, some of what lives in the harness today — planning,
 self-verification, long-horizon coherence — will be absorbed into the model and
-require less context injection. But as with *xref:prompt-engineering.adoc[prompt
-engineering]*, that does not make harness engineering obsolete: a
+require less context injection. But as with xref:prompt-engineering.adoc[*prompt
+engineering*], that does not make harness engineering obsolete: a
 well-configured environment, the right tools, durable state, and verification
 loops make any model more effective regardless of its base intelligence.
 
@@ -405,19 +405,19 @@ loops make any model more effective regardless of its base intelligence.
 
 == See also
 
-* *xref:agent.adoc[Agent]*
-* *xref:agent-orchestration.adoc[Agent orchestration]*
-* *xref:ai-constitutionalism.adoc[AI constitutionalism]*
-* *xref:agent-handoff.adoc[Agent handoff]*
-* *xref:agent-memory.adoc[Agent memory]*
-* *xref:agent-skills.adoc[Agent skills]*
-* *xref:automated-testing.adoc[Automated testing]*
-* *xref:away-from-keyboard.adoc[Away-from-keyboard (AFK)]*
-* *xref:developer-experience.adoc[Developer experience]*
-* *xref:large-language-model.adoc[Large language model (LLM)]*
-* *xref:loop-engineering.adoc[Loop engineering]*
-* *xref:model-context-protocol.adoc[Model Context Protocol]*
-* *xref:agent2agent.adoc[Agent2Agent (A2A)]*
-* *xref:prompt-engineering.adoc[Prompt engineering]*
-* *xref:sandbox.adoc[Sandbox]*
-* *xref:scaffolding.adoc[Scaffolding]*
+* xref:agent.adoc[*Agent*]
+* xref:agent-orchestration.adoc[*Agent orchestration*]
+* xref:ai-constitutionalism.adoc[*AI constitutionalism*]
+* xref:agent-handoff.adoc[*Agent handoff*]
+* xref:agent-memory.adoc[*Agent memory*]
+* xref:agent-skills.adoc[*Agent skills*]
+* xref:automated-testing.adoc[*Automated testing*]
+* xref:away-from-keyboard.adoc[*Away-from-keyboard (AFK)*]
+* xref:developer-experience.adoc[*Developer experience*]
+* xref:large-language-model.adoc[*Large language model (LLM)*]
+* xref:loop-engineering.adoc[*Loop engineering*]
+* xref:model-context-protocol.adoc[*Model Context Protocol*]
+* xref:agent2agent.adoc[*Agent2Agent (A2A)*]
+* xref:prompt-engineering.adoc[*Prompt engineering*]
+* xref:sandbox.adoc[*Sandbox*]
+* xref:scaffolding.adoc[*Scaffolding*]

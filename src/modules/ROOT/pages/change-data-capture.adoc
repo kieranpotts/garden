@@ -45,17 +45,17 @@ The CDC defines the operation and the state before and after it occurred. The
 CDC data structure can be adapted for each use case.
 
 CDCs are particularly helpful for data replication, auditing, and system
-integration, as a streaming alternative to batch *xref:etl.adoc[ETL]*.
+integration, as a streaming alternative to batch xref:etl.adoc[*ETL*].
 
 The main downside is that the CDC pattern introduces tight coupling to the
 internal database schema. If the schema changes, consumers need to be updated.
 For this reason, CDC should be avoided as a public integration layer (eg.
 inter-service communication in microservices). Use it only for internal data
 synchronization or read model updates, such as populating the read side of a
-*xref:cqrs.adoc[CQRS]* architecture or refreshing xref:materialized-view.adoc[*materialized views*].
+xref:cqrs.adoc[*CQRS*] architecture or refreshing xref:materialized-view.adoc[*materialized views*].
 
-See also *xref:domain-driven-design.adoc[Domain-driven design]* and
-*xref:event-sourcing.adoc[event sourcing]*. CDC is similar in concept to the
+See also xref:domain-driven-design.adoc[*Domain-driven design*] and
+xref:event-sourcing.adoc[*event sourcing*]. CDC is similar in concept to the
 domain events that event sourcing is built on, but is more focused on
 _technical_ events rather than business-oriented events. Domain events are more
 abstract, and are therefore more appropriate for public APIs, including those

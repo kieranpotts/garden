@@ -1,21 +1,21 @@
 = Onion architecture
 
-Onion architecture is a software *xref:architectural-pattern.adoc[architectural
-pattern]* introduced by Jeffrey Palermo in 2008. It organizes a system into
+Onion architecture is a software xref:architectural-pattern.adoc[*architectural
+pattern*] introduced by Jeffrey Palermo in 2008. It organizes a system into
 concentric layers, like the rings of an onion, with the domain model at the
 center and infrastructure concerns on the outside. The defining rule is that
 dependencies may only point inward, toward the center. An inner ring may know
 nothing about the rings outside it.
 
 The pattern pursues the same objective as Alistair Cockburn's
-*xref:hexagonal-architecture.adoc[hexagonal architecture]* (2005) and Robert C.
-Martin's *xref:clean-architecture.adoc[clean architecture]* (2012): the
-*xref:separation-of-concerns.adoc[separation of concerns]*, achieved by slicing
+xref:hexagonal-architecture.adoc[*hexagonal architecture*] (2005) and Robert C.
+Martin's xref:clean-architecture.adoc[*clean architecture*] (2012): the
+xref:separation-of-concerns.adoc[*separation of concerns*], achieved by slicing
 a system into discrete layers and applying
-*xref:dependency-inversion.adoc[dependency inversion]* at the boundaries between
+xref:dependency-inversion.adoc[*dependency inversion*] at the boundaries between
 them. The three patterns differ more in vocabulary than in substance. Hexagonal
-architecture frames the rule as *xref:ports-and-adapters.adoc[ports and
-adapters]* on every boundary. Clean architecture names four specific layers and
+architecture frames the rule as xref:ports-and-adapters.adoc[*ports and
+adapters*] on every boundary. Clean architecture names four specific layers and
 an explicit dependency rule. Onion architecture emphasizes the concentric
 shape and the inward direction of every dependency.
 
@@ -31,7 +31,7 @@ form has four, from the center outward.
 
 * *Domain services.* Operations on the domain model that do not belong to a
   single entity. This is where the domain layer of
-  *xref:domain-driven-design.adoc[domain-driven design]* typically sits.
+  xref:domain-driven-design.adoc[*domain-driven design*] typically sits.
 
 * *Application services.* The use cases the application supports. This layer
   orchestrates the flow of data to and from the domain model and enforces the
@@ -49,7 +49,7 @@ The dependency direction is the mechanism by which onion architecture achieves
 its separation of concerns. Because the domain model at the center has no
 knowledge of the database, the web framework, or the UI, it can be tested in
 isolation and is insulated from changes in the infrastructure around it. The
-*xref:layered-architecture.adoc[layered architecture]* that onion architecture
+xref:layered-architecture.adoc[*layered architecture*] that onion architecture
 builds on is the same idea expressed as horizontal tiers. Onion architecture
 rearranges it as concentric rings and makes the inward dependency direction a
 rule rather than a convention.
@@ -65,11 +65,11 @@ The primary benefits follow from the inward dependency direction.
   database, or UI. Each can be swapped by changing only the outer ring that
   adapts it.
 
-* *xref:evolvability.adoc[Evolvability]*. Because the most stable code is the
+* xref:evolvability.adoc[*Evolvability*]. Because the most stable code is the
   most central, routine changes to infrastructure have no reason to touch the
   domain model, so the surface area affected by any given change is smaller.
 
-The trade-off is *xref:complexity.adoc[accidental complexity]*. Every ring adds
+The trade-off is xref:complexity.adoc[*accidental complexity*]. Every ring adds
 interfaces, data conversion, and indirection. For small or straightforward
 applications the discipline of strict concentric layers can be more cost than
 benefit, and a simpler layered architecture may serve the same ends.
@@ -84,13 +84,13 @@ benefit, and a simpler layered architecture may serve the same ends.
 
 == See also
 
-* *xref:architectural-pattern.adoc[Architectural pattern]*
-* *xref:clean-architecture.adoc[Clean architecture]*
-* *xref:complexity.adoc[Complexity]*
-* *xref:dependency-inversion.adoc[Dependency inversion]*
-* *xref:domain-driven-design.adoc[Domain-driven design]*
-* *xref:evolvability.adoc[Evolvability]*
-* *xref:hexagonal-architecture.adoc[Hexagonal architecture]*
-* *xref:layered-architecture.adoc[Layered architecture]*
-* *xref:ports-and-adapters.adoc[Ports and adapters]*
-* *xref:separation-of-concerns.adoc[Separation of concerns]*
+* xref:architectural-pattern.adoc[*Architectural pattern*]
+* xref:clean-architecture.adoc[*Clean architecture*]
+* xref:complexity.adoc[*Complexity*]
+* xref:dependency-inversion.adoc[*Dependency inversion*]
+* xref:domain-driven-design.adoc[*Domain-driven design*]
+* xref:evolvability.adoc[*Evolvability*]
+* xref:hexagonal-architecture.adoc[*Hexagonal architecture*]
+* xref:layered-architecture.adoc[*Layered architecture*]
+* xref:ports-and-adapters.adoc[*Ports and adapters*]
+* xref:separation-of-concerns.adoc[*Separation of concerns*]

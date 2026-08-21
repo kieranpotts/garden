@@ -1,7 +1,7 @@
 = Law of Demeter
 
-The Law of Demeter is a *xref:design-principles.adoc[design principle]* for
-*xref:object-oriented-programming.adoc[object-oriented programs]* that
+The Law of Demeter is a xref:design-principles.adoc[*design principle*] for
+xref:object-oriented-programming.adoc[*object-oriented programs*] that
 restricts how far an object reaches into the structure of its collaborators.
 Colloquially it is summarized as "talk only to your immediate friends, not to
 friends of friends." The name comes from the Demeter project at Northeastern
@@ -36,17 +36,17 @@ The remedy is to push the behavior closer to the data it acts on. Instead of
 asking the order for the customer, the address, and the city, the caller asks
 the order for what it actually needs and lets the order delegate inward. This
 is the same instinct the *tell, don't ask* heuristic expresses, and it keeps
-each object's internals behind a narrow *xref:interfaces.adoc[interface]*.
+each object's internals behind a narrow xref:interfaces.adoc[*interface*].
 
 == Why it matters
 
 Each hop in a method chain is a hidden dependency. The caller knows not only
 its immediate collaborator but the collaborator's collaborator, and so on. That
 knowledge is invisible in the collaborator's interface and survives no
-*xref:refactoring.adoc[refactoring]* of the path between them. Following the
-law keeps *xref:coupling.adoc[coupling]* narrow and visible, which is the same
-goal as *xref:decoupling.adoc[decoupling]* and *xref:encapsulation.adoc[encapsulation]* more broadly. The
-*xref:connascence.adoc[connascence]* locality heuristic captures the same point
+xref:refactoring.adoc[*refactoring*] of the path between them. Following the
+law keeps xref:coupling.adoc[*coupling*] narrow and visible, which is the same
+goal as xref:decoupling.adoc[*decoupling*] and xref:encapsulation.adoc[*encapsulation*] more broadly. The
+xref:connascence.adoc[*connascence*] locality heuristic captures the same point
 at a finer grain: strong coupling is tolerable where it is local and becomes a
 liability only when it crosses boundaries.
 
@@ -73,7 +73,7 @@ because each link returns a fresh, self-contained value rather than exposing
 the next object's private structure.
 
 For the same reason the law sits alongside rather than inside
-*xref:grasp.adoc[GRASP]*. GRASP answers _which_ object should own a
+xref:grasp.adoc[*GRASP*]. GRASP answers _which_ object should own a
 responsibility, where the Law of Demeter constrains _how_ an object talks to
 the one it has chosen. Both are heuristics that pull toward low coupling and
 high cohesion, and both are best applied with the trade-off in view.

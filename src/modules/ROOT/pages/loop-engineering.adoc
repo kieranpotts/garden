@@ -1,11 +1,11 @@
 = Loop engineering
 
 Loop engineering is the practice of designing self-running systems in which an
-*xref:agent.adoc[agent]* operates repeatedly, with minimal human involvement, on
+xref:agent.adoc[*agent*] operates repeatedly, with minimal human involvement, on
 a recurring cadence rather than a single request-response turn.
 
 Loop engineering is a specialized form of
-*xref:agent-orchestration.adoc[agent orchestration]*. It coordinates agents over
+xref:agent-orchestration.adoc[*agent orchestration*]. It coordinates agents over
 repeated turns and long-running goals, but with a narrower focus on unattended
 execution and self-running loops.
 
@@ -26,7 +26,7 @@ minimal case loop engineering formalizes: no scheduler, no persistence layer
 beyond the filesystem, no verification stage beyond whatever the prompt asks
 the agent to check for itself.
 
-Don't confuse this with the *xref:agent-loop.adoc[agent loop]*, which is the
+Don't confuse this with the xref:agent-loop.adoc[*agent loop*], which is the
 cycle within which an agent runs. Loop engineering operates at a higher level of
 abstraction. It is the design of an agentic away-from-keyboard workflow that
 autonomously decides when and how often to run that inner agent loop,
@@ -37,8 +37,8 @@ designing automated systems that prompt agents on behalf of humans, rather than
 humans prompting agents directly.
 
 Loop engineering builds on prompt/context and harness engineering.
-*xref:context-engineering.adoc[Context engineering]* curates what a model sees
-on one turn. *xref:agent-harness.adoc[Harness engineering]* builds a machine for
+xref:context-engineering.adoc[*Context engineering*] curates what a model sees
+on one turn. xref:agent-harness.adoc[*Harness engineering*] builds a machine for
 running one or more agents. Loop engineering sits a level above the harness. It
 designs a system that decides when and how often an agent runs, often with
 agents prompting other agents, rather than a human managing the turns.
@@ -48,7 +48,7 @@ entirely. Loop engineering designs for the human to step back into a supervisory
 role — setting up discovery, verification, and scheduling once, then letting the
 system run unattended across many iterations. Agent execution in this detached,
 no-chat-interface mode is sometimes described as
-*xref:away-from-keyboard.adoc[AFK]*.
+xref:away-from-keyboard.adoc[*AFK*].
 
 As per the original paper, loop engineering decomposes the design of a recurring
 agent system into five concerns:
@@ -92,9 +92,9 @@ re-run, around and around until it passes, with no human in the loop.
 
 Determinism is what makes the loop trustworthy. A flaky check poisons it: the
 agent "fixes" code that was fine, or retries past a real failure. Good checks
-are a large part of a codebase's *xref:agent-harness.adoc[AX]*. A check only
+are a large part of a codebase's xref:agent-harness.adoc[*AX*]. A check only
 catches what it asserts — green checks mean the asserted properties hold, not
-that the code is right. See *xref:automated-testing.adoc[automated testing]*.
+that the code is right. See xref:automated-testing.adoc[*automated testing*].
 
 === Automated review
 
@@ -119,7 +119,7 @@ before a human looks, not a gate that replaces one.
 judgement. Reading the diff or changed files counts; reading the agent's
 description of what it did does not. Narration is not the artifact — the
 description is a secondary source written by the party being reviewed, while
-the diff is the primary source (see *xref:agent-handoff.adoc[agent handoff]*).
+the diff is the primary source (see xref:agent-handoff.adoc[*agent handoff*]).
 
 Agents raise the volume of code produced, so review becomes the bottleneck.
 Layer the strategies: automated checks catch mechanical failures, automated
@@ -127,8 +127,8 @@ review catches describable ones, and human review is reserved for what only you
 can judge — is the change the right change, does the approach fit, should this
 exist at all. Review is cheaper earlier. Reading a plan before work starts, or a
 small diff mid-flight, takes minutes; excavating a finished branch after an
-*xref:away-from-keyboard.adoc[AFK]* run takes longer. Dropping review entirely is
-what *xref:vibe-coding.adoc[vibe coding]* names.
+xref:away-from-keyboard.adoc[*AFK*] run takes longer. Dropping review entirely is
+what xref:vibe-coding.adoc[*vibe coding*] names.
 
 === Trajectory evaluation
 
@@ -140,17 +140,17 @@ that skipped its verification steps is a more dangerous failure than one with a
 visible error, because the silence hides the gap. This is why the
 generator/evaluator separation matters – an independent evaluator with fresh
 context judges the trajectory, not just the result. See
-*xref:agent-loop.adoc[agent loop]* for the loop and
-*xref:automated-testing.adoc[automated testing]*.
+xref:agent-loop.adoc[*agent loop*] for the loop and
+xref:automated-testing.adoc[*automated testing*].
 
 The paper catalogs six structural components that recur across loop-engineered
-systems: automations, worktrees, *xref:agent-skills.adoc[skills]*, connectors,
+systems: automations, worktrees, xref:agent-skills.adoc[*skills*], connectors,
 sub-agents, and memory systems. Further patterns are emerging in early open
 source implementations (see below). For example, a common pattern is to define
 agentic workflows declaratively as a
-*xref:directed-acyclic-graph.adoc[directed acyclic graph (DAG)]* — typically
+xref:directed-acyclic-graph.adoc[*directed acyclic graph (DAG)*] — typically
 expressed in YAML or JSON — where each node is a task or specialized
-*xref:agent.adoc[agent]* and each edge is a dependency.
+xref:agent.adoc[*agent*] and each edge is a dependency.
 
 == Layers
 
@@ -162,24 +162,24 @@ unattended execution:
 
 * *Harness layer*: An interactive surface — a terminal-based coding agent with
   a built-in `/loop` command, skills, and sub-agents in a single environment.
-  This is the *xref:agent-harness.adoc[harness]* itself taking on scheduling
+  This is the xref:agent-harness.adoc[*harness*] itself taking on scheduling
   duties. It suits a solo developer at a keyboard, running loops on demand
   rather than unattended.
 
 * *Runtime layer*: Production infrastructure providing scheduled execution,
   state persistence, sandboxed isolation, and tool access independent of any
-  one terminal session. This is what unattended, *xref:away-from-keyboard.adoc[AFK]*
+  one terminal session. This is what unattended, xref:away-from-keyboard.adoc[*AFK*]
   operation requires — a loop that fires at 3 a.m., survives a crash, and
   resumes correctly after a multi-day pause needs somewhere to run that isn't
   a laptop with a terminal left open.
 
 * *Integration layer*: Connectors — including
-  *xref:model-context-protocol.adoc[MCP]* servers — that bridge the loop to
+  xref:model-context-protocol.adoc[*MCP*] servers — that bridge the loop to
   external systems: issue trackers, monitoring alerts, chat platforms.
   *Discovery* and *delegation* both depend on this layer, since a loop cannot
   find work in a queue or an inbox it has no connector to.
 
-A loop's *xref:agent-memory.adoc[memory]* pattern splits along a similar axis.
+A loop's xref:agent-memory.adoc[*memory*] pattern splits along a similar axis.
 A *stateful* loop reuses the same thread or session identifier across runs, so
 the agent's history accumulates — suited to nightly research or ongoing
 monitoring, where each run should know what the last one found. A *stateless*
@@ -247,7 +247,7 @@ adoption:
   accumulating a gap that surfaces later as the cost of finally understanding
   code nobody on the team read closely the first time. The corrective is to
   engineer loops "like someone who intends to stay the engineer": keeping
-  *xref:agent-handoff.adoc[human review]* and judgement in the loop rather than
+  xref:agent-handoff.adoc[*human review*] and judgement in the loop rather than
   treating unattended operation as license to stop paying attention.
 
 * *A possibly temporary workaround*: distinguished engineer Max Kanat-Alexander
@@ -262,7 +262,7 @@ adoption:
 
 Given these costs, Orosz's newsletter suggests loop engineering is a
 specialism most developers can defer: for engineers outside AI infrastructure
-roles, depth in *xref:context-engineering.adoc[context engineering]* pays off
+roles, depth in xref:context-engineering.adoc[*context engineering*] pays off
 sooner than depth in loop engineering.
 
 ''''
@@ -279,11 +279,11 @@ sooner than depth in loop engineering.
 
 == See also
 
-* *xref:agent.adoc[Agent]*
-* *xref:agent-loop.adoc[Agent loop]*
-* *xref:agent-harness.adoc[Agent harness]*
-* *xref:agent-orchestration.adoc[Agent orchestration]*
-* *xref:context-engineering.adoc[Context engineering]*
-* *xref:agent-skills.adoc[Agent skills]*
-* *xref:agent-memory.adoc[Agent memory]*
-* *xref:directed-acyclic-graph.adoc[Directed acyclic graph (DAG)]*
+* xref:agent.adoc[*Agent*]
+* xref:agent-loop.adoc[*Agent loop*]
+* xref:agent-harness.adoc[*Agent harness*]
+* xref:agent-orchestration.adoc[*Agent orchestration*]
+* xref:context-engineering.adoc[*Context engineering*]
+* xref:agent-skills.adoc[*Agent skills*]
+* xref:agent-memory.adoc[*Agent memory*]
+* xref:directed-acyclic-graph.adoc[*Directed acyclic graph (DAG)*]

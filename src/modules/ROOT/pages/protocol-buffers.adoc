@@ -2,12 +2,12 @@
 
 Protocol Buffers (protobuf) is Google's language- and platform-neutral mechanism
 for serializing structured data. It pairs a small
-*xref:interface-definition-language.adoc[interface definition language (IDL)]*
+xref:interface-definition-language.adoc[*interface definition language (IDL)*]
 with a compact binary wire format and a compiler that generates typed
 serialization code for many programming languages. Google developed it
 internally in the early 2000s and open-sourced it; it is now the dominant
 binary serialization format for internal service-to-service communication and
-the data format underpinning *xref:grpc.adoc[gRPC]*.
+the data format underpinning xref:grpc.adoc[*gRPC*].
 
 The design goal is the same one that drove earlier IDL systems such as CORBA
 and DCE/RPC: fix the contract for exchanged data in one place, in a form no
@@ -56,7 +56,7 @@ absent from a message are simply not encoded – there is no on-wire marker for 
 missing field.
 
 The result is a payload typically 3–10x smaller than the equivalent
-*xref:json.adoc[JSON]*, and faster to serialize and deserialize, because the
+xref:json.adoc[*JSON*], and faster to serialize and deserialize, because the
 parser walks a fixed binary layout rather than scanning and interpreting text.
 The trade-off is the obvious one: the bytes are not human-readable, and a
 reader needs the `.proto` schema to interpret them.
@@ -72,7 +72,7 @@ generated methods; they never hand-write marshalling code.
 This is what makes Protocol Buffers polyglot. A service written in Go and a
 client written in Java can interoperate because both sides were generated from
 the same `.proto` file. The same property is what makes it the IDL of choice
-for *xref:grpc.adoc[gRPC]*, which generates client and server stubs from
+for xref:grpc.adoc[*gRPC*], which generates client and server stubs from
 service definitions in the same file.
 
 == Schema evolution
@@ -119,11 +119,11 @@ serialized to either format.
 == Where it appears
 
 Protocol Buffers is the IDL and serialization format for
-*xref:grpc.adoc[gRPC]*, Google's internal communication mechanism of choice
+xref:grpc.adoc[*gRPC*], Google's internal communication mechanism of choice
 and the basis for many open-source microservice stacks. Beyond gRPC, it is
 used as a storage format (Google's Spanner and various internal systems store
 protobuf-encoded rows) and as the interchange format for protocols such as
-the *xref:agent2agent.adoc[Agent2Agent]* data model.
+the xref:agent2agent.adoc[*Agent2Agent*] data model.
 
 == Trade-offs
 
@@ -141,15 +141,15 @@ the *xref:agent2agent.adoc[Agent2Agent]* data model.
 
 == See also
 
-* *xref:interface-definition-language.adoc[Interface definition language (IDL)]*:
+* xref:interface-definition-language.adoc[*Interface definition language (IDL)*]:
   the category of specification language that `.proto` files belong to.
-* *xref:grpc.adoc[gRPC]*: the RPC framework that uses Protocol Buffers as its
+* xref:grpc.adoc[*gRPC*]: the RPC framework that uses Protocol Buffers as its
   IDL and wire format.
-* *xref:remote-procedure-call.adoc[Remote procedure call (RPC)]*: the protocol
+* xref:remote-procedure-call.adoc[*Remote procedure call (RPC)*]: the protocol
   family Protocol Buffers was built to support.
-* *xref:json.adoc[JSON]*: the text-based alternative most often contrasted with
+* xref:json.adoc[*JSON*]: the text-based alternative most often contrasted with
   Protocol Buffers.
-* *xref:json-schema.adoc[JSON Schema]*: the schema approach for JSON, in
+* xref:json-schema.adoc[*JSON Schema*]: the schema approach for JSON, in
   contrast to Protocol Buffers' schema-as-format.
-* *xref:agent2agent.adoc[Agent2Agent]*: a protocol whose data model is defined
+* xref:agent2agent.adoc[*Agent2Agent*]: a protocol whose data model is defined
   in Protocol Buffers.

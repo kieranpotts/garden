@@ -1,16 +1,16 @@
 = Long polling
 
 Long polling is a technique for emulating server push over the
-*xref:request-response.adoc[request-response]* model of
-*xref:http.adoc[HyperText Transfer Protocol (HTTP)]*. A client issues an HTTP
+xref:request-response.adoc[*request-response*] model of
+xref:http.adoc[*HyperText Transfer Protocol (HTTP)*]. A client issues an HTTP
 request as usual, but instead of returning a response immediately, the server
 holds the request open until data becomes available or a timeout expires. The
 server then sends the response, and the client immediately re-issues the
 request. The result is a sequence of HTTP request-response cycles that
 approximates a continuous stream of updates from server to client.
 
-Long polling predates *xref:websockets.adoc[WebSockets]* and
-*xref:server-sent-events.adoc[Server-Sent Events (SSE)]*, and was popularized
+Long polling predates xref:websockets.adoc[*WebSockets*] and
+xref:server-sent-events.adoc[*Server-Sent Events (SSE)*], and was popularized
 in the mid-2000s under the umbrella term *Comet*. It remains useful as a
 fallback when those newer mechanisms are unavailable, for example behind
 corporate proxies that block WebSocket upgrades, or in environments where only
@@ -121,17 +121,17 @@ built-in browser reconnection. Long polling sits below both as a fallback.
 
 == See also
 
-* *xref:websockets.adoc[WebSockets]*: Full-duplex, persistent-connection
+* xref:websockets.adoc[*WebSockets*]: Full-duplex, persistent-connection
   alternative to long polling.
-* *xref:server-sent-events.adoc[Server-Sent Events (SSE)]*: HTTP-native
+* xref:server-sent-events.adoc[*Server-Sent Events (SSE)*]: HTTP-native
   one-way server push with automatic browser reconnection.
-* *xref:http.adoc[HyperText Transfer Protocol (HTTP)]*: The transport long
+* xref:http.adoc[*HyperText Transfer Protocol (HTTP)*]: The transport long
   polling is built on.
-* *xref:request-response.adoc[Request-response]*: The communication pattern
+* xref:request-response.adoc[*Request-response*]: The communication pattern
   long polling extends.
-* *xref:push-architecture.adoc[Push architecture]*: The broader family of
+* xref:push-architecture.adoc[*Push architecture*]: The broader family of
   server-initiated delivery patterns, of which long polling is a simulation.
-* *xref:pull-architecture.adoc[Pull architecture]*: The consumer-initiated model
+* xref:pull-architecture.adoc[*Pull architecture*]: The consumer-initiated model
   that long polling extends toward push delivery.
-* *xref:webhook.adoc[Webhooks]*: Server-to-server push via callbacks,
+* xref:webhook.adoc[*Webhooks*]: Server-to-server push via callbacks,
   contrasting with the client-driven polling model.

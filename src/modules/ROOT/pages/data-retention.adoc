@@ -1,26 +1,26 @@
 = Data retention
 
-Data retention is the *xref:quality-attributes.adoc[quality attribute]* and
+Data retention is the xref:quality-attributes.adoc[*quality attribute*] and
 associated policy that governs how long a system keeps data before deleting or
 archiving it. A retention policy specifies, for each class of data, how long it
 must be held, where it is stored, and what happens to it at the end of that
 period.
 
 Retention is driven by three forces that often pull in different directions.
-Regulatory and *xref:compliance.adoc[compliance]* obligations frequently
+Regulatory and xref:compliance.adoc[*compliance*] obligations frequently
 mandate minimum retention periods, eg. financial records that must be kept for
 seven years, or audit logs that must survive for a defined window. Business
 value pulls the other way. Historical data feeds analytics, trend detection,
 and machine-learning models, so there is often pressure to keep data longer
-than the law strictly requires. *xref:privacy.adoc[Privacy]* considerations and
+than the law strictly requires. xref:privacy.adoc[*Privacy*] considerations and
 data-minimization principles push toward shorter retention, since holding data
 longer than necessary increases the cost and blast radius of a breach and may
 conflict with legal rights such as the right to erasure.
 
 The third force is cost and operability. Every byte retained consumes storage,
-backup bandwidth, and compute at query time. *xref:observability.adoc[Observability]*
+backup bandwidth, and compute at query time. xref:observability.adoc[*Observability*]
 pipelines in particular can generate prodigious volumes of
-*xref:telemetry.adoc[telemetry]* and *xref:logging.adoc[log]* data, and
+xref:telemetry.adoc[*telemetry*] and xref:logging.adoc[*log*] data, and
 unbounded retention is a common source of runaway cloud bills. A retention
 policy is the mechanism that keeps these forces in balance.
 
@@ -29,15 +29,15 @@ policy is the mechanism that keeps these forces in balance.
 Deleting data sounds simple, but in practice it is one of the harder problems
 in data engineering. A few common pitfalls.
 
-* *Immutable and append-only stores.* *xref:event-sourcing.adoc[Event-sourced]*
-  systems and *xref:change-data-capture.adoc[change data capture]* pipelines
+* *Immutable and append-only stores.* xref:event-sourcing.adoc[*Event-sourced*]
+  systems and xref:change-data-capture.adoc[*change data capture*] pipelines
   record facts that, by design, cannot be altered or removed. Honouring a
   deletion request then requires compensating events, tombstones, or
   key-level encryption rotation rather than a simple `DELETE`.
 
 * *Backups and replicas.* A record purged from the primary store typically
-  lives on in *xref:disaster-recovery.adoc[disaster recovery]* backups,
-  snapshots, and *xref:replication.adoc[replicas]* for as long as those copies
+  lives on in xref:disaster-recovery.adoc[*disaster recovery*] backups,
+  snapshots, and xref:replication.adoc[*replicas*] for as long as those copies
   are retained. True deletion has to account for the retention window of every
   copy, or the policy is only half-enforced.
 
@@ -51,19 +51,19 @@ in data engineering. A few common pitfalls.
   means redacting or anonymizing identifying fields while retaining the record
   itself for its mandated period.
 
-Retention also interacts with *xref:data-integrity.adoc[data integrity]* and
-*xref:durability.adoc[durability]*. A policy is only meaningful if the data it
+Retention also interacts with xref:data-integrity.adoc[*data integrity*] and
+xref:durability.adoc[*durability*]. A policy is only meaningful if the data it
 governs remains correct and recoverable for as long as it is held, and is
 reliably removed once that period elapses.
 
 == See also
 
-* *xref:compliance.adoc[Compliance]*
-* *xref:data-integrity.adoc[Data integrity]*
-* *xref:disaster-recovery.adoc[Disaster recovery]*
-* *xref:durability.adoc[Durability]*
-* *xref:event-sourcing.adoc[Event sourcing]*
-* *xref:logging.adoc[Logging]*
-* *xref:observability.adoc[Observability]*
-* *xref:privacy.adoc[Privacy]*
-* *xref:quality-attributes.adoc[Quality attributes]*
+* xref:compliance.adoc[*Compliance*]
+* xref:data-integrity.adoc[*Data integrity*]
+* xref:disaster-recovery.adoc[*Disaster recovery*]
+* xref:durability.adoc[*Durability*]
+* xref:event-sourcing.adoc[*Event sourcing*]
+* xref:logging.adoc[*Logging*]
+* xref:observability.adoc[*Observability*]
+* xref:privacy.adoc[*Privacy*]
+* xref:quality-attributes.adoc[*Quality attributes*]

@@ -20,7 +20,7 @@ the work targets.
 
 * *Legacy maintenance.* A system outlives its original developers and its
   design documentation. Reverse engineering recovers the architecture and data
-  model so the system can be understood, *xref:refactoring.adoc[refactored]*,
+  model so the system can be understood, xref:refactoring.adoc[*refactored*],
   or replaced.
 
 * *Interoperability.* A product must read a proprietary file format or speak a
@@ -29,7 +29,7 @@ the work targets.
 
 * *Security analysis.* *Malware analysis* reverse-engineers malicious binaries
   to understand their behavior, indicators, and provenance. Vulnerability
-  research and *xref:penetration-testing.adoc[penetration testing]* apply the
+  research and xref:penetration-testing.adoc[*penetration testing*] apply the
   same skills to find exploitable flaws in software the researcher does not
   own.
 
@@ -58,12 +58,12 @@ reconstructs information that a forward-engineering step would have discarded.
 
 * *Design and architecture recovery.* The structure above the code — modules,
   layers, components, and their dependencies — is reconstructed, often as
-  *xref:diagramming.adoc[diagrams]*.
+  xref:diagramming.adoc[*diagrams*].
 
 * *Specification recovery.* The system's intended behavior is expressed as a
   specification, the highest and most aspirational level. Reaching a
   specification rigorous enough for
-  *xref:formal-methods.adoc[formal methods]* is rare.
+  xref:formal-methods.adoc[*formal methods*] is rare.
 
 == Static and dynamic techniques
 
@@ -73,14 +73,14 @@ dynamic work, and the two are complementary.
 *Static* techniques reason about the artifact at rest: disassembling a binary,
 recovering a control-flow graph, tracking data flow, or identifying known
 library code. They are an application of
-*xref:static-analysis.adoc[static analysis]* to artifacts below the source
+xref:static-analysis.adoc[*static analysis*] to artifacts below the source
 level, and they share its limits. Opaque indirect jumps, reflection, and
 self-modifying code can defeat static recovery.
 
 *Dynamic* techniques observe the system running. A
-*xref:debugger.adoc[debugger]* traces execution through the code under study,
+xref:debugger.adoc[*debugger*] traces execution through the code under study,
 revealing the path actually taken where static analysis can only enumerate the
-paths possible. *xref:profiling.adoc[Profiling]* and sandboxing show what a
+paths possible. xref:profiling.adoc[*Profiling*] and sandboxing show what a
 binary does rather than what it could do, which is essential for packed or
 obfuscated malware that resists static inspection. The trade-off is the same as
 for any dynamic analysis. Only the exercised path is observed.
@@ -95,13 +95,13 @@ attempt the lossy lift back toward C. Debuggers such as GDB, WinDbg, and x64dbg
 drive the dynamic side, and emulators like QEMU let a binary be run and
 observed on a different architecture or in a controlled sandbox.
 
-Historically, *xref:case.adoc[CASE]* tooling promised a form of
+Historically, xref:case.adoc[*CASE*] tooling promised a form of
 reverse-engineering for design artifacts. *Round-trip engineering* kept code
 and graphical models in sync, and lower-CASE tools could generate diagrams from
 existing code. The integrated CASE suites are gone, but the thread survives in
 model-extraction features of modern
-*xref:integrated-development-environments.adoc[IDEs]* and in
-*xref:data-modeling.adoc[data modeling]* tools that reverse-engineer schemas
+xref:integrated-development-environments.adoc[*IDEs*] and in
+xref:data-modeling.adoc[*data modeling*] tools that reverse-engineer schemas
 from live databases.
 
 == Difficulties and limits

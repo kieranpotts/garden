@@ -3,8 +3,8 @@
 // TODO: https://www.f5.com/glossary/api-gateway
 // TODO: https://blog.algomaster.io/p/what-is-an-api-gateway
 
-In a *xref:service-oriented-architecture.adoc[service-oriented architecture]*
-and other back-end *xref:distributed-system.adoc[distributed software]*, an API
+In a xref:service-oriented-architecture.adoc[*service-oriented architecture*]
+and other back-end xref:distributed-system.adoc[*distributed software*], an API
 gateway is a server that acts as a single-entry point for API clients. Rather
 than exposing every service endpoint directly, all incoming client requests go
 through the gateway, which routes them to the appropriate back-end services.
@@ -17,15 +17,15 @@ while keeping internal service complexity hidden.
 == Key features
 
 API gateways provide a convenient centralized point for implementing
-*xref:cross-cutting-concern.adoc[Cross-cutting concerns]* across all API traffic:
+xref:cross-cutting-concern.adoc[*Cross-cutting concerns*] across all API traffic:
 
 * Request routing: Routes requests to the correct back-end service based on URL
   path, HTTP method, headers, query parameters, or service discovery metadata.
-* *xref:authentication.adoc[*Authentication*]* and authorization: Integrates with
+* xref:authentication.adoc[*Authentication*] and authorization: Integrates with
   identity providers (OAuth 2.0, OpenID Connect), validates tokens (eg.
-  *xref:jwt.adoc[JWT]*), and enforces role-based or scope-based access controls,
+  xref:jwt.adoc[*JWT*]), and enforces role-based or scope-based access controls,
   centralizing security policy enforcement across all services.
-* *xref:rate-limiting.adoc[*Rate limiting*]* and throttling: Restricts the
+* xref:rate-limiting.adoc[*Rate limiting*] and throttling: Restricts the
   number of requests a client can make per unit of time, protecting back-end
   services from overuse or abuse.
 * Request and response transformation: Modifies requests or responses in
@@ -45,26 +45,26 @@ API gateways provide a convenient centralized point for implementing
 * Protocol translation: Translates between protocols (e.g. HTTP ↔ gRPC,
   WebSocket ↔ REST, SOAP ↔ REST), allowing clients to use simpler protocols
   while internal services use more efficient ones.
-* *xref:input-validation.adoc[Input validation]*,
-  *xref:circuit-breaker.adoc[circuit breaking]*,
-  *xref:firewalls.adoc[firewalling]* (allow-listing/deny-listing), and service
+* xref:input-validation.adoc[*Input validation*],
+  xref:circuit-breaker.adoc[*circuit breaking*],
+  xref:firewalls.adoc[*firewalling*] (allow-listing/deny-listing), and service
   discovery.
 
 == Relationship to load balancers and reverse proxies
 
-An API gateway is a specialised *xref:reverse-proxy.adoc[reverse proxy]*
+An API gateway is a specialised xref:reverse-proxy.adoc[*reverse proxy*]
 designed specifically for API management. While a
-*xref:reverse-proxy.adoc[reverse proxy]* focuses on forwarding HTTP traffic,
+xref:reverse-proxy.adoc[*reverse proxy*] focuses on forwarding HTTP traffic,
 abstracting back-end infrastructure, and providing caching and SSL termination,
 an API gateway adds API-specific capabilities: authentication, rate limiting,
 request transformation, aggregation, and API lifecycle management (versioning,
 developer portals).
 
 Since an API gateway is a potential
-*xref:single-point-of-failure.adoc[single point of failure]*, it is typically
-deployed in a *xref:load-balancing.adoc[load-balanced]* configuration, with
+xref:single-point-of-failure.adoc[*single point of failure*], it is typically
+deployed in a xref:load-balancing.adoc[*load-balanced*] configuration, with
 traffic distributed between multiple instances. Additional
-*xref:load-balancer.adoc[load balancers]* may sit behind the API gateway to
+xref:load-balancer.adoc[*load balancers*] may sit behind the API gateway to
 further distribute traffic between multiple instances of the back-end services.
 
 In large-scale architectures, all three may be used together: an edge load
@@ -87,7 +87,7 @@ service-to-service policy.
 
 == See also
 
-* *xref:load-balancer.adoc[Load balancer]*
-* *xref:reverse-proxy.adoc[Reverse proxy]*
+* xref:load-balancer.adoc[*Load balancer*]
+* xref:reverse-proxy.adoc[*Reverse proxy*]
 * xref:edge-proxy.adoc[*Edge proxy*]
-* *xref:service-mesh.adoc[Service mesh]*
+* xref:service-mesh.adoc[*Service mesh*]

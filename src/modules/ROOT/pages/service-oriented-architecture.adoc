@@ -11,15 +11,15 @@
 // knowledge of how each service is implemented internally.
 
 Service-oriented architecture is a
-*xref:distributed-system.adoc[distributed software]* design pattern. It sees an
+xref:distributed-system.adoc[*distributed software*] design pattern. It sees an
 application divided into multiple services, each of which can be developed and
 tested independently of other services within the system. The defining feature
 of a service is that it runs in its own *process* and communicates with other
 services within the system via
-*xref:inter-process-communication.adoc[network calls]*. Optionally, individual
+xref:inter-process-communication.adoc[*network calls*]. Optionally, individual
 services may have distinct code repositories and production infrastructure.
 
-The *xref:system-design.adoc[system design]* of service-oriented architecture
+The xref:system-design.adoc[*system design*] of service-oriented architecture
 involves decomposing an application's functionality into separate,
 *loosely coupled* services, each managing its own data stores and caches, and
 which communicate with each other via network APIs or message brokers.
@@ -32,43 +32,43 @@ rarely change, and would therefore require minimal maintenance. Higher-level
 services will tend to be domain-specific (they are also known as
 *domain services*). For example, an e-commerce platform may have services for
 inventory management, order processing, and customer reviews – each a
-*subdomain* of the *xref:domain-model.adoc[domain model]*.
+*subdomain* of the xref:domain-model.adoc[*domain model*].
 
 Domain services are more likely to be *stateful*, due to requirements to
 maintain state across multiple requests, while utility services are more likely
-to be optimized for performance using a *xref:stateless.adoc[stateless]* design.
+to be optimized for performance using a xref:stateless.adoc[*stateless*] design.
 
 == Comparisons to other architectural styles
 
-*xref:microservices.adoc[Microservices architecture]* is a subset of
+xref:microservices.adoc[*Microservices architecture*] is a subset of
 service-oriented architecture with further design constraints. A microservices
 architecture emphasizes the design of very small, independently deployable
 services. The distinction between service-oriented and microservices
 architectures is mostly a matter of granularity, which is subjective. The two
 terms are often used interchangeably.
 
-*xref:web-oriented-architecture.adoc[Web-oriented]* and
-The OMG's *xref:model-driven-architecture.adoc[model-driven architecture]*
+xref:web-oriented-architecture.adoc[*Web-oriented*] and
+The OMG's xref:model-driven-architecture.adoc[*model-driven architecture*]
 standard is one model-driven take on SOA, in which platform-independent models
 of services and their contracts are projected onto platform-specific models for
-different middleware. *xref:resource-oriented-architecture.adoc[resource-oriented]* architects are
-other variations on SOA. On the public web, *xref:mashup.adoc[mashups]* are a
+different middleware. xref:resource-oriented-architecture.adoc[*resource-oriented*] architects are
+other variations on SOA. On the public web, xref:mashup.adoc[*mashups*] are a
 lightweight, ad hoc expression of the same principles, combining open APIs into
 a single application without a formal integration effort.
 
-*xref:message-driven-architecture.adoc[Message-driven]* and
-*xref:event-driven-architecture.adoc[event-driven]* architectures help to
+xref:message-driven-architecture.adoc[*Message-driven*] and
+xref:event-driven-architecture.adoc[*event-driven*] architectures help to
 enforce the loose coupling between services that is a key principle of SOA.
 However, SOA itself does not prescribe particular communication patterns for
 service contracts, and a service-oriented system may even implement a mix of
 communication styles, including
-*xref:synchronous-communication.adoc[synchronous]* and
-*xref:asynchronous-communication.adoc[asynchronous]* styles.
+xref:synchronous-communication.adoc[*synchronous*] and
+xref:asynchronous-communication.adoc[*asynchronous*] styles.
 
 If each service in a service-oriented design were to deliver an end-to-end
 solution for a discrete user-facing function, then the architectural style could
 be said to be a cross between service-oriented and
-*xref:vertical-slice-architecture.adoc[vertical-slice architecture]*. More
+xref:vertical-slice-architecture.adoc[*vertical-slice architecture*]. More
 commonly, service-oriented designs tend to involve a hierarchy of services, in
 which lower-level cross-cutting services are reused by multiple higher-level
 user-facing or domain-oriented services.
@@ -78,20 +78,20 @@ user-facing or domain-oriented services.
 == Design trade-offs
 
 Service-oriented architectures share the same trade-offs as all
-*xref:distributed-system.adoc[distributed software]*. The main trade-off is that
-greater *xref:scalability.adoc[scalability]* is achieved at a cost of increased
-*xref:complexity.adoc[accidental complexity]*. Common difficulties in
+xref:distributed-system.adoc[*distributed software*]. The main trade-off is that
+greater xref:scalability.adoc[*scalability*] is achieved at a cost of increased
+xref:complexity.adoc[*accidental complexity*]. Common difficulties in
 service-oriented designs include planning for
-*xref:fault-tolerance.adoc[fault tolerance]*, reasoning about
-*xref:concurrency.adoc[concurrency]*, and achieving
-*xref:consistency.adoc[consistency]* in
-*xref:replication.adoc[replicated data]*. See
-*xref:distributed-system.adoc[distributed software]* for more on these
+xref:fault-tolerance.adoc[*fault tolerance*], reasoning about
+xref:concurrency.adoc[*concurrency*], and achieving
+xref:consistency.adoc[*consistency*] in
+xref:replication.adoc[*replicated data*]. See
+xref:distributed-system.adoc[*distributed software*] for more on these
 trade-offs.
 
 A widely-promoted advantage of service-oriented architecture is that it allows
 for flexibility in optimizing software components in different ways for
-performance optimization and *xref:scalability.adoc[scalability]*. Each service
+performance optimization and xref:scalability.adoc[*scalability*]. Each service
 in a service-oriented system can be scaled independently, and optimized in
 different ways as appropriate for their respective use cases and load patterns.
 This can include using different programming languages for different services.
@@ -105,7 +105,7 @@ example, Python might be used for a machine learning service while the rest of a
 system uses Java.
 
 Service-oriented architecture tends to work best where service boundaries
-clearly map to bounded contexts in the *xref:domain-model.adoc[domain model]*,
+clearly map to bounded contexts in the xref:domain-model.adoc[*domain model*],
 and where the bounded contexts in turn map directly to team topologies, allowing
 teams to each work independently on a discrete group of services.
 
@@ -113,9 +113,9 @@ A critical design consideration in service-oriented architectures is the
 granularity of services. If services are too fine-grained, the system can become
 overly complex (due to the operating overheads of managing lots of services) and
 slow (due to the overhead of higher network communication) – see
-*xref:microservices.adoc[microservices]* for more on these trade-offs. On the
+xref:microservices.adoc[*microservices*] for more on these trade-offs. On the
 other hand, if services are too coarse-grained, the system keeps more of the
-limitations of *xref:monolith.adoc[monolithic architectures]*.
+limitations of xref:monolith.adoc[*monolithic architectures*].
 
 ''''
 

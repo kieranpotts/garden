@@ -1,21 +1,21 @@
 = Capacity
 
-Capacity is a *xref:quality-attributes.adoc[quality attribute]* that describes
+Capacity is a xref:quality-attributes.adoc[*quality attribute*] that describes
 the maximum amount of work a system can handle at once while still meeting its
-other quality requirements, such as *xref:latency.adoc[latency]* and
-*xref:availability.adoc[availability]*. It is most often expressed as a ceiling
+other quality requirements, such as xref:latency.adoc[*latency*] and
+xref:availability.adoc[*availability*]. It is most often expressed as a ceiling
 on concurrent requests, concurrent users, or concurrent sessions, rather than
 as a sustained rate over time.
 
 Capacity is distinct from its near neighbours.
-*xref:throughput.adoc[Throughput]* is the amount of work completed per unit of
-time, a rate rather than a concurrent ceiling. *xref:scalability.adoc[Scalability]*
+xref:throughput.adoc[*Throughput*] is the amount of work completed per unit of
+time, a rate rather than a concurrent ceiling. xref:scalability.adoc[*Scalability*]
 is the ability to grow that ceiling by adding resources, whereas capacity is the
 ceiling as it stands today. A system with high capacity is not necessarily
 scalable, and a scalable system may be running well below its capacity.
 
 The relationship between capacity and latency is not linear. As
-*xref:load.adoc[load]* approaches the system's capacity, queues lengthen and
+xref:load.adoc[*load*] approaches the system's capacity, queues lengthen and
 latency rises, often
 dramatically. For this reason capacity is usually stated alongside a target
 latency or service level, not as a bare number. A system that "handles 10,000
@@ -24,17 +24,17 @@ load is also known.
 
 Production systems are rarely run at full capacity. A margin of headroom is
 held in reserve so that traffic spikes, component failures, and the startup
-lag of *xref:auto-scaling.adoc[auto-scaling]* do not immediately degrade
+lag of xref:auto-scaling.adoc[*auto-scaling*] do not immediately degrade
 service. Running close to capacity is a common cause of incidents. When one
-node in a *xref:load-balancing.adoc[load-balanced]* fleet fails, the surviving
+node in a xref:load-balancing.adoc[*load-balanced*] fleet fails, the surviving
 nodes must absorb its share, and a fleet with no headroom will then saturate.
-This is why capacity and *xref:redundancy.adoc[redundancy]* are sized together,
-eg. the N+1 rule in *xref:active-active.adoc[active-active]* clusters. The
-ceiling itself is established through *xref:load-testing.adoc[load testing]*,
+This is why capacity and xref:redundancy.adoc[*redundancy*] are sized together,
+eg. the N+1 rule in xref:active-active.adoc[*active-active*] clusters. The
+ceiling itself is established through xref:load-testing.adoc[*load testing*],
 which progressively increases demand to find where performance degrades.
-*xref:stress-testing.adoc[Stress testing]* goes one step further, pushing past
+xref:stress-testing.adoc[*Stress testing*] goes one step further, pushing past
 that ceiling to find where the system actually breaks.
 
 == See also
 
-* *xref:performance.adoc[Performance]*
+* xref:performance.adoc[*Performance*]

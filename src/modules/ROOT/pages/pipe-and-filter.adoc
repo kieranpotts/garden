@@ -1,6 +1,6 @@
 = Pipe and filter
 
-*Pipe and filter* is an *xref:architectural-pattern.adoc[architectural pattern]*
+*Pipe and filter* is an xref:architectural-pattern.adoc[*architectural pattern*]
 in which a data stream flows through a sequence of independent processing
 stages called *filters*, connected by conduits called *pipes*. Each filter
 performs a single, self-contained transformation on its input and writes the
@@ -13,10 +13,10 @@ programming model rather than the system structure.
 The pattern was codified in _Pattern-Oriented Software Architecture_, where its
 canonical small-scale example is the Unix pipeline: a chain of small,
 single-purpose programs such as `grep`, `sort`, `uniq`, and `wc` strung
-together by the *xref:shell.adoc[shell]*'s pipe operator (`|`). Each program
+together by the xref:shell.adoc[*shell*]'s pipe operator (`|`). Each program
 reads from standard input and writes to standard output, and the kernel's pipe
 mechanism connects them. The pipe was the decisive enabler of the
-*xref:unix-philosophy.adoc[Unix philosophy]*'s emphasis on small, composable
+xref:unix-philosophy.adoc[*Unix philosophy*]'s emphasis on small, composable
 tools, and the same shape recurs at every scale, from a one-line
 shell command to enterprise integration flows that span many machines.
 
@@ -45,7 +45,7 @@ the pipes absorbing the differences in speed between stages.
 The pattern's home territory is data integration and transformation, where a
 fixed sequence of stages is the natural shape of the work.
 
-* *xref:etl.adoc[Extract, transform, load (ETL)]* pipelines are pipe-and-filter
+* xref:etl.adoc[*Extract, transform, load (ETL)*] pipelines are pipe-and-filter
   systems almost by definition. Extract, transform, and load are three
   filters, and the staging tables and queues between them are the pipes.
 
@@ -61,7 +61,7 @@ fixed sequence of stages is the natural shape of the work.
 Pipe and filter assumes the work decomposes into a fixed, linear sequence of
 stages. When a problem has no known deterministic strategy and the next step
 depends on what has been learned so far,
-*xref:blackboard.adoc[blackboard]* is the better fit. It lets independent
+xref:blackboard.adoc[*blackboard*] is the better fit. It lets independent
 specialists cooperate opportunistically through a shared structure rather than
 a fixed pipeline.
 
@@ -69,7 +69,7 @@ Pipe and filter is also a *non-mediated* pattern: data flows through the pipes
 themselves, with no central component deciding which stage runs next. Where
 stages have complex dependencies, or where the workflow needs centralized
 retries, timeouts, and compensation,
-*xref:execution-orchestrator.adoc[execution orchestrator]* adds a coordinator
+xref:execution-orchestrator.adoc[*execution orchestrator*] adds a coordinator
 on top. The two patterns are often combined. The orchestrator sequences
 coarse-grained stages, each of which is internally a pipe-and-filter pipeline.
 
@@ -80,7 +80,7 @@ coarse-grained stages, each of which is internally a pipe-and-filter pipeline.
 
 * *Parallelism.* Independent filters can run concurrently, and buffering in
   the pipes smooths out differences in stage speed. The model maps naturally
-  onto *xref:parallelism.adoc[parallel]* execution.
+  onto xref:parallelism.adoc[*parallel*] execution.
 
 * *No feedback or branching.* The classic shape is linear and one-way. Loops,
   conditional routing, and request/response interactions have to be bolted on,
@@ -98,14 +98,14 @@ coarse-grained stages, each of which is internally a pipe-and-filter pipeline.
 
 == See also
 
-* *xref:architectural-pattern.adoc[Architectural pattern]*
-* *xref:blackboard.adoc[Blackboard]*
-* *xref:execution-orchestrator.adoc[Execution orchestrator]*
-* *xref:etl.adoc[Extract, transform, load (ETL)]*
-* *xref:parallelism.adoc[Parallelism]*
-* *xref:shell.adoc[Shell]*
-* *xref:stream-processing-systems.adoc[Stream processing systems]*
-* *xref:unix-philosophy.adoc[Unix philosophy]*
+* xref:architectural-pattern.adoc[*Architectural pattern*]
+* xref:blackboard.adoc[*Blackboard*]
+* xref:execution-orchestrator.adoc[*Execution orchestrator*]
+* xref:etl.adoc[*Extract, transform, load (ETL)*]
+* xref:parallelism.adoc[*Parallelism*]
+* xref:shell.adoc[*Shell*]
+* xref:stream-processing-systems.adoc[*Stream processing systems*]
+* xref:unix-philosophy.adoc[*Unix philosophy*]
 
 == References
 

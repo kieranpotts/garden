@@ -3,24 +3,24 @@
 The Liskov substitution principle (LSP) states that objects in a program should
 be replaceable with instances of their subtypes without altering the
 correctness of that program. Introduced by Barbara Liskov in 1987, it is the L
-in *xref:solid.adoc[SOLID]*, a family of
-*xref:design-principles.adoc[design principles]* for
-*xref:object-oriented-programming.adoc[object-oriented programming]*.
+in xref:solid.adoc[*SOLID*], a family of
+xref:design-principles.adoc[*design principles*] for
+xref:object-oriented-programming.adoc[*object-oriented programming*].
 
 LSP is a principle about behavior, not about naming. A subtype must honor the
 contract of its base type – its preconditions, postconditions, and invariants –
 so that any code written against the base type continues to work when given a
-subtype instead. This is what makes *xref:polymorphism.adoc[polymorphism]* safe:
+subtype instead. This is what makes xref:polymorphism.adoc[*polymorphism*] safe:
 clients can depend on an abstract type and remain oblivious to which concrete
 subtype they receive, provided every subtype is a true behavioral substitute.
 
-Violations most often arise when *xref:inheritance.adoc[inheritance]* is used for
+Violations most often arise when xref:inheritance.adoc[*inheritance*] is used for
 code reuse rather than to model a genuine "is-a" relationship. A classic example
 is deriving `Square` from `Rectangle`. A square cannot accept arbitrary width
 and height independently, so it breaks the postconditions of its base type. The
 subclass compiles, but any code that sets width and height separately and
 expects them to stick is now wrong. When the "is-a" relationship does not hold at
-the behavioral level, *xref:composition.adoc[composition]* is usually the better
+the behavioral level, xref:composition.adoc[*composition*] is usually the better
 answer than inheritance.
 
 Following LSP keeps hierarchies honest. Subclasses that strengthen
@@ -28,13 +28,13 @@ preconditions, weaken postconditions, or throw exceptions for inputs the base
 type accepts are all tells that the hierarchy is modeling reuse rather than
 subtyping. Like the other SOLID letters, LSP is easiest to satisfy when each
 type has a single, well-defined responsibility, which is the concern of the
-*xref:single-responsibility-principle.adoc[single responsibility principle]*, and
+xref:single-responsibility-principle.adoc[*single responsibility principle*], and
 when extensions are additive rather than modifying, which is the goal of the
-*xref:open-closed-principle.adoc[open-closed principle]*. It also underpins
-*xref:dependency-inversion.adoc[dependency inversion]*, which relies on clients
+xref:open-closed-principle.adoc[*open-closed principle*]. It also underpins
+xref:dependency-inversion.adoc[*dependency inversion*], which relies on clients
 depending on abstractions whose concrete implementations are fully
 substitutable. And it depends on interfaces being narrow enough that every
 implementer can honor the full contract, which is the concern of the
-*xref:interface-segregation-principle.adoc[interface segregation principle]*:
+xref:interface-segregation-principle.adoc[*interface segregation principle*]:
 a fat interface pressures implementers into stubbing or throwing on methods they
 cannot support, which is itself a substitution violation.

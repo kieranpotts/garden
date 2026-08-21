@@ -3,14 +3,14 @@
 A task queue is a system that receives units of computational work — *tasks* —
 together with their arguments, dispatches those tasks to be executed, and
 returns the results to the application. It is a higher-level abstraction than a
-*xref:message-queues.adoc[message queue]*: where a message queue moves data
+xref:message-queues.adoc[*message queue*]: where a message queue moves data
 between producers and consumers and leaves what to do with it up to the
 consumer, a task queue treats each message as a callable unit of work and
 concerns itself with executing it, tracking its state, and reporting its
 outcome.
 
 Task queues are the workhorse of
-*xref:asynchronous-processing.adoc[asynchronous processing]* in distributed
+xref:asynchronous-processing.adoc[*asynchronous processing*] in distributed
 systems. Web request handlers offload slow, variable, or fault-prone work —
 sending email, transcoding media, generating reports, calling third-party APIs
 — to a background worker so the foreground request returns quickly and the
@@ -24,10 +24,10 @@ A task queue has four cooperating parts.
   task's name and arguments into a message and hand it to a broker, then return
   immediately without waiting for the task to run.
 
-* A *xref:message-broker.adoc[message broker]* (often a dedicated
-  *xref:message-queues.adoc[message queue]* such as
-  *xref:rabbitmq.adoc[RabbitMQ]* or Amazon SQS, or a
-  *xref:redis.adoc[Redis]* list or stream) holds the queued task until a worker
+* A xref:message-broker.adoc[*message broker*] (often a dedicated
+  xref:message-queues.adoc[*message queue*] such as
+  xref:rabbitmq.adoc[*RabbitMQ*] or Amazon SQS, or a
+  xref:redis.adoc[*Redis*] list or stream) holds the queued task until a worker
   is ready for it. The broker provides the durability and ordering semantics
   the queue relies on.
 
@@ -80,7 +80,7 @@ availability, so the practical contract is "delivered at least once, possibly
 more than once".
 
 This makes task handlers
-*xref:idempotent.adoc[idempotent]* by necessity. A handler that charges a card
+xref:idempotent.adoc[*idempotent*] by necessity. A handler that charges a card
 or writes a row on every invocation will double-charge or double-write on
 redelivery. The remedy is the same as for any other at-least-once system:
 design the side effect to be naturally idempotent (eg. upsert by key), or
@@ -90,10 +90,10 @@ short-circuited.
 == Retries, dead letters, and the result backend
 
 Tasks fail for both transient and permanent reasons. A task queue applies a
-*xref:retry.adoc[retry]* policy — typically exponential backoff with jitter —
+xref:retry.adoc[*retry*] policy — typically exponential backoff with jitter —
 to absorb transient failures such as a downstream API timeout. When the
 retry budget is exhausted, the task is diverted to a
-*xref:dead-letter-queue.adoc[dead letter queue]* rather than retried forever
+xref:dead-letter-queue.adoc[*dead letter queue*] rather than retried forever
 or dropped silently, so an operator can inspect, fix, and replay it.
 
 The result backend records the terminal state of each task — succeeded,
@@ -127,7 +127,7 @@ drawing clearly.
 
 * *Versus an execution orchestrator.* A task queue runs independent,
   stateless units of work with no knowledge of one another. An
-  *xref:execution-orchestrator.adoc[execution orchestrator]* models a workflow
+  xref:execution-orchestrator.adoc[*execution orchestrator*] models a workflow
   as a dependency graph of steps, sequencing them, handling compensation, and
   persisting intermediate state so a long-running process can resume after a
   crash. Use a task queue for many independent jobs; use an orchestrator when
@@ -139,8 +139,8 @@ https://docs.celeryq.dev/[Celery] is the canonical distributed task queue for
 Python. Tasks are defined as ordinary Python functions and executed either
 synchronously (in the foreground, for instant execution) or asynchronously (in
 the background). Celery is commonly paired with
-*xref:rabbitmq.adoc[RabbitMQ]* as its broker, but it can also use Amazon SQS,
-*xref:redis.adoc[Redis]*, or a database. Its communication protocol has been
+xref:rabbitmq.adoc[*RabbitMQ*] as its broker, but it can also use Amazon SQS,
+xref:redis.adoc[*Redis*], or a database. Its communication protocol has been
 reimplemented in other languages, with libraries available for JavaScript,
 TypeScript, and PHP.
 
@@ -150,17 +150,17 @@ https://sidekiq.org/[Sidekiq] for Ruby, https://docs.bullmq.io/[BullMQ] for
 Node.js, and https://masstransit.io/[MassTransit] and
 https://www.hangfire.io/[Hangfire] for .NET. Cloud platforms offer hosted
 equivalents such as Google Cloud Tasks and Amazon SQS with
-*xref:function-as-a-service.adoc[serverless functions]*, which remove the
+xref:function-as-a-service.adoc[*serverless functions*], which remove the
 operational burden of running workers at the cost of less control over the
 worker model and the result backend.
 
 == See also
 
-* *xref:message-queues.adoc[Message queues]*
-* *xref:asynchronous-processing.adoc[Asynchronous processing]*
-* *xref:message-broker.adoc[Message broker]*
-* *xref:idempotent.adoc[Idempotent]*
-* *xref:retry.adoc[Retry]*
-* *xref:dead-letter-queue.adoc[Dead letter queue]*
-* *xref:execution-orchestrator.adoc[Execution orchestrator]*
-* *xref:batch-processing.adoc[Batch processing]*
+* xref:message-queues.adoc[*Message queues*]
+* xref:asynchronous-processing.adoc[*Asynchronous processing*]
+* xref:message-broker.adoc[*Message broker*]
+* xref:idempotent.adoc[*Idempotent*]
+* xref:retry.adoc[*Retry*]
+* xref:dead-letter-queue.adoc[*Dead letter queue*]
+* xref:execution-orchestrator.adoc[*Execution orchestrator*]
+* xref:batch-processing.adoc[*Batch processing*]

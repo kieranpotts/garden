@@ -7,9 +7,9 @@ Leonard Richardson and Sam Ruby in their 2007 O'Reilly book
 https://archive.org/details/restfulwebservic00rich_0[_RESTful Web Services_].
 
 ROA is the concrete, web-bound application of
-*xref:rest.adoc[Representational State Transfer (REST)]*. Where REST is an
+xref:rest.adoc[*Representational State Transfer (REST)*]. Where REST is an
 abstract set of architectural constraints, ROA is a recipe for building web
-services that satisfy those constraints using *xref:http.adoc[HTTP]* and URIs.
+services that satisfy those constraints using xref:http.adoc[*HTTP*] and URIs.
 For this reason ROA is sometimes described as "REST applied to the web", and the
 two terms are often used interchangeably in practice.
 
@@ -28,11 +28,11 @@ resource-oriented system.
 
 * *Representations.* Clients never touch a resource directly. They exchange
   *representations* of it – concrete byte sequences in a format such as
-  *xref:json.adoc[JSON]*, XML, or HTML. A single resource can have many
+  xref:json.adoc[*JSON*], XML, or HTML. A single resource can have many
   representations, and the client and server negotiate which to use.
 
 * *The uniform interface.* A small, fixed set of verbs applies to every
-  resource. On the web these are the *xref:http.adoc[HTTP]* methods – `GET`,
+  resource. On the web these are the xref:http.adoc[*HTTP*] methods – `GET`,
   `POST`, `PUT`, `DELETE`, and friends. The same verbs mean the same thing
   across every resource, which is what lets generic clients, proxies, and caches
   work without any knowledge of the application.
@@ -40,24 +40,24 @@ resource-oriented system.
 == Relationship to other styles
 
 ROA is a web-centric variation of
-*xref:service-oriented-architecture.adoc[service-oriented architecture (SOA)]*.
+xref:service-oriented-architecture.adoc[*service-oriented architecture (SOA)*].
 Where SOA in general decomposes a system around *services* that expose
 operations, ROA decomposes it around *resources* that expose a uniform
 interface. The two are not mutually exclusive. A service-oriented system may
 expose some of its services in a resource-oriented way.
 
-*xref:web-oriented-architecture.adoc[Web-oriented architecture (WOA)]* is a
+xref:web-oriented-architecture.adoc[*Web-oriented architecture (WOA)*] is a
 closely related style, also built on REST and scoped to the web. The two terms
 overlap heavily. WOA was coined from an analyst's perspective and emphasises
-global network effects and *xref:mashup.adoc[mashups]*, while ROA was framed
+global network effects and xref:mashup.adoc[*mashups*], while ROA was framed
 from a practitioner's, how-to-build-it perspective.
 
 The natural contrast is
-*xref:remote-procedure-call.adoc[Remote Procedure Call (RPC)]*, which organises
+xref:remote-procedure-call.adoc[*Remote Procedure Call (RPC)*], which organises
 remote interfaces around named functions and their arguments rather than
 addressable resources. An RPC-style URL such as `/getOrder?id=42` embeds the
 verb in the path. A ROA-style URL keeps the verb in the HTTP method and the noun
-in the path. ROA is one style of *xref:http-api.adoc[HTTP API]*.
+in the path. ROA is one style of xref:http-api.adoc[*HTTP API*].
 
 == See also
 

@@ -2,9 +2,9 @@
 
 A cross-cutting concern is an aspect of a system's design that affects multiple
 components, layers, or services, rather than being localized to one part of the
-codebase. *xref:non-functional-requirements.adoc[Non-functional requirements]*
+codebase. xref:non-functional-requirements.adoc[*Non-functional requirements*]
 are the classic example. Performance, security, availability, and the like are
-*xref:quality-attributes.adoc[quality attributes]* that cut across the whole
+xref:quality-attributes.adoc[*quality attributes*] that cut across the whole
 system, so satisfying one typically means touching many parts at once.
 
 The term comes from *aspect-oriented programming (AOP)*, which coined it for
@@ -20,15 +20,15 @@ tangling*.
 
 The following concerns commonly cut across a system.
 
-* *xref:logging.adoc[Logging]* and *xref:observability.adoc[observability]*,
-  including metrics and *xref:tracing.adoc[tracing]*.
-* *xref:security.adoc[Security]*, covering
-  *xref:authentication.adoc[authentication]*, authorization, and encryption in
+* xref:logging.adoc[*Logging*] and xref:observability.adoc[*observability*],
+  including metrics and xref:tracing.adoc[*tracing*].
+* xref:security.adoc[*Security*], covering
+  xref:authentication.adoc[*authentication*], authorization, and encryption in
   transit.
-* *xref:caching.adoc[Caching]* and *xref:performance.adoc[performance]*.
+* xref:caching.adoc[*Caching*] and xref:performance.adoc[*performance*].
 * Transaction management and error handling.
-* *xref:input-validation.adoc[Input validation]* and
-  *xref:compliance.adoc[compliance]* checks.
+* xref:input-validation.adoc[*Input validation*] and
+  xref:compliance.adoc[*compliance*] checks.
 
 Handled naively, each of these ends up duplicated in every layer or service that
 touches a request.
@@ -42,24 +42,24 @@ techniques collect each one into a single place.
   code at compile time or runtime. The logic is written once and applied
   automatically at the *join points* where it is needed.
 * *Middleware* and *interceptor* pipelines, as used by web frameworks and
-  *xref:grpc.adoc[gRPC]*, run each request through a chain of handlers that
+  xref:grpc.adoc[*gRPC*], run each request through a chain of handlers that
   apply logging, auth, and rate limiting before the business logic.
-* *xref:api-gateway.adoc[API gateways]* and
-  *xref:service-mesh.adoc[service meshes]* centralize cross-cutting concerns
-  across a *xref:distributed-system.adoc[distributed system]*. Auth, routing,
+* xref:api-gateway.adoc[*API gateways*] and
+  xref:service-mesh.adoc[*service meshes*] centralize cross-cutting concerns
+  across a xref:distributed-system.adoc[*distributed system*]. Auth, routing,
   retries, and observability are enforced at the infrastructure layer rather
   than reimplemented in every service.
-* *xref:dependency-injection.adoc[Dependency injection]* and the *decorator*
+* xref:dependency-injection.adoc[*Dependency injection*] and the *decorator*
   pattern wrap many components with a single concern without modifying them.
 
-The unifying idea is *xref:separation-of-concerns.adoc[separation of concerns]*.
+The unifying idea is xref:separation-of-concerns.adoc[*separation of concerns*].
 Each module stays focused on its primary responsibility, and the concerns that
 would otherwise be scattered across them are factored out.
 
 == See also
 
-* *xref:non-functional-requirements.adoc[Non-functional requirements]*
-* *xref:quality-attributes.adoc[Quality attributes]*
+* xref:non-functional-requirements.adoc[*Non-functional requirements*]
+* xref:quality-attributes.adoc[*Quality attributes*]
 
 == References
 

@@ -2,7 +2,7 @@
 
 A debugger is a tool for inspecting and controlling the execution of another
 program so that its behavior can be examined and faults localized. Whereas
-*xref:testing.adoc[testing]* tries to expose defects before they reach a user, a
+xref:testing.adoc[*testing*] tries to expose defects before they reach a user, a
 debugger is the instrument used once a defect has already surfaced and the
 question is *why*.
 
@@ -11,8 +11,8 @@ developer wrote. To do this it relies on *debug symbols*, metadata emitted by
 the compiler or interpreter that relates machine instructions to source lines,
 names to memory locations, and types to values. Without symbols the same
 mechanics still work, but the developer is left reading raw addresses and
-disassembly — work that shades into *xref:reverse-engineering.adoc[reverse
-engineering]* when the goal is to recover design from a built artifact rather
+disassembly — work that shades into xref:reverse-engineering.adoc[*reverse
+engineering*] when the goal is to recover design from a built artifact rather
 than fix a known fault.
 
 == Core capabilities
@@ -81,20 +81,20 @@ the interleaving that triggered the fault.
 Because a debugger examines one specific execution, it can confirm *that* a
 bug occurs but cannot prove *why* in general. A failing run is evidence, not
 an explanation. For that reason a debugger is most powerful when paired with
-other tools. *xref:logging.adoc[Logging]* records what happened across many
-runs. *xref:tracing.adoc[Tracing]* extends that view across service boundaries
-in a *xref:distributed-system.adoc[distributed system]*, where attaching a
-single-process debugger is no longer feasible. *xref:profiling.adoc[Profiling]*
+other tools. xref:logging.adoc[*Logging*] records what happened across many
+runs. xref:tracing.adoc[*Tracing*] extends that view across service boundaries
+in a xref:distributed-system.adoc[*distributed system*], where attaching a
+single-process debugger is no longer feasible. xref:profiling.adoc[*Profiling*]
 answers "where is the time going?" rather than "why is this wrong?". And
-*xref:static-analysis.adoc[static analysis]* finds whole classes of defect
+xref:static-analysis.adoc[*static analysis*] finds whole classes of defect
 without executing the program at all.
 
-For the human side of the work, techniques like *xref:rubber-ducking.adoc[rubber
-ducking]* attack the problem from the opposite direction, reasoning about the
+For the human side of the work, techniques like xref:rubber-ducking.adoc[*rubber
+ducking*] attack the problem from the opposite direction, reasoning about the
 code rather than running it.
 
 Debuggers are most often encountered bundled inside an
-*xref:integrated-development-environments.adoc[IDE]*, and indeed the quality of
+xref:integrated-development-environments.adoc[*IDE*], and indeed the quality of
 its integrated debugger is one of the main reasons developers choose a
 particular IDE.
 

@@ -3,13 +3,13 @@
 A *nonce* is a value that is meant to be used only once within a given context.
 The word is a contraction of "number used once", though a nonce need not be
 numeric. It is commonly a random string or a counter. Nonces are a building
-block of *xref:cryptography.adoc[cryptography]* and
-*xref:authentication.adoc[authentication]* protocols, wherever a system needs
+block of xref:cryptography.adoc[*cryptography*] and
+xref:authentication.adoc[*authentication*] protocols, wherever a system needs
 to prove that a message is fresh rather than a copy of an earlier one.
 
 The defining property of a nonce is uniqueness within its scope. A server that
 receives a request carrying a nonce it has already seen can reject the request
-as a *xref:replay-attack.adoc[replay attack]*, because a legitimate client
+as a xref:replay-attack.adoc[*replay attack*], because a legitimate client
 would never reuse the same value. To make this work, the server records each
 nonce it accepts and discards it once the corresponding exchange is complete,
 or binds the nonce to a short time window so that old values expire.
@@ -29,19 +29,19 @@ Nonces turn up in several distinct contexts, all sharing the "used once" idea.
   client a nonce to sign along with its credentials, so that a captured
   response cannot be replayed later. The next challenge carries a different
   nonce.
-* *Request deduplication.* An *xref:idempotent.adoc[idempotency key]* is a
+* *Request deduplication.* An xref:idempotent.adoc[*idempotency key*] is a
   nonce scoped to a single logical request. The client attaches it so the
   server can return the cached result of an earlier call instead of
   reprocessing it. This is how payment APIs prevent double charges on retry.
 * *Encryption.* Stream cipher modes and authenticated modes such as AES-GCM
   and ChaCha20-Poly1305 take a nonce (sometimes called an initialization
-  vector) as an input alongside the key. *xref:encryption.adoc[Encryption]*
+  vector) as an input alongside the key. xref:encryption.adoc[*Encryption*]
   with the same key and nonce for two different messages is catastrophic.
   The keystreams cancel, exposing the XOR of the plaintexts.
 
 == Nonce versus salt
 
-A nonce is often confused with a *xref:salt.adoc[salt]*. Both are non-secret
+A nonce is often confused with a xref:salt.adoc[*salt*]. Both are non-secret
 random values added to an input before processing, but they serve different
 purposes. A salt is reused for as long as the stored value exists. Its job is
 to make otherwise identical inputs hash to different outputs, so that
@@ -51,9 +51,9 @@ across messages under the same key is a fatal break.
 
 == See also
 
-* *xref:cryptography.adoc[Cryptography]*
-* *xref:encryption.adoc[Encryption]*
-* *xref:authentication.adoc[Authentication]*
-* *xref:replay-attack.adoc[Replay attack]*
-* *xref:idempotent.adoc[Idempotent]*
-* *xref:salt.adoc[Salt]*
+* xref:cryptography.adoc[*Cryptography*]
+* xref:encryption.adoc[*Encryption*]
+* xref:authentication.adoc[*Authentication*]
+* xref:replay-attack.adoc[*Replay attack*]
+* xref:idempotent.adoc[*Idempotent*]
+* xref:salt.adoc[*Salt*]

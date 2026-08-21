@@ -26,7 +26,7 @@ two logically equivalent queries can run thousands of times slower than each
 other, and tuning them means reading the query plan the abstraction was meant to
 spare you from thinking about. A network file system pretends a remote file is
 local until the connection drops and reads begin to fail or hang. The
-*xref:interfaces.adoc[interface]* is the surface across which these leaks
+xref:interfaces.adoc[*interface*] is the surface across which these leaks
 travel: the cleaner the contract, the more jarring the moment the
 implementation behind it shows through.
 
@@ -44,7 +44,7 @@ semantics, and Kafka's idempotent produce semantics, are APIs that are nearly
 impossible to implement any other way.
 
 Under this reading, leaky abstractions are not just a maintenance hazard but a
-*xref:complexity.adoc[complexity]* strategy: a moat the incumbent digs with its
+xref:complexity.adoc[*complexity*] strategy: a moat the incumbent digs with its
 own API, and that competitors and downstream engineers then have to swim
 across. The same leak that makes the abstraction easy to consume also makes it
 hard to replace.
@@ -62,7 +62,7 @@ advertised.
 The corollary is that higher-level tools do not make proficiency easier; they
 raise its ceiling. Each new layer of abstraction widens the surface that can
 leak, so a competent engineer's working knowledge has to grow with the stack,
-not shrink with it. In a *xref:layered-architecture.adoc[layered architecture]*
+not shrink with it. In a xref:layered-architecture.adoc[*layered architecture*]
 this compounds: a fault that surfaces in the top layer may have originated
 three layers down, and tracing it demands fluency in every layer in between.
 The remedy is not to abandon the abstractions but to treat each one as a seam
@@ -71,14 +71,14 @@ close the gap when it does.
 
 == See also
 
-* *xref:abstraction.adoc[Abstraction]*: What an abstraction is, and why it
+* xref:abstraction.adoc[*Abstraction*]: What an abstraction is, and why it
   leaks.
-* *xref:encapsulation.adoc[Encapsulation]*: The boundary a leaky abstraction
+* xref:encapsulation.adoc[*Encapsulation*]: The boundary a leaky abstraction
   fails to hold.
-* *xref:interfaces.adoc[Interfaces]*: The surface across which leaks travel.
-* *xref:layered-architecture.adoc[Layered architecture]*: Stacked abstractions,
+* xref:interfaces.adoc[*Interfaces*]: The surface across which leaks travel.
+* xref:layered-architecture.adoc[*Layered architecture*]: Stacked abstractions,
   each a seam that can open.
 * xref:principle-of-least-astonishment.adoc[*Principle of least astonishment*]:
   A leak is the moment an abstraction surprises its caller.
-* *xref:remote-procedure-call.adoc[Remote procedure call (RPC)]*: its
+* xref:remote-procedure-call.adoc[*Remote procedure call (RPC)*]: its
   location-transparency promise is a classic leak.

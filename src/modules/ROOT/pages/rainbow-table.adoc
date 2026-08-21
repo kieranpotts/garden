@@ -1,7 +1,7 @@
 = Rainbow table
 
 A *rainbow table* is a precomputed data structure for inverting a
-*xref:hashing.adoc[hash function]* — that is, for finding an input that
+xref:hashing.adoc[*hash function*] — that is, for finding an input that
 produces a given hash digest. It is most associated with recovering plaintext
 passwords from a stolen database of password hashes. Where brute-forcing a
 single hash means re-running the hash function across a huge key space, and a
@@ -42,12 +42,12 @@ the term refers to today.
 Rainbow tables are precomputed for one specific hash function. Two controls
 render them ineffective for password storage.
 
-A per-record *xref:salt.adoc[salt]* changes the effective hash function for
+A per-record xref:salt.adoc[*salt*] changes the effective hash function for
 every password, so a single precomputed table covers only one salt value.
 Salting makes precomputation no cheaper than brute-forcing each record
 individually, which is the whole point.
 
-*xref:cryptography.adoc[Key derivation functions]* such as bcrypt, scrypt,
+xref:cryptography.adoc[*Key derivation functions*] such as bcrypt, scrypt,
 Argon2, and PBKDF2 raise the cost of each guess — deliberately slow and, in the
 case of the newer designs, memory-hard — so that building or walking a
 precomputed table becomes infeasible. Combined with unique salts, these make
@@ -56,16 +56,16 @@ rainbow tables obsolete for any competently stored credential.
 They remain relevant against legacy, unsalted, fast hashes — raw MD5 or
 Windows NTLM hashes — where a single leaked hash file can be inverted with a
 widely available precomputed table in seconds. See
-*xref:authentication.adoc[authentication]* for how these controls fit into a
+xref:authentication.adoc[*authentication*] for how these controls fit into a
 broader credential-protection strategy.
 
 == See also
 
-* *xref:hashing.adoc[Hashing]*
-* *xref:salt.adoc[Salt]*
-* *xref:cryptography.adoc[Cryptography]*
-* *xref:authentication.adoc[Authentication]*
-* *xref:security.adoc[Security]*
+* xref:hashing.adoc[*Hashing*]
+* xref:salt.adoc[*Salt*]
+* xref:cryptography.adoc[*Cryptography*]
+* xref:authentication.adoc[*Authentication*]
+* xref:security.adoc[*Security*]
 
 == References
 

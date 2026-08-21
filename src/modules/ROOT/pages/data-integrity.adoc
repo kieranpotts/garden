@@ -13,47 +13,47 @@ rules, broken relationships between records, or partial updates that leave a
 database in an invalid state. Most systems need both.
 
 The techniques that deliver data integrity fall roughly along these two lines.
-Logical integrity is enforced through *xref:transaction.adoc[transactions]* and
-the *xref:acid-principles.adoc[ACID properties]*, which keep concurrent
+Logical integrity is enforced through xref:transaction.adoc[*transactions*] and
+the xref:acid-principles.adoc[*ACID properties*], which keep concurrent
 operations from corrupting one another and roll back partial failures. Schema
 constraints encode the application's invariants so that invalid data is
 rejected at write time. The most prominent are
-*xref:referential-integrity.adoc[referential integrity]*, enforced through
-*xref:foreign-keys.adoc[foreign keys]*, together with type checking and
-*xref:normalization.adoc[normalization]*.
+xref:referential-integrity.adoc[*referential integrity*], enforced through
+xref:foreign-keys.adoc[*foreign keys*], together with type checking and
+xref:normalization.adoc[*normalization*].
 
-Physical integrity is enforced through *xref:checksum.adoc[checksums]* and
-*xref:hashing.adoc[hash functions]*, which detect when stored or transmitted
+Physical integrity is enforced through xref:checksum.adoc[*checksums*] and
+xref:hashing.adoc[*hash functions*], which detect when stored or transmitted
 data has been altered. A checksum computed at write time and rechecked at read
 time turns silent corruption into a detectable error.
-*xref:cryptography.adoc[Cryptographic]* hashes add tamper resistance, since a
+xref:cryptography.adoc[*Cryptographic*] hashes add tamper resistance, since a
 plain checksum can be forged by an attacker who knows the algorithm. Beyond
-detection, *xref:replication.adoc[replication]* and the
-*xref:durability.adoc[durability]* property of a storage system protect
+detection, xref:replication.adoc[*replication*] and the
+xref:durability.adoc[*durability*] property of a storage system protect
 integrity against the total loss of a data copy, so that a single failed node
 does not destroy the only correct version.
 
 A common pitfall is confusing data integrity with
-*xref:consistency.adoc[replica consistency]*. Consistency is about whether
+xref:consistency.adoc[*replica consistency*]. Consistency is about whether
 copies agree with one another right now. Integrity is about whether any given
 copy is itself correct and complete. A system can be strongly consistent yet
 hold corrupt data, or eventually consistent yet preserve integrity within each
 replica. The two concerns reinforce each other but are not the same.
 
 In information security, integrity is the "I" in the CIA triad, alongside
-*confidentiality* and *xref:availability.adoc[availability]*, and is treated as
-a goal of *xref:security.adoc[security]* more broadly. There it carries a
+*confidentiality* and xref:availability.adoc[*availability*], and is treated as
+a goal of xref:security.adoc[*security*] more broadly. There it carries a
 narrower sense: protecting data from unauthorized modification. The broader
 data-integrity concerns above subsume that sense while also covering
 accidental corruption and logical validity.
 
 == See also
 
-* *xref:acid-principles.adoc[ACID principles]*
-* *xref:checksum.adoc[Checksums]*
-* *xref:consistency.adoc[Consistency]*
-* *xref:durability.adoc[Durability]*
-* *xref:referential-integrity.adoc[Referential integrity]*
-* *xref:replication.adoc[Replication]*
-* *xref:security.adoc[Security]*
-* *xref:transaction.adoc[Transactions]*
+* xref:acid-principles.adoc[*ACID principles*]
+* xref:checksum.adoc[*Checksums*]
+* xref:consistency.adoc[*Consistency*]
+* xref:durability.adoc[*Durability*]
+* xref:referential-integrity.adoc[*Referential integrity*]
+* xref:replication.adoc[*Replication*]
+* xref:security.adoc[*Security*]
+* xref:transaction.adoc[*Transactions*]

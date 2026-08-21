@@ -1,8 +1,8 @@
 = Bulkhead
 
-The bulkhead *xref:design-patterns.adoc[design pattern]* is an architectural
-pattern used to improve the *xref:fault-tolerance.adoc[fault tolerance]* of
-*xref:distributed-system.adoc[distributed software]*.
+The bulkhead xref:design-patterns.adoc[*design pattern*] is an architectural
+pattern used to improve the xref:fault-tolerance.adoc[*fault tolerance*] of
+xref:distributed-system.adoc[*distributed software*].
 
 The pattern is inspired by the construction of ships, in which the hulls are
 divided into watertight compartments called bulkheads, to prevent the entire
@@ -16,8 +16,8 @@ other bulkheads.
 By isolating failures, the bulkhead pattern helps prevent cascading failures,
 containing the blast radius of any one failure to the bulkhead it originated in.
 It is one of the principal mechanisms for realizing the broader design principle
-of *xref:isolation.adoc[isolation]*, and a recurring technique in
-*xref:resilience.adoc[resilience]* engineering.
+of xref:isolation.adoc[*isolation*], and a recurring technique in
+xref:resilience.adoc[*resilience*] engineering.
 
 == How bulkheads isolate failures
 
@@ -43,20 +43,20 @@ across a process or host:
 * *Compute and memory.* Containers, with their own CPU and memory limits,
   prevent one workload from starving its neighbors on a shared host. The same
   idea extends to separate processes, virtual machines, or
-  *xref:availability-zone.adoc[availability zones]* when the failure mode being
+  xref:availability-zone.adoc[*availability zones*] when the failure mode being
   contained is a whole node or data center rather than a single call.
 
 * *Service or cell boundaries.* At the coarsest scale, an entire service or
-  *xref:microservices.adoc[microservice]* acts as a bulkhead for the
+  xref:microservices.adoc[*microservice*] acts as a bulkhead for the
   capabilities it owns, since a failure inside one service cannot directly
   affect the memory, threads, or connections of another.
-  *xref:cell-based-architecture.adoc[Cell-based architecture]* takes this idea to
+  xref:cell-based-architecture.adoc[*Cell-based architecture*] takes this idea to
   its limit, partitioning the whole stack – compute, data, and storage – into
   independent, redundant cells.
 
 == Bulkheads and circuit breakers
 
-Bulkheads are often paired with *xref:circuit-breaker.adoc[circuit breakers]*,
+Bulkheads are often paired with xref:circuit-breaker.adoc[*circuit breakers*],
 and the two are frequently confused, but they address different concerns. A
 bulkhead partitions resources so that load from one consumer cannot consume
 another's share; it operates continuously, regardless of whether anything is
@@ -85,8 +85,8 @@ Sizing the bulkheads is the central design problem. Partitions that are too
 small throttle legitimate traffic and create artificial contention. Partitions
 that are too large fail to isolate, because a failing consumer can still exhaust
 most of the resource. Effective sizing depends on observed load profiles and is
-typically refined through *xref:load-testing.adoc[load testing]* and
-*xref:observability.adoc[observability]* of per-pool metrics such as queue depth,
+typically refined through xref:load-testing.adoc[*load testing*] and
+xref:observability.adoc[*observability*] of per-pool metrics such as queue depth,
 active threads, and rejection rates.
 
 Bulkheads also add operational complexity. More partitions means more pools to

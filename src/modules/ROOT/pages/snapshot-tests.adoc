@@ -7,7 +7,7 @@ baseline. Any difference fails the test, signaling that the system's
 observable behavior has changed. When the change is intentional the developer
 updates the snapshot; when it is not, the test has caught a regression.
 
-Snapshot tests are a form of *xref:regression-testing.adoc[regression testing]*
+Snapshot tests are a form of xref:regression-testing.adoc[*regression testing*]
 that trades explicit assertions for a captured baseline. A conventional test
 states the expected outcome up front, eg. `expect(result).toBe(42)`. A
 snapshot test states only "the output should match this stored artifact", so
@@ -20,8 +20,8 @@ The technique is most associated with front-end and component testing, where
 rendering a component produces a deep tree of markup and styles that is
 impractical to assert against by hand. Frameworks such as Jest popularized
 the pattern through `toMatchSnapshot()`, which serializes the rendered output
-to a `__snapshots__` file checked into *xref:version-control.adoc[version
-control]* alongside the test. The same idea applies to any deterministic
+to a `__snapshots__` file checked into xref:version-control.adoc[*version
+control*] alongside the test. The same idea applies to any deterministic
 output: a CLI's `--help` text, a compiler's AST dump, an API response shape, a
 configuration object.
 
@@ -47,7 +47,7 @@ diff that adds an unexpected field to a serialized response, or strips a class
 from rendered markup, is exactly the signal a snapshot test exists to
 surface. Treating snapshot updates as mechanical – regenerating and
 committing without inspection – silently erodes the safety the tests provide
-and can *xref:technical-debt.adoc[accumulate technical debt]* across a suite.
+and can xref:technical-debt.adoc[*accumulate technical debt*] across a suite.
 
 The complementary risk is over-use. Snapshot tests are convenient, and
 convenience invites their application to outputs that would be better served
@@ -59,6 +59,6 @@ add little where a one-line assertion would do.
 
 == See also
 
-* *xref:regression-testing.adoc[Regression testing]*
+* xref:regression-testing.adoc[*Regression testing*]
 * xref:automated-testing.adoc[*Automated testing*]
-* *xref:testing.adoc[Testing]*
+* xref:testing.adoc[*Testing*]

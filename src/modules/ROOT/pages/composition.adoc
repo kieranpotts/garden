@@ -1,14 +1,14 @@
 = Composition
 
-Composition is a *xref:design-patterns.adoc[design pattern]* and a
-*xref:design-principles.adoc[design principle]* of
-*xref:object-oriented-programming.adoc[object-oriented programming]*. As a
+Composition is a xref:design-patterns.adoc[*design pattern*] and a
+xref:design-principles.adoc[*design principle*] of
+xref:object-oriented-programming.adoc[*object-oriented programming*]. As a
 mechanism, it builds complex objects from simpler ones. An object holds
 references to other objects that supply part of its behavior, rather than
 deriving that behavior from a parent class through
-*xref:inheritance.adoc[inheritance]*. The composed object "has a" collaborator,
+xref:inheritance.adoc[*inheritance*]. The composed object "has a" collaborator,
 where inheritance expresses an "is a" relationship. Composition is the strongest
-form of *xref:association.adoc[association]*, the general "uses a" or "has a"
+form of xref:association.adoc[*association*], the general "uses a" or "has a"
 relationship between classes.
 
 The mechanism is *delegation*. The composed object forwards the calls it cannot
@@ -16,16 +16,16 @@ The mechanism is *delegation*. The composed object forwards the calls it cannot
 work on its behalf. The collaborator may be passed in, constructed privately, or
 swapped later. Because the relationship is mediated by references rather than
 welded into the class hierarchy, the collaborator can be replaced at runtime and
-tested in isolation. This is what keeps *xref:coupling.adoc[coupling]* low and
-*xref:cohesion.adoc[cohesion]* high: each object owns one concern and borrows the
+tested in isolation. This is what keeps xref:coupling.adoc[*coupling*] low and
+xref:cohesion.adoc[*cohesion*] high: each object owns one concern and borrows the
 rest.
 
 The Gang of Four's recommendation to *favor composition over inheritance* is the
 principle's best-known form. Inheritance is a powerful but rigid tool. A
 subclass is bound to its parent's implementation at compile time, cannot change
 its parent at runtime, and easily breaks the
-*xref:liskov-substitution-principle.adoc[Liskov substitution principle]* when
-used for *xref:code-reuse.adoc[code reuse]* rather than true subtyping. Deep
+xref:liskov-substitution-principle.adoc[*Liskov substitution principle*] when
+used for xref:code-reuse.adoc[*code reuse*] rather than true subtyping. Deep
 class hierarchies amplify the cost: a change near the root ripples through every
 descendant, and behavior the subclass does not want is inherited along with the
 behavior it does. Composition sidesteps these problems. A class can swap or
@@ -40,33 +40,33 @@ of its parent, and to reach for composition whenever the goal is reuse without a
 varying behavior is then assembled from collaborators held by reference. This
 mix keeps the type hierarchy narrow while leaving behavior open to change.
 
-Composition also plays well with *xref:interfaces.adoc[interfaces]* and
-*xref:polymorphism.adoc[polymorphism]*. A class delegates to a collaborator
+Composition also plays well with xref:interfaces.adoc[*interfaces*] and
+xref:polymorphism.adoc[*polymorphism*]. A class delegates to a collaborator
 through an interface, so the collaborator's concrete type can vary without the
 consumer changing. This is the basis of many
-*xref:design-patterns.adoc[design patterns]* — strategy, decorator, and adapter
+xref:design-patterns.adoc[*design patterns*] — strategy, decorator, and adapter
 all compose objects to vary behavior rather than bending a class hierarchy. The
-*xref:adapter-pattern.adoc[adapter pattern]*, for instance, comes in an *object
+xref:adapter-pattern.adoc[*adapter pattern*], for instance, comes in an *object
 adapter* form that holds the adaptee by reference and a *class adapter* form that
 inherits from both sides. The object form is preferred precisely because it
 composes rather than inherits.
 
 Varying behavior by adding a new collaborator rather than editing the consumer
-is what the *xref:open-closed-principle.adoc[open-closed principle]* asks for,
+is what the xref:open-closed-principle.adoc[*open-closed principle*] asks for,
 and composition is the mechanism that makes it possible at the object level.
 
 Holding collaborators through interfaces is also what makes composition the
-structural foundation of *xref:dependency-injection.adoc[dependency injection]*.
+structural foundation of xref:dependency-injection.adoc[*dependency injection*].
 The composed object declares the collaborators it needs as abstract dependencies
 rather than constructing them itself, and an outside agent supplies concrete
 instances. That arrangement is an application of
-*xref:dependency-inversion.adoc[dependency inversion]*: both the consumer and the
+xref:dependency-inversion.adoc[*dependency inversion*]: both the consumer and the
 collaborator depend on the same abstraction, so neither is bound to the other's
 concrete type. Composition supplies the "has a" relationship; injection decides
 who fills it and when.
 
 The same principle scales beyond individual objects. In game development, the
-*xref:entity-component-system.adoc[entity component system]* pattern treats every
+xref:entity-component-system.adoc[*entity component system*] pattern treats every
 object in a scene as an entity assembled from components rather than as a member
 of a class hierarchy. An enemy, a weapon, and a projectile share no common
 ancestor; each is whatever its current components make it, and behavior changes
@@ -83,15 +83,15 @@ is a substitutable specialization of its parent.
 
 == See also
 
-* *xref:inheritance.adoc[Inheritance]*
-* *xref:association.adoc[Association]*
-* *xref:decomposition.adoc[Decomposition]*
-* *xref:dependency-injection.adoc[Dependency injection]*
-* *xref:dependency-inversion.adoc[Dependency inversion]*
-* *xref:adapter-pattern.adoc[Adapter pattern]*
-* *xref:entity-component-system.adoc[Entity component system]*
-* *xref:liskov-substitution-principle.adoc[Liskov substitution principle]*
-* *xref:open-closed-principle.adoc[Open-closed principle]*
+* xref:inheritance.adoc[*Inheritance*]
+* xref:association.adoc[*Association*]
+* xref:decomposition.adoc[*Decomposition*]
+* xref:dependency-injection.adoc[*Dependency injection*]
+* xref:dependency-inversion.adoc[*Dependency inversion*]
+* xref:adapter-pattern.adoc[*Adapter pattern*]
+* xref:entity-component-system.adoc[*Entity component system*]
+* xref:liskov-substitution-principle.adoc[*Liskov substitution principle*]
+* xref:open-closed-principle.adoc[*Open-closed principle*]
 
 == References
 

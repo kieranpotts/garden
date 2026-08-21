@@ -2,7 +2,7 @@
 
 Integration testing is a software testing methodology that exercises the
 interactions between two or more components of a system after they have been
-*xref:unit-testing.adoc[unit tested]* in isolation. Where a unit test verifies a
+xref:unit-testing.adoc[*unit tested*] in isolation. Where a unit test verifies a
 single component against its own contract, an integration test verifies that
 components behave correctly once they are wired together. It checks that their
 contracts mesh, that their combined behavior matches the specification, and that
@@ -22,15 +22,15 @@ boundary* – the seam across which two independently developed components meet.
 What counts as a component depends on the system. In a monolithic application it
 might be a pair of classes, a module and the database it persists to, or a
 service and the message broker it publishes to. In a
-*xref:microservices.adoc[microservices]* system it is typically a service and one
+xref:microservices.adoc[*microservices*] system it is typically a service and one
 of its collaborators, or several services together.
 
 The breadth of the integration boundary is what distinguishes integration
 testing from the levels above and below it. A test that exercises one component
-in isolation, with collaborators replaced by *xref:test-harness.adoc[test
-doubles]*, is a unit test. A test that exercises the whole application end to
+in isolation, with collaborators replaced by xref:test-harness.adoc[*test
+doubles*], is a unit test. A test that exercises the whole application end to
 end, through its external interfaces and including all of its collaborators, is
-*xref:system-testing.adoc[system testing]*. Integration testing occupies the
+xref:system-testing.adoc[*system testing*]. Integration testing occupies the
 middle ground: enough components are real to exercise their interactions, but the
 scope is held short of the full system.
 
@@ -76,7 +76,7 @@ only exercise the behavior the double has been told to produce. A double that
 misrepresents its collaborator lets integration defects pass undetected, and the
 suite can drift out of sync with the real system as that system evolves. This
 tension is particularly acute in distributed systems, where
-*xref:dependency-injection.adoc[dependency injection]* and
+xref:dependency-injection.adoc[*dependency injection*] and
 *service virtualization* are commonly used to keep a subset of collaborators real
 while stubbing the rest.
 
@@ -92,17 +92,17 @@ changes.
 
 Against that, integration tests catch the class of defects that unit tests are
 structurally blind to, and they do so far more cheaply than
-*xref:system-testing.adoc[system tests]*, which require the whole application to
-be stood up. The *xref:automated-testing.adoc[test pyramid]* convention reflects
+xref:system-testing.adoc[*system tests*], which require the whole application to
+be stood up. The xref:automated-testing.adoc[*test pyramid*] convention reflects
 this trade-off by calling for fewer integration tests than unit tests, but more
 than end-to-end tests. Each integration test should justify its cost by
 exercising an interaction that a unit test cannot.
 
 Integration tests are prime candidates for
-*xref:regression-testing.adoc[regression testing]*. Once an interaction has been
+xref:regression-testing.adoc[*regression testing*]. Once an interaction has been
 captured as a passing integration test, subsequent changes that break it are
 flagged automatically, which makes them valuable guards during refactoring and
-*xref:ci-cd.adoc[CI/CD]*.
+xref:ci-cd.adoc[*CI/CD*].
 
 == In distributed systems
 
@@ -110,10 +110,10 @@ Integration testing is markedly harder across service boundaries than within a
 single process. Each collaborator may be owned by a different team, evolve on its
 own release cadence, and offer no access to its internals. Network behavior,
 eventual consistency, and partial failure modes add new ways for components to
-disagree. See *xref:microservices.adoc[microservices]* for the specific
+disagree. See xref:microservices.adoc[*microservices*] for the specific
 challenges and the testing strategies that address them.
 
-A *xref:walking-skeleton.adoc[walking skeleton]* is one common starting point. It
+A xref:walking-skeleton.adoc[*walking skeleton*] is one common starting point. It
 is a thin end-to-end slice that links the main architectural components and is
 kept working from the start of a project, so that the integration path is
 exercised continuously rather than deferred to a late, big-bang integration

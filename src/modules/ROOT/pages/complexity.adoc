@@ -4,7 +4,7 @@
 
 All systems are complex because all systems have *essential complexity*.
 Essential complexity is the complexity that is inherent in the *[problem]* that
-the system is trying to solve, or the *xref:domain.adoc[domain]* of the
+the system is trying to solve, or the xref:domain.adoc[*domain*] of the
 software.
 
 For example, a system that is trying to solve the problem of routing packets
@@ -19,21 +19,21 @@ reducing the scope of the problem you're trying to solve.
 *Accidental complexity* is the type of complexity in software systems that
 developers have more control over. This is the complexity that comes from the
 decisions the developers choose to make in the
-*xref:system-design.adoc[system design]*.
+xref:system-design.adoc[*system design*].
 
 Different architectural styles, design patterns, programming paradigms,
 application frameworks, and runtime environments – all of these things make
 trade-offs between competing *[qualities]*, and therefore bring different types
 of accidental complexity into a solution.
 
-For example, *xref:distributed-system.adoc[distributed software]* is inherently
-more complex than *xref:monolith.adoc[monolithic software]*. A distributed program has to deal
+For example, xref:distributed-system.adoc[*distributed software*] is inherently
+more complex than xref:monolith.adoc[*monolithic software*]. A distributed program has to deal
 with the complexities of network communication, data consistency, and fault
-tolerance. Add *xref:asynchronous-communication.adoc[asynchronous]*
-*xref:inter-process-communication.adoc[inter-process communication]* to the mix,
+tolerance. Add xref:asynchronous-communication.adoc[*asynchronous*]
+xref:inter-process-communication.adoc[*inter-process communication*] to the mix,
 and you have even more complexity that requires specialist tools and techniques
-– like *xref:observability.adoc[observability]* and especially
-*xref:tracing.adoc[distributed tracing]* – to deal with.
+– like xref:observability.adoc[*observability*] and especially
+xref:tracing.adoc[*distributed tracing*] – to deal with.
 
 == The three laws of software complexity
 
@@ -48,8 +48,8 @@ change to a well-designed system risks leaving it harder to change next time. A
 well-designed database behind a clean storage engine API stays swappable until
 someone adds a `getLevelSize` call, at which point it can no longer be ported
 off an LSM tree. Well-designed is therefore an unstable, ephemeral state, and
-*xref:software-rot.adoc[software rot]* is the stable attractor the whole field
-drifts toward. This is *xref:technical-debt.adoc[technical debt]* accruing
+xref:software-rot.adoc[*software rot*] is the stable attractor the whole field
+drifts toward. This is xref:technical-debt.adoc[*technical debt*] accruing
 as a law of motion, not a one-off mistake. Lehman's
 xref:laws-of-software-evolution.adoc[*laws of software evolution*] named the
 same dynamic decades earlier.
@@ -62,7 +62,7 @@ substitute a different one under the hood. ZooKeeper's
 stronger-than-linearizable consistency coupled to TCP/IP-based ephemeral node
 semantics, and Kafka's idempotent produce semantics, are APIs that are nearly
 impossible to implement any other way. This is
-*xref:leaky-abstractions.adoc[leaky abstractions]* weaponized as a competitive
+xref:leaky-abstractions.adoc[*leaky abstractions*] weaponized as a competitive
 strategy rather than suffered as an accident.
 
 * *Third law: there is no fundamental upper limit on software complexity.* In
@@ -76,10 +76,10 @@ manager had already written the promo docs, maybe the tech lead split
 membership and leader election into separate layers to avoid a political
 fight. Each existing system is, in Balakrishnan's phrase, "a DoS attack on you
 by dozens of people you may not even know" – a booby-trapped palace of
-ticking *xref:big-ball-of-mud.adoc[complexity time-bombs]* planted years before
+ticking xref:big-ball-of-mud.adoc[*complexity time-bombs*] planted years before
 you arrived.
 
-The throughline is that *xref:conceptual-integrity.adoc[conceptual integrity]*
+The throughline is that xref:conceptual-integrity.adoc[*conceptual integrity*]
 is the quality the three laws conspire against: a single coherent design erodes
 under accumulated changes, competitive API pressure, and the many hands that
 touch a long-lived system. Balakrishnan's own answer is to keep building new
@@ -88,8 +88,8 @@ concedes.
 
 == See also
 
-* *xref:abstraction.adoc[Abstraction]*: The mechanism the second law exploits.
-* *xref:computer-science.adoc[Computer science]*
+* xref:abstraction.adoc[*Abstraction*]: The mechanism the second law exploits.
+* xref:computer-science.adoc[*Computer science*]
 * xref:galls-law.adoc[*Gall's law*]: Complex working systems evolve from simple ones, never from scratch.
 * xref:hock-principle.adoc[*Hock principle*]: The organizational counterpart — simple purpose and principles give rise to complex behavior.
 * xref:kiss-principle.adoc[*KISS principle*]: The design principle that names simplicity as a goal and accidental complexity as the enemy.

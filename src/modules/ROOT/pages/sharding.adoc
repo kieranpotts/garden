@@ -4,25 +4,25 @@
 // TODO: https://blog.algomaster.io/p/what-is-database-sharding
 // TODO: https://aws.amazon.com/what-is/database-sharding/#:~:text=Database%20sharding%20splits%20a%20single,original%20database%27s%20schema%20or%20design
 
-Database sharding is a *xref:horizontal-scaling.adoc[horizontal scaling]*
+Database sharding is a xref:horizontal-scaling.adoc[*horizontal scaling*]
 technique in *[database management]* that involves *partitioning* (splitting)
 one large database into multiple smaller databases, called *shards*. The shards
 are then distributed across multiple *[nodes]*, each responsible for handling a
 specific subset of the overall data.
 
 By distributing data across multiple nodes, sharding
-*xref:load-balancing.adoc[balances load]* across multiple nodes, reducing
-*xref:load.adoc[load]* and *xref:fault-tolerance.adoc[risk]* on any single node.
-This improves system *xref:performance.adoc[performance]*,
-*xref:availability.adoc[availability]*, and
-*xref:scalability.adoc[scalability]*.
+xref:load-balancing.adoc[*balances load*] across multiple nodes, reducing
+xref:load.adoc[*load*] and xref:fault-tolerance.adoc[*risk*] on any single node.
+This improves system xref:performance.adoc[*performance*],
+xref:availability.adoc[*availability*], and
+xref:scalability.adoc[*scalability*].
 
-Trade-offs include increased *xref:complexity.adoc[complexity]* in the system
+Trade-offs include increased xref:complexity.adoc[*complexity*] in the system
 design, new challenges for joining data across shards, complications for
 xref:acid-principles.adoc[*ACID transactions*] that span shards, and the
 potential for
 *hot spots*, uneven concentrations of traffic caused by skewed
-*xref:access-patterns.adoc[access patterns]*, that can be solved only through
+xref:access-patterns.adoc[*access patterns*], that can be solved only through
 tricky *data rebalancing*.
 
 Database sharding is commonly used in situations where a single database can no
@@ -74,7 +74,7 @@ Partitioning can be done on various criteria:
 
 * *Hash partitioning*, which applies a hash function to a key or attribute to
   determine which partition the data is stored in.
-  *xref:consistent-hashing.adoc[consistent hashing]* is a common implementation
+  xref:consistent-hashing.adoc[*consistent hashing*] is a common implementation
   technique.
 
 * *Range partitioning*, which assigns contiguous ranges of key values to each

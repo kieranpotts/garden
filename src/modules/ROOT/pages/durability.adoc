@@ -1,23 +1,23 @@
 = Durability
 
-Durability is a *xref:quality-attributes.adoc[quality attribute]* of an IT
+Durability is a xref:quality-attributes.adoc[*quality attribute*] of an IT
 system. It is the property that data, once written or committed, survives
 failures of the processes and hardware that hold it. A durable system can lose
 power, crash, or shed nodes and still present the data it acknowledged
 preserving.
 
 The term is used in two overlapping senses. As one of the
-*xref:acid-principles.adoc[ACID properties]* of a database, durability promises
-that a committed *xref:transaction.adoc[transaction]* persists even if the
+xref:acid-principles.adoc[*ACID properties*] of a database, durability promises
+that a committed xref:transaction.adoc[*transaction*] persists even if the
 database crashes immediately afterwards. As a broader
-*xref:quality-attributes.adoc[quality attribute]*, it applies to any storage
+xref:quality-attributes.adoc[*quality attribute*], it applies to any storage
 system and is usually expressed as a statistical guarantee, such as the chance
 of losing an object over a year.
 
 Durability is a property of the data, not of the service. A system can be
 durable yet temporarily unable to serve reads, or available yet holding data
 that a single power loss would destroy. It complements but is distinct from
-*xref:data-integrity.adoc[data integrity]*: integrity asks that the bits be
+xref:data-integrity.adoc[*data integrity*]: integrity asks that the bits be
 correct, durability asks that they still exist.
 
 == How durability is achieved
@@ -29,9 +29,9 @@ can fail.
 *Non-volatile storage.* The baseline technique is to write committed data to a
 non-volatile medium, such as disk or SSD, before acknowledging the write.
 Volatile memory, such as the RAM of an
-*xref:in-memory-databases.adoc[in-memory database]*, is not durable on its own
+xref:in-memory-databases.adoc[*in-memory database*], is not durable on its own
 because a crash or power loss discards it. Systems that prioritise latency,
-such as *xref:redis.adoc[Redis]*, therefore layer optional persistence on top
+such as xref:redis.adoc[*Redis*], therefore layer optional persistence on top
 of memory and trade durability against throughput through knobs such as how
 often the append-only file is flushed to disk.
 
@@ -44,14 +44,14 @@ durable append, which is far cheaper to force to stable storage.
 *Replication.* A single durable copy is still one fire, one flood, or one
 controller failure from being lost. xref:replication.adoc[*Replication*] keeps
 copies on independent nodes, often across
-*xref:availability-zone.adoc[availability zones]*, so that the failure of one
+xref:availability-zone.adoc[*availability zones*], so that the failure of one
 does not destroy the only copy. xref:distributed-databases.adoc[*Distributed
 databases*] typically combine sharding with a replication factor, and many
 acknowledge a write only once a quorum of replicas has it, tuning durability
 against latency.
 
 *Erasure coding.* Storage systems that hold very large datasets, such as
-*xref:object-storage.adoc[object storage]*, often spread encoded fragments
+xref:object-storage.adoc[*object storage*], often spread encoded fragments
 across many devices instead of keeping full replicas. *Erasure coding* delivers
 comparable durability to replication at a lower storage cost, at the price of
 more computation on read and on rebuild.

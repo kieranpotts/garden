@@ -65,13 +65,13 @@ Examples include, but are not limited to:
 
 Logs should not all be treated the same way. For example, audit and security
 logs may be subject to regulatory requirements dictating how long they must be
-retained, a concern covered by *xref:data-retention.adoc[data retention]*. In
+retained, a concern covered by xref:data-retention.adoc[*data retention*]. In
 contrast, debug logs may be purged more frequently to conserve storage resources.
 And other types of logs – typically those used to generate metrics – will never
 get looked at directly by humans, but instead will be aggregated and analyzed by
-algorithms. See also *xref:metrics.adoc[metrics]* and
-*xref:tracing.adoc[tracing]*, the other two pillars of
-*xref:observability.adoc[observability]* alongside logs.
+algorithms. See also xref:metrics.adoc[*metrics*] and
+xref:tracing.adoc[*tracing*], the other two pillars of
+xref:observability.adoc[*observability*] alongside logs.
 
 == Structured logging
 
@@ -153,7 +153,7 @@ Log::info('Information for developers, perhaps explaining why a particular scena
 Severity is a statement about the event, not about the reader's interest.
 A common pitfall is to log at `ERROR` anything an operator might want to see,
 which inflates error budgets and triggers false
-*xref:alerting.adoc[alerts]*. Reserve `ERROR` for conditions that represent a
+xref:alerting.adoc[*alerts*]. Reserve `ERROR` for conditions that represent a
 real failure an operator may need to act on; emit expected, handled outcomes at
 `WARNING` or `INFO` instead. Conversely, logging at `DEBUG` in production by
 default is a frequent source of runaway volume and cost, which is why debug
@@ -163,19 +163,19 @@ for a window.
 == Centralized logging
 
 A centralized logging system collects logs from every process, host, and
-*xref:container.adoc[container]* in a deployment into a single store, where they
+xref:container.adoc[*container*] in a deployment into a single store, where they
 can be indexed, searched, and visualized together. Without one, logs scattered
 across individual machines are effectively lost the moment that machine is
 replaced – a particular problem in
-*xref:distributed-system.adoc[distributed software]* and
-*xref:microservices.adoc[microservice]* deployments, where a single user request
+xref:distributed-system.adoc[*distributed software*] and
+xref:microservices.adoc[*microservice*] deployments, where a single user request
 may traverse dozens of processes.
 
 A typical pipeline has four stages.
 
 * *Collection.* A shipper runs on or near each source and forwards log entries.
   Examples include Beats, Fluentd, Fluent Bit, Vector, and Promtail. The
-  *xref:12-factor-app.adoc[12-factor]* discipline of writing logs to `stdout`
+  xref:12-factor-app.adoc[*12-factor*] discipline of writing logs to `stdout`
   and leaving aggregation to the platform means the shipper often reads from a
   container runtime's log driver rather than from application-owned files.
 
@@ -230,9 +230,9 @@ test.
   authoritative record.
 
 * *Never log secrets or personal data.* Tokens, passwords, full credit card
-  numbers, and *xref:privacy.adoc[personally identifiable information]* routinely
+  numbers, and xref:privacy.adoc[*personally identifiable information*] routinely
   leak through naive logging of request bodies or headers. This is both a
-  *xref:security.adoc[security]* and a compliance failure. Redact at the
+  xref:security.adoc[*security*] and a compliance failure. Redact at the
   processing stage as a backstop, but the reliable fix is to never emit the
   value in the first place.
 
@@ -242,23 +242,23 @@ test.
 
 * *Resist the urge to log as a debugger.* Logs are for events an operator needs
   to know about, not for tracing every variable assignment. For interactive
-  introspection, reach for a *xref:debugger.adoc[debugger]* or
-  *xref:profiling.adoc[profiler]* instead, and keep high-frequency diagnostic
+  introspection, reach for a xref:debugger.adoc[*debugger*] or
+  xref:profiling.adoc[*profiler*] instead, and keep high-frequency diagnostic
   output behind a `DEBUG` level that is off in production by default.
 
 == See also
 
-* *xref:alerting.adoc[Alerting]*
-* *xref:debugger.adoc[Debugger]*
-* *xref:distributed-system.adoc[Distributed system]*
-* *xref:elastic-stack.adoc[Elastic stack]*
-* *xref:metrics.adoc[Metrics]*
-* *xref:microservices.adoc[Microservices]*
-* *xref:observability.adoc[Observability]*
-* *xref:privacy.adoc[Privacy]*
-* *xref:security.adoc[Security]*
-* *xref:tracing.adoc[Tracing]*
-* *xref:12-factor-app.adoc[12-factor app]*
+* xref:alerting.adoc[*Alerting*]
+* xref:debugger.adoc[*Debugger*]
+* xref:distributed-system.adoc[*Distributed system*]
+* xref:elastic-stack.adoc[*Elastic stack*]
+* xref:metrics.adoc[*Metrics*]
+* xref:microservices.adoc[*Microservices*]
+* xref:observability.adoc[*Observability*]
+* xref:privacy.adoc[*Privacy*]
+* xref:security.adoc[*Security*]
+* xref:tracing.adoc[*Tracing*]
+* xref:12-factor-app.adoc[*12-factor app*]
 
 == References
 

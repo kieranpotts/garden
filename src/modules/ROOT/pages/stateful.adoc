@@ -3,20 +3,20 @@
 A *stateful* design or system retains xref:state.adoc[*state*] across interactions – it carries
 information forward from one step to the next, so each invocation can build on
 what came before rather than starting fresh. It is the counterpart to
-*xref:stateless.adoc[stateless design]*.
+xref:stateless.adoc[*stateless design*].
 
-In *xref:agent.adoc[agent]* and *xref:large-language-model.adoc[LLM]* systems,
+In xref:agent.adoc[*agent*] and xref:large-language-model.adoc[*LLM*] systems,
 where state lives varies by layer:
 
 * *The model is never stateful.* Its parameters are frozen after training, and
   it sees only what is placed in each request. Nothing you do at inference
   changes it.
-* *A session is stateful across turns.* The *xref:agent-harness.adoc[harness]*
+* *A session is stateful across turns.* The xref:agent-harness.adoc[*harness*]
   appends every message and tool result to the
-  *xref:context-engineering.adoc[context]*, so the conversation accumulates as it
+  xref:context-engineering.adoc[*context*], so the conversation accumulates as it
   runs.
-* *A harness can be stateful across sessions.* *xref:agent-memory.adoc[Memory]*
-  files, `AGENTS.md`, and *xref:agent-handoff.adoc[handoff]* artifacts are written
+* *A harness can be stateful across sessions.* xref:agent-memory.adoc[*Memory*]
+  files, `AGENTS.md`, and xref:agent-handoff.adoc[*handoff*] artifacts are written
   down in one session and reloaded later.
 * *The environment is always stateful.* Files persist whether or not any session
   is running.
@@ -38,9 +38,9 @@ reasoning, and consistency burdens across the parts that hold it.
 
 == See also
 
-* *xref:stateless.adoc[Stateless design]*
-* *xref:large-language-model.adoc[Large language model]*
-* *xref:context-engineering.adoc[Context engineering]*
-* *xref:agent.adoc[Agent]*
-* *xref:agent-memory.adoc[Agent memory]*
-* *xref:agent-handoff.adoc[Agent handoff]*
+* xref:stateless.adoc[*Stateless design*]
+* xref:large-language-model.adoc[*Large language model*]
+* xref:context-engineering.adoc[*Context engineering*]
+* xref:agent.adoc[*Agent*]
+* xref:agent-memory.adoc[*Agent memory*]
+* xref:agent-handoff.adoc[*Agent handoff*]

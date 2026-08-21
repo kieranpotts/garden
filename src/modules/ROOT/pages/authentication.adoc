@@ -3,7 +3,7 @@
 *Authentication* is the process of verifying the identity of a user, device, or
 system. It answers the question "who are you?" by checking that a claimed
 identity is genuine. Authentication is distinct from
-*xref:authorization.adoc[authorization]*, which decides what an authenticated
+xref:authorization.adoc[*authorization*], which decides what an authenticated
 principal is allowed to do. The two are separate concerns, but so often
 implemented together that they are collectively known as *Identity and Access
 Management (IAM)*.
@@ -31,16 +31,16 @@ Authentication systems vary widely in how they collect and validate evidence.
 
 *Passwords* remain the dominant knowledge factor. Because users reuse and
 choose weak passwords, password-based systems almost always pair with
-secondary controls: *xref:rate-limiting.adoc[rate limiting]* to throttle
-brute-force guessing, *xref:salt.adoc[salt]* and slow hash functions to protect
+secondary controls: xref:rate-limiting.adoc[*rate limiting*] to throttle
+brute-force guessing, xref:salt.adoc[*salt*] and slow hash functions to protect
 stored credentials, and MFA to compensate for the inherent weakness of
 memorized secrets.
 
 *Tokens* replace a long-lived credential with a short-lived proof of identity
-issued after an initial login. *xref:jwt.adoc[JSON Web Tokens]* carry signed
+issued after an initial login. xref:jwt.adoc[*JSON Web Tokens*] carry signed
 claims about the user and are verified by the server without a session
 lookup, which makes them popular in distributed and
-*xref:api-gateway.adoc[API gateway]*-mediated architectures.
+xref:api-gateway.adoc[*API gateway*]-mediated architectures.
 
 *Certificates* rely on public-key cryptography. The principal proves
 possession of a private key whose corresponding public key is vouched for by a
@@ -88,23 +88,23 @@ require protection against cross-site request forgery (CSRF).
 * *Session hijacking.* Theft of a valid session identifier or token. Mitigated
   with HTTPS, short token lifetimes, and secure cookie attributes.
 * *Replay.* Re-transmission of a captured token or request. Mitigated with
-  *xref:nonce.adoc[nonces]*, timestamps, and short-lived tokens.
+  xref:nonce.adoc[*nonces*], timestamps, and short-lived tokens.
 
-A *xref:secure-by-design.adoc[secure by design]* approach treats these threats
+A xref:secure-by-design.adoc[*secure by design*] approach treats these threats
 as design constraints from the outset rather than patches applied after
 deployment.
 
 == See also
 
-* *xref:authorization.adoc[Authorization]*
-* *xref:security.adoc[Security]*
-* *xref:jwt.adoc[JSON Web Token (JWT)]*
-* *xref:salt.adoc[Salt]*
-* *xref:rainbow-table.adoc[Rainbow table]*
-* *xref:nonce.adoc[Nonce]*
-* *xref:api-gateway.adoc[API gateway]*
-* *xref:security-testing.adoc[Security testing]*
-* *xref:secure-by-design.adoc[Secure by design]*
+* xref:authorization.adoc[*Authorization*]
+* xref:security.adoc[*Security*]
+* xref:jwt.adoc[*JSON Web Token (JWT)*]
+* xref:salt.adoc[*Salt*]
+* xref:rainbow-table.adoc[*Rainbow table*]
+* xref:nonce.adoc[*Nonce*]
+* xref:api-gateway.adoc[*API gateway*]
+* xref:security-testing.adoc[*Security testing*]
+* xref:secure-by-design.adoc[*Secure by design*]
 
 == References
 

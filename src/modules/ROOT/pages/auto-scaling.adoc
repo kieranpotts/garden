@@ -1,15 +1,15 @@
 = Auto-scaling
 
-Auto-scaling is the automatic, dynamic adjustment of the *xref:capacity.adoc[capacity]*
+Auto-scaling is the automatic, dynamic adjustment of the xref:capacity.adoc[*capacity*]
 allocated to an application, so that the number of running instances – or the
 resources each one
 is given – tracks real-time demand. It is the automation of
-*xref:horizontal-scaling.adoc[horizontal scaling]* and, less commonly,
-*xref:vertical-scaling.adoc[vertical scaling]*. Instead of an operator adding or
+xref:horizontal-scaling.adoc[*horizontal scaling*] and, less commonly,
+xref:vertical-scaling.adoc[*vertical scaling*]. Instead of an operator adding or
 removing servers by hand, a controller does so in response to measured load.
 
-The motivation is to keep *xref:throughput.adoc[throughput]* and
-*xref:availability.adoc[availability]* within target bounds while paying only for
+The motivation is to keep xref:throughput.adoc[*throughput*] and
+xref:availability.adoc[*availability*] within target bounds while paying only for
 the capacity actually used. A manually sized fleet must be provisioned for peak
 load, leaving idle – and billable – resources the rest of the time. Auto-scaling
 lets a fleet shrink during quiet periods and grow again before demand
@@ -25,7 +25,7 @@ response to metric breaches.
 Several metrics commonly drive scaling decisions.
 
 * CPU and memory utilization, the simplest and most widely available signals.
-* Request rate or throughput at a front-end *xref:load-balancing.adoc[load balancer]*.
+* Request rate or throughput at a front-end xref:load-balancing.adoc[*load balancer*].
 * Queue length or backlog, for worker-style consumers where depth is the truest
   measure of pressure.
 * Custom business metrics, such as concurrent sessions or orders per minute,
@@ -51,21 +51,21 @@ instances time to register and absorb load before the next decision is made.
 
 == Where it lives
 
-In *xref:container-orchestration.adoc[container orchestration]* platforms,
-auto-scaling is a built-in feature. *xref:kubernetes.adoc[Kubernetes]* provides
+In xref:container-orchestration.adoc[*container orchestration*] platforms,
+auto-scaling is a built-in feature. xref:kubernetes.adoc[*Kubernetes*] provides
 the Horizontal Pod Autoscaler, which adjusts a workload's replica count from
 CPU, memory, or custom metrics, and the Cluster Autoscaler, which resizes the
 underlying node pool to fit the pods that the Horizontal Pod Autoscaler requests.
 
-*xref:cloud-computing.adoc[Cloud computing]* platforms offer auto-scaling at the
+xref:cloud-computing.adoc[*Cloud computing*] platforms offer auto-scaling at the
 virtual-machine level. Services such as AWS Auto Scaling groups and Azure
 virtual-machine scale sets manage the lifecycle of instances behind a load
 balancer.
 
-*xref:serverless-computing.adoc[Serverless]* computing, delivered through
-*xref:function-as-a-service.adoc[Function-as-a-Service (FaaS)]*, takes
+xref:serverless-computing.adoc[*Serverless*] computing, delivered through
+xref:function-as-a-service.adoc[*Function-as-a-Service (FaaS)*], takes
 auto-scaling to its limit. Scaling is implicit and per-request, and the
-developer never specifies an instance count at all. *xref:microservices.adoc[Microservice]* architectures
+developer never specifies an instance count at all. xref:microservices.adoc[*Microservice*] architectures
 lean on auto-scaling precisely because each service's load is hard to predict
 independently, and manual sizing of dozens of services is impractical.
 
@@ -83,10 +83,10 @@ independently, and manual sizing of dozens of services is impractical.
 
 == See also
 
-* *xref:scalability.adoc[Scalability]*
-* *xref:horizontal-scaling.adoc[Horizontal scaling]*
-* *xref:vertical-scaling.adoc[Vertical scaling]*
-* *xref:load-balancing.adoc[Load balancing]*
-* *xref:container-orchestration.adoc[Container orchestration]*
-* *xref:serverless-computing.adoc[Serverless computing]*
-* *xref:function-as-a-service.adoc[Function-as-a-Service (FaaS)]*
+* xref:scalability.adoc[*Scalability*]
+* xref:horizontal-scaling.adoc[*Horizontal scaling*]
+* xref:vertical-scaling.adoc[*Vertical scaling*]
+* xref:load-balancing.adoc[*Load balancing*]
+* xref:container-orchestration.adoc[*Container orchestration*]
+* xref:serverless-computing.adoc[*Serverless computing*]
+* xref:function-as-a-service.adoc[*Function-as-a-Service (FaaS)*]

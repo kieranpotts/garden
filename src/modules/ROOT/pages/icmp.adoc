@@ -1,14 +1,14 @@
 = Internet Control Message Protocol (ICMP)
 
 The Internet Control Message Protocol (ICMP) is a control and diagnostic protocol
-that runs alongside *xref:internet-protocol.adoc[IP]* at Layer 3 of the
-*xref:osi-model.adoc[OSI model]*. IP itself is a best-effort, connectionless
+that runs alongside xref:internet-protocol.adoc[*IP*] at Layer 3 of the
+xref:osi-model.adoc[*OSI model*]. IP itself is a best-effort, connectionless
 protocol with no built-in way to report errors or probe for reachability. ICMP
 fills that gap, carrying the messages that hosts and routers use to signal
 problems and query the state of the network.
 
 ICMP is not a transport protocol. It carries no application data, and is not
-used by *xref:tcp.adoc[TCP]* or *xref:udp.adoc[UDP]* to deliver streams or
+used by xref:tcp.adoc[*TCP*] or xref:udp.adoc[*UDP*] to deliver streams or
 datagrams. Instead, both transport protocols rely on ICMP to report the errors
 that IP encounters while routing their packets, such as an unreachable
 destination or a fragmentation failure.
@@ -17,7 +17,7 @@ destination or a fragmentation failure.
 
 ICMP messages travel inside IP packets, identified by protocol number 1 in the
 IP header. An ICMP message has a small fixed header — a type, a code, a
-*xref:checksum.adoc[checksum]*, and a few fields that depend on the message
+xref:checksum.adoc[*checksum*], and a few fields that depend on the message
 type — followed by a data section. The type and code together identify the
 specific message, eg. echo request is type 8 code 0, and destination
 unreachable is type 3 with codes that distinguish "network unreachable",
@@ -32,7 +32,7 @@ prevent error-reporting loops.
 * *Echo request and echo reply* (types 8 and 0). The basis of `ping`. A host
   sends an echo request and the target returns an echo reply with the same
   data. This tests reachability and measures
-  *xref:rtt.adoc[round-trip time]*.
+  xref:rtt.adoc[*round-trip time*].
 * *Destination unreachable* (type 3). A router or host reports that a packet
   could not be delivered, with a code indicating why: network, host, protocol,
   or port unreachable, or fragmentation needed when the "don't fragment" flag
@@ -67,7 +67,7 @@ ICMP's usefulness as a diagnostic tool makes it useful to attackers too. A
 *ping flood* overwhelms a target with echo requests, forcing it to generate a
 reply for each one, a simple form of denial of service. *Smurf* attacks extend
 this by spoofing the source address and bouncing echo requests off broadcast
-addresses. For these reasons *xref:firewalls.adoc[firewalls]* commonly restrict
+addresses. For these reasons xref:firewalls.adoc[*firewalls*] commonly restrict
 or rate-limit ICMP, though blocking it entirely breaks path MTU discovery and
 other mechanisms that depend on "fragmentation needed" messages reaching the
 sender.
@@ -82,12 +82,12 @@ reporting.
 
 == See also
 
-* *xref:internet-protocol.adoc[Internet Protocol (IP)]*
-* *xref:tcp.adoc[Transmission Control Protocol (TCP)]*
-* *xref:udp.adoc[User Datagram Protocol (UDP)]*
-* *xref:osi-model.adoc[OSI model]*
-* *xref:firewalls.adoc[Firewalls]*
-* *xref:rtt.adoc[Round-trip time (RTT)]*
+* xref:internet-protocol.adoc[*Internet Protocol (IP)*]
+* xref:tcp.adoc[*Transmission Control Protocol (TCP)*]
+* xref:udp.adoc[*User Datagram Protocol (UDP)*]
+* xref:osi-model.adoc[*OSI model*]
+* xref:firewalls.adoc[*Firewalls*]
+* xref:rtt.adoc[*Round-trip time (RTT)*]
 
 == References
 

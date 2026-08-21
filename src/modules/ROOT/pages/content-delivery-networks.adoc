@@ -3,11 +3,11 @@
 // TODO: https://www.cloudflare.com/en-gb/learning/cdn/what-is-a-cdn/
 // TODO: https://blog.algomaster.io/p/27c62e07-f25b-40ac-a397-101cc54f1f0a
 
-A content delivery network (CDN) is a type of *xref:caching.adoc[cache]* that
+A content delivery network (CDN) is a type of xref:caching.adoc[*cache*] that
 stores copies of digital files in multiple geographic locations. The aim is to
-reduce *xref:latency.adoc[latency]*, improve
-*xref:performance.adoc[performance]*, and increase
-*xref:availability.adoc[availability]* by serving files from the nearest servers
+reduce xref:latency.adoc[*latency*], improve
+xref:performance.adoc[*performance*], and increase
+xref:availability.adoc[*availability*] by serving files from the nearest servers
 to the end user.
 
 CDNs are implemented as geographically-distributed networks of servers. They are
@@ -17,10 +17,10 @@ a website, a CDN will redirect the request to the nearest server in its network,
 reducing latency (download times) for a better user experience.
 
 There are two types of CDNs: *pull-based* and *push-based*. Pull-based CDNs pull
-objects out of *xref:object-storage.adoc[object storage]* only when those
+objects out of xref:object-storage.adoc[*object storage*] only when those
 objects are requested and the existing cache, if any, is stale. Push-based CDNs
 are pre-populated with objects from the origin server — an instance of
-*xref:push-architecture.adoc[push architecture]*.
+xref:push-architecture.adoc[*push architecture*].
 
 == Edge and origin
 
@@ -29,20 +29,20 @@ house them are *edge locations* or *points of presence (PoPs)*. The server that
 holds the authoritative copy of the content is the *origin server*. A CDN sits
 between the user and the origin. On a cache hit it serves the response directly,
 and on a miss it fetches from the origin, stores the result, and returns it. In
-this sense every edge server is a *xref:reverse-proxy.adoc[reverse proxy]*
+this sense every edge server is a xref:reverse-proxy.adoc[*reverse proxy*]
 distributed across many locations.
 
 == Request routing
 
 A CDN has to direct each user request to a suitable edge server. The two
 dominant mechanisms are DNS-based routing and
-*xref:border-gateway-protocol.adoc[Border Gateway Protocol (BGP)]*-based
+xref:border-gateway-protocol.adoc[*Border Gateway Protocol (BGP)*]-based
 anycast.
 
 In DNS-based routing, the CDN operates the authoritative nameserver for the
 customer's domain. When a user resolves the hostname, that nameserver looks at
 the source IP of the recursive resolver, estimates the user's location, and
-returns the IP of a nearby edge location. *xref:dns.adoc[DNS]* routing is
+returns the IP of a nearby edge location. xref:dns.adoc[*DNS*] routing is
 coarse. It steers by the resolver's location, not the user's. The TTL of the
 record controls how quickly traffic can be moved.
 
@@ -52,13 +52,13 @@ routing metrics, typically the topologically closest edge. Anycast gives
 sub-second failover. If a PoP fails, its BGP advertisement is withdrawn and
 traffic shifts to the next-best location automatically.
 
-CDNs also perform *xref:load-balancing.adoc[load balancing]* within each PoP,
+CDNs also perform xref:load-balancing.adoc[*load balancing*] within each PoP,
 distributing requests across the edge servers it houses.
 
 == What gets cached, and for how long
 
 A CDN caches only what it is told to cache. The origin signals cacheability
-through *xref:http.adoc[HTTP]* response headers, principally `Cache-Control` and
+through xref:http.adoc[*HTTP*] response headers, principally `Cache-Control` and
 `Expires`. `Cache-Control: max-age=3600` declares a response fresh for one hour.
 `public` allows shared caches such as a CDN to store it, while `private`
 restricts caching to the end user's browser. `s-maxage` sets a separate TTL for
@@ -108,8 +108,8 @@ Because a CDN sits in the path of every request, it is a natural place to apply
 security controls. CDNs absorb and filter volumetric *distributed
 denial-of-service (DDoS)* attacks at the edge, where the attack capacity is,
 before traffic reaches the origin. Many CDNs host a *web application firewall
-(WAF)*, apply bot management, and inject *xref:security-headers.adoc[security
-headers]* into responses. TLS
+(WAF)*, apply bot management, and inject xref:security-headers.adoc[*security
+headers*] into responses. TLS
 termination at the edge also enforces HTTPS and modern cipher suites
 consistently.
 
@@ -133,19 +133,19 @@ is healthy.
 Widely used CDNs include Cloudflare, Akamai, Amazon CloudFront, Fastly, and
 Google Cloud CDN. Cloudflare and Fastly also expose an edge compute platform
 (Workers and Compute@Edge) that runs application code at the edge, blurring the
-line between a CDN and a *xref:serverless-computing.adoc[serverless]* runtime.
+line between a CDN and a xref:serverless-computing.adoc[*serverless*] runtime.
 
 == See also
 
-* *xref:caching.adoc[Caching]*
-* *xref:scalability.adoc[Scalability]*
-* *xref:rtt.adoc[Round-trip time (RTT)]*
-* *xref:reverse-proxy.adoc[Reverse proxy]*
-* *xref:border-gateway-protocol.adoc[Border Gateway Protocol (BGP)]*
-* *xref:dns.adoc[Domain Name System (DNS)]*
-* *xref:object-storage.adoc[Object storage]*
-* *xref:load-balancing.adoc[Load balancing]*
-* *xref:http.adoc[HyperText Transfer Protocol (HTTP)]*
+* xref:caching.adoc[*Caching*]
+* xref:scalability.adoc[*Scalability*]
+* xref:rtt.adoc[*Round-trip time (RTT)*]
+* xref:reverse-proxy.adoc[*Reverse proxy*]
+* xref:border-gateway-protocol.adoc[*Border Gateway Protocol (BGP)*]
+* xref:dns.adoc[*Domain Name System (DNS)*]
+* xref:object-storage.adoc[*Object storage*]
+* xref:load-balancing.adoc[*Load balancing*]
+* xref:http.adoc[*HyperText Transfer Protocol (HTTP)*]
 * xref:push-architecture.adoc[*Push architecture*]
 
 == References

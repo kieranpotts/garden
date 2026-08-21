@@ -2,8 +2,8 @@
 
 Input validation is the practice of checking data entering a system against
 an explicit set of expectations before that data is processed, stored, or
-passed onward. It is a primary *xref:security.adoc[security]* control and a
-foundational habit of *xref:secure-by-design.adoc[secure by design]* systems.
+passed onward. It is a primary xref:security.adoc[*security*] control and a
+foundational habit of xref:secure-by-design.adoc[*secure by design*] systems.
 Its purpose is twofold. It protects the system from malformed or hostile data
 that could trigger bugs, crashes, or injection attacks, and it gives the
 caller early, precise feedback when a request is wrong, rather than letting
@@ -17,7 +17,7 @@ crosses from an untrusted source into a component that trusts its input.
 Public API endpoints, file parsers, message consumers, and command-line
 interfaces are all trust boundaries. Inside a single process or a tightly
 coupled component, a bad input usually signals a programming defect and is
-better handled by *xref:fail-fast.adoc[fail-fast]* assertions. At a boundary,
+better handled by xref:fail-fast.adoc[*fail-fast*] assertions. At a boundary,
 the sender may be a different team, a different organization, or an older
 version of yourself, and the data must be treated as untrusted until it has
 been checked.
@@ -40,22 +40,22 @@ A useful distinction separates two layers of checking.
   past. The referenced record actually exists.
 
 Both layers are needed. Syntactic checks are cheap and mechanical, and many
-can be delegated to a schema language such as *xref:json-schema.adoc[JSON
-Schema]*. Semantic checks usually require business knowledge and a round-trip
+can be delegated to a schema language such as xref:json-schema.adoc[*JSON
+Schema*]. Semantic checks usually require business knowledge and a round-trip
 to authoritative state, which is why they tend to live in the application or
 domain layer rather than at the edge.
 
 == Allowlisting over denylisting
 
-A persistent lesson of *xref:owasp.adoc[OWASP]* guidance is that validation
+A persistent lesson of xref:owasp.adoc[*OWASP*] guidance is that validation
 should prefer *allowlisting* over *denylisting*. An allowlist defines the
 shapes that are known to be safe and rejects everything else. A denylist
 attempts to enumerate the shapes that are dangerous and lets everything else
 through. Allowlists fail closed. Denylists fail open, and attackers are
 inventive at finding shapes the denylist author never imagined.
 
-The same reasoning applies to output. *xref:cross-site-scripting.adoc[Cross-
-site scripting (XSS)]* and *xref:sql-injection.adoc[SQL injection]* are both
+The same reasoning applies to output. xref:cross-site-scripting.adoc[*Cross-
+site scripting (XSS)*] and xref:sql-injection.adoc[*SQL injection*] are both
 injection failures, and both are routinely traced to denylist-based input
 filtering that an attacker evaded through encoding, mutation, or a parser
 quirk. Validation rejects malformed data early, but it is a secondary
@@ -77,12 +77,12 @@ explicitly, in one place, and the result should be re-validated.
 == Tension with the robustness principle
 
 Strict input validation sits in direct tension with the
-*xref:robustness-principle.adoc[robustness principle]* (Postel's law), which
+xref:robustness-principle.adoc[*robustness principle*] (Postel's law), which
 counsels being liberal in what you accept. The two are not contradictions so
 much as a trade-off struck at different boundaries. At a public network API,
 accepting mildly non-conformant but recoverable input preserves
-interoperability and *xref:backwards-compatibility.adoc[backwards
-compatibility]*. At a security boundary facing hostile input, strictness is
+interoperability and xref:backwards-compatibility.adoc[*backwards
+compatibility*]. At a security boundary facing hostile input, strictness is
 the safer default. The discipline is to be liberal about cosmetic variation
 and strict about anything that affects safety or meaning.
 

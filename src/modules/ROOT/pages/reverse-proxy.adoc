@@ -19,7 +19,7 @@ A reverse proxy shields back-end servers from direct exposure. It hides IP
 addresses, port numbers, and other identifying information, making back-end
 services less vulnerable to attacks such as DDoS, port scanning, and application
 fingerprinting. All external traffic passes through the proxy, which provides a
-single point at which to apply *xref:firewalls.adoc[firewall]* rules, block
+single point at which to apply xref:firewalls.adoc[*firewall*] rules, block
 malicious traffic, and enforce security policies.
 
 === SSL/TLS termination
@@ -36,7 +36,7 @@ files, CSS, HTML pages – and serve those responses directly without hitting
 back-end servers. This reduces back-end load, improves response times for
 clients, and lowers bandwidth usage. Particularly effective for high-traffic
 sites with large amounts of static or infrequently-changing content. A
-*xref:content-delivery-networks.adoc[content delivery network (CDN)]* applies
+xref:content-delivery-networks.adoc[*content delivery network (CDN)*] applies
 this same pattern at global scale, distributing the cache across many edge
 locations.
 
@@ -58,20 +58,20 @@ public-facing URLs that decouple the client API from internal service structure.
 
 Many reverse proxies support basic load balancing across multiple back-end
 instances, distributing requests to spread load. Tools like Nginx can function
-as both a reverse proxy and a *xref:load-balancer.adoc[load balancer]*
+as both a reverse proxy and a xref:load-balancer.adoc[*load balancer*]
 simultaneously.
 
 == Reverse proxy vs. load balancer vs. API gateway
 
 These three components overlap and are often confused:
 
-* A *xref:load-balancer.adoc[load balancer]* is focused specifically on
+* A xref:load-balancer.adoc[*load balancer*] is focused specifically on
   distributing traffic across multiple identical server instances for
   availability and scalability.
 * A reverse proxy is a more general-purpose intermediary – it can route, cache,
   compress, rewrite, and secure traffic, often in front of a heterogeneous set
   of back-end services.
-* An *xref:api-gateway.adoc[API gateway]* is a specialized reverse proxy for API
+* An xref:api-gateway.adoc[*API gateway*] is a specialized reverse proxy for API
   management, adding authentication, rate limiting, request/response
   transformation, aggregation, and API lifecycle management.
 
@@ -87,7 +87,7 @@ Common implementations include Nginx, Apache HTTP Server, HAProxy, and Traefik.
 == See also
 
 * xref:proxy-server.adoc[*Proxy server*]
-* *xref:load-balancer.adoc[Load balancer]*
-* *xref:api-gateway.adoc[API gateway]*
+* xref:load-balancer.adoc[*Load balancer*]
+* xref:api-gateway.adoc[*API gateway*]
 * xref:edge-proxy.adoc[*Edge proxy*]
-* *xref:security-headers.adoc[Security headers]*
+* xref:security-headers.adoc[*Security headers*]

@@ -1,10 +1,10 @@
 = Publish-subscribe (pubsub) pattern
 
-Publish-subscribe is a *xref:design-patterns.adoc[design pattern]* in which a
+Publish-subscribe is a xref:design-patterns.adoc[*design pattern*] in which a
 centralized component acts as an intermediary between two distinct groups of
 software components: publishers and subscribers. Publishers send messages
-(typically in the form of events) to the central *xref:message-broker.adoc[message
-broker]*, and the broker is responsible for delivering the messages to the
+(typically in the form of events) to the central xref:message-broker.adoc[*message
+broker*], and the broker is responsible for delivering the messages to the
 subscribers who are interested in them.
 
 Subscribers can subscribe to particular message channels or particular types of
@@ -15,12 +15,12 @@ A software component may be both a publisher and consumer, publishing some kinds
 of messages while consuming others.
 
 The pubsub pattern is implemented in the brokers in
-*xref:event-driven-architecture.adoc[event-driven systems]*. Because the broker
+xref:event-driven-architecture.adoc[*event-driven systems*]. Because the broker
 delivers messages to subscribers without them requesting each one, pubsub is a
-*xref:push-architecture.adoc[push architecture]*. Event-driven
+xref:push-architecture.adoc[*push architecture*]. Event-driven
 architecture is a style of application design in which components or services
 communicate with each other by producing and consuming events. An
-*xref:event-bus.adoc[event bus]* is one common implementation of such a broker.
+xref:event-bus.adoc[*event bus*] is one common implementation of such a broker.
 
 The pubsub pattern – and, by extension, event-driven architecture – is an
 implementation of the xref:dependency-inversion.adoc[*dependency inversion*]
@@ -31,7 +31,7 @@ abstraction (the event messages themselves). This means that components (or
 services) can be more easily added, changed, replaced, without impacting the
 rest of the system.
 
-See also the *xref:observer-pattern.adoc[observer pattern]*, which is closely
+See also the xref:observer-pattern.adoc[*observer pattern*], which is closely
 related to pubsub.
 
 == See also

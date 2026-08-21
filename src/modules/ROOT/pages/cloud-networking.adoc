@@ -1,10 +1,10 @@
 = Cloud networking
 
 Cloud networking is the body of networking capabilities that
-*xref:cloud-computing.adoc[cloud computing]* providers expose to their customers.
+xref:cloud-computing.adoc[*cloud computing*] providers expose to their customers.
 It covers the same concerns as traditional enterprise networking – addressing,
 routing, switching, firewalls, load balancing, and name resolution – but
-delivered as *xref:virtualization.adoc[virtualized]*, API-provisioned services
+delivered as xref:virtualization.adoc[*virtualized*], API-provisioned services
 rather than physical hardware. The customer consumes networking as software:
 subnets, route tables, firewalls, and load balancers are all defined in code and
 brought up in seconds.
@@ -12,29 +12,29 @@ brought up in seconds.
 == Foundations
 
 The underlying protocols are the ones the public internet already runs on. Cloud
-networks carry traffic over *xref:internet-protocol.adoc[IP]*, segment their
-address space with *xref:cidr.adoc[CIDR]* blocks, and exchange routes between
+networks carry traffic over xref:internet-protocol.adoc[*IP*], segment their
+address space with xref:cidr.adoc[*CIDR*] blocks, and exchange routes between
 regions and on-premises data centers using
-*xref:border-gateway-protocol.adoc[BGP]*. What distinguishes cloud networking
+xref:border-gateway-protocol.adoc[*BGP*]. What distinguishes cloud networking
 from running the same protocols on owned hardware is the consumption model. A
 customer provisions a subnet, attaches a route table, or opens a port through an
-API or *xref:infrastructure-as-code.adoc[infrastructure as code]*, and pays only
+API or xref:infrastructure-as-code.adoc[*infrastructure as code*], and pays only
 for the capacity actually used.
 
 == Core constructs
 
-Although every *xref:cloud-service-providers.adoc[cloud service provider]* names
+Although every xref:cloud-service-providers.adoc[*cloud service provider*] names
 them differently, the building blocks of a cloud network are broadly the same.
 
 * *Virtual private cloud (VPC).* An isolated, customer-defined address space
   within a provider's network, subdivided into subnets that are typically pinned
-  to a single *xref:availability-zone.adoc[availability zone]* for fault isolation.
+  to a single xref:availability-zone.adoc[*availability zone*] for fault isolation.
 
 * *Route tables.* Per-subnet rules that direct traffic, eg. a default route to
   the internet or a more specific route to a peered network.
 
 * *Security groups and network ACLs.* Stateful and stateless packet filters that
-  replace the perimeter *xref:firewalls.adoc[firewall]* with finer-grained rules
+  replace the perimeter xref:firewalls.adoc[*firewall*] with finer-grained rules
   attached to individual network interfaces.
 
 * *Internet and NAT gateways.* The boundary between a private subnet and the
@@ -42,7 +42,7 @@ them differently, the building blocks of a cloud network are broadly the same.
   directly.
 
 * *xref:load-balancing.adoc[Load balancing].* Managed
-  *xref:load-balancer.adoc[load balancers]* that distribute traffic across
+  xref:load-balancer.adoc[*load balancers*] that distribute traffic across
   instances, often across multiple availability zones.
 
 * *xref:dns.adoc[DNS].* Managed name resolution, eg. AWS Route 53 or Google
@@ -56,10 +56,10 @@ them differently, the building blocks of a cloud network are broadly the same.
 
 Cloud networking also mediates the two broad directions traffic flows.
 North-south traffic, between users and the application, is shaped at the edge by
-*xref:content-delivery-networks.adoc[content delivery networks]* for static
-content and by *xref:api-gateway.adoc[API gateways]* for API requests. East-west
+xref:content-delivery-networks.adoc[*content delivery networks*] for static
+content and by xref:api-gateway.adoc[*API gateways*] for API requests. East-west
 traffic, between services inside the cloud, is increasingly handled by a
-*xref:service-mesh.adoc[service mesh]* that moves routing, retries, and mutual
+xref:service-mesh.adoc[*service mesh*] that moves routing, retries, and mutual
 TLS out of application code and into a sidecar.
 
 == Trade-offs

@@ -1,19 +1,19 @@
 = Application performance management (APM)
 
 *Application performance management (APM)* is the practice of monitoring and
-managing the *xref:performance.adoc[performance]* and availability of software
-applications. It is a specialized branch of *xref:monitoring.adoc[monitoring]*
+managing the xref:performance.adoc[*performance*] and availability of software
+applications. It is a specialized branch of xref:monitoring.adoc[*monitoring*]
 that focuses on the application layer, tracking how an application behaves in
 production rather than the infrastructure it runs on. Where
 xref:performance-testing.adoc[*performance testing*] probes these qualities
 under simulated load before release, APM watches them under real traffic once
 the system is live.
 
-APM collects *xref:telemetry.adoc[telemetry]* from running applications to
+APM collects xref:telemetry.adoc[*telemetry*] from running applications to
 answer questions such as how fast the application responds to users, where
 time is spent within a request, and which dependencies are failing or slow.
-Typical signals include response times (*xref:latency.adoc[latency]*), error
-rates, *xref:throughput.adoc[throughput]*, queue depths, per-process resource
+Typical signals include response times (xref:latency.adoc[*latency*]), error
+rates, xref:throughput.adoc[*throughput*], queue depths, per-process resource
 utilization, and the health of downstream dependencies such as databases,
 caches, and external APIs.
 
@@ -26,7 +26,7 @@ planning. An APM suite therefore tends to combine several capabilities.
   in the browser or mobile client.
 * *Synthetic monitoring* runs scripted requests against the application on a
   schedule to detect outages before real users hit them.
-* *xref:tracing.adoc[Distributed tracing]* follows a request across service
+* xref:tracing.adoc[*Distributed tracing*] follows a request across service
   boundaries to localize where time is lost or where a failure originates.
 * xref:profiling.adoc[*Profiling*] samples the application at runtime to
   attribute CPU and memory consumption to specific code paths.
@@ -36,8 +36,8 @@ planning. An APM suite therefore tends to combine several capabilities.
 == APM and observability
 
 APM predates the modern observability framing, and the two overlap heavily.
-Both collect the three pillars of *xref:observability.adoc[observability]*:
-*xref:logging.adoc[logs]*, *xref:metrics.adoc[metrics]*, and traces. Most
+Both collect the three pillars of xref:observability.adoc[*observability*]:
+xref:logging.adoc[*logs*], xref:metrics.adoc[*metrics*], and traces. Most
 contemporary APM products have expanded into full observability platforms.
 The distinction is one of emphasis. APM centers on the application and on the
 questions teams already know to ask about it. Is it fast, is it up, which
@@ -45,7 +45,7 @@ transaction is slow. Observability broadens the lens to exploratory analysis
 of a system's internal state, including questions the team did not think to
 ask in advance.
 
-In *xref:distributed-system.adoc[distributed software]*, the two converge.
+In xref:distributed-system.adoc[*distributed software*], the two converge.
 Tracing a request as it hops between microservices is the centerpiece of APM
 in such systems, and it is also the most important pillar of observability
 for distributed architectures. The request IDs and spans that an APM agent
@@ -71,13 +71,13 @@ requests, while relying on cheaper metrics for system-wide baselines.
 
 == See also
 
-* *xref:latency.adoc[Latency]*
-* *xref:logging.adoc[Logging]*
-* *xref:metrics.adoc[Metrics]*
-* *xref:monitoring.adoc[Monitoring]*
-* *xref:observability.adoc[Observability]*
-* *xref:performance.adoc[Performance]*
-* *xref:visibility.adoc[Visibility]*
-* *xref:telemetry.adoc[Telemetry]*
-* *xref:throughput.adoc[Throughput (aka. bandwidth)]*
-* *xref:tracing.adoc[Tracing]*
+* xref:latency.adoc[*Latency*]
+* xref:logging.adoc[*Logging*]
+* xref:metrics.adoc[*Metrics*]
+* xref:monitoring.adoc[*Monitoring*]
+* xref:observability.adoc[*Observability*]
+* xref:performance.adoc[*Performance*]
+* xref:visibility.adoc[*Visibility*]
+* xref:telemetry.adoc[*Telemetry*]
+* xref:throughput.adoc[*Throughput (aka. bandwidth)*]
+* xref:tracing.adoc[*Tracing*]

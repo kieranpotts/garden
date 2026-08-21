@@ -4,7 +4,7 @@ A JSON Web Token (JWT) is a compact, URL-safe token used to securely transmit
 information between two parties – typically a client and a server. JWTs are
 digitally signed, so their contents can be verified and trusted.
 
-JWTs are widely used for *xref:authentication.adoc[authentication]* and
+JWTs are widely used for xref:authentication.adoc[*authentication*] and
 xref:authorization.adoc[*authorization*]. The core advantage over traditional server-side sessions is that
 all necessary user information is stored inside the token itself. The server
 does not need to look up session state to authenticate a request – it only needs
@@ -46,7 +46,7 @@ itself. There are three categories:
   namespace to avoid naming conflicts.
 * *Private claims*: Custom claims agreed upon between specific parties, for
   example `userId`, `role`, or `permissions`. A `role` claim is a natural fit
-  for *xref:role-based-access-controls.adoc[role-based access control]*.
+  for xref:role-based-access-controls.adoc[*role-based access control*].
 
 The payload is Base64Url-encoded to form the second part of the token.
 
@@ -100,7 +100,7 @@ to the header or payload will invalidate it.
   revoked before expiry. Common mitigations include using short-lived access
   tokens paired with longer-lived refresh tokens (which can be revoked
   server-side), or maintaining a token denylist keyed on the `jti` (JWT ID)
-  claim, which acts as a per-token *xref:nonce.adoc[nonce]*.
+  claim, which acts as a per-token xref:nonce.adoc[*nonce*].
 * *Client storage*: `localStorage` and `sessionStorage` are vulnerable to
   cross-site scripting (XSS) attacks. HttpOnly cookies are safer from XSS but
   require CSRF protection. A common best practice is to keep access tokens in
@@ -108,6 +108,6 @@ to the header or payload will invalidate it.
 
 == See also
 
-* *xref:authentication.adoc[Authentication]*
-* *xref:salt.adoc[Salt]*
-* *xref:nonce.adoc[Nonce]*
+* xref:authentication.adoc[*Authentication*]
+* xref:salt.adoc[*Salt*]
+* xref:nonce.adoc[*Nonce*]

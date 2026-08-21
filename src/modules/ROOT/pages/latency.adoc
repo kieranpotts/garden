@@ -5,20 +5,20 @@ complete, or to move data from one place to another.
 
 Low latency means faster response times and a more responsive system. High
 latency can lead to lag and poor user experience. Elevated latency is a common
-target for *xref:alerting.adoc[symptom-based alerting]*.
+target for xref:alerting.adoc[*symptom-based alerting*].
 
-Latency is an important *xref:quality-attributes.adoc[quality attribute]* of IT
+Latency is an important xref:quality-attributes.adoc[*quality attribute*] of IT
 systems, and required careful consideration in the
-*xref:system-design.adoc[design]* of
-*xref:distributed-system.adoc[distributed software]* especially. It is one facet
-of the broader quality of *xref:performance.adoc[performance]*, which measures
+xref:system-design.adoc[*design*] of
+xref:distributed-system.adoc[*distributed software*] especially. It is one facet
+of the broader quality of xref:performance.adoc[*performance*], which measures
 how well a system responds to interactions overall.
 
 In high-volume systems, latency may need to be traded for higher
-*xref:throughput.adoc[throughput (aka. bandwidth)]*, ie. increasing the amount
+xref:throughput.adoc[*throughput (aka. bandwidth)*], ie. increasing the amount
 of data that can be processed over a period of time. For example, to increase
 throughput you might batch requests together, process data in
-*xref:parallelism.adoc[parallel]*, or spread load across multiple servers. But
+xref:parallelism.adoc[*parallel*], or spread load across multiple servers. But
 these strategies can have the effect of increasing the time individual requests
 spend waiting in queues, thereby increasing latency. The
 xref:access-patterns.adoc[*access patterns*] of the workload determine which of
@@ -139,32 +139,32 @@ and more predictable response times.
 == Reducing latency
 
 Latency reduction works by attacking one or more of the four components above.
-Caching and *xref:preprocessing.adoc[preprocessing]* cut processing delay by
+Caching and xref:preprocessing.adoc[*preprocessing*] cut processing delay by
 doing work ahead of time. Content delivery networks cut transmission and
 propagation delay by moving data closer to where it is read.
-*xref:load-balancing.adoc[Load balancing]* and careful capacity provisioning cut
+xref:load-balancing.adoc[*Load balancing*] and careful capacity provisioning cut
 queuing delay by keeping resources below saturation. And
 *xref:horizontal-scaling.adoc[horizontal scaling*] brings compute physically
 closer to users across regions, attacking the irreducible propagation floor.
 None of these is free; each trades some other quality, often cost or
-*xref:consistency.adoc[consistency]*, for lower latency.
-*xref:local-first-software.adoc[Local-first software]* applies the same idea more
+xref:consistency.adoc[*consistency*], for lower latency.
+xref:local-first-software.adoc[*Local-first software*] applies the same idea more
 aggressively by keeping the authoritative copy of a user's data on their
 device, so reads and writes never cross the network at all.
 
 == See also
 
-* *xref:rtt.adoc[Round-trip time (RTT)]*
-* *xref:performance.adoc[Performance]*
-* *xref:throughput.adoc[Throughput (aka. bandwidth)]*
-* *xref:scalability.adoc[Scalability]*
-* *xref:mechanical-sympathy.adoc[Mechanical sympathy]*
-* *xref:application-performance-management.adoc[Application performance management]*
-* *xref:observability.adoc[Observability]*
-* *xref:content-delivery-networks.adoc[Content delivery networks]*
-* *xref:caching.adoc[Caching]*
-* *xref:load-balancing.adoc[Load balancing]*
-* *xref:premature-optimization.adoc[Premature optimization]*
+* xref:rtt.adoc[*Round-trip time (RTT)*]
+* xref:performance.adoc[*Performance*]
+* xref:throughput.adoc[*Throughput (aka. bandwidth)*]
+* xref:scalability.adoc[*Scalability*]
+* xref:mechanical-sympathy.adoc[*Mechanical sympathy*]
+* xref:application-performance-management.adoc[*Application performance management*]
+* xref:observability.adoc[*Observability*]
+* xref:content-delivery-networks.adoc[*Content delivery networks*]
+* xref:caching.adoc[*Caching*]
+* xref:load-balancing.adoc[*Load balancing*]
+* xref:premature-optimization.adoc[*Premature optimization*]
 
 == References
 

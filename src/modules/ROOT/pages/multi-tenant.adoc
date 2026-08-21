@@ -9,7 +9,7 @@ users expect their data and configuration to be isolated from every other
 tenant's.
 
 Multi-tenancy is the architectural property that makes
-*xref:software-as-a-service.adoc[Software-as-a-service (SaaS)]* economically
+xref:software-as-a-service.adoc[*Software-as-a-service (SaaS)*] economically
 viable. By sharing one deployment across many tenants, the provider spreads
 infrastructure and operational costs that would otherwise be paid per customer.
 The alternative, a dedicated deployment per tenant, is sometimes called
@@ -43,16 +43,16 @@ rough order from most shared to most isolated, are the following.
   architecture but is managed as one product, typically through automation that
   provisions and upgrades every tenant's stack in lockstep.
 
-These models compose with *xref:horizontal-scaling.adoc[horizontal scaling]*
+These models compose with xref:horizontal-scaling.adoc[*horizontal scaling*]
 techniques. A large multi-tenant system often combines them, running a
 shared-everything core for small tenants and dedicated databases or cells for
-the largest ones, partitioned by *xref:sharding.adoc[shard]* key or tenant
+the largest ones, partitioned by xref:sharding.adoc[*shard*] key or tenant
 identifier.
 
 == Isolation and blast radius
 
 The central design tension in multi-tenancy is between the efficiency of
-sharing and the *xref:isolation.adoc[isolation]* each tenant expects. Sharing
+sharing and the xref:isolation.adoc[*isolation*] each tenant expects. Sharing
 infrastructure means one tenant's behavior can affect another's. A runaway
 query from one tenant can saturate a shared database, and a *noisy neighbor*
 can consume disproportionate CPU or network on a shared application instance.
@@ -61,7 +61,7 @@ a misconfigured feature flag, is the set of tenants that share the affected
 component.
 
 Stronger isolation models shrink the blast radius by reducing what is shared.
-*xref:cell-based-architecture.adoc[Cell-based architecture]* takes this to its
+xref:cell-based-architecture.adoc[*Cell-based architecture*] takes this to its
 logical extreme by partitioning the entire stack — compute, storage, and
 network — into cells, often along tenant boundaries, so that a failure in one
 cell cannot reach another. Weaker models accept a larger blast radius in
@@ -72,24 +72,24 @@ exchange for lower cost and simpler operations.
 Sharing infrastructure also raises the stakes on access control. Every request
 must be scoped to the requesting tenant, and every query must carry a tenant
 predicate that the database cannot accidentally drop. See
-*xref:authorization.adoc[authorization]*. In
-*xref:role-based-access-controls.adoc[role-based access control]* deployments,
+xref:authorization.adoc[*authorization*]. In
+xref:role-based-access-controls.adoc[*role-based access control*] deployments,
 the tenant identifier scopes every role lookup, so a role name in one tenant
 is a distinct assignment from the same name in another. An *insecure direct
 object reference*
 flaw that, in a single-tenant system, only exposes one customer's data to its
 own users becomes a cross-tenant data leak in a multi-tenant system – a
-*xref:privacy.adoc[privacy]* failure, not just a security one.
+xref:privacy.adoc[*privacy*] failure, not just a security one.
 
 == Enabling technologies
 
-Multi-tenancy at scale is enabled by *xref:virtualization.adoc[virtualization]*,
-*xref:containerization.adoc[containerization]*, and
-*xref:container-orchestration.adoc[container orchestration]*, which make it
+Multi-tenancy at scale is enabled by xref:virtualization.adoc[*virtualization*],
+xref:containerization.adoc[*containerization*], and
+xref:container-orchestration.adoc[*container orchestration*], which make it
 cheap to provision and operate many isolated runtime environments on shared
 hardware. Multi-tenant applications are commonly built as
-*xref:microservices.adoc[microservices]* or other
-*xref:service-oriented-architecture.adoc[service-oriented]* styles so that
+xref:microservices.adoc[*microservices*] or other
+xref:service-oriented-architecture.adoc[*service-oriented*] styles so that
 individual components can be scaled and isolated independently of the others.
 
 == See also

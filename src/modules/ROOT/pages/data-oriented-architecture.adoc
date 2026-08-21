@@ -16,13 +16,13 @@ drawn from his experience building trading systems on the pattern.
 A *data-oriented architecture* (DOA) is a system that uses a monolithic data
 store as its main source of state, but in which multiple loosely-coupled
 stateless services act upon that central store. It is therefore a hybrid of
-*xref:monolith.adoc[monolithic]* and
-*xref:service-oriented-architecture.adoc[service-oriented]* (and especially
-*xref:microservices.adoc[microservice]*) designs. Like a monolith, it keeps
+xref:monolith.adoc[*monolithic*] and
+xref:service-oriented-architecture.adoc[*service-oriented*] (and especially
+xref:microservices.adoc[*microservice*]) designs. Like a monolith, it keeps
 state in one place. Like microservices, it decomposes processing into small,
 independently deployable components.
 
-DOA is a direct descendant of the *xref:blackboard.adoc[blackboard pattern]*,
+DOA is a direct descendant of the xref:blackboard.adoc[*blackboard pattern*],
 in which independent specialists cooperate through a shared data structure
 rather than by calling each other directly. DOA applies the same idea to a
 distributed system: the central data store is the blackboard, and the
@@ -36,7 +36,7 @@ DOA departs from conventional microservices in two ways.
   service, DOA mandates describing the state layer in terms of a single,
   centrally-managed global schema. Every service reads from and writes to that
   shared store, and holds no state of its own between interactions. Each
-  service is *xref:stateless.adoc[stateless]* in the same sense as a stage in
+  service is xref:stateless.adoc[*stateless*] in the same sense as a stage in
   a dataflow pipeline.
 
 * _Component-to-component interaction is minimized_, in favor of interaction
@@ -52,9 +52,9 @@ consumer reads or subscribes to it. A service that takes incoming market
 requests and publishes them as `RFQ` records is a producer. A service that
 joins those records with pricing data and writes out quotes is both a consumer
 and a producer. The shape resembles a
-*xref:stream-processing-systems.adoc[stream processing]* or
-*xref:map-reduce.adoc[MapReduce]* pipeline, and the read/write division echoes
-*xref:cqrs.adoc[CQRS]* applied across whole services rather than within a
+xref:stream-processing-systems.adoc[*stream processing*] or
+xref:map-reduce.adoc[*MapReduce*] pipeline, and the read/write division echoes
+xref:cqrs.adoc[*CQRS*] applied across whole services rather than within a
 single model.
 
 Because the intermediate data is visible and queryable, each stage must
@@ -68,8 +68,8 @@ When a component needs to trigger behavior in another, the first design move
 is to reframe the call as an *event* and its *effect*. Instead of component X
 requesting an action from component Y, X produces an event to the data store
 and Y responds by consuming it. This pattern of *data-based events* pushes
-looseness further than *xref:event-driven-architecture.adoc[event-driven
-architecture]* typically goes: producers need not know who consumes their
+looseness further than xref:event-driven-architecture.adoc[*event-driven
+architecture*] typically goes: producers need not know who consumes their
 events, and consumers need not know where events originate, only their
 business-logic meaning. A limited number of genuine component-to-component
 RPCs may still be needed when the intent is to trigger a behavior in a
@@ -108,13 +108,13 @@ another is much reduced.
 == Trade-offs
 
 * _Consistency._ Keeping all state in one store makes it easier to maintain
-  *xref:consistency.adoc[consistency]* across the system, and minimizes
+  xref:consistency.adoc[*consistency*] across the system, and minimizes
   component-to-component interaction, which can reduce overall latency.
 
 * _Central store as a bottleneck and single point of failure._ The data store
-  is a *xref:single-point-of-failure.adoc[single point of failure]* and a
-  serialization point. *xref:sharding.adoc[Sharding]* and
-  *xref:replication.adoc[replication]* can mitigate this, but both are harder
+  is a xref:single-point-of-failure.adoc[*single point of failure*] and a
+  serialization point. xref:sharding.adoc[*Sharding*] and
+  xref:replication.adoc[*replication*] can mitigate this, but both are harder
   to implement against a single monolithic store than against per-service
   stores, and they reintroduce exactly the consistency problems the central
   store was meant to avoid.
@@ -139,7 +139,7 @@ another is much reduced.
 == Relation to data mesh
 
 DOA sits at the opposite end of the spectrum from
-*xref:data-mesh.adoc[data mesh]*. Where a data mesh deliberately decentralizes
+xref:data-mesh.adoc[*data mesh*]. Where a data mesh deliberately decentralizes
 data ownership across domain teams, each serving their own data products, DOA
 centralizes state in a single global schema. Both aim to escape the
 central-bottleneck warehouse, but by opposite routes: DOA keeps one store and

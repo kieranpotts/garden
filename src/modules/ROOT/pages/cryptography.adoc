@@ -3,12 +3,12 @@
 Cryptography is the discipline of securing information and communication against
 adversaries. The name comes from the Greek _kryptós_ ("hidden") and _gráphein_
 ("to write"), and it is one of the oldest applied sciences in
-*xref:computer-science.adoc[computer science]*. Its concern is not only keeping
+xref:computer-science.adoc[*computer science*]. Its concern is not only keeping
 data secret, but also ensuring that data has not been altered, that parties are
 who they claim to be, and that actions cannot later be denied.
 
 Cryptography is a foundational technique within
-*xref:security.adoc[security]*, but it is narrower than security as a whole.
+xref:security.adoc[*security*], but it is narrower than security as a whole.
 Security also covers operational and procedural controls — access policy,
 patching, and physical access — that cryptography cannot address. Conversely,
 cryptography supplies the mathematical primitives on which much of security is
@@ -20,14 +20,14 @@ Cryptographic systems are designed to provide one or more of the following
 properties.
 
 * *Confidentiality.* Only authorized parties can read the data. This is the
-  familiar goal of *xref:encryption.adoc[encryption]*, which transforms
+  familiar goal of xref:encryption.adoc[*encryption*], which transforms
   plaintext into ciphertext that is meaningless without a key.
 * *Integrity.* The data has not been modified in transit or at rest. Detecting
   deliberate modification, as opposed to accidental corruption, requires
-  *xref:hashing.adoc[cryptographic hash functions]* rather than ordinary
-  *xref:checksum.adoc[checksums]*.
+  xref:hashing.adoc[*cryptographic hash functions*] rather than ordinary
+  xref:checksum.adoc[*checksums*].
 * *Authenticity.* The origin of the data can be verified.
-  *xref:authentication.adoc[Authentication]* of users and systems leans heavily
+  xref:authentication.adoc[*Authentication*] of users and systems leans heavily
   on cryptographic mechanisms such as digital signatures and certificates.
 * *Non-repudiation.* The sender cannot later deny having sent the message.
   Digital signatures provide this guarantee, because a signature can only have
@@ -45,11 +45,11 @@ ones.
   key kept secret and a public key shared openly. What one key encrypts, the
   other decrypts. This removes the need to share a secret in advance and
   underpins digital signatures and certificate-based
-  *xref:authentication.adoc[authentication]*.
+  xref:authentication.adoc[*authentication*].
 * *Cryptographic hash functions.* One-way functions that produce a fixed-size
   digest of any input. They are the basis of tamper detection,
-  *xref:checksum.adoc[checksums]*, and password storage with
-  *xref:salt.adoc[salt]*.
+  xref:checksum.adoc[*checksums*], and password storage with
+  xref:salt.adoc[*salt*].
 * *Message authentication codes (MACs).* A hash keyed with a secret that proves
   both integrity and authenticity in a single value.
 * *Digital signatures.* The public-key analogue of a MAC. The signer hashes the
@@ -59,30 +59,30 @@ ones.
   an insecure channel, eg. Diffie-Hellman.
 
 Most real systems combine several primitives.
-*xref:envelope-encryption.adoc[Envelope encryption]*, for example, uses a
+xref:envelope-encryption.adoc[*Envelope encryption*], for example, uses a
 symmetric data key for the payload and an asymmetric key-encryption key to
-protect the data key. Protecting against *xref:replay-attack.adoc[replay
-attacks]* typically adds a *xref:nonce.adoc[nonce]* to each message so that
+protect the data key. Protecting against xref:replay-attack.adoc[*replay
+attacks*] typically adds a xref:nonce.adoc[*nonce*] to each message so that
 intercepted traffic cannot be retransmitted.
 
 == Cryptography versus encryption
 
 The two terms are often used interchangeably, but they name different things.
-Cryptography is the discipline. *xref:encryption.adoc[Encryption]* is one
+Cryptography is the discipline. xref:encryption.adoc[*Encryption*] is one
 technique within it — the transformation of plaintext to ciphertext for
 confidentiality. Hashing, signatures, and key exchange are also cryptography,
 but they are not encryption.
 
 == See also
 
-* *xref:security.adoc[Security]*
-* *xref:computer-science.adoc[Computer science]*
-* *xref:encryption.adoc[Encryption]*
-* *xref:hashing.adoc[Hashing]*
-* *xref:checksum.adoc[Checksum]*
-* *xref:data-integrity.adoc[Data integrity]*
-* *xref:authentication.adoc[Authentication]*
-* *xref:envelope-encryption.adoc[Envelope encryption]*
-* *xref:salt.adoc[Salt]*
-* *xref:nonce.adoc[Nonce]*
-* *xref:replay-attack.adoc[Replay attack]*
+* xref:security.adoc[*Security*]
+* xref:computer-science.adoc[*Computer science*]
+* xref:encryption.adoc[*Encryption*]
+* xref:hashing.adoc[*Hashing*]
+* xref:checksum.adoc[*Checksum*]
+* xref:data-integrity.adoc[*Data integrity*]
+* xref:authentication.adoc[*Authentication*]
+* xref:envelope-encryption.adoc[*Envelope encryption*]
+* xref:salt.adoc[*Salt*]
+* xref:nonce.adoc[*Nonce*]
+* xref:replay-attack.adoc[*Replay attack*]

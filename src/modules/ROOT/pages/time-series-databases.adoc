@@ -5,15 +5,15 @@ data, where each entry is associated with a specific point in time.
 
 Although it is possible to store time series data in many different database
 types, the design of these systems is distinct from
-*xref:relational-databases.adoc[relational databases]*, in which relationships
+xref:relational-databases.adoc[*relational databases*], in which relationships
 between data points are implemented through referential models, rather than
 being implicit through timestamps. Therefore, time series databases are a type
-of *xref:nosql-databases.adoc[NoSQL database]*.
+of xref:nosql-databases.adoc[*NoSQL database*].
 
-Time series databases underpin *xref:monitoring.adoc[monitoring]* and
-*xref:alerting.adoc[alerting]* systems, which evaluate stored series against
+Time series databases underpin xref:monitoring.adoc[*monitoring*] and
+xref:alerting.adoc[*alerting*] systems, which evaluate stored series against
 rules in near real time. Beyond observability, the same storage model serves
-*xref:metrics.adoc[metrics]* collection, IoT and sensor telemetry, financial and
+xref:metrics.adoc[*metrics*] collection, IoT and sensor telemetry, financial and
 market data, application and infrastructure performance data, and any workload
 that records how a value changes over time.
 
@@ -49,15 +49,15 @@ compress well with XOR encoding, which stores only the bits that change
 between consecutive samples. These two techniques,
 described in the _Gorilla_ paper, underpin the in-storage compression of several
 modern systems, and the same idea is the basis of
-*xref:in-memory-databases.adoc[in-memory]* time series engines that hold hot data
+xref:in-memory-databases.adoc[*in-memory*] time series engines that hold hot data
 in compressed form in RAM.
 
 Because the workload is append-mostly and time-ordered, many engines lay data out
 in time chunks and use log-structured write paths so that high write rates do not
 fragment the store. Some systems are built on top of a
-*xref:wide-column-stores.adoc[wide-column store]*, such as OpenTSDB on HBase, and
+xref:wide-column-stores.adoc[*wide-column store*], such as OpenTSDB on HBase, and
 inherit that layer's distribution model. Others, such as Prometheus, are
-*xref:distributed-databases.adoc[distributed]* single-binary deployments that
+xref:distributed-databases.adoc[*distributed*] single-binary deployments that
 shard by series.
 
 == Query patterns
@@ -73,15 +73,15 @@ year of points unless the engine rolls them up first.
 To avoid re-computing the same aggregations on every query, engines support
 *continuous queries* and recording rules that periodically evaluate an
 aggregation and persist the result. The pre-aggregated output is effectively a
-*xref:materialized-view.adoc[materialized view]* over the raw series, kept fresh
+xref:materialized-view.adoc[*materialized view*] over the raw series, kept fresh
 on a schedule rather than on every write. This trades extra write work and
 storage for much cheaper reads.
 
 Because these workloads are analytical rather than transactional, time series
 databases sit on the analytical side of the
-*xref:analytical-databases.adoc[analytical databases]* divide, even when their
+xref:analytical-databases.adoc[*analytical databases*] divide, even when their
 query language is not SQL. The performance of a time series workload depends
-heavily on *xref:database-query-optimization.adoc[query optimization]* that
+heavily on xref:database-query-optimization.adoc[*query optimization*] that
 understands time buckets and label cardinality, rather than join order.
 
 == Retention and downsampling
@@ -89,7 +89,7 @@ understands time buckets and label cardinality, rather than join order.
 Time series data is unusual in that its value decays predictably with age. A
 one-second sample is invaluable for diagnosing an outage that happened minutes
 ago, and nearly worthless for understanding a year-old trend. Most systems
-combine a time-based *xref:data-retention.adoc[retention policy]* with a
+combine a time-based xref:data-retention.adoc[*retention policy*] with a
 downsampling pipeline: raw data is kept at full resolution for a short window,
 rolled up to coarser buckets for a longer window, and eventually dropped.
 
@@ -109,7 +109,7 @@ transactions across entities.
 
 The cardinality trap cuts the other way on reads. Indexing every label value
 makes label-filtered queries fast, but the index grows with the number of
-distinct series. *xref:database-indexes.adoc[Indexes]* that are cheap for a
+distinct series. xref:database-indexes.adoc[*Indexes*] that are cheap for a
 relational workload can become the dominant memory consumer in a time series
 engine, which is why some systems deliberately limit which labels are indexed.
 

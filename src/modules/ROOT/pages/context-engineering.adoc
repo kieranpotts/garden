@@ -2,7 +2,7 @@
 
 Context engineering is the practice of designing and curating the full
 *context window* provided to a
-*xref:large-language-model.adoc[large language model]* — including system
+xref:large-language-model.adoc[*large language model*] — including system
 prompts, retrieved documents, conversation history, tool outputs, structured
 data, and other information. The objective is to improve the quality, relevance,
 and accuracy of model outputs.
@@ -11,7 +11,7 @@ As models are increasingly deployed in agentic and multi-step workflows, context
 engineering becomes more important than prompt engineering alone.
 
 Context engineering is a superset of
-*xref:prompt-engineering.adoc[prompt engineering]*. Prompt engineering is the
+xref:prompt-engineering.adoc[*prompt engineering*]. Prompt engineering is the
 practice of designing and refining the instructions given to a model — primarily
 the *system prompt*, the behind-the-scenes instructions that developers bake
 into a product to shape a model's behavior — to elicit better, more accurate, or
@@ -23,7 +23,7 @@ Because LLMs are sensitive to how questions and instructions are phrased, the
 structure and content of the context can significantly affect the quality of the
 response.
 
-See also *xref:agent-skills.adoc[agent skills]*, which support context
+See also xref:agent-skills.adoc[*agent skills*], which support context
 engineering.
 
 == Context, context window, and session
@@ -38,9 +38,9 @@ output, none about the task) or nearly empty and context excellent (the one type
 definition the task turns on). Most failures trace back to context — the agent
 invents an API or contradicts a decision because the relevant fact was never
 loaded or was buried under attention degradation. The fix is curation: load what
-the task needs, keep out what it doesn't. See *xref:large-language-model.adoc[large language model]*
+the task needs, keep out what it doesn't. See xref:large-language-model.adoc[*large language model*]
 for the context window and attention mechanics, and
-*xref:agent-memory.adoc[agent memory]* for the memory systems that keep the
+xref:agent-memory.adoc[*agent memory*] for the memory systems that keep the
 right facts in view.
 
 == System prompt
@@ -68,10 +68,10 @@ codebase reference patterns. *Tools* are the precise definitions of the APIs,
 scripts, and external services the agent can invoke. *Guardrails* are hard
 constraints, formatting rules, and safety validations.
 
-These map to other pages in the garden: *xref:agent-memory.adoc[agent memory]*
-for memory, *xref:agent-skills.adoc[agent skills]* for examples,
-*xref:model-context-protocol.adoc[Model Context Protocol]* for tools, and
-*xref:agent-harness.adoc[agent harness]* for guardrails.
+These map to other pages in the garden: xref:agent-memory.adoc[*agent memory*]
+for memory, xref:agent-skills.adoc[*agent skills*] for examples,
+xref:model-context-protocol.adoc[*Model Context Protocol*] for tools, and
+xref:agent-harness.adoc[*agent harness*] for guardrails.
 
 == Static and dynamic context
 
@@ -88,7 +88,7 @@ information is needed.
 Too much static context wastes tokens and dilutes signals. Too little means the
 agent forgets critical rules. The best systems treat this boundary as a
 first-class architectural decision, reviewed and versioned like any other
-configuration. *xref:agent-skills.adoc[Agent skills]* are the key pattern for
+configuration. xref:agent-skills.adoc[*Agent skills*] are the key pattern for
 managing this trade-off at scale via progressive disclosure.
 
 == Keeping context lean
@@ -97,7 +97,7 @@ Two families of mechanism keep the always-loaded layer small. The first is
 *progressive disclosure*: instead of loading every instruction, skill, and tool
 definition up front, the harness loads a short pointer (a name and description)
 and fetches the full body only when the task calls for it. Context pointers,
-*xref:agent-memory.adoc[agent memory]*, and `AGENTS.md` all work this way. See
+xref:agent-memory.adoc[*agent memory*], and `AGENTS.md` all work this way. See
 the agent memory page for the detail.
 
 The second is *clearing and compaction*. As a session runs, accumulated tool
@@ -105,24 +105,24 @@ output and conversation history stop paying for themselves — they crowd the
 window and degrade attention. Compaction summarizes and discards the parts that
 no longer earn their place; autocompact does this when the window nears its
 limit. Clearing is the same idea applied deliberately, by you or the harness, to
-reset the working set. See *xref:large-language-model.adoc[large language model]*
-for why this matters, and *xref:agent-handoff.adoc[agent handoff]* for the
+reset the working set. See xref:large-language-model.adoc[*large language model*]
+for why this matters, and xref:agent-handoff.adoc[*agent handoff*] for the
 framing of carrying work forward without dragging the old session along.
 
 ''''
 
 == See also
 
-* *xref:agent.adoc[Agent]*
-* *xref:agent-harness.adoc[Agent harness]*
-* *xref:agent-handoff.adoc[Agent handoff]*
-* *xref:agent-loop.adoc[Agent loop]*
-* *xref:agent-memory.adoc[Agent memory]*
-* *xref:agent-skills.adoc[Agent skills]*
-* *xref:large-language-model.adoc[Large language model (LLM)]*
-* *xref:loop-engineering.adoc[Loop engineering]*
-* *xref:stateful.adoc[Stateful design]*
-* *xref:stateless.adoc[Stateless]*
+* xref:agent.adoc[*Agent*]
+* xref:agent-harness.adoc[*Agent harness*]
+* xref:agent-handoff.adoc[*Agent handoff*]
+* xref:agent-loop.adoc[*Agent loop*]
+* xref:agent-memory.adoc[*Agent memory*]
+* xref:agent-skills.adoc[*Agent skills*]
+* xref:large-language-model.adoc[*Large language model (LLM)*]
+* xref:loop-engineering.adoc[*Loop engineering*]
+* xref:stateful.adoc[*Stateful design*]
+* xref:stateless.adoc[*Stateless*]
 
 == References
 

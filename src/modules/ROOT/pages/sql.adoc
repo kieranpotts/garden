@@ -1,16 +1,16 @@
 = Structured query language (SQL)
 
 *Structured Query Language (SQL)* is a
-*xref:domain-specific-language.adoc[domain-specific language]* for defining and
-manipulating data in *xref:relational-databases.adoc[relational databases]*. It
+xref:domain-specific-language.adoc[*domain-specific language*] for defining and
+manipulating data in xref:relational-databases.adoc[*relational databases*]. It
 was developed at IBM in the early 1970s by Donald Chamberlin and Raymond Boyce
 as a practical notation for the relational model E. F. Codd had set out in 1970,
 and was originally called SEQUEL – the name was shortened to SQL after a
 trademark conflict. Unlike a general-purpose programming language, SQL is
 *declarative*. A statement describes the result the caller wants, and the
-database's *xref:database-query-optimization.adoc[query optimizer]* decides how
+database's xref:database-query-optimization.adoc[*query optimizer*] decides how
 to produce it. That property places SQL among the higher rungs of the
-*xref:rule-of-least-power.adoc[rule of least power]*: expressive enough for a
+xref:rule-of-least-power.adoc[*rule of least power*]: expressive enough for a
 wide range of queries, weak enough that the data it operates on stays
 inspectable and open to transformation.
 
@@ -19,9 +19,9 @@ concerned with a different aspect of database use.
 
 * *Data definition language (DDL)* defines the structure of the database – its
   tables, columns, types, and constraints such as
-  *xref:foreign-keys.adoc[foreign keys]* and primary keys. The DDL statements are
+  xref:foreign-keys.adoc[*foreign keys*] and primary keys. The DDL statements are
   `CREATE`, `ALTER`, and `DROP`. This is the output of
-  *xref:data-modeling.adoc[data modeling]*, expressed in SQL syntax.
+  xref:data-modeling.adoc[*data modeling*], expressed in SQL syntax.
 * *Data manipulation language (DML)* inserts, updates, and deletes rows. The
   `INSERT`, `UPDATE`, and `DELETE` statements belong here.
 * *Data query language (DQL)* is often pulled out of DML in practice, because
@@ -30,9 +30,9 @@ concerned with a different aspect of database use.
 * *Data control language (DCL)* governs access. The `GRANT` and `REVOKE`
   statements adjust permissions on database objects.
 * *Transaction control language (TCL)* manages
-  *xref:transaction.adoc[transactions]* – `BEGIN`, `COMMIT`, `ROLLBACK` – the
+  xref:transaction.adoc[*transactions*] – `BEGIN`, `COMMIT`, `ROLLBACK` – the
   unit that gives a relational database its
-  *xref:acid-principles.adoc[ACID]* guarantees.
+  xref:acid-principles.adoc[*ACID*] guarantees.
 
 == A query's structure
 
@@ -87,15 +87,15 @@ Most applications do not send SQL to the database by hand. They go through an
 from code-level constructs and maps rows back to objects. The abstraction
 removes boilerplate but obscures the queries that actually run, which is the
 root cause of the N+1 problem and other performance surprises described under
-*xref:database-query-optimization.adoc[query optimization]*.
+xref:database-query-optimization.adoc[*query optimization*].
 
 SQL that is assembled from user input is vulnerable to
-*xref:sql-injection.adoc[SQL injection]*, the canonical attack against
+xref:sql-injection.adoc[*SQL injection*], the canonical attack against
 database-backed applications. Parameterized queries and prepared statements,
 which separate code from data, are the standard defense. Hand-rolled string
 concatenation of SQL remains a persistent source of vulnerabilities.
 
-SQL's dominance is challenged by *xref:nosql-databases.adoc[NoSQL databases]*,
+SQL's dominance is challenged by xref:nosql-databases.adoc[*NoSQL databases*],
 which trade the relational model and SQL's query power for schema flexibility
 and horizontal scale. The complement is sometimes literal. Many NoSQL systems
 now expose SQL-like or SQL-over-their-data query layers, the "Not Only SQL"

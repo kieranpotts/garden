@@ -1,7 +1,7 @@
 = Reactive systems
 
 Reactive systems is an architectural style for building
-*xref:distributed-system.adoc[distributed software]* that remains responsive
+xref:distributed-system.adoc[*distributed software*] that remains responsive
 under load, under failure, and under change. The style was codified in 2014 by
 Jonas Bonér, Dave Farley, Roland Kuhn, and Martin Thompson in _The Reactive
 Manifesto_, an https://www.reactivemanifesto.org/[online document] that
@@ -9,7 +9,7 @@ characterises such systems by four traits: they are *responsive*, *resilient*,
 *elastic*, and *message-driven*.
 
 The manifesto is an architectural statement, not a programming one. It is
-commonly confused with *xref:reactive-programming.adoc[reactive programming]*, a
+commonly confused with xref:reactive-programming.adoc[*reactive programming*], a
 related programming technique. The two share a name and an emphasis on
 asynchrony, but operate at different levels of abstraction. Reactive
 programming is a tool one might use *inside* a reactive system, but it is
@@ -34,36 +34,36 @@ three are built.
 * *xref:resilience.adoc[Resilient].* The system stays responsive when a
   component fails. Failures are contained and isolated, and recovery happens
   without affecting the wider system. The manifesto's resilience leans on
-  patterns such as *xref:replication.adoc[replication]*,
-  *xref:isolation.adoc[isolation]*, *xref:circuit-breaker.adoc[circuit
-  breakers]*, and *xref:bulkhead.adoc[bulkheads]* to keep the blast radius of a
+  patterns such as xref:replication.adoc[*replication*],
+  xref:isolation.adoc[*isolation*], xref:circuit-breaker.adoc[*circuit
+  breakers*], and xref:bulkhead.adoc[*bulkheads*] to keep the blast radius of a
   failing component local.
 
 * *xref:scalability.adoc[Elastic].* The system stays responsive under varying
   load, scaling up and down automatically as demand changes. Elasticity is the
   name the manifesto gives to the ability to add and remove resources in
   proportion to load. In practice it is delivered by
-  *xref:auto-scaling.adoc[auto-scaling]* and
-  *xref:load-balancing.adoc[load balancing]* on top of
-  *xref:horizontal-scaling.adoc[horizontal scaling]*.
+  xref:auto-scaling.adoc[*auto-scaling*] and
+  xref:load-balancing.adoc[*load balancing*] on top of
+  xref:horizontal-scaling.adoc[*horizontal scaling*].
 
 * *Message-driven.* The system is built on
-  *xref:asynchronous-communication.adoc[asynchronous]*,
-  *xref:message-driven-architecture.adoc[message-driven]* communication between
+  xref:asynchronous-communication.adoc[*asynchronous*],
+  xref:message-driven-architecture.adoc[*message-driven*] communication between
   components. Messages are the means by which the other three traits are
   realised: loose coupling via messages yields isolation, lets components be
   placed wherever capacity is available, and lets failures be signalled as
   messages rather than propagated through synchronous call stacks. This trait
   places reactive systems in the same family as
-  *xref:event-driven-architecture.adoc[event-driven architecture]*, of which it
+  xref:event-driven-architecture.adoc[*event-driven architecture*], of which it
   is a more prescriptive formulation.
 
 == The Reactive Principles
 
 The https://www.reactiveprinciples.org/[Reactive Principles] site, a companion
 to the manifesto, restates the same four traits and elaborates them as a set
-of design principles for *xref:microservices.adoc[microservice]* and
-*xref:cloud-computing.adoc[cloud-native]* systems. Where the manifesto is a
+of design principles for xref:microservices.adoc[*microservice*] and
+xref:cloud-computing.adoc[*cloud-native*] systems. Where the manifesto is a
 short statement of what a reactive system is, the principles are a longer,
 more opinionated guide to how one is designed.
 

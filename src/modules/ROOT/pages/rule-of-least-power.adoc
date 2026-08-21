@@ -1,6 +1,6 @@
 = Rule of least power
 
-The rule of least power is a *xref:design-principles.adoc[design principle]* that
+The rule of least power is a xref:design-principles.adoc[*design principle*] that
 recommends choosing the least powerful language sufficient for a given task. When
 several languages could express a solution, prefer the most descriptive and least
 procedural one. Less powerful languages are easier to analyze, optimize, secure,
@@ -19,12 +19,12 @@ it run.
 
 The rule orders languages along a spectrum from descriptive to procedural.
 
-* _Plain data._ The contents of a database, a *xref:json.adoc[JSON]* document, an
+* _Plain data._ The contents of a database, a xref:json.adoc[*JSON*] document, an
   access control list.
 * _Limited propositional logic._ Configuration formats and policy languages that
   can express rules but not arbitrary computation.
-* _Declarative but near-Turing-complete._ *xref:sql.adoc[SQL]* and XSLT.
-* _Turing-complete general-purpose languages._ *xref:javascript.adoc[JavaScript]*,
+* _Declarative but near-Turing-complete._ xref:sql.adoc[*SQL*] and XSLT.
+* _Turing-complete general-purpose languages._ xref:javascript.adoc[*JavaScript*],
   Python, and the rest.
 * _Unabashedly imperative._ Languages with side effects, manual memory, and
   arbitrary I/O.
@@ -42,25 +42,25 @@ demand can only be understood by executing it. Less power means more
 manipulability. Anyone can write a program to analyze declarative data; no one
 can reliably analyze a program short of running it.
 
-The same logic underlies *xref:rest.adoc[REST]*. Fielding's uniform interface
+The same logic underlies xref:rest.adoc[*REST*]. Fielding's uniform interface
 constraint deliberately limits what an HTTP message can say, trading
 expressiveness for visibility, cachability, and independent evolution.
 Intermediaries can reason about requests and responses without interpreting
 arbitrary code.
 
-The rule is also why deliberately limited *xref:domain-specific-language.adoc[domain-specific
-languages]* are often preferable to a general-purpose host. A language that
+The rule is also why deliberately limited xref:domain-specific-language.adoc[*domain-specific
+languages*] are often preferable to a general-purpose host. A language that
 cannot express arbitrary computation is easier to reason about and harder to
-misuse, which is the appeal of *xref:data-driven-programming.adoc[data-driven]*
+misuse, which is the appeal of xref:data-driven-programming.adoc[*data-driven*]
 languages such as Sieve that strip out variables and loops to leave only
 stateless filtering.
 
 == Relation to other principles
 
-The rule extends the *xref:kiss-principle.adoc[KISS principle]* to the choice of
+The rule extends the xref:kiss-principle.adoc[*KISS principle*] to the choice of
 language. Rather than asking only "is there a simpler solution?", it asks "is
-there a less powerful one?". It overlaps with *xref:worse-is-better.adoc[worse
-is better]* in valuing constraints over completeness, though it is framed as a
+there a less powerful one?". It overlaps with xref:worse-is-better.adoc[*worse
+is better*] in valuing constraints over completeness, though it is framed as a
 property of the language rather than of the implementation.
 
 It is an instance of the *principle of least privilege* applied to language

@@ -3,7 +3,7 @@
 *Authorization* is the process of deciding whether an authenticated principal
 may perform a given action on a given resource. It answers the question "what
 are you allowed to do?" and is evaluated after
-*xref:authentication.adoc[authentication]* has established *who* the principal
+xref:authentication.adoc[*authentication*] has established *who* the principal
 is. The two are separate concerns, but so often implemented together that they
 are collectively known as *identity and access management (IAM)*.
 
@@ -38,7 +38,7 @@ expressiveness for operational simplicity.
 * *Role-based access control.* Permissions are grouped into roles, and
   principals are granted roles rather than individual permissions. This is the
   dominant model in business software. See
-  *xref:role-based-access-controls.adoc[role-based access control]*.
+  xref:role-based-access-controls.adoc[*role-based access control*].
 * *Attribute-based access control (ABAC).* Policies evaluate attributes of
   the principal, resource, and context, allowing fine-grained rules such as
   "a doctor may read a patient's record only during their shift and only if
@@ -50,7 +50,7 @@ Sound authorization rests on a few durable principles.
 
 * *Least privilege.* Grant the narrowest set of permissions needed to perform
   a task, and no more. This limits the blast radius of a compromised principal.
-  See *xref:secure-by-design.adoc[secure by design]*.
+  See xref:secure-by-design.adoc[*secure by design*].
 * *Deny by default.* In the absence of an explicit permit, deny. Whitelisting
   is safer than blacklisting because new resources start protected.
 * *Separation of duties.* Split a sensitive operation across two or more
@@ -68,7 +68,7 @@ consistent but introducing a chokepoint. Distributed enforcement pushes the
 check to each service, which is more resilient but risks drift as services
 implement the same policy differently.
 
-In *xref:multi-tenant.adoc[multi-tenant]* systems, enforcement must also
+In xref:multi-tenant.adoc[*multi-tenant*] systems, enforcement must also
 isolate one tenant's principals from another's resources, even when they
 share infrastructure. Tenant identity becomes a non-negotiable part of the
 resource and context inputs.
@@ -76,7 +76,7 @@ resource and context inputs.
 == Tokens and claims
 
 Stateless architectures often fold authorization into the credential itself.
-A *xref:jwt.adoc[JSON Web Token]* can carry claims such as `role`, `scope`, or
+A xref:jwt.adoc[*JSON Web Token*] can carry claims such as `role`, `scope`, or
 `permissions` that the receiving service evaluates without a lookup. The
 trade-off is revocation. A short-lived token limits the window in which a
 stolen grant is useful, but a granted permission cannot easily be taken back
@@ -86,7 +86,7 @@ before the token expires.
 
 *Broken access control* – failures that let a principal reach resources or
 actions it should not – has sat at or near the top of the
-*xref:owasp.adoc[OWASP]* Top 10 for years. Recurring failure modes include the
+xref:owasp.adoc[*OWASP*] Top 10 for years. Recurring failure modes include the
 following.
 
 * *Insecure direct object reference (IDOR).* The service checks that the
@@ -98,20 +98,20 @@ following.
 * *Forced browsing.* Reaching unlisted URLs or API operations by guessing
   paths, relying on the absence of a link rather than an explicit check.
 
-A *xref:secure-by-design.adoc[secure by design]* approach treats authorization
+A xref:secure-by-design.adoc[*secure by design*] approach treats authorization
 as a design constraint from the outset. Every request path is reasoned about,
 and every resource is protected by an explicit check, rather than bolting on a
 layer once an incident exposes a gap.
 
 == See also
 
-* *xref:authentication.adoc[Authentication]*
-* *xref:security.adoc[Security]*
-* *xref:security-testing.adoc[Security testing]*
-* *xref:role-based-access-controls.adoc[Role-based access control]*
-* *xref:jwt.adoc[JSON Web Token (JWT)]*
-* *xref:multi-tenant.adoc[Multi-tenant]*
-* *xref:secure-by-design.adoc[Secure by design]*
+* xref:authentication.adoc[*Authentication*]
+* xref:security.adoc[*Security*]
+* xref:security-testing.adoc[*Security testing*]
+* xref:role-based-access-controls.adoc[*Role-based access control*]
+* xref:jwt.adoc[*JSON Web Token (JWT)*]
+* xref:multi-tenant.adoc[*Multi-tenant*]
+* xref:secure-by-design.adoc[*Secure by design*]
 
 == References
 

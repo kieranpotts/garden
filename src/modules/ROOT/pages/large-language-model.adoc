@@ -2,7 +2,7 @@
 :toc: macro
 :toc-title: Contents
 
-A large language model (LLM) is a *xref:machine-learning.adoc[deep learning]*
+A large language model (LLM) is a xref:machine-learning.adoc[*deep learning*]
 model trained on vast amounts of text.
 
 At a fundamental level, LLMs work by predicting the probability of each possible
@@ -35,16 +35,16 @@ Part of why the output _feels_ so human is simply that the training data is
 human: models learn from our own conversations, writing, and creative works, and
 so come to mirror the way we communicate.
 
-LLMs are a category of *xref:generative-ai.adoc[generative AI]*. They are
+LLMs are a category of xref:generative-ai.adoc[*generative AI*]. They are
 increasingly deployed across a wide variety of contexts.
-*xref:ai-assistant.adoc[AI assistants]* are perhaps the best-known application
+xref:ai-assistant.adoc[*AI assistants*] are perhaps the best-known application
 built on top of LLMs, but many other use cases are being found.
 
 toc::[]
 
 == Transformer architecture
 
-Modern LLMs are built on the *xref:transformer.adoc[transformer architecture]*,
+Modern LLMs are built on the xref:transformer.adoc[*transformer architecture*],
 which was introduced in Google's 2017 research paper
 "https://research.google/pubs/attention-is-all-you-need/[Attention Is All You Need]".
 
@@ -53,7 +53,7 @@ The core innovation of the transformer architecture is the
 every token against every other token in the current context when predicting the
 next token. This enables transformers to capture long-range dependencies in text
 far more effectively than earlier architectures. See
-*xref:transformer.adoc[transformer architecture]* for a full explanation.
+xref:transformer.adoc[*transformer architecture*] for a full explanation.
 
 == Pre-training
 
@@ -88,7 +88,7 @@ It is worth being clear-eyed about the limits of this. A model is ultimately
 just a massive vector of numerical parameters, so there is no way to _guarantee_
 that a model will behave safely on its own. Fine-tuning shifts the odds but
 proves nothing. In practice, safety depends as much on the wrapping
-infrastructure around the model — the *xref:agent-harness.adoc[harness]*,
+infrastructure around the model — the xref:agent-harness.adoc[*harness*],
 guardrails, and monitoring — as on the model's own training.
 
 == Post-training
@@ -199,7 +199,7 @@ directly, it scales without requiring continuous human input.
 
 RLHF is how base models are transformed into helpful assistants that follow
 instructions. Most frontier models use RLHF or a close variant (such as
-*xref:ai-constitutionalism.adoc[constitutional AI]*, RLAIF, or DPO) as part of
+xref:ai-constitutionalism.adoc[*constitutional AI*], RLAIF, or DPO) as part of
 their post-training pipeline.
 
 == Prompt-based adaptation
@@ -258,7 +258,7 @@ model works from contextual knowledge rather than stale parametric knowledge.
 
 *Contextual knowledge* is the facts an agent can read directly from its context
 window: the user's task, files that have been read in, tool results, and
-*xref:agent-memory.adoc[agent memory]* such as an AGENTS.md file. It is the
+xref:agent-memory.adoc[*agent memory*] such as an AGENTS.md file. It is the
 counterpart to parametric knowledge, which is recalled from the model's
 parameters — contextual knowledge is read from the window.
 
@@ -397,7 +397,7 @@ not the underlying fact is real, because it is predicting the most plausible
 continuation, not verifying anything.
 
 Tool calls are not a separate mechanism. They are simply structured strings the
-*xref:agent-harness.adoc[harness]* parses from the output stream. The model emits
+xref:agent-harness.adoc[*harness*] parses from the output stream. The model emits
 text that happens to parse as a tool invocation, the harness intercepts it, runs
 the tool, and feeds the result back as context for the next request.
 
@@ -421,18 +421,18 @@ extend to 1M tokens and beyond.
 
 The window is finite, which means it fills up. Long sessions force compaction (see
 below) or clearing, because everything — system prompt, conversation history,
-tool results — competes for the same budget. *xref:context-engineering.adoc[Context engineering]* treats the window as a budget to be spent deliberately
+tool results — competes for the same budget. xref:context-engineering.adoc[*Context engineering*] treats the window as a budget to be spent deliberately
 rather than a container to be filled.
 
-The *xref:key-value-cache.adoc[key-value cache (KV cache)]* stores the attention
+The xref:key-value-cache.adoc[*key-value cache (KV cache)*] stores the attention
 states of previously processed tokens so they don't have to be recomputed for
 every new token. This trades memory for compute and is what makes long,
 interactive generation practical. See
-*xref:key-value-cache.adoc[key-value cache (KV cache)]* for details.
+xref:key-value-cache.adoc[*key-value cache (KV cache)*] for details.
 
 The context window is working state, not memory. It does not persist across
 sessions: a fresh session starts with an empty window. What persists across
-sessions is *xref:agent-memory.adoc[agent memory]* — files, handoff artifacts,
+sessions is xref:agent-memory.adoc[*agent memory*] — files, handoff artifacts,
 and other records written to disk — not the window itself.
 
 == Compaction
@@ -451,7 +451,7 @@ latency and cost bounded as a conversation grows, but it is inherently lossy.
 Detail that seemed unimportant at summarization time is discarded and cannot be
 recovered, and errors introduced into the summary propagate silently through
 everything that follows. The raw transcript is a primary source and the summary
-a secondary one — *xref:agent-handoff.adoc[agent handoff]* treats the same
+a secondary one — xref:agent-handoff.adoc[*agent handoff*] treats the same
 distinction more generally.
 
 Compacting too aggressively risks losing context the model still needs.
@@ -546,7 +546,7 @@ zones do not track the context window limit: quality falls off long before the
 window is full. Planning around the smart zone, rather than the window limit,
 means giving each task its own session so it gets the sharpest part, and when a
 single task is bigger than one smart zone, handing off or compacting at a
-natural boundary. See *xref:agent-handoff.adoc[agent handoff]*.
+natural boundary. See xref:agent-handoff.adoc[*agent handoff*].
 
 == Temperature and sampling
 
@@ -664,7 +664,7 @@ computation.
 https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/[Stephen Wolfram calls this property]
 *computational irreducibility*.
 
-This is one reason *xref:agent.adoc[agentic systems]* pair LLMs with external
+This is one reason xref:agent.adoc[*agentic systems*] pair LLMs with external
 tools such as calculators, code interpreters, and REPLs. The idea is to offload
 irreducible computation to a traditional system which can actually execute the
 computation, rather than asking the model to predict the answer token by token.
@@ -693,12 +693,12 @@ RAG is widely used to build knowledge-aware applications — internal document Q
 systems, customer support bots, and AI search engines.
 https://www.perplexity.ai/[Perplexity] is a prominent consumer example. It uses
 live web search to answer questions with cited sources in real time. See
-*xref:ai-assistant.adoc[AI assistants]* for other examples.
+xref:ai-assistant.adoc[*AI assistants*] for other examples.
 
 Agent development frameworks such as LangChain and LlamaIndex can be used to
 build RAG capabilities into agents, providing the retrieval, chunking, and
 orchestration plumbing so developers do not have to wire it together from
-scratch. See *xref:agent.adoc[agents]*.
+scratch. See xref:agent.adoc[*agents*].
 
 == Evals
 
@@ -786,7 +786,7 @@ limits throughput gains from multi-GPU setups.
 A *model provider* is whatever serves a model for inference. It is usually a
 remote service — Anthropic, OpenAI, or Google — but it can also be a local
 runtime such as Ollama, LM Studio, or llama.cpp. The
-*xref:agent-harness.adoc[harness]* asks a provider for each response, and the
+xref:agent-harness.adoc[*harness*] asks a provider for each response, and the
 provider owns the hardware and the model's parameters.
 
 The provider is the source of rate limits, degraded capacity, and outages, so
@@ -806,7 +806,7 @@ chain of requests (read the tests, read the file, edit, re-run, answer) that
 each re-send the whole context.
 
 Each request carries everything — system prompt, full history, all tool results
-— because the model is *xref:stateless.adoc[stateless]*: the provider keeps
+— because the model is xref:stateless.adoc[*stateless*]: the provider keeps
 nothing between requests. The request, not the turn, is the unit of billing.
 Distinguishing the two matters for cost: one turn is many requests, and every
 request after the first re-sends the entire session so far.
@@ -859,51 +859,51 @@ and the next request rebuilds at full price once.
 Although it is possible to interact with a model directly, for most use cases
 you reach it via an access layer, which handles authentication, response
 formatting, and other details specific to a particular provider or use case. See
-*xref:model-access-layer.adoc[model access layer]*.
+xref:model-access-layer.adoc[*model access layer*].
 
 ''''
 
 == See also
 
-* *xref:machine-learning.adoc[Machine learning]*: The broader field of which
+* xref:machine-learning.adoc[*Machine learning*]: The broader field of which
   LLMs are a part.
 
-* *xref:transformer.adoc[Transformer architecture]*: The neural network
+* xref:transformer.adoc[*Transformer architecture*]: The neural network
   architecture that underpins all modern LLMs.
 
-* *xref:generative-ai.adoc[Generative AI]*: Covers broader AI product categories
+* xref:generative-ai.adoc[*Generative AI*]: Covers broader AI product categories
   including diffusion models for image generation.
 
-* *xref:ai-assistant.adoc[AI assistant]*: General-purpose conversational
+* xref:ai-assistant.adoc[*AI assistant*]: General-purpose conversational
   interfaces to LLMs, such as ChatGPT, Claude, and Perplexity.
 
-* *xref:context-engineering.adoc[Context engineering]*
+* xref:context-engineering.adoc[*Context engineering*]
 
-* *xref:agent.adoc[Agent]*
+* xref:agent.adoc[*Agent*]
 
-* *xref:agent-harness.adoc[Agent harness]*: The wrapping infrastructure around a
+* xref:agent-harness.adoc[*Agent harness*]: The wrapping infrastructure around a
   model that drives requests, parses tool calls, and manages context.
 
-* *xref:agent-memory.adoc[Agent memory]*: What persists across sessions — files,
+* xref:agent-memory.adoc[*Agent memory*]: What persists across sessions — files,
   handoff artifacts, and other records on disk — as distinct from the context
   window's working state.
 
-* *xref:agent-handoff.adoc[Agent handoff]*: Clearing, compaction, and handoff as
+* xref:agent-handoff.adoc[*Agent handoff*]: Clearing, compaction, and handoff as
   ways of managing context across session boundaries.
 
-* *xref:stateful.adoc[Stateful design]* and *xref:stateless.adoc[statelessness]*:
+* xref:stateful.adoc[*Stateful design*] and xref:stateless.adoc[*statelessness*]:
   The statelessness of the model underlies why every request re-sends the full
   context.
 
-* *xref:ai-coding-assistant.adoc[AI coding assistant]*
+* xref:ai-coding-assistant.adoc[*AI coding assistant*]
 
-* *xref:agent-orchestration.adoc[Agent orchestration]*: Frameworks and platforms
+* xref:agent-orchestration.adoc[*Agent orchestration*]: Frameworks and platforms
   for building and coordinating agents (LangChain, CrewAI, and others).
 
-* *xref:model-access-layer.adoc[Model access layer]*: Deployment patterns,
+* xref:model-access-layer.adoc[*Model access layer*]: Deployment patterns,
   gateways, and model managers for reaching or running an LLM.
 
-* *xref:open-weight-model.adoc[Open-weight model]*: Models with publicly
+* xref:open-weight-model.adoc[*Open-weight model*]: Models with publicly
   released weights, including licensing, hardware requirements, and notable
   families.
 

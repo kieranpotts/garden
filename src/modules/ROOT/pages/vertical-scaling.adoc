@@ -2,15 +2,15 @@
 
 image::vertical-vs-horizontal-scaling.png[]
 
-Vertical scaling is a *xref:scalability.adoc[scalability]* technique that
-increases the *xref:capacity.adoc[capacity]* of a single server by giving it more
+Vertical scaling is a xref:scalability.adoc[*scalability*] technique that
+increases the xref:capacity.adoc[*capacity*] of a single server by giving it more
 CPUs, memory, storage, or network bandwidth. The system keeps running on one
 node; the node simply gets bigger. It is also known as scaling up, and it is the
-counterpart to *xref:horizontal-scaling.adoc[horizontal scaling]*, which grows a
+counterpart to xref:horizontal-scaling.adoc[*horizontal scaling*], which grows a
 system by adding nodes rather than enlarging them.
 
-The aim is to raise *xref:throughput.adoc[throughput]* and lower
-*xref:latency.adoc[latency]* on the existing deployment topology, without paying
+The aim is to raise xref:throughput.adoc[*throughput*] and lower
+xref:latency.adoc[*latency*] on the existing deployment topology, without paying
 the coordination cost that comes with distributing work across multiple
 machines.
 
@@ -18,18 +18,18 @@ machines.
 
 Vertical scaling is usually the first move when a workload outgrows its current
 node, because it changes nothing about how the system is deployed. There is no
-*xref:load-balancing.adoc[load balancing]* to introduce, no
-*xref:stateless.adoc[stateless]* redesign to undertake, and no partitioning of
+xref:load-balancing.adoc[*load balancing*] to introduce, no
+xref:stateless.adoc[*stateless*] redesign to undertake, and no partitioning of
 data. The application code keeps talking to the same single endpoint, only
 faster.
 
 This makes vertical scaling especially attractive for stateful components that
-resist horizontal scaling. *xref:relational-databases.adoc[Relational databases]*
-and *xref:transactional-databases.adoc[transactional databases]* have
+resist horizontal scaling. xref:relational-databases.adoc[*Relational databases*]
+and xref:transactional-databases.adoc[*transactional databases*] have
 historically scaled vertically, by moving to a bigger server, because
 distributing consistent transactions across nodes is expensive (see the
-*xref:cap-theorem.adoc[CAP theorem]*). When that single node finally reaches its
-ceiling, *xref:sharding.adoc[sharding]* and *xref:replication.adoc[replication]*
+xref:cap-theorem.adoc[*CAP theorem*]). When that single node finally reaches its
+ceiling, xref:sharding.adoc[*sharding*] and xref:replication.adoc[*replication*]
 take over as the ways to grow further.
 
 == Trade-offs and limits
@@ -41,7 +41,7 @@ box usually costs well more than twice as much, so the economics bend against
 vertical scaling at the high end.
 
 A vertically scaled system is also a
-*xref:single-point-of-failure.adoc[single point of failure]* that does not get
+xref:single-point-of-failure.adoc[*single point of failure*] that does not get
 any more available for being bigger. It is still one machine, and when it fails
 the whole service fails with it. To keep running through failures you need
 redundancy on top, which leads back toward horizontal techniques.
@@ -55,7 +55,7 @@ traffic.
 == Elasticity
 
 Vertical scaling is less friendly to automation than its horizontal
-counterpart. *xref:auto-scaling.adoc[Auto-scaling]* controllers prefer to add and
+counterpart. xref:auto-scaling.adoc[*Auto-scaling*] controllers prefer to add and
 remove interchangeable instances, since that is a clean, reversible operation.
 Resizing a running node is more disruptive, so vertical auto-scaling is rarer
 and typically scheduled rather than reactive.

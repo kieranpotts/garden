@@ -1,21 +1,21 @@
 = Data modeling
 
-Data modeling is the process of creating a *xref:modeling.adoc[model]* of the
+Data modeling is the process of creating a xref:modeling.adoc[*model*] of the
 data that an information system must store and use. It is a specialist branch of
 modeling concerned with defining data elements, the structures that hold them,
 the relationships between those structures, and the constraints that keep the
 data valid. A data model is eventually implemented as a schema in a
-*xref:relational-databases.adoc[relational database]* or an equivalent store, so
+xref:relational-databases.adoc[*relational database*] or an equivalent store, so
 the discipline is sometimes called *database modeling*.
 
 Data modeling is distinct from the broader modeling of
 software, which also covers behavior and process, and from
-*xref:diagramming.adoc[diagramming]*, which only produces pictures. A data model
+xref:diagramming.adoc[*diagramming*], which only produces pictures. A data model
 is a structured, non-visual artifact; the
-*xref:entity-relationship-diagram.adoc[entity-relationship diagrams (ERDs)]*
+xref:entity-relationship-diagram.adoc[*entity-relationship diagrams (ERDs)*]
 that accompany it are just one view onto that model. It is also distinct from
-the *xref:domain-model.adoc[domain model]* of
-*xref:domain-driven-design.adoc[domain-driven design]*, which describes the
+the xref:domain-model.adoc[*domain model*] of
+xref:domain-driven-design.adoc[*domain-driven design*], which describes the
 behavioral concepts of a domain. A domain model informs a data model, but the
 two are not the same artifact.
 
@@ -38,14 +38,14 @@ forcing a rewrite of the business-facing model.
 
 * *Physical schema.* Fixes how the data is stored on a concrete platform:
   tablespaces, partitions, data types, and
-  *xref:database-indexes.adoc[indexes]*. It accounts for access patterns,
+  xref:database-indexes.adoc[*indexes*]. It accounts for access patterns,
   performance, and storage constraints, and is expressed in a data definition
-  language such as *xref:sql.adoc[SQL]*.
+  language such as xref:sql.adoc[*SQL*].
 
 The conceptual-to-logical step is where
-*xref:normalization.adoc[normalization]* is applied to remove redundancy, and
+xref:normalization.adoc[*normalization*] is applied to remove redundancy, and
 the logical-to-physical step is where
-*xref:denormalization.adoc[denormalization]* is selectively undone to meet read
+xref:denormalization.adoc[*denormalization*] is selectively undone to meet read
 performance targets. The two are not opposites so much as pressures applied at
 different layers.
 
@@ -56,23 +56,23 @@ Data models are built in two broad directions, after Len Silverston (1997).
 * *Top-down* models start from a subject-area understanding gathered from domain
   experts and are worked down into entities and relationships. They serve as a
   reference template even when a given system implements only part of them. This
-  mirrors *xref:top-down-design.adoc[top-down design]* more generally.
+  mirrors xref:top-down-design.adoc[*top-down design*] more generally.
 
 * *Bottom-up* or *view-integration* models are assembled from existing data
-  structures, screens, and reports, often during a *xref:reverse-engineering.adoc[reverse-engineering]* effort.
+  structures, screens, and reports, often during a xref:reverse-engineering.adoc[*reverse-engineering*] effort.
   They tend to be physical and application-specific, and they may not promote
   data sharing across an organization. This mirrors
-  *xref:bottom-up-design.adoc[bottom-up design]*.
+  xref:bottom-up-design.adoc[*bottom-up design*].
 
 In practice most projects blend the two, drafting a top-down reference model and
 refining it against real data structures. The distinction is also blurred by
-*xref:case.adoc[CASE]* tools that collapse the logical and physical layers into
+xref:case.adoc[*CASE*] tools that collapse the logical and physical layers into
 one.
 
 == Notations
 
 Several notations exist for drawing data models, most of them variants of the
-*xref:entity-relationship-diagram.adoc[entity-relationship model]* introduced by
+xref:entity-relationship-diagram.adoc[*entity-relationship model*] introduced by
 Peter Chen in 1976. Common notations include Chen's notation, Barker's notation,
 IDEF1X, and Object-Role Modeling. They differ mainly in how they represent
 cardinality and optionality, but the underlying model, entities plus
@@ -83,19 +83,19 @@ communication rather than a guarantee of a correct design.
 == Schema-less and NoSQL modeling
 
 The three-schema discipline assumes a fixed schema.
-*xref:nosql-databases.adoc[NoSQL databases]* complicate that assumption.
+xref:nosql-databases.adoc[*NoSQL databases*] complicate that assumption.
 Document, key-value, wide-column, and xref:graph-databases.adoc[*graph stores*]
 each favor a different shape of data, and many are schema-less or schema-on-read, letting each record
 carry its own structure.
 
 Schema freedom is a trade-off, not a free lunch. Without a schema enforced by
 the store, the data model lives in the application code that writes and reads
-the records, and *xref:data-integrity.adoc[data integrity]* and
-*xref:referential-integrity.adoc[referential integrity]* become the
+the records, and xref:data-integrity.adoc[*data integrity*] and
+xref:referential-integrity.adoc[*referential integrity*] become the
 application's responsibility. Data modeling is no less relevant here, but it
 shifts from designing tables to designing the document shapes, access keys, and
 aggregate boundaries that the store will use, and these decisions are driven by
-*xref:access-patterns.adoc[access patterns]* as much as by the shape of the real
+xref:access-patterns.adoc[*access patterns*] as much as by the shape of the real
 world.
 
 == Common pitfalls
@@ -126,8 +126,8 @@ are baked into the structure rather than the code that sits on top of it.
 
 The following tools specialize in database modeling. They are used to design
 database schemas, including the relationships and constraints in SQL databases.
-These are proper *xref:modeling.adoc[modeling]* tools, not just
-*xref:diagramming.adoc[diagramming]* tools, which means they can be used to
+These are proper xref:modeling.adoc[*modeling*] tools, not just
+xref:diagramming.adoc[*diagramming*] tools, which means they can be used to
 generate SQL code from their models.
 
 Some database administration tools such as https://www.heidisql.com/[HeidiSQL]
@@ -182,22 +182,22 @@ visual database design.
 
 == See also
 
-* *xref:modeling.adoc[Modeling]*
-* *xref:diagramming.adoc[Diagramming]*
-* *xref:diagrams-as-code.adoc[Diagrams as code]*
-* *xref:entity-relationship-diagram.adoc[Entity relationship diagram (ERD)]*
-* *xref:domain-model.adoc[Domain model]*
-* *xref:relational-databases.adoc[Relational databases]*
-* *xref:nosql-databases.adoc[NoSQL databases]*
-* *xref:normalization.adoc[Normalization]*
-* *xref:denormalization.adoc[Denormalization]*
-* *xref:access-patterns.adoc[Access patterns]*
-* *xref:referential-integrity.adoc[Referential integrity]*
-* *xref:data-integrity.adoc[Data integrity]*
-* *xref:database-indexes.adoc[Database indexes]*
-* *xref:top-down-design.adoc[Top-down design]*
-* *xref:bottom-up-design.adoc[Bottom-up design]*
-* *xref:case.adoc[Computer-aided software engineering (CASE)]*
+* xref:modeling.adoc[*Modeling*]
+* xref:diagramming.adoc[*Diagramming*]
+* xref:diagrams-as-code.adoc[*Diagrams as code*]
+* xref:entity-relationship-diagram.adoc[*Entity relationship diagram (ERD)*]
+* xref:domain-model.adoc[*Domain model*]
+* xref:relational-databases.adoc[*Relational databases*]
+* xref:nosql-databases.adoc[*NoSQL databases*]
+* xref:normalization.adoc[*Normalization*]
+* xref:denormalization.adoc[*Denormalization*]
+* xref:access-patterns.adoc[*Access patterns*]
+* xref:referential-integrity.adoc[*Referential integrity*]
+* xref:data-integrity.adoc[*Data integrity*]
+* xref:database-indexes.adoc[*Database indexes*]
+* xref:top-down-design.adoc[*Top-down design*]
+* xref:bottom-up-design.adoc[*Bottom-up design*]
+* xref:case.adoc[*Computer-aided software engineering (CASE)*]
 
 == References
 

@@ -3,13 +3,13 @@
 Encryption is the process of transforming readable *plaintext* into an
 unreadable form called *ciphertext*, so that only someone holding the right key
 can recover the original. The reverse operation is *decryption*. It is one
-technique within *xref:cryptography.adoc[cryptography]*, focused on the goal of
+technique within xref:cryptography.adoc[*cryptography*], focused on the goal of
 confidentiality, keeping data secret from anyone other than its intended
 recipients.
 
 Encryption is reversible. With the correct key, ciphertext is restored to
 plaintext exactly. This is what distinguishes it from
-*xref:hashing.adoc[hashing]*, which is a one-way function with no key and no
+xref:hashing.adoc[*hashing*], which is a one-way function with no key and no
 reversal. It is also distinct from encoding, such as Base64, which transforms
 data for transport but hides nothing from anyone who knows the scheme.
 
@@ -24,11 +24,11 @@ Encryption schemes fall into two families.
   key is kept secret and a public key is shared openly. What one key encrypts,
   the other decrypts. This removes the need to share a secret in advance and
   underpins digital signatures and certificate-based
-  *xref:authentication.adoc[authentication]*. RSA and elliptic-curve schemes are
+  xref:authentication.adoc[*authentication*]. RSA and elliptic-curve schemes are
   common examples.
 
-Most real systems combine the two. *xref:envelope-encryption.adoc[Envelope
-encryption]*, for example, uses a symmetric data key for the payload and an
+Most real systems combine the two. xref:envelope-encryption.adoc[*Envelope
+encryption*], for example, uses a symmetric data key for the payload and an
 asymmetric key-encryption key to protect the data key. It gains the speed of
 symmetric encryption and the key-handling convenience of public-key
 cryptography.
@@ -43,7 +43,7 @@ rejected before it is ever returned. AES-GCM and ChaCha20-Poly1305 are widely
 used authenticated modes.
 
 This is the same integrity concern that
-*xref:hashing.adoc[cryptographic hash functions]* and message authentication
+xref:hashing.adoc[*cryptographic hash functions*] and message authentication
 codes address in other contexts. Encryption without authentication is a common
 design flaw, not a defensible shortcut.
 
@@ -70,10 +70,10 @@ rotated before they are overused or believed compromised. Losing a key makes
 the data it protects unrecoverable. Leaking a key makes the protection
 meaningless.
 
-This is why schemes such as *xref:envelope-encryption.adoc[envelope
-encryption]* delegate the hard part to a dedicated key management service.
-Protecting against *xref:replay-attack.adoc[replay attacks]* usually adds a
-*xref:nonce.adoc[nonce]* to each message, so that intercepted traffic cannot be
+This is why schemes such as xref:envelope-encryption.adoc[*envelope
+encryption*] delegate the hard part to a dedicated key management service.
+Protecting against xref:replay-attack.adoc[*replay attacks*] usually adds a
+xref:nonce.adoc[*nonce*] to each message, so that intercepted traffic cannot be
 retransmitted to good effect.
 
 == Common pitfalls
@@ -94,11 +94,11 @@ Encryption is easy to use badly and hard to use well.
 
 == See also
 
-* *xref:cryptography.adoc[Cryptography]*
-* *xref:hashing.adoc[Hashing]*
-* *xref:envelope-encryption.adoc[Envelope encryption]*
-* *xref:authentication.adoc[Authentication]*
-* *xref:nonce.adoc[Nonce]*
-* *xref:replay-attack.adoc[Replay attack]*
-* *xref:security.adoc[Security]*
-* *xref:security-testing.adoc[Security testing]*
+* xref:cryptography.adoc[*Cryptography*]
+* xref:hashing.adoc[*Hashing*]
+* xref:envelope-encryption.adoc[*Envelope encryption*]
+* xref:authentication.adoc[*Authentication*]
+* xref:nonce.adoc[*Nonce*]
+* xref:replay-attack.adoc[*Replay attack*]
+* xref:security.adoc[*Security*]
+* xref:security-testing.adoc[*Security testing*]

@@ -2,32 +2,32 @@
 
 Active-active is a deployment topology in which multiple instances of a
 service, or multiple replicas of data, run simultaneously and all serve live
-traffic. It is a *xref:redundancy.adoc[redundancy]* strategy and the counterpart
+traffic. It is a xref:redundancy.adoc[*redundancy*] strategy and the counterpart
 to active-passive, where one instance handles traffic while one or more standby
-replicas remain idle until they are needed for *xref:failover.adoc[failover]*.
+replicas remain idle until they are needed for xref:failover.adoc[*failover*].
 
 In an active-active setup, every node is hot. Requests are spread across the
-nodes by *xref:load-balancing.adoc[load balancing]*, so *xref:capacity.adoc[capacity]*
+nodes by xref:load-balancing.adoc[*load balancing*], so xref:capacity.adoc[*capacity*]
 scales with the number of replicas, a form of
-*xref:horizontal-scaling.adoc[horizontal scaling]*.
+xref:horizontal-scaling.adoc[*horizontal scaling*].
 When a node fails, the remaining nodes simply absorb its share of traffic.
 There is no promotion step and no interruption, which makes active-active
 attractive for systems that require high
-*xref:availability.adoc[availability]* and
-*xref:fault-tolerance.adoc[fault tolerance]*.
+xref:availability.adoc[*availability*] and
+xref:fault-tolerance.adoc[*fault tolerance*].
 
 The absence of a failover step is not free, though. Because the surviving nodes
 must carry the failed node's load as well as their own, the cluster has to be
 provisioned with headroom: at least the capacity of one node, the so-called N+1
 margin. Run the cluster at full utilization and the loss of a node pushes the
 rest past their limits, trading instant failover for saturation and
-*xref:latency.adoc[latency]* spikes. Active-active therefore trades idle
+xref:latency.adoc[*latency*] spikes. Active-active therefore trades idle
 standby nodes for idle capacity on every node.
 
 Active-active is commonly applied at two layers.
 
 * *Application layer.* Multiple stateless service instances run behind a load
-  balancer. *xref:stateless.adoc[Stateless design]* is what makes the topology
+  balancer. xref:stateless.adoc[*Stateless design*] is what makes the topology
   viable here: because no instance holds exclusive state, any instance can
   handle any request. Where state must be kept, such as a shopping cart or a
   session, it is moved to an external store so that the instances stay
@@ -35,24 +35,24 @@ Active-active is commonly applied at two layers.
   routing or a shared session store, eroding the benefits.
 
 * *Data layer.* Multiple database replicas accept writes concurrently, an
-  arrangement also known as multi-leader *xref:replication.adoc[replication]*.
+  arrangement also known as multi-leader xref:replication.adoc[*replication*].
   Each replica serves local reads and writes, and changes propagate to the
   others asynchronously.
 
 The data layer is where the trade-offs bite. With several nodes accepting
 writes at once, concurrent updates can conflict, and replicas converge only
-through *xref:eventual-consistency.adoc[eventual consistency]*. Resolving
+through xref:eventual-consistency.adoc[*eventual consistency*]. Resolving
 conflicts requires strategies such as last-write-wins, version vectors, or
 application-level merge logic. Under a network partition the nodes can diverge
 into independent groups, a split-brain, and the coordination needed to keep
 them agreed is exactly the problem
-*xref:consensus-algorithms.adoc[consensus algorithms]* exist to solve. That
-coordination sits at the heart of the *xref:cap-theorem.adoc[CAP theorem]*
-trade-off between availability and *xref:consistency.adoc[consistency]*.
+xref:consensus-algorithms.adoc[*consensus algorithms*] exist to solve. That
+coordination sits at the heart of the xref:cap-theorem.adoc[*CAP theorem*]
+trade-off between availability and xref:consistency.adoc[*consistency*].
 
 Active-active is most worthwhile in
-*xref:distributed-system.adoc[distributed software]* that cannot tolerate
-*xref:downtime.adoc[downtime]* during recovery, and in multi-region deployments
+xref:distributed-system.adoc[*distributed software*] that cannot tolerate
+xref:downtime.adoc[*downtime*] during recovery, and in multi-region deployments
 where serving reads
 and writes from a node close to the user reduces latency. The cost is
 operational complexity. Every node must be kept in sync, the system must detect

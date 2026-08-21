@@ -9,11 +9,11 @@ then let the next-highest level of the system decide how to handle them.
 Fail-fast designs typically check the system's state at several points in an
 operation, so that failures are detected close to where and when they
 originate. This is the opposite philosophy to a
-*xref:fault-tolerance.adoc[fault-tolerant]* system, which keeps running in the
+xref:fault-tolerance.adoc[*fault-tolerant*] system, which keeps running in the
 presence of failures by relying on redundancy and recovery. The two are not
 mutually exclusive. Paradoxically, fail-fast components make fault-tolerant
 systems more resilient: a component that fails fast and visibly is easier for a
-*xref:failover.adoc[failover]* mechanism to detect and route around, whereas a
+xref:failover.adoc[*failover*] mechanism to detect and route around, whereas a
 component that limps on in a bad state can corrupt work and mask the failure
 from the surrounding system.
 
@@ -45,7 +45,7 @@ possible, ideally at the point a variable or object is initialized.
 * A function that checks its preconditions before doing any work fails before
   it has had a chance to corrupt state or waste computation.
 * A client-server system that validates
-  *xref:input-validation.adoc[input]* as soon as a request arrives, before
+  xref:input-validation.adoc[*input*] as soon as a request arrives, before
   dispatching it to internal components, returns an error to the caller at the
   boundary rather than propagating bad data through the system.
 * A fail-fast iterator raises an error if the collection it is iterating is
@@ -58,7 +58,7 @@ than hoped for in the middle.
 == Tension with the robustness principle
 
 Fail-fast sits in direct tension with the
-*xref:robustness-principle.adoc[robustness principle]* (Postel's law), which
+xref:robustness-principle.adoc[*robustness principle*] (Postel's law), which
 counsels being liberal in what you accept. The two are not contradictions so
 much as a trade-off to be struck at different boundaries. Inside a single
 process or a tightly-coupled component, where a programming bug is the most
@@ -68,11 +68,11 @@ system boundary – a public network API, a file format parser, a protocol
 implementation – being forgiving of malformed but recoverable input is often
 more valuable, because the sender may be a different team, a different
 organization, or an older version of yourself, and rejecting it outright would
-break *xref:backwards-compatibility.adoc[backwards compatibility]*.
+break xref:backwards-compatibility.adoc[*backwards compatibility*].
 
 == Relation to crash-only
 
-The *xref:crash-only.adoc[crash-only]* philosophy takes the fail-fast instinct
+The xref:crash-only.adoc[*crash-only*] philosophy takes the fail-fast instinct
 to its architectural conclusion. If a component's recovery path is robust
 enough to handle a crash at any moment, then a clean shutdown is just a slow
 crash, and the component is free to halt immediately on the first sign of

@@ -1,19 +1,19 @@
 = SQL injection
 
 *SQL injection* is a code injection vulnerability in which attacker-controlled
-input is concatenated into a *xref:sql.adoc[SQL]* statement and then interpreted
-as part of the query by the *xref:relational-databases.adoc[relational
-database]* engine. The database cannot distinguish the code the application
+input is concatenated into a xref:sql.adoc[*SQL*] statement and then interpreted
+as part of the query by the xref:relational-databases.adoc[*relational
+database*] engine. The database cannot distinguish the code the application
 authored from the data the attacker supplied, so the input can alter the
 query's structure – adding predicates, closing the statement early, or
 appending entirely new ones. The result is a query the application never
 intended to issue.
 
 SQL injection is the canonical injection flaw and the close sibling of
-*xref:cross-site-scripting.adoc[cross-site scripting (XSS)]*. Both exploit code
+xref:cross-site-scripting.adoc[*cross-site scripting (XSS)*]. Both exploit code
 that mixes untrusted data with an interpreter without adequate separation; the
 difference is the target interpreter, the database engine rather than the
-browser. It has appeared on every edition of the *xref:owasp.adoc[OWASP]* Top
+browser. It has appeared on every edition of the xref:owasp.adoc[*OWASP*] Top
 Ten and was the top entry for years, because it is easy to introduce, easy to
 exploit, and frequently devastating in impact.
 
@@ -73,9 +73,9 @@ underlying defect is the same in every case: code and data share one stream.
 
 == Impact
 
-Because the query runs with the *xref:authorization.adoc[permissions]* of the
+Because the query runs with the xref:authorization.adoc[*permissions*] of the
 application's database account, the impact is bounded only by that account's
-reach. Typical consequences include bypassing *xref:authentication.adoc[authentication]*,
+reach. Typical consequences include bypassing xref:authentication.adoc[*authentication*],
 exfiltrating sensitive data, tampering with or destroying records, and forging
 audit trails. Where the account is over-privileged or the engine exposes
 filesystem, shell, or network primitives – such as `xp_cmdshell` on SQL Server
@@ -105,16 +105,16 @@ be parsed as SQL syntax.
 Layered controls reduce residual risk and limit the blast radius when a
 vulnerability slips through.
 
-* *xref:input-validation.adoc[Input validation]* rejects malformed data early
+* xref:input-validation.adoc[*Input validation*] rejects malformed data early
   and shrinks the surface, but it is a secondary measure. Validation alone
   cannot anticipate every encoding and dialect trick an attacker may use, and
   blacklist filtering is routinely evaded.
 * *Least privilege* on the database account – read-only where the code only
   reads, no DDL or administrative commands, no filesystem or shell access –
   caps the damage a successful injection can do. This is a practical instance
-  of *xref:secure-by-design.adoc[secure by design]*.
-* *xref:security-testing.adoc[Security testing]*, *xref:penetration-testing.adoc[penetration
-  testing]*, and *xref:static-analysis.adoc[static analysis]* catch the defect
+  of xref:secure-by-design.adoc[*secure by design*].
+* xref:security-testing.adoc[*Security testing*], xref:penetration-testing.adoc[*penetration
+  testing*], and xref:static-analysis.adoc[*static analysis*] catch the defect
   before deployment. SAST tools in particular flag string-built SQL as a
   matter of course, since the pattern is well understood.
 
@@ -127,19 +127,19 @@ Parameterization removes the defect; filtering only hides it.
 
 == See also
 
-* *xref:sql.adoc[SQL]*
-* *xref:relational-databases.adoc[Relational databases]*
-* *xref:cross-site-scripting.adoc[Cross-site scripting (XSS)]*
-* *xref:input-validation.adoc[Input validation]*
-* *xref:secure-by-design.adoc[Secure by design]*
-* *xref:owasp.adoc[OWASP]*
-* *xref:security.adoc[Security]*
-* *xref:security-testing.adoc[Security testing]*
-* *xref:penetration-testing.adoc[Penetration testing]*
-* *xref:static-analysis.adoc[Static analysis]*
-* *xref:vulnerability-databases.adoc[Vulnerability databases]*
-* *xref:authentication.adoc[Authentication]*
-* *xref:authorization.adoc[Authorization]*
+* xref:sql.adoc[*SQL*]
+* xref:relational-databases.adoc[*Relational databases*]
+* xref:cross-site-scripting.adoc[*Cross-site scripting (XSS)*]
+* xref:input-validation.adoc[*Input validation*]
+* xref:secure-by-design.adoc[*Secure by design*]
+* xref:owasp.adoc[*OWASP*]
+* xref:security.adoc[*Security*]
+* xref:security-testing.adoc[*Security testing*]
+* xref:penetration-testing.adoc[*Penetration testing*]
+* xref:static-analysis.adoc[*Static analysis*]
+* xref:vulnerability-databases.adoc[*Vulnerability databases*]
+* xref:authentication.adoc[*Authentication*]
+* xref:authorization.adoc[*Authorization*]
 
 == References
 

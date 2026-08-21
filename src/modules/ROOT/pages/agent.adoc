@@ -1,6 +1,6 @@
 = Agent
 
-*Agentic systems* are *xref:large-language-model.adoc[LLM]*-based systems that
+*Agentic systems* are xref:large-language-model.adoc[*LLM*]-based systems that
 can act autonomously to achieve goals. *Agents*, also known as *AI agents* and
 *software agents*, are a key component of many AI applications, from personal
 assistants to autonomous vehicles and software automation.
@@ -16,7 +16,7 @@ What distinguishes an agent from an ordinary program — or from a single LLM ca
 human intervention, deciding its own next step); reactivity (it perceives its
 environment and responds to it); proactivity (it pursues goals on its own
 initiative, not only in response to a user prompt); and persistence (it runs in
-a *xref:agent-loop.adoc[loop]* toward a goal, rather than a one-off execution).
+a xref:agent-loop.adoc[*loop*] toward a goal, rather than a one-off execution).
 
 It helps to distinguish three closely related concepts:
 
@@ -43,14 +43,14 @@ but run inside different harnesses will behave very differently, because the
 harness — not the model — defines the agent's action space and constraints.
 
 Designing and operating an agent harness is a discipline in its own right —
-known as *xref:agent-harness.adoc[harness engineering]*.
+known as xref:agent-harness.adoc[*harness engineering*].
 
 == The anthropomorphized unit
 
 An agent is the unit you are speaking to — the
-*xref:large-language-model.adoc[model]* in motion, configured for a purpose.
+xref:large-language-model.adoc[*model*] in motion, configured for a purpose.
 "Agent" does not name a mechanical part. The model is a file of parameters; the
-*xref:agent-harness.adoc[harness]* is software. "Agent" is the anthropomorphized
+xref:agent-harness.adoc[*harness*] is software. "Agent" is the anthropomorphized
 unit you delegate to, the thing you address when you give a goal.
 
 The idea predates this wave of AI. Software agents — programs you delegate a goal
@@ -61,31 +61,31 @@ to be useful; "agent" names the unit precisely.
 
 A *session* is one bounded run of interaction. It starts empty and accumulates
 messages, tool results, and files read, and it ends when cleared, closed, or
-*xref:large-language-model.adoc[compacted]*. The session is what fills the context
+xref:large-language-model.adoc[*compacted*]. The session is what fills the context
 window. Message history is the agent's working memory — the model is
-*xref:stateless.adoc[stateless]*, and everything it appears to remember is in the
+xref:stateless.adoc[*stateless*], and everything it appears to remember is in the
 history re-sent with each request. Memory ends with the session; a new session
 starts from nothing. What survives is the filesystem. Keeping one task per
 session keeps the context relevant. See
-*xref:context-engineering.adoc[context engineering]* and
-*xref:agent-handoff.adoc[agent handoff]*.
+xref:context-engineering.adoc[*context engineering*] and
+xref:agent-handoff.adoc[*agent handoff*].
 
 == Turn
 
 A *turn* is one user message plus everything the agent does in response, up until
 it yields back. A turn contains one or more
-*xref:large-language-model.adoc[model provider]* requests — many, if tools are
+xref:large-language-model.adoc[*model provider*] requests — many, if tools are
 called. The turn's length is the agent's decision, not yours: a turn can be a
 one-sentence answer or twenty minutes of work. Long turns enable
-*xref:away-from-keyboard.adoc[AFK]* work, and they are where things go wrong
+xref:away-from-keyboard.adoc[*AFK*] work, and they are where things go wrong
 unsupervised. The turn is the natural unit for steering — the gaps between turns
-are where you redirect. See *xref:agent-loop.adoc[agent loop]*.
+are where you redirect. See xref:agent-loop.adoc[*agent loop*].
 
 == Human-in-the-loop
 
 *Human-in-the-loop* is a working pattern where one or more humans pair with the
 agent during a session — reviewing, redirecting, collaborating in real time. The
-contrast is *xref:away-from-keyboard.adoc[AFK]*, where the agent runs unattended
+contrast is xref:away-from-keyboard.adoc[*AFK*], where the agent runs unattended
 and you judge the result afterwards. Human-in-the-loop catches problems while
 they are cheap.
 
@@ -93,11 +93,11 @@ Well-specified, low-risk, easy-to-verify tasks suit AFK. Ambiguous,
 irreversible, or hard-to-review tasks — a schema migration, a tricky design,
 anything touching production — suit staying in the loop. The judgement call is
 how expensive a wrong turn would be, and how late you would catch it. Some work
-is in-the-loop by nature: *grilling* and *xref:prototyping.adoc[prototyping]*.
+is in-the-loop by nature: *grilling* and xref:prototyping.adoc[*prototyping*].
 Staying in the loop costs your attention, and part of getting better is moving
 more work safely out of the loop. See
-*xref:loop-engineering.adoc[loop engineering]* and
-*xref:agent-handoff.adoc[agent handoff]*.
+xref:loop-engineering.adoc[*loop engineering*] and
+xref:agent-handoff.adoc[*agent handoff*].
 
 == Design concept
 
@@ -112,14 +112,14 @@ agent filled the silences with its own assumptions.
 You can tell the concept is shared when the other party starts answering
 questions you have not asked, the way you would. Until then the work is
 conversation, and *grilling* is the deliberate version of that conversation. See
-*xref:agent-handoff.adoc[agent handoff]*.
+xref:agent-handoff.adoc[*agent handoff*].
 
 == Grilling
 
 *Grilling* is a technique for developing a design concept with an agent. The
 agent interviews the user Socratically, one decision at a time, proposing a
 recommended answer each time. It slows the rush to a finished plan; no
-*xref:agent-handoff.adoc[handoff artifact]* is produced until the concept
+xref:agent-handoff.adoc[*handoff artifact*] is produced until the concept
 stabilises.
 
 Grilling exists because agents fill gaps silently. Asked to write a spec from a
@@ -127,7 +127,7 @@ two-line prompt, the agent picks defaults and writes them in, indistinguishable
 from your own choices. Grilling inverts this: instead of guessing, the agent
 asks. It is a human-in-the-loop technique — your answers are the input. When a
 question cannot be answered in conversation, switch to
-*xref:prototyping.adoc[prototyping]*.
+xref:prototyping.adoc[*prototyping*].
 
 == Conductor and orchestrator
 
@@ -146,8 +146,8 @@ watching code appear line by line. Agents may work in the background, in paralle
 on different parts of a codebase. The developer checks in periodically, reviews
 output, and gives course corrections. This suits well-defined tasks like bug
 fixes, features against established patterns, codebase migrations, and test
-generation, and is the natural mode for *xref:away-from-keyboard.adoc[AFK]* work
-and *xref:agent-orchestration.adoc[multi-agent delegation]*.
+generation, and is the natural mode for xref:away-from-keyboard.adoc[*AFK*] work
+and xref:agent-orchestration.adoc[*multi-agent delegation*].
 
 The orchestrator demands a different skill set than the conductor: specification
 (defining tasks precisely enough for unambiguous execution), decomposition
@@ -158,8 +158,8 @@ implementation skill to judgment – directing agents well matters more than
 writing the most code.
 
 The conductor and orchestrator are two ends of a spectrum, and most real work
-mixes both. The choice connects to *xref:agentic-engineering.adoc[agentic
-engineering]*, *xref:loop-engineering.adoc[loop engineering]*, and the
+mixes both. The choice connects to xref:agentic-engineering.adoc[*agentic
+engineering*], xref:loop-engineering.adoc[*loop engineering*], and the
 human-in-the-loop pattern above.
 
 == Agent development frameworks
@@ -188,7 +188,7 @@ General-purpose agent development frameworks include:
   building agents and LLM-powered applications. Emphasizes model
   interoperability, rapid prototyping, and an extensive ecosystem of
   integrations. Available in Python and JavaScript/TypeScript. Its LangGraph
-  component handles *xref:agent-orchestration.adoc[multi-agent orchestration]*.
+  component handles xref:agent-orchestration.adoc[*multi-agent orchestration*].
 
 * https://ai.pydantic.dev/[Pydantic AI]: Typed agent framework from the team
   behind Pydantic. Uses Pydantic models to enforce safe, predictable, structured
@@ -260,7 +260,7 @@ Low-code platforms and foundations:
   cron-style jobs, and dynamic pacing. Can also be used as a basic
   terminal-based coding assistant out-of-the-box.
 
-See also *xref:ai-coding-assistant.adoc[AI coding assistants]*, many of which
+See also xref:ai-coding-assistant.adoc[*AI coding assistants*], many of which
 have agentic properties, too.
 
 == Agent orchestration platforms
@@ -270,7 +270,7 @@ teams/swarms of agents working together toward shared goals — managing
 scheduling, delegation, budgets, and governance across a whole system of
 autonomous workers. Platforms in this space include Claude Cowork, AG2, CrewAI,
 LangGraph, MetaGPT, and SuperAGI. See
-*xref:agent-orchestration.adoc[agent orchestration]*.
+xref:agent-orchestration.adoc[*agent orchestration*].
 
 == Benchmarks
 
@@ -281,19 +281,19 @@ LangGraph, MetaGPT, and SuperAGI. See
 
 == See also
 
-* *xref:agent-loop.adoc[Agent loop]*
-* *xref:agent-harness.adoc[Agent harness]*
-* *xref:agent-handoff.adoc[Agent handoff]*
-* *xref:agent-memory.adoc[Agent memory]*
-* *xref:agent-orchestration.adoc[Agent orchestration]*
-* *xref:loop-engineering.adoc[Loop engineering]*
-* *xref:away-from-keyboard.adoc[Away-from-keyboard (AFK)]*
-* *xref:recursive-self-improvement.adoc[Recursive self-improvement (RSI)]*
-* *xref:agent-skills.adoc[Agent skills]*
-* *xref:model-context-protocol.adoc[Model Context Protocol]*
-* *xref:agent2agent.adoc[Agent2Agent (A2A)]*
-* *xref:prototyping.adoc[Prototyping]*
-* *xref:developer-experience.adoc[Developer experience (DX)]*
+* xref:agent-loop.adoc[*Agent loop*]
+* xref:agent-harness.adoc[*Agent harness*]
+* xref:agent-handoff.adoc[*Agent handoff*]
+* xref:agent-memory.adoc[*Agent memory*]
+* xref:agent-orchestration.adoc[*Agent orchestration*]
+* xref:loop-engineering.adoc[*Loop engineering*]
+* xref:away-from-keyboard.adoc[*Away-from-keyboard (AFK)*]
+* xref:recursive-self-improvement.adoc[*Recursive self-improvement (RSI)*]
+* xref:agent-skills.adoc[*Agent skills*]
+* xref:model-context-protocol.adoc[*Model Context Protocol*]
+* xref:agent2agent.adoc[*Agent2Agent (A2A)*]
+* xref:prototyping.adoc[*Prototyping*]
+* xref:developer-experience.adoc[*Developer experience (DX)*]
 
 == References
 

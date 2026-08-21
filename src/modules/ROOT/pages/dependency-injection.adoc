@@ -1,20 +1,20 @@
 = Dependency injection
 
 Dependency injection is a technique of
-*xref:object-oriented-programming.adoc[object-oriented programming]* for realizing
-*xref:inversion-of-control.adoc[inversion of control]*. A client object delegates
+xref:object-oriented-programming.adoc[*object-oriented programming*] for realizing
+xref:inversion-of-control.adoc[*inversion of control*]. A client object delegates
 the responsibility for obtaining its collaborators to an external agent, called
 the injector, rather than constructing or looking them up itself. The injector
 decides which concrete collaborators fill the client's references and when.
 
-The technique rests on *xref:composition.adoc[composition]*. The client holds its
-collaborators by reference through *xref:interfaces.adoc[interfaces]*, so a
+The technique rests on xref:composition.adoc[*composition*]. The client holds its
+collaborators by reference through xref:interfaces.adoc[*interfaces*], so a
 collaborator's concrete type can vary without the client changing. This is an
-application of *xref:dependency-inversion.adoc[dependency inversion]*: both the
+application of xref:dependency-inversion.adoc[*dependency inversion*]: both the
 client and its collaborator depend on the same abstraction, and neither is bound
 to the other's concrete type. The result is low
-*xref:coupling.adoc[coupling]* and a design that is easier to
-*xref:decoupling.adoc[decouple]* further.
+xref:coupling.adoc[*coupling*] and a design that is easier to
+xref:decoupling.adoc[*decouple*] further.
 
 The collaborators are usually injected in one of three ways.
 
@@ -39,7 +39,7 @@ reconfiguration needs.
 
 Dependency injection is what makes a class testable in isolation. Because the
 client accepts its collaborators through abstractions, a
-*xref:unit-testing.adoc[unit test]* can supply stand-ins such as mocks, stubs,
+xref:unit-testing.adoc[*unit test*] can supply stand-ins such as mocks, stubs,
 and fakes in place of the real collaborators, keeping the test fast and
 deterministic.
 
@@ -57,7 +57,7 @@ moving parts and an injector to understand. *Dependency injection containers*
 (DICs), libraries or frameworks that build, configure, and assemble object
 graphs from declarations, reduce the boilerplate but move the construction
 logic into configuration that can be hard to debug. The
-*xref:spring-framework.adoc[Spring Framework]* is a widely used DI container in
+xref:spring-framework.adoc[*Spring Framework*] is a widely used DI container in
 the Java ecosystem.
 
 The *service locator* pattern is a related but discouraged alternative. Instead
@@ -68,22 +68,22 @@ in isolation and couples every caller to the locator. Dependency injection, by
 contrast, keeps the dependency visible.
 
 Because dependency injection relies on holding collaborators through interfaces,
-it is an instance of composition over *xref:inheritance.adoc[inheritance]*. A
+it is an instance of composition over xref:inheritance.adoc[*inheritance*]. A
 client that needs varying behavior receives a different collaborator – the
-basis of the *xref:strategy-pattern.adoc[strategy pattern]* – rather than
+basis of the xref:strategy-pattern.adoc[*strategy pattern*] – rather than
 deriving a new subclass, keeping the type hierarchy shallow and behavior
 swappable at runtime.
 
 == See also
 
-* *xref:inversion-of-control.adoc[Inversion of control]*
-* *xref:dependency-inversion.adoc[Dependency inversion]*
-* *xref:composition.adoc[Composition]*
-* *xref:inheritance.adoc[Inheritance]*
-* *xref:decoupling.adoc[Decoupling]*
-* *xref:coupling.adoc[Coupling]*
-* *xref:unit-testing.adoc[Unit testing]*
-* *xref:strategy-pattern.adoc[Strategy pattern]*
+* xref:inversion-of-control.adoc[*Inversion of control*]
+* xref:dependency-inversion.adoc[*Dependency inversion*]
+* xref:composition.adoc[*Composition*]
+* xref:inheritance.adoc[*Inheritance*]
+* xref:decoupling.adoc[*Decoupling*]
+* xref:coupling.adoc[*Coupling*]
+* xref:unit-testing.adoc[*Unit testing*]
+* xref:strategy-pattern.adoc[*Strategy pattern*]
 
 == References
 

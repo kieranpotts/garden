@@ -2,13 +2,13 @@
 
 // TODO: https://redis.io/blog/what-is-data-replication/
 
-Replication, also known as *xref:redundancy.adoc[data redundancy]*, is the
+Replication, also known as xref:redundancy.adoc[*data redundancy*], is the
 process of creating and maintaining identical copies of data across multiple
 servers or nodes. In cloud platforms, replicas are commonly spread across
-*xref:availability-zone.adoc[availability zones]* to survive data-center-level
+xref:availability-zone.adoc[*availability zones*] to survive data-center-level
 failures.
 
-Together with *xref:sharding.adoc[sharding]*, replication is a key technique for
+Together with xref:sharding.adoc[*sharding*], replication is a key technique for
 scaling databases, and a core technique of
 xref:distributed-databases.adoc[*distributed databases*]. Sharding splits data
 across multiple servers, while replication duplicates data across multiple
@@ -19,19 +19,19 @@ without an outage.
 
 Data replication becomes necessary the more that data is distributed across
 multiple servers, for example in
-*xref:service-oriented-architecture.adoc[service-oriented]* or
-*xref:microservices.adoc[microservices]* architectures.
+xref:service-oriented-architecture.adoc[*service-oriented*] or
+xref:microservices.adoc[*microservices*] architectures.
 
-In a *xref:monolith.adoc[monolithic]* architecture, data is typically stored in
+In a xref:monolith.adoc[*monolithic*] architecture, data is typically stored in
 a single database instance, and joins are typically used to query relational
 data across multiple tables.
 
 image::monolith-with-cross-table-joins.svg[]
 
-But in a *xref:distributed-system.adoc[distributed software]*, those joins turn
-into network calls. This increases *xref:latency.adoc[latency]*, decreasing
-*xref:performance.adoc[performance]* and having implications for the
-*xref:fault-tolerance.adoc[resilience]* of the system.
+But in a xref:distributed-system.adoc[*distributed software*], those joins turn
+into network calls. This increases xref:latency.adoc[*latency*], decreasing
+xref:performance.adoc[*performance*] and having implications for the
+xref:fault-tolerance.adoc[*resilience*] of the system.
 
 image::microservices-with-cross-service-calls.svg[]
 
@@ -42,14 +42,14 @@ data.
 
 image::microservices-with-data-replication.svg[]
 
-Besides the *xref:performance.adoc[performance]* benefits of reducing network
+Besides the xref:performance.adoc[*performance*] benefits of reducing network
 calls, data replication also improves the
-*xref:fault-tolerance.adoc[fault tolerance]* and
-*xref:availability.adoc[availability]* of
-*xref:distributed-system.adoc[distributed software]*, due to reduced
+xref:fault-tolerance.adoc[*fault tolerance*] and
+xref:availability.adoc[*availability*] of
+xref:distributed-system.adoc[*distributed software*], due to reduced
 dependencies between services. Replicas also spread read load across nodes, so a
 hot primary is no longer the single bottleneck for queries, raising read
-*xref:throughput.adoc[throughput]* without changing the write path.
+xref:throughput.adoc[*throughput*] without changing the write path.
 
 Data replication is a useful strategy to support the re-architecture of system
 designs. For example, in the transition from monolithic services to more
@@ -60,8 +60,8 @@ legacy system keeps serving traffic. Once the new service is trusted, it takes
 ownership of its data and the legacy copy is retired, moving toward one source
 of truth per service.
 
-Trade-offs are made in terms of *xref:consistency.adoc[data consistency]*, and
-the increased system *xref:complexity.adoc[complexity]* required to manage the
+Trade-offs are made in terms of xref:consistency.adoc[*data consistency*], and
+the increased system xref:complexity.adoc[*complexity*] required to manage the
 data replication and synchronization processes. Storage costs also increase,
 since every replica is another full copy of the data, and the bandwidth needed
 to keep copies in step grows with the write rate.
@@ -74,7 +74,7 @@ Most replicated stores lean toward the latter, letting copies converge over time
 rather than blocking writes while a partition heals.
 
 Data synchronization can be achieved using either batch processes or
-*xref:event-stream.adoc[event streams]*. Batch processes periodically dump and
+xref:event-stream.adoc[*event streams*]. Batch processes periodically dump and
 reload snapshots of the source data, which is simple to reason about but leaves
 replicas stale between runs. Event streams propagate each change as it happens,
 so replicas track the source with far less lag, at the cost of ordering,
@@ -89,9 +89,9 @@ anti-entropy xref:gossip-protocol.adoc[*gossip protocol*], which repairs
 divergence through randomized peer-to-peer exchanges.
 
 Data need not be replicated in the form of its
-*xref:single-source-of-truth.adoc[source of truth]*. A replica can hold a
+xref:single-source-of-truth.adoc[*source of truth*]. A replica can hold a
 transformed or denormalized projection rather than a verbatim copy.
-*xref:materialized-view.adoc[Materialized views]* are the common case, storing
+xref:materialized-view.adoc[*Materialized views*] are the common case, storing
 pre-processed data that's optimized for specific use cases, such as reporting.
 
 == See also

@@ -1,7 +1,7 @@
 = Bulk synchronous parallel
 
 *Bulk synchronous parallel (BSP)* is a model for
-*xref:parallelism.adoc[parallel computing]* introduced by Leslie Valiant in 1990
+xref:parallelism.adoc[*parallel computing*] introduced by Leslie Valiant in 1990
 as a *bridging model* – a single abstraction that sits between the hardware and
 the algorithm, so that programs written against BSP run portably across many
 different parallel machines, and machines can be compared against a common
@@ -43,7 +43,7 @@ superstep is the sum of three terms.
   received by any single processor, and *g* is the cost per message, set by the
   network's bandwidth. Their product is the cost of moving the data.
 * *l* – the barrier synchronization cost, a fixed
-  *xref:latency.adoc[latency]* the network charges to coordinate the barrier,
+  xref:latency.adoc[*latency*] the network charges to coordinate the barrier,
   independent of how much work was done.
 
 The total cost of a program is the sum of its superstep costs. Because each
@@ -54,16 +54,16 @@ supersteps small.
 == Realizations
 
 BSP began as a model for
-*xref:high-performance-computing.adoc[high-performance computing]* and
+xref:high-performance-computing.adoc[*high-performance computing*] and
 scientific computing, and several libraries implement it directly, including
 BSPlib and the Oxford Bulk library.
 
 The model is better known today through frameworks that adopt its structure
-without naming it. Google's *xref:map-reduce.adoc[MapReduce]* is a restricted,
+without naming it. Google's xref:map-reduce.adoc[*MapReduce*] is a restricted,
 two-superstep BSP: a *map* superstep, a barrier implemented by the *shuffle*,
 and a *reduce* superstep. Google's Pregel, and its open-source descendant
 Apache Giraph, apply the same superstep-and-barrier pattern to iterative
-*xref:batch-processing.adoc[batch processing]* of large graphs. Apache Spark's
+xref:batch-processing.adoc[*batch processing*] of large graphs. Apache Spark's
 iterative model is closer still, looping many supersteps in place within a
 single job.
 
@@ -86,11 +86,11 @@ single job.
 
 == See also
 
-* *xref:batch-processing.adoc[Batch processing]*
-* *xref:distributed-system.adoc[Distributed system]*
-* *xref:high-performance-computing.adoc[High-performance computing (HPC)]*
-* *xref:map-reduce.adoc[MapReduce]*
-* *xref:parallelism.adoc[Parallelism]*
+* xref:batch-processing.adoc[*Batch processing*]
+* xref:distributed-system.adoc[*Distributed system*]
+* xref:high-performance-computing.adoc[*High-performance computing (HPC)*]
+* xref:map-reduce.adoc[*MapReduce*]
+* xref:parallelism.adoc[*Parallelism*]
 
 == References
 

@@ -5,12 +5,12 @@ computing infrastructure – networks, load balancers, storage, databases,
 compute instances, and the rest of the resources a cloud provider exposes –
 through machine-readable definition files rather than interactive, manual
 commands. The definitions are treated like any other source artifact. They live
-in a *xref:version-control.adoc[version control]* repository, are reviewed
+in a xref:version-control.adoc[*version control*] repository, are reviewed
 before merge, and are applied by a tool that converges the real infrastructure
 toward the declared state.
 
 IaC extends the declarative, version-controlled approach of
-*xref:configuration-management.adoc[configuration management]* from the
+xref:configuration-management.adoc[*configuration management*] from the
 configuration of machines that already exist to the provisioning of the
 infrastructure itself. The two disciplines overlap and the terms are sometimes
 used interchangeably, but the distinction is one of scope. Configuration
@@ -46,16 +46,16 @@ version-controlled, every change to infrastructure has a history, a review
 record, and a rollback path. This is what makes IaC a foundational practice of
 xref:devops.adoc[*DevOps*] and a precondition for
 xref:continuous-deployment.adoc[*continuous deployment*] at the environment
-level. A *xref:ci-cd.adoc[CI/CD]* pipeline can rebuild whole environments on
+level. A xref:ci-cd.adoc[*CI/CD*] pipeline can rebuild whole environments on
 every change only when the infrastructure itself is code.
 
 IaC is most at home in public clouds, where resources are provisioned through
 web APIs and billed by consumption. The major
-*xref:cloud-service-providers.adoc[cloud service providers]* each ship a native
+xref:cloud-service-providers.adoc[*cloud service providers*] each ship a native
 IaC service – AWS CloudFormation, Azure Resource Manager templates, and Google
 Cloud Deployment Manager – and cross-provider tools like Terraform, OpenTofu,
 and Pulumi abstract over them with provider plugins. The same declarative model
-also underlies *xref:container-orchestration.adoc[container orchestration]*. A
+also underlies xref:container-orchestration.adoc[*container orchestration*]. A
 Kubernetes manifest is infrastructure expressed as code, applied to a cluster's
 control plane rather than a cloud provider's.
 

@@ -2,7 +2,7 @@
 
 The 12-factor app is a methodology for building software-as-a-service
 applications that are designed to be deployed as
-*xref:cloud-computing.adoc[cloud]* services. It was distilled in 2011 by Adam
+xref:cloud-computing.adoc[*cloud*] services. It was distilled in 2011 by Adam
 Wiggins and other engineers at Heroku from their experience building and
 operating the Heroku platform. The methodology is documented as a short,
 opinionated manifesto at https://12factor.net/.
@@ -10,17 +10,17 @@ opinionated manifesto at https://12factor.net/.
 The goal of the methodology is to minimize the friction of modern application
 development and operation. It collects a set of design principles that, taken
 together, make applications portable across deployment environments, friendly
-to *xref:continuous-deployment.adoc[continuous deployment]*, and able to scale
+to xref:continuous-deployment.adoc[*continuous deployment*], and able to scale
 out cleanly without architectural rework. Many of the same principles recur in
-*xref:microservices.adoc[microservices]* design, and the 12-factor methodology
+xref:microservices.adoc[*microservices*] design, and the 12-factor methodology
 is often cited as a precursor of the cloud-native style that containers and
 orchestrators later productized.
 
 The twelve factors are guidelines, not a checklist. Each addresses a particular
 class of problem that the authors observed recurring across SaaS applications.
 
-* *I. Codebase.* One codebase tracked in *xref:version-control.adoc[revision
-  control]*, with many deploys derived from it. A single app may have many
+* *I. Codebase.* One codebase tracked in xref:version-control.adoc[*revision
+  control*], with many deploys derived from it. A single app may have many
   deployed instances (staging, production, and so on) that all share one
   codebase, but multiple apps must not share a codebase.
 
@@ -33,7 +33,7 @@ class of problem that the authors observed recurring across SaaS applications.
   injected via environment variables rather than baked into the codebase,
   keeping the same build artifact deployable anywhere. This is the
   application-level counterpart to the systems practice of
-  *xref:configuration-management.adoc[configuration management]*.
+  xref:configuration-management.adoc[*configuration management*].
 
 * *IV. Backing services.* Treat attached resources – databases, message
   brokers, caching layers, email services – as interchangeable, addressable
@@ -44,10 +44,10 @@ class of problem that the authors observed recurring across SaaS applications.
   source into a immutable artifact) from the release stage (which combines the
   build with config to form a release) and the run stage (which executes the
   release). Releases are append-only and immutable, which makes
-  *xref:rollback.adoc[rollbacks]* a matter of restoring a prior release.
+  xref:rollback.adoc[*rollbacks*] a matter of restoring a prior release.
 
 * *VI. Processes.* Execute the app as one or more
-  *xref:stateless.adoc[stateless]* processes. Any state that needs to persist
+  xref:stateless.adoc[*stateless*] processes. Any state that needs to persist
   must be held in a backing service, so that any process can be killed or
   replaced without losing data that the next request depends on.
 
@@ -56,7 +56,7 @@ class of problem that the authors observed recurring across SaaS applications.
   backing service to others that connect to its port.
 
 * *VIII. Concurrency.* Scale out by adding processes, exploiting the operating
-  system's *xref:concurrency.adoc[concurrency]* model rather than threads
+  system's xref:concurrency.adoc[*concurrency*] model rather than threads
   alone. Different workloads (web requests, background jobs, scheduled tasks)
   run as separate process types that can be scaled independently.
 
@@ -68,7 +68,7 @@ class of problem that the authors observed recurring across SaaS applications.
   as possible, across time, personnel, and backing services. Small gaps
   between environments are where deployment surprises hide.
 
-* *XI. Logs.* Treat *xref:logging.adoc[logs]* as an append-only event stream.
+* *XI. Logs.* Treat xref:logging.adoc[*logs*] as an append-only event stream.
   The app writes unbuffered events to `stdout` and leaves aggregation,
   routing, and long-term storage to the platform.
 
@@ -80,8 +80,8 @@ class of problem that the authors observed recurring across SaaS applications.
 [NOTE]
 --
 The 12-factor methodology predates the widespread adoption of
-*xref:containerization.adoc[containerization]* and
-*xref:infrastructure-as-code.adoc[infrastructure as code]*, but its principles
+xref:containerization.adoc[*containerization*] and
+xref:infrastructure-as-code.adoc[*infrastructure as code*], but its principles
 map cleanly onto both: a container image is a natural build artifact, an
 environment-variable config is trivial to inject into a container, and a
 stateless, disposable process is exactly what an orchestrator schedules.
@@ -89,14 +89,14 @@ stateless, disposable process is exactly what an orchestrator schedules.
 
 == See also
 
-* *xref:microservices.adoc[Microservices]*
-* *xref:cloud-computing.adoc[Cloud computing]*
-* *xref:containerization.adoc[Containerization]*
-* *xref:stateless.adoc[Stateless design]*
-* *xref:continuous-deployment.adoc[Continuous deployment]*
-* *xref:concurrency.adoc[Concurrency]*
-* *xref:logging.adoc[Logging]*
-* *xref:version-control.adoc[Version control]*
+* xref:microservices.adoc[*Microservices*]
+* xref:cloud-computing.adoc[*Cloud computing*]
+* xref:containerization.adoc[*Containerization*]
+* xref:stateless.adoc[*Stateless design*]
+* xref:continuous-deployment.adoc[*Continuous deployment*]
+* xref:concurrency.adoc[*Concurrency*]
+* xref:logging.adoc[*Logging*]
+* xref:version-control.adoc[*Version control*]
 
 == References
 

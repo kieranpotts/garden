@@ -20,9 +20,9 @@ that:
 
 Applying Postel's law can lead to more robust and interoperable systems. It is
 particularly relevant in the context of
-*xref:distributed-system.adoc[distributed systems]* and network APIs, where
+xref:distributed-system.adoc[*distributed systems*] and network APIs, where
 components may be developed independently and may evolve over time, and in
-*xref:network-protocols.adoc[network protocols]*, where different
+xref:network-protocols.adoc[*network protocols*], where different
 implementations may have varying levels of compliance with specifications. It
 also applies wherever systems interact with each other, such as file formats,
 data serialization, and user interfaces.
@@ -43,22 +43,22 @@ immediately when a new API version is released), or fill in missing attributes
 with default values and ignore unrecognized input attributes.
 
 The robustness principle supports
-*xref:iterative-and-incremental-development.adoc[iterative and incremental development]*
-of individual components of *xref:distributed-system.adoc[distributed systems]*.
+xref:iterative-and-incremental-development.adoc[*iterative and incremental development*]
+of individual components of xref:distributed-system.adoc[*distributed systems*].
 It allows for the gradual evolution of APIs and protocols, enabling developers
 to introduce new features and improvements without breaking existing
 functionality. This is particularly important in large-scale systems such as
-*xref:microservices.adoc[microservices]* where services may be developed and
+xref:microservices.adoc[*microservices*] where services may be developed and
 maintained by different teams or even different organizations.
 
 However, this principle needs to be balanced against security considerations.
 For example, servers should avoid unintentionally accepting harmful or
-malicious input. It also sits in tension with *xref:fail-fast.adoc[fail-fast]* design,
+malicious input. It also sits in tension with xref:fail-fast.adoc[*fail-fast*] design,
 which favors rejecting bad input immediately rather than tolerating it. The two
 are complementary rather than contradictory: strictness fits the inside of a
 component, where a bad input usually signals a defect, while the robustness
 principle fits the boundaries between independently-evolving components.
 
-See also *xref:backwards-compatibility.adoc[backwards compatibility]*,
-*xref:do-what-i-mean.adoc[do what I mean]*, and
+See also xref:backwards-compatibility.adoc[*backwards compatibility*],
+xref:do-what-i-mean.adoc[*do what I mean*], and
 xref:graceful-degradation.adoc[*graceful degradation*].

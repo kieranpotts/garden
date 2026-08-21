@@ -2,12 +2,12 @@
 
 Messaging protocols are application layer protocols that define how messages
 are framed, addressed, and delivered between producers and consumers, usually
-mediated by a *xref:message-broker.adoc[message broker]*. They sit above
-transport layer protocols such as *xref:tcp.adoc[TCP]* and are typically
-associated with *xref:message-queues.adoc[message queues]* and
-*xref:message-driven-architecture.adoc[message-driven architectures]*. Unlike
-request-response protocols such as *xref:http.adoc[HTTP]* or the formats used
-for *xref:remote-procedure-call.adoc[remote procedure call]* (RPC), they assume
+mediated by a xref:message-broker.adoc[*message broker*]. They sit above
+transport layer protocols such as xref:tcp.adoc[*TCP*] and are typically
+associated with xref:message-queues.adoc[*message queues*] and
+xref:message-driven-architecture.adoc[*message-driven architectures*]. Unlike
+request-response protocols such as xref:http.adoc[*HTTP*] or the formats used
+for xref:remote-procedure-call.adoc[*remote procedure call*] (RPC), they assume
 one-way, asynchronous delivery and leave routing, buffering, and redelivery to
 the broker.
 
@@ -16,11 +16,11 @@ The most widely used messaging protocols are listed below.
 * *AMQP* (Advanced Message Queuing Protocol): An open standard application
   layer protocol for message-oriented middleware. AMQP allows for complex
   message routing configuration, including point-to-point,
-  *xref:publish-subscribe-pattern.adoc[publish-subscribe]*, and store-and-forward
+  xref:publish-subscribe-pattern.adoc[*publish-subscribe*], and store-and-forward
   patterns. It is commonly used in enterprise environments.
 
   AMQP exists in two incompatible versions. AMQP 0-9-1 is the variant
-  *xref:rabbitmq.adoc[RabbitMQ]* implements natively, and it prescribes a
+  xref:rabbitmq.adoc[*RabbitMQ*] implements natively, and it prescribes a
   specific routing topology built from exchanges, queues, and the bindings
   that connect them. Producers publish to an exchange, and the broker routes
   each message to one or more queues based on the binding rules, where
@@ -65,7 +65,7 @@ The most widely used messaging protocols are listed below.
 
   RabbitMQ supports MQTT as an alternative messaging protocol to AMQP via
   plugins. Mosquitto is an open-source, lightweight MQTT broker, while HiveMQ
-  is a commercial MQTT broker. *xref:kafka.adoc[Apache Kafka]* can integrate
+  is a commercial MQTT broker. xref:kafka.adoc[*Apache Kafka*] can integrate
   with MQTT through connectors and proxies.
 
 * *STOMP* (Simple (or Streaming) Text Oriented Messaging Protocol): A
@@ -81,7 +81,7 @@ The most widely used messaging protocols are listed below.
   interprets the `destination` header on `SEND` and `SUBSCRIBE` frames
   according to its own conventions, which makes STOMP clients portable in
   principle but broker-specific in practice. The protocol runs over TCP and is
-  also commonly tunneled over *xref:websockets.adoc[WebSocket]* so that browser
+  also commonly tunneled over xref:websockets.adoc[*WebSocket*] so that browser
   clients can talk directly to a broker. ActiveMQ, ActiveMQ Artemis, HornetQ,
   and RabbitMQ (via plugin) all expose STOMP endpoints, and the spec's
   looseness has produced small broker-specific dialects.

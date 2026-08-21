@@ -1,12 +1,12 @@
 = Role-based access controls
 
-*Role-based access control (RBAC)* is an *xref:authorization.adoc[authorization]*
+*Role-based access control (RBAC)* is an xref:authorization.adoc[*authorization*]
 model in which permissions are grouped into named *roles* and principals are
 granted roles rather than individual permissions. A principal exercises a
 permission only through a role they hold, so the authorization decision
 reduces to "does any of this principal's roles include the requested
 permission on this resource?" RBAC presupposes that
-*xref:authentication.adoc[authentication]* has already established who the
+xref:authentication.adoc[*authentication*] has already established who the
 principal is; it concerns itself only with what that principal may do.
 
 RBAC is the dominant access control model in business software because it
@@ -61,7 +61,7 @@ that can encode an organization's risk policies directly.
 == RBAC and least privilege
 
 RBAC is the most common way to operationalize
-*xref:secure-by-design.adoc[least privilege]*. Narrow, task-specific roles let
+xref:secure-by-design.adoc[*least privilege*]. Narrow, task-specific roles let
 an organization grant the minimum permissions needed for a task without
 managing each permission per user. The role activation model goes further. A
 principal can hold a powerful role but leave it inactive except when
@@ -70,7 +70,7 @@ explicitly needed, shrinking the standing privilege surface.
 == Tokens and roles
 
 Stateless architectures often carry role assignments in the credential
-itself. A *xref:jwt.adoc[JSON Web Token]* can include a `role` or `roles`
+itself. A xref:jwt.adoc[*JSON Web Token*] can include a `role` or `roles`
 claim that the receiving service evaluates without a lookup. This pushes the
 user-role assignment into the token's lifetime, so revoking a role before the
 token expires requires a denylist or short token lifetimes paired with
@@ -78,7 +78,7 @@ revocable refresh tokens.
 
 == Multi-tenancy
 
-In *xref:multi-tenant.adoc[multi-tenant]* systems, roles are usually scoped
+In xref:multi-tenant.adoc[*multi-tenant*] systems, roles are usually scoped
 per tenant. The `admin` role in tenant A is a distinct assignment from `admin`
 in tenant B, even when the names match, and the tenant identifier becomes a
 non-negotiable part of every role lookup. Without that scoping, a role name
@@ -99,17 +99,17 @@ collision across tenants becomes a cross-tenant privilege escalation.
   drift.
 * *Broken access control.* Failures in role enforcement – checking
   authentication but not role membership, or assuming a missing link means
-  denial – have sat at or near the top of the *xref:owasp.adoc[OWASP]* Top 10
+  denial – have sat at or near the top of the xref:owasp.adoc[*OWASP*] Top 10
   for years.
 
 == See also
 
-* *xref:authorization.adoc[Authorization]*
-* *xref:authentication.adoc[Authentication]*
-* *xref:secure-by-design.adoc[Secure by design]*
-* *xref:jwt.adoc[JSON Web Token (JWT)]*
-* *xref:multi-tenant.adoc[Multi-tenant]*
-* *xref:owasp.adoc[OWASP]*
+* xref:authorization.adoc[*Authorization*]
+* xref:authentication.adoc[*Authentication*]
+* xref:secure-by-design.adoc[*Secure by design*]
+* xref:jwt.adoc[*JSON Web Token (JWT)*]
+* xref:multi-tenant.adoc[*Multi-tenant*]
+* xref:owasp.adoc[*OWASP*]
 
 == References
 

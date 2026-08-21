@@ -4,7 +4,7 @@ The Agent2Agent (A2A) protocol is an open standard, announced by Google in April
 2025, that defines how independent AI agents communicate and coordinate with one
 another across different systems, vendors, and frameworks.
 
-As organizations build more *xref:agent.adoc[agentic]* systems, they
+As organizations build more xref:agent.adoc[*agentic*] systems, they
 increasingly need agents built by different teams — and on different platforms —
 to work together. Without a common protocol, every agent-to-agent integration is
 bespoke.
@@ -14,15 +14,15 @@ each other, exchange messages, and delegate tasks, without sharing internal
 state or relying on proprietary integrations.
 
 A2A is complementary to the
-*xref:model-context-protocol.adoc[Model Context Protocol (MCP)]*, not a
+xref:model-context-protocol.adoc[*Model Context Protocol (MCP)*], not a
 competitor to it. The two solve different problems. MCP connects an agent to its
 tools and data sources, while A2A connects agents to other agents. An
-*xref:agent-harness.adoc[agent harness]* may combine both — MCP to give each
+xref:agent-harness.adoc[*agent harness*] may combine both — MCP to give each
 agent its capabilities, and A2A to let those agents collaborate.
 
 == Core concepts
 
-A2A is a *xref:client-server-architecture.adoc[client-server]* protocol. An
+A2A is a xref:client-server-architecture.adoc[*client-server*] protocol. An
 *A2A client* is the application or agent that initiates a request on behalf of a
 user or another system. An *A2A server*, sometimes called a remote agent,
 exposes an A2A-compliant endpoint that processes requests and returns results.
@@ -30,7 +30,7 @@ exposes an A2A-compliant endpoint that processes requests and returns results.
 Every A2A server publishes an *Agent Card*, a JSON metadata document describing
 its identity, capabilities, skills, service endpoint, and authentication
 requirements. By convention the card is served at
-`/.well-known/agent-card.json`, so a client can *xref:service-discovery.adoc[discover]* a remote agent from
+`/.well-known/agent-card.json`, so a client can xref:service-discovery.adoc[*discover*] a remote agent from
 its domain alone.
 The card may be signed with a JSON Web Signature so clients can verify its
 authenticity and integrity.
@@ -51,7 +51,7 @@ machine-to-machine exchange self-describing. Task outputs are returned as
 
 Because tasks can run for minutes or hours, A2A offers three update mechanisms.
 A client can poll a task with `GetTask`, subscribe to a live stream of status
-and artifact events, or register a *xref:webhook.adoc[webhook]* to receive push
+and artifact events, or register a xref:webhook.adoc[*webhook*] to receive push
 notifications when the task changes state. The choice is driven by the client's
 connectivity and latency needs.
 
@@ -71,7 +71,7 @@ than blocking until completion, and human-in-the-loop pauses are first-class. A
 task can wait on additional input or authorization mid-flight.
 
 It reuses existing web standards rather than inventing new ones. A2A builds on
-HTTP, JSON-RPC 2.0, and *xref:server-sent-events.adoc[Server-Sent Events]*, and
+HTTP, JSON-RPC 2.0, and xref:server-sent-events.adoc[*Server-Sent Events*], and
 aligns its security model with familiar enterprise practices such as OAuth 2.0,
 OpenID Connect, and mutual TLS.
 The goal is interoperability with the tooling and infrastructure organizations
@@ -109,8 +109,8 @@ human-in-the-loop pause — the three A2A virtues in one flow.
 
 == Protocol bindings
 
-The data model is defined in *xref:protocol-buffers.adoc[Protocol Buffers]* and
-mapped to three standard bindings: JSON-RPC 2.0 over HTTP, *xref:grpc.adoc[gRPC]*
+The data model is defined in xref:protocol-buffers.adoc[*Protocol Buffers*] and
+mapped to three standard bindings: JSON-RPC 2.0 over HTTP, xref:grpc.adoc[*gRPC*]
 over HTTP/2, and a REST-style HTTP+JSON binding. An agent may expose several
 bindings at once, listed in preference order on its Agent Card, and all are
 required to behave equivalently. Custom
@@ -132,7 +132,7 @@ standard headers or metadata.
 A task may pause in an `auth-required` state when an agent needs authorization
 it does not hold, delegating the request back to the client or a human approver.
 Push notification webhooks are themselves authenticated, and agents are expected
-to validate webhook URLs to prevent *xref:ssrf.adoc[server-side request forgery]*.
+to validate webhook URLs to prevent xref:ssrf.adoc[*server-side request forgery*].
 
 == Trade-offs and limits
 
@@ -179,8 +179,8 @@ normative Protocol Buffer definition.
 
 == See also
 
-* *xref:agent.adoc[Agent]*
-* *xref:agent-harness.adoc[Agent harness]*
-* *xref:agent-orchestration.adoc[Agent orchestration]*
-* *xref:large-language-model.adoc[Large language model (LLM)]*
-* *xref:model-context-protocol.adoc[Model Context Protocol]*
+* xref:agent.adoc[*Agent*]
+* xref:agent-harness.adoc[*Agent harness*]
+* xref:agent-orchestration.adoc[*Agent orchestration*]
+* xref:large-language-model.adoc[*Large language model (LLM)*]
+* xref:model-context-protocol.adoc[*Model Context Protocol*]

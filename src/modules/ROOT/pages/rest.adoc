@@ -15,7 +15,7 @@ as _RESTful_.
 
 === Client-server
 
-The *xref:client-server-architecture.adoc[client and server]* are decoupled. The
+The xref:client-server-architecture.adoc[*client and server*] are decoupled. The
 client handles the user interface. The server manages data and business logic.
 Neither needs knowledge of the other's internals.
 
@@ -114,7 +114,7 @@ CRUD-shaped are awkward to express.
 
 == REST vs RPC
 
-*xref:remote-procedure-call.adoc[Remote Procedure Call (RPC)]* takes a
+xref:remote-procedure-call.adoc[*Remote Procedure Call (RPC)*] takes a
 different approach. The client calls a named function or method on the server,
 passing parameters.
 
@@ -152,7 +152,7 @@ passing parameters.
 |===
 
 RPC is a natural fit for internal microservice communication, particularly with
-modern implementations like *xref:grpc.adoc[gRPC]*, which provide performance
+modern implementations like xref:grpc.adoc[*gRPC*], which provide performance
 advantages through binary encoding and streaming. REST is more appropriate when
 the API is public-facing and needs to be navigable by diverse, unknown clients.
 
@@ -161,8 +161,8 @@ the API is public-facing and needs to be navigable by diverse, unknown clients.
 Because REST endpoints return fixed response shapes, clients often receive more
 data than they need (_over-fetching_) or must make multiple requests to assemble
 what they need (_under-fetching_). Collection endpoints are therefore almost
-always *xref:pagination.adoc[paginated]*, so a single `GET /books` returns one
-page of results rather than the whole catalog. *xref:graphql.adoc[GraphQL]* was
+always xref:pagination.adoc[*paginated*], so a single `GET /books` returns one
+page of results rather than the whole catalog. xref:graphql.adoc[*GraphQL*] was
 designed specifically to address the over-fetching and under-fetching problems
 by letting clients declare exactly which fields they require.
 
@@ -186,19 +186,19 @@ by letting clients declare exactly which fields they require.
   Clients cannot request partial data.
 * *Multiple round trips*: Assembling a page that needs data from several
   resources may require several sequential requests.
-* *No built-in streaming*: REST over HTTP/1.1 is *xref:request-response.adoc[request-response]*. Streaming
+* *No built-in streaming*: REST over HTTP/1.1 is xref:request-response.adoc[*request-response*]. Streaming
   requires either HTTP/2 server-sent events, WebSockets, or chunked transfer
   encoding.
 
 == See also
 
-* *xref:http.adoc[HyperText Transfer Protocol (HTTP)]*: The underlying transport
+* xref:http.adoc[*HyperText Transfer Protocol (HTTP)*]: The underlying transport
   protocol, and the source of REST's uniform interface.
-* *xref:http-api.adoc[HTTP API]*: The broader category of APIs built on HTTP, of
+* xref:http-api.adoc[*HTTP API*]: The broader category of APIs built on HTTP, of
   which RESTful APIs are one style.
-* *xref:grpc.adoc[gRPC]*: A high-performance RPC framework, common for internal
+* xref:grpc.adoc[*gRPC*]: A high-performance RPC framework, common for internal
   microservice communication.
-* *xref:graphql.adoc[GraphQL]*: A query language for APIs that addresses REST's
+* xref:graphql.adoc[*GraphQL*]: A query language for APIs that addresses REST's
   over-fetching and under-fetching limitations.
 * xref:idempotent.adoc[*Idempotent*]: The property that makes `GET`, `PUT`, and
   `DELETE` safe to retry, and that `POST` and `PATCH` lack.

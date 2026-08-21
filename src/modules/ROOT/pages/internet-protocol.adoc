@@ -3,12 +3,12 @@
 The Internet Protocol (IP) is the fundamental network-layer protocol of the
 internet. It defines how data is addressed, packetized, and routed across
 interconnected networks from a source host to a destination host. IP operates at
-Layer 3 of the *xref:osi-model.adoc[OSI model]*.
+Layer 3 of the xref:osi-model.adoc[*OSI model*].
 
 IP is a connectionless, best-effort protocol: it makes no guarantee that packets
 will arrive, arrive in order, or arrive only once. Reliability, ordering, and
 error recovery are the responsibility of higher-layer protocols such as
-*xref:tcp.adoc[TCP]*.
+xref:tcp.adoc[*TCP*].
 
 == How IP works
 
@@ -16,7 +16,7 @@ Data from higher layers is wrapped in an IP packet (also called a datagram)
 consisting of a header and a payload:
 
 * *Header*: contains source and destination
-  *xref:internet-protocol-address.adoc[IP addresses]*, the protocol of the
+  xref:internet-protocol-address.adoc[*IP addresses*], the protocol of the
   encapsulated payload (e.g. TCP=6, UDP=17, ICMP=1), a TTL (Time-To-Live)
   counter, and other control fields.
 * *Payload*: the data from Layer 4 (e.g. a TCP segment or UDP datagram).
@@ -70,7 +70,7 @@ Both IPv4 and IPv6 reserve certain address ranges for specific purposes:
   `192.168.0.0/16`. Routable only within private networks. Not forwarded by
   internet routers.
 * *Link-local*: `169.254.0.0/16` (IPv4) / `fe80::/10` (IPv6). Automatically
-  assigned when no *xref:dhcp.adoc[DHCP]* server is available. Only valid
+  assigned when no xref:dhcp.adoc[*DHCP*] server is available. Only valid
   within a single network
   segment.
 * *Multicast*: `224.0.0.0/4` (IPv4) / `ff00::/8` (IPv6). Packets addressed to a
@@ -81,7 +81,7 @@ Both IPv4 and IPv6 reserve certain address ranges for specific purposes:
 == CIDR notation
 
 IP networks are expressed in
-*xref:cidr.adoc[Classless Inter-Domain Routing (CIDR)]* notation: an address
+xref:cidr.adoc[*Classless Inter-Domain Routing (CIDR)*] notation: an address
 followed by a prefix length (e.g. `192.168.1.0/24`). The prefix length
 specifies how many bits of the address identify the network (the rest identify
 individual hosts within it). `/24` means the first 24 bits are the network
@@ -95,12 +95,12 @@ flexible subnetting – dividing a network into smaller subnetworks.
 
 IP is the foundation on which other protocols operate:
 
-* *xref:tcp.adoc[TCP]* (Transmission Control Protocol): Adds reliable, ordered,
+* xref:tcp.adoc[*TCP*] (Transmission Control Protocol): Adds reliable, ordered,
   connection-oriented delivery on top of IP.
-* *xref:udp.adoc[UDP]* (User Datagram Protocol): Lightweight, connectionless
+* xref:udp.adoc[*UDP*] (User Datagram Protocol): Lightweight, connectionless
   transport with no delivery guarantees. Used where speed matters more than
   reliability (DNS, streaming, games).
-* *xref:icmp.adoc[ICMP]* (Internet Control Message Protocol): Carries
+* xref:icmp.adoc[*ICMP*] (Internet Control Message Protocol): Carries
   diagnostic and error messages (used by `ping` and `traceroute`).
 * *BGP* (Border Gateway Protocol): The interdomain routing protocol that lets
   autonomous systems exchange reachability information, building the routing
@@ -109,8 +109,8 @@ IP is the foundation on which other protocols operate:
 
 == See also
 
-* *xref:internet-protocol-address.adoc[IP address]*
-* *xref:tcp.adoc[TCP]*
-* *xref:border-gateway-protocol.adoc[Border Gateway Protocol (BGP)]*
-* *xref:osi-model.adoc[OSI model]*
-* *xref:http.adoc[HTTP]*
+* xref:internet-protocol-address.adoc[*IP address*]
+* xref:tcp.adoc[*TCP*]
+* xref:border-gateway-protocol.adoc[*Border Gateway Protocol (BGP)*]
+* xref:osi-model.adoc[*OSI model*]
+* xref:http.adoc[*HTTP*]

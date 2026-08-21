@@ -5,8 +5,8 @@ local device is the primary, authoritative store for their data, and the cloud
 is reduced to a synchronization and backup mechanism rather than the source of
 truth. It inverts the cloud-first assumption that has dominated web application
 architecture since the rise of
-*xref:client-server-architecture.adoc[client-server architecture]* and
-*xref:software-as-a-service.adoc[software as a service]*, in which the server
+xref:client-server-architecture.adoc[*client-server architecture*] and
+xref:software-as-a-service.adoc[*software as a service*], in which the server
 holds the canonical copy and the client is little more than a view onto it.
 
 The term was coined by the Ink & Switch research lab in the 2019 essay
@@ -22,17 +22,17 @@ the ideals that local-first software aspires to.
 * *Ownership and longevity.* The user holds their data and can keep using it
   even if the vendor disappears — data outlives the application that produced it.
 * *Privacy.* Because data lives on the device, the server need not see
-  plaintext content to be useful. See *xref:privacy.adoc[privacy]*.
+  plaintext content to be useful. See xref:privacy.adoc[*privacy*].
 
 The defining technical move is to treat each device as an independent replica
 and to keep those replicas consistent through eventual convergence rather than
 through synchronous coordination. This is precisely the territory of
-*xref:eventual-consistency.adoc[eventual consistency]*: replicas are allowed to
+xref:eventual-consistency.adoc[*eventual consistency*]: replicas are allowed to
 diverge while disconnected and are reconciled once connectivity returns.
 
 == The synchronization problem
 
-The hard part of local-first is *xref:synchronization.adoc[synchronization]*:
+The hard part of local-first is xref:synchronization.adoc[*synchronization*]:
 reconciling the independent edits that several devices — or several users —
 make to overlapping data while they are disconnected. When two replicas have
 each edited the same item, the system has to decide which version wins, or
@@ -56,7 +56,7 @@ research and applied at the application edge.
 * *Three-way merging* keeps a shared base version and attempts to auto-merge
   concurrent changes, falling back to user intervention when the changes touch
   the same region, in the manner of a version-control merge.
-* *xref:event-sourcing.adoc[Event sourcing]* resolves conflicts by replaying
+* xref:event-sourcing.adoc[*Event sourcing*] resolves conflicts by replaying
   the ordered event log and deriving the merged state from it, trading
   implementation complexity for a full audit trail.
 
@@ -66,10 +66,10 @@ simple fields with three-way merging for rich documents.
 == Why it matters
 
 The payoff is twofold. First, performance: because reads and writes are local,
-the application has near-zero *xref:latency.adoc[latency]* and no round-trip
+the application has near-zero xref:latency.adoc[*latency*] and no round-trip
 dependency on the network, so there are no loading spinners and no degraded
 experience on a slow connection. Second,
-*xref:resilience.adoc[resilience]*: a local-first client keeps full
+xref:resilience.adoc[*resilience*]: a local-first client keeps full
 functionality through network outages, partial connectivity, and travel,
 because the copy it depends on never leaves the device.
 
@@ -84,7 +84,7 @@ building local-first applications.
 Local-first is not free. Synchronization machinery adds real complexity, and
 convergence bugs are subtle because they surface only when devices reconnect
 after long disconnection. Data that must not diverge — balances, inventory,
-anything subject to *xref:acid-principles.adoc[ACID principles]* — is poorly
+anything subject to xref:acid-principles.adoc[*ACID principles*] — is poorly
 suited to a model that embraces divergence and reconciliation, and is better
 served by a server-authoritative design with strong consistency. Multi-device
 sync also raises the cost of encryption, access control, and backup, since the

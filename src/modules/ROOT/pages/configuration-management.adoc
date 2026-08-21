@@ -11,8 +11,8 @@ machine toward that state, rather than logging in and configuring it by hand.
 Manual configuration drifts. Two servers built by different people on different
 days end up subtly different, and those differences become the source of
 hard-to-diagnose production faults. Configuration management tools address this
-by making the desired configuration *xref:version-control.adoc[version
-controlled]*, declarative, and automatically applied. The same configuration
+by making the desired configuration xref:version-control.adoc[*version
+controlled*], declarative, and automatically applied. The same configuration
 recipe can be applied to a development laptop, a staging cluster, and a
 production fleet, so that environments behave the same way.
 
@@ -24,19 +24,19 @@ state continuously (Chef, Puppet, Salt) or apply it imperatively on demand
 same idea: configuration expressed as code that can be reviewed, tested, and
 replayed.
 
-*xref:containerization.adoc[Containerization]* and
-*xref:container-orchestration.adoc[container orchestration]* shifted the
+xref:containerization.adoc[*Containerization*] and
+xref:container-orchestration.adoc[*container orchestration*] shifted the
 emphasis. A container image bakes its own configuration in at build time, and an
-orchestrator such as *xref:kubernetes.adoc[Kubernetes]* takes responsibility for
+orchestrator such as xref:kubernetes.adoc[*Kubernetes*] takes responsibility for
 converging the cluster toward a declared desired state. Runtime configuration
 that still needs to vary between deploys – credentials, feature toggles,
 environment-specific endpoints – is supplied separately through mechanisms like
 Kubernetes ConfigMaps and Secrets, following the
-*xref:12-factor-app.adoc[12-factor app]* principle that config lives in the
+xref:12-factor-app.adoc[*12-factor app*] principle that config lives in the
 environment, not in the artifact.
 
 Configuration management overlaps with
-*xref:infrastructure-as-code.adoc[infrastructure as code]* (IaC), and the two
+xref:infrastructure-as-code.adoc[*infrastructure as code*] (IaC), and the two
 terms are sometimes used interchangeably. The distinction is one of scope.
 Configuration management concerns the state of machines and services that have
 already been provisioned. IaC extends the same declarative, version-controlled
@@ -47,18 +47,18 @@ Ansible sit primarily on the CM side.
 
 Configuration management is a foundational practice of
 xref:devops.adoc[*DevOps*] and a precondition for reliable
-*xref:ci-cd.adoc[CI/CD]*. When infrastructure configuration is repeatable and
+xref:ci-cd.adoc[*CI/CD*]. When infrastructure configuration is repeatable and
 checked in, a deployment pipeline can tear down and rebuild whole environments
 on every change, which is what makes
-*xref:continuous-deployment.adoc[continuous deployment]* safe to attempt at all.
+xref:continuous-deployment.adoc[*continuous deployment*] safe to attempt at all.
 
 == See also
 
-* *xref:infrastructure-as-code.adoc[Infrastructure as code]*
-* *xref:container-orchestration.adoc[Container orchestration]*
-* *xref:kubernetes.adoc[Kubernetes]*
-* *xref:12-factor-app.adoc[12-factor app]*
-* *xref:version-control.adoc[Version control]*
-* *xref:devops.adoc[DevOps]*
-* *xref:ci-cd.adoc[CI/CD]*
-* *xref:continuous-deployment.adoc[Continuous deployment]*
+* xref:infrastructure-as-code.adoc[*Infrastructure as code*]
+* xref:container-orchestration.adoc[*Container orchestration*]
+* xref:kubernetes.adoc[*Kubernetes*]
+* xref:12-factor-app.adoc[*12-factor app*]
+* xref:version-control.adoc[*Version control*]
+* xref:devops.adoc[*DevOps*]
+* xref:ci-cd.adoc[*CI/CD*]
+* xref:continuous-deployment.adoc[*Continuous deployment*]

@@ -3,14 +3,14 @@
 Load is the volume of demand placed on a system at a given moment — the
 concurrent requests, active sessions, or units of work that callers are asking
 the system to handle. It is an input to the system, not a property of it. Load
-is what the world does to the system; *xref:capacity.adoc[capacity]* is what the
+is what the world does to the system; xref:capacity.adoc[*capacity*] is what the
 system can do in response.
 
 Load is often confused with its close neighbours.
-*xref:throughput.adoc[Throughput]* is the rate at which the system actually
+xref:throughput.adoc[*Throughput*] is the rate at which the system actually
 completes work — an output rather than an input. A system under heavy load may
 have low throughput if it is saturated or shedding work.
-*xref:latency.adoc[Latency]* is the time each individual request spends in the
+xref:latency.adoc[*Latency*] is the time each individual request spends in the
 system, and it is what load most directly degrades. As load approaches capacity,
 queues lengthen and latency rises, often sharply. Capacity is the ceiling on
 load the system can sustain while still meeting its other quality targets, and
@@ -19,36 +19,36 @@ always stated alongside a target latency or service level, rather than as a
 bare number.
 
 Load is not a single number. It has a *magnitude* — how much demand — and a
-*shape*, determined by the *xref:access-patterns.adoc[access patterns]* of the
+*shape*, determined by the xref:access-patterns.adoc[*access patterns*] of the
 workload: read-heavy or write-heavy, bursty or steady, fan-out or concentrated,
 uniform or skewed. Two services with identical request rates can place very
 different loads on their back-ends, depending on how expensive each request is
 and where the work falls. A workload that is uniform across partitions scales
-cheaply; one that is *xref:sharding.adoc[skewed]* concentrates load on a small
+cheaply; one that is xref:sharding.adoc[*skewed*] concentrates load on a small
 number of hot nodes and saturates them long before the rest of the fleet.
 
-Managing load is the central problem of *xref:scalability.adoc[scalability]* and
-*xref:performance.adoc[performance]* engineering.
-*xref:load-balancing.adoc[Load balancing]* spreads load across multiple
-resources so no single one saturates. *xref:auto-scaling.adoc[Auto-scaling]* adds
-capacity in response to rising load. *xref:rate-limiting.adoc[Rate limiting]* and
-*xref:circuit-breaker.adoc[circuit breakers]* shed or reject load to protect a
+Managing load is the central problem of xref:scalability.adoc[*scalability*] and
+xref:performance.adoc[*performance*] engineering.
+xref:load-balancing.adoc[*Load balancing*] spreads load across multiple
+resources so no single one saturates. xref:auto-scaling.adoc[*Auto-scaling*] adds
+capacity in response to rising load. xref:rate-limiting.adoc[*Rate limiting*] and
+xref:circuit-breaker.adoc[*circuit breakers*] shed or reject load to protect a
 system that cannot keep up. The ceiling a system can sustain is established
-empirically through *xref:load-testing.adoc[load testing]*, and the system's
+empirically through xref:load-testing.adoc[*load testing*], and the system's
 behaviour beyond that ceiling is probed by
-*xref:stress-testing.adoc[stress testing]*.
+xref:stress-testing.adoc[*stress testing*].
 
 == See also
 
-* *xref:capacity.adoc[Capacity]*
-* *xref:throughput.adoc[Throughput (aka. bandwidth)]*
-* *xref:latency.adoc[Latency]*
-* *xref:scalability.adoc[Scalability]*
-* *xref:performance.adoc[Performance]*
-* *xref:load-balancing.adoc[Load balancing]*
-* *xref:auto-scaling.adoc[Auto-scaling]*
-* *xref:load-testing.adoc[Load testing]*
-* *xref:stress-testing.adoc[Stress testing]*
-* *xref:rate-limiting.adoc[Rate limiting]*
-* *xref:circuit-breaker.adoc[Circuit breaker]*
-* *xref:sharding.adoc[Sharding]*
+* xref:capacity.adoc[*Capacity*]
+* xref:throughput.adoc[*Throughput (aka. bandwidth)*]
+* xref:latency.adoc[*Latency*]
+* xref:scalability.adoc[*Scalability*]
+* xref:performance.adoc[*Performance*]
+* xref:load-balancing.adoc[*Load balancing*]
+* xref:auto-scaling.adoc[*Auto-scaling*]
+* xref:load-testing.adoc[*Load testing*]
+* xref:stress-testing.adoc[*Stress testing*]
+* xref:rate-limiting.adoc[*Rate limiting*]
+* xref:circuit-breaker.adoc[*Circuit breaker*]
+* xref:sharding.adoc[*Sharding*]

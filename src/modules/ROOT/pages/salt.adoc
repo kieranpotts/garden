@@ -1,13 +1,13 @@
 = Salt
 
 A *salt* is a random value, unique per record, that is combined with an input
-before it is passed to a *xref:hashing.adoc[hash function]*. Its purpose is to
+before it is passed to a xref:hashing.adoc[*hash function*]. Its purpose is to
 ensure that two identical inputs do not produce the same digest. The salt is
 not secret. It is stored alongside the hash it modifies, in cleartext, and its
 security value comes entirely from its uniqueness, not from being hidden.
 
 The canonical use is password storage. When a system stores
-*xref:authentication.adoc[authentication]* credentials, it never stores the
+xref:authentication.adoc[*authentication*] credentials, it never stores the
 password itself. It stores a hash of the password, plus the salt that was
 mixed in. On login, the system re-reads the stored salt, re-computes the hash
 from the submitted password and that salt, and compares the result to the
@@ -21,7 +21,7 @@ same hash in the credential database. An attacker who steals the database can
 work on one copy of each hash and recover every account that shares it. They
 can also precompute digests for common passwords once, ahead of time, and look
 up the entire database by direct lookup. That precomputed table is a
-*xref:rainbow-table.adoc[rainbow table]*, and it is the attack salting is
+xref:rainbow-table.adoc[*rainbow table*], and it is the attack salting is
 designed to defeat.
 
 A unique, per-record salt changes the effective hash function for every entry.
@@ -34,7 +34,7 @@ than brute-forcing each hash individually.
 == Properties
 
 A salt has three properties that distinguish it from other random values used
-in *xref:cryptography.adoc[cryptography]*.
+in xref:cryptography.adoc[*cryptography*].
 
 * *Per-record uniqueness.* A fresh salt is generated for every value being
   hashed. Reusing a salt across records collapses back toward the
@@ -52,7 +52,7 @@ in *xref:cryptography.adoc[cryptography]*.
 
 == Salt versus nonce
 
-A salt is often confused with a *xref:nonce.adoc[nonce]*. Both are non-secret
+A salt is often confused with a xref:nonce.adoc[*nonce*]. Both are non-secret
 random values mixed into an input before processing, but their lifecycle is
 different. A salt is generated once per record and reused for every
 verification of that record. A nonce is generated once per message and then
@@ -61,8 +61,8 @@ across messages under the same key is a catastrophic break.
 
 == See also
 
-* *xref:hashing.adoc[Hashing]*
-* *xref:rainbow-table.adoc[Rainbow table]*
-* *xref:nonce.adoc[Nonce]*
-* *xref:cryptography.adoc[Cryptography]*
-* *xref:authentication.adoc[Authentication]*
+* xref:hashing.adoc[*Hashing*]
+* xref:rainbow-table.adoc[*Rainbow table*]
+* xref:nonce.adoc[*Nonce*]
+* xref:cryptography.adoc[*Cryptography*]
+* xref:authentication.adoc[*Authentication*]

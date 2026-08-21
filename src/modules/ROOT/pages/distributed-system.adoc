@@ -2,8 +2,8 @@
 
 A distributed system is a general term for any network of computers working as
 one coherent system. Distributed systems include
-*xref:cloud-computing.adoc[cloud computing]* services and
-*xref:peer-to-peer-architecture.adoc[peer-to-peer networks]*.
+xref:cloud-computing.adoc[*cloud computing*] services and
+xref:peer-to-peer-architecture.adoc[*peer-to-peer networks*].
 
 A computer program that is partitioned across multiple nodes in a distributed
 system is called a distributed program or distributed software. Components of a
@@ -12,18 +12,18 @@ components coordinate their actions by passing messages between themselves over
 the network.
 
 Examples of distributed software include applications like Hadoop (for
-*xref:big-data.adoc[big data]* processing), Kubernetes (for
-*xref:container-orchestration.adoc[container orchestration]*), and Cassandra (a
-*xref:distributed-databases.adoc[distributed database]*). Most
+xref:big-data.adoc[*big data*] processing), Kubernetes (for
+xref:container-orchestration.adoc[*container orchestration*]), and Cassandra (a
+xref:distributed-databases.adoc[*distributed database*]). Most
 *[web applications]* are also distributed programs. At the very least, web
-applications partition their processing between a *xref:client-server-architecture.adoc[client and server]*. The
+applications partition their processing between a xref:client-server-architecture.adoc[*client and server*]. The
 server-side application may be further partitioned into a
-*xref:service-oriented-architecture.adoc[service-oriented architecture]* such as
-*xref:microservices.adoc[microservices]*.
+xref:service-oriented-architecture.adoc[*service-oriented architecture*] such as
+xref:microservices.adoc[*microservices*].
 
 Distributed programming is the process of developing and maintaining distributed
 programs. Distributed computing is the field of
-*xref:computer-science.adoc[computer science]* that studies distributed systems.
+xref:computer-science.adoc[*computer science*] that studies distributed systems.
 
 Every distributed system shares three fundamental properties:
 
@@ -38,63 +38,63 @@ document.
 == Designing distributed systems
 
 Most large-scale systems are naturally distributed. That's because
-*xref:monolith.adoc[monoliths]*, as they grow in scope and load, become ever
-harder to maintain, develop, operate, and *xref:scalability.adoc[scale]*. So the natural tendency is
+xref:monolith.adoc[*monoliths*], as they grow in scope and load, become ever
+harder to maintain, develop, operate, and xref:scalability.adoc[*scale*]. So the natural tendency is
 toward breaking down monoliths into lots of smaller and simpler components that
 can each be developed, deployed, operated, scaled, and optimized independently.
-This process is known as *xref:decomposition.adoc[decomposition]*.
+This process is known as xref:decomposition.adoc[*decomposition*].
 
 Distribution is not always a deliberate architectural choice, however. When an
 application must communicate with external third-party services – such as
 payment processors, fraud detection APIs, or identity providers – those external
 machines are outside the developer's control. Yet the application is still
 subject to all the hazards of distributed communication: network failures,
-*xref:latency.adoc[latency]*, and data consistency issues across system
+xref:latency.adoc[*latency*], and data consistency issues across system
 boundaries. Whether or not you manage those extra machines yourself, you are
 responsible for planning around the failures that can occur in interactions with
 them.
 
 But distribution of processing and data has significant *[trade-offs]* in
-*xref:system-design.adoc[system design]*.
+xref:system-design.adoc[*system design*].
 
 Although individual units within a distributed system may be simpler and more
-more *xref:resilience.adoc[resilient]* due to increased *xref:isolation.adoc[isolation]*, overall a
+more xref:resilience.adoc[*resilient*] due to increased xref:isolation.adoc[*isolation*], overall a
 distributed system will always have more *[points of failure]* and a higher
-degree of *xref:complexity.adoc[accidental complexity]* than single-node systems
+degree of xref:complexity.adoc[*accidental complexity*] than single-node systems
 with comparable functionality. Distributed software is inherently *[brittle]*
 because you're introducing internal network calls, which are subject to
-*xref:fault-tolerance.adoc[network failures]* and greater operational
-constraints like *xref:latency.adoc[latency]* and *[bandwidth]*.
+xref:fault-tolerance.adoc[*network failures*] and greater operational
+constraints like xref:latency.adoc[*latency*] and *[bandwidth]*.
 
-Reasoning about *xref:concurrency.adoc[concurrency]*, managing
-*xref:consistency.adoc[data consistency]*, and designing
-*xref:monitoring.adoc[monitoring]* solutions, are other concerns that are
+Reasoning about xref:concurrency.adoc[*concurrency*], managing
+xref:consistency.adoc[*data consistency*], and designing
+xref:monitoring.adoc[*monitoring*] solutions, are other concerns that are
 particularly challenging in distributed software design.
 
 _Distributed programming is hard._ The main challenges in designing distributed
 software are:
 
-* *Fault tolerance*: *xref:fault-tolerance.adoc[Fault tolerance]* is a key
-  *xref:quality-attributes.adoc[quality attribute]* of distributed systems, and
+* *Fault tolerance*: xref:fault-tolerance.adoc[*Fault tolerance*] is a key
+  xref:quality-attributes.adoc[*quality attribute*] of distributed systems, and
   it needs to be treated as a first-class concern in the
-  *xref:system-design.adoc[system design]*. Distributed software is subject to a
+  xref:system-design.adoc[*system design*]. Distributed software is subject to a
   wide range of potential failure modes, including network failures, delayed
   messages, and node crashes. The principle of *[designing for failure]* means
   designing each service in a way that it can tolerate failures in dependent
   services. For example, if an email service goes offline, emails should be
   queued for delivery and sent later when the email service comes back online.
-  *xref:asynchronous-communication.adoc[Asynchronous communication patterns]* improve the fault tolerance of
+  xref:asynchronous-communication.adoc[*Asynchronous communication patterns*] improve the fault tolerance of
   distributed systems by reducing *temporal coupling* (where the availability of
   one service is dependent on the immediate availability of another). Design
-  patterns such as *xref:circuit-breaker.adoc[circuit breakers]* and
-  *xref:bulkhead.adoc[bulkheads]* also help to improve the fault tolerance of
+  patterns such as xref:circuit-breaker.adoc[*circuit breakers*] and
+  xref:bulkhead.adoc[*bulkheads*] also help to improve the fault tolerance of
   distributed systems by isolating failures, so preventing failures in one
   component from cascading into other components.
-  *xref:disaster-recovery.adoc[Disaster recovery]* planning is also important.
+  xref:disaster-recovery.adoc[*Disaster recovery*] planning is also important.
   It is the process of designing services to recover quickly, in an automated
   way, from failures.
 
-* *Latency and bandwidth*: *xref:latency.adoc[Latency]* and *[bandwidth]* are
+* *Latency and bandwidth*: xref:latency.adoc[*Latency*] and *[bandwidth]* are
   two key performance metrics in distributed systems. Latency is the time it
   takes for a message to travel from one node to another, while bandwidth is the
   amount of data that can be transmitted over a network in a given time period.
@@ -105,18 +105,18 @@ software are:
 
 * *Concurrency and consistency*: Because distributed systems generally use
   asynchronous communication between services, managing
-  *xref:concurrency.adoc[concurrency]* and ensuring
-  *xref:consistency.adoc[eventual consistency]* become key design concerns.
-  *xref:cap-theorem.adoc[CAP theorem]* is relevant in distributed systems that
-  that *xref:replication.adoc[replicate]* data between nodes.
+  xref:concurrency.adoc[*concurrency*] and ensuring
+  xref:consistency.adoc[*eventual consistency*] become key design concerns.
+  xref:cap-theorem.adoc[*CAP theorem*] is relevant in distributed systems that
+  that xref:replication.adoc[*replicate*] data between nodes.
 
-* *Observability*: *xref:monitoring.adoc[Monitoring]*,
-  *xref:logging.adoc[logging]*, and *[debugging]* all become much more complex
-  in distributed systems. *xref:observability.adoc[Observability]* and
-  especially *xref:tracing.adoc[distributed tracing]* tools are specifically
+* *Observability*: xref:monitoring.adoc[*Monitoring*],
+  xref:logging.adoc[*logging*], and *[debugging]* all become much more complex
+  in distributed systems. xref:observability.adoc[*Observability*] and
+  especially xref:tracing.adoc[*distributed tracing*] tools are specifically
   designed to address these challenges.
 
-* *xref:testing.adoc[Testing]*, too, is much more challenging in distributed
+* xref:testing.adoc[*Testing*], too, is much more challenging in distributed
   systems. It is harder, for example, to do proper integration tests to validate
   a whole system, compared to monolithic systems where all the components run in
   the same process. There tends to be increased reliance upon service mocks,
@@ -142,8 +142,8 @@ software are:
 
 For these reasons, distributed computing should be avoided until it is required
 to solve specific problems, usually something to do with
-*xref:scalability.adoc[scalability]*. Better to start with a
-*xref:modular-monolith.adoc[modular monolith]*, with scalability planned into
+xref:scalability.adoc[*scalability*]. Better to start with a
+xref:modular-monolith.adoc[*modular monolith*], with scalability planned into
 the design from the start, and extract independent services incrementally.
 
 == The eight fallacies of distributed software
@@ -152,7 +152,7 @@ the design from the start, and extract independent services incrementally.
 // TODO: https://web.archive.org/web/20070811082651/http://java.sys-con.com/read/38665.htm
 
 Distributed software design requires a particular set of
-*xref:design-principles.adoc[design principles]* and *[systems thinking]*.
+xref:design-principles.adoc[*design principles*] and *[systems thinking]*.
 
 The eight fallacies of distributed computing are a set of assertions that
 describe false assumptions that are often made by computer programmers who are
@@ -176,9 +176,9 @@ The eight fallacies are:
    to recover from those errors, with the result being the application "hanging"
    or crashing, losing data, or entering an inconsistent or incorrect state.
    Indirect *[asynchronous]*
-   *xref:inter-process-communication.adoc[inter-process communication]*,
-   hardware and software *xref:redundancy.adoc[redundancy]*, and logic such as
-   *[timeouts]* and *xref:retry.adoc[retries]*, can mitigate the effects of
+   xref:inter-process-communication.adoc[*inter-process communication*],
+   hardware and software xref:redundancy.adoc[*redundancy*], and logic such as
+   *[timeouts]* and xref:retry.adoc[*retries*], can mitigate the effects of
    network errors.
 
 2. *Latency is zero*: Latency is typically pretty good in LANs, but it
@@ -204,7 +204,7 @@ The eight fallacies are:
    network latency, in production environments there may be constraints on
    bandwidth that are beyond our control. Therefore, we should use bandwidth
    wisely, designing our payloads to maximize network transfer efficiency, and
-   use *[compression]* and *xref:caching.adoc[caching]* to reduce the amount of
+   use *[compression]* and xref:caching.adoc[*caching*] to reduce the amount of
    data that needs to be transferred over the network.
 
 4. *The network is secure*: Assuming that internal networks are secure can open
@@ -225,7 +225,7 @@ The eight fallacies are:
    changes in network topology. This means not depending on services being
    available in specific locations (IP addresses), instead dynamically
    discovering routes to target endpoints.
-   *xref:service-discovery.adoc[Service discovery]* is a common pattern here. In
+   xref:service-discovery.adoc[*Service discovery*] is a common pattern here. In
    addition, DNS names should be used instead of IP addresses, with a central
    DNS server managing routing tables (the mapping of DNS names to IP
    addresses).
@@ -242,9 +242,9 @@ The eight fallacies are:
    And system administrators may change disk quotas or set more limited
    privileges for users, which may inadvertently impact some operations of the
    application logic. Multiple strategies are needed to mitigate all these
-   risks. *xref:monitoring.adoc[Monitoring]* and *xref:alerting.adoc[alerting]*
+   risks. xref:monitoring.adoc[*Monitoring*] and xref:alerting.adoc[*alerting*]
    are essential. *[Staging]* environments can be used to test changes before
-   they are deployed to production. And *xref:canary-deployment.adoc[canary releases]* can be used to test
+   they are deployed to production. And xref:canary-deployment.adoc[*canary releases*] can be used to test
    new versions of software in production, with a small subset of users, before
    rolling out the changes to all users. All these things help, but there is no
    silver bullet here.

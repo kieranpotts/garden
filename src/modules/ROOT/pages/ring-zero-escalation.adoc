@@ -1,13 +1,13 @@
 = Ring zero escalation
 
-Ring zero escalation is a *xref:security.adoc[security]* attack in which an
+Ring zero escalation is a xref:security.adoc[*security*] attack in which an
 attacker gains execution at the highest privilege level of a computer system,
 known as *ring 0* or *kernel mode*. Ring 0 is the protection ring at which the
 operating system kernel runs, with unrestricted access to memory and hardware.
 
 Most modern operating systems use a layered privilege model derived from the
 protection rings introduced by the Multics project and later adopted by x86
-*xref:processor-architectures.adoc[processor architectures]*. User code runs in
+xref:processor-architectures.adoc[*processor architectures*]. User code runs in
 a less privileged ring (typically ring 3), and transitions to ring 0 are
 mediated by the kernel through well-defined entry points such as system calls.
 Ring zero escalation is any technique that bypasses those entry points to run
@@ -40,17 +40,17 @@ unprivileged code influence the kernel. Common vectors include:
 
 == Virtualization and isolation
 
-Ring zero escalation is also relevant to *xref:virtual-machine.adoc[virtual
-machines]* and *xref:container.adoc[containers]*. Containers on a shared host
+Ring zero escalation is also relevant to xref:virtual-machine.adoc[*virtual
+machines*] and xref:container.adoc[*containers*]. Containers on a shared host
 all rely on the same host kernel, so an attacker who escalates to ring 0 inside
 one container can reach every other container and the host itself. A
-*xref:hypervisor.adoc[hypervisor]* adds a stronger boundary. The escape stops at
+xref:hypervisor.adoc[*hypervisor*] adds a stronger boundary. The escape stops at
 the guest kernel and does not directly cross into other VMs, though a further
 hypervisor escape (a *virtual machine escape*) would be needed to break out
 entirely.
 
 Sandboxing is the general principle of designing boundaries so that breaching
-one *xref:sandbox.adoc[sandbox]* does not grant the attacker the host's full
+one xref:sandbox.adoc[*sandbox*] does not grant the attacker the host's full
 trust root. Where the sandbox is a process container sharing a kernel, ring zero
 escalation is precisely the breach that defeats it.
 
@@ -73,7 +73,7 @@ No single control eliminates ring zero escalation. Defenses are layered:
 
 == See also
 
-* *xref:security.adoc[Security]*
-* *xref:virtual-machine.adoc[Virtual machine]*
-* *xref:hypervisor.adoc[Hypervisor]*
-* *xref:sandbox.adoc[Sandbox]*
+* xref:security.adoc[*Security*]
+* xref:virtual-machine.adoc[*Virtual machine*]
+* xref:hypervisor.adoc[*Hypervisor*]
+* xref:sandbox.adoc[*Sandbox*]

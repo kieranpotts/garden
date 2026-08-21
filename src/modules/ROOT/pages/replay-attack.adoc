@@ -13,7 +13,7 @@ transaction message to cause a duplicate payment.
 
 Replay attacks can be mitigated using:
 
-* *xref:nonce.adoc[nonces (numbers used once)]*, unique random values embedded
+* xref:nonce.adoc[*nonces (numbers used once)*], unique random values embedded
   in each request that the server validates and discards after use;
 * *timestamps*, allowing servers to reject requests that fall outside a narrow
   acceptable time window;
@@ -22,5 +22,5 @@ Replay attacks can be mitigated using:
 
 Modern protocols such as TLS incorporate replay protection through
 session-specific keys and sequence tracking, and short-lived tokens (such as
-*xref:jwt.adoc[JWTs]* with tight expiry times) limit the window of opportunity
+xref:jwt.adoc[*JWTs*] with tight expiry times) limit the window of opportunity
 for a captured credential to be reused.

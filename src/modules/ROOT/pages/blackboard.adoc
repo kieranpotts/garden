@@ -1,7 +1,7 @@
 = Blackboard
 
-The blackboard pattern is an *xref:architectural-pattern.adoc[architectural
-pattern]* for problems that have no known deterministic solution strategy. A
+The blackboard pattern is an xref:architectural-pattern.adoc[*architectural
+pattern*] for problems that have no known deterministic solution strategy. A
 set of independent, specialized components called *knowledge sources*
 cooperate to build a solution incrementally, communicating only through a
 shared data structure known as the *blackboard*.
@@ -24,7 +24,7 @@ The blackboard pattern suits problems that combine incomplete knowledge,
 uncertain data, and several distinct areas of expertise, eg. image
 understanding, fault diagnosis, and complex planning. When a problem can be
 decomposed into a fixed pipeline of stages,
-*xref:pipe-and-filter.adoc[pipe and filter]* is the simpler choice.
+xref:pipe-and-filter.adoc[*pipe and filter*] is the simpler choice.
 
 == Trade-offs
 
@@ -36,7 +36,7 @@ decomposed into a fixed pipeline of stages,
 * *Shared state as a bottleneck.* The blackboard is a single point of failure
   and a serialization point. Scaling it across many nodes is hard; keeping
   replicas consistent generally requires
-  *xref:scatter-and-gather.adoc[scatter-and-gather]* style coordination.
+  xref:scatter-and-gather.adoc[*scatter-and-gather*] style coordination.
 * *Non-deterministic execution.* With no fixed control flow, debugging and
   reproducing failures is difficult.
 
@@ -49,13 +49,13 @@ commercial GigaSpaces product bring tuple spaces to the JVM.
 
 == See also
 
-* *xref:architectural-pattern.adoc[Architectural pattern]*
-* *xref:bulk-synchronous-parallel.adoc[Bulk synchronous parallel]*
-* *xref:data-oriented-architecture.adoc[Data-oriented architecture]*
-* *xref:distributed-system.adoc[Distributed system]*
-* *xref:pipe-and-filter.adoc[Pipe and filter]*
-* *xref:publish-subscribe-pattern.adoc[Publish-subscribe pattern]*
-* *xref:scatter-and-gather.adoc[Scatter and gather]*
+* xref:architectural-pattern.adoc[*Architectural pattern*]
+* xref:bulk-synchronous-parallel.adoc[*Bulk synchronous parallel*]
+* xref:data-oriented-architecture.adoc[*Data-oriented architecture*]
+* xref:distributed-system.adoc[*Distributed system*]
+* xref:pipe-and-filter.adoc[*Pipe and filter*]
+* xref:publish-subscribe-pattern.adoc[*Publish-subscribe pattern*]
+* xref:scatter-and-gather.adoc[*Scatter and gather*]
 
 == References
 

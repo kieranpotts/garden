@@ -1,7 +1,7 @@
 = Cross-site scripting (XSS)
 
 *Cross-site scripting (XSS)* is a web security vulnerability in which an
-attacker injects malicious executable markup – usually *xref:javascript.adoc[JavaScript]* –
+attacker injects malicious executable markup – usually xref:javascript.adoc[*JavaScript*] –
 into a web page that is then rendered in another user's browser. The injected
 script executes within the *security context of the vulnerable site*, not the
 attacker's, so it can read and act on data the browser would only expose to a
@@ -9,11 +9,11 @@ legitimate origin: cookies, session tokens, DOM contents, and responses from
 same-origin API endpoints.
 
 XSS is an *injection* flaw, in the same family as
-*xref:sql-injection.adoc[SQL injection]*: both exploit code that concatenates
+xref:sql-injection.adoc[*SQL injection*]: both exploit code that concatenates
 untrusted data into an interpreter without adequate separation. The difference
 is the target interpreter – the browser's HTML/JS parser rather than the
 database engine. XSS has appeared on every edition of the
-*xref:owasp.adoc[OWASP]* Top Ten and remains one of the most prevalent
+xref:owasp.adoc[*OWASP*] Top Ten and remains one of the most prevalent
 web vulnerabilities in production applications.
 
 == How it works
@@ -37,7 +37,7 @@ XSS is conventionally classified by how the payload reaches the victim.
 * *Reflected (non-persistent) XSS.* The payload is embedded in a link or form
   submission and echoed back by the server in the immediate response. It
   affects only the user who triggers it, so attackers typically deliver it via
-  *xref:spoofing.adoc[phishing]* or a crafted link.
+  xref:spoofing.adoc[*phishing*] or a crafted link.
 
 * *DOM-based XSS.* The payload never reaches the server. Client-side
   JavaScript reads it from a sink such as
@@ -53,7 +53,7 @@ defense.
 
 Because the script runs as the victim on the vulnerable origin, the impact is
 bounded only by what that user can do on the site. Common consequences include
-stealing session cookies to bypass *xref:authentication.adoc[authentication]*,
+stealing session cookies to bypass xref:authentication.adoc[*authentication*],
 performing actions on the user's behalf, scraping sensitive page content,
 redirecting to spoofed pages for credential harvesting,
 and using the compromised session as a pivot for further attacks. Where the
@@ -70,11 +70,11 @@ or `v-html` are the dangerous exceptions and must be handled explicitly.
 
 Layered defenses reduce residual risk:
 
-* *xref:input-validation.adoc[Input validation]* on untrusted input rejects
+* xref:input-validation.adoc[*Input validation*] on untrusted input rejects
   malformed data early, but it is a secondary measure – validation alone cannot
   anticipate every encoding trick an attacker may use.
 
-* A *Content-Security-Policy* delivered through *xref:security-headers.adoc[security headers]*
+* A *Content-Security-Policy* delivered through xref:security-headers.adoc[*security headers*]
   restricts the scripts a page may execute, blocking inline and untrusted
   sources. CSP does not fix the underlying injection but limits its blast
   radius.
@@ -91,13 +91,13 @@ control that actually closes the gap.
 
 == See also
 
-* *xref:sql-injection.adoc[SQL injection]*
-* *xref:ssrf.adoc[Server-side request forgery (SSRF)]*
-* *xref:input-validation.adoc[Input validation]*
-* *xref:security-headers.adoc[Security headers]*
-* *xref:owasp.adoc[OWASP]*
-* *xref:javascript.adoc[JavaScript]*
-* *xref:authentication.adoc[Authentication]*
-* *xref:spoofing.adoc[Spoofing]*
-* *xref:security.adoc[Security]*
-* *xref:security-testing.adoc[Security testing]*
+* xref:sql-injection.adoc[*SQL injection*]
+* xref:ssrf.adoc[*Server-side request forgery (SSRF)*]
+* xref:input-validation.adoc[*Input validation*]
+* xref:security-headers.adoc[*Security headers*]
+* xref:owasp.adoc[*OWASP*]
+* xref:javascript.adoc[*JavaScript*]
+* xref:authentication.adoc[*Authentication*]
+* xref:spoofing.adoc[*Spoofing*]
+* xref:security.adoc[*Security*]
+* xref:security-testing.adoc[*Security testing*]

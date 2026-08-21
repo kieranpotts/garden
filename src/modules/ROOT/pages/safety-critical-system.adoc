@@ -4,22 +4,22 @@ A safety-critical system, also known as a *life-critical system* and
 historically a *man-rated system*, is a system whose failure or malfunction may
 result in death or serious injury to people, loss or severe damage to property
 or equipment, or environmental harm. The term is closely related to
-*xref:high-integrity.adoc[high integrity]*, which is often used as the umbrella
+xref:high-integrity.adoc[*high integrity*], which is often used as the umbrella
 classification for systems — including safety-critical, mission-critical, and
 life-critical systems — whose failure carries serious consequences.
 
 Safety-critical software is developed to a higher standard than ordinary
 commercial software, with an extreme focus on reliability, safety, and
-correctness. See also *xref:software-quality.adoc[software quality]* and
-*xref:software-assurance.adoc[software assurance]*. The development processes
-used to produce it, such as *xref:cleanroom.adoc[Cleanroom]* software
+correctness. See also xref:software-quality.adoc[*software quality*] and
+xref:software-assurance.adoc[*software assurance*]. The development processes
+used to produce it, such as xref:cleanroom.adoc[*Cleanroom*] software
 engineering, favor rigorous specification, review, and certification over
 debug-and-patch iteration.
 
 == Standards and integrity levels
 
 Safety-critical systems are usually developed under a domain-specific safety
-standard, and *xref:compliance.adoc[compliance]* with the applicable standard is
+standard, and xref:compliance.adoc[*compliance*] with the applicable standard is
 typically mandatory for certification. The principal frameworks are:
 
 * *DO-178C* — aviation software, with its *Design Assurance Level (DAL)* scale
@@ -35,7 +35,7 @@ typically mandatory for certification. The principal frameworks are:
 
 Each standard defines a set of techniques that must be applied at the higher
 integrity levels, and traces them back to the hazards they mitigate. The
-*xref:raaml.adoc[Risk Analysis and Assessment Modeling Language (RAAML)]* gives
+xref:raaml.adoc[*Risk Analysis and Assessment Modeling Language (RAAML)*] gives
 tooling a shared, model-based notation for the analyses these standards demand.
 
 == Hazard and risk analysis
@@ -51,10 +51,10 @@ structured argument that residual risk has been reduced to an acceptable level.
 == Verification and validation
 
 Safety-critical development relies on verification that is stronger than
-conventional testing alone. *xref:formal-methods.adoc[Formal methods]* apply
+conventional testing alone. xref:formal-methods.adoc[*Formal methods*] apply
 mathematical proof to show that a system satisfies its specification, and are
 mandated or strongly encouraged at the highest integrity levels of standards
-such as DO-178C. *xref:static-analysis.adoc[Static analysis]*, including sound
+such as DO-178C. xref:static-analysis.adoc[*Static analysis*], including sound
 analyzers built on abstract interpretation, is used to demonstrate the absence
 of whole classes of runtime error in embedded code. Testing remains necessary,
 but it supplements these arguments rather than standing alone.
@@ -112,11 +112,11 @@ out.
 
 Safety is not achieved by process alone. The architecture of a safety-critical
 system is expected to tolerate faults, so that the failure of a single component
-cannot propagate to a hazard. *xref:redundancy.adoc[Redundancy]* provides spare
-capacity so that a failed unit can be replaced; *xref:fault-tolerance.adoc[fault
-tolerance]* is the broader discipline of keeping the system operating correctly
+cannot propagate to a hazard. xref:redundancy.adoc[*Redundancy*] provides spare
+capacity so that a failed unit can be replaced; xref:fault-tolerance.adoc[*fault
+tolerance*] is the broader discipline of keeping the system operating correctly
 in the presence of failures; and eliminating
-*xref:single-point-of-failure.adoc[single points of failure]* is a basic
+xref:single-point-of-failure.adoc[*single points of failure*] is a basic
 expectation at the higher integrity levels. Common-mode failures — faults that
 defeat redundancy by striking "independent" channels through a shared dependency
 — are a particular concern, and the standards require evidence that redundant

@@ -11,19 +11,19 @@ circuit breaker will remain open for a configurable amount of time, after which
 it will automatically close, allowing further requests to be sent again to the
 service.
 
-Circuit breakers complement the *xref:retry.adoc[retry mechanism]*. Whereas a
+Circuit breakers complement the xref:retry.adoc[*retry mechanism*]. Whereas a
 retry mechanism will keep retrying a failing service until it succeeds, a
 circuit breaker will trip when the error rate exceeds a configured threshold.
-Where *xref:rate-limiting.adoc[rate limiting]* caps the rate of inbound requests
+Where xref:rate-limiting.adoc[*rate limiting*] caps the rate of inbound requests
 to protect a service from its callers, a circuit breaker stops a caller from
 continuing to hit a service that is already failing.
 
-Both improve *xref:fault-tolerance.adoc[fault tolerance]*, and work
+Both improve xref:fault-tolerance.adoc[*fault tolerance*], and work
 particularly well in combination. If a service is failing, it is likely to keep
 failing until its failure mode is resolved through
-*xref:disaster-recovery.adoc[disaster recovery]* mechanisms. While disaster
+xref:disaster-recovery.adoc[*disaster recovery*] mechanisms. While disaster
 recovery is ongoing, a circuit breaker will help prevent the recovering system
-from being overwhelmed by retries. Circuit breakers are also commonly paired with *xref:bulkhead.adoc[bulkheads]*, which partition the resources used to call a dependency so that one failing call cannot exhaust the threads or connections available to other callers. In a xref:service-mesh.adoc[*service mesh*], circuit breaking is enforced at the infrastructure layer by the data-plane proxies rather than in application code, applying the same policy to every service-to-service call.
+from being overwhelmed by retries. Circuit breakers are also commonly paired with xref:bulkhead.adoc[*bulkheads*], which partition the resources used to call a dependency so that one failing call cannot exhaust the threads or connections available to other callers. In a xref:service-mesh.adoc[*service mesh*], circuit breaking is enforced at the infrastructure layer by the data-plane proxies rather than in application code, applying the same policy to every service-to-service call.
 
 ////
 

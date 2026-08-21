@@ -24,12 +24,12 @@ the risk of introducing bugs or performance issues into production environments.
 
 Feature flags are an essential component of the technical *[architecture]* of a
 software system where advanced *[agile development methodologies]* and
-*xref:devops.adoc[DevOps]* practices are desirable. Feature flags support
-*xref:trunk-based-development.adoc[trunk-based development]*,
-*xref:continuous-delivery.adoc[continuous delivery]* and
-*xref:continuous-deployment.adoc[continuous deployment]* (which depend on
+xref:devops.adoc[*DevOps*] practices are desirable. Feature flags support
+xref:trunk-based-development.adoc[*trunk-based development*],
+xref:continuous-delivery.adoc[*continuous delivery*] and
+xref:continuous-deployment.adoc[*continuous deployment*] (which depend on
 trunk-based development), *[canary releases]* and *[phased rollouts]*, and
-*xref:ab-testing.adoc[A/B testing]*.
+xref:ab-testing.adoc[*A/B testing*].
 
 Feature flag systems are commonly implemented as user-based systems, in which
 there is a mapping of users to features. This affords the maximum flexibility,
@@ -43,7 +43,7 @@ control the visibility of feature in production (and other environments) without
 needing to deploy new code and configuration. The same mechanism can also be
 used to rollback features – a powerful capability that can help to resolve
 production incidents rapidly.
-*xref:software-as-a-service.adoc[Software-as-a-service]* applications such as
+xref:software-as-a-service.adoc[*Software-as-a-service*] applications such as
 LaunchDarkly, ConfigCat, and FlagFox provide convenient back-ends for managing
 feature releases this way.
 
@@ -85,11 +85,11 @@ the following conditions:
   based on a percentage rollout).
 
 Feature flag systems should not conflate these different concerns. The following
-is an example of an *xref:anti-pattern.adoc[anti-pattern]* in which feature flag
+is an example of an xref:anti-pattern.adoc[*anti-pattern*] in which feature flag
 logic is used in place of an authorization system to restrict access to certain
 features based on user roles or permissions. This design can lead to
-*xref:technical-debt.adoc[technical debt]* and reduced
-*xref:evolvability.adoc[evolvability]* of the software system.
+xref:technical-debt.adoc[*technical debt*] and reduced
+xref:evolvability.adoc[*evolvability*] of the software system.
 
 [source,php]
 ----
@@ -107,10 +107,10 @@ for *[phased roll-outs]*. For example, new features may be initially released to
 a small subset of internal users with the "admin" role, then to "support" staff,
 before being enabled to all other users with the "customer" role.
 
-But feature flag systems themselves should have the *xref:single-responsibility-principle.adoc[single responsibility]* of
+But feature flag systems themselves should have the xref:single-responsibility-principle.adoc[*single responsibility*] of
 decoupling releases from deployments, and for phasing releases (gradually making
 releases available to more and more users, rather than releasing in a
-*xref:big-bang.adoc[big bang]*). Feature flag systems should not be overloaded
+xref:big-bang.adoc[*big bang*]). Feature flag systems should not be overloaded
 with other responsibilities such as authorization, feature detection, or locale
 detection.
 
@@ -136,8 +136,8 @@ if (Feature::active('telecommunications')) {
 
 == See also
 
-* *xref:deployment-strategies.adoc[Deployment strategies]*
-* *xref:rolling-deployments.adoc[Rolling deployments]*
-* *xref:blue-green-deployment.adoc[Blue-green deployment]*
-* *xref:canary-deployment.adoc[Canary deployment]*
-* *xref:big-bang.adoc[Big bang deployment]*
+* xref:deployment-strategies.adoc[*Deployment strategies*]
+* xref:rolling-deployments.adoc[*Rolling deployments*]
+* xref:blue-green-deployment.adoc[*Blue-green deployment*]
+* xref:canary-deployment.adoc[*Canary deployment*]
+* xref:big-bang.adoc[*Big bang deployment*]

@@ -5,7 +5,7 @@ bounded groups, called *batches*, and each batch is processed as a single unit
 rather than record by record as it arrives. A batch run is finite: it has a
 defined beginning and end, and its results become available only once the
 entire batch has been processed. This contrasts with
-*xref:stream-processing-systems.adoc[stream processing]*, where data is handled
+xref:stream-processing-systems.adoc[*stream processing*], where data is handled
 continuously as it flows in, and with interactive or transactional processing,
 where each request is served as it is received.
 
@@ -25,8 +25,8 @@ A batch workload has several distinguishing properties.
   next batch, not folded into the current one.
 
 * *High throughput, high latency.* Because the system can amortize per-record
-  overhead across the whole batch, *xref:throughput.adoc[throughput]* tends to
-  be high. The trade-off is *xref:latency.adoc[latency]*: results are not
+  overhead across the whole batch, xref:throughput.adoc[*throughput*] tends to
+  be high. The trade-off is xref:latency.adoc[*latency*]: results are not
   available until the batch completes, which may be hours after the data was
   collected.
 
@@ -66,12 +66,12 @@ real-time alerting call for stream processing instead.
 == Batch and parallelism
 
 A batch is not inherently sequential. Large batches are usually split into
-partitions that are processed in *xref:parallelism.adoc[parallel]* across many
-workers, then combined. *xref:map-reduce.adoc[MapReduce]* and the wider
+partitions that are processed in xref:parallelism.adoc[*parallel*] across many
+workers, then combined. xref:map-reduce.adoc[*MapReduce*] and the wider
 *xref:big-data.adoc[big data*] ecosystem of frameworks such as Apache Hadoop and
 Apache Spark are built around this pattern: split the input, process each
 shard independently, then shuffle and reduce the partial results. The
-*xref:bulk-synchronous-parallel.adoc[bulk synchronous parallel]* model
+xref:bulk-synchronous-parallel.adoc[*bulk synchronous parallel*] model
 formalizes the same idea as a sequence of supersteps separated by global
 synchronization barriers.
 
@@ -83,7 +83,7 @@ short, fixed interval — seconds rather than hours — and processes each small
 batch in turn. Apache Spark Structured Streaming popularized this style. It
 trades some latency for simpler failure handling and higher throughput than a
 pure streaming pipeline, and it is one expression of the *natural batching*
-idea discussed under *xref:mechanical-sympathy.adoc[mechanical sympathy]*.
+idea discussed under xref:mechanical-sympathy.adoc[*mechanical sympathy*].
 
 == See also
 

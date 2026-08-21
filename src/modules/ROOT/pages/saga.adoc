@@ -1,16 +1,16 @@
 = Saga
 
 In distributed systems, a saga is a design pattern used to manage long-running,
-multi-step *xref:distributed-transaction.adoc[distributed transactions]*. It is
+multi-step xref:distributed-transaction.adoc[*distributed transactions*]. It is
 an alternative approach to
-*xref:phased-commit.adoc[two-phase or three-phase commit (2PC, 3PC)]* protocols.
+xref:phased-commit.adoc[*two-phase or three-phase commit (2PC, 3PC)*] protocols.
 
 Instead of there being one big transaction, a saga breaks it into a sequence of
-local *xref:transaction.adoc[transactions]*. Each step updates its own service
+local xref:transaction.adoc[*transactions*]. Each step updates its own service
 and then triggers the next step via an event or message. If something fails
 along the way, the saga runs compensating transactions to undo the previous
 steps, so eventually reverting the system to a
-*xref:consistency.adoc[consistent]* state.
+xref:consistency.adoc[*consistent*] state.
 
 Like phased commits, the saga pattern depends on a central coordinator, called
 the *orchestrator*, to define and manage the order of local transactions.
@@ -33,7 +33,7 @@ compensating transactions:
 
 The orchestrator offers centralized logic and good visibility of the control
 flow. Trade-offs include the coordinator becoming a
-*xref:single-point-of-failure.adoc[single point of failure]* and a potential
+xref:single-point-of-failure.adoc[*single point of failure*] and a potential
 performance bottleneck.
 
 An alternative to orchestration is *choreography*. There is no central
@@ -50,16 +50,16 @@ example by using orchestration for critical paths (eg. payment processing) and
 choreography for less critical paths (eg. sending notifications).
 
 The saga pattern – whether choreographed or coordinated – offers higher
-*xref:resilience.adoc[resilience]* and *xref:scalability.adoc[scalability]*
+xref:resilience.adoc[*resilience*] and xref:scalability.adoc[*scalability*]
 compared to traditional phased-commit transactions, as it avoids blocking issues
 which are associated with two-phase commit protocols especially. However, the
 trade-off is that sagas can be more complex to implement and manage, and
-*xref:consistency.adoc[consistency]* is traded for
-*xref:availability.adoc[availability]*.
+xref:consistency.adoc[*consistency*] is traded for
+xref:availability.adoc[*availability*].
 
 When you're dealing with distributed sagas, especially choreographed ones,
-*xref:observability.adoc[observability]* – and
-*xref:tracing.adoc[distributed tracing]* in particular – becomes crucial.
+xref:observability.adoc[*observability*] – and
+xref:tracing.adoc[*distributed tracing*] in particular – becomes crucial.
 
 == Implementations
 

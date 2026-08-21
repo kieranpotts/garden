@@ -1,8 +1,8 @@
 = Eventual consistency
 
-Eventual consistency is a *xref:consistency.adoc[consistency]* model for
-*xref:replication.adoc[replicated]* data in
-*xref:distributed-system.adoc[distributed software]*. Its guarantee is
+Eventual consistency is a xref:consistency.adoc[*consistency*] model for
+xref:replication.adoc[*replicated*] data in
+xref:distributed-system.adoc[*distributed software*]. Its guarantee is
 deliberately weak: once a new update stops arriving for a given data item, all
 reads across all replicas will eventually return the last written value. The
 system makes no promise about *when* that convergence happens, only that it
@@ -18,26 +18,26 @@ in weakly connected systems such as the Bayou project in the 1990s.
 == Why it arises
 
 When data is replicated across multiple nodes for
-*xref:availability.adoc[availability]*,
-*xref:fault-tolerance.adoc[fault tolerance]*, and lower read
-*xref:latency.adoc[latency]*, every write has to be propagated to the other
+xref:availability.adoc[*availability*],
+xref:fault-tolerance.adoc[*fault tolerance*], and lower read
+xref:latency.adoc[*latency*], every write has to be propagated to the other
 copies. Synchronizing all replicas before acknowledging a write — the
 alternative known as *strong consistency* — requires coordination that blocks
 progress during network delays or node failures. Under the
 xref:cap-theorem.adoc[*CAP theorem*], a replicated system that must keep
-operating through network *xref:partition-tolerance.adoc[partitions]* has to
+operating through network xref:partition-tolerance.adoc[*partitions*] has to
 choose between availability and consistency. Eventual consistency is the
 consistency guarantee you accept when you choose availability: replicas are
 allowed to diverge temporarily, and reconciliation happens later.
 
 This trade-off is captured by the xref:pacelc-theorem.adoc[*PACELC theorem*],
 which extends CAP to name the choice a replicated system makes even in the
-absence of partitions (E) between *xref:latency.adoc[latency]* and
+absence of partitions (E) between xref:latency.adoc[*latency*] and
 consistency. Eventual consistency is the low-latency, high-availability end
 of that spectrum.
 
 Application-level designs such as
-*xref:local-first-software.adoc[local-first software]* build on this guarantee,
+xref:local-first-software.adoc[*local-first software*] build on this guarantee,
 treating each user's device as a replica that diverges while offline and
 converges with the others once connectivity returns.
 
@@ -99,7 +99,7 @@ confirm it, and a read contacts *R* replicas and returns the newest response.
 If `W + R > N`, reads and writes overlap on at least one replica, giving
 strong consistency for that operation. If `W + R <= N`, the system is
 eventually consistent but can tolerate more failures and serve requests at
-lower latency. *xref:active-active.adoc[Active-active]* and multi-leader
+lower latency. xref:active-active.adoc[*Active-active*] and multi-leader
 replication patterns, which let any node accept writes, are eventually
 consistent by default and rely on techniques such as *last-writer-wins*,
 *version vectors*, and *conflict-free replicated data types (CRDTs)* to reach

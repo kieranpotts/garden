@@ -5,8 +5,8 @@ single, indivisible unit of work. Either every operation in the sequence is
 applied, or none of them is. The outcome is therefore all-or-nothing: a
 transaction that completes successfully is *committed*, and its changes become
 permanent; a transaction that fails, or is cancelled, is *aborted* and its
-changes are discarded by an *xref:rollback.adoc[rollback]*. The guarantee that
-a transaction upholds is *xref:data-integrity.adoc[data integrity]* — the
+changes are discarded by an xref:rollback.adoc[*rollback*]. The guarantee that
+a transaction upholds is xref:data-integrity.adoc[*data integrity*] — the
 database is never left in a state that reflects only part of the transaction.
 
 The classic lifecycle is explicit. A transaction begins with a `BEGIN`
@@ -21,7 +21,7 @@ transaction began.
 == ACID
 
 The guarantees that make this all-or-nothing behaviour trustworthy are the
-*xref:acid-principles.adoc[ACID principles]*: atomicity, consistency, isolation,
+xref:acid-principles.adoc[*ACID principles*]: atomicity, consistency, isolation,
 and durability. Atomicity makes the transaction indivisible. Consistency ensures
 that a committed transaction moves the database from one valid state to
 another, respecting the schema and its constraints. Isolation keeps concurrent
@@ -53,7 +53,7 @@ two concurrent writes each overwrite the other's read, and *write skew*, where
 two transactions each read overlapping data and commit updates that are
 individually valid but inconsistent together. The full treatment of these
 levels and the anomalies they permit is given in the
-*xref:acid-principles.adoc[ACID principles]* entry.
+xref:acid-principles.adoc[*ACID principles*] entry.
 
 == Concurrency control
 
@@ -83,10 +83,10 @@ single transaction than as true nested transactions.
 == Distributed transactions
 
 When the unit of work spans more than one database or service, it becomes a
-*xref:distributed-transaction.adoc[distributed transaction]*. Coordinating
+xref:distributed-transaction.adoc[*distributed transaction*]. Coordinating
 atomicity across independent storage systems is harder than within a single
 node, and typically requires protocols such as two-phase commit or the
-*xref:saga.adoc[saga]* pattern, which trades distributed atomicity for
+xref:saga.adoc[*saga*] pattern, which trades distributed atomicity for
 compensating actions. Distributed transactions are covered in their own entry.
 
 == See also

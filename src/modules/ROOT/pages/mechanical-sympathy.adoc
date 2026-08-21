@@ -1,7 +1,7 @@
 = Mechanical sympathy
 
 *Mechanical sympathy* is the practice of designing software with an
-understanding of the *xref:hardware.adoc[hardware]* it runs on, so that code
+understanding of the xref:hardware.adoc[*hardware*] it runs on, so that code
 works _with_ the machine rather than against it. The term comes from motorsport,
 where a driver benefits from feeling how a car behaves under load. In software
 it means knowing how CPUs, memory, caches, and buses interact, and shaping
@@ -17,7 +17,7 @@ Common principles include:
 * *Predictable memory access.* CPUs and caches favor sequential, localized
   access over random jumps. Choosing data layouts and access patterns that match
   this behavior reduces cache misses and improves
-  *xref:performance.adoc[performance]*.
+  xref:performance.adoc[*performance*].
 
 * *Cache-line awareness.* Data is moved between memory and caches in fixed-size
   lines, commonly 64 bytes. Variables that are unrelated but share a cache line
@@ -27,25 +27,25 @@ Common principles include:
 
 * *Single-writer principle.* Writable state is owned by one thread or actor, and
   other threads submit writes through message passing instead of contending for
-  shared mutable data. This reduces *xref:locking.adoc[locking]*, avoids race
-  conditions, and improves *xref:concurrency.adoc[concurrency]* and
-  *xref:parallelism.adoc[parallelism]*.
+  shared mutable data. This reduces xref:locking.adoc[*locking*], avoids race
+  conditions, and improves xref:concurrency.adoc[*concurrency*] and
+  xref:parallelism.adoc[*parallelism*].
 
 * *Natural batching.* Instead of waiting for a fixed batch size or a timeout, a
   worker gathers available items as they arrive and dispatches a batch as soon
   as the queue is empty or the batch is full. This reduces
-  *xref:latency.adoc[latency]* jitter and increases
-  *xref:throughput.adoc[throughput]*.
+  xref:latency.adoc[*latency*] jitter and increases
+  xref:throughput.adoc[*throughput*].
 
 Mechanical sympathy is closely related to
-*xref:data-oriented-design.adoc[data-oriented design]* and to careful
-*xref:memory-allocation.adoc[memory allocation]*. It is not
-*xref:premature-optimization.adoc[premature optimization]*: it assumes measurable
+xref:data-oriented-design.adoc[*data-oriented design*] and to careful
+xref:memory-allocation.adoc[*memory allocation*]. It is not
+xref:premature-optimization.adoc[*premature optimization*]: it assumes measurable
 goals exist and that changes are driven by profiling, not by guessing.
 
 == See also
 
-* *xref:performance.adoc[Performance]*
-* *xref:caching.adoc[Caching]*
-* *xref:batch-processing.adoc[Batch processing]*
-* *xref:high-performance-computing.adoc[High-performance computing (HPC)]*
+* xref:performance.adoc[*Performance*]
+* xref:caching.adoc[*Caching*]
+* xref:batch-processing.adoc[*Batch processing*]
+* xref:high-performance-computing.adoc[*High-performance computing (HPC)*]

@@ -3,7 +3,7 @@
 // TODO: https://blog.algomaster.io/p/106604fb-b746-41de-88fb-60e932b2ff68
 
 *Remote Procedure Call (RPC)* is a category of protocols for
-*xref:inter-process-communication.adoc[inter-process communication]*. It is not
+xref:inter-process-communication.adoc[*inter-process communication*]. It is not
 a single specific protocol, but rather a family of protocols and techniques.
 The common feature of RPC protocols is that they allow programs to execute
 procedures (or subroutines) in another address space — typically another
@@ -33,7 +33,7 @@ The marshalled payload is paired with enough metadata to identify which
 procedure to invoke.
 
 *Transport.* The payload is sent over a transport. Historically that was a
-bespoke binary protocol; today it is usually *xref:http.adoc[HTTP]* or HTTP/2. On
+bespoke binary protocol; today it is usually xref:http.adoc[*HTTP*] or HTTP/2. On
 the server side, a server stub receives the payload, unmarshals the arguments,
 and dispatches them to the real procedure. The return path is the mirror image.
 The result is marshalled, sent back, and unmarshalled by the client stub, which
@@ -48,8 +48,8 @@ the called code reads like an ordinary procedure body.
 There are multiple implementations and protocols that fall under the RPC
 umbrella. Some notable examples include.
 
-* *xref:grpc.adoc[gRPC]*: A modern, high-performance RPC framework developed by
-  Google, based on HTTP/2 and *xref:protocol-buffers.adoc[Protocol Buffers]*.
+* xref:grpc.adoc[*gRPC*]: A modern, high-performance RPC framework developed by
+  Google, based on HTTP/2 and xref:protocol-buffers.adoc[*Protocol Buffers*].
 
 * *XML-RPC*: An older RPC protocol that uses XML for encoding messages and HTTP
   as a transport protocol.
@@ -65,7 +65,7 @@ umbrella. Some notable examples include.
 
 Each of these implementations comes with specific features and trade-offs, but
 they all adhere to the overarching concept of RPC. Most ship their own
-*xref:interface-definition-language.adoc[interface definition language (IDL)]*
+xref:interface-definition-language.adoc[*interface definition language (IDL)*]
 for declaring procedures and data types in a language-neutral form. The IDL is
 what the stub generators consume. A `.proto` file, an OMG IDL file, or a WSDL
 description is compiled into client and server stubs in each language the
@@ -73,7 +73,7 @@ system supports.
 
 == RPC vs REST
 
-RPC and *xref:rest.adoc[REST]* are the two dominant styles for designing
+RPC and xref:rest.adoc[*REST*] are the two dominant styles for designing
 networked APIs, and they differ in what they ask the caller to address. RPC
 exposes actions. The client invokes a named procedure and passes it arguments,
 much like a local function call. REST exposes resources. The client manipulates
@@ -92,7 +92,7 @@ more carefully, typically versioned through the IDL.
 REST won the public-API market because its uniform interface is cheap to consume
 from unknown clients — browsers, curl, any HTTP client. RPC, and gRPC in
 particular, dominates internal service-to-service communication inside
-*xref:microservices.adoc[microservice]* systems. There the client and server are
+xref:microservices.adoc[*microservice*] systems. There the client and server are
 both controlled by the same team, the contract is compiled in, and binary
 encoding pays for itself in throughput.
 
@@ -101,9 +101,9 @@ encoding pays for itself in throughput.
 RPC's selling point — that a remote call reads like a local one — is also its
 deepest problem. In a 1994 paper, "A Note on Distributed Computing", Waldo,
 Wylla, Kendall and Wollrath argued that treating local and remote invocation as
-the same thing is a *xref:leaky-abstractions.adoc[leaky abstraction]*. Local
+the same thing is a xref:leaky-abstractions.adoc[*leaky abstraction*]. Local
 calls are fast, fail predictably, and never silently hang. Remote calls have
-*xref:latency.adoc[latency]* measured in milliseconds or more, can fail in
+xref:latency.adoc[*latency*] measured in milliseconds or more, can fail in
 partial and ambiguous ways, and can stall indefinitely when the network or the
 callee drops. A program written as though the call were local is unprepared for
 any of these, and the abstraction offers no vocabulary for them.
@@ -118,12 +118,12 @@ assumed a function call.
 
 == Trade-offs
 
-RPC makes *xref:distributed-system.adoc[distributed software]* feel more like
+RPC makes xref:distributed-system.adoc[*distributed software*] feel more like
 monolithic software from the perspective of application programmers, by allowing
 them to call methods on other services in the system as though they were methods
 on a local object. This can make it easier to build distributed software, as it
 abstracts away the complexities of network communication. But the
-*xref:synchronous-communication.adoc[synchronous]* nature of most RPC calls also
+xref:synchronous-communication.adoc[*synchronous*] nature of most RPC calls also
 introduces challenges.
 
 * Tight coupling between services, making it harder to evolve the system over
@@ -132,25 +132,25 @@ introduces challenges.
 * Performance issues. RPC calls are usually synchronous, and are therefore
   blocking. They will typically be slower than equivalent in-process calls, due
   to the overhead of marshalling and unmarshalling data and the
-  *xref:rtt.adoc[round-trip time]* across the network.
+  xref:rtt.adoc[*round-trip time*] across the network.
 
 * Increased difficulty in handling failures, for example when the network is
-  slow or unreliable. Retries, timeouts, and *xref:circuit-breaker.adoc[circuit
-  breaking]* must be added explicitly. The abstraction did not provide for them.
+  slow or unreliable. Retries, timeouts, and xref:circuit-breaker.adoc[*circuit
+  breaking*] must be added explicitly. The abstraction did not provide for them.
 
 * Difficulty in managing exceptions that are thrown on the remote server.
 
 == See also
 
-* *xref:inter-process-communication.adoc[Inter-process communication]*: the
+* xref:inter-process-communication.adoc[*Inter-process communication*]: the
   category RPC belongs to.
-* *xref:rest.adoc[REST]*: the resource-oriented alternative for public APIs.
-* *xref:grpc.adoc[gRPC]*: the dominant modern RPC implementation.
-* *xref:interface-definition-language.adoc[Interface definition language]*: the
+* xref:rest.adoc[*REST*]: the resource-oriented alternative for public APIs.
+* xref:grpc.adoc[*gRPC*]: the dominant modern RPC implementation.
+* xref:interface-definition-language.adoc[*Interface definition language*]: the
   contract format that drives stub generation.
-* *xref:request-response.adoc[Request-response]*: the communication pattern RPC
+* xref:request-response.adoc[*Request-response*]: the communication pattern RPC
   instantiates.
-* *xref:leaky-abstractions.adoc[Leaky abstractions]*: why "transparent" RPC is
+* xref:leaky-abstractions.adoc[*Leaky abstractions*]: why "transparent" RPC is
   not transparent.
 
 == References
