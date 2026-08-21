@@ -2,11 +2,11 @@
 name: tend
 description: >-
   Check one target entry's structural health — unresolvable cross-references,
-  fake bracketed pseudo-links, a missing index or nav listing, and a maturity
-  emoji that no longer matches the content — then fix what is mechanical and
-  report the rest. Use this skill when the user says something like "tend
-  event-sourcing.adoc", "check this entry for broken links", or asks to tend a
-  particular page. Do not use it to write or reword an entry's prose.
+  fake bracketed pseudo-links, and a missing index or nav listing — then fix
+  what is mechanical and report the rest. Use this skill when the user says
+  something like "tend event-sourcing.adoc", "check this entry for broken
+  links", or asks to tend a particular page. Do not use it to write or reword
+  an entry's prose, or to review its maturity emoji.
 compatibility: requires Read, Glob, Grep, Edit
 license: CC0-1.0
 ---
@@ -14,9 +14,9 @@ license: CC0-1.0
 # Tend
 
 Inspect a single garden entry for withering content — broken cross-references,
-fake pseudo-links, a missing index or nav listing, and a stale maturity emoji —
-then apply the unambiguous fixes and report everything else. Tending repairs
-structure. It never grows content.
+fake pseudo-links, and a missing index or nav listing — then apply the
+unambiguous fixes and report everything else. Tending repairs structure. It
+never grows content.
 
 ## Parameters
 
@@ -42,8 +42,6 @@ user with an error message.
 
 - No `xref:` MAY have been repointed to a target that was guessed rather than
   established.
-
-- No maturity emoji in the index MUST have changed.
 
 - The report MUST separate the fixes already applied from the items still
   needing the user's decision.
@@ -76,24 +74,14 @@ user with an error message.
     trail. Report each absence with the section you would file it under —
     placement is a taxonomy judgment, so propose it rather than applying it.
 
-5.  Check the maturity emoji. Compare the target entry against its emoji in
-    the index and flag any mismatch.
-
-    - A 🌱 Seedling that is substantial, well-linked, and carries no
-      `// TODO` marker — a candidate for 🌿 Budding or 🌳 Evergreen.
-
-    - An entry carrying a `// TODO` marker, or noticeably thinner than its
-      peers, still marked 🌿 Budding or 🌳 Evergreen — a candidate for
-      demotion, or for 🍂 Decaying if it looks abandoned.
-
-6.  Apply the unambiguous fixes. Repoint a broken `xref:` only where the
+5.  Apply the unambiguous fixes. Repoint a broken `xref:` only where the
     intended target is beyond doubt, such as an exact rename or an obvious
     typo. Convert a pseudo-link only where a matching entry genuinely exists.
     Leave everything else for the user.
 
-7.  Report what was found, what was fixed, and what needs a decision,
-    grouped as broken cross-references, fake pseudo-links, listing problems,
-    and stale maturity emoji.
+6.  Report what was found, what was fixed, and what needs a decision,
+    grouped as broken cross-references, fake pseudo-links, and listing
+    problems.
 
 ## Rules
 
@@ -101,10 +89,6 @@ user with an error message.
   obvious correct target is reported, never guessed at. Silently repointing a
   link at the wrong entry is harder to notice, and harder to undo, than
   leaving it dead.
-
-- You MUST NOT change an entry's maturity emoji in the index. Maturity is an
-  editorial judgment the user reserves. Surface the evidence — `// TODO`
-  markers, body length, link density — and let the user decide.
 
 - You MUST NOT write or reword an entry's prose. Where a repair would mean
   composing new content, such as an index description or an entry that does

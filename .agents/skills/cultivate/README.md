@@ -1,8 +1,9 @@
 # Cultivate
 
 Reads one target entry and triages it, recommending which skills — watering,
-fertilizing, dividing, entwining, tending, tidying, pruning, grafting, or
-uprooting — would improve it, with a one-line reason per recommendation.
+fertilizing, dividing, entwining, tending, tidying, pruning, grafting,
+uprooting, or classifying — would improve it, with a one-line reason per
+recommendation.
 
 ## Interactivity
 

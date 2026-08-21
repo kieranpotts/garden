@@ -3,8 +3,8 @@ name: cultivate
 description: >-
   Read one target entry and triage it, recommending which skills, if any, would
   improve it — watering, fertilizing, dividing, entwining, tending, tidying,
-  pruning, grafting, or uprooting — with a one-line reason per recommendation.
-  Use this skill when the user says something like "cultivate
+  pruning, grafting, uprooting, or classifying — with a one-line reason per
+  recommendation. Use this skill when the user says something like "cultivate
   event-sourcing.adoc", "what does this entry need?", or asks for a triage of one
   page. Do not use it to make the changes itself — it is read-only and reports
   recommendations only.
@@ -34,8 +34,8 @@ user with an error message.
 
 - Every recommendation MUST name one of the garden's improvement skills
   (`water`, `fertilize`, `divide`, `entwine`, `tend`, `tidy`, `prune`, `graft`,
-  `uproot`) and give a one-line reason grounded in evidence from the entry or
-  the garden inventory.
+  `uproot`, `classify`) and give a one-line reason grounded in evidence from
+  the entry or the garden inventory.
 
 - The report MUST cover every skill's criterion, stating "no action" where the
   entry passes, so the user can see the triage was complete rather than
@@ -78,9 +78,14 @@ user with an error message.
       stray bold, an `xref:` not wrapped in `*...*`. Recommend tidy where
       mechanical violations are present.
 
-    - **tend** — broken `xref:` targets, fake bracketed pseudo-links, a missing
-      `index.adoc` or `nav.adoc` listing, or a maturity emoji that no longer
-      matches the content. Recommend tend where a structural defect is present.
+    - **tend** — broken `xref:` targets, fake bracketed pseudo-links, or a
+      missing `index.adoc` or `nav.adoc` listing. Recommend tend where a
+      structural defect is present.
+
+    - **classify** — a maturity emoji that no longer matches the content: a
+      substantial, well-linked 🌱 Seedling, or a 🌿 Budding or 🌳 Evergreen
+      entry that has thinned or gone stale. Recommend classify where the
+      emoji and the content have drifted apart.
 
     - **prune** — waffle, local repetition, or poor ordering that a careful
       read would catch. Recommend prune where the prose reads baggy but the
@@ -130,8 +135,8 @@ user with an error message.
   cultivate recommendation.
 
 - You MUST NOT change a maturity emoji, and you MUST NOT stage, commit, or
-  push. Leave the working tree untouched. Reviewing the report is how the user
-  decides what to run next.
+  push. Leave the working tree untouched. Reviewing the report is how the
+  user decides what to run next.
 
 ## Edge cases
 

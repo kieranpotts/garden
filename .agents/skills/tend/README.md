@@ -1,8 +1,9 @@
 # Tend
 
 Checks one target entry's structural health: broken cross-references, fake
-pseudo-links, a missing index or nav listing, and a maturity emoji that no
-longer matches the content.
+pseudo-links, and a missing index or nav listing. See
+[classify](../classify/README.md) to review whether an entry's maturity
+emoji still fits.
 
 ## Interactivity
 
