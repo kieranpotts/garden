@@ -1,87 +1,79 @@
 = Distributed file systems
 
-A distributed file system is a xref:distributed-system.adoc[*distributed software*]
-that presents files and directories across multiple networked nodes as though
-they lived on a single local disk. Client programs read, write, and navigate the
-same hierarchical namespace regardless of which physical machine holds any given
-file. The defining goal is to combine the familiar interface of
+A distributed file system is a xref:distributed-system.adoc[*distributed software*] that presents
+files and directories across multiple networked nodes as though they lived on a single local disk.
+Client programs read, write, and navigate the same hierarchical namespace regardless of which
+physical machine holds any given file. The defining goal is to combine the familiar interface of
 xref:file-storage.adoc[*file storage*] with the
 xref:horizontal-scaling.adoc[*horizontal scalability*] and
 xref:fault-tolerance.adoc[*fault tolerance*] of a cluster.
 
 A distributed file system is one form of distributed storage, alongside
 xref:distributed-databases.adoc[*distributed databases*] and
-xref:object-storage.adoc[*object storage*]. The distinction is the interface. A
-database imposes a data model and query language. Object storage exposes a flat
-namespace of blobs over an HTTP API. A distributed file system keeps the
-file-and-directory tree, and usually aims for
-xref:posix.adoc[*POSIX*]-compatible semantics so that ordinary applications can
-use it without modification.
+xref:object-storage.adoc[*object storage*]. The distinction is the interface. A database imposes a
+data model and query language. Object storage exposes a flat namespace of blobs over an HTTP API. A
+distributed file system keeps the file-and-directory tree, and usually aims for
+xref:posix.adoc[*POSIX*]-compatible semantics so that ordinary applications can use it without
+modification.
 
 == Architecture
 
-Most distributed file systems separate *metadata* from *file data*. A metadata
-server, sometimes called a name node or master, tracks the directory tree, file
-names, permissions, and the mapping from each file to the nodes that store its
-contents. Data nodes hold the raw bytes, typically broken into fixed-size chunks
-and xref:replication.adoc[*replicated*] across several nodes for xref:durability.adoc[*durability*].
+Most distributed file systems separate *metadata* from *file data*. A metadata server, sometimes
+called a name node or master, tracks the directory tree, file names, permissions, and the mapping
+from each file to the nodes that store its contents. Data nodes hold the raw bytes, typically broken
+into fixed-size chunks and xref:replication.adoc[*replicated*] across several nodes for
+xref:durability.adoc[*durability*].
 
-Splitting metadata and data lets the system scale the two independently. Large
-sequential reads and writes stream directly between client and data node, while
-the metadata server handles only small lookups. The metadata server is also the
-central coordination point, and so a common bottleneck. Many systems mitigate
-this by replicating the metadata service or sharding it across multiple servers.
+Splitting metadata and data lets the system scale the two independently. Large sequential reads and
+writes stream directly between client and data node, while the metadata server handles only small
+lookups. The metadata server is also the central coordination point, and so a common bottleneck.
+Many systems mitigate this by replicating the metadata service or sharding it across multiple
+servers.
 
 == Consistency and semantics
 
-A single-node file system gives every client a consistent view of a file. Once a
-write is acknowledged, the next read sees it. Across a cluster this becomes a
-xref:consistency.adoc[*consistency*] problem. Writes acknowledged on one node
-may not yet be visible on a replica, and concurrent writers can produce
-conflicting versions.
+A single-node file system gives every client a consistent view of a file. Once a write is
+acknowledged, the next read sees it. Across a cluster this becomes a
+xref:consistency.adoc[*consistency*] problem. Writes acknowledged on one node may not yet be visible
+on a replica, and concurrent writers can produce conflicting versions.
 
-The xref:cap-theorem.adoc[*CAP theorem*] applies. Under a network partition the
-system must choose between availability and consistency. Most distributed file
-systems designed for xref:big-data.adoc[*big data*] workloads favor availability
-and throughput over strict consistency, relaxing POSIX guarantees such as atomic
-append or lease-based locking. Others, built as general-purpose cluster file
-systems, keep closer to POSIX semantics at the cost of more coordination and
-higher xref:latency.adoc[*latency*].
+The xref:cap-theorem.adoc[*CAP theorem*] applies. Under a network partition the system must choose
+between availability and consistency. Most distributed file systems designed for
+xref:big-data.adoc[*big data*] workloads favor availability and throughput over strict consistency,
+relaxing POSIX guarantees such as atomic append or lease-based locking. Others, built as
+general-purpose cluster file systems, keep closer to POSIX semantics at the cost of more
+coordination and higher xref:latency.adoc[*latency*].
 
 [CAUTION]
-Some distributed file systems advertise POSIX compatibility but quietly relax
-guarantees under failure or concurrent access. Applications that assume a local
-file system's exact semantics may see truncated reads, stale metadata, or
-duplicate writes. Check the system's documented consistency model before relying
-on it.
+Some distributed file systems advertise POSIX compatibility but quietly relax guarantees under
+failure or concurrent access. Applications that assume a local file system's exact semantics may see
+truncated reads, stale metadata, or duplicate writes. Check the system's documented consistency
+model before relying on it.
 
 == Trade-offs
 
-Distributed file systems trade the simplicity and low latency of a local disk
-for capacity and resilience that no single machine can match. The costs are the
-usual ones for xref:distributed-system.adoc[*distributed software*]: network
-overhead on every operation, partial-failure handling, and consistency
-management. Metadata operations that are instant on a local disk become network
-round trips, and small random reads scale poorly because each may hit a
+Distributed file systems trade the simplicity and low latency of a local disk for capacity and
+resilience that no single machine can match. The costs are the usual ones for
+xref:distributed-system.adoc[*distributed software*]: network overhead on every operation,
+partial-failure handling, and consistency management. Metadata operations that are instant on a
+local disk become network round trips, and small random reads scale poorly because each may hit a
 different node.
 
-Where workloads are dominated by large sequential access — analytics, log
-processing, machine learning training sets — distributed file systems excel.
-Where workloads need sub-millisecond random I/O or frequent in-place updates,
-xref:block-storage.adoc[*block storage*] or a database is usually a better fit.
+Where workloads are dominated by large sequential access — analytics, log processing, machine
+learning training sets — distributed file systems excel. Where workloads need sub-millisecond random
+I/O or frequent in-place updates, xref:block-storage.adoc[*block storage*] or a database is usually
+a better fit.
 
 == Use cases and implementations
 
-The classic use case is as the storage layer for
-xref:batch-processing.adoc[*batch processing*] frameworks. Google's GFS and the
-open-source Hadoop Distributed File System (HDFS) were built to feed
-xref:map-reduce.adoc[*MapReduce*] jobs, keeping computation close to the data so
-that large scans avoid saturating the network.
+The classic use case is as the storage layer for xref:batch-processing.adoc[*batch processing*]
+frameworks. Google's GFS and the open-source Hadoop Distributed File System (HDFS) were built to
+feed xref:map-reduce.adoc[*MapReduce*] jobs, keeping computation close to the data so that large
+scans avoid saturating the network.
 
-Other systems target different niches. Ceph and GlusterFS provide
-general-purpose, POSIX-style storage for clusters. Lustre is favored in
-high-performance computing. NFS, the original network file system, remains
-widely used for simpler shared-storage needs where a single server suffices.
+Other systems target different niches. Ceph and GlusterFS provide general-purpose, POSIX-style
+storage for clusters. Lustre is favored in high-performance computing. NFS, the original network
+file system, remains widely used for simpler shared-storage needs where a single server suffices.
 
 == See also
 

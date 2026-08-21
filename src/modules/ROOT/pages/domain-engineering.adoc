@@ -1,61 +1,52 @@
 = Domain engineering
 
-Domain engineering is the activity of building reusable assets from the
-knowledge of a xref:domain.adoc[*domain*], so that a family of related software
-systems can be produced more efficiently than by building each one from
-scratch. Where application engineering concerns a single system, domain
-engineering concerns a class of systems that share concepts, vocabulary, and
+Domain engineering is the activity of building reusable assets from the knowledge of a
+xref:domain.adoc[*domain*], so that a family of related software systems can be produced more
+efficiently than by building each one from scratch. Where application engineering concerns a single
+system, domain engineering concerns a class of systems that share concepts, vocabulary, and
 requirements within the same domain.
 
-The goal is to capture what is common across the systems in a domain, and to
-make the points where they vary explicit and configurable, so that the common
-parts can be reused and the variable parts selected for each system. This is the
-discipline behind *software product line engineering*. Rather than treating each
-new product as a greenfield project, a team invests once in reusable domain
+The goal is to capture what is common across the systems in a domain, and to make the points where
+they vary explicit and configurable, so that the common parts can be reused and the variable parts
+selected for each system. This is the discipline behind *software product line engineering*. Rather
+than treating each new product as a greenfield project, a team invests once in reusable domain
 assets and then derives individual products from them.
 
 The process is conventionally divided into three phases.
 
-*Domain analysis* identifies and bounds the domain, studies existing systems,
-standards, and stakeholder needs within it, and produces a
-xref:domain-model.adoc[*domain model*] that records the common and variable
-features of the family. A common technique is *feature modeling*, which
-decomposes each concept into its mandatory and optional features so that a new
-system is described by selecting from a tree of variation points. Domain
-analysis differs from
-xref:requirements-engineering.adoc[*requirements engineering*]. Requirements
-engineering establishes what one particular system must do, while domain
-analysis establishes what a family of systems can do and how they vary.
+*Domain analysis* identifies and bounds the domain, studies existing systems, standards, and
+stakeholder needs within it, and produces a xref:domain-model.adoc[*domain model*] that records the
+common and variable features of the family. A common technique is *feature modeling*, which
+decomposes each concept into its mandatory and optional features so that a new system is described
+by selecting from a tree of variation points. Domain analysis differs from
+xref:requirements-engineering.adoc[*requirements engineering*]. Requirements engineering establishes
+what one particular system must do, while domain analysis establishes what a family of systems can
+do and how they vary.
 
-*Domain design* turns the domain model into a *reference architecture*: a
-generic xref:software-architecture.adoc[*architecture*] that all systems in the
-family conform to, with explicit variation points where individual systems
-diverge. The aim is to satisfy as many of the family's requirements as possible
-while keeping the architecture flexible enough to admit the variations the
-feature model allows.
+*Domain design* turns the domain model into a *reference architecture*: a generic
+xref:software-architecture.adoc[*architecture*] that all systems in the family conform to, with
+explicit variation points where individual systems diverge. The aim is to satisfy as many of the
+family's requirements as possible while keeping the architecture flexible enough to admit the
+variations the feature model allows.
 
-*Domain implementation* realizes the reference architecture as concrete reusable
-assets: components, frameworks, xref:domain-specific-language.adoc[*domain- specific languages*], or application generators that produce or assemble a
-customized system from the selected features.
+*Domain implementation* realizes the reference architecture as concrete reusable assets: components,
+frameworks, xref:domain-specific-language.adoc[*domain- specific languages*], or application
+generators that produce or assemble a customized system from the selected features.
 
-Domain engineering is distinct from *domain modeling*, which is the narrower act
-of constructing a model of a single domain for a particular system. That is the
-central activity of xref:domain-driven-design.adoc[*domain-driven design*].
-Domain engineering may produce a domain model as one of its artifacts, but its
-purpose is reuse across a family of systems, not modeling for one. The two are
-complementary. Domain-driven design concerns building one system well, while
-domain engineering concerns amortizing the cost of understanding a domain across
-many.
+Domain engineering is distinct from *domain modeling*, which is the narrower act of constructing a
+model of a single domain for a particular system. That is the central activity of
+xref:domain-driven-design.adoc[*domain-driven design*]. Domain engineering may produce a domain
+model as one of its artifacts, but its purpose is reuse across a family of systems, not modeling for
+one. The two are complementary. Domain-driven design concerns building one system well, while domain
+engineering concerns amortizing the cost of understanding a domain across many.
 
-The payoff is xref:code-reuse.adoc[*reuse*] at the level of requirements,
-designs, and code rather than code alone. Studies of domain-specific languages
-in practice report substantial reductions in code size and effort. The cost is
-upfront investment in analyzing a domain and building configurable assets, which
-only pays off when enough systems in the family are produced to amortize it. The
-approach has also been criticized for concentrating on engineering-for-reuse at
-the expense of engineering-for-use. The fit of a reused asset to an individual
-system's context can suffer when that context is treated as a variation point
-rather than a first-class concern.
+The payoff is xref:code-reuse.adoc[*reuse*] at the level of requirements, designs, and code rather
+than code alone. Studies of domain-specific languages in practice report substantial reductions in
+code size and effort. The cost is upfront investment in analyzing a domain and building configurable
+assets, which only pays off when enough systems in the family are produced to amortize it. The
+approach has also been criticized for concentrating on engineering-for-reuse at the expense of
+engineering-for-use. The fit of a reused asset to an individual system's context can suffer when
+that context is treated as a variation point rather than a first-class concern.
 
 == See also
 
@@ -69,9 +60,9 @@ rather than a first-class concern.
 
 == References
 
-- Czarnecki, Krzysztof; Eisenecker, Ulrich W. (2000). _Generative Programming:
-  Methods, Tools, and Applications_. Addison-Wesley.
-- Frakes, William B.; Kang, Kyo (2005). "Software Reuse Research: Status and
-  Future". _IEEE Transactions on Software Engineering_, 31(7).
-- Reinhartz-Berger, Iris et al. (2013). _Domain Engineering: Product Lines,
-  Languages, and Conceptual Models_. Springer.
+- Czarnecki, Krzysztof; Eisenecker, Ulrich W. (2000).
+  _Generative Programming: Methods, Tools, and Applications_. Addison-Wesley.
+- Frakes, William B.; Kang, Kyo (2005). "Software Reuse Research: Status and Future".
+  _IEEE Transactions on Software Engineering_, 31(7).
+- Reinhartz-Berger, Iris et al. (2013).
+  _Domain Engineering: Product Lines, Languages, and Conceptual Models_. Springer.

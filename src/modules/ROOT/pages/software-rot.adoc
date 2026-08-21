@@ -1,85 +1,72 @@
 = Software rot
 
-The term *software rot* refers to the observation that computer programs appear
-to decay in their performance and reliability over time, even if nothing appears
-to change. That's because all computer programs have dependencies on other
-computer systems – at least an operating system, and perhaps additional
-dependencies such as system utility programs and other applications – and those
+The term *software rot* refers to the observation that computer programs appear to decay in their
+performance and reliability over time, even if nothing appears to change. That's because all
+computer programs have dependencies on other computer systems – at least an operating system, and
+perhaps additional dependencies such as system utility programs and other applications – and those
 external dependencies will themselves change over time.
 
-The rot is metaphorical. The program's bytes do not spoil on disk; what decays is
-the fit between the program's assumptions and the world it runs in. A binary
-built in 2010 that depended on a 32-bit system call, a TLS cipher suite, or a
-public API endpoint is unchanged in 2025 – the call was removed, the cipher
-deprecated, the endpoint retired. The program is the same. The environment has
+The rot is metaphorical. The program's bytes do not spoil on disk; what decays is the fit between
+the program's assumptions and the world it runs in. A binary built in 2010 that depended on a 32-bit
+system call, a TLS cipher suite, or a public API endpoint is unchanged in 2025 – the call was
+removed, the cipher deprecated, the endpoint retired. The program is the same. The environment has
 moved, and the gap between the two is the rot.
 
 == How rot sets in
 
-Rot arrives through several distinct channels, all of them external to the
-program itself.
+Rot arrives through several distinct channels, all of them external to the program itself.
 
-* *Dependency drift.* Libraries the program links or imports release new
-  versions, drop old APIs, or fix bugs the program had inadvertently come to
-  rely on. Transitively pulled dependencies disappear from package registries
-  or break under newer runtimes.
-* *Platform and runtime change.* Operating systems, kernels, language
-  runtimes, and hardware ABIs evolve. System calls are removed, ABI details
-  shift, and word-size or endianness assumptions stop holding, so older
-  binaries no longer run on newer platforms.
-* *External services and endpoints.* A program that calls a third-party API,
-  fetches a URL, or resolves a hostname is coupled to a service it does not
-  control. The service's schema, authentication, rate limits, or mere
-  existence can change without notice.
-* *Data and schema drift.* File formats, encodings, character sets, and
-  database schemas evolve. A reader built for one dialect of a format starts
-  rejecting input that a writer, following a newer dialect, produces.
-* *Time-based decay.* Certificates and keys expire; timezone databases,
-  leap-second handling, and fixed dates (the Y2K family) all make a program
-  that ran yesterday fail today for no reason but the calendar.
+* *Dependency drift.* Libraries the program links or imports release new versions, drop old APIs, or
+  fix bugs the program had inadvertently come to rely on. Transitively pulled dependencies disappear
+  from package registries or break under newer runtimes.
+* *Platform and runtime change.* Operating systems, kernels, language runtimes, and hardware ABIs
+  evolve. System calls are removed, ABI details shift, and word-size or endianness assumptions stop
+  holding, so older binaries no longer run on newer platforms.
+* *External services and endpoints.* A program that calls a third-party API, fetches a URL, or
+  resolves a hostname is coupled to a service it does not control. The service's schema,
+  authentication, rate limits, or mere existence can change without notice.
+* *Data and schema drift.* File formats, encodings, character sets, and database schemas evolve. A
+  reader built for one dialect of a format starts rejecting input that a writer, following a newer
+  dialect, produces.
+* *Time-based decay.* Certificates and keys expire; timezone databases, leap-second handling, and
+  fixed dates (the Y2K family) all make a program that ran yesterday fail today for no reason but
+  the calendar.
 
-The more tightly a program is xref:coupling.adoc[*coupled*] to its environment,
-the further each of these changes propagates and the faster rot accumulates.
+The more tightly a program is xref:coupling.adoc[*coupled*] to its environment, the further each of
+these changes propagates and the faster rot accumulates.
 
 == Rate and maintenance
 
-Rot is therefore inevitable for any program embedded in a changing world –
-Lehman's E-type systems. What separates a healthy system from a decaying one is
-not whether rot occurs but the rate at which it accumulates relative to
-maintenance. A program whose dependencies change fast and whose maintainers
-respond slowly rots quickly; one with stable dependencies and active
-maintenance rots slowly enough to keep working.
+Rot is therefore inevitable for any program embedded in a changing world – Lehman's E-type systems.
+What separates a healthy system from a decaying one is not whether rot occurs but the rate at which
+it accumulates relative to maintenance. A program whose dependencies change fast and whose
+maintainers respond slowly rots quickly; one with stable dependencies and active maintenance rots
+slowly enough to keep working.
 
-This is what Lehman's xref:laws-of-software-evolution.adoc[*laws of software evolution*] describe from the other side: an E-type system that is not
-continually adapted becomes progressively less satisfactory, and its quality
-appears to decline. The second law adds that xref:complexity.adoc[*complexity*]
-rises as the system evolves unless explicit work holds it down, and rising
-complexity in turn makes the maintenance that fends off rot harder still.
+This is what Lehman's xref:laws-of-software-evolution.adoc[*laws of software evolution*] describe
+from the other side: an E-type system that is not continually adapted becomes progressively less
+satisfactory, and its quality appears to decline. The second law adds that
+xref:complexity.adoc[*complexity*] rises as the system evolves unless explicit work holds it down,
+and rising complexity in turn makes the maintenance that fends off rot harder still.
 
-See also xref:technical-debt.adoc[*technical debt*], which is a different but
-related concept. A system that has high technical debt is more likely to suffer
-from faster rot. The decay is often felt first as a loss of
-xref:backwards-compatibility.adoc[*backwards compatibility*], as the assumptions
-older consumers depend on no longer hold. Designs that follow the
-xref:open-closed-principle.adoc[*open-closed principle*] tend to resist rot,
-since new behavior arrives as new code rather than edits to depended-upon code.
+See also xref:technical-debt.adoc[*technical debt*], which is a different but related concept. A
+system that has high technical debt is more likely to suffer from faster rot. The decay is often
+felt first as a loss of xref:backwards-compatibility.adoc[*backwards compatibility*], as the
+assumptions older consumers depend on no longer hold. Designs that follow the
+xref:open-closed-principle.adoc[*open-closed principle*] tend to resist rot, since new behavior
+arrives as new code rather than edits to depended-upon code.
 
-The pattern is especially visible with
-xref:shrinkwrap-software.adoc[*shrinkwrap software*]. Once the vendor has sold
-a version and collected its upgrade revenue, the incentive to patch it fades,
-and the installed copy is left to decay on the customer's machine as its
-environment moves on.
+The pattern is especially visible with xref:shrinkwrap-software.adoc[*shrinkwrap software*]. Once
+the vendor has sold a version and collected its upgrade revenue, the incentive to patch it fades,
+and the installed copy is left to decay on the customer's machine as its environment moves on.
 
-xref:refactoring.adoc[*Refactoring*] is the disciplined countermeasure,
-restructuring the system piece by piece before rot compels a more drastic
-rewrite. The broader property it sustains is
-xref:evolvability.adoc[*evolvability*]: a system that can be adapted without
-breaking is one that can keep up with its environment instead of being rotted
-by it.
+xref:refactoring.adoc[*Refactoring*] is the disciplined countermeasure, restructuring the system
+piece by piece before rot compels a more drastic rewrite. The broader property it sustains is
+xref:evolvability.adoc[*evolvability*]: a system that can be adapted without breaking is one that
+can keep up with its environment instead of being rotted by it.
 
-The end state of unmanaged rot and debt is often a
-xref:big-ball-of-mud.adoc[*big ball of mud*]: a system with no discernible
-architecture, held together by expedient patches.
+The end state of unmanaged rot and debt is often a xref:big-ball-of-mud.adoc[*big ball of mud*]: a
+system with no discernible architecture, held together by expedient patches.
 
 == See also
 

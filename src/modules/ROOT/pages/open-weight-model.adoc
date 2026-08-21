@@ -1,54 +1,48 @@
 = Open-weight model
 
-*Open-weight* models are xref:large-language-model.adoc[*large language models*]
-(or other machine learning models) whose trained weights are published for
-anyone to download and run. This is distinct from *open-source*, which would
-also require the training data and code used to produce the model to be public.
+*Open-weight* models are xref:large-language-model.adoc[*large language models*] (or other machine
+learning models) whose trained weights are published for anyone to download and run. This is
+distinct from *open-source*, which would also require the training data and code used to produce the
+model to be public.
 
 == Open weight vs. open source
 
-Most "open" AI models are only open-weight. The weights are downloadable, but
-the training corpus, the data-cleaning recipes, and the exact training code are
-kept private. That is enough for many use cases — you can run, fine-tune, and
-self-host the model — but it is not enough to reproduce it from scratch, audit
-what it was trained on, or verify that a given output is free of inherited
-copyright or bias issues.
+Most "open" AI models are only open-weight. The weights are downloadable, but the training corpus,
+the data-cleaning recipes, and the exact training code are kept private. That is enough for many use
+cases — you can run, fine-tune, and self-host the model — but it is not enough to reproduce it from
+scratch, audit what it was trained on, or verify that a given output is free of inherited copyright
+or bias issues.
 
-A smaller but growing category is *truly open-source* models, which release the
-weights _and_ the training data and methodology. The standout example is
-Nvidia's https://research.nvidia.com/labs/nemotron/Nemotron-3/[*Nemotron 3*]
-family, announced alongside a partnership with Palantir in July 2026. Nvidia
-published not just the model weights but the training recipes and roughly ten
-trillion tokens of the underlying training data. That level of openness makes it
-possible to inspect, reproduce, and modify the full pipeline, not just the final
-artifact.
+A smaller but growing category is *truly open-source* models, which release the weights _and_ the
+training data and methodology. The standout example is Nvidia's
+https://research.nvidia.com/labs/nemotron/Nemotron-3/[*Nemotron 3*] family, announced alongside a
+partnership with Palantir in July 2026. Nvidia published not just the model weights but the training
+recipes and roughly ten trillion tokens of the underlying training data. That level of openness
+makes it possible to inspect, reproduce, and modify the full pipeline, not just the final artifact.
 
 The distinction matters for several reasons:
 
-* *Reproducibility and auditability.* Open-source models let researchers and
-  regulators inspect what went into the model. Open-weight models do not.
+* *Reproducibility and auditability.* Open-source models let researchers and regulators inspect what
+  went into the model. Open-weight models do not.
 
-* *Data sovereignty and IP risk.* Running an open-weight or open-source model on
-  your own hardware keeps proprietary prompts and data inside your
-  infrastructure. More fully open models also make it easier to avoid the
-  training-data copyright questions that have led to large settlements against
+* *Data sovereignty and IP risk.* Running an open-weight or open-source model on your own hardware
+  keeps proprietary prompts and data inside your infrastructure. More fully open models also make it
+  easier to avoid the training-data copyright questions that have led to large settlements against
   closed labs.
 
-* *Cost.* When performance is roughly equivalent, self-hosting an open model is
-  often an order of magnitude cheaper per token than using a closed frontier
-  API.
+* *Cost.* When performance is roughly equivalent, self-hosting an open model is often an order of
+  magnitude cheaper per token than using a closed frontier API.
 
-Licensing terms vary between open-weight models. Some permit unrestricted
-commercial use (eg. Apache 2.0, MIT). Others carry custom licenses that restrict
-commercial use, redistribution, or use above a certain scale (eg. Meta's Llama
-community license).
+Licensing terms vary between open-weight models. Some permit unrestricted commercial use (eg. Apache
+2.0, MIT). Others carry custom licenses that restrict commercial use, redistribution, or use above a
+certain scale (eg. Meta's Llama community license).
 
-https://huggingface.co/[Hugging Face] is the primary hub for discovering and
-downloading open-weight models, hosting over two million models contributed by
-individuals, research labs, and major organizations. The other major resource in
-this space is https://ollama.com/search[Ollama's model database], which is a
-more curated library of models that are proven to be stable with the Ollama
-model manager (see xref:model-access-layer.adoc[*model access layer*]).
+https://huggingface.co/[Hugging Face] is the primary hub for discovering and downloading open-weight
+models, hosting over two million models contributed by individuals, research labs, and major
+organizations. The other major resource in this space is
+https://ollama.com/search[Ollama's model database], which is a more curated library of models that
+are proven to be stable with the Ollama model manager (see
+xref:model-access-layer.adoc[*model access layer*]).
 
 There are pros and cons to running open-weight models on your own hardware:
 
@@ -63,202 +57,165 @@ There are pros and cons to running open-weight models on your own hardware:
 
 == Hardware requirements
 
-It is useful to think of open-weight models as falling into a spectrum of size
-tiers, with each tier having different minimal hardware requirements:
+It is useful to think of open-weight models as falling into a spectrum of size tiers, with each tier
+having different minimal hardware requirements:
 
-* *Ultra-light (1–3B)*: Run on almost any machine with 8 GB+ RAM. Capable of
-  basic chat and simple tasks.
+* *Ultra-light (1–3B)*: Run on almost any machine with 8 GB+ RAM. Capable of basic chat and simple
+  tasks.
 
-* *Small (3–8B)*: A good balance of quality and speed. Need ~8–16 GB RAM. The
-  recommended starting point for most local setups.
+* *Small (3–8B)*: A good balance of quality and speed. Need ~8–16 GB RAM. The recommended starting
+  point for most local setups.
 
-* *Medium (8–13B)*: Well-rounded general-purpose models. Run well on 16–24 GB
-  RAM with a mid-range GPU.
+* *Medium (8–13B)*: Well-rounded general-purpose models. Run well on 16–24 GB RAM with a mid-range
+  GPU.
 
-* *Large (30–70B)*: High capability. Require at least 32 GB RAM and a dedicated
-  GPU with 24+ GB VRAM.
+* *Large (30–70B)*: High capability. Require at least 32 GB RAM and a dedicated GPU with 24+ GB
+  VRAM.
 
-* *Very large (70B+)*: Near-frontier capability. Require high-end workstations
-  with multi-GPU setups and at least 64 GB each of RAM and VRAM.
+* *Very large (70B+)*: Near-frontier capability. Require high-end workstations with multi-GPU setups
+  and at least 64 GB each of RAM and VRAM.
 
 [TIP]
 ======
-To estimate whether your own hardware can run a given model — accounting for
-quantization level (Q4–F16), context length, and expected token throughput (TPS)
-— try the
+To estimate whether your own hardware can run a given model — accounting for quantization level
+(Q4–F16), context length, and expected token throughput (TPS) — try the
 https://logarithmicspirals.com/tools/local-ai-vram-calculator-gpu-planner/[Local AI VRAM Calculator & GPU Planner].
-It maps a hardware setup and use case to model recommendations, with the caveat
-that the figures are planning estimates, not performance guarantees.
+It maps a hardware setup and use case to model recommendations, with the caveat that the figures are
+planning estimates, not performance guarantees.
 ======
 
 Custom hardware like the
-https://www.nvidia.com/en-gb/products/workstations/dgx-spark/[Nvidia DGX Spark]
-give you the ability to run _and train_ large language models on your own
-hardware.
+https://www.nvidia.com/en-gb/products/workstations/dgx-spark/[Nvidia DGX Spark] give you the ability
+to run _and train_ large language models on your own hardware.
 
 == Open-weight model families
 
 As of 2026, some notable open-weight model families include (several use a
-xref:large-language-model.adoc#_mixture_of_experts[*mixture-of-experts (MoE)*]
-architecture):
+xref:large-language-model.adoc#_mixture_of_experts[*mixture-of-experts (MoE)*] architecture):
 
-* https://llama.meta.com/[*Llama*] models from Meta. The Llama family did much
-  to kick-start the open-weight era, and its widespread adoption has made the
-  underlying architecture a de facto reference point that many other open models
-  build on. The Scout variant is known for its massive 10-million token context
-  window. Released under Meta's community license, which permits commercial use
-  but imposes some restrictions (including for very large deployments).
+* https://llama.meta.com/[*Llama*] models from Meta. The Llama family did much to kick-start the
+  open-weight era, and its widespread adoption has made the underlying architecture a de facto
+  reference point that many other open models build on. The Scout variant is known for its massive
+  10-million token context window. Released under Meta's community license, which permits commercial
+  use but imposes some restrictions (including for very large deployments).
 
-* https://ai.google.dev/gemma[*Gemma*] models from Google. These are Google's
-  open-weight counterparts to its proprietary, frontier Gemini models. Gemma
-  models are optimized to run on consumer hardware.
+* https://ai.google.dev/gemma[*Gemma*] models from Google. These are Google's open-weight
+  counterparts to its proprietary, frontier Gemini models. Gemma models are optimized to run on
+  consumer hardware.
 
-* https://qwenlm.github.io/[*Qwen*] models from Alibaba Cloud are available in a
-  wide range of sizes, so there'll always be one variant that you can run on
-  your hardware.
+* https://qwenlm.github.io/[*Qwen*] models from Alibaba Cloud are available in a wide range of
+  sizes, so there'll always be one variant that you can run on your hardware.
 
-* https://mistral.ai/[*Mistral*] models from Mistral AI, a French company that
-  produces both open-weight models and proprietary models accessible via web
-  service APIs. Their Mixtral models helped popularize the mixture-of-experts
-  (MoE) architecture in open models.
+* https://mistral.ai/[*Mistral*] models from Mistral AI, a French company that produces both
+  open-weight models and proprietary models accessible via web service APIs. Their Mixtral models
+  helped popularize the mixture-of-experts (MoE) architecture in open models.
 
-* https://azure.microsoft.com/en-us/products/phi/[*Phi*] models from Microsoft.
-  A family of small language models (SLMs) that punch well above their size on
-  reasoning and maths, achieved largely by training on high-quality,
-  "textbook-quality" filtered and synthetic data rather than sheer scale.
-  Optimized for on-device and edge use, and released under the permissive MIT
-  license. Recent releases include Phi-4 (14B) and the compact Phi-4-mini, with
-  multimodal variants.
+* https://azure.microsoft.com/en-us/products/phi/[*Phi*] models from Microsoft. A family of small
+  language models (SLMs) that punch well above their size on reasoning and maths, achieved largely
+  by training on high-quality, "textbook-quality" filtered and synthetic data rather than sheer
+  scale. Optimized for on-device and edge use, and released under the permissive MIT license. Recent
+  releases include Phi-4 (14B) and the compact Phi-4-mini, with multimodal variants.
 
-* https://huggingface.co/openai[*gpt-oss*] models from OpenAI. `gpt-oss-120b`
-  and `gpt-oss-20b`, released under the permissive Apache 2.0 license in August
-  2025, were OpenAI's first open-weight models since GPT-2.
+* https://huggingface.co/openai[*gpt-oss*] models from OpenAI. `gpt-oss-120b` and `gpt-oss-20b`,
+  released under the permissive Apache 2.0 license in August 2025, were OpenAI's first open-weight
+  models since GPT-2.
 
-* https://huggingface.co/moonshotai[*Kimi*] models from Moonshot AI. Kimi K2.5
-  (released January 2026) is an open-weight mixture-of-experts model with 1T
-  total parameters (32B activated per token) and a 256K-token context window. It
-  matches frontier models on several benchmarks and is multimodal across text,
-  code, image, and video (understanding only, no generation). Kimi 2.5 leads in
-  mathematical reasoning and is optimized for "agent swarming".
+* https://huggingface.co/moonshotai[*Kimi*] models from Moonshot AI. Kimi K2.5 (released January
+  2026) is an open-weight mixture-of-experts model with 1T total parameters (32B activated per
+  token) and a 256K-token context window. It matches frontier models on several benchmarks and is
+  multimodal across text, code, image, and video (understanding only, no generation). Kimi 2.5 leads
+  in mathematical reasoning and is optimized for "agent swarming".
 
-* https://huggingface.co/zai-org[*GLM*] models from Z.ai (formerly Zhipu AI).
-  The GLM-4.5 and GLM-4.6 releases are strong open-weight MoE models,
-  well-regarded for their "interleaved thinking" and demonstrated capabilities
-  in both agentic and vibe coding workflows.
+* https://huggingface.co/zai-org[*GLM*] models from Z.ai (formerly Zhipu AI). The GLM-4.5 and
+  GLM-4.6 releases are strong open-weight MoE models, well-regarded for their "interleaved thinking"
+  and demonstrated capabilities in both agentic and vibe coding workflows.
 
-* https://www.deepseek.com/[*DeepSeek*] models from DeepSeek AI. This AI lab
-  made waves in early 2025 when DeepSeek-R1 demonstrated near-frontier reasoning
-  performance at a fraction of the training compute cost that had previously
-  been assumed was necessary to develop frontier models. Its "engram" memory
-  system has been proven to maintain high coding performance across 1M+ token
+* https://www.deepseek.com/[*DeepSeek*] models from DeepSeek AI. This AI lab made waves in early
+  2025 when DeepSeek-R1 demonstrated near-frontier reasoning performance at a fraction of the
+  training compute cost that had previously been assumed was necessary to develop frontier models.
+  Its "engram" memory system has been proven to maintain high coding performance across 1M+ token
   contexts.
 
-* https://www.minimax.io/[*MiniMax*] models from MiniMax AI, which also develops
-  closed-weight models. MiniMax M2.5 is well-regarded, posting near-frontier
-  agentic and coding scores (~80% on SWE-Bench Verified) at an exceptionally low
-  cost.
+* https://www.minimax.io/[*MiniMax*] models from MiniMax AI, which also develops closed-weight
+  models. MiniMax M2.5 is well-regarded, posting near-frontier agentic and coding scores (~80% on
+  SWE-Bench Verified) at an exceptionally low cost.
 
 Nvidia continues to expand its open-weight offerings, most recently with the
-https://research.nvidia.com/labs/nemotron/Nemotron-3/[*Nemotron 3*] family
-(Nano, Super, and Ultra variants).
+https://research.nvidia.com/labs/nemotron/Nemotron-3/[*Nemotron 3*] family (Nano, Super, and Ultra
+variants).
 
 == Open-weight coding models
 
-The following open-weight models are highly regarded for programming tasks.
-Small models (≤ 8B) run comfortably on a laptop or CPU-only setup. Larger models
-require a GPU with ≥ 16–24 GB VRAM.
+The following open-weight models are highly regarded for programming tasks. Small models (≤ 8B) run
+comfortably on a laptop or CPU-only setup. Larger models require a GPU with ≥ 16–24 GB VRAM.
 
-Not all of them support *tool calling* (also called function calling) — the
-ability to emit structured calls to external tools/functions as part of a
-response. This is a prerequisite for agentic coding workflows, where the model
-must be able to invoke tools such as file edits, shell commands, or search.
-Models without native tool-calling support can still be used for plain code
-generation, completion, or chat, but are not suitable as the driver of an
-agent loop without a third-party fine-tune or adapter bolted on.
+Not all of them support *tool calling* (also called function calling) — the ability to emit
+structured calls to external tools/functions as part of a response. This is a prerequisite for
+agentic coding workflows, where the model must be able to invoke tools such as file edits, shell
+commands, or search. Models without native tool-calling support can still be used for plain code
+generation, completion, or chat, but are not suitable as the driver of an agent loop without a
+third-party fine-tune or adapter bolted on.
 
 * *Qwen3.8-27B*: Alibaba's flagship model in the 27B class, released August
   2026. A dense, natively multimodal model (text, image, and video input)
-  built for agentic, long-horizon coding tasks, with flexible thinking control
-  and a 262K native context window (extensible to 1M via YaRN). Available on
-  all Ollama-supported platforms. Apache 2.0 license.
-  +
-  *Tool calling: supported natively.* Uses a `<tool_call>` XML format; Qwen-Agent
-  is the recommended harness for making full use of its agentic tool-calling
-  ability.
+built for agentic, long-horizon coding tasks, with flexible thinking control and a 262K native
+context window (extensible to 1M via YaRN). Available on all Ollama-supported platforms. Apache 2.0
+license. + *Tool calling: supported natively.* Uses a `<tool_call>` XML format; Qwen-Agent is the
+recommended harness for making full use of its agentic tool-calling ability.
 
-* *Nvidia Nemotron 3.5 Lightning*: A hybrid Mixture-of-Experts model (30B
-  total, 3B active) from Nvidia, released August 2026, purpose-built for the
-  execution layer of always-on agents — reading files, calling tools, sorting
-  results, and retrying failures. Designed to run on local hardware (RTX PCs,
-  RTX PRO workstations, DGX Spark/Station) rather than the datacenter, keeping
-  agent context on-device. 1M token context. Uses speculative decoding
-  (multi-token prediction, DFlash/DSpark) for up to 4x the throughput of
-  comparable open models. Open weights and open training data. Apache 2.0
-  license.
-  +
-  *Tool calling: supported natively.* Trained specifically for tool calling,
-  instruction following, and multi-turn agentic work, for use in harnesses
-  such as Claude Code, Hermes Agent, and OpenClaw.
+* *Nvidia Nemotron 3.5 Lightning*: A hybrid Mixture-of-Experts model (30B total, 3B active) from
+  Nvidia, released August 2026, purpose-built for the execution layer of always-on agents — reading
+  files, calling tools, sorting results, and retrying failures. Designed to run on local hardware
+  (RTX PCs, RTX PRO workstations, DGX Spark/Station) rather than the datacenter, keeping agent
+  context on-device. 1M token context. Uses speculative decoding (multi-token prediction,
+  DFlash/DSpark) for up to 4x the throughput of comparable open models. Open weights and open
+  training data. Apache 2.0 license. + *Tool calling: supported natively.* Trained specifically for
+  tool calling, instruction following, and multi-turn agentic work, for use in harnesses such as
+  Claude Code, Hermes Agent, and OpenClaw.
 
-* *Muse Glimmer*: A 30B multimodal model from Meta Superintelligence Labs,
-  released August 2026 — Meta's first model under that new lab and a notable
-  departure from the Llama family's community license. Built for agent
-  workloads that run locally, with 128K+ context and controllable reasoning
-  strength (low/medium/high/xhigh — use high or xhigh for complex coding and
-  agentic tasks). Available via Ollama's MLX engine on Apple Silicon, with
-  broader platform support following. Apache 2.0 license.
-  +
-  *Tool calling: supported natively.* Reliable schema-based tool invocation
-  across extended, multi-turn workflows, including diagnosing and retrying
-  failed or unexpected tool results.
+* *Muse Glimmer*: A 30B multimodal model from Meta Superintelligence Labs, released August 2026 —
+  Meta's first model under that new lab and a notable departure from the Llama family's community
+  license. Built for agent workloads that run locally, with 128K+ context and controllable reasoning
+  strength (low/medium/high/xhigh — use high or xhigh for complex coding and agentic tasks).
+  Available via Ollama's MLX engine on Apple Silicon, with broader platform support following.
+  Apache 2.0 license. + *Tool calling: supported natively.* Reliable schema-based tool invocation
+  across extended, multi-turn workflows, including diagnosing and retrying failed or unexpected tool
+  results.
 
-* *Qwen2.5-Coder 32B Instruct*: Alibaba's dedicated coding model that
-  consistently tops open-weight coding benchmarks. Strong across Python,
-  JavaScript, Go, and SQL. Supports a 32K context window. Apache 2.0 license.
-  +
-  *Tool calling: supported natively.* Trained for multi-turn tool/function
-  calling using a Hermes-style `<tool_call>` format, recognized out of the box
-  by inference servers such as vLLM.
+* *Qwen2.5-Coder 32B Instruct*: Alibaba's dedicated coding model that consistently tops open-weight
+  coding benchmarks. Strong across Python, JavaScript, Go, and SQL. Supports a 32K context window.
+  Apache 2.0 license. + *Tool calling: supported natively.* Trained for multi-turn tool/function
+  calling using a Hermes-style `<tool_call>` format, recognized out of the box by inference servers
+  such as vLLM.
 
-* *DeepSeek-Coder-V2 Instruct*: A Mixture-of-Experts model (236B total, 21B
-  active) with very strong multi-language coding performance and a 128K context
-  window. One of the most capable open-weight options for complex, multi-file
-  tasks. MIT license.
-  +
-  *Tool calling: not supported.* The official instruct release has no native
-  function-calling format. Community fine-tunes exist that bolt it on, but
-  it's not built in.
+* *DeepSeek-Coder-V2 Instruct*: A Mixture-of-Experts model (236B total, 21B active) with very strong
+  multi-language coding performance and a 128K context window. One of the most capable open-weight
+  options for complex, multi-file tasks. MIT license. + *Tool calling: not supported.* The official
+  instruct release has no native function-calling format. Community fine-tunes exist that bolt it
+  on, but it's not built in.
 
-* *Codestral 22B*: Mistral AI's dedicated code model, optimized for low-latency
-  code completion and fill-in-the-middle (FIM) tasks. Well suited to IDE
-  integration. Supports 32K context. Mistral AI Non-Production License
-  (commercial use requires a separate agreement).
-  +
-  *Tool calling: not supported.* A deliberate design choice by Mistral —
-  Codestral targets completion/FIM, not agentic use. Other Mistral chat models
-  (eg. Mistral Large) do support tool calling.
+* *Codestral 22B*: Mistral AI's dedicated code model, optimized for low-latency code completion and
+  fill-in-the-middle (FIM) tasks. Well suited to IDE integration. Supports 32K context. Mistral AI
+  Non-Production License (commercial use requires a separate agreement). +
+  *Tool calling: not supported.* A deliberate design choice by Mistral — Codestral targets
+  completion/FIM, not agentic use. Other Mistral chat models (eg. Mistral Large) do support tool
+  calling.
 
-* *StarCoder2 15B*: The successor to StarCoder, trained on The Stack v2. Strong
-  on Python, JavaScript, and C/C++, and well suited to code search and
-  autocompletion tasks. Apache 2.0 license.
-  +
-  *Tool calling: not supported.* The base model is only lightly
-  instruction-tuned and has no function-calling format.
+* *StarCoder2 15B*: The successor to StarCoder, trained on The Stack v2. Strong on Python,
+  JavaScript, and C/C++, and well suited to code search and autocompletion tasks. Apache 2.0
+  license. + *Tool calling: not supported.* The base model is only lightly instruction-tuned and has
+  no function-calling format.
 
-* *Code Llama 70B Instruct*: Meta's instruction-tuned coding variant of Llama 2,
-  with a 16K context window and strong performance on multi-language tasks and
-  large-scale refactoring. Meta's non-commercial license restricts use to
-  research.
-  +
-  *Tool calling: not supported.* No native tool-calling format from Meta for
-  this release. Later, non-coding Llama 3.x Instruct models are the better
-  choice if tool calling is required from the Llama family.
+* *Code Llama 70B Instruct*: Meta's instruction-tuned coding variant of Llama 2, with a 16K context
+  window and strong performance on multi-language tasks and large-scale refactoring. Meta's
+  non-commercial license restricts use to research. + *Tool calling: not supported.* No native
+  tool-calling format from Meta for this release. Later, non-coding Llama 3.x Instruct models are
+  the better choice if tool calling is required from the Llama family.
 
 == See also
 
-* xref:large-language-model.adoc[*Large language model (LLM)*]: The broader
-  concept these models are examples of.
+* xref:large-language-model.adoc[*Large language model (LLM)*]: The broader concept these models are
+  examples of.
 
-* xref:model-access-layer.adoc[*Model access layer*]: Deployment patterns,
-  gateways, and model managers for reaching or running models, including
-  open-weight ones.
+* xref:model-access-layer.adoc[*Model access layer*]: Deployment patterns, gateways, and model
+  managers for reaching or running models, including open-weight ones.

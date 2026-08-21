@@ -3,14 +3,12 @@
 // TODO: https://blog.algomaster.io/p/system-design-how-to-avoid-single-point-of-failures
 
 Planning to mitigate single points of failure is a critical aspect of
-xref:system-design.adoc[*system design*]. A single point of failure (SPOF) is
-any part of a system that, if it fails, stops the entire system from functioning
-correctly.
+xref:system-design.adoc[*system design*]. A single point of failure (SPOF) is any part of a system
+that, if it fails, stops the entire system from functioning correctly.
 
-An analogy for a single point of failure is a light switch that controls all the
-lights in a house. If the switch breaks, none of the lights will turn on.
-Similarly, a single point of failure in an IT system is something that can lead
-to system-wide outages or data loss.
+An analogy for a single point of failure is a light switch that controls all the lights in a house.
+If the switch breaks, none of the lights will turn on. Similarly, a single point of failure in an IT
+system is something that can lead to system-wide outages or data loss.
 
 Single points of failure can have the following impacts:
 
@@ -33,31 +31,27 @@ Common single points of failure include:
 
 Common strategies to mitigate single points of failure include:
 
-* xref:redundancy.adoc[*Redundancy*]: Adding backups and replicas for critical
-  components, for example using primary-replica databases or multi-region
-  clusters.
+* xref:redundancy.adoc[*Redundancy*]: Adding backups and replicas for critical components, for
+  example using primary-replica databases or multi-region clusters.
 
-* *Geographic redundancy*: Deploying systems across multiple regions to handle
-  regional outages.
+* *Geographic redundancy*: Deploying systems across multiple regions to handle regional outages.
 
-* xref:load-balancing.adoc[*Load balancing*]: Distributing traffic across
-  multiple servers using tools like Nginx or AWS ELB. This prevents bottlenecks
-  by ensuring no single server handles all requests.
+* xref:load-balancing.adoc[*Load balancing*]: Distributing traffic across multiple servers using
+  tools like Nginx or AWS ELB. This prevents bottlenecks by ensuring no single server handles all
+  requests.
 
-* *High availability (HA)*: Designing systems to be highly available using
-  active-active or active-passive xref:failover.adoc[*failover*] setups.
+* *High availability (HA)*: Designing systems to be highly available using active-active or
+  active-passive xref:failover.adoc[*failover*] setups.
 
 * *Fault tolerance*: Using xref:circuit-breaker.adoc[*circuit breakers*],
-  xref:retry.adoc[*retry mechanisms*], and xref:bulkhead.adoc[*bulkheads*] to prevent failures
-  from cascading.
+  xref:retry.adoc[*retry mechanisms*], and xref:bulkhead.adoc[*bulkheads*] to prevent failures from
+  cascading.
 
-* *Disaster recovery*: Backing up data, and having recovery plans for
-  system-wide failures.
+* *Disaster recovery*: Backing up data, and having recovery plans for system-wide failures.
 
-* *Monitoring and alerting*: Using tools like Prometheus, Datadog, or New Relic
-  to identify failures before they escalate.
+* *Monitoring and alerting*: Using tools like Prometheus, Datadog, or New Relic to identify failures
+  before they escalate.
 
-* *Chaos engineering/testing*: Running experiments to test system resilience and
-  identify single points of failure. For example, Netflix developed a tool
-  called *Chaos Monkey* which would randomly turn off production instances to
-  test system resilience!
+* *Chaos engineering/testing*: Running experiments to test system resilience and identify single
+  points of failure. For example, Netflix developed a tool called *Chaos Monkey* which would
+  randomly turn off production instances to test system resilience!

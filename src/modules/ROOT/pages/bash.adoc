@@ -2,99 +2,83 @@
 
 [Bash](https://www.gnu.org/software/bash/) is a Unix xref:shell.adoc[*shell*].
 
-Brian Fox was the original author of Bash. The language was developed from the
-late 1980s as a [GNU](https://www.gnu.org/) project, with the aim of making a
-[free software](https://www.fsf.org/) replacement for the Bourne shell, which
-was then the standard shell on all Unix systems. Bash's syntax and baseline
-features are a superset of the Bourne shell, meaning that legacy Bourne `sh`
-scripts can usually be executed by the Bash shell. (Bash is an acronym for
-"bourne again shell".)
+Brian Fox was the original author of Bash. The language was developed from the late 1980s as a
+[GNU](https://www.gnu.org/) project, with the aim of making a [free software](https://www.fsf.org/)
+replacement for the Bourne shell, which was then the standard shell on all Unix systems. Bash's
+syntax and baseline features are a superset of the Bourne shell, meaning that legacy Bourne `sh`
+scripts can usually be executed by the Bash shell. (Bash is an acronym for "bourne again shell".)
 
-Chet Ramey took over maintenance of Bash in the early 1990s and has been the
-project's sole maintainer since. Bash remains a GNU project, with copyright
-assigned to the Free Software Foundation, but Ramey maintains it in his own
-time rather than as an FSF employee. Releases are infrequent but steady. Bash
-2.0 (1996) introduced indexed arrays; 4.0 (2009) added associative arrays, the
-`coproc` keyword, the `mapfile` builtin, and the `**` globstar; and 5.0 (2019)
-brought nameref variables and time-related builtins such as `EPOCHSECONDS`.
-The current release line is 5.x.
+Chet Ramey took over maintenance of Bash in the early 1990s and has been the project's sole
+maintainer since. Bash remains a GNU project, with copyright assigned to the Free Software
+Foundation, but Ramey maintains it in his own time rather than as an FSF employee. Releases are
+infrequent but steady. Bash 2.0 (1996) introduced indexed arrays; 4.0 (2009) added associative
+arrays, the `coproc` keyword, the `mapfile` builtin, and the `**` globstar; and 5.0 (2019) brought
+nameref variables and time-related builtins such as `EPOCHSECONDS`. The current release line is 5.x.
 
-Despite newer shells like [Z shell (Zsh)](https://www.zsh.org/) coming along,
-Bash remains the most popular shell among users of xref:linux.adoc[*Linux*]. It
-is still the default login shell for most Linux distributions, and it was the
-default shell in macOS prior to 2019 (when the default shell was swapped to
-Zsh). Apple had long shipped Bash at version 3.2 because later releases moved
-to the GPLv3, whose terms Apple was unwilling to accept; the switch to Zsh
-gave macOS a more modern default shell. A version of Bash is also available for
-Windows 10 and later, both through the Windows Subsystem for Linux and as Git
-Bash.
+Despite newer shells like [Z shell (Zsh)](https://www.zsh.org/) coming along, Bash remains the most
+popular shell among users of xref:linux.adoc[*Linux*]. It is still the default login shell for most
+Linux distributions, and it was the default shell in macOS prior to 2019 (when the default shell was
+swapped to Zsh). Apple had long shipped Bash at version 3.2 because later releases moved to the
+GPLv3, whose terms Apple was unwilling to accept; the switch to Zsh gave macOS a more modern default
+shell. A version of Bash is also available for Windows 10 and later, both through the Windows
+Subsystem for Linux and as Git Bash.
 
 == Bash as a scripting language
 
-Bash is both an interactive command language and a scripting language. As a
-scripting language it extends the Bourne shell with a range of conveniences
-that POSIX `sh` lacks: integer arithmetic with `$(())`, the safer
-`[[ ... ]]` conditional expression, indexed and associative arrays, pattern
-matching with extended globs, process substitution `<(...)`, here strings
-`<<<`, and functions with `local` variables. It also provides job control,
-command-line editing via GNU Readline, and a persistent command history.
+Bash is both an interactive command language and a scripting language. As a scripting language it
+extends the Bourne shell with a range of conveniences that POSIX `sh` lacks: integer arithmetic with
+`$(())`, the safer `[[ ... ]]` conditional expression, indexed and associative arrays, pattern
+matching with extended globs, process substitution `<(...)`, here strings `<<<`, and functions with
+`local` variables. It also provides job control, command-line editing via GNU Readline, and a
+persistent command history.
 
-These conveniences come at a cost to portability. Features like `[[`,
-arrays, `==`, and process substitution are Bash-specific and are not part of
-the POSIX `sh` standard, so a script that relies on them will fail under a
-strict POSIX shell such as Debian's `dash`. Many Linux distributions symlink
-`/bin/sh` to `dash` rather than `bash`, so the choice of shebang –
-`#!/bin/bash` versus `#!/bin/sh` – determines which language the script is
-actually running in. See xref:posix.adoc[*POSIX*] for more on shell
-portability.
+These conveniences come at a cost to portability. Features like `[[`, arrays, `==`, and process
+substitution are Bash-specific and are not part of the POSIX `sh` standard, so a script that relies
+on them will fail under a strict POSIX shell such as Debian's `dash`. Many Linux distributions
+symlink `/bin/sh` to `dash` rather than `bash`, so the choice of shebang – `#!/bin/bash` versus
+`#!/bin/sh` – determines which language the script is actually running in. See
+xref:posix.adoc[*POSIX*] for more on shell portability.
 
 == Configuration
 
-A Bash session reads a sequence of startup files depending on how it is
-invoked. Login shells read `/etc/profile` and then the first of
-`~/.bash_profile`, `~/.bash_login`, or `~/.profile` that exists. Interactive
-non-login shells read `~/.bashrc`. The distinction is a common source of
-confusion: terminals opened from a desktop environment typically run non-login
-shells, while SSH sessions run login shells. Many users source `~/.bashrc`
-from `~/.bash_profile` to keep configuration consistent. `~/.bash_logout`
-runs when a login shell exits.
+A Bash session reads a sequence of startup files depending on how it is invoked. Login shells read
+`/etc/profile` and then the first of `~/.bash_profile`, `~/.bash_login`, or `~/.profile` that
+exists. Interactive non-login shells read `~/.bashrc`. The distinction is a common source of
+confusion: terminals opened from a desktop environment typically run non-login shells, while SSH
+sessions run login shells. Many users source `~/.bashrc` from `~/.bash_profile` to keep
+configuration consistent. `~/.bash_logout` runs when a login shell exits.
 
 == Common pitfalls
 
-Bash's handling of word splitting and unquoted variables is the source of most
-of its notorious bugs. An unquoted `$VAR` is split on whitespace and
-glob-expanded before the command runs, so a filename containing a space can
-silently become two arguments. The defensive habit is to quote almost
-everything: `"$VAR"`.
+Bash's handling of word splitting and unquoted variables is the source of most of its notorious
+bugs. An unquoted `$VAR` is split on whitespace and glob-expanded before the command runs, so a
+filename containing a space can silently become two arguments. The defensive habit is to quote
+almost everything: `"$VAR"`.
 
-Bash is also poorly suited to non-trivial programs. Its error handling is
-coarse (no exceptions, no structured return values beyond exit codes), its
-data structures are limited, and subshells are comparatively expensive. For
-scripts that grow beyond a few dozen lines or that need to manipulate
-structured data, a general-purpose language such as Python is usually a better
-choice. [ShellCheck](https://www.shellcheck.net/) is a widely used linter that
-catches the most common Bash mistakes automatically.
+Bash is also poorly suited to non-trivial programs. Its error handling is coarse (no exceptions, no
+structured return values beyond exit codes), its data structures are limited, and subshells are
+comparatively expensive. For scripts that grow beyond a few dozen lines or that need to manipulate
+structured data, a general-purpose language such as Python is usually a better choice.
+[ShellCheck](https://www.shellcheck.net/) is a widely used linter that catches the most common Bash
+mistakes automatically.
 
 == Shellshock
 
-In September 2014 the *Shellshock* vulnerability (CVE-2014-6271 and related
-CVEs) disclosed a serious flaw in Bash's parsing of function definitions
-exported through environment variables. Because Bash was the default shell on
-most Linux servers and on macOS, and because web servers commonly invoked Bash
-through CGI, the bug allowed attackers to execute arbitrary commands on a vast
-number of exposed systems. The episode prompted a wave of emergency patches
-and underscored how deeply Bash is embedded in the infrastructure of the
-internet.
+In September 2014 the *Shellshock* vulnerability (CVE-2014-6271 and related CVEs) disclosed a
+serious flaw in Bash's parsing of function definitions exported through environment variables.
+Because Bash was the default shell on most Linux servers and on macOS, and because web servers
+commonly invoked Bash through CGI, the bug allowed attackers to execute arbitrary commands on a vast
+number of exposed systems. The episode prompted a wave of emergency patches and underscored how
+deeply Bash is embedded in the infrastructure of the internet.
 
 == Bash and the Unix philosophy
 
-Like other Unix shells, Bash itself is not particularly powerful. Its utility
-comes from the access it gives to other Unix tools, and from the way it
-composes them through pipelines and redirection. The classic Bash script is a
-short sequence of calls to `grep`, `awk`, `sed`, `sort`, and the like, glued
-together with pipes – the same composable, plain-text approach that the
-xref:unix-philosophy.adoc[*Unix philosophy*] has favoured since the beginning
-of xref:unix.adoc[*Unix*].
+Like other Unix shells, Bash itself is not particularly powerful. Its utility comes from the access
+it gives to other Unix tools, and from the way it composes them through pipelines and redirection.
+The classic Bash script is a short sequence of calls to `grep`, `awk`, `sed`, `sort`, and the like,
+glued together with pipes – the same composable, plain-text approach that the
+xref:unix-philosophy.adoc[*Unix philosophy*] has favoured since the beginning of
+xref:unix.adoc[*Unix*].
 
 == See also
 
@@ -106,8 +90,8 @@ of xref:unix.adoc[*Unix*].
 
 == References
 
-* Ramey, C. and Fox, B. (1989–). _Bash Reference Manual_. Free Software
-  Foundation. https://www.gnu.org/software/bash/manual/
+* Ramey, C. and Fox, B. (1989–). _Bash Reference Manual_. Free Software Foundation.
+  https://www.gnu.org/software/bash/manual/
 
 * Ramey, C. (1994–). _The GNU Bash Project_ (source repository).
   https://git.savannah.gnu.org/cgit/bash.git

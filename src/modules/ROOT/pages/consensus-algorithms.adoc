@@ -2,33 +2,30 @@
 
 // TODO: https://medium.com/@sourabhatta1819/consensus-in-distributed-system-ac79f8ba2b8c
 
-In xref:distributed-system.adoc[*distributed software*], *[nodes]* need to work
-together to maintain a xref:consistency.adoc[*consistent*] state. However, due
-to the inherent challenges of distributed software systems – such as network
-xref:latency.adoc[*latency*], node *[failures]*, and *[asynchrony]* – it is
-difficult to achieve *[consensus]* on the state of the system.
+In xref:distributed-system.adoc[*distributed software*], *[nodes]* need to work together to maintain
+a xref:consistency.adoc[*consistent*] state. However, due to the inherent challenges of distributed
+software systems – such as network xref:latency.adoc[*latency*], node *[failures]*, and
+*[asynchrony]* – it is difficult to achieve *[consensus]* on the state of the system.
 
-Consensus algorithms address these challenges by ensuring that all participating
-nodes agree on some state or sequence of events, even when some nodes might fail
-or act maliciously.
+Consensus algorithms address these challenges by ensuring that all participating nodes agree on some
+state or sequence of events, even when some nodes might fail or act maliciously.
 
-Consensus is the foundation for several distributed coordination patterns,
-including xref:distributed-locking.adoc[*distributed locking*] that must
-guarantee correctness.
+Consensus is the foundation for several distributed coordination patterns, including
+xref:distributed-locking.adoc[*distributed locking*] that must guarantee correctness.
 
 == Popular consensus algorithms
 
-* *Paxos*: Paxos works by electing a leader that proposes a value, which is then
-  accepted by a majority of the nodes.
+* *Paxos*: Paxos works by electing a leader that proposes a value, which is then accepted by a
+  majority of the nodes.
 
-* *Raft*: Raft works by designating one node as the leader to manage log
-  replication, and ensure consistency across the cluster. The leader stays in
-  authority by sending xref:heartbeat.adoc[*heartbeats*] to followers; a follower
-  that stops receiving them starts a new election.
+* *Raft*: Raft works by designating one node as the leader to manage log replication, and ensure
+  consistency across the cluster. The leader stays in authority by sending
+  xref:heartbeat.adoc[*heartbeats*] to followers; a follower that stops receiving them starts a new
+  election.
 
 Consensus is especially demanding in
-xref:peer-to-peer-architecture.adoc[*peer-to-peer (P2P) networks*], where there
-is no central authority to arbitrate and any peer may join or leave at will.
+xref:peer-to-peer-architecture.adoc[*peer-to-peer (P2P) networks*], where there is no central
+authority to arbitrate and any peer may join or leave at will.
 
 == See also
 

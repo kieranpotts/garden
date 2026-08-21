@@ -1,52 +1,44 @@
 = Event bus
 
-An *event bus* is a communication channel that transports events between the
-components of an xref:event-driven-architecture.adoc[*event-driven*] system. It
-It is a kind of xref:message-broker.adoc[*message broker*] organized around
-the xref:publish-subscribe-pattern.adoc[*publish-subscribe (pubsub)*] pattern.
-Producers publish events to the bus, and the bus delivers each event to every
-component that has subscribed to it.
+An *event bus* is a communication channel that transports events between the components of an
+xref:event-driven-architecture.adoc[*event-driven*] system. It It is a kind of
+xref:message-broker.adoc[*message broker*] organized around the
+xref:publish-subscribe-pattern.adoc[*publish-subscribe (pubsub)*] pattern. Producers publish events
+to the bus, and the bus delivers each event to every component that has subscribed to it.
 
-The bus sits between producers and consumers so that neither side needs to know
-about the other. Producers emit events and continue their work without waiting
-for a response. Consumers register their interest in particular event types and
-react to events as they arrive. This
-xref:asynchronous-communication.adoc[*asynchronous*] decoupling is the main
-reason event buses are used to make
-xref:distributed-system.adoc[*distributed software*] more modular and scalable.
+The bus sits between producers and consumers so that neither side needs to know about the other.
+Producers emit events and continue their work without waiting for a response. Consumers register
+their interest in particular event types and react to events as they arrive. This
+xref:asynchronous-communication.adoc[*asynchronous*] decoupling is the main reason event buses are
+used to make xref:distributed-system.adoc[*distributed software*] more modular and scalable.
 
-A defining characteristic of an event bus is *fan-out*. Each published event is
-delivered to all of its subscribers, not to a single chosen consumer. This
-distinguishes an event bus from a xref:message-queues.adoc[*message queue*],
-which routes each message to exactly one consumer and removes it once it has been
-acknowledged. Message queues are well suited to distributing discrete units of
-work across a pool of workers, whereas an event bus is well suited to
-broadcasting the same occurrence to many independent reactions.
+A defining characteristic of an event bus is *fan-out*. Each published event is delivered to all of
+its subscribers, not to a single chosen consumer. This distinguishes an event bus from a
+xref:message-queues.adoc[*message queue*], which routes each message to exactly one consumer and
+removes it once it has been acknowledged. Message queues are well suited to distributing discrete
+units of work across a pool of workers, whereas an event bus is well suited to broadcasting the same
+occurrence to many independent reactions.
 
 An event bus is also distinct from a
-xref:stream-processing-systems.adoc[*stream processing system*]. Stream
-processing systems such as xref:kafka.adoc[*Kafka*] are optimized for very high
-xref:throughput.adoc[*throughput*] and retain messages for replay over a period
-of time. An event bus, by contrast, is generally concerned with dispatching
-events to live subscribers. Events are not retained once they have been
-delivered.
+xref:stream-processing-systems.adoc[*stream processing system*]. Stream processing systems such as
+xref:kafka.adoc[*Kafka*] are optimized for very high xref:throughput.adoc[*throughput*] and retain
+messages for replay over a period of time. An event bus, by contrast, is generally concerned with
+dispatching events to live subscribers. Events are not retained once they have been delivered.
 
 == Implementations
 
 The term "event bus" spans both in-process and distributed implementations.
 
-In-process event buses live within a single application. Components register
-handlers for particular event types, and the bus dispatches each published event
-to the matching handlers. Dispatch may be synchronous, with handlers invoked on
-the publishing thread, or asynchronous, with events queued and delivered on a
-separate thread. Examples include Guava's `EventBus`, Spring's
+In-process event buses live within a single application. Components register handlers for particular
+event types, and the bus dispatches each published event to the matching handlers. Dispatch may be
+synchronous, with handlers invoked on the publishing thread, or asynchronous, with events queued and
+delivered on a separate thread. Examples include Guava's `EventBus`, Spring's
 `ApplicationEventMulticaster`, and the event bus in Vert.x.
 
-Distributed event buses connect separate services across a network. In this form
-the event bus is usually realized on top of a message broker or an
-xref:event-stream.adoc[*event streaming*] platform, with the pubsub semantics
-provided by the underlying transport. The logical role of the bus is the same in
-both cases. It decouples producers from consumers and fans events out to
+Distributed event buses connect separate services across a network. In this form the event bus is
+usually realized on top of a message broker or an xref:event-stream.adoc[*event streaming*]
+platform, with the pubsub semantics provided by the underlying transport. The logical role of the
+bus is the same in both cases. It decouples producers from consumers and fans events out to
 subscribers.
 
 == See also

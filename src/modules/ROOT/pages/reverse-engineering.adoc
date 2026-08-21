@@ -1,124 +1,108 @@
 = Reverse engineering
 
-Reverse engineering is the process of analyzing a subject system to identify
-its components and their interrelationships, and to produce representations of
-the system in another form or at a higher level of abstraction. It is the
-inverse of forward engineering, which proceeds top-down from a specification to
-an implementation. Reverse engineering works bottom-up, recovering design and
+Reverse engineering is the process of analyzing a subject system to identify its components and
+their interrelationships, and to produce representations of the system in another form or at a
+higher level of abstraction. It is the inverse of forward engineering, which proceeds top-down from
+a specification to an implementation. Reverse engineering works bottom-up, recovering design and
 intent from what was built.
 
-The canonical definition comes from Chikofsky and Cross (1990), who draw the
-line at *abstraction recovery*. Reverse engineering stops at understanding and
-representing the system. *Reengineering* goes further, restructuring or
-redesigning the system to produce a new one. The two are sequential rather than
-synonymous — reengineering typically begins with a reverse-engineering phase.
+The canonical definition comes from Chikofsky and Cross (1990), who draw the line at
+*abstraction recovery*. Reverse engineering stops at understanding and representing the system.
+*Reengineering* goes further, restructuring or redesigning the system to produce a new one. The two
+are sequential rather than synonymous — reengineering typically begins with a reverse-engineering
+phase.
 
 == Why it is done
 
-The motivating situations are varied, and they shape which level of abstraction
-the work targets.
+The motivating situations are varied, and they shape which level of abstraction the work targets.
 
-* *Legacy maintenance.* A system outlives its original developers and its
-  design documentation. Reverse engineering recovers the architecture and data
-  model so the system can be understood, xref:refactoring.adoc[*refactored*],
-  or replaced.
+* *Legacy maintenance.* A system outlives its original developers and its design documentation.
+  Reverse engineering recovers the architecture and data model so the system can be understood,
+  xref:refactoring.adoc[*refactored*], or replaced.
 
-* *Interoperability.* A product must read a proprietary file format or speak a
-  closed protocol. With no specification, the format is recovered from observed
-  behavior or from the binaries that produce and consume it.
+* *Interoperability.* A product must read a proprietary file format or speak a closed protocol. With
+  no specification, the format is recovered from observed behavior or from the binaries that produce
+  and consume it.
 
-* *Security analysis.* *Malware analysis* reverse-engineers malicious binaries
-  to understand their behavior, indicators, and provenance. Vulnerability
-  research and xref:penetration-testing.adoc[*penetration testing*] apply the
-  same skills to find exploitable flaws in software the researcher does not
-  own.
+* *Security analysis.* *Malware analysis* reverse-engineers malicious binaries to understand their
+  behavior, indicators, and provenance. Vulnerability research and
+  xref:penetration-testing.adoc[*penetration testing*] apply the same skills to find exploitable
+  flaws in software the researcher does not own.
 
-* *Validation and audit.* Reviewing third-party or acquired code for backdoors,
-  unintended behavior, or compliance with claimed properties.
+* *Validation and audit.* Reviewing third-party or acquired code for backdoors, unintended behavior,
+  or compliance with claimed properties.
 
-* *Education.* Studying how a respected system works when its source is not
-  available.
+* *Education.* Studying how a respected system works when its source is not available.
 
 == Levels of abstraction
 
-Reverse engineering recovers a representation at a higher level than the
-artifact it starts from. The chain typically runs upward, and each step
-reconstructs information that a forward-engineering step would have discarded.
+Reverse engineering recovers a representation at a higher level than the artifact it starts from.
+The chain typically runs upward, and each step reconstructs information that a forward-engineering
+step would have discarded.
 
-* *Disassembly.* Machine code is translated into assembly, recovering
-  individual instructions and their addresses.
+* *Disassembly.* Machine code is translated into assembly, recovering individual instructions and
+  their addresses.
 
-* *Decompilation.* Assembly or bytecode is lifted toward a high-level language,
-  reconstructing control structures, types, and function signatures. The result
-  is rarely compilable as-is, because compilation is lossy. Names, comments,
-  and much type information are gone.
+* *Decompilation.* Assembly or bytecode is lifted toward a high-level language, reconstructing
+  control structures, types, and function signatures. The result is rarely compilable as-is, because
+  compilation is lossy. Names, comments, and much type information are gone.
 
-* *Source-level reconstruction.* Where partial source or symbols survive, the
-  recovered code is annotated and named to approach readable source.
+* *Source-level reconstruction.* Where partial source or symbols survive, the recovered code is
+  annotated and named to approach readable source.
 
-* *Design and architecture recovery.* The structure above the code — modules,
-  layers, components, and their dependencies — is reconstructed, often as
-  xref:diagramming.adoc[*diagrams*].
+* *Design and architecture recovery.* The structure above the code — modules, layers, components,
+  and their dependencies — is reconstructed, often as xref:diagramming.adoc[*diagrams*].
 
-* *Specification recovery.* The system's intended behavior is expressed as a
-  specification, the highest and most aspirational level. Reaching a
-  specification rigorous enough for
+* *Specification recovery.* The system's intended behavior is expressed as a specification, the
+  highest and most aspirational level. Reaching a specification rigorous enough for
   xref:formal-methods.adoc[*formal methods*] is rare.
 
 == Static and dynamic techniques
 
-As with program analysis generally, reverse engineering splits into static and
-dynamic work, and the two are complementary.
+As with program analysis generally, reverse engineering splits into static and dynamic work, and the
+two are complementary.
 
-*Static* techniques reason about the artifact at rest: disassembling a binary,
-recovering a control-flow graph, tracking data flow, or identifying known
-library code. They are an application of
-xref:static-analysis.adoc[*static analysis*] to artifacts below the source
-level, and they share its limits. Opaque indirect jumps, reflection, and
-self-modifying code can defeat static recovery.
+*Static* techniques reason about the artifact at rest: disassembling a binary, recovering a
+control-flow graph, tracking data flow, or identifying known library code. They are an application
+of xref:static-analysis.adoc[*static analysis*] to artifacts below the source level, and they share
+its limits. Opaque indirect jumps, reflection, and self-modifying code can defeat static recovery.
 
-*Dynamic* techniques observe the system running. A
-xref:debugger.adoc[*debugger*] traces execution through the code under study,
-revealing the path actually taken where static analysis can only enumerate the
-paths possible. xref:profiling.adoc[*Profiling*] and sandboxing show what a
-binary does rather than what it could do, which is essential for packed or
-obfuscated malware that resists static inspection. The trade-off is the same as
-for any dynamic analysis. Only the exercised path is observed.
+*Dynamic* techniques observe the system running. A xref:debugger.adoc[*debugger*] traces execution
+through the code under study, revealing the path actually taken where static analysis can only
+enumerate the paths possible. xref:profiling.adoc[*Profiling*] and sandboxing show what a binary
+does rather than what it could do, which is essential for packed or obfuscated malware that resists
+static inspection. The trade-off is the same as for any dynamic analysis. Only the exercised path is
+observed.
 
 == Tooling
 
-The classic reverse-engineering toolkit centers on the disassembler-decompiler
-and the debugger. IDA Pro and the open-source Ghidra are the best-known
-disassemblers, both pairing a disassembly view with a decompiler and a
-graphing UI for navigating control flow. Hex-Rays and Ghidra's decompiler
-attempt the lossy lift back toward C. Debuggers such as GDB, WinDbg, and x64dbg
-drive the dynamic side, and emulators like QEMU let a binary be run and
-observed on a different architecture or in a controlled sandbox.
+The classic reverse-engineering toolkit centers on the disassembler-decompiler and the debugger. IDA
+Pro and the open-source Ghidra are the best-known disassemblers, both pairing a disassembly view
+with a decompiler and a graphing UI for navigating control flow. Hex-Rays and Ghidra's decompiler
+attempt the lossy lift back toward C. Debuggers such as GDB, WinDbg, and x64dbg drive the dynamic
+side, and emulators like QEMU let a binary be run and observed on a different architecture or in a
+controlled sandbox.
 
-Historically, xref:case.adoc[*CASE*] tooling promised a form of
-reverse-engineering for design artifacts. *Round-trip engineering* kept code
-and graphical models in sync, and lower-CASE tools could generate diagrams from
-existing code. The integrated CASE suites are gone, but the thread survives in
-model-extraction features of modern
+Historically, xref:case.adoc[*CASE*] tooling promised a form of reverse-engineering for design
+artifacts. *Round-trip engineering* kept code and graphical models in sync, and lower-CASE tools
+could generate diagrams from existing code. The integrated CASE suites are gone, but the thread
+survives in model-extraction features of modern
 xref:integrated-development-environments.adoc[*IDEs*] and in
-xref:data-modeling.adoc[*data modeling*] tools that reverse-engineer schemas
-from live databases.
+xref:data-modeling.adoc[*data modeling*] tools that reverse-engineer schemas from live databases.
 
 == Difficulties and limits
 
-Compilation and distribution destroy information. Optimization reorders and
-inlines, stripping the structure the original author wrote. Symbol stripping
-removes names. Packing and obfuscation deliberately obscure binaries to defeat
-analysis. The recovered representation is always an inference, not a
-reconstruction of the original. Two source programs can compile to the same
-binary, and the reverse engineer can recover at most one of them.
+Compilation and distribution destroy information. Optimization reorders and inlines, stripping the
+structure the original author wrote. Symbol stripping removes names. Packing and obfuscation
+deliberately obscure binaries to defeat analysis. The recovered representation is always an
+inference, not a reconstruction of the original. Two source programs can compile to the same binary,
+and the reverse engineer can recover at most one of them.
 
-The work is also bounded by law and contract. Reverse engineering for
-interoperability is protected in some jurisdictions, but circumventing
-technical protection measures, distributing recovered specifications, or even
-performing the work at all can breach license terms, copyright, or laws such
-as the DMCA. Whether a given act of reverse engineering is legitimate depends
-on purpose, jurisdiction, and the terms under which the artifact was obtained.
+The work is also bounded by law and contract. Reverse engineering for interoperability is protected
+in some jurisdictions, but circumventing technical protection measures, distributing recovered
+specifications, or even performing the work at all can breach license terms, copyright, or laws such
+as the DMCA. Whether a given act of reverse engineering is legitimate depends on purpose,
+jurisdiction, and the terms under which the artifact was obtained.
 
 == See also
 
@@ -133,5 +117,5 @@ on purpose, jurisdiction, and the terms under which the artifact was obtained.
 
 == References
 
-* Chikofsky, E.J. and Cross, J.H. (1990). "Reverse Engineering and Design
-  Recovery: A Taxonomy". _IEEE Software_, 7(1), 13–17.
+* Chikofsky, E.J. and Cross, J.H. (1990). "Reverse Engineering and Design Recovery: A Taxonomy".
+  _IEEE Software_, 7(1), 13–17.

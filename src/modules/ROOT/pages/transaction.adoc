@@ -1,92 +1,80 @@
 = Transactions
 
-A database transaction is a sequence of database operations that is treated as a
-single, indivisible unit of work. Either every operation in the sequence is
-applied, or none of them is. The outcome is therefore all-or-nothing: a
-transaction that completes successfully is *committed*, and its changes become
-permanent; a transaction that fails, or is cancelled, is *aborted* and its
-changes are discarded by an xref:rollback.adoc[*rollback*]. The guarantee that
-a transaction upholds is xref:data-integrity.adoc[*data integrity*] — the
-database is never left in a state that reflects only part of the transaction.
+A database transaction is a sequence of database operations that is treated as a single, indivisible
+unit of work. Either every operation in the sequence is applied, or none of them is. The outcome is
+therefore all-or-nothing: a transaction that completes successfully is *committed*, and its changes
+become permanent; a transaction that fails, or is cancelled, is *aborted* and its changes are
+discarded by an xref:rollback.adoc[*rollback*]. The guarantee that a transaction upholds is
+xref:data-integrity.adoc[*data integrity*] — the database is never left in a state that reflects
+only part of the transaction.
 
-The classic lifecycle is explicit. A transaction begins with a `BEGIN`
-statement (in SQL), runs one or more operations — reads, inserts, updates,
-deletes — and ends with either `COMMIT` to confirm the work or `ROLLBACK` to
-undo it. Many application frameworks wrap this sequence so that the program
-issues a sequence of statements and the framework infers the begin and commit
-boundaries. Once a transaction commits, its effects survive subsequent crashes;
-once it rolls back, the database is restored to the state it was in before the
-transaction began.
+The classic lifecycle is explicit. A transaction begins with a `BEGIN` statement (in SQL), runs one
+or more operations — reads, inserts, updates, deletes — and ends with either `COMMIT` to confirm the
+work or `ROLLBACK` to undo it. Many application frameworks wrap this sequence so that the program
+issues a sequence of statements and the framework infers the begin and commit boundaries. Once a
+transaction commits, its effects survive subsequent crashes; once it rolls back, the database is
+restored to the state it was in before the transaction began.
 
 == ACID
 
 The guarantees that make this all-or-nothing behaviour trustworthy are the
-xref:acid-principles.adoc[*ACID principles*]: atomicity, consistency, isolation,
-and durability. Atomicity makes the transaction indivisible. Consistency ensures
-that a committed transaction moves the database from one valid state to
-another, respecting the schema and its constraints. Isolation keeps concurrent
-transactions from interfering with one another. Durability ensures that a
-committed result survives failures. The four are interdependent, and the cost
-of providing them grows as data is replicated or partitioned across nodes.
+xref:acid-principles.adoc[*ACID principles*]: atomicity, consistency, isolation, and durability.
+Atomicity makes the transaction indivisible. Consistency ensures that a committed transaction moves
+the database from one valid state to another, respecting the schema and its constraints. Isolation
+keeps concurrent transactions from interfering with one another. Durability ensures that a committed
+result survives failures. The four are interdependent, and the cost of providing them grows as data
+is replicated or partitioned across nodes.
 
 == Isolation levels and anomalies
 
-Full isolation is expensive, so databases expose a configurable *isolation level* that trades correctness for throughput. The SQL standard defines four
-levels in increasing strictness, each forbidding more of the *anomalies* that
-concurrency can otherwise introduce.
+Full isolation is expensive, so databases expose a configurable *isolation level* that trades
+correctness for throughput. The SQL standard defines four levels in increasing strictness, each
+forbidding more of the *anomalies* that concurrency can otherwise introduce.
 
-* *Read uncommitted* permits every anomaly, including *dirty reads* — a
-  transaction sees another transaction's uncommitted writes.
-* *Read committed* forbids dirty reads, but allows *non-repeatable reads* — the
-  same query issued twice in one transaction returns different rows because
-  another transaction committed an update in between.
-* *Repeatable read* also forbids non-repeatable reads, but allows *phantom
-  reads* — a query re-run in the same transaction sees new rows that another
-  transaction has inserted.
-* *Serializable* forbids phantoms too, behaving as if transactions had run one
-  at a time in some serial order.
+* *Read uncommitted* permits every anomaly, including *dirty reads* — a transaction sees another
+  transaction's uncommitted writes.
+* *Read committed* forbids dirty reads, but allows *non-repeatable reads* — the same query issued
+  twice in one transaction returns different rows because another transaction committed an update in
+  between.
+* *Repeatable read* also forbids non-repeatable reads, but allows *phantom reads* — a query re-run
+  in the same transaction sees new rows that another transaction has inserted.
+* *Serializable* forbids phantoms too, behaving as if transactions had run one at a time in some
+  serial order.
 
-Beyond the standard set, real engines contend with further anomalies that
-stricter levels are still sometimes expected to prevent: *lost updates*, where
-two concurrent writes each overwrite the other's read, and *write skew*, where
-two transactions each read overlapping data and commit updates that are
-individually valid but inconsistent together. The full treatment of these
-levels and the anomalies they permit is given in the
-xref:acid-principles.adoc[*ACID principles*] entry.
+Beyond the standard set, real engines contend with further anomalies that stricter levels are still
+sometimes expected to prevent: *lost updates*, where two concurrent writes each overwrite the
+other's read, and *write skew*, where two transactions each read overlapping data and commit updates
+that are individually valid but inconsistent together. The full treatment of these levels and the
+anomalies they permit is given in the xref:acid-principles.adoc[*ACID principles*] entry.
 
 == Concurrency control
 
-Isolation is enforced by some form of xref:concurrency.adoc[*concurrency*]
-control. *Pessimistic* schemes acquire xref:locking.adoc[*locks*] on the rows
-or ranges a transaction touches, blocking other transactions from writing until
-the lock is released at commit. *Optimistic* schemes proceed without locking
-and validate at commit time, retrying or aborting on conflict.
-*Multiversion concurrency control (MVCC)*, used by PostgreSQL, MySQL's InnoDB
-engine, and Oracle, gives each transaction a consistent snapshot of the
-database, letting readers proceed without blocking writers and trading storage
-overhead for higher read concurrency. The trade-offs between these schemes are
-covered in xref:locking.adoc[*locking*] and xref:concurrency.adoc[*concurrency*].
+Isolation is enforced by some form of xref:concurrency.adoc[*concurrency*] control. *Pessimistic*
+schemes acquire xref:locking.adoc[*locks*] on the rows or ranges a transaction touches, blocking
+other transactions from writing until the lock is released at commit. *Optimistic* schemes proceed
+without locking and validate at commit time, retrying or aborting on conflict.
+*Multiversion concurrency control (MVCC)*, used by PostgreSQL, MySQL's InnoDB engine, and Oracle,
+gives each transaction a consistent snapshot of the database, letting readers proceed without
+blocking writers and trading storage overhead for higher read concurrency. The trade-offs between
+these schemes are covered in xref:locking.adoc[*locking*] and xref:concurrency.adoc[*concurrency*].
 
 == Savepoints and nested transactions
 
-A long transaction that fails partway through need not always be abandoned
-wholesale. A *savepoint* is a named intermediate mark within a transaction that
-a later `ROLLBACK TO` statement can return to, discarding only the work done
-after the savepoint while keeping the work done before it. Savepoints are the
-mechanism behind *nested transactions*, where an inner unit of work can be
-rolled back independently of the outer one. Strictly speaking the inner unit is
-not a separate transaction — there is still only one commit, at the outermost
-level — so savepoints are better understood as partial rollback points inside a
-single transaction than as true nested transactions.
+A long transaction that fails partway through need not always be abandoned wholesale. A *savepoint*
+is a named intermediate mark within a transaction that a later `ROLLBACK TO` statement can return
+to, discarding only the work done after the savepoint while keeping the work done before it.
+Savepoints are the mechanism behind *nested transactions*, where an inner unit of work can be rolled
+back independently of the outer one. Strictly speaking the inner unit is not a separate transaction
+— there is still only one commit, at the outermost level — so savepoints are better understood as
+partial rollback points inside a single transaction than as true nested transactions.
 
 == Distributed transactions
 
 When the unit of work spans more than one database or service, it becomes a
-xref:distributed-transaction.adoc[*distributed transaction*]. Coordinating
-atomicity across independent storage systems is harder than within a single
-node, and typically requires protocols such as two-phase commit or the
-xref:saga.adoc[*saga*] pattern, which trades distributed atomicity for
-compensating actions. Distributed transactions are covered in their own entry.
+xref:distributed-transaction.adoc[*distributed transaction*]. Coordinating atomicity across
+independent storage systems is harder than within a single node, and typically requires protocols
+such as two-phase commit or the xref:saga.adoc[*saga*] pattern, which trades distributed atomicity
+for compensating actions. Distributed transactions are covered in their own entry.
 
 == See also
 

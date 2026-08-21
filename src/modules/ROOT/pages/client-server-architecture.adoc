@@ -1,53 +1,47 @@
 = Client-server architecture
 
-The client-server architecture is a common software
-xref:design-patterns.adoc[*design pattern*] that divides an application into two
-separate parts that communicate over a network.
+The client-server architecture is a common software xref:design-patterns.adoc[*design pattern*] that
+divides an application into two separate parts that communicate over a network.
 
-* *Clients* are the user-facing parts of the system, such as websites, mobile
-  apps, or desktop applications. Clients send requests to servers and display
-  the results to the user.
+* *Clients* are the user-facing parts of the system, such as websites, mobile apps, or desktop
+  applications. Clients send requests to servers and display the results to the user.
 
-* *Servers* are the parts that process client requests, manage shared resources
-  such as databases, and send the required data back to the clients.
+* *Servers* are the parts that process client requests, manage shared resources such as databases,
+  and send the required data back to the clients.
 
-The two sides communicate using a xref:request-response.adoc[*request-response*]
-exchange: the client initiates, the server responds. This asymmetry — clients
-ask, servers answer — is the defining feature of the pattern. That same
-asymmetry is what makes client-server a xref:pull-architecture.adoc[*pull architecture*]: data flows only when the client requests it, never pushed by
-the server. It is what distinguishes client-server from
-xref:peer-to-peer-architecture.adoc[*peer-to-peer (P2P) architecture*], where
-every node is both a client and a server and there is no central authority.
+The two sides communicate using a xref:request-response.adoc[*request-response*] exchange: the
+client initiates, the server responds. This asymmetry — clients ask, servers answer — is the
+defining feature of the pattern. That same asymmetry is what makes client-server a
+xref:pull-architecture.adoc[*pull architecture*]: data flows only when the client requests it, never
+pushed by the server. It is what distinguishes client-server from
+xref:peer-to-peer-architecture.adoc[*peer-to-peer (P2P) architecture*], where every node is both a
+client and a server and there is no central authority.
 
 The model descends from the mainframe-and-terminal systems of
-xref:time-share-computing.adoc[*time-share computing*], where a central machine
-served many dumb terminals. The terminals did little but present output; all
-real processing lived on the mainframe. Modern client-server systems distribute
-work more evenly. The split between "thin" and "fat" clients is a sliding scale
-rather than a fixed point. A thin client, such as a browser rendering a web page,
-relies on the server for almost everything. A fat client, such as a desktop or
-mobile app, takes on more processing, validation, and even offline behaviour,
-leaving the server to coordinate and persist shared state. The
-xref:local-first-software.adoc[*local-first*] approach takes this furthest,
-making the client's copy of the data authoritative and reducing the server to a
+xref:time-share-computing.adoc[*time-share computing*], where a central machine served many dumb
+terminals. The terminals did little but present output; all real processing lived on the mainframe.
+Modern client-server systems distribute work more evenly. The split between "thin" and "fat" clients
+is a sliding scale rather than a fixed point. A thin client, such as a browser rendering a web page,
+relies on the server for almost everything. A fat client, such as a desktop or mobile app, takes on
+more processing, validation, and even offline behaviour, leaving the server to coordinate and
+persist shared state. The xref:local-first-software.adoc[*local-first*] approach takes this
+furthest, making the client's copy of the data authoritative and reducing the server to a
 synchronization role.
 
 Server-side work is often further partitioned along the lines of a
-xref:layered-architecture.adoc[*layered (tiered) architecture*]. The familiar
-three-tier web application — presentation on the client, business logic on an
-application server, and data on a database server — is a client-server system in
-which the server side is itself split into tiers. Each tier can be scaled and
-evolved independently.
+xref:layered-architecture.adoc[*layered (tiered) architecture*]. The familiar three-tier web
+application — presentation on the client, business logic on an application server, and data on a
+database server — is a client-server system in which the server side is itself split into tiers.
+Each tier can be scaled and evolved independently.
 
-Because the server is a shared, centralized resource, it can become a
-bottleneck or a xref:single-point-of-failure.adoc[*single point of failure*].
-Scaling a client-server system therefore usually means scaling the server side.
-xref:load-balancing.adoc[*Load balancing*] spreads requests across multiple
-server instances, and making those instances xref:stateless.adoc[*stateless*] so
-that any instance can handle any request is what lets capacity be added or
-removed freely. A client-server system is, at its simplest, the smallest possible
-xref:distributed-system.adoc[*distributed system*] — one client and one server —
-and many of the techniques for larger distributed systems generalize from it.
+Because the server is a shared, centralized resource, it can become a bottleneck or a
+xref:single-point-of-failure.adoc[*single point of failure*]. Scaling a client-server system
+therefore usually means scaling the server side. xref:load-balancing.adoc[*Load balancing*] spreads
+requests across multiple server instances, and making those instances
+xref:stateless.adoc[*stateless*] so that any instance can handle any request is what lets capacity
+be added or removed freely. A client-server system is, at its simplest, the smallest possible
+xref:distributed-system.adoc[*distributed system*] — one client and one server — and many of the
+techniques for larger distributed systems generalize from it.
 
 == See also
 

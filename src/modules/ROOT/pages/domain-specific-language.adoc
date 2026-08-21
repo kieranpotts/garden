@@ -1,50 +1,40 @@
 = Domain-specific language (DSL)
 
-A domain-specific language (DSL) is a programming or markup language designed
-for a narrow, specialized domain, in contrast to a _general-purpose language_
-such as xref:javascript.adoc[*JavaScript*] or xref:sql.adoc[*SQL*] that can
-express programs across a wide range of problem areas. By restricting their
-scope, DSLs can offer concise, readable syntax that closely mirrors the concepts
-and vocabulary of the domain they serve, making them accessible to domain
-experts who may not be professional programmers.
+A domain-specific language (DSL) is a programming or markup language designed for a narrow,
+specialized domain, in contrast to a _general-purpose language_ such as
+xref:javascript.adoc[*JavaScript*] or xref:sql.adoc[*SQL*] that can express programs across a wide
+range of problem areas. By restricting their scope, DSLs can offer concise, readable syntax that
+closely mirrors the concepts and vocabulary of the domain they serve, making them accessible to
+domain experts who may not be professional programmers.
 
-DSLs come in two broad categories. An _external_ DSL has its own dedicated
-syntax and parser – xref:gherkin.adoc[*Gherkin*], used in
-xref:behavior-driven-development.adoc[*behavior-driven development*] to specify
-acceptance criteria in a Given-When-Then format, is a well-known example. An
-_internal_ or _embedded_ DSL is implemented within a general-purpose host
-language, leveraging that language's syntax and tooling to create a
-mini-language. xref:reactive-programming.adoc[*Reactive programming*] frameworks
-and fluent builder APIs are common examples. Many
-xref:data-driven-programming.adoc[*data-driven*] languages, including AWK,
-`sed`, and Sieve, are external DSLs specialized for stream and message
-processing.
+DSLs come in two broad categories. An _external_ DSL has its own dedicated syntax and parser –
+xref:gherkin.adoc[*Gherkin*], used in
+xref:behavior-driven-development.adoc[*behavior-driven development*] to specify acceptance criteria
+in a Given-When-Then format, is a well-known example. An _internal_ or _embedded_ DSL is implemented
+within a general-purpose host language, leveraging that language's syntax and tooling to create a
+mini-language. xref:reactive-programming.adoc[*Reactive programming*] frameworks and fluent builder
+APIs are common examples. Many xref:data-driven-programming.adoc[*data-driven*] languages, including
+AWK, `sed`, and Sieve, are external DSLs specialized for stream and message processing.
 
-DSLs are widespread in software tooling.
-xref:diagrams-as-code.adoc[*Diagrams-as-code*] tools such as Structurizr define
-DSLs for describing software architecture models. Visualization grammars such as
-xref:vega.adoc[*Vega*] are DSLs for declaratively specifying charts and
-interactive graphics.
-xref:containerization.adoc[*Containerization*] systems use DSLs like the
-Dockerfile syntax to declare container image build instructions.
-xref:modeling.adoc[*Modeling*] tools frequently expose their own DSLs for
-describing domain structures, xref:bpmn.adoc[*BPMN*] processes, or other model
-types. The Structurizr DSL, for instance, lets architects define
-xref:c4-model.adoc[*C4 model*] diagrams as plain text that can be
-version-controlled alongside application code.
-xref:lightweight-text-markup-languages.adoc[*Lightweight text markup languages*]
-such as Markdown and AsciiDoc are DSLs for authoring structured documents.
+DSLs are widespread in software tooling. xref:diagrams-as-code.adoc[*Diagrams-as-code*] tools such
+as Structurizr define DSLs for describing software architecture models. Visualization grammars such
+as xref:vega.adoc[*Vega*] are DSLs for declaratively specifying charts and interactive graphics.
+xref:containerization.adoc[*Containerization*] systems use DSLs like the Dockerfile syntax to
+declare container image build instructions. xref:modeling.adoc[*Modeling*] tools frequently expose
+their own DSLs for describing domain structures, xref:bpmn.adoc[*BPMN*] processes, or other model
+types. The Structurizr DSL, for instance, lets architects define xref:c4-model.adoc[*C4 model*]
+diagrams as plain text that can be version-controlled alongside application code.
+xref:lightweight-text-markup-languages.adoc[*Lightweight text markup languages*] such as Markdown
+and AsciiDoc are DSLs for authoring structured documents.
 
-The trade-off when adopting a DSL is between expressiveness and learning cost. A
-well-designed DSL can make domain-specific tasks dramatically more concise and
-clear, but each new DSL adds a syntax and mental model that users must learn.
-DSLs that grow beyond their intended scope risk accreting general-purpose
-features and becoming harder to use than the host languages they were meant to
-simplify – a phenomenon sometimes called the _inner-platform effect_. The
-opposite temptation is to make a DSL more powerful than its task requires. The
-xref:rule-of-least-power.adoc[*rule of least power*] argues for stopping at the
-weakest language that still does the job, since less expressive languages are
-easier to analyze and reuse.
+The trade-off when adopting a DSL is between expressiveness and learning cost. A well-designed DSL
+can make domain-specific tasks dramatically more concise and clear, but each new DSL adds a syntax
+and mental model that users must learn. DSLs that grow beyond their intended scope risk accreting
+general-purpose features and becoming harder to use than the host languages they were meant to
+simplify – a phenomenon sometimes called the _inner-platform effect_. The opposite temptation is to
+make a DSL more powerful than its task requires. The
+xref:rule-of-least-power.adoc[*rule of least power*] argues for stopping at the weakest language
+that still does the job, since less expressive languages are easier to analyze and reuse.
 
 == See also
 

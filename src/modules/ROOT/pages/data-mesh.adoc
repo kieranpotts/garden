@@ -1,75 +1,69 @@
 = Data mesh
 
-Data mesh is a sociotechnical approach to decentralized data architecture that
-organizes analytical data around business domains rather than centralizing it in
-a single data warehouse or data lake. It was introduced by Zhamak Dehghani in
-2019 while she was a consultant at ThoughtWorks, and elaborated in her 2022 book
-_Data Mesh_.
+Data mesh is a sociotechnical approach to decentralized data architecture that organizes analytical
+data around business domains rather than centralizing it in a single data warehouse or data lake. It
+was introduced by Zhamak Dehghani in 2019 while she was a consultant at ThoughtWorks, and elaborated
+in her 2022 book _Data Mesh_.
 
-The central proposition is that ownership of analytical data shifts from a
-central data team to the domain teams that produce and understand the data. A
-dedicated platform team provides a self-serve data platform, and a federated
-governance model sets shared standards. The approach draws on
-xref:domain-driven-design.adoc[*domain-driven design*] for its domain-oriented
-decomposition, and on the _team topologies_ framework of Skelton and Pais, which
-is itself an application of xref:conways-law.adoc[*Conway's law*].
+The central proposition is that ownership of analytical data shifts from a central data team to the
+domain teams that produce and understand the data. A dedicated platform team provides a self-serve
+data platform, and a federated governance model sets shared standards. The approach draws on
+xref:domain-driven-design.adoc[*domain-driven design*] for its domain-oriented decomposition, and on
+the _team topologies_ framework of Skelton and Pais, which is itself an application of
+xref:conways-law.adoc[*Conway's law*].
 
 == Principles
 
 Data mesh rests on four principles.
 
-* *Domain ownership.* Each business domain owns its analytical data end to end,
-  from ingestion to serving. The boundary follows the domain's
-  xref:bounded-context.adoc[*bounded context*], aligning data ownership with
-  team and model boundaries.
+* *Domain ownership.* Each business domain owns its analytical data end to end, from ingestion to
+  serving. The boundary follows the domain's xref:bounded-context.adoc[*bounded context*], aligning
+  data ownership with team and model boundaries.
 
-* *Data as a product.* Domain teams treat the data they expose as a product in
-  its own right, with consumers, quality guarantees, and an owner. Each *data product* is discoverable, addressable, trustworthy, and self-describing.
+* *Data as a product.* Domain teams treat the data they expose as a product in its own right, with
+  consumers, quality guarantees, and an owner. Each *data product* is discoverable, addressable,
+  trustworthy, and self-describing.
 
-* *Self-serve data platform.* A platform team provides domain-agnostic
-  infrastructure so that domain teams can build and serve data products without
-  specialist data-engineering skills. This is
-  xref:platform-engineering.adoc[*platform engineering*] applied to the data
-  plane.
+* *Self-serve data platform.* A platform team provides domain-agnostic infrastructure so that domain
+  teams can build and serve data products without specialist data-engineering skills. This is
+  xref:platform-engineering.adoc[*platform engineering*] applied to the data plane.
 
-* *Federated computational governance.* A lightweight central body sets global
-  standards for data quality, security, privacy, and interoperability, enforced
-  computationally rather than through manual review.
+* *Federated computational governance.* A lightweight central body sets global standards for data
+  quality, security, privacy, and interoperability, enforced computationally rather than through
+  manual review.
 
 == Contrast with centralized approaches
 
-The conventional pattern for xref:big-data.adoc[*big data*] analytics is to
-funnel data from many source systems through xref:etl.adoc[*ETL*] pipelines into
-a central data lake or data warehouse maintained by a dedicated data team. As an
-organization scales, this central team becomes a bottleneck. Pipelines
-multiply, ownership blurs, and data quality degrades because the people who
+The conventional pattern for xref:big-data.adoc[*big data*] analytics is to funnel data from many
+source systems through xref:etl.adoc[*ETL*] pipelines into a central data lake or data warehouse
+maintained by a dedicated data team. As an organization scales, this central team becomes a
+bottleneck. Pipelines multiply, ownership blurs, and data quality degrades because the people who
 understand the source data are not the people managing the warehouse.
 
-Data mesh addresses these problems by distributing ownership. Each domain
-exposes its data as products through a standard interface, and consumers
-discover and access them directly. The analogy often drawn is with
-xref:microservices.adoc[*microservices*]. Just as microservices decentralize
-application ownership from a monolith, data mesh decentralizes data ownership
-from a central warehouse.
+Data mesh addresses these problems by distributing ownership. Each domain exposes its data as
+products through a standard interface, and consumers discover and access them directly. The analogy
+often drawn is with xref:microservices.adoc[*microservices*]. Just as microservices decentralize
+application ownership from a monolith, data mesh decentralizes data ownership from a central
+warehouse.
 
 == Trade-offs
 
-Data mesh is not a technical architecture but a sociotechnical one. Its
-challenges are organizational as much as technical.
+Data mesh is not a technical architecture but a sociotechnical one. Its challenges are
+organizational as much as technical.
 
-* Federated governance is hard to adopt when security, privacy, and regulatory
-  practices were previously owned centrally.
+* Federated governance is hard to adopt when security, privacy, and regulatory practices were
+  previously owned centrally.
 
-* Domain teams bear a new responsibility for data products that primarily
-  benefits other domains, and this work is often uncompensated.
+* Domain teams bear a new responsibility for data products that primarily benefits other domains,
+  and this work is often uncompensated.
 
-* The paradigm is frequently misunderstood. A common failure mode is relabeling
-  existing data pipelines as "data products" without shifting ownership or
-  adopting the platform and governance layers.
+* The paradigm is frequently misunderstood. A common failure mode is relabeling existing data
+  pipelines as "data products" without shifting ownership or adopting the platform and governance
+  layers.
 
-Data mesh suits large organizations with many domains and mature platform
-capabilities. Smaller organizations, or those whose analytical needs fit a
-single warehouse, may not benefit from the added organizational complexity.
+Data mesh suits large organizations with many domains and mature platform capabilities. Smaller
+organizations, or those whose analytical needs fit a single warehouse, may not benefit from the
+added organizational complexity.
 
 == See also
 
@@ -85,9 +79,9 @@ single warehouse, may not benefit from the added organizational complexity.
 
 == References
 
-- Dehghani, Zhamak (2022). _Data Mesh: Delivering Data-Driven Value at Scale_.
-  O'Reilly Media.
+- Dehghani, Zhamak (2022). _Data Mesh: Delivering Data-Driven Value at Scale_. O'Reilly Media.
 - Dehghani, Zhamak (2019).
-  https://martinfowler.com/articles/data-monolith-to-datamesh.html[_How to Move Beyond a Monolithic Data Lake to a Distributed Data Mesh_]. martinfowler.com.
-- Skelton, Matthew, and Pais, Manuel (2019). _Team Topologies: Organizing
-  Business and Technology Teams for Fast Flow_. IT Governance Press.
+  https://martinfowler.com/articles/data-monolith-to-datamesh.html[_How to Move Beyond a Monolithic Data Lake to a Distributed Data Mesh_].
+  martinfowler.com.
+- Skelton, Matthew, and Pais, Manuel (2019).
+  _Team Topologies: Organizing Business and Technology Teams for Fast Flow_. IT Governance Press.

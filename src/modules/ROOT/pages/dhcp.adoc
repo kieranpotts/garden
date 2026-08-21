@@ -1,71 +1,64 @@
 = DHCP
 
-The Dynamic Host Configuration Protocol (DHCP) is an application-layer protocol
-that automatically assigns xref:internet-protocol-address.adoc[*IP addresses*]
-and other network configuration parameters to devices joining a network. It
-runs over xref:udp.adoc[*UDP*] and sits at the application layer of the
-xref:osi-model.adoc[*OSI model*].
+The Dynamic Host Configuration Protocol (DHCP) is an application-layer protocol that automatically
+assigns xref:internet-protocol-address.adoc[*IP addresses*] and other network configuration
+parameters to devices joining a network. It runs over xref:udp.adoc[*UDP*] and sits at the
+application layer of the xref:osi-model.adoc[*OSI model*].
 
-Without DHCP, every host on a network would need to be configured manually with
-a unique IP address, a subnet mask, a default gateway, and the addresses of one
-or more xref:dns.adoc[*DNS*] servers. On any network larger than a handful of
-fixed hosts, manual configuration is error-prone and hard to keep consistent.
-DHCP centralizes that configuration in a server, handing parameters out to
-clients as they join.
+Without DHCP, every host on a network would need to be configured manually with a unique IP address,
+a subnet mask, a default gateway, and the addresses of one or more xref:dns.adoc[*DNS*] servers. On
+any network larger than a handful of fixed hosts, manual configuration is error-prone and hard to
+keep consistent. DHCP centralizes that configuration in a server, handing parameters out to clients
+as they join.
 
 == The DORA exchange
 
 A client obtains a lease through a four-message exchange known as DORA:
 
-1. *Discover.* The client broadcasts a `DHCPDISCOVER` message to find available
-   servers. Because it does not yet have an IP address, the message is sent
-   from `0.0.0.0` to the broadcast address `255.255.255.255` over UDP ports 67
-   and 68.
-2. *Offer.* Each server that receives the discover responds with a
-   `DHCPOFFER`, proposing an IP address and lease terms.
-3. *Request.* The client broadcasts a `DHCPREQUEST` identifying the server it
-   has chosen. The broadcast lets the other servers know their offers were
-   declined so they can return the proposed addresses to their pools.
-4. *Acknowledge.* The chosen server sends a `DHCPACK` confirming the lease and
-   supplying the remaining configuration, such as subnet mask, default gateway,
-   DNS servers, lease duration, and any other options the server is configured
-   to hand out.
+1. *Discover.* The client broadcasts a `DHCPDISCOVER` message to find available servers. Because it
+   does not yet have an IP address, the message is sent from `0.0.0.0` to the broadcast address
+   `255.255.255.255` over UDP ports 67 and 68.
+2. *Offer.* Each server that receives the discover responds with a `DHCPOFFER`, proposing an IP
+   address and lease terms.
+3. *Request.* The client broadcasts a `DHCPREQUEST` identifying the server it has chosen. The
+   broadcast lets the other servers know their offers were declined so they can return the proposed
+   addresses to their pools.
+4. *Acknowledge.* The chosen server sends a `DHCPACK` confirming the lease and supplying the
+   remaining configuration, such as subnet mask, default gateway, DNS servers, lease duration, and
+   any other options the server is configured to hand out.
 
 == Leases and renewal
 
-A DHCP lease is temporary. The server lends an address for a fixed period
-rather than assigning it permanently. Before the lease expires, the client
-requests a renewal; if the server agrees, the lease is extended. If the client
-leaves the network or lets the lease lapse, the address returns to the server's
-pool and can be reassigned.
+A DHCP lease is temporary. The server lends an address for a fixed period rather than assigning it
+permanently. Before the lease expires, the client requests a renewal; if the server agrees, the
+lease is extended. If the client leaves the network or lets the lease lapse, the address returns to
+the server's pool and can be reassigned.
 
-Leasing rather than assigning is what lets DHCP serve far more clients than a
-network has addresses. A home router with a `/24` subnet, expressed in
-xref:cidr.adoc[*CIDR*] notation, has only 254 usable addresses, but the devices
-coming and going on a guest Wi-Fi network can number in the thousands over a
-week. Only the currently connected hosts hold a lease at any one time.
+Leasing rather than assigning is what lets DHCP serve far more clients than a network has addresses.
+A home router with a `/24` subnet, expressed in xref:cidr.adoc[*CIDR*] notation, has only 254 usable
+addresses, but the devices coming and going on a guest Wi-Fi network can number in the thousands
+over a week. Only the currently connected hosts hold a lease at any one time.
 
 == Static and dynamic assignment
 
 DHCP servers distinguish two kinds of assignment.
 
-* *Dynamic.* The client receives an address drawn from a pool, and the address
-  may differ each time the client connects.
-* *Static (reserved).* The server maps a client's MAC address to a fixed IP,
-  so the same device always receives the same address. This is useful for
-  servers, printers, and other hosts that other devices reference by IP.
+* *Dynamic.* The client receives an address drawn from a pool, and the address may differ each time
+  the client connects.
+* *Static (reserved).* The server maps a client's MAC address to a fixed IP, so the same device
+  always receives the same address. This is useful for servers, printers, and other hosts that other
+  devices reference by IP.
 
-Static reservation keeps the convenience of centralized configuration while
-giving specific hosts a stable address.
+Static reservation keeps the convenience of centralized configuration while giving specific hosts a
+stable address.
 
 == IPv4 and IPv6
 
-DHCP was originally defined for IPv4 in RFC 2131. DHCPv6, defined in RFC 3315,
-serves the same purpose for xref:internet-protocol.adoc[*IPv6*] but is not the
-only option. IPv6 also supports Stateless Address Autoconfiguration (SLAAC), in
-which hosts derive addresses from router advertisements without a DHCP server.
-The two mechanisms coexist, and which one a network uses depends on how it is
-configured.
+DHCP was originally defined for IPv4 in RFC 2131. DHCPv6, defined in RFC 3315, serves the same
+purpose for xref:internet-protocol.adoc[*IPv6*] but is not the only option. IPv6 also supports
+Stateless Address Autoconfiguration (SLAAC), in which hosts derive addresses from router
+advertisements without a DHCP server. The two mechanisms coexist, and which one a network uses
+depends on how it is configured.
 
 == See also
 

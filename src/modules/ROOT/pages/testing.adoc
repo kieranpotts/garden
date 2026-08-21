@@ -1,81 +1,70 @@
 = Testing
 
-*Testing* is the practice of exercising software to verify that it meets its
-requirements and behaves as expected under specified conditions. A test
-performs an action on the system under test – feeding it input, driving it
-through a sequence of states, or placing it under load – and observes an
-outcome, comparing the actual result against an expected one. A mismatch
-reveals a defect; a match builds confidence that the software does what it
-claims to.
+*Testing* is the practice of exercising software to verify that it meets its requirements and
+behaves as expected under specified conditions. A test performs an action on the system under test –
+feeding it input, driving it through a sequence of states, or placing it under load – and observes
+an outcome, comparing the actual result against an expected one. A mismatch reveals a defect; a
+match builds confidence that the software does what it claims to.
 
-Testing is the most prominent technique of *quality control (QC)*, the
-product-focused activity of inspecting outputs to catch defects that slipped
-through. It sits inside the broader discipline of
-xref:quality-assurance.adoc[*quality assurance*], which is concerned with the
-processes that prevent defects from being written in the first place. Testing
-cannot prove the absence of defects – as
-xref:formal-methods.adoc[*formal methods*] advocates are fond of noting, tests
-can only show the presence of failures, never their absence. What testing does
-provide is evidence, gathered at a cost the team can afford, that the system
-behaves correctly on the cases its authors thought to check.
+Testing is the most prominent technique of *quality control (QC)*, the product-focused activity of
+inspecting outputs to catch defects that slipped through. It sits inside the broader discipline of
+xref:quality-assurance.adoc[*quality assurance*], which is concerned with the processes that prevent
+defects from being written in the first place. Testing cannot prove the absence of defects – as
+xref:formal-methods.adoc[*formal methods*] advocates are fond of noting, tests can only show the
+presence of failures, never their absence. What testing does provide is evidence, gathered at a cost
+the team can afford, that the system behaves correctly on the cases its authors thought to check.
 
 == Why testing matters
 
-Testing earns its place in the development lifecycle for several reasons that
-compound when used together.
+Testing earns its place in the development lifecycle for several reasons that compound when used
+together.
 
-* *Defect detection.* Tests expose incorrect behavior before it reaches users,
-  when it is cheapest to fix.
-* *Regression protection.* A suite that runs on every change catches behavior
-  that breaks as a side effect of unrelated work.
-  xref:regression-testing.adoc[*Regression testing*] is what makes
+* *Defect detection.* Tests expose incorrect behavior before it reaches users, when it is cheapest
+  to fix.
+* *Regression protection.* A suite that runs on every change catches behavior that breaks as a side
+  effect of unrelated work. xref:regression-testing.adoc[*Regression testing*] is what makes
   xref:refactoring.adoc[*refactoring*] and ongoing evolution safe.
-* *Design feedback.* Writing a test against a unit's public interface is a
-  trial use of that interface. Tests that are hard to write usually point at
-  coupling, unclear responsibilities, or hidden dependencies.
-* *Confidence to change.* A fast, reliable suite is the safety net that lets a
-  team move quickly without freezing in fear of breaking something unseen.
+* *Design feedback.* Writing a test against a unit's public interface is a trial use of that
+  interface. Tests that are hard to write usually point at coupling, unclear responsibilities, or
+  hidden dependencies.
+* *Confidence to change.* A fast, reliable suite is the safety net that lets a team move quickly
+  without freezing in fear of breaking something unseen.
 
-*Test-driven development (TDD)* sharpens the design-feedback role by writing
-the test _before_ the code, so the test drives the design rather than merely
-recording it. See xref:test-driven-development.adoc[*test-driven development*]
-for that practice in detail.
+*Test-driven development (TDD)* sharpens the design-feedback role by writing the test _before_ the
+code, so the test drives the design rather than merely recording it. See
+xref:test-driven-development.adoc[*test-driven development*] for that practice in detail.
 
 == Test levels and the testing pyramid
 
-Tests are conventionally grouped into levels by how much of the system they
-exercise. *Unit tests* isolate a single unit – typically a function or class –
-and run in milliseconds. *Integration tests* exercise the seams between units
-or between the system and its external dependencies.
-xref:system-testing.adoc[*System tests*] (also called end-to-end or e2e tests)
-drive the whole system from its outermost boundary, through the same entry
-points a real user or client would use.
+Tests are conventionally grouped into levels by how much of the system they exercise. *Unit tests*
+isolate a single unit – typically a function or class – and run in milliseconds. *Integration tests*
+exercise the seams between units or between the system and its external dependencies.
+xref:system-testing.adoc[*System tests*] (also called end-to-end or e2e tests) drive the whole
+system from its outermost boundary, through the same entry points a real user or client would use.
 
-The trade-off across these levels is fidelity against cost. Higher-level tests
-catch integration and configuration defects that unit tests miss, because they
-exercise the real wiring between components. But they are slower, more
-expensive to maintain, and harder to localize when they fail. The *testing pyramid* captures the conventional response to that trade-off: many fast unit
-tests at the base, fewer integration tests in the middle, and a thin layer of
-end-to-end tests at the top. The pyramid is a heuristic, not a law. Some
-systems – those with thin logic and heavy integration, or with graphical
-interfaces that dominate their risk surface – justify inverted shapes, with
-more high-level tests than unit tests.
+The trade-off across these levels is fidelity against cost. Higher-level tests catch integration and
+configuration defects that unit tests miss, because they exercise the real wiring between
+components. But they are slower, more expensive to maintain, and harder to localize when they fail.
+The *testing pyramid* captures the conventional response to that trade-off: many fast unit tests at
+the base, fewer integration tests in the middle, and a thin layer of end-to-end tests at the top.
+The pyramid is a heuristic, not a law. Some systems – those with thin logic and heavy integration,
+or with graphical interfaces that dominate their risk surface – justify inverted shapes, with more
+high-level tests than unit tests.
 
-Whether a test is xref:automated-testing.adoc[*automated*] or run by hand is
-orthogonal to its level. Automation pays off for any test that needs to run more
-than once, which is most of them; xref:manual-testing.adoc[*manual testing*]
-retains a role for exploratory work and judgments a script cannot make.
+Whether a test is xref:automated-testing.adoc[*automated*] or run by hand is orthogonal to its
+level. Automation pays off for any test that needs to run more than once, which is most of them;
+xref:manual-testing.adoc[*manual testing*] retains a role for exploratory work and judgments a
+script cannot make.
 
 == Role in the software development lifecycle
 
-Testing is most effective when it is woven through the lifecycle rather than
-left as a final phase. The xref:shift-left.adoc[*shift-left*] movement argues
-for moving checking earlier, where defects are cheapest to fix: writing tests
-alongside or before the code, running them on every commit, and gating merges
-on them in xref:ci-cd.adoc[*CI/CD*]. A test that only runs on the eve of release
-finds defects too late to influence the design that produced them. The
-contribution of testing to xref:software-quality.adoc[*software quality*] is
-therefore as much about _when_ the checks happen as about what they check.
+Testing is most effective when it is woven through the lifecycle rather than left as a final phase.
+The xref:shift-left.adoc[*shift-left*] movement argues for moving checking earlier, where defects
+are cheapest to fix: writing tests alongside or before the code, running them on every commit, and
+gating merges on them in xref:ci-cd.adoc[*CI/CD*]. A test that only runs on the eve of release finds
+defects too late to influence the design that produced them. The contribution of testing to
+xref:software-quality.adoc[*software quality*] is therefore as much about _when_ the checks happen
+as about what they check.
 
 == Types of testing
 

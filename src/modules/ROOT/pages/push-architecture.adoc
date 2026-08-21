@@ -1,71 +1,61 @@
 = Push architecture
 
-Push architecture is a communication model in which the producer of data
-initiates each transfer, sending data to the consumer as it becomes available.
-The consumer sits passive between deliveries, waiting to receive. It is the
-opposite of xref:pull-architecture.adoc[*pull architecture*], where the
-consumer initiates each transfer by requesting it from the producer.
+Push architecture is a communication model in which the producer of data initiates each transfer,
+sending data to the consumer as it becomes available. The consumer sits passive between deliveries,
+waiting to receive. It is the opposite of xref:pull-architecture.adoc[*pull architecture*], where
+the consumer initiates each transfer by requesting it from the producer.
 
-The defining property is that the producer decides when to send and how much.
-The consumer's role is to register interest and then handle whatever arrives.
-A stock ticker that streams price updates, a payment provider that calls a
-merchant's xref:webhook.adoc[*webhook*] when a charge succeeds, and a chat
-server that broadcasts messages over xref:websockets.adoc[*WebSockets*] are all
-push producers. In each case the consumer did not ask for this particular
-delivery at this particular moment; the producer pushed it out.
+The defining property is that the producer decides when to send and how much. The consumer's role is
+to register interest and then handle whatever arrives. A stock ticker that streams price updates, a
+payment provider that calls a merchant's xref:webhook.adoc[*webhook*] when a charge succeeds, and a
+chat server that broadcasts messages over xref:websockets.adoc[*WebSockets*] are all push producers.
+In each case the consumer did not ask for this particular delivery at this particular moment; the
+producer pushed it out.
 
 Push is the data-flow model behind
 xref:event-driven-architecture.adoc[*event-driven architecture (EDA)*] and the
-xref:publish-subscribe-pattern.adoc[*publish-subscribe (pubsub) pattern*],
-where producers emit events to a xref:message-broker.adoc[*message broker*] that
-fans them out to subscribers. xref:server-sent-events.adoc[*Server-Sent Events (SSE)*] and WebSockets push updates over a long-lived channel;
-xref:message-queues.adoc[*message queues*] and
-xref:stream-processing-systems.adoc[*stream processing systems*] push events
-through a pipeline, and xref:change-data-capture.adoc[*change data capture (CDC)*] pushes row changes out of a database as they happen.
+xref:publish-subscribe-pattern.adoc[*publish-subscribe (pubsub) pattern*], where producers emit
+events to a xref:message-broker.adoc[*message broker*] that fans them out to subscribers.
+xref:server-sent-events.adoc[*Server-Sent Events (SSE)*] and WebSockets push updates over a
+long-lived channel; xref:message-queues.adoc[*message queues*] and
+xref:stream-processing-systems.adoc[*stream processing systems*] push events through a pipeline, and
+xref:change-data-capture.adoc[*change data capture (CDC)*] pushes row changes out of a database as
+they happen.
 
-The advantage over pull is immediacy. The producer learns of a change the
-moment it happens and can deliver it at once, with no polling interval to bound
-the latency and no wasted empty requests. This is why push dominates
-real-time, high-frequency, and server-initiated flows: live dashboards,
-notifications, collaborative editing, market data feeds, and
-machine-to-machine signaling.
+The advantage over pull is immediacy. The producer learns of a change the moment it happens and can
+deliver it at once, with no polling interval to bound the latency and no wasted empty requests. This
+is why push dominates real-time, high-frequency, and server-initiated flows: live dashboards,
+notifications, collaborative editing, market data feeds, and machine-to-machine signaling.
 
 The cost is a set of complications that pull avoids.
 
-* *Reachability.* The consumer must be addressable by the producer. A server
-  behind a NAT gateway or a restrictive firewall cannot easily receive inbound
-  pushes, which is why webhooks require a public endpoint and WebSocket
-  connections are initiated by the consumer as an outbound upgrade.
+* *Reachability.* The consumer must be addressable by the producer. A server behind a NAT gateway or
+  a restrictive firewall cannot easily receive inbound pushes, which is why webhooks require a
+  public endpoint and WebSocket connections are initiated by the consumer as an outbound upgrade.
 
-* *Statefulness.* A persistent push channel holds per-consumer state on the
-  producer or broker. WebSockets keep a TCP connection open per client, and a
-  pubsub broker tracks every subscription. This makes push systems
-  xref:stateful.adoc[*stateful*] and harder to scale than
+* *Statefulness.* A persistent push channel holds per-consumer state on the producer or broker.
+  WebSockets keep a TCP connection open per client, and a pubsub broker tracks every subscription.
+  This makes push systems xref:stateful.adoc[*stateful*] and harder to scale than
   xref:stateless.adoc[*stateless*] xref:request-response.adoc[*request-response*] servers, demanding
-  connection affinity at the load balancer and careful management of file
-  descriptors and memory.
+  connection affinity at the load balancer and careful management of file descriptors and memory.
 
-* *Backpressure.* When the producer emits faster than the consumer can process,
-  something must give. Without a flow-control mechanism the consumer's buffers
-  grow unboundedly; with one, the producer must slow down, buffer, or drop. Pull
-  architectures avoid this naturally, because the consumer sets the pace by
-  issuing requests.
+* *Backpressure.* When the producer emits faster than the consumer can process, something must give.
+  Without a flow-control mechanism the consumer's buffers grow unboundedly; with one, the producer
+  must slow down, buffer, or drop. Pull architectures avoid this naturally, because the consumer
+  sets the pace by issuing requests.
 
-* *Delivery guarantees.* Push introduces the question of what happens when a
-  delivery fails or the consumer is momentarily absent. At-least-once,
-  at-most-once, and exactly-once semantics become the producer's or broker's
-  responsibility, usually through acks, retries, and
+* *Delivery guarantees.* Push introduces the question of what happens when a delivery fails or the
+  consumer is momentarily absent. At-least-once, at-most-once, and exactly-once semantics become the
+  producer's or broker's responsibility, usually through acks, retries, and
   xref:dead-letter-queue.adoc[*dead-letter queues*].
 
-For these reasons push and pull are usually combined rather than chosen
-between. A client pulls the current state on load and then subscribes to a push
-channel for subsequent updates; a service pulls bulk data on a schedule and
-relies on webhooks for time-sensitive events.
-xref:content-delivery-networks.adoc[*Content delivery networks (CDNs)*] come in
-both pull-based and push-based flavours: a pull CDN fetches from the origin on
-first request, while a push CDN is pre-populated by the producer.
-xref:long-polling.adoc[*Long polling*] is a hybrid that uses a pull transport
-to approximate push delivery.
+For these reasons push and pull are usually combined rather than chosen between. A client pulls the
+current state on load and then subscribes to a push channel for subsequent updates; a service pulls
+bulk data on a schedule and relies on webhooks for time-sensitive events.
+xref:content-delivery-networks.adoc[*Content delivery networks (CDNs)*] come in both pull-based and
+push-based flavours: a pull CDN fetches from the origin on first request, while a push CDN is
+pre-populated by the producer. xref:long-polling.adoc[*Long polling*] is a hybrid that uses a pull
+transport to approximate push delivery.
 
 == See also
 

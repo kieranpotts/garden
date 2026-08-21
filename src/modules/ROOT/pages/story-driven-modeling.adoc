@@ -1,92 +1,75 @@
 = Story-driven modeling
 
-Story-driven modeling is an object-oriented xref:modeling.adoc[*modeling*]
-technique. Other forms of object-oriented modeling tend to focus on classes,
-describing the static structure of a system: its building blocks and the
-relationships between them. Story-driven modeling instead focuses on behavior,
-and on how a system interacts with the outside world.
+Story-driven modeling is an object-oriented xref:modeling.adoc[*modeling*] technique. Other forms of
+object-oriented modeling tend to focus on classes, describing the static structure of a system: its
+building blocks and the relationships between them. Story-driven modeling instead focuses on
+behavior, and on how a system interacts with the outside world.
 
-The central modeling primitive is the *scenario*: a concrete, worked example of
-the system in use, told as a short narrative. Where a class diagram reasons in
-general terms — types, attributes, and abstract relationships — a scenario
-reasons in particulars: named people, specific values, and the steps they take.
-The modeler then represents each step of the scenario as an
-xref:uml.adoc[*UML*] object diagram and shows how that object structure evolves
-as the scenario unfolds. A scenario annotated with its object diagrams is called
-a *storyboard*.
+The central modeling primitive is the *scenario*: a concrete, worked example of the system in use,
+told as a short narrative. Where a class diagram reasons in general terms — types, attributes, and
+abstract relationships — a scenario reasons in particulars: named people, specific values, and the
+steps they take. The modeler then represents each step of the scenario as an xref:uml.adoc[*UML*]
+object diagram and shows how that object structure evolves as the scenario unfolds. A scenario
+annotated with its object diagrams is called a *storyboard*.
 
-Story-driven modeling was developed by Albert Zündorf and colleagues at the
-University of Paderborn in the late 1990s. It is set out in a 1999 technical
-report and later collected in a book by Ulrich Norbisrath, Zündorf, and Ruben
-Jubeh, _Story Driven Modeling_ (2013). Since then it has been adopted as a
-teaching method at several universities, including Kassel, Paderborn, Tartu,
-Antwerp, and the Hasso Plattner Institute in Potsdam.
+Story-driven modeling was developed by Albert Zündorf and colleagues at the University of Paderborn
+in the late 1990s. It is set out in a 1999 technical report and later collected in a book by Ulrich
+Norbisrath, Zündorf, and Ruben Jubeh, _Story Driven Modeling_ (2013). Since then it has been adopted
+as a teaching method at several universities, including Kassel, Paderborn, Tartu, Antwerp, and the
+Hasso Plattner Institute in Potsdam.
 
 == The method
 
-The technique prescribes a sequence of activities, applied to one feature or
-use case at a time.
+The technique prescribes a sequence of activities, applied to one feature or use case at a time.
 
-1. *Textual scenario.* Write a short, concrete narrative of the most common path
-   through the feature, naming specific actors and values rather than abstract
-   roles.
-2. *GUI mock-ups.* Where the feature has a user interface, attach wireframes to
-   the steps to make the interaction tangible to non-technical stakeholders.
-3. *Storyboarding.* For each step, sketch a UML object diagram showing the runtime
-   object structure that step produces. The sequence of object diagrams is the
-   storyboard.
-4. *Class diagram derivation.* Read the common structure off the object diagrams
-   to derive a class diagram. The class diagram then serves as the shared
-   reference that keeps every storyboard's types and attributes consistent.
-5. *Algorithm design.* Outline the behavior that moves the object structure from
-   one storyboard step to the next in pseudocode, written as operations on the
-   object structure.
-6. *Behavior implementation.* Translate the pseudocode into method bodies against
-   the class diagram.
-7. *Testing.* Turn the original scenario into an automated test that sets up the
-   starting object structure, exercises the behavior, and asserts the resulting
-   links and values.
+1. *Textual scenario.* Write a short, concrete narrative of the most common path through the
+   feature, naming specific actors and values rather than abstract roles.
+2. *GUI mock-ups.* Where the feature has a user interface, attach wireframes to the steps to make
+   the interaction tangible to non-technical stakeholders.
+3. *Storyboarding.* For each step, sketch a UML object diagram showing the runtime object structure
+   that step produces. The sequence of object diagrams is the storyboard.
+4. *Class diagram derivation.* Read the common structure off the object diagrams to derive a class
+   diagram. The class diagram then serves as the shared reference that keeps every storyboard's
+   types and attributes consistent.
+5. *Algorithm design.* Outline the behavior that moves the object structure from one storyboard step
+   to the next in pseudocode, written as operations on the object structure.
+6. *Behavior implementation.* Translate the pseudocode into method bodies against the class diagram.
+7. *Testing.* Turn the original scenario into an automated test that sets up the starting object
+   structure, exercises the behavior, and asserts the resulting links and values.
 
-The flow is iterative and incremental. Each feature is worked end to end
-through the seven steps, and the class diagram is refined as new storyboards
-reveal new objects or relationships.
+The flow is iterative and incremental. Each feature is worked end to end through the seven steps,
+and the class diagram is refined as new storyboards reveal new objects or relationships.
 
 == Why scenarios
 
-Scenarios work well as a shared artifact between developers and domain experts.
-Non-technical people struggle to describe their needs in general terms, or to
-judge whether an abstract class diagram or a block of pseudocode captures them.
-The same people can readily spot a problematic case in a concrete example.
-Story-driven modeling exploits this asymmetry. The examples that domain experts
-find easy to read and critique are the same examples that drive the derivation
-of the model and its tests.
+Scenarios work well as a shared artifact between developers and domain experts. Non-technical people
+struggle to describe their needs in general terms, or to judge whether an abstract class diagram or
+a block of pseudocode captures them. The same people can readily spot a problematic case in a
+concrete example. Story-driven modeling exploits this asymmetry. The examples that domain experts
+find easy to read and critique are the same examples that drive the derivation of the model and its
+tests.
 
-Because the scenarios double as test cases, the link between requirements,
-model, and code stays concrete. A change that breaks a scenario breaks a test,
-which keeps the documentation close to the implementation. This echoes the
-outside-in, example-driven ethos of
+Because the scenarios double as test cases, the link between requirements, model, and code stays
+concrete. A change that breaks a scenario breaks a test, which keeps the documentation close to the
+implementation. This echoes the outside-in, example-driven ethos of
 xref:specification-by-example.adoc[*specification by example*] and
-xref:test-driven-development.adoc[*test-driven development*], though
-story-driven modeling operates at the level of object structures rather than
-executable specifications.
+xref:test-driven-development.adoc[*test-driven development*], though story-driven modeling operates
+at the level of object structures rather than executable specifications.
 
 == Relation to other techniques
 
-Story-driven modeling is one of several behavior-first approaches to
-object-oriented design. xref:crc-card.adoc[*CRC cards*] also start from
-behavior — responsibilities and collaborations — rather than data, and similarly
-defer the class structure. The two differ in granularity. A CRC card summarizes
-a class's role in a sentence or two, while a storyboard works a single scenario
-down to the level of individual object links and attribute values.
+Story-driven modeling is one of several behavior-first approaches to object-oriented design.
+xref:crc-card.adoc[*CRC cards*] also start from behavior — responsibilities and collaborations —
+rather than data, and similarly defer the class structure. The two differ in granularity. A CRC card
+summarizes a class's role in a sentence or two, while a storyboard works a single scenario down to
+the level of individual object links and attribute values.
 
-The scenarios themselves are close kin of xref:use-case.adoc[*use cases*]. Both
-describe a system's behavior as a sequence of interactions with an outside actor.
-A use case tends to be written more abstractly, naming roles and main and
-alternate flows, where a story-driven scenario favors concrete instances. The
-technique also shares the iterative, scenario-led character of the broader
-xref:unified-process.adoc[*Unified Process*] family and its use-case-driven
-development, while prescribing a more specific path from scenario to class
-diagram to test.
+The scenarios themselves are close kin of xref:use-case.adoc[*use cases*]. Both describe a system's
+behavior as a sequence of interactions with an outside actor. A use case tends to be written more
+abstractly, naming roles and main and alternate flows, where a story-driven scenario favors concrete
+instances. The technique also shares the iterative, scenario-led character of the broader
+xref:unified-process.adoc[*Unified Process*] family and its use-case-driven development, while
+prescribing a more specific path from scenario to class diagram to test.
 
 == See also
 
@@ -100,9 +83,9 @@ diagram to test.
 
 == References
 
-* Norbisrath, U., Zündorf, A. & Jubeh, R. (2013). _Story Driven Modeling_.
-  CreateSpace. ISBN 978-1483949253.
-* Zündorf, A., Schürr, A. & Winter, A. J. (1999). _Story Driven Modeling_.
-  University of Paderborn, Technical Report tr-ri-99-211.
-* Diethelm, I., Geiger, L. & Zündorf, A. (2004). "Systematic story driven
-  modeling: a case study". _Third International Workshop on Scenarios and State Machines_, pp. 65–70.
+* Norbisrath, U., Zündorf, A. & Jubeh, R. (2013). _Story Driven Modeling_. CreateSpace. ISBN
+  978-1483949253.
+* Zündorf, A., Schürr, A. & Winter, A. J. (1999). _Story Driven Modeling_. University of Paderborn,
+  Technical Report tr-ri-99-211.
+* Diethelm, I., Geiger, L. & Zündorf, A. (2004). "Systematic story driven modeling: a case study".
+  _Third International Workshop on Scenarios and State Machines_, pp. 65–70.

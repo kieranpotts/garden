@@ -1,8 +1,23 @@
 // TODO: https://martinfowler.com/bliki/CommandQuerySeparation.html
 = Command query separation
 
-Command query separation is a design principle stating that each method should be either a command that performs an action and mutates state, or a query that returns data to the caller, but never both. Asking a question should not modify the answer. The principle was coined by Bertrand Meyer as part of Eiffel's *design by contract* methodology.
+Command query separation is a design principle stating that each method should be either a command
+that performs an action and mutates state, or a query that returns data to the caller, but never
+both. Asking a question should not modify the answer. The principle was coined by Bertrand Meyer as
+part of Eiffel's *design by contract* methodology.
 
-When the principle is applied, programmers can reason about code with much more confidence. Query methods do not mutate state, so they can be called freely, in any order, and from any context without surprising side effects. Commands, by contrast, require more care because they change observable state. A naming convention that implies whether a method is a query or a command makes the distinction visible at the call site.
+When the principle is applied, programmers can reason about code with much more confidence. Query
+methods do not mutate state, so they can be called freely, in any order, and from any context
+without surprising side effects. Commands, by contrast, require more care because they change
+observable state. A naming convention that implies whether a method is a query or a command makes
+the distinction visible at the call site.
 
-Command query separation is one expression of the broader instinct toward xref:separation-of-concerns.adoc[*separation of concerns*], and it shapes how xref:interfaces.adoc[*interfaces*] expose behavior to their clients. It is related to but distinct from xref:cqrs.adoc[*Command Query Responsibility Segregation*], which separates commands and queries at the architectural level rather than within a single method. CQRS builds on the same underlying idea. The xref:uniform-access-principle.adoc[*uniform access principle*] is a sibling principle from the same work, addressing the notation for attribute versus method access rather than the separation of commands from queries. See xref:design-principles.adoc[*design principles*] for the wider landscape.
+Command query separation is one expression of the broader instinct toward
+xref:separation-of-concerns.adoc[*separation of concerns*], and it shapes how
+xref:interfaces.adoc[*interfaces*] expose behavior to their clients. It is related to but distinct
+from xref:cqrs.adoc[*Command Query Responsibility Segregation*], which separates commands and
+queries at the architectural level rather than within a single method. CQRS builds on the same
+underlying idea. The xref:uniform-access-principle.adoc[*uniform access principle*] is a sibling
+principle from the same work, addressing the notation for attribute versus method access rather than
+the separation of commands from queries. See xref:design-principles.adoc[*design principles*] for
+the wider landscape.

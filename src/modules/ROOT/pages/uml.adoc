@@ -1,29 +1,24 @@
 = Unified Modeling Language (UML)
 
-The Unified Modeling Language (UML) is a standard
-xref:modeling.adoc[*modeling*] language for specifying, visualizing, and
-documenting the artifacts of software systems. It is the de facto notation for
-object-oriented analysis and design, providing a shared graphical vocabulary
-for classes, objects, components, interactions, states, and the relationships
-between them. UML is an open standard maintained by the Object Management
-Group (OMG), the consortium that also stewards xref:sysml.adoc[*SysML*],
-xref:bpmn.adoc[*BPMN*], and
-xref:model-driven-architecture.adoc[*model-driven architecture*]. The current
-version is UML 2.5.1, published in 2017, with a substantially revised UML 2.6
-under development.
+The Unified Modeling Language (UML) is a standard xref:modeling.adoc[*modeling*] language for
+specifying, visualizing, and documenting the artifacts of software systems. It is the de facto
+notation for object-oriented analysis and design, providing a shared graphical vocabulary for
+classes, objects, components, interactions, states, and the relationships between them. UML is an
+open standard maintained by the Object Management Group (OMG), the consortium that also stewards
+xref:sysml.adoc[*SysML*], xref:bpmn.adoc[*BPMN*], and
+xref:model-driven-architecture.adoc[*model-driven architecture*]. The current version is UML 2.5.1,
+published in 2017, with a substantially revised UML 2.6 under development.
 
 == History
 
-UML was unified in the mid-1990s from three competing object-oriented
-notations: the xref:booch-method.adoc[*Booch method*], James Rumbaugh's Object
-Modeling Technique (OMT), and Ivar Jacobson's Object-Oriented Software
-Engineering (OOSE). In 1994 Booch and Rumbaugh joined Rational Software, and
-Jacobson followed in 1995. The "three amigos" set out to merge their notations
-into one, and the first UML specification was submitted to the OMG in 1997.
-The same team also developed the xref:unified-process.adoc[*Unified Process*],
-the process framework that pairs with UML: UP is the method, UML is the
-notation. The OMG has owned the standard since, publishing UML 1.1 in 1997 and
-the substantial UML 2.0 revision in 2005.
+UML was unified in the mid-1990s from three competing object-oriented notations: the
+xref:booch-method.adoc[*Booch method*], James Rumbaugh's Object Modeling Technique (OMT), and Ivar
+Jacobson's Object-Oriented Software Engineering (OOSE). In 1994 Booch and Rumbaugh joined Rational
+Software, and Jacobson followed in 1995. The "three amigos" set out to merge their notations into
+one, and the first UML specification was submitted to the OMG in 1997. The same team also developed
+the xref:unified-process.adoc[*Unified Process*], the process framework that pairs with UML: UP is
+the method, UML is the notation. The OMG has owned the standard since, publishing UML 1.1 in 1997
+and the substantial UML 2.0 revision in 2005.
 
 == Diagram types
 
@@ -31,158 +26,130 @@ UML defines fourteen diagram types, split into two families.
 
 *Structural diagrams* describe the static organization of a system.
 
-* *Class diagram.* Classes, their attributes and operations, and the
-  relationships between them. The most widely used UML diagram type.
-* *Object diagram.* A snapshot of instances and the links between them at one
-  moment in time.
-* *Component diagram.* The components that make up a system and their
-  dependencies.
-* *Deployment diagram.* How artifacts are placed on physical or virtual
-  hardware nodes.
+* *Class diagram.* Classes, their attributes and operations, and the relationships between them. The
+  most widely used UML diagram type.
+* *Object diagram.* A snapshot of instances and the links between them at one moment in time.
+* *Component diagram.* The components that make up a system and their dependencies.
+* *Deployment diagram.* How artifacts are placed on physical or virtual hardware nodes.
 * *Package diagram.* The grouping of model elements into packages.
-* *Composite structure diagram.* The internal structure of a classifier,
-  including parts and connectors.
-* *Profile diagram.* Stereotypes and tagged definitions that customize UML
-  for a specific domain.
+* *Composite structure diagram.* The internal structure of a classifier, including parts and
+  connectors.
+* *Profile diagram.* Stereotypes and tagged definitions that customize UML for a specific domain.
 
 *Behavioral diagrams* describe the dynamic behavior of a system.
 
-* *Use case diagram.* Depicts the xref:use-case.adoc[*use cases*] a system
-  supports and the actors that pursue them.
-* *Activity diagram.* Flows of work and data, the closest UML equivalent of a
-  xref:bpmn.adoc[*BPMN*] process.
-* *Sequence diagram.* The messages exchanged between objects over time, drawn
-  as vertical lifelines.
-* *Communication diagram.* Object interactions organized by structure rather
-  than by time.
-* *State machine diagram.* The states an object can occupy and the events
-  that transition it between them.
+* *Use case diagram.* Depicts the xref:use-case.adoc[*use cases*] a system supports and the actors
+  that pursue them.
+* *Activity diagram.* Flows of work and data, the closest UML equivalent of a xref:bpmn.adoc[*BPMN*]
+  process.
+* *Sequence diagram.* The messages exchanged between objects over time, drawn as vertical lifelines.
+* *Communication diagram.* Object interactions organized by structure rather than by time.
+* *State machine diagram.* The states an object can occupy and the events that transition it between
+  them.
 * *Timing diagram.* State or value changes along a time axis.
-* *Interaction overview diagram.* A control-flow overview that nests other
-  interaction diagrams.
+* *Interaction overview diagram.* A control-flow overview that nests other interaction diagrams.
 
-The split into structural and behavioral families is conventional rather than
-load-bearing. Several diagram types straddle the line, and most projects use
-only a small subset. The taxonomy's size is itself a common target for the
-language's critics.
+The split into structural and behavioral families is conventional rather than load-bearing. Several
+diagram types straddle the line, and most projects use only a small subset. The taxonomy's size is
+itself a common target for the language's critics.
 
 == Class diagrams
 
-The class diagram is the most used and most recognized UML diagram. It shows
-the classes of a system, their attributes and operations, and the
-relationships between them. Those relationships map directly onto the core
-constructs of xref:object-oriented-programming.adoc[*object-oriented programming*].
+The class diagram is the most used and most recognized UML diagram. It shows the classes of a
+system, their attributes and operations, and the relationships between them. Those relationships map
+directly onto the core constructs of
+xref:object-oriented-programming.adoc[*object-oriented programming*].
 
-* xref:association.adoc[*Association*]. A "uses a" link between two classes,
-  drawn as a solid line. It is refined into *aggregation*, a hollow diamond at
-  the whole end denoting "has a", and xref:composition.adoc[*composition*], a
-  filled diamond denoting "owns a".
-* xref:inheritance.adoc[*Generalization*]. An "is a" relationship, drawn with a
-  hollow triangle pointing at the parent class.
-* *Dependency.* A "depends on" relationship, drawn as a dashed arrow, where a
-  change in the target may affect the source.
-* *Realization.* A class implementing an interface, drawn with a hollow
-  triangle on a dashed line.
+* xref:association.adoc[*Association*]. A "uses a" link between two classes, drawn as a solid line.
+  It is refined into *aggregation*, a hollow diamond at the whole end denoting "has a", and
+  xref:composition.adoc[*composition*], a filled diamond denoting "owns a".
+* xref:inheritance.adoc[*Generalization*]. An "is a" relationship, drawn with a hollow triangle
+  pointing at the parent class.
+* *Dependency.* A "depends on" relationship, drawn as a dashed arrow, where a change in the target
+  may affect the source.
+* *Realization.* A class implementing an interface, drawn with a hollow triangle on a dashed line.
 
 Class diagrams are sometimes compared with
-xref:entity-relationship-diagram.adoc[*entity-relationship diagrams (ERDs)*].
-Both depict things and their relationships as boxes and lines, but a class
-diagram describes the structure of an object-oriented program, including
-behavior, inheritance, and packaging, while an ERD describes the data a
-system must store for xref:relational-databases.adoc[*relational storage*].
-Many projects use both, the ERD to design the database and the class diagram
-to design the application.
+xref:entity-relationship-diagram.adoc[*entity-relationship diagrams (ERDs)*]. Both depict things and
+their relationships as boxes and lines, but a class diagram describes the structure of an
+object-oriented program, including behavior, inheritance, and packaging, while an ERD describes the
+data a system must store for xref:relational-databases.adoc[*relational storage*]. Many projects use
+both, the ERD to design the database and the class diagram to design the application.
 
 == Modes of use
 
-Martin Fowler, in _UML Distilled_, distinguishes three ways UML is put to
-work, and argues that confusion between them is at the root of much of the
-criticism the language attracts.
+Martin Fowler, in _UML Distilled_, distinguishes three ways UML is put to work, and argues that
+confusion between them is at the root of much of the criticism the language attracts.
 
-* *UML as sketch.* Informal diagrams drawn to communicate a point and then
-  discarded. The diagram is a means, not an end. This is the most common use
-  in agile teams.
-* *UML as blueprint.* A detailed, forward-engineered design from which code is
-  produced, or a reverse-engineered record of an existing system. This is the
-  xref:case.adoc[*CASE*] vision carried into the UML era, and the mode that
-  xref:model-driven-architecture.adoc[*model-driven architecture*] pushes
-  furthest.
-* *UML as programming language.* Executable models that are themselves the
-  running system, with code generation pushed down to a build step. This mode
-  has the deepest ambitions and the narrowest adoption.
+* *UML as sketch.* Informal diagrams drawn to communicate a point and then discarded. The diagram is
+  a means, not an end. This is the most common use in agile teams.
+* *UML as blueprint.* A detailed, forward-engineered design from which code is produced, or a
+  reverse-engineered record of an existing system. This is the xref:case.adoc[*CASE*] vision carried
+  into the UML era, and the mode that
+  xref:model-driven-architecture.adoc[*model-driven architecture*] pushes furthest.
+* *UML as programming language.* Executable models that are themselves the running system, with code
+  generation pushed down to a build step. This mode has the deepest ambitions and the narrowest
+  adoption.
 
-Fowler's point is that a team should pick one mode and be explicit about it.
-Treating a sketch as a blueprint, or a blueprint as a programming language, is
-where the notational effort stops paying back.
+Fowler's point is that a team should pick one mode and be explicit about it. Treating a sketch as a
+blueprint, or a blueprint as a programming language, is where the notational effort stops paying
+back.
 
 == Evolution
 
-UML 1.0 was published by the OMG in 1997, with 1.1 following later that year
-after the standard was brought fully in-house. UML 1.x added activity, state
-machine, and deployment diagrams through revisions 1.3 to 1.5, but retained
-the inherited notational quirks of its three parent methods. UML 2.0,
-published in 2005, was a substantial rewrite. It introduced a new
-infrastructure and superstructure architecture, added composite structure,
-component, and communication diagrams as first-class types, and aligned the
-semantics with the OMG's Meta-Object Facility (MOF). UML 2.5, published in
-2015 and updated to 2.5.1 in 2017, folded the previously separate
-infrastructure and superstructure specifications into a single document and is
-the current reference. A UML 2.6 revision remains in development. Adoption of
-new versions by tooling has typically lagged the specification by several
-years.
+UML 1.0 was published by the OMG in 1997, with 1.1 following later that year after the standard was
+brought fully in-house. UML 1.x added activity, state machine, and deployment diagrams through
+revisions 1.3 to 1.5, but retained the inherited notational quirks of its three parent methods. UML
+2.0, published in 2005, was a substantial rewrite. It introduced a new infrastructure and
+superstructure architecture, added composite structure, component, and communication diagrams as
+first-class types, and aligned the semantics with the OMG's Meta-Object Facility (MOF). UML 2.5,
+published in 2015 and updated to 2.5.1 in 2017, folded the previously separate infrastructure and
+superstructure specifications into a single document and is the current reference. A UML 2.6
+revision remains in development. Adoption of new versions by tooling has typically lagged the
+specification by several years.
 
 == Strengths and weaknesses
 
-UML's main strength is its shared, standardized notation. A class diagram
-drawn by one engineer can be read by another without prior agreement on
-conventions, and the OMG's stewardship gives the language a stable,
-vendor-neutral home. Tool support is broad, from commercial suites such as
-Sparx Enterprise Architect and Visual Paradigm to open-source options such as
-Modelio and Umbrello, and the underlying XML Metadata Interchange (XMI)
-format lets models move between them. xref:sysml.adoc[*SysML*] and
-xref:raaml.adoc[*RAAML*] build on UML as profiles, extending the same notation
-into systems engineering and safety analysis.
+UML's main strength is its shared, standardized notation. A class diagram drawn by one engineer can
+be read by another without prior agreement on conventions, and the OMG's stewardship gives the
+language a stable, vendor-neutral home. Tool support is broad, from commercial suites such as Sparx
+Enterprise Architect and Visual Paradigm to open-source options such as Modelio and Umbrello, and
+the underlying XML Metadata Interchange (XMI) format lets models move between them.
+xref:sysml.adoc[*SysML*] and xref:raaml.adoc[*RAAML*] build on UML as profiles, extending the same
+notation into systems engineering and safety analysis.
 
-The standard criticism is that UML is too large. Fourteen diagram types, a
-metamodel of considerable depth, and a profusion of notational variants
-produce a steep learning curve and a language that few practitioners use in
-full. In practice most teams reach for a small subset, often just class and
-sequence diagrams. The result is a language that everyone recognizes but
-almost no one uses consistently. Simon Brown's critique, which motivated the
-xref:c4-model.adoc[*C4 model*], was that UML was poorly understood,
-inconsistently applied, and too often produced diagrams that no one could
-read. Lighter alternatives have since gained ground: C4 for software
-architecture, xref:archimate.adoc[*ArchiMate*] for enterprise architecture,
-plain "boxes-and-arrows" sketches, and
-xref:diagrams-as-code.adoc[*diagrams-as-code*] tools such as PlantUML and
-Mermaid that trade formal semantics for ease of authoring.
-xref:crc-card.adoc[*CRC cards*] offer a paper-and-pencil alternative for early
-class discovery.
+The standard criticism is that UML is too large. Fourteen diagram types, a metamodel of considerable
+depth, and a profusion of notational variants produce a steep learning curve and a language that few
+practitioners use in full. In practice most teams reach for a small subset, often just class and
+sequence diagrams. The result is a language that everyone recognizes but almost no one uses
+consistently. Simon Brown's critique, which motivated the xref:c4-model.adoc[*C4 model*], was that
+UML was poorly understood, inconsistently applied, and too often produced diagrams that no one could
+read. Lighter alternatives have since gained ground: C4 for software architecture,
+xref:archimate.adoc[*ArchiMate*] for enterprise architecture, plain "boxes-and-arrows" sketches, and
+xref:diagrams-as-code.adoc[*diagrams-as-code*] tools such as PlantUML and Mermaid that trade formal
+semantics for ease of authoring. xref:crc-card.adoc[*CRC cards*] offer a paper-and-pencil
+alternative for early class discovery.
 
 == Relationship to other notations
 
-UML's activity diagrams overlap with xref:bpmn.adoc[*BPMN*] for modeling flows
-of work. UML is oriented toward the internal design of software systems,
-whereas BPMN is purpose-built for business processes and carries executable
-semantics that UML activity diagrams lack.
+UML's activity diagrams overlap with xref:bpmn.adoc[*BPMN*] for modeling flows of work. UML is
+oriented toward the internal design of software systems, whereas BPMN is purpose-built for business
+processes and carries executable semantics that UML activity diagrams lack.
 
-For visualizing software architecture specifically, the
-xref:c4-model.adoc[*C4 model*] offers a deliberately smaller notation with a
-fixed set of zoom levels, as a lightweight alternative to UML's notational
-breadth. Several methodologies adopt only a small UML subset and prescribe an
-order for applying it, notably xref:iconix.adoc[*ICONIX*], which is built
-around use cases, robustness diagrams, sequence diagrams, and class diagrams.
+For visualizing software architecture specifically, the xref:c4-model.adoc[*C4 model*] offers a
+deliberately smaller notation with a fixed set of zoom levels, as a lightweight alternative to UML's
+notational breadth. Several methodologies adopt only a small UML subset and prescribe an order for
+applying it, notably xref:iconix.adoc[*ICONIX*], which is built around use cases, robustness
+diagrams, sequence diagrams, and class diagrams.
 
 UML is also the modeling language that underpins the OMG's
-xref:model-driven-architecture.adoc[*model-driven architecture*] standard,
-which uses UML models at platform-independent and platform-specific layers of
-abstraction and derives implementations from them through model
-transformations.
+xref:model-driven-architecture.adoc[*model-driven architecture*] standard, which uses UML models at
+platform-independent and platform-specific layers of abstraction and derives implementations from
+them through model transformations.
 
 The most prominent UML derivative aimed outside pure software is the
-xref:sysml.adoc[*Systems Modeling Language (SysML)*], which reuses a subset of
-UML's diagrams and adds requirement and parametric diagrams for systems
-engineering work.
+xref:sysml.adoc[*Systems Modeling Language (SysML)*], which reuses a subset of UML's diagrams and
+adds requirement and parametric diagrams for systems engineering work.
 
 Most UML diagram types can also be represented using plain ASCII text.
 
@@ -233,5 +200,5 @@ Most UML diagram types can also be represented using plain ASCII text.
 
 * Object Management Group (2017).
   _https://www.omg.org/spec/UML/2.5.1/[Unified Modeling Language (UML) Specification, Version 2.5.1]_.
-* Fowler, M. (2003). _UML Distilled: A Brief Guide to the Standard Object
-  Modeling Language_ (3rd ed.). Addison-Wesley.
+* Fowler, M. (2003). _UML Distilled: A Brief Guide to the Standard Object Modeling Language_ (3rd
+  ed.). Addison-Wesley.

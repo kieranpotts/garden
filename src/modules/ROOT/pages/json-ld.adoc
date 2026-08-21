@@ -1,55 +1,47 @@
 = JSON-LD
 
-JSON-LD (JavaScript Object Notation for Linked Data) is a W3C-standardized
-format for serializing *linked data* as xref:json.adoc[*JSON*]. It extends plain
-JSON objects with a small set of keywords that give their properties
-machine-readable meaning, so that data from independent sources can be
+JSON-LD (JavaScript Object Notation for Linked Data) is a W3C-standardized format for serializing
+*linked data* as xref:json.adoc[*JSON*]. It extends plain JSON objects with a small set of keywords
+that give their properties machine-readable meaning, so that data from independent sources can be
 unambiguously combined and followed across the web.
 
-A JSON-LD document is, at the same time, a valid JSON document. Any existing
-JSON parser can read it. The format is defined by the W3C recommendation
-_JSON-LD 1.1_ (2020), which supersedes the 1.0 recommendation from 2014. Its
-media type is `application/ld+json`.
+A JSON-LD document is, at the same time, a valid JSON document. Any existing JSON parser can read
+it. The format is defined by the W3C recommendation _JSON-LD 1.1_ (2020), which supersedes the 1.0
+recommendation from 2014. Its media type is `application/ld+json`.
 
 == The context
 
-The central mechanism is the `@context` property. A context maps the short,
-human-friendly keys used in a JSON object to IRIs. These are global,
-dereferenceable identifiers drawn from a shared vocabulary. Where plain JSON
-leaves the meaning of a key like `"name"` to private agreement between two
-systems, JSON-LD lets that key expand to, eg. `http://schema.org/name`, so
-any consumer that understands the vocabulary understands the value.
+The central mechanism is the `@context` property. A context maps the short, human-friendly keys used
+in a JSON object to IRIs. These are global, dereferenceable identifiers drawn from a shared
+vocabulary. Where plain JSON leaves the meaning of a key like `"name"` to private agreement between
+two systems, JSON-LD lets that key expand to, eg. `http://schema.org/name`, so any consumer that
+understands the vocabulary understands the value.
 
-A context may be embedded directly in the document or referenced by URL, and
-a single document can carry several contexts layered together. A handful of
-further keywords build on this foundation. `@id` identifies a node with an
-IRI. `@type` assigns it a type. `@value`, paired with `@type` or `@language`,
-qualifies a literal with a datatype or a language tag.
+A context may be embedded directly in the document or referenced by URL, and a single document can
+carry several contexts layered together. A handful of further keywords build on this foundation.
+`@id` identifies a node with an IRI. `@type` assigns it a type. `@value`, paired with `@type` or
+`@language`, qualifies a literal with a datatype or a language tag.
 
 == Relationship to RDF
 
-JSON-LD is a concrete RDF syntax. Its data model is the RDF data model, a
-labeled directed graph of nodes connected by IRI-named properties. A JSON-LD
-document can therefore be transformed into RDF triples and back without loss.
-This makes it a developer-friendly alternative to serializations such as
-Turtle or RDF/XML. The same data is expressed in a format that already
-integrates with the JSON tooling most applications use.
+JSON-LD is a concrete RDF syntax. Its data model is the RDF data model, a labeled directed graph of
+nodes connected by IRI-named properties. A JSON-LD document can therefore be transformed into RDF
+triples and back without loss. This makes it a developer-friendly alternative to serializations such
+as Turtle or RDF/XML. The same data is expressed in a format that already integrates with the JSON
+tooling most applications use.
 
-Because it carries RDF, JSON-LD is a natural vehicle for publishing
-xref:ontology.adoc[*ontology*] and xref:knowledge-graph.adoc[*knowledge graph*]
-data on the web, and for loading that data into the RDF triple stores backed
-by xref:graph-databases.adoc[*graph databases*].
+Because it carries RDF, JSON-LD is a natural vehicle for publishing xref:ontology.adoc[*ontology*]
+and xref:knowledge-graph.adoc[*knowledge graph*] data on the web, and for loading that data into the
+RDF triple stores backed by xref:graph-databases.adoc[*graph databases*].
 
 == Uses
 
-JSON-LD's most visible deployment is structured data on the web. Search
-engines recommend embedding the schema.org vocabulary as JSON-LD inside an
-HTML `<script type="application/ld+json">` block, so that page content is
-understood as typed entities such as a person, an event, or a product rather
-than free text. The same approach underpins W3C specifications such as
-Verifiable Credentials and Activity Streams 2.0, which define their payloads
-as JSON-LD. Interoperability comes from a shared context rather than a shared
-schema.
+JSON-LD's most visible deployment is structured data on the web. Search engines recommend embedding
+the schema.org vocabulary as JSON-LD inside an HTML `<script type="application/ld+json">` block, so
+that page content is understood as typed entities such as a person, an event, or a product rather
+than free text. The same approach underpins W3C specifications such as Verifiable Credentials and
+Activity Streams 2.0, which define their payloads as JSON-LD. Interoperability comes from a shared
+context rather than a shared schema.
 
 == See also
 

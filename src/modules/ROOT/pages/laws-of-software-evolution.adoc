@@ -1,86 +1,71 @@
 = Laws of software evolution
 
-The *laws of software evolution* are a set of empirically derived
-observations about how software changes over its lifetime. They were
-formulated by Meir M. Lehman, beginning in 1974, and refined with Les Belady
-and later collaborators over the following two decades. Lehman based the laws
-on studies of large, long-lived systems, most influentially IBM's OS/360
-operating system, and on the broader observation that software which is used
-does not stand still.
+The *laws of software evolution* are a set of empirically derived observations about how software
+changes over its lifetime. They were formulated by Meir M. Lehman, beginning in 1974, and refined
+with Les Belady and later collaborators over the following two decades. Lehman based the laws on
+studies of large, long-lived systems, most influentially IBM's OS/360 operating system, and on the
+broader observation that software which is used does not stand still.
 
 == The program classification
 
-Lehman sorted software into three categories, because the laws apply only to
-one of them.
+Lehman sorted software into three categories, because the laws apply only to one of them.
 
-* *S-programs* are written to an exact specification whose validity is
-  self-contained, eg. a program that solves the eight queens puzzle. Their
-  correctness is judged against the specification, so they have little reason
-  to evolve.
-* *P-programs* model a real-world problem, eg. weather forecasting. They are
-  written to a specification, but their ultimate value is judged against the
-  real world they model, so they change as that world does.
-* *E-programs* mechanize a human or societal activity. They are embedded in
-  the environment they serve, and to stay useful they must continually adapt
-  to changes in that environment.
+* *S-programs* are written to an exact specification whose validity is self-contained, eg. a program
+  that solves the eight queens puzzle. Their correctness is judged against the specification, so
+  they have little reason to evolve.
+* *P-programs* model a real-world problem, eg. weather forecasting. They are written to a
+  specification, but their ultimate value is judged against the real world they model, so they
+  change as that world does.
+* *E-programs* mechanize a human or societal activity. They are embedded in the environment they
+  serve, and to stay useful they must continually adapt to changes in that environment.
 
-The laws concern E-type programs. They describe the balance between the
-forces that push an E-type system to change and the forces that resist that
-change.
+The laws concern E-type programs. They describe the balance between the forces that push an E-type
+system to change and the forces that resist that change.
 
 == The eight laws
 
-The laws were published in stages. Three appeared in 1974, two more by 1978,
-and the set reached eight by 1996.
+The laws were published in stages. Three appeared in 1974, two more by 1978, and the set reached
+eight by 1996.
 
-* *Continuing change* (1974). An E-type system must be continually adapted, or
-  it becomes progressively less satisfactory. A system that is used is one
-  its users want to keep changing.
-* *Increasing complexity* (1974). As an E-type system evolves, its complexity
-  rises unless explicit work is done to hold it down. Each change, made to
-  solve an immediate problem, tends to tangle the code a little more.
-  xref:refactoring.adoc[*Refactoring*] is the discipline that pushes back.
-* *Self-regulation* (1974). The evolution process regulates itself. Measures
-  of product and process — size, rate of change, defect counts — tend to
-  settle into roughly stable distributions over the system's life.
-* *Conservation of organizational stability* (1978). The average effective
-  work rate on an evolving E-type system is roughly constant across its
-  lifetime. Adding people does not raise it for long; the process absorbs the
-  extra capacity into its own rhythm.
-* *Conservation of familiarity* (1978). As an E-type system evolves, everyone
-  associated with it — developers, operators, users — must keep their grasp
-  of its content and behavior. Growth that outruns that grasp becomes
-  unmanageable, so the average size of successive increments stays roughly
-  constant.
-* *Continuing growth* (1991). The functional content of an E-type system must
-  keep increasing to keep users satisfied over its lifetime. Stasis is not an
-  option for a system embedded in a changing world.
-* *Declining quality* (1996). The quality of an E-type system appears to
-  decline unless it is rigorously maintained and adapted to changes in its
-  operational environment. Left unadapted, the system succumbs to
-  xref:software-rot.adoc[*software rot*], as the assumptions it was built on
-  stop holding.
-* *Feedback system* (1996). The evolution process is a multi-level,
-  multi-loop, multi-agent feedback system. Treating it as such — measuring,
-  feeding the measurements back in, and adjusting — is the only route to
-  lasting improvement.
+* *Continuing change* (1974). An E-type system must be continually adapted, or it becomes
+  progressively less satisfactory. A system that is used is one its users want to keep changing.
+* *Increasing complexity* (1974). As an E-type system evolves, its complexity rises unless explicit
+  work is done to hold it down. Each change, made to solve an immediate problem, tends to tangle the
+  code a little more. xref:refactoring.adoc[*Refactoring*] is the discipline that pushes back.
+* *Self-regulation* (1974). The evolution process regulates itself. Measures of product and process
+  — size, rate of change, defect counts — tend to settle into roughly stable distributions over the
+  system's life.
+* *Conservation of organizational stability* (1978). The average effective work rate on an evolving
+  E-type system is roughly constant across its lifetime. Adding people does not raise it for long;
+  the process absorbs the extra capacity into its own rhythm.
+* *Conservation of familiarity* (1978). As an E-type system evolves, everyone associated with it —
+  developers, operators, users — must keep their grasp of its content and behavior. Growth that
+  outruns that grasp becomes unmanageable, so the average size of successive increments stays
+  roughly constant.
+* *Continuing growth* (1991). The functional content of an E-type system must keep increasing to
+  keep users satisfied over its lifetime. Stasis is not an option for a system embedded in a
+  changing world.
+* *Declining quality* (1996). The quality of an E-type system appears to decline unless it is
+  rigorously maintained and adapted to changes in its operational environment. Left unadapted, the
+  system succumbs to xref:software-rot.adoc[*software rot*], as the assumptions it was built on stop
+  holding.
+* *Feedback system* (1996). The evolution process is a multi-level, multi-loop, multi-agent feedback
+  system. Treating it as such — measuring, feeding the measurements back in, and adjusting — is the
+  only route to lasting improvement.
 
 == Significance
 
-The laws are descriptive, not prescriptive. They name regularities that
-Lehman and others observed in real systems, and their value is that they make
-the consequences of neglecting evolution explicit. The second and seventh
-laws, between them, are the formal statement of why unmanaged
-xref:complexity.adoc[*complexity*] grows and unadapted systems decay. Untreated,
-that dynamic ends in xref:big-ball-of-mud.adoc[*a big ball of mud*]. The laws
-are the conceptual backdrop to xref:technical-debt.adoc[*technical debt*]
-management, and to the broader quality attribute of
+The laws are descriptive, not prescriptive. They name regularities that Lehman and others observed
+in real systems, and their value is that they make the consequences of neglecting evolution
+explicit. The second and seventh laws, between them, are the formal statement of why unmanaged
+xref:complexity.adoc[*complexity*] grows and unadapted systems decay. Untreated, that dynamic ends
+in xref:big-ball-of-mud.adoc[*a big ball of mud*]. The laws are the conceptual backdrop to
+xref:technical-debt.adoc[*technical debt*] management, and to the broader quality attribute of
 xref:evolvability.adoc[*evolvability*].
 
-The laws have been tested against many codebases since, with mixed but
-broadly supporting results. Their strongest claim is the simplest one: a
-system that is in use is a system that is changing, and the only question is
-whether that change is being shaped or merely suffered.
+The laws have been tested against many codebases since, with mixed but broadly supporting results.
+Their strongest claim is the simplest one: a system that is in use is a system that is changing, and
+the only question is whether that change is being shaped or merely suffered.
 
 == See also
 
@@ -89,15 +74,15 @@ whether that change is being shaped or merely suffered.
 * xref:technical-debt.adoc[*Technical debt*]
 * xref:refactoring.adoc[*Refactoring*]
 * xref:evolvability.adoc[*Evolvability*]
-* xref:galls-law.adoc[*Gall's law*]: Complex working systems evolve from simple ones, the genesis-side counterpart to these in-use evolution laws.
+* xref:galls-law.adoc[*Gall's law*]: Complex working systems evolve from simple ones, the
+  genesis-side counterpart to these in-use evolution laws.
 
 == References
 
-- Lehman, Meir M. (1980). _Programs, Life Cycles, and Laws of Software
-  Evolution_. _Proceedings of the IEEE_, 68(9), 1060–1076.
-- Lehman, M. M., Ramil, J. F., Wernick, P. D., Perry, D. E., and Turski, W. M.
-  (1997). _Metrics and laws of software evolution — the nineties view_.
-  Proceedings of the 4th International Software Metrics Symposium (METRICS
-  '97), 20–32.
-- Herraiz, Israel, Rodriguez, Daniel, Robles, Gregorio, and
-  Gonzalez-Barahona, Jesus M. (2013). _The evolution of the laws of software evolution_. _ACM Computing Surveys_, 46(2), 1–28.
+- Lehman, Meir M. (1980). _Programs, Life Cycles, and Laws of Software Evolution_.
+  _Proceedings of the IEEE_, 68(9), 1060–1076.
+- Lehman, M. M., Ramil, J. F., Wernick, P. D., Perry, D. E., and Turski, W. M. (1997).
+  _Metrics and laws of software evolution — the nineties view_. Proceedings of the 4th International
+  Software Metrics Symposium (METRICS '97), 20–32.
+- Herraiz, Israel, Rodriguez, Daniel, Robles, Gregorio, and Gonzalez-Barahona, Jesus M. (2013).
+  _The evolution of the laws of software evolution_. _ACM Computing Surveys_, 46(2), 1–28.

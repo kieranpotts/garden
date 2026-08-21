@@ -1,55 +1,47 @@
 = Edge proxy
 
-An edge proxy is a xref:reverse-proxy.adoc[*reverse proxy*] deployed at the
-boundary of a network or service, where it mediates traffic entering or leaving
-that boundary. The "edge" is the perimeter between a trusted internal network
-and untrusted external clients, or the boundary drawn around an individual
-service. By intercepting traffic at the edge, the proxy can apply cross-cutting
-behavior uniformly without each service reimplementing it.
+An edge proxy is a xref:reverse-proxy.adoc[*reverse proxy*] deployed at the boundary of a network or
+service, where it mediates traffic entering or leaving that boundary. The "edge" is the perimeter
+between a trusted internal network and untrusted external clients, or the boundary drawn around an
+individual service. By intercepting traffic at the edge, the proxy can apply cross-cutting behavior
+uniformly without each service reimplementing it.
 
-Edge proxies are common in xref:microservices.adoc[*microservice*] architectures
-and other xref:distributed-system.adoc[*distributed software*], where many
-services need consistent handling of concerns such as routing, security, and
-xref:observability.adoc[*observability*]. Envoy is a widely used implementation.
-It can run as a front-facing proxy at the network perimeter, or as a *sidecar*
-deployed alongside each service — the deployment model used by a
+Edge proxies are common in xref:microservices.adoc[*microservice*] architectures and other
+xref:distributed-system.adoc[*distributed software*], where many services need consistent handling
+of concerns such as routing, security, and xref:observability.adoc[*observability*]. Envoy is a
+widely used implementation. It can run as a front-facing proxy at the network perimeter, or as a
+*sidecar* deployed alongside each service — the deployment model used by a
 xref:service-mesh.adoc[*service mesh*].
 
 == Responsibilities
 
-An edge proxy centralizes capabilities that would otherwise be duplicated across
-services.
+An edge proxy centralizes capabilities that would otherwise be duplicated across services.
 
-* *Routing*: Directs requests to the appropriate back-end based on URL path,
-  HTTP headers, or other request attributes, supporting
-  xref:load-balancer.adoc[*load balancing*] across multiple instances.
-* *TLS termination*: Decrypts inbound HTTPS traffic so that internal services
-  receive plain requests, centralizing certificate management.
-* *Security*: Enforces authentication, authorization, and
-  xref:rate-limiting.adoc[*rate limiting*], and shields back-end services from
-  direct exposure.
-* *Resilience*: Applies xref:circuit-breaker.adoc[*circuit breaking*], retries,
-  and timeouts to stop failures cascading through the system.
-* *Observability*: Emits metrics, logs, and traces for all traffic passing
-  through, giving a consistent view of request flow without instrumenting every
-  service.
+* *Routing*: Directs requests to the appropriate back-end based on URL path, HTTP headers, or other
+  request attributes, supporting xref:load-balancer.adoc[*load balancing*] across multiple
+  instances.
+* *TLS termination*: Decrypts inbound HTTPS traffic so that internal services receive plain
+  requests, centralizing certificate management.
+* *Security*: Enforces authentication, authorization, and xref:rate-limiting.adoc[*rate limiting*],
+  and shields back-end services from direct exposure.
+* *Resilience*: Applies xref:circuit-breaker.adoc[*circuit breaking*], retries, and timeouts to stop
+  failures cascading through the system.
+* *Observability*: Emits metrics, logs, and traces for all traffic passing through, giving a
+  consistent view of request flow without instrumenting every service.
 
-Because every request passes through the proxy, it becomes a single point at
-which to enforce policy and collect telemetry. It is also a potential
-xref:single-point-of-failure.adoc[*single point of failure*], so edge proxies are
-typically deployed in redundant, xref:load-balancing.adoc[*load-balanced*]
-configurations.
+Because every request passes through the proxy, it becomes a single point at which to enforce policy
+and collect telemetry. It is also a potential
+xref:single-point-of-failure.adoc[*single point of failure*], so edge proxies are typically deployed
+in redundant, xref:load-balancing.adoc[*load-balanced*] configurations.
 
 == Edge proxy vs. API gateway
 
-An edge proxy and an xref:api-gateway.adoc[*API gateway*] overlap heavily — both
-sit in front of services and apply cross-cutting concerns. The distinction is one
-of emphasis. An edge proxy is a general-purpose traffic intermediary focused on
-routing, resilience, and observability. An API gateway layers API-management
-concerns on top, such as request and response transformation, API aggregation,
-versioning, and developer portals. Many deployments combine both, with an edge
-proxy handling transport-level concerns and an API gateway handling API-level
-concerns.
+An edge proxy and an xref:api-gateway.adoc[*API gateway*] overlap heavily — both sit in front of
+services and apply cross-cutting concerns. The distinction is one of emphasis. An edge proxy is a
+general-purpose traffic intermediary focused on routing, resilience, and observability. An API
+gateway layers API-management concerns on top, such as request and response transformation, API
+aggregation, versioning, and developer portals. Many deployments combine both, with an edge proxy
+handling transport-level concerns and an API gateway handling API-level concerns.
 
 == See also
 

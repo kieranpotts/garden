@@ -2,67 +2,59 @@
 
 image::dead-letter-queue.jpg[]
 
-A dead letter queue (DLQ) is a secondary xref:message-queues.adoc[*message queue*] that receives messages a system cannot process. It sits alongside a
-primary queue and catches messages that have failed processing after exhausting
-the configured retries, or that have been rejected for other reasons such as
-exceeding a time-to-live or violating a message-size limit.
+A dead letter queue (DLQ) is a secondary xref:message-queues.adoc[*message queue*] that receives
+messages a system cannot process. It sits alongside a primary queue and catches messages that have
+failed processing after exhausting the configured retries, or that have been rejected for other
+reasons such as exceeding a time-to-live or violating a message-size limit.
 
-The DLQ separates unprocessable messages from the main flow so that the primary
-queue can keep draining. A poison message is one that crashes the consumer every
-time it is delivered. Without a DLQ, such a message can block the head of the
-queue or be retried indefinitely, wasting resources and starving later messages.
+The DLQ separates unprocessable messages from the main flow so that the primary queue can keep
+draining. A poison message is one that crashes the consumer every time it is delivered. Without a
+DLQ, such a message can block the head of the queue or be retried indefinitely, wasting resources
+and starving later messages.
 
 Retaining the failed message is what makes a DLQ an essential part of
-xref:fault-tolerance.adoc[*fault tolerance*] for asynchronous pipelines. The
-system keeps running, and the failed work is held for inspection, repair, and
-replay rather than being silently dropped. The retained message also provides an
-audit trail: when a downstream report looks wrong, the DLQ is where you look for
-the messages that never made it through.
+xref:fault-tolerance.adoc[*fault tolerance*] for asynchronous pipelines. The system keeps running,
+and the failed work is held for inspection, repair, and replay rather than being silently dropped.
+The retained message also provides an audit trail: when a downstream report looks wrong, the DLQ is
+where you look for the messages that never made it through.
 
 == When messages are dead-lettered
 
-A message is typically moved to a DLQ after a xref:retry.adoc[*retry mechanism*]
-has tried and failed to process it a configured number of times. This
-distinguishes transient failures, which retries are designed to absorb, from
-permanent ones such as malformed payloads, unsupported schema versions, or
-references to missing data. Retries will not fix a permanent failure, so the
-message is diverted rather than retried forever.
+A message is typically moved to a DLQ after a xref:retry.adoc[*retry mechanism*] has tried and
+failed to process it a configured number of times. This distinguishes transient failures, which
+retries are designed to absorb, from permanent ones such as malformed payloads, unsupported schema
+versions, or references to missing data. Retries will not fix a permanent failure, so the message is
+diverted rather than retried forever.
 
-The exact triggers vary by broker. Amazon SQS dead-letters a message once its
-`receiveCount` exceeds a queue's `maxReceiveCount`. xref:rabbitmq.adoc[*RabbitMQ*]
-can dead-letter messages that are rejected with `basic.nack` or `basic.reject`
-(with `requeue` set to false), that expire in a dead-letter exchange, or that
-exceed a queue length limit. xref:kafka.adoc[*Kafka*] has no built-in DLQ
-concept. The convention is to route failed records to a separate error or
-dead-letter topic, typically via a Streams `branch` or a producer in the
-consumer's error handler.
+The exact triggers vary by broker. Amazon SQS dead-letters a message once its `receiveCount` exceeds
+a queue's `maxReceiveCount`. xref:rabbitmq.adoc[*RabbitMQ*] can dead-letter messages that are
+rejected with `basic.nack` or `basic.reject` (with `requeue` set to false), that expire in a
+dead-letter exchange, or that exceed a queue length limit. xref:kafka.adoc[*Kafka*] has no built-in
+DLQ concept. The convention is to route failed records to a separate error or dead-letter topic,
+typically via a Streams `branch` or a producer in the consumer's error handler.
 
 == Common pitfalls
 
-The most common failure mode is the unmonitored DLQ. Messages accumulate with no
-alert, no dashboard, and no review process. Failures go unnoticed for days or
-weeks, until someone stumbles across missing data. A DLQ that nobody watches is
-little better than dropping the messages outright.
+The most common failure mode is the unmonitored DLQ. Messages accumulate with no alert, no
+dashboard, and no review process. Failures go unnoticed for days or weeks, until someone stumbles
+across missing data. A DLQ that nobody watches is little better than dropping the messages outright.
 
-Treat the DLQ as part of the system's xref:monitoring.adoc[*monitoring*]. Track
-queue depth and the age of the oldest message. Raise
-xref:alerting.adoc[*alerts*] when either crosses a threshold, and set a regular
-cadence, daily or weekly, for reviewing and draining what has landed there.
+Treat the DLQ as part of the system's xref:monitoring.adoc[*monitoring*]. Track queue depth and the
+age of the oldest message. Raise xref:alerting.adoc[*alerts*] when either crosses a threshold, and
+set a regular cadence, daily or weekly, for reviewing and draining what has landed there.
 
-A second pitfall is message expiry. Many brokers delete DLQ messages after a
-fixed retention period that is not configurable, or only loosely so. In Amazon
-SQS the maximum retention is 14 days. If nobody processes the messages before
-they expire, they are gone for good, with no reprocessing possible. Track
-message age and alert as it approaches the retention limit.
+A second pitfall is message expiry. Many brokers delete DLQ messages after a fixed retention period
+that is not configurable, or only loosely so. In Amazon SQS the maximum retention is 14 days. If
+nobody processes the messages before they expire, they are gone for good, with no reprocessing
+possible. Track message age and alert as it approaches the retention limit.
 
 == Replay and idempotency
 
-Replaying a message from a DLQ is not always straightforward. The underlying
-failure may have been fixed, but the side effects of an earlier, partially
-successful attempt may still be present. Replays must therefore be
-xref:idempotent.adoc[*idempotent*], or guarded by an idempotency key, so that
-reprocessing does not double-charge a customer, send a duplicate notification,
-or create a second record.
+Replaying a message from a DLQ is not always straightforward. The underlying failure may have been
+fixed, but the side effects of an earlier, partially successful attempt may still be present.
+Replays must therefore be xref:idempotent.adoc[*idempotent*], or guarded by an idempotency key, so
+that reprocessing does not double-charge a customer, send a duplicate notification, or create a
+second record.
 
 == See also
 

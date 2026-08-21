@@ -1,44 +1,38 @@
 = Eventual consistency
 
 Eventual consistency is a xref:consistency.adoc[*consistency*] model for
-xref:replication.adoc[*replicated*] data in
-xref:distributed-system.adoc[*distributed software*]. Its guarantee is
-deliberately weak: once a new update stops arriving for a given data item, all
-reads across all replicas will eventually return the last written value. The
-system makes no promise about *when* that convergence happens, only that it
-happens in the absence of new writes and ongoing failures.
+xref:replication.adoc[*replicated*] data in xref:distributed-system.adoc[*distributed software*].
+Its guarantee is deliberately weak: once a new update stops arriving for a given data item, all
+reads across all replicas will eventually return the last written value. The system makes no promise
+about *when* that convergence happens, only that it happens in the absence of new writes and ongoing
+failures.
 
-The term was popularized by *Werner Vogels* in his 2008 article _Eventually consistent_, which reframed a property that practitioners of
-xref:distributed-databases.adoc[*distributed databases*] and
-xref:nosql-databases.adoc[*NoSQL databases*] had already been living with for
-years. The idea itself goes back further, to work on *optimistic replication*
-in weakly connected systems such as the Bayou project in the 1990s.
+The term was popularized by *Werner Vogels* in his 2008 article _Eventually consistent_, which
+reframed a property that practitioners of xref:distributed-databases.adoc[*distributed databases*]
+and xref:nosql-databases.adoc[*NoSQL databases*] had already been living with for years. The idea
+itself goes back further, to work on *optimistic replication* in weakly connected systems such as
+the Bayou project in the 1990s.
 
 == Why it arises
 
-When data is replicated across multiple nodes for
-xref:availability.adoc[*availability*],
-xref:fault-tolerance.adoc[*fault tolerance*], and lower read
-xref:latency.adoc[*latency*], every write has to be propagated to the other
-copies. Synchronizing all replicas before acknowledging a write — the
-alternative known as *strong consistency* — requires coordination that blocks
-progress during network delays or node failures. Under the
-xref:cap-theorem.adoc[*CAP theorem*], a replicated system that must keep
-operating through network xref:partition-tolerance.adoc[*partitions*] has to
-choose between availability and consistency. Eventual consistency is the
-consistency guarantee you accept when you choose availability: replicas are
-allowed to diverge temporarily, and reconciliation happens later.
+When data is replicated across multiple nodes for xref:availability.adoc[*availability*],
+xref:fault-tolerance.adoc[*fault tolerance*], and lower read xref:latency.adoc[*latency*], every
+write has to be propagated to the other copies. Synchronizing all replicas before acknowledging a
+write — the alternative known as *strong consistency* — requires coordination that blocks progress
+during network delays or node failures. Under the xref:cap-theorem.adoc[*CAP theorem*], a replicated
+system that must keep operating through network xref:partition-tolerance.adoc[*partitions*] has to
+choose between availability and consistency. Eventual consistency is the consistency guarantee you
+accept when you choose availability: replicas are allowed to diverge temporarily, and reconciliation
+happens later.
 
-This trade-off is captured by the xref:pacelc-theorem.adoc[*PACELC theorem*],
-which extends CAP to name the choice a replicated system makes even in the
-absence of partitions (E) between xref:latency.adoc[*latency*] and
-consistency. Eventual consistency is the low-latency, high-availability end
-of that spectrum.
+This trade-off is captured by the xref:pacelc-theorem.adoc[*PACELC theorem*], which extends CAP to
+name the choice a replicated system makes even in the absence of partitions (E) between
+xref:latency.adoc[*latency*] and consistency. Eventual consistency is the low-latency,
+high-availability end of that spectrum.
 
-Application-level designs such as
-xref:local-first-software.adoc[*local-first software*] build on this guarantee,
-treating each user's device as a replica that diverges while offline and
-converges with the others once connectivity returns.
+Application-level designs such as xref:local-first-software.adoc[*local-first software*] build on
+this guarantee, treating each user's device as a replica that diverges while offline and converges
+with the others once connectivity returns.
 
 == What it actually guarantees
 
@@ -48,88 +42,71 @@ Convergence has three preconditions.
 * Updates are applied in a per-replica order that respects causality.
 * No new updates keep arriving indefinitely, and failures are not perpetual.
 
-Given those, the system reaches *replica convergence*: every read returns the
-same, latest value. Until it does, reads may return *stale* data — a value
-older than the most recent write — and different replicas may answer
-differently for the same read. The window during which replicas disagree is
-called *replication lag*, and it is usually measured in milliseconds on a
-healthy local network but can stretch to seconds or minutes across regions or
-during recovery from a partition.
+Given those, the system reaches *replica convergence*: every read returns the same, latest value.
+Until it does, reads may return *stale* data — a value older than the most recent write — and
+different replicas may answer differently for the same read. The window during which replicas
+disagree is called *replication lag*, and it is usually measured in milliseconds on a healthy local
+network but can stretch to seconds or minutes across regions or during recovery from a partition.
 
-Eventual consistency is therefore a *liveness* property with a *safety* gap.
-It promises that something good eventually happens, but it permits bad
-intermediate states. Programs built on it have to tolerate those states rather
-than pretend they cannot occur.
+Eventual consistency is therefore a *liveness* property with a *safety* gap. It promises that
+something good eventually happens, but it permits bad intermediate states. Programs built on it have
+to tolerate those states rather than pretend they cannot occur.
 
 == Session guarantees
 
-A bare eventual-consistency guarantee is awkward to program against, because a
-client might write a value and then immediately read a stale copy from another
-replica. Vogels catalogued a set of *session guarantees* that a system can
-offer a single client session on top of eventual consistency.
+A bare eventual-consistency guarantee is awkward to program against, because a client might write a
+value and then immediately read a stale copy from another replica. Vogels catalogued a set of
+*session guarantees* that a system can offer a single client session on top of eventual consistency.
 
-* *Read-your-writes.* A client always sees its own writes within the same
-  session.
-* *Monotonic reads.* Once a client sees a value, it never sees an older one
-  in the same session.
-* *Monotonic writes.* Writes from one session are applied in the order the
-  client issued them.
-* *Writes-follow-reads.* A write is ordered after the writes that the client
-  previously read.
+* *Read-your-writes.* A client always sees its own writes within the same session.
+* *Monotonic reads.* Once a client sees a value, it never sees an older one in the same session.
+* *Monotonic writes.* Writes from one session are applied in the order the client issued them.
+* *Writes-follow-reads.* A write is ordered after the writes that the client previously read.
 
-These do not make the system strongly consistent. They bound the surprise a
-single client can observe, which is often enough to make eventual consistency
-usable.
+These do not make the system strongly consistent. They bound the surprise a single client can
+observe, which is often enough to make eventual consistency usable.
 
 == Tuning and conflict resolution
 
-Because eventual consistency allows replicas to diverge, the system must
-reconcile concurrent updates to the same data. Reconciliation strategies and
-the *anti-entropy* mechanisms that propagate updates between replicas are
-covered in xref:consistency.adoc[*consistency*], which treats them in detail.
-The dominant anti-entropy mechanism in practice is a
-xref:gossip-protocol.adoc[*gossip protocol*], which spreads updates through
-randomized peer-to-peer exchanges.
+Because eventual consistency allows replicas to diverge, the system must reconcile concurrent
+updates to the same data. Reconciliation strategies and the *anti-entropy* mechanisms that propagate
+updates between replicas are covered in xref:consistency.adoc[*consistency*], which treats them in
+detail. The dominant anti-entropy mechanism in practice is a
+xref:gossip-protocol.adoc[*gossip protocol*], which spreads updates through randomized peer-to-peer
+exchanges.
 
-A common way to tune the consistency/availability balance is quorum-based
-replication, as popularized by Amazon Dynamo and its descendants. Each data
-item is replicated to *N* nodes; a write is acknowledged after *W* replicas
-confirm it, and a read contacts *R* replicas and returns the newest response.
-If `W + R > N`, reads and writes overlap on at least one replica, giving
-strong consistency for that operation. If `W + R <= N`, the system is
-eventually consistent but can tolerate more failures and serve requests at
-lower latency. xref:active-active.adoc[*Active-active*] and multi-leader
-replication patterns, which let any node accept writes, are eventually
-consistent by default and rely on techniques such as *last-writer-wins*,
-*version vectors*, and *conflict-free replicated data types (CRDTs)* to reach
-convergence.
+A common way to tune the consistency/availability balance is quorum-based replication, as
+popularized by Amazon Dynamo and its descendants. Each data item is replicated to *N* nodes; a write
+is acknowledged after *W* replicas confirm it, and a read contacts *R* replicas and returns the
+newest response. If `W + R > N`, reads and writes overlap on at least one replica, giving strong
+consistency for that operation. If `W + R <= N`, the system is eventually consistent but can
+tolerate more failures and serve requests at lower latency. xref:active-active.adoc[*Active-active*]
+and multi-leader replication patterns, which let any node accept writes, are eventually consistent
+by default and rely on techniques such as *last-writer-wins*, *version vectors*, and
+*conflict-free replicated data types (CRDTs)* to reach convergence.
 
-Stronger convergence can be achieved with xref:consensus-algorithms.adoc
-[*consensus algorithms*] such as Raft and Paxos, which make replicas agree on
-a single ordered log. That moves the system toward strong consistency at the
-cost of the coordination overhead eventual consistency was designed to avoid.
+Stronger convergence can be achieved with xref:consensus-algorithms.adoc [*consensus algorithms*]
+such as Raft and Paxos, which make replicas agree on a single ordered log. That moves the system
+toward strong consistency at the cost of the coordination overhead eventual consistency was designed
+to avoid.
 
 == When to use it, and when not to
 
-Eventual consistency suits workloads where high availability and low latency
-matter more than every reader seeing every recent write. Typical examples
-include DNS, social feeds, product reviews, recommendation systems, and
-shopping carts — domains where stale data is a minor inconvenience rather than
-an error.
+Eventual consistency suits workloads where high availability and low latency matter more than every
+reader seeing every recent write. Typical examples include DNS, social feeds, product reviews,
+recommendation systems, and shopping carts — domains where stale data is a minor inconvenience
+rather than an error.
 
-It is the wrong default where correctness depends on every reader seeing the
-latest write: financial balances, inventory levels, and anything that must not
-double-spend or oversell. Those workloads call for the guarantees of
-xref:acid-principles.adoc[*ACID principles*] and the strong consistency models
-offered by xref:transactional-databases.adoc[*transactional databases*]. A
-common pattern is to mix the two in one system — strongly consistent storage
-for the money, eventually consistent storage for everything around it — and to
-design around an agreed xref:single-source-of-truth.adoc
+It is the wrong default where correctness depends on every reader seeing the latest write: financial
+balances, inventory levels, and anything that must not double-spend or oversell. Those workloads
+call for the guarantees of xref:acid-principles.adoc[*ACID principles*] and the strong consistency
+models offered by xref:transactional-databases.adoc[*transactional databases*]. A common pattern is
+to mix the two in one system — strongly consistent storage for the money, eventually consistent
+storage for everything around it — and to design around an agreed xref:single-source-of-truth.adoc
 [*single source of truth*] for each type of data.
 
-Supporting practices include xref:idempotent.adoc
-[*idempotent operations*], which make retries safe during convergence, and
-xref:chaos-engineering.adoc[*chaos engineering*], which tests how the system
+Supporting practices include xref:idempotent.adoc [*idempotent operations*], which make retries safe
+during convergence, and xref:chaos-engineering.adoc[*chaos engineering*], which tests how the system
 behaves when replicas are unreachable.
 
 == See also
@@ -145,7 +122,10 @@ behaves when replicas are unreachable.
 
 == References
 
-* Vogels, Werner (2008). link:https://www.allthingsdistributed.com/2008/12/eventually_consistent.html[_Eventually consistent - revisited_]. All Things Distributed.
-* Terry, Douglas B., Theimer, Marvin M., Petersen, Karin, Demers, Alan J.,
-  Spreitzer, Mike J., and Hauser, Carl H. (1995). _Managing update conflicts in Bayou, a weakly connected replicated storage system_. Proceedings of the
-  15th ACM Symposium on Operating Systems Principles (SOSP).
+* Vogels, Werner (2008).
+  link:https://www.allthingsdistributed.com/2008/12/eventually_consistent.html[_Eventually consistent - revisited_].
+  All Things Distributed.
+* Terry, Douglas B., Theimer, Marvin M., Petersen, Karin, Demers, Alan J., Spreitzer, Mike J., and
+  Hauser, Carl H. (1995).
+  _Managing update conflicts in Bayou, a weakly connected replicated storage system_. Proceedings of
+  the 15th ACM Symposium on Operating Systems Principles (SOSP).

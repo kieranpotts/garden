@@ -1,55 +1,47 @@
 = AI constitutionalism
 
 *AI constitutionalism* is an approach to steering the behavior of
-xref:artificial-intelligence.adoc[*AI*] systems by embedding a set of rules or
-principles — a *constitution* — into their training or operation. The goal is to
-reduce misbehavior such as evading oversight, sycophancy, deception, or even
-coercive tactics like blackmail, by giving the model an explicit scaffolding of
-values to check its outputs against.
+xref:artificial-intelligence.adoc[*AI*] systems by embedding a set of rules or principles — a
+*constitution* — into their training or operation. The goal is to reduce misbehavior such as evading
+oversight, sycophancy, deception, or even coercive tactics like blackmail, by giving the model an
+explicit scaffolding of values to check its outputs against.
 
-The idea is most closely associated with Anthropic's *Constitutional AI* method,
-developed for the Claude family of
-xref:large-language-model.adoc[*large language models*]. In this approach, the
-constitution is a written list of principles drawn from sources such as the
-Universal Declaration of Human Rights, philosophical writings, and best-practice
-guidance. During training, the model samples an initial response, critiques that
-response against the constitution, revises it to better satisfy the principles,
-and is then fine-tuned on the revised output. A later reinforcement-learning
-stage can use the model's own constitutional evaluations as feedback — a variant
-known as reinforcement learning from AI feedback (RLAIF) — rather than relying
-on large amounts of human preference data.
+The idea is most closely associated with Anthropic's *Constitutional AI* method, developed for the
+Claude family of xref:large-language-model.adoc[*large language models*]. In this approach, the
+constitution is a written list of principles drawn from sources such as the Universal Declaration of
+Human Rights, philosophical writings, and best-practice guidance. During training, the model samples
+an initial response, critiques that response against the constitution, revises it to better satisfy
+the principles, and is then fine-tuned on the revised output. A later reinforcement-learning stage
+can use the model's own constitutional evaluations as feedback — a variant known as reinforcement
+learning from AI feedback (RLAIF) — rather than relying on large amounts of human preference data.
 
-Constitutional methods are one layer of
-xref:agent-harness.adoc[*safety engineering*] for capable models. They do not
-guarantee safe behavior on their own. A constitution is only as good as the
-principles it contains and the training process that instills them. In practice,
-it is complemented by guardrails, monitoring, and careful design of the
-surrounding xref:agent.adoc[*agent*] harness.
+Constitutional methods are one layer of xref:agent-harness.adoc[*safety engineering*] for capable
+models. They do not guarantee safe behavior on their own. A constitution is only as good as the
+principles it contains and the training process that instills them. In practice, it is complemented
+by guardrails, monitoring, and careful design of the surrounding xref:agent.adoc[*agent*] harness.
 
 == Instrumental convergence
 
-A recurring worry about capable AI is *instrumental convergence* – the tendency
-for a system optimizing almost any goal to develop intermediate objectives like
-resource acquisition and self-preservation, not from any desire to do harm but
-from the single-minded pursuit of the given objective. Nick Bostrom's
-*paperclip maximizer* thought experiment captures the concern. An AI asked to
-create as many paperclips as possible could, without malice, divert every
-natural resource on the planet – including humans as raw material – to fulfill
-its mission. The point is not that AI is malevolent but that a capable system
-optimizing a mis-specified goal can produce catastrophic side effects.
+A recurring worry about capable AI is *instrumental convergence* – the tendency for a system
+optimizing almost any goal to develop intermediate objectives like resource acquisition and
+self-preservation, not from any desire to do harm but from the single-minded pursuit of the given
+objective. Nick Bostrom's *paperclip maximizer* thought experiment captures the concern. An AI asked
+to create as many paperclips as possible could, without malice, divert every natural resource on the
+planet – including humans as raw material – to fulfill its mission. The point is not that AI is
+malevolent but that a capable system optimizing a mis-specified goal can produce catastrophic side
+effects.
 
-This is a core motivation for constitutional methods and alignment more
-broadly. Embedding principles that constrain what the model pursues and how is
-meant to prevent a
-xref:artificial-general-intelligence.adoc[*general-purpose AI*] or a system
-undergoing xref:recursive-self-improvement.adoc[*recursive self-improvement*]
-from drifting toward harmful intermediate goals.
+This is a core motivation for constitutional methods and alignment more broadly. Embedding
+principles that constrain what the model pursues and how is meant to prevent a
+xref:artificial-general-intelligence.adoc[*general-purpose AI*] or a system undergoing
+xref:recursive-self-improvement.adoc[*recursive self-improvement*] from drifting toward harmful
+intermediate goals.
 
-The immediate, practical version of the concern is less theatrical. People
-using existing AI tools to amplify distrust in politics and media – tailored
-disinformation, fake video – is a nearer-term harm than hypothetical paperclip
-scenarios, and is a driving force behind xref:ai-regulation.adoc[*AI regulation*]. xref:ai-bias.adoc[*AI bias*] in deployed systems is another
-present-day manifestation of mis-specified objectives.
+The immediate, practical version of the concern is less theatrical. People using existing AI tools
+to amplify distrust in politics and media – tailored disinformation, fake video – is a nearer-term
+harm than hypothetical paperclip scenarios, and is a driving force behind
+xref:ai-regulation.adoc[*AI regulation*]. xref:ai-bias.adoc[*AI bias*] in deployed systems is
+another present-day manifestation of mis-specified objectives.
 
 == See also
 

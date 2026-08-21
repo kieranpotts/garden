@@ -1,58 +1,55 @@
 = Decomposition
 
-Decomposition is the technique of breaking a complex problem or system down into
-smaller, more manageable parts. It is also called *functional decomposition* when
-the division follows the system's functional responsibilities. Each part is then
-simple enough to understand, build, test, and reason about on its own.
+Decomposition is the technique of breaking a complex problem or system down into smaller, more
+manageable parts. It is also called *functional decomposition* when the division follows the
+system's functional responsibilities. Each part is then simple enough to understand, build, test,
+and reason about on its own.
 
-Decomposition is a foundational move in xref:system-design.adoc[*system design*].
-It is the driving technique of xref:top-down-design.adoc[*top-down design*], which
-starts from the whole and refines it into a hierarchy of subsystems, modules, and
-components. It is the inverse of xref:composition.adoc[*composition*], which
-assembles complex objects from the simpler parts that decomposition identifies.
+Decomposition is a foundational move in xref:system-design.adoc[*system design*]. It is the driving
+technique of xref:top-down-design.adoc[*top-down design*], which starts from the whole and refines
+it into a hierarchy of subsystems, modules, and components. It is the inverse of
+xref:composition.adoc[*composition*], which assembles complex objects from the simpler parts that
+decomposition identifies.
 
-The goal of decomposition is not smallness for its own sake. A good decomposition
-produces parts that are each internally coherent and only loosely connected to one
-another. In the vocabulary of xref:modular-design.adoc[*module structure*], it aims for
-high xref:cohesion.adoc[*cohesion*] within each part and low
-xref:coupling.adoc[*coupling*] between parts. xref:decoupling.adoc[*Decoupling*] names the practice of keeping
-that coupling low. That balance is what lets the parts be developed, changed, and
-replaced independently. It is also a direct application of
-xref:separation-of-concerns.adoc[*separation of concerns*], splitting a system
-along the lines of its distinct responsibilities.
+The goal of decomposition is not smallness for its own sake. A good decomposition produces parts
+that are each internally coherent and only loosely connected to one another. In the vocabulary of
+xref:modular-design.adoc[*module structure*], it aims for high xref:cohesion.adoc[*cohesion*] within
+each part and low xref:coupling.adoc[*coupling*] between parts. xref:decoupling.adoc[*Decoupling*]
+names the practice of keeping that coupling low. That balance is what lets the parts be developed,
+changed, and replaced independently. It is also a direct application of
+xref:separation-of-concerns.adoc[*separation of concerns*], splitting a system along the lines of
+its distinct responsibilities.
 
-Decomposition recurses. Each part can itself be decomposed into smaller parts,
-producing a tree of progressively finer-grained components.
-xref:stepwise-refinement.adoc[*Stepwise refinement*] names this progressive
-elaboration, treating each level as a black box whose internals are filled in only
+Decomposition recurses. Each part can itself be decomposed into smaller parts, producing a tree of
+progressively finer-grained components. xref:stepwise-refinement.adoc[*Stepwise refinement*] names
+this progressive elaboration, treating each level as a black box whose internals are filled in only
 at the next level down.
 
 The technique scales from a single program to whole systems. Decomposing a
-xref:monolith.adoc[*monolith*] into independently deployable units is the move that
-produces a xref:modular-monolith.adoc[*modular monolith*] and, taken further, a
-xref:microservices.adoc[*microservices*] deployment. The same idea drives the
-partitioning of a xref:distributed-system.adoc[*distributed system*] across
-multiple nodes, and of a front-end into xref:micro-frontend.adoc[*micro front-ends*]. Carrying that decomposition out against a running legacy system,
-rather than a greenfield one, is the move the
-xref:strangler-fig-pattern.adoc[*strangler fig pattern*] names. An interception
-layer routes each decomposed slice to its replacement while the rest of the
-legacy system carries on.
+xref:monolith.adoc[*monolith*] into independently deployable units is the move that produces a
+xref:modular-monolith.adoc[*modular monolith*] and, taken further, a
+xref:microservices.adoc[*microservices*] deployment. The same idea drives the partitioning of a
+xref:distributed-system.adoc[*distributed system*] across multiple nodes, and of a front-end into
+xref:micro-frontend.adoc[*micro front-ends*]. Carrying that decomposition out against a running
+legacy system, rather than a greenfield one, is the move the
+xref:strangler-fig-pattern.adoc[*strangler fig pattern*] names. An interception layer routes each
+decomposed slice to its replacement while the rest of the legacy system carries on.
 
-The recurring pitfall is over-decomposition. Splitting too eagerly produces a
-swarm of tiny parts whose interactions are harder to follow than the original
-whole, and which collectively cost more to coordinate than they save. The
-xref:single-responsibility-principle.adoc[*single responsibility principle*] is
-often misread as "do one thing" and used to justify this over-splitting. Its real
-Its real unit of responsibility is the actor served by a module, not the granularity of its
-methods. A decomposition is only as good as the boundaries it draws. At service granularity,
-the endpoint of this over-splitting is the xref:nanoservices.adoc[*nanoservices*]
-anti-pattern, where each operation becomes its own deployed service.
+The recurring pitfall is over-decomposition. Splitting too eagerly produces a swarm of tiny parts
+whose interactions are harder to follow than the original whole, and which collectively cost more to
+coordinate than they save. The
+xref:single-responsibility-principle.adoc[*single responsibility principle*] is often misread as "do
+one thing" and used to justify this over-splitting. Its real Its real unit of responsibility is the
+actor served by a module, not the granularity of its methods. A decomposition is only as good as the
+boundaries it draws. At service granularity, the endpoint of this over-splitting is the
+xref:nanoservices.adoc[*nanoservices*] anti-pattern, where each operation becomes its own deployed
+service.
 
 Those boundaries are also constrained by the organization that draws them.
-xref:conways-law.adoc[*Conway's law*] observes that a system's decomposition tends
-to mirror the communication structure of the team that builds it. A decomposition
-that cuts across team boundaries will be fought by the organization, while one that
-aligns with those boundaries will be reinforced by them.
+xref:conways-law.adoc[*Conway's law*] observes that a system's decomposition tends to mirror the
+communication structure of the team that builds it. A decomposition that cuts across team boundaries
+will be fought by the organization, while one that aligns with those boundaries will be reinforced
+by them.
 
 == See also
 
@@ -69,5 +66,4 @@ aligns with those boundaries will be reinforced by them.
 
 == References
 
-* Wirth, Niklaus (1971). _Program Development by Stepwise Refinement_.
-  Communications of the ACM.
+* Wirth, Niklaus (1971). _Program Development by Stepwise Refinement_. Communications of the ACM.

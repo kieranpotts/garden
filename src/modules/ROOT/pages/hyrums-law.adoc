@@ -1,25 +1,23 @@
 = Hyrum's law
 
-Hyrum's law states that *with a sufficient number of users of an API, it does not matter what you promise in the contract: all observable behaviors of your system will be depended on by somebody*. It is named for Hyrum Wright, a
-Google software engineer, and was popularized in the book _Software Engineering at Google_ (2020).
+Hyrum's law states that
+*with a sufficient number of users of an API, it does not matter what you promise in the contract: all observable behaviors of your system will be depended on by somebody*.
+It is named for Hyrum Wright, a Google software engineer, and was popularized in the book
+_Software Engineering at Google_ (2020).
 
-The law describes a gap between a documented interface contract and what
-callers actually rely on. A function's official contract might promise only
-its return value, but if it also happens to log a particular message, throw
-exceptions in a particular order, or run in roughly constant time, some caller
-somewhere will come to depend on that incidental behavior, whether or not it
-was ever promised. Once enough callers exist, the true interface of a system
-is not what its documentation says but the sum of everything callers have
-been observed to rely on.
+The law describes a gap between a documented interface contract and what callers actually rely on. A
+function's official contract might promise only its return value, but if it also happens to log a
+particular message, throw exceptions in a particular order, or run in roughly constant time, some
+caller somewhere will come to depend on that incidental behavior, whether or not it was ever
+promised. Once enough callers exist, the true interface of a system is not what its documentation
+says but the sum of everything callers have been observed to rely on.
 
-The law is a central complication for anyone maintaining a widely used
-library or service, because it means that even a change that is correct
-according to the documented contract can break real callers. It sharpens the
-case for narrow, minimal interfaces, since every incidentally observable
-detail of a larger surface is a latent commitment. It is often discussed
-alongside *API versioning* and *backward compatibility* as one of the
-reasons both are harder in practice than the written contract alone would
-suggest.
+The law is a central complication for anyone maintaining a widely used library or service, because
+it means that even a change that is correct according to the documented contract can break real
+callers. It sharpens the case for narrow, minimal interfaces, since every incidentally observable
+detail of a larger surface is a latent commitment. It is often discussed alongside *API versioning*
+and *backward compatibility* as one of the reasons both are harder in practice than the written
+contract alone would suggest.
 
 == See also
 
@@ -27,6 +25,5 @@ suggest.
 
 == References
 
-* Winters, Titus, Manshreck, Tom, and Wright, Hyrum (2020). _Software
-  Engineering at Google: Lessons Learned from Programming Over Time_.
-  O'Reilly Media.
+* Winters, Titus, Manshreck, Tom, and Wright, Hyrum (2020).
+  _Software Engineering at Google: Lessons Learned from Programming Over Time_. O'Reilly Media.

@@ -1,44 +1,39 @@
 = Data structures
 
-A data structure is a particular way of organizing and storing data so that
-operations on it can be performed efficiently. The operations that matter are
-access, insertion, deletion, search, and traversal. The same data, arranged
-differently, can make one operation trivial and another expensive. An array
-gives O(1) lookup by index but O(n) insertion in the middle, while a linked
-list inverts that trade-off.
+A data structure is a particular way of organizing and storing data so that operations on it can be
+performed efficiently. The operations that matter are access, insertion, deletion, search, and
+traversal. The same data, arranged differently, can make one operation trivial and another
+expensive. An array gives O(1) lookup by index but O(n) insertion in the middle, while a linked list
+inverts that trade-off.
 
-A data structure is defined by the relationship between its elements and the
-operations it supports, not by any particular programming language. The same
-structure can be implemented in C, Python, or a database engine, and its
-essential character — what it makes fast and what it makes slow — carries over
-from one to the next.
+A data structure is defined by the relationship between its elements and the operations it supports,
+not by any particular programming language. The same structure can be implemented in C, Python, or a
+database engine, and its essential character — what it makes fast and what it makes slow — carries
+over from one to the next.
 
 == Abstract data types and implementations
 
-A useful distinction separates the *abstract data type (ADT)* from the concrete
-data structure that implements it. An ADT specifies a contract. It defines
-which operations are available and what they promise, without fixing how the
-data is laid out. A *stack*, for example, promises `push`, `pop`, and `peek` with
-last-in, first-out semantics, but says nothing about whether it is backed by an
-array or a linked list. The same ADT can have several implementations, each
-with different performance and memory characteristics, and the choice between
-them is a separate decision from the choice of ADT itself.
+A useful distinction separates the *abstract data type (ADT)* from the concrete data structure that
+implements it. An ADT specifies a contract. It defines which operations are available and what they
+promise, without fixing how the data is laid out. A *stack*, for example, promises `push`, `pop`,
+and `peek` with last-in, first-out semantics, but says nothing about whether it is backed by an
+array or a linked list. The same ADT can have several implementations, each with different
+performance and memory characteristics, and the choice between them is a separate decision from the
+choice of ADT itself.
 
-This separation is what lets a data structure be reasoned about and reused
-independently of its embodiment in code, in the same way an algorithm can. It
-is also an instance of xref:abstraction.adoc[*abstraction*]. The contract is
-the interface, and the implementation is free to change as long as the contract
-still holds.
+This separation is what lets a data structure be reasoned about and reused independently of its
+embodiment in code, in the same way an algorithm can. It is also an instance of
+xref:abstraction.adoc[*abstraction*]. The contract is the interface, and the implementation is free
+to change as long as the contract still holds.
 
 == Relationship to algorithms
 
-Data structures and xref:algorithms.adoc[*algorithms*] (DSA) are foundational
-topics in xref:computer-science.adoc[*computer science*], and they are studied
-together because each shapes the other. An algorithm operates on data, and the
-way that data is organized determines which algorithms are practical. A sorted
-array makes binary search possible. A hash table makes average-case O(1)
-lookup possible. A graph makes traversal algorithms possible. Choosing the
-right structure often makes the algorithm self-evident.
+Data structures and xref:algorithms.adoc[*algorithms*] (DSA) are foundational topics in
+xref:computer-science.adoc[*computer science*], and they are studied together because each shapes
+the other. An algorithm operates on data, and the way that data is organized determines which
+algorithms are practical. A sorted array makes binary search possible. A hash table makes
+average-case O(1) lookup possible. A graph makes traversal algorithms possible. Choosing the right
+structure often makes the algorithm self-evident.
 
 [quote, Rob Pike, Notes on Programming in C (1989)]
 ____
@@ -49,58 +44,51 @@ ____
 
 == Choosing a data structure
 
-No data structure is best at everything. Each one optimizes some operations at
-the expense of others, and the right choice depends on which operations a given
-problem performs most often. The cost of an operation is described using
-xref:big-o-notation.adoc[*big O notation*], which characterizes how running
-time or memory grows with input size. A hash table offers average-case O(1)
-lookup but degrades to O(n) on collisions and gives no ordered traversal. A
-balanced tree offers O(log n) lookup together with ordered iteration, at the
-cost of more complex updates.
+No data structure is best at everything. Each one optimizes some operations at the expense of
+others, and the right choice depends on which operations a given problem performs most often. The
+cost of an operation is described using xref:big-o-notation.adoc[*big O notation*], which
+characterizes how running time or memory grows with input size. A hash table offers average-case
+O(1) lookup but degrades to O(n) on collisions and gives no ordered traversal. A balanced tree
+offers O(log n) lookup together with ordered iteration, at the cost of more complex updates.
 
-The right choice is driven by the xref:access-patterns.adoc[*access patterns*]
-of the consuming code: the ratio of reads to writes, whether lookups are by key
-or by range, and how often the working set changes. Selecting a structure
-without understanding how it will be accessed is a common source of
-xref:performance.adoc[*performance*] problems.
+The right choice is driven by the xref:access-patterns.adoc[*access patterns*] of the consuming
+code: the ratio of reads to writes, whether lookups are by key or by range, and how often the
+working set changes. Selecting a structure without understanding how it will be accessed is a common
+source of xref:performance.adoc[*performance*] problems.
 
 == Memory layout
 
-The logical structure of a data structure is only half the picture. How it is
-laid out in memory has a large effect on performance, because modern CPUs are
-far faster at reading data that is contiguous and cache-resident than at
-chasing pointers across the heap. A linked list and a dynamic array may both
-store a sequence, but the array's contiguous layout lets the CPU prefetch and
-stream through it, while the linked list's per-node pointers defeat the cache.
-On large inputs the cache-friendly structure often wins even when its
-asymptotic complexity is the same.
+The logical structure of a data structure is only half the picture. How it is laid out in memory has
+a large effect on performance, because modern CPUs are far faster at reading data that is contiguous
+and cache-resident than at chasing pointers across the heap. A linked list and a dynamic array may
+both store a sequence, but the array's contiguous layout lets the CPU prefetch and stream through
+it, while the linked list's per-node pointers defeat the cache. On large inputs the cache-friendly
+structure often wins even when its asymptotic complexity is the same.
 
-xref:memory-allocation.adoc[*Memory allocation*] patterns also matter. A
-structure that allocates a new node per element fragments the heap and pays an
-allocation cost on every insert, while one that grows in batches amortizes
-that cost. xref:data-oriented-design.adoc[*Data-oriented design*] is an
-approach that treats memory layout as a first-class design constraint, choosing
-layouts to match how the data is accessed.
+xref:memory-allocation.adoc[*Memory allocation*] patterns also matter. A structure that allocates a
+new node per element fragments the heap and pays an allocation cost on every insert, while one that
+grows in batches amortizes that cost. xref:data-oriented-design.adoc[*Data-oriented design*] is an
+approach that treats memory layout as a first-class design constraint, choosing layouts to match how
+the data is accessed.
 
 == Common kinds
 
 The familiar data structures fall into a few broad families.
 
-* *Linear structures* arrange elements in a sequence. Examples include arrays,
-  linked lists, stacks, and queues.
-* *Trees* arrange elements hierarchically, supporting ordered search and
-  balanced insertion, as in a binary search tree or a B-tree.
+* *Linear structures* arrange elements in a sequence. Examples include arrays, linked lists, stacks,
+  and queues.
+* *Trees* arrange elements hierarchically, supporting ordered search and balanced insertion, as in a
+  binary search tree or a B-tree.
 * *Graphs* record arbitrary pairwise relationships between nodes. A
-  xref:directed-acyclic-graph.adoc[*directed acyclic graph (DAG)*] is one
-  specialization used widely to model dependencies.
-* *Hash-based structures* use xref:hashing.adoc[*hashing*] to map keys to
-  buckets, giving near-constant-time lookup on average. A
-  xref:bloom-filter.adoc[*bloom filter*] is a probabilistic variant that
-  trades certainty for memory efficiency.
+  xref:directed-acyclic-graph.adoc[*directed acyclic graph (DAG)*] is one specialization used widely
+  to model dependencies.
+* *Hash-based structures* use xref:hashing.adoc[*hashing*] to map keys to buckets, giving
+  near-constant-time lookup on average. A xref:bloom-filter.adoc[*bloom filter*] is a probabilistic
+  variant that trades certainty for memory efficiency.
 
-These families overlap and combine. A xref:database-indexes.adoc[*database index*] is typically a tree. A
-compiler's symbol table is typically a hash table. A cache may be built on
-either, depending on whether eviction order matters.
+These families overlap and combine. A xref:database-indexes.adoc[*database index*] is typically a
+tree. A compiler's symbol table is typically a hash table. A cache may be built on either, depending
+on whether eviction order matters.
 
 == See also
 

@@ -1,101 +1,78 @@
 = Software assurance
 
-*Software assurance (SwA)* is the planned and systematic set of activities
-that provide justified confidence software is free from vulnerabilities —
-whether intentionally inserted or accidentally introduced at any point in its
-life cycle — and that it functions only as intended. The term is used most
-often in the language of the US government bodies that did most to define it,
-notably the National Institute of Standards and Technology (NIST), the
-Department of Homeland Security (DHS), the Department of Defense (DoD), and
-NASA, but the underlying idea spans the broader engineering literature.
+*Software assurance (SwA)* is the planned and systematic set of activities that provide justified
+confidence software is free from vulnerabilities — whether intentionally inserted or accidentally
+introduced at any point in its life cycle — and that it functions only as intended. The term is used
+most often in the language of the US government bodies that did most to define it, notably the
+National Institute of Standards and Technology (NIST), the Department of Homeland Security (DHS),
+the Department of Defense (DoD), and NASA, but the underlying idea spans the broader engineering
+literature.
 
-The NIST definition, echoed by the DoD, frames SwA as the level of confidence
-that software is free from vulnerabilities, either intentionally designed into
-the software or accidentally inserted at any time during its life cycle, and
-that the software functions in the intended manner. The DHS and the NIST
-SAMATE project decompose that confidence into three properties.
+The NIST definition, echoed by the DoD, frames SwA as the level of confidence that software is free
+from vulnerabilities, either intentionally designed into the software or accidentally inserted at
+any time during its life cycle, and that the software functions in the intended manner. The DHS and
+the NIST SAMATE project decompose that confidence into three properties.
 
-* *Trustworthiness.* No exploitable vulnerabilities exist, of either
-  malicious or unintentional origin.
-* *Predictable execution.* Justifiable confidence that, when executed, the
-  software behaves as intended, with no unintended side effects.
-* *Conformance.* Software processes and products meet their requirements,
-  standards, and procedures.
+* *Trustworthiness.* No exploitable vulnerabilities exist, of either malicious or unintentional
+  origin.
+* *Predictable execution.* Justifiable confidence that, when executed, the software behaves as
+  intended, with no unintended side effects.
+* *Conformance.* Software processes and products meet their requirements, standards, and procedures.
 
 == Relationship to quality, safety, and security
 
-SwA is the umbrella term, not a synonym for any one of its parts. NASA's
-Software Assurance Standard names the contributing disciplines: quality
-assurance and quality engineering, verification and validation,
-nonconformance reporting and corrective action, safety assurance, and
-security assurance. Each contributes evidence to the overall confidence
-argument.
+SwA is the umbrella term, not a synonym for any one of its parts. NASA's Software Assurance Standard
+names the contributing disciplines: quality assurance and quality engineering, verification and
+validation, nonconformance reporting and corrective action, safety assurance, and security
+assurance. Each contributes evidence to the overall confidence argument.
 
-The distinction from
-xref:quality-assurance.adoc[*quality assurance*] is one
-of intent and scope. QA is a process-focused activity aimed at preventing and
-detecting defects. SwA broadens that to include *adversarial* intent —
-vulnerabilities deliberately planted or exploitable by an attacker — and the
-wider requirement that the software behave predictably in its operating
-environment. It sits above both QA and
-xref:security.adoc[*security*] by adding the notion
-of *justified confidence* backed by evidence and argument, rather than the
-absence of known defects alone.
+The distinction from xref:quality-assurance.adoc[*quality assurance*] is one of intent and scope. QA
+is a process-focused activity aimed at preventing and detecting defects. SwA broadens that to
+include *adversarial* intent — vulnerabilities deliberately planted or exploitable by an attacker —
+and the wider requirement that the software behave predictably in its operating environment. It sits
+above both QA and xref:security.adoc[*security*] by adding the notion of *justified confidence*
+backed by evidence and argument, rather than the absence of known defects alone.
 
 SwA comes to the fore where the cost of failure is high. For
-xref:high-integrity.adoc[*high-integrity*] and
-xref:safety-critical-system.adoc[*safety-critical*]
-systems — medical devices, avionics, automotive, defence — the assurance is
-documented as an *assurance case* (a *safety case* when the concern is
-safety, a *security case* when it is security): a structured argument,
-supported by evidence and
-xref:traceability.adoc[*traceability*] from
-xref:requirements.adoc[*requirements*] through to
-implementation, that residual risk has been reduced to an acceptable level.
-The same standards that govern those systems — DO-178C, IEC 61508, ISO 26262,
-IEC 62304 — codify the assurance activities expected at each integrity
-level, and
-xref:compliance.adoc[*compliance*] with the applicable
-standard is typically mandatory for certification.
+xref:high-integrity.adoc[*high-integrity*] and xref:safety-critical-system.adoc[*safety-critical*]
+systems — medical devices, avionics, automotive, defence — the assurance is documented as an
+*assurance case* (a *safety case* when the concern is safety, a *security case* when it is
+security): a structured argument, supported by evidence and xref:traceability.adoc[*traceability*]
+from xref:requirements.adoc[*requirements*] through to implementation, that residual risk has been
+reduced to an acceptable level. The same standards that govern those systems — DO-178C, IEC 61508,
+ISO 26262, IEC 62304 — codify the assurance activities expected at each integrity level, and
+xref:compliance.adoc[*compliance*] with the applicable standard is typically mandatory for
+certification.
 
 == Activities and techniques
 
-SwA is realized through a planned set of activities applied across the
-lifecycle, drawn from several disciplines.
+SwA is realized through a planned set of activities applied across the lifecycle, drawn from several
+disciplines.
 
-* *Requirements and design.* Requirements analysis and design reviews catch
-  defects while they are still cheap to fix.
-  xref:shift-left.adoc[*Shift left*] is the general
-  move of these activities earlier in the lifecycle. Architectural risk
-  analysis and threat modeling surface design flaws, which account for a
-  large fraction of security problems and cannot be found by inspecting code
+* *Requirements and design.* Requirements analysis and design reviews catch defects while they are
+  still cheap to fix. xref:shift-left.adoc[*Shift left*] is the general move of these activities
+  earlier in the lifecycle. Architectural risk analysis and threat modeling surface design flaws,
+  which account for a large fraction of security problems and cannot be found by inspecting code
   alone.
-* *Code-level assurance.*
-  xref:static-analysis.adoc[*Static analysis*]
-  examines code without executing it; code inspections and review enforce
-  conventions. xref:secure-by-design.adoc[*Secure by design*] and secure-coding standards such as the SEI CERT guides aim to rule
-  out whole classes of weakness at the source.
-* *Dynamic verification.*
-  xref:testing.adoc[*Testing*] — functional,
-  performance, and
-  xref:security-testing.adoc[*security testing*]
-  — alongside
-  xref:penetration-testing.adoc[*penetration testing*] and fuzz testing, probes the running system for defects and
-  exploitable behavior.
-* *Formal verification.* At the highest integrity levels,
-  xref:formal-methods.adoc[*formal methods*]
-  provide mathematical proof that a system satisfies its specification, going
-  beyond what testing alone can show.
+* *Code-level assurance.* xref:static-analysis.adoc[*Static analysis*] examines code without
+  executing it; code inspections and review enforce conventions.
+  xref:secure-by-design.adoc[*Secure by design*] and secure-coding standards such as the SEI CERT
+  guides aim to rule out whole classes of weakness at the source.
+* *Dynamic verification.* xref:testing.adoc[*Testing*] — functional, performance, and
+  xref:security-testing.adoc[*security testing*] — alongside
+  xref:penetration-testing.adoc[*penetration testing*] and fuzz testing, probes the running system
+  for defects and exploitable behavior.
+* *Formal verification.* At the highest integrity levels, xref:formal-methods.adoc[*formal methods*]
+  provide mathematical proof that a system satisfies its specification, going beyond what testing
+  alone can show.
 
 == Why it matters
 
-Software controls cars, medical devices, financial systems, and military
-equipment. Defects and vulnerabilities in that software can cause system
-failures, security breaches, and harm to people and property, and in
-regulated domains they can carry legal and financial penalties. SwA is the
-discipline that makes confidence in such software *justifiable* — backed by
-evidence and argument rather than asserted — so that acquirers, regulators,
-and operators can depend on it.
+Software controls cars, medical devices, financial systems, and military equipment. Defects and
+vulnerabilities in that software can cause system failures, security breaches, and harm to people
+and property, and in regulated domains they can carry legal and financial penalties. SwA is the
+discipline that makes confidence in such software *justifiable* — backed by evidence and argument
+rather than asserted — so that acquirers, regulators, and operators can depend on it.
 
 == See also
 
@@ -114,8 +91,9 @@ and operators can depend on it.
 
 == References
 
-* NIST (2016). https://www.nist.gov/itl/ssd/software-assurance[_Software assurance_]. National Institute of Standards and Technology.
-* DHS (n.d.). _Software assurance: what is it and why do I need it?_. US
-  Department of Homeland Security.
+* NIST (2016). https://www.nist.gov/itl/ssd/software-assurance[_Software assurance_]. National
+  Institute of Standards and Technology.
+* DHS (n.d.). _Software assurance: what is it and why do I need it?_. US Department of Homeland
+  Security.
 * NASA (1992). _NASA Software Assurance Standard_ (NASA-STD-2201-93).
 * McGraw, G. (2006). _Software Security: Building Security In_. Addison-Wesley.

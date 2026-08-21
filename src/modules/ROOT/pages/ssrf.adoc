@@ -1,143 +1,125 @@
 = Server-side request forgery (SSRF)
 
-*Server-side request forgery (SSRF)* is a web security vulnerability in which an
-attacker coerces a vulnerable server into making xref:http.adoc[*HTTP*] requests
-to destinations the attacker chooses. The server, trusted by the network it sits
-on, becomes an unwitting proxy. Requests it issues travel from inside the
-perimeter, where xref:firewalls.adoc[*firewalls*] and network ACLs assume they are
-benign. The attacker never touches the internal targets directly; the server
-reaches them on the attacker's behalf.
+*Server-side request forgery (SSRF)* is a web security vulnerability in which an attacker coerces a
+vulnerable server into making xref:http.adoc[*HTTP*] requests to destinations the attacker chooses.
+The server, trusted by the network it sits on, becomes an unwitting proxy. Requests it issues travel
+from inside the perimeter, where xref:firewalls.adoc[*firewalls*] and network ACLs assume they are
+benign. The attacker never touches the internal targets directly; the server reaches them on the
+attacker's behalf.
 
-SSRF is fundamentally different from *cross-site request forgery (CSRF)*,
-despite the similar name. CSRF tricks a user's browser into issuing a request to
-a site where the user is authenticated. SSRF tricks the server itself. The two
-share no exploitation path and no defense. SSRF is closer in spirit to
-xref:cross-site-scripting.adoc[*cross-site scripting (XSS)*] and
-xref:sql-injection.adoc[*SQL injection*] in that all three abuse untrusted input
-that is not adequately separated from the application's behaviour, but it is
-not an injection flaw. The defect is the server acting on an
-attacker-influenced URL at all, not a parser confusing code with data. SSRF
-joined the xref:owasp.adoc[*OWASP*] Top 10 in 2021 as A10:2021, reflecting its
-prominence in cloud-era breaches.
+SSRF is fundamentally different from *cross-site request forgery (CSRF)*, despite the similar name.
+CSRF tricks a user's browser into issuing a request to a site where the user is authenticated. SSRF
+tricks the server itself. The two share no exploitation path and no defense. SSRF is closer in
+spirit to xref:cross-site-scripting.adoc[*cross-site scripting (XSS)*] and
+xref:sql-injection.adoc[*SQL injection*] in that all three abuse untrusted input that is not
+adequately separated from the application's behaviour, but it is not an injection flaw. The defect
+is the server acting on an attacker-influenced URL at all, not a parser confusing code with data.
+SSRF joined the xref:owasp.adoc[*OWASP*] Top 10 in 2021 as A10:2021, reflecting its prominence in
+cloud-era breaches.
 
 == How it works
 
-SSRF arises wherever a server fetches a resource from a URL that is wholly or
-partly attacker-controlled. The server resolves the hostname, opens a
-connection, and issues the request as itself, with its own credentials, from its
-own IP address, on its own network. Nothing in the request marks it as
-attacker-driven. The target sees only the vulnerable application.
+SSRF arises wherever a server fetches a resource from a URL that is wholly or partly
+attacker-controlled. The server resolves the hostname, opens a connection, and issues the request as
+itself, with its own credentials, from its own IP address, on its own network. Nothing in the
+request marks it as attacker-driven. The target sees only the vulnerable application.
 
-The canonical shape is a feature that fetches user-supplied URLs: image
-upload-by-URL, link previews, PDF-from-HTML rendering, feed aggregators,
-xref:webhook.adoc[*webhook*] delivery, SSO callback fetchers, and "import from
-URL" wizards. Each is an SSRF surface the moment it accepts a URL from outside
-and dereferences it without restriction.
+The canonical shape is a feature that fetches user-supplied URLs: image upload-by-URL, link
+previews, PDF-from-HTML rendering, feed aggregators, xref:webhook.adoc[*webhook*] delivery, SSO
+callback fetchers, and "import from URL" wizards. Each is an SSRF surface the moment it accepts a
+URL from outside and dereferences it without restriction.
 
 == Common targets
 
-What makes SSRF serious is that the server's vantage point reaches resources an
-external attacker cannot.
+What makes SSRF serious is that the server's vantage point reaches resources an external attacker
+cannot.
 
 * *Cloud instance metadata services.* Every major
-  xref:cloud-service-providers.adoc[*cloud service provider*] exposes a
-  link-local metadata endpoint on the host, `169.254.169.254` on AWS and Azure
-  and `metadata.google.internal` on GCP, that returns temporary credentials,
-  instance tags, and user-data scripts to any process on the instance. An SSRF
-  that reaches it can exfiltrate short-lived IAM credentials and pivot into the
-  cloud account. This single target is responsible for most catastrophic SSRF
-  incidents.
+  xref:cloud-service-providers.adoc[*cloud service provider*] exposes a link-local metadata endpoint
+  on the host, `169.254.169.254` on AWS and Azure and `metadata.google.internal` on GCP, that
+  returns temporary credentials, instance tags, and user-data scripts to any process on the
+  instance. An SSRF that reaches it can exfiltrate short-lived IAM credentials and pivot into the
+  cloud account. This single target is responsible for most catastrophic SSRF incidents.
 
-* *Internal admin and management interfaces.* Services that listen on
-  `127.0.0.1` or a private subnet, trusting that the network will keep them
-  unreachable, are exposed to an SSRF that originates from inside. Databases,
-  caching servers, metrics endpoints, container runtimes, and orchestration
-  control planes all fall in this group.
+* *Internal admin and management interfaces.* Services that listen on `127.0.0.1` or a private
+  subnet, trusting that the network will keep them unreachable, are exposed to an SSRF that
+  originates from inside. Databases, caching servers, metrics endpoints, container runtimes, and
+  orchestration control planes all fall in this group.
 
 * *Unauthenticated internal APIs.* Services behind the perimeter that omit
-  xref:authentication.adoc[*authentication*] because "only our apps call them"
-  become directly callable through the vulnerable server.
+  xref:authentication.adoc[*authentication*] because "only our apps call them" become directly
+  callable through the vulnerable server.
 
 == Evasion
 
 Naive defenses block requests to obvious internal
-xref:internet-protocol-address.adoc[*IP addresses*], and attackers have a
-library of tricks to slip past them.
+xref:internet-protocol-address.adoc[*IP addresses*], and attackers have a library of tricks to slip
+past them.
 
-* *IP address encoding.* `192.168.0.1`, `0xc0a80001`, `2130706433`, and
-  `0:0:0:0:0:ffff:c0a8:1` all denote the same destination. A blocklist that
-  matches one form misses the others.
+* *IP address encoding.* `192.168.0.1`, `0xc0a80001`, `2130706433`, and `0:0:0:0:0:ffff:c0a8:1` all
+  denote the same destination. A blocklist that matches one form misses the others.
 
-* *DNS rebinding.* The attacker controls a hostname whose
-  xref:dns.adoc[*DNS*] record flips between a public IP, which passes
-  validation, and a private one, which the request actually reaches, within the
-  validation-to-fetch window. Time-of-check-to-time-of-use, applied to name
-  resolution.
+* *DNS rebinding.* The attacker controls a hostname whose xref:dns.adoc[*DNS*] record flips between
+  a public IP, which passes validation, and a private one, which the request actually reaches,
+  within the validation-to-fetch window. Time-of-check-to-time-of-use, applied to name resolution.
 
-* *Open redirects and chained requests.* A request to an allowed host that
-  responds with a `301` to an internal URL is followed by most HTTP clients
-  without re-validation, smuggling the request past an allow-list.
+* *Open redirects and chained requests.* A request to an allowed host that responds with a `301` to
+  an internal URL is followed by most HTTP clients without re-validation, smuggling the request past
+  an allow-list.
 
-* *Alternative URL schemes.* `file://`, `gopher://`, `dict://`, and `ftp://`
-  are handled by some clients and can read local files or speak to non-HTTP
-  services. Disabling every scheme except `http` and `https` closes the
-  richest vein.
+* *Alternative URL schemes.* `file://`, `gopher://`, `dict://`, and `ftp://` are handled by some
+  clients and can read local files or speak to non-HTTP services. Disabling every scheme except
+  `http` and `https` closes the richest vein.
 
 == Impact
 
-Because the request carries the server's privileges and network position, the
-blast radius is whatever the server can reach. Typical consequences include
-reading internal-only data, stealing cloud credentials via the metadata
-service, scanning and fingerprinting internal hosts, and using the server as
-a pivot for further movement deeper into the network. Where the metadata
-service is reached and IAM credentials leak, an SSRF that started as a single
-unguarded URL fetch can escalate into full account compromise.
+Because the request carries the server's privileges and network position, the blast radius is
+whatever the server can reach. Typical consequences include reading internal-only data, stealing
+cloud credentials via the metadata service, scanning and fingerprinting internal hosts, and using
+the server as a pivot for further movement deeper into the network. Where the metadata service is
+reached and IAM credentials leak, an SSRF that started as a single unguarded URL fetch can escalate
+into full account compromise.
 
-The 2019 Capital One breach is the textbook case. An SSRF against a
-misconfigured xref:reverse-proxy.adoc[*reverse proxy*] / WAF reached the EC2
-metadata service, retrieved the instance's IAM role credentials, and was used
-to exfiltrate the personal data of roughly 100 million applicants. It is the
-incident most cited for why metadata services now require token-based access,
+The 2019 Capital One breach is the textbook case. An SSRF against a misconfigured
+xref:reverse-proxy.adoc[*reverse proxy*] / WAF reached the EC2 metadata service, retrieved the
+instance's IAM role credentials, and was used to exfiltrate the personal data of roughly 100 million
+applicants. It is the incident most cited for why metadata services now require token-based access,
 IMDSv2 on AWS.
 
 == Defenses
 
-SSRF is hard to close with input filtering alone, because the attacker
-controls a URL whose meaning keeps shifting through encoding, redirects, and
-DNS. Defenses stack.
+SSRF is hard to close with input filtering alone, because the attacker controls a URL whose meaning
+keeps shifting through encoding, redirects, and DNS. Defenses stack.
 
-* *Allow-list the destinations.* Where the set of legitimate fetch targets is
-  known and small, a handful of partner domains or an internal asset host,
-  validate against an allow-list of hostnames and reject everything else. This
-  is the strongest control and a form of xref:input-validation.adoc[*input validation*].
+* *Allow-list the destinations.* Where the set of legitimate fetch targets is known and small, a
+  handful of partner domains or an internal asset host, validate against an allow-list of hostnames
+  and reject everything else. This is the strongest control and a form of
+  xref:input-validation.adoc[*input validation*].
 
-* *Disable unused URL schemes.* Permit only `http` and `https`. Never `file`,
-  `gopher`, `dict`, or `ftp`.
+* *Disable unused URL schemes.* Permit only `http` and `https`. Never `file`, `gopher`, `dict`, or
+  `ftp`.
 
-* *Resolve once, then connect to the resolved address.* Resolve the hostname,
-  verify the resulting IP is in an allowed range, and open the connection to
-  that IP rather than re-resolving. This defeats DNS rebinding, provided the
-  client honours the pinned address.
+* *Resolve once, then connect to the resolved address.* Resolve the hostname, verify the resulting
+  IP is in an allowed range, and open the connection to that IP rather than re-resolving. This
+  defeats DNS rebinding, provided the client honours the pinned address.
 
-* *Block link-local and private ranges at the egress point.* Enforce egress
-  filtering from the application's network segment so that even a fully
-  subverted request to `169.254.169.254` or `10.0.0.0/8` cannot complete. This
-  is xref:firewalls.adoc[*firewall*] and security-group policy, applied as
-  xref:secure-by-design.adoc[*secure by design*].
+* *Block link-local and private ranges at the egress point.* Enforce egress filtering from the
+  application's network segment so that even a fully subverted request to `169.254.169.254` or
+  `10.0.0.0/8` cannot complete. This is xref:firewalls.adoc[*firewall*] and security-group policy,
+  applied as xref:secure-by-design.adoc[*secure by design*].
 
-* *Harden the metadata service.* Require session-oriented, token-based
-  retrieval, such as AWS IMDSv2, so a bare `GET` from an SSRF no longer returns
-  credentials. On GCP, mandatory metadata headers enforce the same effect.
+* *Harden the metadata service.* Require session-oriented, token-based retrieval, such as AWS
+  IMDSv2, so a bare `GET` from an SSRF no longer returns credentials. On GCP, mandatory metadata
+  headers enforce the same effect.
 
-* *Run URL-fetching features in an isolated segment.* Place services that must
-  fetch attacker-supplied URLs on their own network segment with no route to
-  internal services, so a successful SSRF has nothing internal to reach.
+* *Run URL-fetching features in an isolated segment.* Place services that must fetch
+  attacker-supplied URLs on their own network segment with no route to internal services, so a
+  successful SSRF has nothing internal to reach.
 
 [WARNING]
-Blocklisting known-bad IP ranges and URL schemes as the sole defense is a
-common and dangerous anti-pattern. Encoding tricks, DNS rebinding, and
-redirect chains evade blocklists routinely. The reliable control is to
-allow-list the small set of destinations the feature genuinely needs and to
+Blocklisting known-bad IP ranges and URL schemes as the sole defense is a common and dangerous
+anti-pattern. Encoding tricks, DNS rebinding, and redirect chains evade blocklists routinely. The
+reliable control is to allow-list the small set of destinations the feature genuinely needs and to
 deny everything else at the network egress.
 
 == See also

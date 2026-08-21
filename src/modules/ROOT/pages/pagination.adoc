@@ -1,101 +1,87 @@
 = Pagination (design pattern)
 
-Pagination is a xref:design-patterns.adoc[*design pattern*] for dividing a
-large result set into discrete chunks, called _pages_, so that a client
-retrieves one chunk at a time rather than the whole set in a single response.
-Each page carries enough metadata for the client to request the next chunk,
-typically a page number, an offset, or a cursor.
+Pagination is a xref:design-patterns.adoc[*design pattern*] for dividing a large result set into
+discrete chunks, called _pages_, so that a client retrieves one chunk at a time rather than the
+whole set in a single response. Each page carries enough metadata for the client to request the next
+chunk, typically a page number, an offset, or a cursor.
 
-The pattern addresses two pressures that grow with collection size. The first
-is resource cost: returning a million records in one shot is slow to compute,
-costly to transmit, and expensive to hold in memory on both ends. The second
-is usability: end users rarely want an unbounded list dumped in front of them.
-Pagination caps the cost of any single request and gives the consumer a
-predictable unit of work, whether that consumer is a person scrolling a feed or
-a service fetching rows from a xref:databases.adoc[*database*].
+The pattern addresses two pressures that grow with collection size. The first is resource cost:
+returning a million records in one shot is slow to compute, costly to transmit, and expensive to
+hold in memory on both ends. The second is usability: end users rarely want an unbounded list dumped
+in front of them. Pagination caps the cost of any single request and gives the consumer a
+predictable unit of work, whether that consumer is a person scrolling a feed or a service fetching
+rows from a xref:databases.adoc[*database*].
 
 == Where it is used
 
-The same idea appears wherever a bounded unit of work is preferable to an
-unbounded one.
+The same idea appears wherever a bounded unit of work is preferable to an unbounded one.
 
-* *HTTP APIs.* Collection endpoints on xref:http-api.adoc[*HTTP APIs*] are
-  paginated by convention. A `GET /books` request returns a page of books
-  rather than the entire catalog, with the page selected through query
-  parameters such as `?page=2&size=20` or `?cursor=eyJpZCI6MTAwfQ`.
-  xref:rest.adoc[*REST*] APIs most often expose pagination through query
-  parameters and response envelopes that include next-page links.
-* *GraphQL.* xref:graphql.adoc[*GraphQL*] standardises list pagination through
-  the _connections_ specification popularised by Relay. A connection exposes
-  `edges` (each wrapping a node and its cursor), `pageInfo` (with `hasNextPage`
-  and `startCursor`/`endCursor`), and a `first`/`after` argument pair that
-  requests N items after a given cursor.
-* *Databases.* Result sets are paginated at the query level with `LIMIT` and
-  `OFFSET`, or with keyset predicates such as `WHERE id > ? ORDER BY id LIMIT ?`. The choice of strategy has a large effect on cost, described below.
-* *User interfaces.* Lists, tables, and feeds render one page at a time and
-  fetch more as the user advances. *Infinite scroll* is a UI variant in which
-  the next page is fetched automatically as the user nears the bottom, hiding
-  the page boundary behind a continuous stream.
+* *HTTP APIs.* Collection endpoints on xref:http-api.adoc[*HTTP APIs*] are paginated by convention.
+  A `GET /books` request returns a page of books rather than the entire catalog, with the page
+  selected through query parameters such as `?page=2&size=20` or `?cursor=eyJpZCI6MTAwfQ`.
+  xref:rest.adoc[*REST*] APIs most often expose pagination through query parameters and response
+  envelopes that include next-page links.
+* *GraphQL.* xref:graphql.adoc[*GraphQL*] standardises list pagination through the _connections_
+  specification popularised by Relay. A connection exposes `edges` (each wrapping a node and its
+  cursor), `pageInfo` (with `hasNextPage` and `startCursor`/`endCursor`), and a `first`/`after`
+  argument pair that requests N items after a given cursor.
+* *Databases.* Result sets are paginated at the query level with `LIMIT` and `OFFSET`, or with
+  keyset predicates such as `WHERE id > ? ORDER BY id LIMIT ?`. The choice of strategy has a large
+  effect on cost, described below.
+* *User interfaces.* Lists, tables, and feeds render one page at a time and fetch more as the user
+  advances. *Infinite scroll* is a UI variant in which the next page is fetched automatically as the
+  user nears the bottom, hiding the page boundary behind a continuous stream.
 
 == Strategies
 
-Three strategies cover most implementations. They differ in how the position
-of the next page is expressed.
+Three strategies cover most implementations. They differ in how the position of the next page is
+expressed.
 
-* *Offset and limit.* The client names a starting position (`offset` or
-  `page`) and a page size (`limit` or `size`). The server skips the first
-  _offset_ rows and returns the next _limit_. This is the most intuitive
-  strategy and the easiest to expose over xref:http.adoc[*HTTP*] query
+* *Offset and limit.* The client names a starting position (`offset` or `page`) and a page size
+  (`limit` or `size`). The server skips the first _offset_ rows and returns the next _limit_. This
+  is the most intuitive strategy and the easiest to expose over xref:http.adoc[*HTTP*] query
   parameters. It also lets a client jump to an arbitrary page.
-* *Cursor (keyset).* The client holds an opaque _cursor_ that encodes the
-  position of the last item on the current page, eg. the row's identifier or a
-  hash of its sort key. The next request asks for items _after_ that cursor.
-  Because the cursor anchors to a value in the data rather than a positional
-  offset, the result set is stable under concurrent inserts and deletes. This
-  is the strategy favoured by xref:graphql.adoc[*GraphQL*] connections and by
-  most large-scale APIs.
-* *Seek.* A hybrid in which the client passes the sort value of the last row
-  on the previous page (eg. `WHERE created_at < ? ORDER BY created_at DESC LIMIT ?`) rather than an opaque cursor. It achieves the stability of
-  keyset pagination while keeping the predicate inspectable.
+* *Cursor (keyset).* The client holds an opaque _cursor_ that encodes the position of the last item
+  on the current page, eg. the row's identifier or a hash of its sort key. The next request asks for
+  items _after_ that cursor. Because the cursor anchors to a value in the data rather than a
+  positional offset, the result set is stable under concurrent inserts and deletes. This is the
+  strategy favoured by xref:graphql.adoc[*GraphQL*] connections and by most large-scale APIs.
+* *Seek.* A hybrid in which the client passes the sort value of the last row on the previous page
+  (eg. `WHERE created_at < ? ORDER BY created_at DESC LIMIT ?`) rather than an opaque cursor. It
+  achieves the stability of keyset pagination while keeping the predicate inspectable.
 
 == Trade-offs
 
 Pagination is never free. Each strategy shifts cost somewhere.
 
-* *Offset is expensive on large datasets.* Skipping the first 100,000 rows
-  still requires the database to read and discard them, so deep pages degrade
-  roughly linearly with the offset. For collections that grow without bound,
-  cursor pagination is the better default.
-* *Offset is unstable under writes.* If a row is inserted before the current
-  offset between two requests, the next page shifts and an item is returned
-  twice or skipped. Cursor pagination over a monotonic sort key avoids this.
-* *Cursors cannot jump.* Because the cursor encodes a position in the data,
-  a client cannot ask for "page 47" without walking there. Interfaces that
-  require random access to pages, such as a numbered pager control, are a
-  better fit for offset pagination.
-* *Ordering must be total.* Cursor and seek pagination require a stable,
-  unique sort key. Sorting on a non-unique column without a tiebreaker makes
-  the boundary between pages ambiguous and can drop or duplicate rows.
-* *Total counts are costly.* Reporting the total number of items (`"total":
-  12345`) requires a separate count query, which on large or sharded datasets
-  can be as expensive as the page itself. Many APIs omit the total or return
-  only a `hasNextPage` flag.
+* *Offset is expensive on large datasets.* Skipping the first 100,000 rows still requires the
+  database to read and discard them, so deep pages degrade roughly linearly with the offset. For
+  collections that grow without bound, cursor pagination is the better default.
+* *Offset is unstable under writes.* If a row is inserted before the current offset between two
+  requests, the next page shifts and an item is returned twice or skipped. Cursor pagination over a
+  monotonic sort key avoids this.
+* *Cursors cannot jump.* Because the cursor encodes a position in the data, a client cannot ask for
+  "page 47" without walking there. Interfaces that require random access to pages, such as a
+  numbered pager control, are a better fit for offset pagination.
+* *Ordering must be total.* Cursor and seek pagination require a stable, unique sort key. Sorting on
+  a non-unique column without a tiebreaker makes the boundary between pages ambiguous and can drop
+  or duplicate rows.
+* *Total counts are costly.* Reporting the total number of items (`"total": 12345`) requires a
+  separate count query, which on large or sharded datasets can be as expensive as the page itself.
+  Many APIs omit the total or return only a `hasNextPage` flag.
 
 == Relationship to lazy loading
 
-Pagination is closely related to xref:lazy-loading.adoc[*lazy loading*]. Both
-defer work until it is needed, and both bound the cost of any single request.
-The distinction is granularity: lazy loading defers the materialisation of a
-single resource until it is accessed, while pagination splits a large
-collection into many smaller requests so that only the requested chunk is
-loaded. The two are often combined, eg. an infinite-scroll UI is a lazy
-loading of pages.
+Pagination is closely related to xref:lazy-loading.adoc[*lazy loading*]. Both defer work until it is
+needed, and both bound the cost of any single request. The distinction is granularity: lazy loading
+defers the materialisation of a single resource until it is accessed, while pagination splits a
+large collection into many smaller requests so that only the requested chunk is loaded. The two are
+often combined, eg. an infinite-scroll UI is a lazy loading of pages.
 
-Caching a page is the natural complement. The first request for a page pays
-the database cost; subsequent requests for the same page can be served from a
-xref:caching.adoc[*cache*], keyed by the page parameters. Cursor pages cache
-well because their results are stable, while offset pages are invalidated by
-any insert or delete that lands before their offset.
+Caching a page is the natural complement. The first request for a page pays the database cost;
+subsequent requests for the same page can be served from a xref:caching.adoc[*cache*], keyed by the
+page parameters. Cursor pages cache well because their results are stable, while offset pages are
+invalidated by any insert or delete that lands before their offset.
 
 == See also
 
@@ -111,4 +97,5 @@ any insert or delete that lands before their offset.
 == References
 
 * GeeksforGeeks (2026).
-  https://www.geeksforgeeks.org/blogs/pagination-design-pattern/[_Pagination Design Pattern_]. GeeksforGeeks.
+  https://www.geeksforgeeks.org/blogs/pagination-design-pattern/[_Pagination Design Pattern_].
+  GeeksforGeeks.

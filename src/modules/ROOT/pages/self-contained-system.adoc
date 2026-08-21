@@ -1,20 +1,17 @@
 = Self-contained system (SCS)
 
-A self-contained system is an
-xref:software-architecture.adoc[*software architecture*] in which a larger
-application is composed from several autonomous subsystems, each of which
-implements a vertical slice of functionality end to end. An SCS owns its own
-xref:domain-model.adoc[*domain model*], its own data storage, its own business
-logic, and its own front-end, so that it can serve a user-facing use case
-without depending on any other SCS at request time.
+A self-contained system is an xref:software-architecture.adoc[*software architecture*] in which a
+larger application is composed from several autonomous subsystems, each of which implements a
+vertical slice of functionality end to end. An SCS owns its own
+xref:domain-model.adoc[*domain model*], its own data storage, its own business logic, and its own
+front-end, so that it can serve a user-facing use case without depending on any other SCS at request
+time.
 
-The pattern is a close relative of
-xref:micro-frontend.adoc[*micro front-ends*]. Where micro front-ends describe
-how a single user interface is composed from fragments built by different
-teams, an SCS is the larger system-level unit that each of those teams owns:
-back-end, data, and front-end together. An SCS is also a particular form of
-xref:microservices.adoc[*microservice*], distinguished by the requirement that
-each service carries its own UI rather than leaving presentation to a shared
+The pattern is a close relative of xref:micro-frontend.adoc[*micro front-ends*]. Where micro
+front-ends describe how a single user interface is composed from fragments built by different teams,
+an SCS is the larger system-level unit that each of those teams owns: back-end, data, and front-end
+together. An SCS is also a particular form of xref:microservices.adoc[*microservice*], distinguished
+by the requirement that each service carries its own UI rather than leaving presentation to a shared
 front-end shell.
 
 == Characteristics
@@ -22,57 +19,49 @@ front-end shell.
 An SCS is defined by autonomy across the full technology stack.
 
 * *Vertical slice.* An SCS spans every layer of a
-  xref:vertical-slice-architecture.adoc[*vertical-slice architecture*], from the
-  user interface down to the database. A single SCS implements one set of
-  related use cases in full.
-* *Own data.* An SCS owns its data stores. No SCS reads or writes another SCS's
-  database directly. Where one SCS needs data held by another, it requests it
-  through that SCS's API or receives a copy via a
-  xref:decoupling.adoc[*decoupling*] mechanism such as
-  *event-carried state transfer*.
-* *Own front-end.* An SCS renders its own UI, chosen to suit its use case
-  rather than imposed by a shared shell. The overall user interface is
-  assembled by routing or by linking between SCSs, not by embedding one SCS's
-  logic into another's UI.
-* *Autonomy.* Each SCS is built, deployed, and operated by one team on its own
-  schedule. Following xref:conways-law.adoc[*Conway's law*], the boundary of an
-  SCS is meant to align with the boundary of the team that owns it.
-* *Loose coupling.* SCSs communicate preferentially through asynchronous
-  messaging and hypermedia links, rather than direct synchronous calls, so that
-  no SCS is a hard runtime dependency of another.
+  xref:vertical-slice-architecture.adoc[*vertical-slice architecture*], from the user interface down
+  to the database. A single SCS implements one set of related use cases in full.
+* *Own data.* An SCS owns its data stores. No SCS reads or writes another SCS's database directly.
+  Where one SCS needs data held by another, it requests it through that SCS's API or receives a copy
+  via a xref:decoupling.adoc[*decoupling*] mechanism such as *event-carried state transfer*.
+* *Own front-end.* An SCS renders its own UI, chosen to suit its use case rather than imposed by a
+  shared shell. The overall user interface is assembled by routing or by linking between SCSs, not
+  by embedding one SCS's logic into another's UI.
+* *Autonomy.* Each SCS is built, deployed, and operated by one team on its own schedule. Following
+  xref:conways-law.adoc[*Conway's law*], the boundary of an SCS is meant to align with the boundary
+  of the team that owns it.
+* *Loose coupling.* SCSs communicate preferentially through asynchronous messaging and hypermedia
+  links, rather than direct synchronous calls, so that no SCS is a hard runtime dependency of
+  another.
 
 == Relationship to other architectural styles
 
 The SCS pattern sits between
-xref:service-oriented-architecture.adoc[*service-oriented architecture*] and
-the finer-grained microservices style. SCSs are typically coarser than
-microservices. An SCS may bundle several microservices behind one
-domain-aligned boundary, provided the whole bundle is owned by one team and
+xref:service-oriented-architecture.adoc[*service-oriented architecture*] and the finer-grained
+microservices style. SCSs are typically coarser than microservices. An SCS may bundle several
+microservices behind one domain-aligned boundary, provided the whole bundle is owned by one team and
 presented through one front-end. The boundary is usually chosen to match a
 xref:bounded-context.adoc[*bounded context*] from
-xref:domain-driven-design.adoc[*domain-driven design*], so that an SCS holds a
-single, internally consistent domain model.
+xref:domain-driven-design.adoc[*domain-driven design*], so that an SCS holds a single, internally
+consistent domain model.
 
-Compared with a xref:monolith.adoc[*monolith*], an SCS-based system trades the
-simplicity of a single deployable for the autonomy of independently evolved
-subsystems. Compared with a generic microservices system, it accepts coarser
-service boundaries in exchange for end-to-end team ownership and a clearer
-mapping from feature to deployable unit.
+Compared with a xref:monolith.adoc[*monolith*], an SCS-based system trades the simplicity of a
+single deployable for the autonomy of independently evolved subsystems. Compared with a generic
+microservices system, it accepts coarser service boundaries in exchange for end-to-end team
+ownership and a clearer mapping from feature to deployable unit.
 
 == Trade-offs
 
-Because an SCS is a xref:distributed-system.adoc[*distributed system*] in
-miniature, it inherits the trade-offs of distributed software: higher
-operational complexity, network failure modes, and the cost of replicating data
-across boundaries. Owning a front-end per SCS also raises the cost of keeping
-the user experience consistent, since cross-cutting concerns such as
-navigation, styling, and authentication must be coordinated between SCSs rather
-than enforced by a shared codebase.
+Because an SCS is a xref:distributed-system.adoc[*distributed system*] in miniature, it inherits the
+trade-offs of distributed software: higher operational complexity, network failure modes, and the
+cost of replicating data across boundaries. Owning a front-end per SCS also raises the cost of
+keeping the user experience consistent, since cross-cutting concerns such as navigation, styling,
+and authentication must be coordinated between SCSs rather than enforced by a shared codebase.
 
-The pattern pays off when the organization is large enough that the autonomy
-per SCS outweighs the integration overhead. For smaller teams, a
-xref:modular-monolith.adoc[*modular monolith*] or a simpler microservices design
-without per-service UIs usually delivers the same benefits at lower cost.
+The pattern pays off when the organization is large enough that the autonomy per SCS outweighs the
+integration overhead. For smaller teams, a xref:modular-monolith.adoc[*modular monolith*] or a
+simpler microservices design without per-service UIs usually delivers the same benefits at lower
+cost.
 
 == See also
 
@@ -88,8 +77,7 @@ without per-service UIs usually delivers the same benefits at lower cost.
 
 == References
 
-* https://innoq.com/en/articles/2015/12/scs-self-contained-systems/[Self-contained Systems],
-  Volker Mayer and Stefan Tilkov, innoQ, 2015: the original articulation of the
-  SCS pattern.
+* https://innoq.com/en/articles/2015/12/scs-self-contained-systems/[Self-contained Systems], Volker
+  Mayer and Stefan Tilkov, innoQ, 2015: the original articulation of the SCS pattern.
 * _Self-contained system_.
   https://en.wikipedia.org/wiki/Self-contained_system_(software)[Wikipedia].

@@ -1,74 +1,64 @@
 = Floating point arithmetic
 
-*Floating point arithmetic* is the standard technique computers use to
-represent and compute with real numbers in a fixed number of bits. A
-floating-point number is stored as a sign, a significand of fixed precision,
-and an exponent, in the form `±d.dd...d × βᵉ`, where `β` is the base
-(almost always 2) and the exponent lets the same number of significant digits
-represent both very large and very small magnitudes. This is the "floating"
-point: unlike a fixed-point representation, the position of the radix point
-moves to track the exponent.
+*Floating point arithmetic* is the standard technique computers use to represent and compute with
+real numbers in a fixed number of bits. A floating-point number is stored as a sign, a significand
+of fixed precision, and an exponent, in the form `±d.dd...d × βᵉ`, where `β` is the base (almost
+always 2) and the exponent lets the same number of significant digits represent both very large and
+very small magnitudes. This is the "floating" point: unlike a fixed-point representation, the
+position of the radix point moves to track the exponent.
 
-The defining constraint is that infinitely many real numbers must be squeezed
-into a finite bit pattern. Most values, including simple decimals such as
-`0.1`, have no exact binary representation and must be rounded to the nearest
-representable value. Every arithmetic operation on floating-point numbers can
-therefore introduce a small *rounding error*, measured in *ulps* (units in the
-last place) or as a *relative error* expressed as a multiple of *machine epsilon* — the gap between 1.0 and the next representable value. These errors
-are individually tiny, but they compound. Subtracting two nearly equal
-floating-point numbers can trigger *catastrophic cancellation*, where the
-result retains almost none of the original precision, because the leading
-digits cancel and expose the accumulated rounding noise underneath. This is
-why comparing floating-point values for exact equality is unreliable, and why
-naive formulas, eg. the textbook quadratic formula, are routinely rearranged
-by numerical analysts to avoid subtracting near-equal quantities.
+The defining constraint is that infinitely many real numbers must be squeezed into a finite bit
+pattern. Most values, including simple decimals such as `0.1`, have no exact binary representation
+and must be rounded to the nearest representable value. Every arithmetic operation on floating-point
+numbers can therefore introduce a small *rounding error*, measured in *ulps* (units in the last
+place) or as a *relative error* expressed as a multiple of *machine epsilon* — the gap between 1.0
+and the next representable value. These errors are individually tiny, but they compound. Subtracting
+two nearly equal floating-point numbers can trigger *catastrophic cancellation*, where the result
+retains almost none of the original precision, because the leading digits cancel and expose the
+accumulated rounding noise underneath. This is why comparing floating-point values for exact
+equality is unreliable, and why naive formulas, eg. the textbook quadratic formula, are routinely
+rearranged by numerical analysts to avoid subtracting near-equal quantities.
 
 == IEEE 754
 
-The *IEEE 754 standard* defines the bit layouts, rounding rules, and special
-values that virtually all modern hardware and languages use, which is why
-floating-point results are portable across compliant platforms. It specifies
-formats including *single precision* (32 bits: 1 sign bit, 8 exponent bits, 23
-significand bits) and *double precision* (64 bits: 1 sign bit, 11 exponent
-bits, 52 significand bits), and requires that the basic operations (add,
-subtract, multiply, divide, square root) be computed exactly and then rounded
-to the nearest representable value, with ties broken by rounding to an even
-last digit to avoid systematic drift.
+The *IEEE 754 standard* defines the bit layouts, rounding rules, and special values that virtually
+all modern hardware and languages use, which is why floating-point results are portable across
+compliant platforms. It specifies formats including *single precision* (32 bits: 1 sign bit, 8
+exponent bits, 23 significand bits) and *double precision* (64 bits: 1 sign bit, 11 exponent bits,
+52 significand bits), and requires that the basic operations (add, subtract, multiply, divide,
+square root) be computed exactly and then rounded to the nearest representable value, with ties
+broken by rounding to an even last digit to avoid systematic drift.
 
-The standard also defines special values that let computation continue
-through conditions that would otherwise be undefined: signed infinities for
-overflow, a signed zero that preserves directional information for functions
-with branch cuts, and *NaN* ("not a number") for results such as `0/0` that
-have no meaningful value. Any operation involving a NaN propagates NaN rather
-than trapping, so xref:algorithms.adoc[*algorithms*] such as iterative
-root-finders can detect an invalid result after the fact instead of crashing
-mid-computation. Near zero, *denormalized numbers* allow magnitude to shrink
-gradually rather than jumping straight to zero, preserving the property that
-two distinct values never subtract to exactly zero.
+The standard also defines special values that let computation continue through conditions that would
+otherwise be undefined: signed infinities for overflow, a signed zero that preserves directional
+information for functions with branch cuts, and *NaN* ("not a number") for results such as `0/0`
+that have no meaningful value. Any operation involving a NaN propagates NaN rather than trapping, so
+xref:algorithms.adoc[*algorithms*] such as iterative root-finders can detect an invalid result after
+the fact instead of crashing mid-computation. Near zero, *denormalized numbers* allow magnitude to
+shrink gradually rather than jumping straight to zero, preserving the property that two distinct
+values never subtract to exactly zero.
 
 == Practical implications
 
-Floating point underpins numeric types in almost every programming language
-and data format; xref:json.adoc[*JSON*], for instance, has a single `number`
-type that does not distinguish integers from floating-point values, leaving
-the distinction to the consuming application. It is also central to
-performance-sensitive domains. xref:high-performance-computing.adoc[*High-performance computing*] systems are ranked in *floating-point operations per second (FLOPS)*, and processor instruction set architectures, such as
-xref:processor-architectures.adoc[*RISC-V*], define dedicated single- and
-double-precision floating-point extensions. Storage systems exploit the
-structure of floating-point bit patterns too; xref:time-series-databases.adoc[*time-series databases*] commonly use XOR-based encoding that stores only the bits that
-change between consecutive floating-point samples, since real-world
-measurements tend to vary little from one reading to the next.
+Floating point underpins numeric types in almost every programming language and data format;
+xref:json.adoc[*JSON*], for instance, has a single `number` type that does not distinguish integers
+from floating-point values, leaving the distinction to the consuming application. It is also central
+to performance-sensitive domains. xref:high-performance-computing.adoc[*High-performance computing*]
+systems are ranked in *floating-point operations per second (FLOPS)*, and processor instruction set
+architectures, such as xref:processor-architectures.adoc[*RISC-V*], define dedicated single- and
+double-precision floating-point extensions. Storage systems exploit the structure of floating-point
+bit patterns too; xref:time-series-databases.adoc[*time-series databases*] commonly use XOR-based
+encoding that stores only the bits that change between consecutive floating-point samples, since
+real-world measurements tend to vary little from one reading to the next.
 
-Because floating-point results depend on rounding, operation order, and
-platform-specific extended precision, programmers cannot treat floating-point
-arithmetic as if it obeyed the exact laws of real-number algebra. Addition is
-not strictly associative, and a sum computed in a different order can produce
-a different rounded result. Numerical code that must be reliable, eg.
-financial calculations or long-running simulations, either uses arbitrary
-precision or fixed-point decimal types instead, or is written with an
-understanding of error propagation and guard digits, the extra bits of
-precision an implementation carries during a subtraction to avoid needlessly
-discarding accuracy.
+Because floating-point results depend on rounding, operation order, and platform-specific extended
+precision, programmers cannot treat floating-point arithmetic as if it obeyed the exact laws of
+real-number algebra. Addition is not strictly associative, and a sum computed in a different order
+can produce a different rounded result. Numerical code that must be reliable, eg. financial
+calculations or long-running simulations, either uses arbitrary precision or fixed-point decimal
+types instead, or is written with an understanding of error propagation and guard digits, the extra
+bits of precision an implementation carries during a subtraction to avoid needlessly discarding
+accuracy.
 
 == See also
 
@@ -80,9 +70,8 @@ discarding accuracy.
 
 == References
 
-* Goldberg, D. (1991). _What Every Computer Scientist Should Know About
-  Floating-Point Arithmetic_. ACM Computing Surveys.
-  https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
+* Goldberg, D. (1991). _What Every Computer Scientist Should Know About Floating-Point Arithmetic_.
+  ACM Computing Surveys. https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
 
 * Evans, J. _Why does 0.1 + 0.2 = 0.30000000000000004?_
   https://jvns.ca/blog/2023/02/08/why-does-0-1-plus-0-2-equal-0-30000000000000004/

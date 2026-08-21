@@ -1,59 +1,51 @@
 = Access patterns
 
-A key consideration in xref:system-design.adoc[*system design*] is the access
-patterns of the data.
+A key consideration in xref:system-design.adoc[*system design*] is the access patterns of the data.
 
-Access patterns describe how data is read and written, and how it is queried.
-They capture the ratio of reads to writes, the shapes of the queries, the
-frequency with which particular records are touched, and the locality of those
-accesses over time. Systems may be read-heavy or write-heavy, or have a
-balanced mix of reads and writes. The access patterns of a system are
-influenced by its xref:domain.adoc[*domain*] and xref:requirements.adoc[*requirements*] such as
-xref:scalability.adoc[*scalability*], xref:availability.adoc[*availability*],
-and xref:consistency.adoc[*consistency*].
+Access patterns describe how data is read and written, and how it is queried. They capture the ratio
+of reads to writes, the shapes of the queries, the frequency with which particular records are
+touched, and the locality of those accesses over time. Systems may be read-heavy or write-heavy, or
+have a balanced mix of reads and writes. The access patterns of a system are influenced by its
+xref:domain.adoc[*domain*] and xref:requirements.adoc[*requirements*] such as
+xref:scalability.adoc[*scalability*], xref:availability.adoc[*availability*], and
+xref:consistency.adoc[*consistency*].
 
 Several dimensions characterize a system's access patterns.
 
-* *Read/write ratio.* Whether the workload is dominated by reads, writes, or a
-  balance of both.
-* *Query shape.* Point lookups by key, range scans over ordered data,
-  aggregations, or graph traversals.
-* *Access locality.* Whether requests concentrate on a small *working set* of
-  hot records or spread evenly across the data. A stable working set rewards
-  xref:caching.adoc[*caching*]. A large or shifting one pushes heat around the
-  dataset and demands more deliberate placement.
-* *Temporal patterns.* Bursts of traffic, diurnal cycles, or event-driven
-  spikes.
+* *Read/write ratio.* Whether the workload is dominated by reads, writes, or a balance of both.
+* *Query shape.* Point lookups by key, range scans over ordered data, aggregations, or graph
+  traversals.
+* *Access locality.* Whether requests concentrate on a small *working set* of hot records or spread
+  evenly across the data. A stable working set rewards xref:caching.adoc[*caching*]. A large or
+  shifting one pushes heat around the dataset and demands more deliberate placement.
+* *Temporal patterns.* Bursts of traffic, diurnal cycles, or event-driven spikes.
 
-Consider a social feed. One design reads each viewer's timeline on demand by
-joining the posts of everyone they follow. That is a read-heavy pattern with
-unpredictable query shapes, suited to a denormalized
-xref:materialized-view.adoc[*materialized view*]. An alternative writes each new
-post into every follower's inbox at posting time, trading a write-heavy
-fan-out for cheap point reads. Both implement the same feature, but their
-access patterns point at opposite storage and xref:data-modeling.adoc[*data modeling*] choices. The access pattern, not the feature, drives the design.
+Consider a social feed. One design reads each viewer's timeline on demand by joining the posts of
+everyone they follow. That is a read-heavy pattern with unpredictable query shapes, suited to a
+denormalized xref:materialized-view.adoc[*materialized view*]. An alternative writes each new post
+into every follower's inbox at posting time, trading a write-heavy fan-out for cheap point reads.
+Both implement the same feature, but their access patterns point at opposite storage and
+xref:data-modeling.adoc[*data modeling*] choices. The access pattern, not the feature, drives the
+design.
 
-These dimensions drive many downstream design decisions. A read-heavy workload
-favors xref:database-indexes.adoc[*indexes*], *caching*, and
-*materialized views* that accelerate reads at the cost of slower or more
-complex writes. A write-heavy workload favors append-only storage and
-xref:sharding.adoc[*sharding*] to distribute write load. Where read and write
-patterns diverge sharply, xref:cqrs.adoc[*command query responsibility segregation (CQRS)*] separates the read and write models so each can be
-optimized independently. The choice of data model and storage technology
-follows the same logic. xref:relational-databases.adoc[*Relational databases*]
-suit ad-hoc queries and complex joins, while xref:nosql-databases.adoc[*NoSQL databases*] are often selected for their fit to a specific, well-understood
-access pattern such as key-value lookup or xref:wide-column-stores.adoc[*wide-column reads*].
+These dimensions drive many downstream design decisions. A read-heavy workload favors
+xref:database-indexes.adoc[*indexes*], *caching*, and *materialized views* that accelerate reads at
+the cost of slower or more complex writes. A write-heavy workload favors append-only storage and
+xref:sharding.adoc[*sharding*] to distribute write load. Where read and write patterns diverge
+sharply, xref:cqrs.adoc[*command query responsibility segregation (CQRS)*] separates the read and
+write models so each can be optimized independently. The choice of data model and storage technology
+follows the same logic. xref:relational-databases.adoc[*Relational databases*] suit ad-hoc queries
+and complex joins, while xref:nosql-databases.adoc[*NoSQL databases*] are often selected for their
+fit to a specific, well-understood access pattern such as key-value lookup or
+xref:wide-column-stores.adoc[*wide-column reads*].
 
-Access patterns can have a significant influence on the
-xref:architecture-and-design.adoc[*design*] of a system, but the patterns may
-not be fully understood until the system is in production. Real workloads
-often reveal *hot spots*, uneven concentrations of traffic, that were not
-visible in design-time assumptions. A single popular key, such as a
-celebrity's profile or a viral item, can dominate load even when the rest of the
-data is cold. Optimizing for access patterns is therefore a constraint that may
-require iterative design. xref:load-testing.adoc[*Load testing*] and production
-xref:observability.adoc[*observability*] surface the true patterns so the
-design can be refined.
+Access patterns can have a significant influence on the xref:architecture-and-design.adoc[*design*]
+of a system, but the patterns may not be fully understood until the system is in production. Real
+workloads often reveal *hot spots*, uneven concentrations of traffic, that were not visible in
+design-time assumptions. A single popular key, such as a celebrity's profile or a viral item, can
+dominate load even when the rest of the data is cold. Optimizing for access patterns is therefore a
+constraint that may require iterative design. xref:load-testing.adoc[*Load testing*] and production
+xref:observability.adoc[*observability*] surface the true patterns so the design can be refined.
 
 == See also
 

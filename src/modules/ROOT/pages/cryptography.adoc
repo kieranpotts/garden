@@ -1,76 +1,66 @@
 = Cryptography
 
-Cryptography is the discipline of securing information and communication against
-adversaries. The name comes from the Greek _kryptós_ ("hidden") and _gráphein_
-("to write"), and it is one of the oldest applied sciences in
-xref:computer-science.adoc[*computer science*]. Its concern is not only keeping
-data secret, but also ensuring that data has not been altered, that parties are
-who they claim to be, and that actions cannot later be denied.
+Cryptography is the discipline of securing information and communication against adversaries. The
+name comes from the Greek _kryptós_ ("hidden") and _gráphein_ ("to write"), and it is one of the
+oldest applied sciences in xref:computer-science.adoc[*computer science*]. Its concern is not only
+keeping data secret, but also ensuring that data has not been altered, that parties are who they
+claim to be, and that actions cannot later be denied.
 
-Cryptography is a foundational technique within
-xref:security.adoc[*security*], but it is narrower than security as a whole.
-Security also covers operational and procedural controls — access policy,
-patching, and physical access — that cryptography cannot address. Conversely,
-cryptography supplies the mathematical primitives on which much of security is
-built.
+Cryptography is a foundational technique within xref:security.adoc[*security*], but it is narrower
+than security as a whole. Security also covers operational and procedural controls — access policy,
+patching, and physical access — that cryptography cannot address. Conversely, cryptography supplies
+the mathematical primitives on which much of security is built.
 
 == Core goals
 
-Cryptographic systems are designed to provide one or more of the following
-properties.
+Cryptographic systems are designed to provide one or more of the following properties.
 
-* *Confidentiality.* Only authorized parties can read the data. This is the
-  familiar goal of xref:encryption.adoc[*encryption*], which transforms
-  plaintext into ciphertext that is meaningless without a key.
-* *Integrity.* The data has not been modified in transit or at rest. Detecting
-  deliberate modification, as opposed to accidental corruption, requires
+* *Confidentiality.* Only authorized parties can read the data. This is the familiar goal of
+  xref:encryption.adoc[*encryption*], which transforms plaintext into ciphertext that is meaningless
+  without a key.
+* *Integrity.* The data has not been modified in transit or at rest. Detecting deliberate
+  modification, as opposed to accidental corruption, requires
   xref:hashing.adoc[*cryptographic hash functions*] rather than ordinary
   xref:checksum.adoc[*checksums*].
-* *Authenticity.* The origin of the data can be verified.
-  xref:authentication.adoc[*Authentication*] of users and systems leans heavily
-  on cryptographic mechanisms such as digital signatures and certificates.
-* *Non-repudiation.* The sender cannot later deny having sent the message.
-  Digital signatures provide this guarantee, because a signature can only have
-  been produced by the holder of the private key.
+* *Authenticity.* The origin of the data can be verified. xref:authentication.adoc[*Authentication*]
+  of users and systems leans heavily on cryptographic mechanisms such as digital signatures and
+  certificates.
+* *Non-repudiation.* The sender cannot later deny having sent the message. Digital signatures
+  provide this guarantee, because a signature can only have been produced by the holder of the
+  private key.
 
 == Primitives
 
-Cryptography is built from a small set of primitives, each addressing a
-different goal. Systems compose these primitives rather than inventing new
-ones.
+Cryptography is built from a small set of primitives, each addressing a different goal. Systems
+compose these primitives rather than inventing new ones.
 
-* *Symmetric encryption.* A single secret key both encrypts and decrypts. It is
-  fast and suited to bulk data, but the parties must already share the key.
-* *Public-key (asymmetric) encryption.* Each party holds a key pair: a private
-  key kept secret and a public key shared openly. What one key encrypts, the
-  other decrypts. This removes the need to share a secret in advance and
-  underpins digital signatures and certificate-based
+* *Symmetric encryption.* A single secret key both encrypts and decrypts. It is fast and suited to
+  bulk data, but the parties must already share the key.
+* *Public-key (asymmetric) encryption.* Each party holds a key pair: a private key kept secret and a
+  public key shared openly. What one key encrypts, the other decrypts. This removes the need to
+  share a secret in advance and underpins digital signatures and certificate-based
   xref:authentication.adoc[*authentication*].
-* *Cryptographic hash functions.* One-way functions that produce a fixed-size
-  digest of any input. They are the basis of tamper detection,
-  xref:checksum.adoc[*checksums*], and password storage with
+* *Cryptographic hash functions.* One-way functions that produce a fixed-size digest of any input.
+  They are the basis of tamper detection, xref:checksum.adoc[*checksums*], and password storage with
   xref:salt.adoc[*salt*].
-* *Message authentication codes (MACs).* A hash keyed with a secret that proves
-  both integrity and authenticity in a single value.
-* *Digital signatures.* The public-key analogue of a MAC. The signer hashes the
-  message and encrypts the digest with their private key; anyone with the
-  public key can verify it.
-* *Key exchange.* Protocols that let two parties establish a shared secret over
-  an insecure channel, eg. Diffie-Hellman.
+* *Message authentication codes (MACs).* A hash keyed with a secret that proves both integrity and
+  authenticity in a single value.
+* *Digital signatures.* The public-key analogue of a MAC. The signer hashes the message and encrypts
+  the digest with their private key; anyone with the public key can verify it.
+* *Key exchange.* Protocols that let two parties establish a shared secret over an insecure channel,
+  eg. Diffie-Hellman.
 
-Most real systems combine several primitives.
-xref:envelope-encryption.adoc[*Envelope encryption*], for example, uses a
-symmetric data key for the payload and an asymmetric key-encryption key to
-protect the data key. Protecting against xref:replay-attack.adoc[*replay attacks*] typically adds a xref:nonce.adoc[*nonce*] to each message so that
-intercepted traffic cannot be retransmitted.
+Most real systems combine several primitives. xref:envelope-encryption.adoc[*Envelope encryption*],
+for example, uses a symmetric data key for the payload and an asymmetric key-encryption key to
+protect the data key. Protecting against xref:replay-attack.adoc[*replay attacks*] typically adds a
+xref:nonce.adoc[*nonce*] to each message so that intercepted traffic cannot be retransmitted.
 
 == Cryptography versus encryption
 
-The two terms are often used interchangeably, but they name different things.
-Cryptography is the discipline. xref:encryption.adoc[*Encryption*] is one
-technique within it — the transformation of plaintext to ciphertext for
-confidentiality. Hashing, signatures, and key exchange are also cryptography,
-but they are not encryption.
+The two terms are often used interchangeably, but they name different things. Cryptography is the
+discipline. xref:encryption.adoc[*Encryption*] is one technique within it — the transformation of
+plaintext to ciphertext for confidentiality. Hashing, signatures, and key exchange are also
+cryptography, but they are not encryption.
 
 == See also
 

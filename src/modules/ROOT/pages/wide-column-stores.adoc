@@ -1,159 +1,137 @@
 = Wide-column stores
 
-A *wide-column store* is a class of xref:nosql-databases.adoc[*NoSQL database*]
-that organizes data into tables of rows and columns, but groups columns into
-*column families* rather than the fixed, uniform schema of a
-xref:relational-databases.adoc[*relational database*]. Each row is identified
-by a row key, and within a row the columns that belong to a family are stored
-together. The model was introduced by Google's *Bigtable* paper in 2006, which
-described a system for storing petabytes of loosely structured data across
-commodity clusters. That paper directly shaped the open-source systems that
-followed, most notably Apache HBase and Apache Cassandra.
+A *wide-column store* is a class of xref:nosql-databases.adoc[*NoSQL database*] that organizes data
+into tables of rows and columns, but groups columns into *column families* rather than the fixed,
+uniform schema of a xref:relational-databases.adoc[*relational database*]. Each row is identified by
+a row key, and within a row the columns that belong to a family are stored together. The model was
+introduced by Google's *Bigtable* paper in 2006, which described a system for storing petabytes of
+loosely structured data across commodity clusters. That paper directly shaped the open-source
+systems that followed, most notably Apache HBase and Apache Cassandra.
 
-The name reflects two properties. Rows can be *wide* — a single row may carry
-millions of columns — and the column set is *sparse*, meaning most rows
-populate only a small subset of the available columns. Storage is allocated
-only for cells that contain data, so a row that uses two of a thousand possible
-columns costs no more than a two-column row.
+The name reflects two properties. Rows can be *wide* — a single row may carry millions of columns —
+and the column set is *sparse*, meaning most rows populate only a small subset of the available
+columns. Storage is allocated only for cells that contain data, so a row that uses two of a thousand
+possible columns costs no more than a two-column row.
 
 == The data model
 
 A wide-column table has four levels.
 
 * *Row key.* A unique identifier for a row, like the key in a
-  xref:key-value-stores.adoc[*key-value store*]. Rows are sorted by key, and the
-  sort order is the basis for range scans.
-* *Column family.* A named group of columns, defined when the table is created.
-  A family is the unit of storage and access control: the columns in a family
-  are kept together on disk, which makes reading a whole family cheap.
-* *Column qualifier.* The individual column within a family. Unlike the family,
-  qualifiers are created on write. An application can introduce a new column at
-  any time without a schema migration.
-* *Cell.* The value at the intersection of a row, column family, column
-  qualifier, and (usually) a timestamp. Most wide-column stores version cells,
-  keeping several revisions ordered by timestamp so that the latest value, or a
-  historical one, can be read.
+  xref:key-value-stores.adoc[*key-value store*]. Rows are sorted by key, and the sort order is the
+  basis for range scans.
+* *Column family.* A named group of columns, defined when the table is created. A family is the unit
+  of storage and access control: the columns in a family are kept together on disk, which makes
+  reading a whole family cheap.
+* *Column qualifier.* The individual column within a family. Unlike the family, qualifiers are
+  created on write. An application can introduce a new column at any time without a schema
+  migration.
+* *Cell.* The value at the intersection of a row, column family, column qualifier, and (usually) a
+  timestamp. Most wide-column stores version cells, keeping several revisions ordered by timestamp
+  so that the latest value, or a historical one, can be read.
 
-Because the schema is fixed only at the family level and free at the qualifier
-level, the model combines a rigid, queryable structure with the *schema-on-read*
-flexibility shared with other NoSQL families. Column families are designed up
-front to match the dominant xref:access-patterns.adoc[*access patterns*], while
-the column qualifiers inside them can drift per row.
+Because the schema is fixed only at the family level and free at the qualifier level, the model
+combines a rigid, queryable structure with the *schema-on-read* flexibility shared with other NoSQL
+families. Column families are designed up front to match the dominant
+xref:access-patterns.adoc[*access patterns*], while the column qualifiers inside them can drift per
+row.
 
 == Wide-column versus columnar
 
-The name invites confusion with *columnar* databases, the column-oriented
-stores used for xref:analytical-databases.adoc[*analytical*] workloads. The two
-are unrelated. A columnar database stores each column separately so that an
-aggregation can scan one column across many rows without touching the others.
-Its strength is OLAP over wide tables. A wide-column store keeps the columns of
-a family together within a row, so the row remains the unit of access. Its
-strength is operational point and range reads over very wide, sparse data.
-Bigtable-style systems are NoSQL operational stores, not analytics engines.
+The name invites confusion with *columnar* databases, the column-oriented stores used for
+xref:analytical-databases.adoc[*analytical*] workloads. The two are unrelated. A columnar database
+stores each column separately so that an aggregation can scan one column across many rows without
+touching the others. Its strength is OLAP over wide tables. A wide-column store keeps the columns of
+a family together within a row, so the row remains the unit of access. Its strength is operational
+point and range reads over very wide, sparse data. Bigtable-style systems are NoSQL operational
+stores, not analytics engines.
 
 == Querying and access patterns
 
-The primary access path is the row key. A point lookup fetches one row, and a
-range scan fetches a contiguous slice of rows by key. Reads and writes are
-keyed, and the row-key design is the central
-xref:data-modeling.adoc[*data modeling*] decision, just as the key is in a
-key-value store. A key that matches the query pattern keeps every read a single
-lookup, while a key that buries the lookup dimension forces a scan or a
-secondary index.
+The primary access path is the row key. A point lookup fetches one row, and a range scan fetches a
+contiguous slice of rows by key. Reads and writes are keyed, and the row-key design is the central
+xref:data-modeling.adoc[*data modeling*] decision, just as the key is in a key-value store. A key
+that matches the query pattern keeps every read a single lookup, while a key that buries the lookup
+dimension forces a scan or a secondary index.
 
-Secondary xref:database-indexes.adoc[*indexes*] are limited and often an
-afterthought. HBase has none beyond the row-key order and relies on
-application-maintained indexes. Cassandra adds secondary indexes and a SQL-like
-query language (CQL), but they are weaker than a relational optimizer and suit
-known, bounded queries rather than ad-hoc joins. Where richer queries are
-needed, the common pattern is to denormalize — writing the same data under
-multiple row keys, one per query — so each query is again a keyed read. This is
-xref:denormalization.adoc[*denormalization*] applied to the storage model,
-shaped by access patterns rather than by an ideal of non-redundancy.
+Secondary xref:database-indexes.adoc[*indexes*] are limited and often an afterthought. HBase has
+none beyond the row-key order and relies on application-maintained indexes. Cassandra adds secondary
+indexes and a SQL-like query language (CQL), but they are weaker than a relational optimizer and
+suit known, bounded queries rather than ad-hoc joins. Where richer queries are needed, the common
+pattern is to denormalize — writing the same data under multiple row keys, one per query — so each
+query is again a keyed read. This is xref:denormalization.adoc[*denormalization*] applied to the
+storage model, shaped by access patterns rather than by an ideal of non-redundancy.
 
 == Consistency and transactions
 
-Most wide-column stores guarantee atomicity only on a single row. A read or
-write of one row is all-or-nothing, a thin slice of the
-xref:acid-principles.adoc[*ACID*] guarantees a relational database offers, and
-cross-row transactions are generally not supported.
+Most wide-column stores guarantee atomicity only on a single row. A read or write of one row is
+all-or-nothing, a thin slice of the xref:acid-principles.adoc[*ACID*] guarantees a relational
+database offers, and cross-row transactions are generally not supported.
 
-The systems diverge on the xref:cap-theorem.adoc[*CAP theorem*] trade-off. HBase
-is *CP*. It favors strong consistency, serving every read from a single
-authoritative replica per region and blocking while that replica is
-unavailable. Cassandra is *AP*. It favors availability, replicating writes to
-several nodes and offering xref:eventual-consistency.adoc[*eventual consistency*]
-by default, with a tunable consistency level per request. The
-xref:pacelc-theorem.adoc[*PACELC theorem*] describes the further latency
-trade-off each makes when the network is healthy.
+The systems diverge on the xref:cap-theorem.adoc[*CAP theorem*] trade-off. HBase is *CP*. It favors
+strong consistency, serving every read from a single authoritative replica per region and blocking
+while that replica is unavailable. Cassandra is *AP*. It favors availability, replicating writes to
+several nodes and offering xref:eventual-consistency.adoc[*eventual consistency*] by default, with a
+tunable consistency level per request. The xref:pacelc-theorem.adoc[*PACELC theorem*] describes the
+further latency trade-off each makes when the network is healthy.
 
 == Scaling and distribution
 
-Wide-column stores are built to run as
-xref:distributed-databases.adoc[*distributed databases*]. Data is
-xref:sharding.adoc[*sharded*] across nodes by row key, either by contiguous key
-ranges — HBase's region servers, Bigtable's tablets — or by
-xref:consistent-hashing.adoc[*consistent hashing*], as in Cassandra, so that
-adding or removing a node moves only a small slice of data.
-xref:replication.adoc[*Replication*] places copies on several nodes for
-xref:durability.adoc[*durability*] and fault tolerance. This
-xref:horizontal-scaling.adoc[*horizontal scaling*] is the model's reason for
-existing. It was designed from the first for datasets and throughputs that
-exceed a single machine.
+Wide-column stores are built to run as xref:distributed-databases.adoc[*distributed databases*].
+Data is xref:sharding.adoc[*sharded*] across nodes by row key, either by contiguous key ranges —
+HBase's region servers, Bigtable's tablets — or by
+xref:consistent-hashing.adoc[*consistent hashing*], as in Cassandra, so that adding or removing a
+node moves only a small slice of data. xref:replication.adoc[*Replication*] places copies on several
+nodes for xref:durability.adoc[*durability*] and fault tolerance. This
+xref:horizontal-scaling.adoc[*horizontal scaling*] is the model's reason for existing. It was
+designed from the first for datasets and throughputs that exceed a single machine.
 
-Storage is typically a log-structured merge tree (LSM-tree). Writes are appended
-to an in-memory structure and a write-ahead log, then flushed to immutable,
-sorted on-disk files (SSTables) and compacted over time. This makes writes fast
-and sequential, at the cost of read amplification that is mitigated with
-xref:bloom-filter.adoc[*bloom filters*] and in-memory caches. It is the same
-engine family that underpins many key-value stores, which is why wide-column
-stores are sometimes described as key-value stores extended with column
-families.
+Storage is typically a log-structured merge tree (LSM-tree). Writes are appended to an in-memory
+structure and a write-ahead log, then flushed to immutable, sorted on-disk files (SSTables) and
+compacted over time. This makes writes fast and sequential, at the cost of read amplification that
+is mitigated with xref:bloom-filter.adoc[*bloom filters*] and in-memory caches. It is the same
+engine family that underpins many key-value stores, which is why wide-column stores are sometimes
+described as key-value stores extended with column families.
 
 == Relation to other NoSQL families
 
-Among NoSQL databases, wide-column stores sit between the simplest and the most
-expressive models.
+Among NoSQL databases, wide-column stores sit between the simplest and the most expressive models.
 
-xref:key-value-stores.adoc[*Key-value stores*] treat the value as an opaque blob
-and address it only by key. A wide-column store keeps the key-addressed
-foundation but makes the value's columns visible and queryable through
-families. xref:document-oriented-databases.adoc[*Document stores*] keep a
-similar nested shape but model it as a single self-contained document per key,
-where a wide-column store spreads the shape across column families optimized
-for wide, sparse rows. xref:graph-databases.adoc[*Graph databases*] abandon the
-key-addressed model entirely to make relationships first-class. Each step along
-the spectrum trades the key-value store's lean access path for more expressive
-power.
+xref:key-value-stores.adoc[*Key-value stores*] treat the value as an opaque blob and address it only
+by key. A wide-column store keeps the key-addressed foundation but makes the value's columns visible
+and queryable through families. xref:document-oriented-databases.adoc[*Document stores*] keep a
+similar nested shape but model it as a single self-contained document per key, where a wide-column
+store spreads the shape across column families optimized for wide, sparse rows.
+xref:graph-databases.adoc[*Graph databases*] abandon the key-addressed model entirely to make
+relationships first-class. Each step along the spectrum trades the key-value store's lean access
+path for more expressive power.
 
 == Use cases
 
-The combination of wide, sparse rows, keyed access, and horizontal scale suits
-a focused set of workloads.
+The combination of wide, sparse rows, keyed access, and horizontal scale suits a focused set of
+workloads.
 
-* *Time-series and IoT.* Sensor readings and metrics are naturally keyed by
-  entity and timestamp, written at high volume, and read by recent time range.
-  The model overlaps with xref:time-series-databases.adoc[*time-series databases*]
-  and is a common backing store for them.
-* *Activity feeds and messaging.* Per-user timelines are wide, sparse, and
-  append-heavy.
-* xref:big-data.adoc[*Big data*] storage. Wide-column stores are common backing
-  stores for xref:map-reduce.adoc[*MapReduce*]-style processing, holding the raw
-  data that batch jobs aggregate.
+* *Time-series and IoT.* Sensor readings and metrics are naturally keyed by entity and timestamp,
+  written at high volume, and read by recent time range. The model overlaps with
+  xref:time-series-databases.adoc[*time-series databases*] and is a common backing store for them.
+* *Activity feeds and messaging.* Per-user timelines are wide, sparse, and append-heavy.
+* xref:big-data.adoc[*Big data*] storage. Wide-column stores are common backing stores for
+  xref:map-reduce.adoc[*MapReduce*]-style processing, holding the raw data that batch jobs
+  aggregate.
 
 == Examples
 
-* *Google Bigtable.* The system that defined the model, described in the 2006
-  paper, and the basis for the open-source clones.
-* *Apache HBase.* An open-source Bigtable clone built on the Hadoop distributed
-  file system (HDFS), offering strong consistency per row.
-* *Apache Cassandra.* A distributed store that blends the Bigtable column-family
-  model with Amazon Dynamo's consistent hashing and eventual consistency,
-  emphasizing availability and write throughput.
-* *ScyllaDB.* A Cassandra-compatible store rewritten in C++ for lower latency
-  and better resource efficiency.
-* *Apache Accumulo.* A Bigtable-derived store from the US National Security
-  Agency, adding cell-level security labels.
+* *Google Bigtable.* The system that defined the model, described in the 2006 paper, and the basis
+  for the open-source clones.
+* *Apache HBase.* An open-source Bigtable clone built on the Hadoop distributed file system (HDFS),
+  offering strong consistency per row.
+* *Apache Cassandra.* A distributed store that blends the Bigtable column-family model with Amazon
+  Dynamo's consistent hashing and eventual consistency, emphasizing availability and write
+  throughput.
+* *ScyllaDB.* A Cassandra-compatible store rewritten in C++ for lower latency and better resource
+  efficiency.
+* *Apache Accumulo.* A Bigtable-derived store from the US National Security Agency, adding
+  cell-level security labels.
 
 == See also
 
@@ -185,5 +163,8 @@ a focused set of workloads.
 
 == References
 
-* Fay Chang et al. (2006). link:https://research.google.com/archive/bigtable.html[_Bigtable: A Distributed Storage System for Structured Data_]. OSDI '06.
-* Martin Kleppmann (2017). link:https://www.dataintensive.net/[_Designing Data-Intensive Applications_]. O'Reilly.
+* Fay Chang et al. (2006).
+  link:https://research.google.com/archive/bigtable.html[_Bigtable: A Distributed Storage System for Structured Data_].
+  OSDI '06.
+* Martin Kleppmann (2017).
+  link:https://www.dataintensive.net/[_Designing Data-Intensive Applications_]. O'Reilly.

@@ -1,89 +1,78 @@
 = Dependency inversion
 
 Dependency inversion is a xref:design-principles.adoc[*design principle*] of
-xref:object-oriented-programming.adoc[*object-oriented programming*]. It is the
-D in xref:solid.adoc[*SOLID*], the family of principles popularized by Robert
-C. Martin, and it governs the direction of dependencies between modules. The
-principle has two clauses.
+xref:object-oriented-programming.adoc[*object-oriented programming*]. It is the D in
+xref:solid.adoc[*SOLID*], the family of principles popularized by Robert C. Martin, and it governs
+the direction of dependencies between modules. The principle has two clauses.
 
-* High-level modules should not depend on low-level modules. Both should depend
-  on xref:abstraction.adoc[*abstractions*].
-* Abstractions should not depend on details. Details should depend on
-  abstractions.
+* High-level modules should not depend on low-level modules. Both should depend on
+  xref:abstraction.adoc[*abstractions*].
+* Abstractions should not depend on details. Details should depend on abstractions.
 
-In a conventional layered design, a high-level module that encodes business
-policy depends on the low-level modules that implement mechanisms such as data
-access, messaging, or calls to external services. The dependency direction
-follows the call direction. When a low-level module changes, the high-level
-module that depends on it must change too, even though the policy it expresses
-has not. Policy is held hostage to mechanism.
+In a conventional layered design, a high-level module that encodes business policy depends on the
+low-level modules that implement mechanisms such as data access, messaging, or calls to external
+services. The dependency direction follows the call direction. When a low-level module changes, the
+high-level module that depends on it must change too, even though the policy it expresses has not.
+Policy is held hostage to mechanism.
 
-Dependency inversion reverses this. The high-level module defines an abstraction
-– typically an xref:interfaces.adoc[*interface*] – that describes the capability
-it needs, and both the high-level module and the low-level implementation depend
-on that abstraction. The low-level module now depends on the abstraction that the
-high-level module owns. The single arrow from policy to mechanism is replaced by
-two arrows pointing toward the abstraction, which is what "inversion" names.
+Dependency inversion reverses this. The high-level module defines an abstraction – typically an
+xref:interfaces.adoc[*interface*] – that describes the capability it needs, and both the high-level
+module and the low-level implementation depend on that abstraction. The low-level module now depends
+on the abstraction that the high-level module owns. The single arrow from policy to mechanism is
+replaced by two arrows pointing toward the abstraction, which is what "inversion" names.
 
-A typical consequence is that the high-level module no longer mentions any
-concrete low-level type. Some other agent supplies a concrete implementation
-at the seam – a constructor, a xref:factory.adoc[*factory*], or an
-xref:dependency-injection.adoc[*dependency injection*] container. The high-level
-code continues to work because of xref:polymorphism.adoc[*polymorphism*]: every
-low-level implementation satisfies the shared interface, so the call dispatches
-to whichever one is supplied. This is why dependency injection is the technique
-most often used to put the principle into practice, and why the principle is
-itself one form of xref:inversion-of-control.adoc[*inversion of control*].
+A typical consequence is that the high-level module no longer mentions any concrete low-level type.
+Some other agent supplies a concrete implementation at the seam – a constructor, a
+xref:factory.adoc[*factory*], or an xref:dependency-injection.adoc[*dependency injection*]
+container. The high-level code continues to work because of xref:polymorphism.adoc[*polymorphism*]:
+every low-level implementation satisfies the shared interface, so the call dispatches to whichever
+one is supplied. This is why dependency injection is the technique most often used to put the
+principle into practice, and why the principle is itself one form of
+xref:inversion-of-control.adoc[*inversion of control*].
 
 == Why it matters
 
-The payoff is that high-level policy becomes independent of the volatility of
-low-level detail. A change to a database driver, a third-party API, or a message
-transport touches only the implementation behind the abstraction. The policy
-module, its tests, and every other module that depends on the same abstraction
-are untouched. The principle thus protects the parts of the system that change
-least – the business rules – from the parts that change most, the
-infrastructure.
+The payoff is that high-level policy becomes independent of the volatility of low-level detail. A
+change to a database driver, a third-party API, or a message transport touches only the
+implementation behind the abstraction. The policy module, its tests, and every other module that
+depends on the same abstraction are untouched. The principle thus protects the parts of the system
+that change least – the business rules – from the parts that change most, the infrastructure.
 
-It also makes the high-level module testable in isolation. Because it depends
-only on an abstraction, a xref:unit-testing.adoc[*unit test*] can substitute a
-stand-in for the real collaborator, keeping the test fast and free of external
-dependencies.
+It also makes the high-level module testable in isolation. Because it depends only on an
+abstraction, a xref:unit-testing.adoc[*unit test*] can substitute a stand-in for the real
+collaborator, keeping the test fast and free of external dependencies.
 
 == Where it appears
 
-The principle is the structural rule behind several architectural styles that
-keep business logic at the center and push infrastructure to the edges. The
+The principle is the structural rule behind several architectural styles that keep business logic at
+the center and push infrastructure to the edges. The
 xref:hexagonal-architecture.adoc[*hexagonal architecture*],
 xref:onion-architecture.adoc[*onion architecture*], and
-xref:clean-architecture.adoc[*clean architecture*] each express the same
-dependency rule. Dependencies point inward, toward the domain, and outward-
-facing layers depend on inner abstractions rather than the reverse. At the
-pattern level, the xref:adapter-pattern.adoc[*adapter pattern*] and the
-xref:strategy-pattern.adoc[*strategy pattern*] are both applications of
-dependency inversion, since each lets a client depend on an abstraction while
-concrete implementations vary behind it. The xref:publish-subscribe-pattern.adoc[*publish-subscribe pattern*] is another: publishers and subscribers both
-depend on the message abstraction rather than on each other.
+xref:clean-architecture.adoc[*clean architecture*] each express the same dependency rule.
+Dependencies point inward, toward the domain, and outward- facing layers depend on inner
+abstractions rather than the reverse. At the pattern level, the
+xref:adapter-pattern.adoc[*adapter pattern*] and the xref:strategy-pattern.adoc[*strategy pattern*]
+are both applications of dependency inversion, since each lets a client depend on an abstraction
+while concrete implementations vary behind it. The
+xref:publish-subscribe-pattern.adoc[*publish-subscribe pattern*] is another: publishers and
+subscribers both depend on the message abstraction rather than on each other.
 
 == Trade-offs
 
-Dependency inversion trades directness for flexibility. Every inverted
-dependency adds an abstraction and a seam, which is indirection a reader must
-follow. In a small or stable system the abstraction may never pay for itself,
-and a dependency that never varies is better left concrete until it does. See
-xref:yagni.adoc[*YAGNI*].
+Dependency inversion trades directness for flexibility. Every inverted dependency adds an
+abstraction and a seam, which is indirection a reader must follow. In a small or stable system the
+abstraction may never pay for itself, and a dependency that never varies is better left concrete
+until it does. See xref:yagni.adoc[*YAGNI*].
 
-The principle also depends on the abstraction being honest. If the interface
-leaks the concerns of a particular implementation – a method shaped to fit one
-database vendor, an error type that exposes a transport detail – then the
-high-level module is coupled to the low-level detail through the abstraction
-itself, and the inversion is only nominal. See
+The principle also depends on the abstraction being honest. If the interface leaks the concerns of a
+particular implementation – a method shaped to fit one database vendor, an error type that exposes a
+transport detail – then the high-level module is coupled to the low-level detail through the
+abstraction itself, and the inversion is only nominal. See
 xref:leaky-abstractions.adoc[*leaky abstractions*].
 
-A related pitfall is inverting dependencies prematurely. Introducing an
-interface for every collaboration, ahead of any second implementation,
-produces empty abstractions that multiply without earning their keep. The
-principle is best applied where a dependency is genuinely volatile or where
+A related pitfall is inverting dependencies prematurely. Introducing an interface for every
+collaboration, ahead of any second implementation, produces empty abstractions that multiply without
+earning their keep. The principle is best applied where a dependency is genuinely volatile or where
 testability demands a seam, not as a blanket rule over every collaboration.
 
 == See also
@@ -105,5 +94,5 @@ testability demands a seam, not as a blanket rule over every collaboration.
 == References
 
 * Martin, Robert C. (1996). _The Dependency Inversion Principle_. C++ Report.
-* Martin, Robert C. (2002). _Agile Software Development, Principles, Patterns,
-  and Practices_. Pearson.
+* Martin, Robert C. (2002). _Agile Software Development, Principles, Patterns, and Practices_.
+  Pearson.

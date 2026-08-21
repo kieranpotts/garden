@@ -1,104 +1,94 @@
 = Proxy server
 
-A proxy server is an intermediary that sits between a client and the servers it
-wants to reach, forwarding requests and responses on the client's behalf. It has
-its own IP address: when a client makes a request through the proxy, the
-destination sees only the proxy's address, not the client's. This makes a proxy
-both a control point – where traffic can be inspected, filtered, logged, or
+A proxy server is an intermediary that sits between a client and the servers it wants to reach,
+forwarding requests and responses on the client's behalf. It has its own IP address: when a client
+makes a request through the proxy, the destination sees only the proxy's address, not the client's.
+This makes a proxy both a control point – where traffic can be inspected, filtered, logged, or
 shaped – and a privacy boundary that hides the originating client.
 
-"Proxy server" most commonly refers to a *forward proxy*, which acts on behalf of
-clients reaching out to the internet. The complementary form is the
-xref:reverse-proxy.adoc[*reverse proxy*], which acts on behalf of servers
-receiving inbound requests. This entry covers forward proxies; the reverse form
-has its own page.
+"Proxy server" most commonly refers to a *forward proxy*, which acts on behalf of clients reaching
+out to the internet. The complementary form is the xref:reverse-proxy.adoc[*reverse proxy*], which
+acts on behalf of servers receiving inbound requests. This entry covers forward proxies; the reverse
+form has its own page.
 
 == How a forward proxy works
 
-When a client is configured to use a forward proxy, outgoing requests are sent
-to the proxy instead of to the destination server. The proxy evaluates each
-request against its rules – it may forward it, block it, or serve a cached copy
-– then opens a connection to the target server on the client's behalf. The
-target server sees the request as coming from the proxy, and the response is
-relayed back through the proxy to the client.
+When a client is configured to use a forward proxy, outgoing requests are sent to the proxy instead
+of to the destination server. The proxy evaluates each request against its rules – it may forward
+it, block it, or serve a cached copy – then opens a connection to the target server on the client's
+behalf. The target server sees the request as coming from the proxy, and the response is relayed
+back through the proxy to the client.
 
-Because the proxy terminates one connection from the client and opens another
-to the server, it operates at Layer 7 of the xref:osi-model.adoc[*OSI model*]
-and can inspect the full content of each request, not just the packet headers.
-This is what makes content filtering, URL rewriting, and protocol-aware caching
-possible.
+Because the proxy terminates one connection from the client and opens another to the server, it
+operates at Layer 7 of the xref:osi-model.adoc[*OSI model*] and can inspect the full content of each
+request, not just the packet headers. This is what makes content filtering, URL rewriting, and
+protocol-aware caching possible.
 
 == Common uses
 
-Forward proxies are deployed for a mix of control, privacy, and performance
-reasons.
+Forward proxies are deployed for a mix of control, privacy, and performance reasons.
 
-* *Access control and content filtering.* Organizations route employee web
-  traffic through a proxy to enforce acceptable-use policies, block categories
-  of sites, and log activity. The proxy applies the same rules to every request
-  regardless of which device or browser the user is on.
+* *Access control and content filtering.* Organizations route employee web traffic through a proxy
+  to enforce acceptable-use policies, block categories of sites, and log activity. The proxy applies
+  the same rules to every request regardless of which device or browser the user is on.
 
-* *Privacy and anonymity.* By substituting its own IP address for the client's,
-  a proxy prevents the destination from identifying or geolocating the
-  originating user. Anonymous and high-anonymity variants go further, stripping
-  or spoofing identifying headers such as `X-Forwarded-For`.
+* *Privacy and anonymity.* By substituting its own IP address for the client's, a proxy prevents the
+  destination from identifying or geolocating the originating user. Anonymous and high-anonymity
+  variants go further, stripping or spoofing identifying headers such as `X-Forwarded-For`.
 
-* *Geo-spoofing.* Pointing a proxy at an IP address registered in another
-  region makes the request appear to originate there, which is how users reach
-  location-restricted content such as regional streaming catalogs.
+* *Geo-spoofing.* Pointing a proxy at an IP address registered in another region makes the request
+  appear to originate there, which is how users reach location-restricted content such as regional
+  streaming catalogs.
 
-* *Caching.* A proxy can store copies of frequently requested pages and serve
-  them directly, lowering bandwidth and latency for subsequent requests. This
-  is the same xref:caching.adoc[*caching*] principle applied at the network
-  egress; a xref:content-delivery-networks.adoc[*content delivery network (CDN)*] applies it at the ingress side instead.
+* *Caching.* A proxy can store copies of frequently requested pages and serve them directly,
+  lowering bandwidth and latency for subsequent requests. This is the same
+  xref:caching.adoc[*caching*] principle applied at the network egress; a
+  xref:content-delivery-networks.adoc[*content delivery network (CDN)*] applies it at the ingress
+  side instead.
 
-* *Security filtering.* A proxy can scan responses for malware, block known
-  malicious domains, and act as a xref:firewalls.adoc[*firewall*] at the
-  application layer. This is the basis of a secure web gateway.
+* *Security filtering.* A proxy can scan responses for malware, block known malicious domains, and
+  act as a xref:firewalls.adoc[*firewall*] at the application layer. This is the basis of a secure
+  web gateway.
 
 == Variants
 
-Beyond the basic forward proxy, several specialized variants trade off
-anonymity, transparency, and performance.
+Beyond the basic forward proxy, several specialized variants trade off anonymity, transparency, and
+performance.
 
-* *Transparent proxy.* Forwards requests without modifying them and often
-  without the client knowing it is there. Common in captive portals on public
-  Wi-Fi and in corporate egress filtering, but exposed to some denial-of-service
-  attacks because clients cannot be assumed to cooperate.
+* *Transparent proxy.* Forwards requests without modifying them and often without the client knowing
+  it is there. Common in captive portals on public Wi-Fi and in corporate egress filtering, but
+  exposed to some denial-of-service attacks because clients cannot be assumed to cooperate.
 
-* *Anonymous proxy.* Hides the client's IP address but identifies itself as a
-  proxy. The destination knows a proxy is in use but not who is behind it.
+* *Anonymous proxy.* Hides the client's IP address but identifies itself as a proxy. The destination
+  knows a proxy is in use but not who is behind it.
 
-* *High anonymity proxy (elite proxy).* Strips all identifying headers, so the
-  destination cannot tell that a proxy is being used at all.
+* *High anonymity proxy (elite proxy).* Strips all identifying headers, so the destination cannot
+  tell that a proxy is being used at all.
 
-* *Distorting proxy.* Announces itself as a proxy but presents a false IP
-  address, letting the user appear to be in a different location.
+* *Distorting proxy.* Announces itself as a proxy but presents a false IP address, letting the user
+  appear to be in a different location.
 
-The reverse of all these is the xref:reverse-proxy.adoc[*reverse proxy*], which
-applies the same intermediary idea to inbound traffic on behalf of servers.
+The reverse of all these is the xref:reverse-proxy.adoc[*reverse proxy*], which applies the same
+intermediary idea to inbound traffic on behalf of servers.
 
 == Proxy vs. VPN vs. firewall
 
 A proxy is often confused with two adjacent controls.
 
-A *VPN* encrypts and tunnels all of a device's network traffic, while a proxy
-typically only forwards traffic for specific protocols or applications. A VPN
-offers stronger transport security; a proxy offers finer-grained,
-per-application control.
+A *VPN* encrypts and tunnels all of a device's network traffic, while a proxy typically only
+forwards traffic for specific protocols or applications. A VPN offers stronger transport security; a
+proxy offers finer-grained, per-application control.
 
-A xref:firewalls.adoc[*firewall*] filters packets by rule without acting as the
-origin or destination of a connection. A proxy goes further. It terminates the
-client's connection and opens a new one to the server, so it can inspect and
-rewrite the content rather than just the headers. Many next-generation firewalls
-and secure web gateways are built on a proxy core.
+A xref:firewalls.adoc[*firewall*] filters packets by rule without acting as the origin or
+destination of a connection. A proxy goes further. It terminates the client's connection and opens a
+new one to the server, so it can inspect and rewrite the content rather than just the headers. Many
+next-generation firewalls and secure web gateways are built on a proxy core.
 
 == Implementations
 
-Common forward-proxy software includes Squid (a long-established caching
-proxy), Apache Traffic Server, and the forward-proxy modes of Nginx and HAProxy.
-Cloud providers also offer managed forward proxies for egress filtering, such as
-AWS Client VPN and Cloudflare WARP.
+Common forward-proxy software includes Squid (a long-established caching proxy), Apache Traffic
+Server, and the forward-proxy modes of Nginx and HAProxy. Cloud providers also offer managed forward
+proxies for egress filtering, such as AWS Client VPN and Cloudflare WARP.
 
 == See also
 
@@ -112,5 +102,9 @@ AWS Client VPN and Cloudflare WARP.
 
 == References
 
-* Fortinet (n.d.). https://www.fortinet.com/resources/cyberglossary/proxy-server[_What is a proxy server?_]. CyberGlossary.
-* Singh, A. (2024). https://blog.algomaster.io/p/proxy-vs-reverse-proxy-explained[_Proxy vs. reverse proxy explained_]. AlgoMaster.
+* Fortinet (n.d.).
+  https://www.fortinet.com/resources/cyberglossary/proxy-server[_What is a proxy server?_].
+  CyberGlossary.
+* Singh, A. (2024).
+  https://blog.algomaster.io/p/proxy-vs-reverse-proxy-explained[_Proxy vs. reverse proxy explained_].
+  AlgoMaster.

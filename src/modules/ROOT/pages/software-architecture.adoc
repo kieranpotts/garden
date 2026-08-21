@@ -1,123 +1,112 @@
 = Software architecture
 
-The *software architecture* of a system is the high-level structure of the
-system: the major components it is built from, the responsibilities assigned to
-each, the relationships and interactions between them, and the significant
-design decisions that shape that structure. It is the part of the design that
-is hardest to change once the system is built around it.
+The *software architecture* of a system is the high-level structure of the system: the major
+components it is built from, the responsibilities assigned to each, the relationships and
+interactions between them, and the significant design decisions that shape that structure. It is the
+part of the design that is hardest to change once the system is built around it.
 
 Software architecture sits at the top of the design spectrum described in
 xref:architecture-and-design.adoc[*architecture and design*]. Where
 xref:software-design.adoc[*software design*] – low-level
-xref:design-patterns.adoc[*design patterns*] and code-level constructs – deals
-with individual classes and modules, architecture deals with the system as a
-whole and the boundaries between its major parts. The boundary between the two is not
-sharp, and what counts as an architectural decision in one system may be a
-routine design choice in another. A useful heuristic is that architecture is the
-set of decisions that are expensive to reverse.
+xref:design-patterns.adoc[*design patterns*] and code-level constructs – deals with individual
+classes and modules, architecture deals with the system as a whole and the boundaries between its
+major parts. The boundary between the two is not sharp, and what counts as an architectural decision
+in one system may be a routine design choice in another. A useful heuristic is that architecture is
+the set of decisions that are expensive to reverse.
 
 == Two views of the same thing
 
-Software architecture is described in two complementary ways, and most modern
-definitions blend the two.
+Software architecture is described in two complementary ways, and most modern definitions blend the
+two.
 
-* *Structure.* The system is decomposed into components – processing elements,
-  data elements, and connecting elements – together with the
-  xref:architectural-pattern.adoc[*architectural patterns*] and styles that
-  govern how they are composed. A xref:layered-architecture.adoc[*layered architecture*], a xref:client-server-architecture.adoc[*client-server architecture*], or a xref:microservices.adoc[*microservices*] system are all
-  descriptions of structure.
+* *Structure.* The system is decomposed into components – processing elements, data elements, and
+  connecting elements – together with the xref:architectural-pattern.adoc[*architectural patterns*]
+  and styles that govern how they are composed. A
+  xref:layered-architecture.adoc[*layered architecture*], a
+  xref:client-server-architecture.adoc[*client-server architecture*], or a
+  xref:microservices.adoc[*microservices*] system are all descriptions of structure.
 
-* *Decisions.* Architecture is also the set of significant decisions made early
-  in development, the rationale for them, and the trade-offs they imply.
-  Choosing a xref:monolith.adoc[*monolith*] over a distributed deployment,
-  deciding how data is partitioned, or settling on a particular
-  xref:event-driven-architecture.adoc[*event-driven*] style are architectural
-  decisions because they constrain almost everything that follows.
+* *Decisions.* Architecture is also the set of significant decisions made early in development, the
+  rationale for them, and the trade-offs they imply. Choosing a xref:monolith.adoc[*monolith*] over
+  a distributed deployment, deciding how data is partitioned, or settling on a particular
+  xref:event-driven-architecture.adoc[*event-driven*] style are architectural decisions because they
+  constrain almost everything that follows.
 
-The structural view answers "what does the system look like?". The decision
-view answers "why does it look like that?". Both are needed: a diagram of
-boxes and arrows is only half an architecture until the decisions behind it are
-recorded.
+The structural view answers "what does the system look like?". The decision view answers "why does
+it look like that?". Both are needed: a diagram of boxes and arrows is only half an architecture
+until the decisions behind it are recorded.
 
 == Why architecture matters
 
-Architecture matters because it is where the system's qualities are won or
-lost. Functional behavior can usually be achieved in many structures; the
-qualities the system must exhibit while behaving – the
-xref:quality-attributes.adoc[*quality attributes*] – are determined largely by
-the architecture. These qualities, captured as
-xref:non-functional-requirements.adoc[*non-functional requirements*], include
-xref:software-quality.adoc[*availability*], performance, scalability, security,
-modifiability, and testability. They are in frequent tension with one another,
-and reconciling them is the central work of architecture. See
-xref:system-design.adoc[*system design*] for a catalogue of the trade-offs that
-recur.
+Architecture matters because it is where the system's qualities are won or lost. Functional behavior
+can usually be achieved in many structures; the qualities the system must exhibit while behaving –
+the xref:quality-attributes.adoc[*quality attributes*] – are determined largely by the architecture.
+These qualities, captured as xref:non-functional-requirements.adoc[*non-functional requirements*],
+include xref:software-quality.adoc[*availability*], performance, scalability, security,
+modifiability, and testability. They are in frequent tension with one another, and reconciling them
+is the central work of architecture. See xref:system-design.adoc[*system design*] for a catalogue of
+the trade-offs that recur.
 
-Architecture is also the primary medium through which stakeholders
-communicate about the system. Different audiences need different views:
-*developers* need module structure, *operators* need deployment topology, and
-*sponsors* need to see how the design meets business goals. The
-xref:architectural-knowledge-management.adoc[*practice of recording architecture*] – decisions, views, and rationale, in artifacts such as
-xref:c4-model.adoc[*C4 models*] and architecture decision records – is what
-makes that communication possible and keeps the design legible to the people who
+Architecture is also the primary medium through which stakeholders communicate about the system.
+Different audiences need different views: *developers* need module structure, *operators* need
+deployment topology, and *sponsors* need to see how the design meets business goals. The
+xref:architectural-knowledge-management.adoc[*practice of recording architecture*] – decisions,
+views, and rationale, in artifacts such as xref:c4-model.adoc[*C4 models*] and architecture decision
+records – is what makes that communication possible and keeps the design legible to the people who
 inherit it.
 
-Finally, architecture is the bridge between xref:requirements.adoc[*requirements*]
-and implementation. It translates what the system must do into the structures
-that will do it, and it is the earliest point at which the consequences of the
-requirements can be reasoned about and assessed.
+Finally, architecture is the bridge between xref:requirements.adoc[*requirements*] and
+implementation. It translates what the system must do into the structures that will do it, and it is
+the earliest point at which the consequences of the requirements can be reasoned about and assessed.
 
 == What makes a decision architectural
 
-Not every design decision is architectural. A decision is architectural when it
-satisfies at least one of the following.
+Not every design decision is architectural. A decision is architectural when it satisfies at least
+one of the following.
 
-* It is hard to reverse. The cost of changing it, once the system is built
-  around it, would be prohibitive.
+* It is hard to reverse. The cost of changing it, once the system is built around it, would be
+  prohibitive.
 * It has system-wide effect. It shapes many components rather than one.
 * It is driven by a quality attribute rather than by functional behavior.
-* It resolves a significant xref:requirements.adoc[*requirement*] or constraint
-  and trades one quality against another.
+* It resolves a significant xref:requirements.adoc[*requirement*] or constraint and trades one
+  quality against another.
 
-Decisions that are local, recoverable, or purely functional belong to design
-rather than architecture. The distinction is a judgment, and it shifts with the
-scale of the system.
+Decisions that are local, recoverable, or purely functional belong to design rather than
+architecture. The distinction is a judgment, and it shifts with the scale of the system.
 
 == The elements of an architecture
 
-Most architectural descriptions are built from a small set of recurring
-elements.
+Most architectural descriptions are built from a small set of recurring elements.
 
-* *Components* are the units that do the work – modules, services, layers,
-  processes, or subsystems. Each carries a coherent responsibility.
-* *Connectors* are the mechanisms by which components interact – procedure calls,
-  event buses, message queues, shared databases, or network protocols.
-* *Configurations* are the topological arrangements of components and
-  connectors – layered, pipe-and-filter, brokered, or event-driven.
-* *Properties* are the qualities the structure is intended to deliver, eg.
-  low xref:coupling.adoc[*coupling*], high xref:cohesion.adoc[*cohesion*], and
+* *Components* are the units that do the work – modules, services, layers, processes, or subsystems.
+  Each carries a coherent responsibility.
+* *Connectors* are the mechanisms by which components interact – procedure calls, event buses,
+  message queues, shared databases, or network protocols.
+* *Configurations* are the topological arrangements of components and connectors – layered,
+  pipe-and-filter, brokered, or event-driven.
+* *Properties* are the qualities the structure is intended to deliver, eg. low
+  xref:coupling.adoc[*coupling*], high xref:cohesion.adoc[*cohesion*], and
   xref:conceptual-integrity.adoc[*conceptual integrity*].
 
-These elements are realized through xref:design-principles.adoc[*design principles*] such as xref:separation-of-concerns.adoc[*separation of concerns*],
-xref:abstraction.adoc[*abstraction*], and xref:encapsulation.adoc[*encapsulation*],
-which together keep the structure coherent as it grows.
+These elements are realized through xref:design-principles.adoc[*design principles*] such as
+xref:separation-of-concerns.adoc[*separation of concerns*], xref:abstraction.adoc[*abstraction*],
+and xref:encapsulation.adoc[*encapsulation*], which together keep the structure coherent as it
+grows.
 
 == What shapes an architecture
 
-An architecture is shaped by more than its requirements. The forces that
-constrain and bias it include the organization that builds it –
-xref:conways-law.adoc[*Conway's law*] observes that systems mirror the
-communication structures of their organizations – the existing systems and
-xref:technical-debt.adoc[*technical debt*] it must accommodate, the available
-technology and the skills of the team. These forces are discussed in
+An architecture is shaped by more than its requirements. The forces that constrain and bias it
+include the organization that builds it – xref:conways-law.adoc[*Conway's law*] observes that
+systems mirror the communication structures of their organizations – the existing systems and
+xref:technical-debt.adoc[*technical debt*] it must accommodate, the available technology and the
+skills of the team. These forces are discussed in
 xref:architecture-and-design.adoc[*architecture and design*].
 
-How much of the architecture is fixed up front, and how much is allowed to
-emerge, depends on the cost of change and the stability of the requirements.
-xref:big-design-up-front.adoc[*Big design up-front*] suits environments where
-change is expensive and requirements are stable;
-xref:evolvability.adoc[*evolvability*] suits uncertain ones. Most real systems
-blend the two and develop the architecture iteratively, refining it through
+How much of the architecture is fixed up front, and how much is allowed to emerge, depends on the
+cost of change and the stability of the requirements.
+xref:big-design-up-front.adoc[*Big design up-front*] suits environments where change is expensive
+and requirements are stable; xref:evolvability.adoc[*evolvability*] suits uncertain ones. Most real
+systems blend the two and develop the architecture iteratively, refining it through
 xref:stepwise-refinement.adoc[*stepwise refinement*] as learning accumulates.
 
 == See also

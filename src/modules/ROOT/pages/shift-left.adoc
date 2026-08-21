@@ -1,71 +1,61 @@
 = Shift left
 
-*Shift left* is the practice of moving quality, security, and other
-non-functional concerns earlier in the software development lifecycle, so they
-are addressed while changes are still cheap to make. The name comes from the
-habit of reading a delivery timeline left to right, with design on the left and
-production on the right. Shifting a concern "left" means performing it sooner
-in that sequence.
+*Shift left* is the practice of moving quality, security, and other non-functional concerns earlier
+in the software development lifecycle, so they are addressed while changes are still cheap to make.
+The name comes from the habit of reading a delivery timeline left to right, with design on the left
+and production on the right. Shifting a concern "left" means performing it sooner in that sequence.
 
-The economic argument is straightforward. The cost of fixing a defect grows
-roughly with the distance between the stage where it is introduced and the
-stage where it is found. A bug caught in design is a corrected drawing. A bug
-caught in production is an incident, a rollback, and a customer's lost trust.
-Pushing checks upstream shrinks that gap and, with it, the average cost of
+The economic argument is straightforward. The cost of fixing a defect grows roughly with the
+distance between the stage where it is introduced and the stage where it is found. A bug caught in
+design is a corrected drawing. A bug caught in production is an incident, a rollback, and a
+customer's lost trust. Pushing checks upstream shrinks that gap and, with it, the average cost of
 each defect.
 
-Shift left is therefore as much an organizational idea as a technical one. It
-asks teams to surface concerns that traditionally arrived late — security
-review, performance validation, accessibility checks, compliance sign-off —
-and treat them as first-class inputs to design and coding rather than gates at
-the end. xref:devops.adoc[*DevOps*] and
-xref:platform-engineering.adoc[*platform engineering*] embody the same impulse
-by dissolving the hand-off between development and operations.
+Shift left is therefore as much an organizational idea as a technical one. It asks teams to surface
+concerns that traditionally arrived late — security review, performance validation, accessibility
+checks, compliance sign-off — and treat them as first-class inputs to design and coding rather than
+gates at the end. xref:devops.adoc[*DevOps*] and
+xref:platform-engineering.adoc[*platform engineering*] embody the same impulse by dissolving the
+hand-off between development and operations.
 
 == What gets shifted
 
-The pattern applies to any concern that tends to accumulate as late-stage
-debt. Common examples include the following.
+The pattern applies to any concern that tends to accumulate as late-stage debt. Common examples
+include the following.
 
-- *Testing.* Writing tests alongside or before the code, rather than after a
-  feature is "done", is the original shift-left concern.
-  xref:test-driven-development.adoc[*Test-driven development>* makes the shift
-  explicit, and *xref:automated-testing.adoc[automated testing*] keeps it
-  economic to repeat on every change.
-- *Security.* xref:secure-by-design.adoc[*Secure by design>* moves security
-  decisions into architecture. The *xref:penetration-testing.adoc[shift-left security*] movement pushes scanning, threat modeling, and dependency
-  checking into the pipeline so vulnerabilities are found by developers, not
-  by an external audit.
-- *Code quality.* xref:static-analysis.adoc[*Static analysis>* and linting run
-  on every commit, catching issues a human reviewer would otherwise flag.
-- *Compliance and accessibility.* Controls that once waited for a release
-  review are expressed as *xref:compliance-testing.adoc[automated checks*] and
+- *Testing.* Writing tests alongside or before the code, rather than after a feature is "done", is
+  the original shift-left concern.
+  xref:test-driven-development.adoc[*Test-driven development>* makes the shift explicit, and *xref:automated-testing.adoc[automated testing*]
+  keeps it economic to repeat on every change.
+- *Security.*
+  xref:secure-by-design.adoc[*Secure by design>* moves security decisions into architecture. The *xref:penetration-testing.adoc[shift-left security*]
+  movement pushes scanning, threat modeling, and dependency checking into the pipeline so
+  vulnerabilities are found by developers, not by an external audit.
+- *Code quality.* xref:static-analysis.adoc[*Static analysis>* and linting run on every commit,
+  catching issues a human reviewer would otherwise flag.
+- *Compliance and accessibility.* Controls that once waited for a release review are expressed as
+  *xref:compliance-testing.adoc[automated checks*] and
   xref:accessibility-testing.adoc[*accessibility tests*] that run continuously.
 
 == How it is sustained
 
 Shift left only works if the early checks are cheap to run and hard to ignore.
-xref:ci-cd.adoc[*CI/CD*] pipelines make the checks automatic on every change,
-and a xref:deployment-pipeline.adoc[*deployment pipeline>* stages them so fast
-feedback arrives before slower, more expensive validation. The goal is
-*xref:fail-fast.adoc[fail fast*]: surface a problem within minutes of the
-commit that introduced it, while the context is still fresh.
+xref:ci-cd.adoc[*CI/CD*] pipelines make the checks automatic on every change, and a
+xref:deployment-pipeline.adoc[*deployment pipeline>* stages them so fast feedback arrives before slower, more expensive validation. The goal is *xref:fail-fast.adoc[fail fast*]:
+surface a problem within minutes of the commit that introduced it, while the context is still fresh.
 
 The practice complements, rather than replaces, late-stage validation.
-*xref:quality-assurance.adoc[Quality assurance>* still inspects the whole
-product, and exploratory testing still finds what automated checks miss. Shift
-left changes where most of the checking happens, not whether checking happens
-at the end.
+*xref:quality-assurance.adoc[Quality assurance>* still inspects the whole product, and exploratory
+testing still finds what automated checks miss. Shift left changes where most of the checking
+happens, not whether checking happens at the end.
 
 == Trade-offs
 
-Moving work earlier trades one cost for another. Developers spend more time on
-tooling, test design, and security review up front, and the pipeline itself
-becomes a system that must be maintained. A team that shifts concerns left
-without automating them simply relocates the bottleneck, and gating every
-commit on slow checks can throttle the very flow the shift was meant to
-improve. The discipline is worth keeping: shift the concern, then automate it,
-then keep the feedback loop short.
+Moving work earlier trades one cost for another. Developers spend more time on tooling, test design,
+and security review up front, and the pipeline itself becomes a system that must be maintained. A
+team that shifts concerns left without automating them simply relocates the bottleneck, and gating
+every commit on slow checks can throttle the very flow the shift was meant to improve. The
+discipline is worth keeping: shift the concern, then automate it, then keep the feedback loop short.
 
 == See also
 

@@ -58,9 +58,10 @@ Conventions for writing and formatting garden entries (`.adoc` files under
 
 ## Line wraps
 
-- Soft line wraps at 80 characters, but don't break within cross-references,
-  bold or italic text, or other inline styling. Don't break titles and
-  sub-headings over multiple lines.
+- Soft line wraps at 100 characters, but don't break within cross-references,
+  bold or italic text, or other inline styling — let those lines run longer,
+  typically not past about 120, rather than breaking a span. Don't break
+  titles and sub-headings over multiple lines.
 
 ## Title and headings
 

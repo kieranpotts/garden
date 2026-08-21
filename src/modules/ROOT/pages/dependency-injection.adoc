@@ -2,77 +2,67 @@
 
 Dependency injection is a technique of
 xref:object-oriented-programming.adoc[*object-oriented programming*] for realizing
-xref:inversion-of-control.adoc[*inversion of control*]. A client object delegates
-the responsibility for obtaining its collaborators to an external agent, called
-the injector, rather than constructing or looking them up itself. The injector
-decides which concrete collaborators fill the client's references and when.
+xref:inversion-of-control.adoc[*inversion of control*]. A client object delegates the responsibility
+for obtaining its collaborators to an external agent, called the injector, rather than constructing
+or looking them up itself. The injector decides which concrete collaborators fill the client's
+references and when.
 
-The technique rests on xref:composition.adoc[*composition*]. The client holds its
-collaborators by reference through xref:interfaces.adoc[*interfaces*], so a
-collaborator's concrete type can vary without the client changing. This is an
-application of xref:dependency-inversion.adoc[*dependency inversion*]: both the
-client and its collaborator depend on the same abstraction, and neither is bound
-to the other's concrete type. The result is low
-xref:coupling.adoc[*coupling*] and a design that is easier to
-xref:decoupling.adoc[*decouple*] further.
+The technique rests on xref:composition.adoc[*composition*]. The client holds its collaborators by
+reference through xref:interfaces.adoc[*interfaces*], so a collaborator's concrete type can vary
+without the client changing. This is an application of
+xref:dependency-inversion.adoc[*dependency inversion*]: both the client and its collaborator depend
+on the same abstraction, and neither is bound to the other's concrete type. The result is low
+xref:coupling.adoc[*coupling*] and a design that is easier to xref:decoupling.adoc[*decouple*]
+further.
 
 The collaborators are usually injected in one of three ways.
 
-* *Constructor injection.* The client declares its dependencies as parameters of
-  its constructor. Once constructed, the object is complete with respect to its
-  collaborators, which makes the dependency explicit and impossible to leave
-  unset.
+* *Constructor injection.* The client declares its dependencies as parameters of its constructor.
+  Once constructed, the object is complete with respect to its collaborators, which makes the
+  dependency explicit and impossible to leave unset.
 
-* *Setter injection.* The client exposes setter methods that the injector calls
-  after construction. This allows collaborators to be swapped or reconfigured
-  over the object's lifetime, at the cost of a window in which the object may be
-  partially wired.
+* *Setter injection.* The client exposes setter methods that the injector calls after construction.
+  This allows collaborators to be swapped or reconfigured over the object's lifetime, at the cost of
+  a window in which the object may be partially wired.
 
-* *Interface injection.* The client implements an interface whose methods the
-  injector uses to supply dependencies. It is the least common form and amounts
-  to setter injection with an explicit contract.
+* *Interface injection.* The client implements an interface whose methods the injector uses to
+  supply dependencies. It is the least common form and amounts to setter injection with an explicit
+  contract.
 
-Constructor injection is generally preferred. It makes a class's dependencies
-unambiguous and lets the compiler or runtime enforce that none are missing.
-Setter injection is reserved for optional collaborators or genuine
-reconfiguration needs.
+Constructor injection is generally preferred. It makes a class's dependencies unambiguous and lets
+the compiler or runtime enforce that none are missing. Setter injection is reserved for optional
+collaborators or genuine reconfiguration needs.
 
-Dependency injection is what makes a class testable in isolation. Because the
-client accepts its collaborators through abstractions, a
-xref:unit-testing.adoc[*unit test*] can supply stand-ins such as mocks, stubs,
-and fakes in place of the real collaborators, keeping the test fast and
+Dependency injection is what makes a class testable in isolation. Because the client accepts its
+collaborators through abstractions, a xref:unit-testing.adoc[*unit test*] can supply stand-ins such
+as mocks, stubs, and fakes in place of the real collaborators, keeping the test fast and
 deterministic.
 
 == Trade-offs
 
-The chief benefit is decoupling. The client knows only the abstractions it
-needs, so collaborators can be replaced, reconfigured, or substituted for
-testing without touching the client. Late binding follows naturally. The
-injector can choose implementations at startup, or even at runtime, from
+The chief benefit is decoupling. The client knows only the abstractions it needs, so collaborators
+can be replaced, reconfigured, or substituted for testing without touching the client. Late binding
+follows naturally. The injector can choose implementations at startup, or even at runtime, from
 configuration.
 
-The cost is indirection and wiring. A small system that constructs its objects
-directly is easy to follow. The same system with injected dependencies has more
-moving parts and an injector to understand. *Dependency injection containers*
-(DICs), libraries or frameworks that build, configure, and assemble object
-graphs from declarations, reduce the boilerplate but move the construction
-logic into configuration that can be hard to debug. The
-xref:spring-framework.adoc[*Spring Framework*] is a widely used DI container in
-the Java ecosystem.
+The cost is indirection and wiring. A small system that constructs its objects directly is easy to
+follow. The same system with injected dependencies has more moving parts and an injector to
+understand. *Dependency injection containers* (DICs), libraries or frameworks that build, configure,
+and assemble object graphs from declarations, reduce the boilerplate but move the construction logic
+into configuration that can be hard to debug. The xref:spring-framework.adoc[*Spring Framework*] is
+a widely used DI container in the Java ecosystem.
 
-The *service locator* pattern is a related but discouraged alternative. Instead
-of receiving its collaborators, the client asks a central registry for them on
-demand. This hides the dependencies in the body of the class rather than
-declaring them on its construction surface, which makes the class harder to test
-in isolation and couples every caller to the locator. Dependency injection, by
+The *service locator* pattern is a related but discouraged alternative. Instead of receiving its
+collaborators, the client asks a central registry for them on demand. This hides the dependencies in
+the body of the class rather than declaring them on its construction surface, which makes the class
+harder to test in isolation and couples every caller to the locator. Dependency injection, by
 contrast, keeps the dependency visible.
 
-Because dependency injection relies on holding collaborators through interfaces,
-it is an instance of composition over xref:inheritance.adoc[*inheritance*]. A
-client that needs varying behavior receives a different collaborator – the
-basis of the xref:strategy-pattern.adoc[*strategy pattern*] – rather than
-deriving a new subclass, keeping the type hierarchy shallow and behavior
-swappable at runtime.
+Because dependency injection relies on holding collaborators through interfaces, it is an instance
+of composition over xref:inheritance.adoc[*inheritance*]. A client that needs varying behavior
+receives a different collaborator – the basis of the xref:strategy-pattern.adoc[*strategy pattern*]
+– rather than deriving a new subclass, keeping the type hierarchy shallow and behavior swappable at
+runtime.
 
 == See also
 
@@ -87,6 +77,5 @@ swappable at runtime.
 
 == References
 
-* Fowler, Martin (2004). _Inversion of Control Containers and the Dependency
-  Injection Pattern_.
+* Fowler, Martin (2004). _Inversion of Control Containers and the Dependency Injection Pattern_.
   https://martinfowler.com/articles/injection.html

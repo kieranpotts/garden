@@ -1,113 +1,98 @@
 = Context engineering
 
-Context engineering is the practice of designing and curating the full
-*context window* provided to a
-xref:large-language-model.adoc[*large language model*] — including system
-prompts, retrieved documents, conversation history, tool outputs, structured
-data, and other information. The objective is to improve the quality, relevance,
-and accuracy of model outputs.
+Context engineering is the practice of designing and curating the full *context window* provided to
+a xref:large-language-model.adoc[*large language model*] — including system prompts, retrieved
+documents, conversation history, tool outputs, structured data, and other information. The objective
+is to improve the quality, relevance, and accuracy of model outputs.
 
-As models are increasingly deployed in agentic and multi-step workflows, context
-engineering becomes more important than prompt engineering alone.
+As models are increasingly deployed in agentic and multi-step workflows, context engineering becomes
+more important than prompt engineering alone.
 
-Context engineering is a superset of
-xref:prompt-engineering.adoc[*prompt engineering*]. Prompt engineering is the
-practice of designing and refining the instructions given to a model — primarily
-the *system prompt*, the behind-the-scenes instructions that developers bake
-into a product to shape a model's behavior — to elicit better, more accurate, or
-more useful outputs. Context engineering is broader in scope. Rather than
-focusing on the initial input alone, context engineering is about managing the
-size and focus of the context throughout a model's session.
+Context engineering is a superset of xref:prompt-engineering.adoc[*prompt engineering*]. Prompt
+engineering is the practice of designing and refining the instructions given to a model — primarily
+the *system prompt*, the behind-the-scenes instructions that developers bake into a product to shape
+a model's behavior — to elicit better, more accurate, or more useful outputs. Context engineering is
+broader in scope. Rather than focusing on the initial input alone, context engineering is about
+managing the size and focus of the context throughout a model's session.
 
-Because LLMs are sensitive to how questions and instructions are phrased, the
-structure and content of the context can significantly affect the quality of the
-response.
+Because LLMs are sensitive to how questions and instructions are phrased, the structure and content
+of the context can significantly affect the quality of the response.
 
-See also xref:agent-skills.adoc[*agent skills*], which support context
-engineering.
+See also xref:agent-skills.adoc[*agent skills*], which support context engineering.
 
 == Context, context window, and session
 
-Three terms are often conflated but measure different things. *Context* is the
-task-relevant information the agent currently has — a measure of quality, not
-quantity. The *context window* is the literal token sequence the model sees per
-request. The *session* is the running conversation the harness stores.
+Three terms are often conflated but measure different things. *Context* is the task-relevant
+information the agent currently has — a measure of quality, not quantity. The *context window* is
+the literal token sequence the model sees per request. The *session* is the running conversation the
+harness stores.
 
-A window can be nearly full and context poor (thousands of tokens of stale tool
-output, none about the task) or nearly empty and context excellent (the one type
-definition the task turns on). Most failures trace back to context — the agent
-invents an API or contradicts a decision because the relevant fact was never
-loaded or was buried under attention degradation. The fix is curation: load what
-the task needs, keep out what it doesn't. See xref:large-language-model.adoc[*large language model*]
-for the context window and attention mechanics, and
-xref:agent-memory.adoc[*agent memory*] for the memory systems that keep the
-right facts in view.
+A window can be nearly full and context poor (thousands of tokens of stale tool output, none about
+the task) or nearly empty and context excellent (the one type definition the task turns on). Most
+failures trace back to context — the agent invents an API or contradicts a decision because the
+relevant fact was never loaded or was buried under attention degradation. The fix is curation: load
+what the task needs, keep out what it doesn't. See
+xref:large-language-model.adoc[*large language model*] for the context window and attention
+mechanics, and xref:agent-memory.adoc[*agent memory*] for the memory systems that keep the right
+facts in view.
 
 == System prompt
 
-The *system prompt* is the instructions the harness prepends to every request —
-the agent's standing brief (who it is, how to behave, which tools, what
-conventions). It is written by the harness vendor, not you. In coding harnesses
-it is big: tens of thousands of tokens of rules, tool descriptions, edge-case
-handling, paid as input every turn. Your own standing instructions (`AGENTS.md`)
-ride along.
+The *system prompt* is the instructions the harness prepends to every request — the agent's standing
+brief (who it is, how to behave, which tools, what conventions). It is written by the harness
+vendor, not you. In coding harnesses it is big: tens of thousands of tokens of rules, tool
+descriptions, edge-case handling, paid as input every turn. Your own standing instructions
+(`AGENTS.md`) ride along.
 
-The system prompt is identical on every request, so it forms the start of the
-prefix cache. Models are trained to prioritise it over user messages — when an
-agent insists on a convention you never asked for, it is usually obeying its
-system prompt.
+The system prompt is identical on every request, so it forms the start of the prefix cache. Models
+are trained to prioritise it over user messages — when an agent insists on a convention you never
+asked for, it is usually obeying its system prompt.
 
 == The six types of context
 
-Six primary types of context shape what an agent can do. *Instructions* define
-the agent's core role, goals, and operational boundaries. *Knowledge* is
-retrieved documents, architectural diagrams, and domain-specific data. *Memory*
-covers short-term session logs (what just happened) and long-term persistent state
-(what the project is). *Examples* are few-shot behavioural demonstrations and
-codebase reference patterns. *Tools* are the precise definitions of the APIs,
-scripts, and external services the agent can invoke. *Guardrails* are hard
-constraints, formatting rules, and safety validations.
+Six primary types of context shape what an agent can do. *Instructions* define the agent's core
+role, goals, and operational boundaries. *Knowledge* is retrieved documents, architectural diagrams,
+and domain-specific data. *Memory* covers short-term session logs (what just happened) and long-term
+persistent state (what the project is). *Examples* are few-shot behavioural demonstrations and
+codebase reference patterns. *Tools* are the precise definitions of the APIs, scripts, and external
+services the agent can invoke. *Guardrails* are hard constraints, formatting rules, and safety
+validations.
 
-These map to other pages in the garden: xref:agent-memory.adoc[*agent memory*]
-for memory, xref:agent-skills.adoc[*agent skills*] for examples,
+These map to other pages in the garden: xref:agent-memory.adoc[*agent memory*] for memory,
+xref:agent-skills.adoc[*agent skills*] for examples,
 xref:model-context-protocol.adoc[*Model Context Protocol*] for tools, and
 xref:agent-harness.adoc[*agent harness*] for guardrails.
 
 == Static and dynamic context
 
-The core design decision is what context is always loaded versus what is loaded
-on demand. *Static context* is always present – system instructions, rule files
-(`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`), global memory, persona definitions. It
-defines who the agent is and how it behaves, and it is expensive because every
-token is present in every interaction regardless of relevance. *Dynamic context*
-is loaded on demand – skill instructions triggered by task matching, tool results
-retrieved during execution, documents fetched from RAG pipelines, windowed session
-history. It is efficient because the agent pays the token cost only when the
-information is needed.
+The core design decision is what context is always loaded versus what is loaded on demand.
+*Static context* is always present – system instructions, rule files (`AGENTS.md`, `CLAUDE.md`,
+`GEMINI.md`), global memory, persona definitions. It defines who the agent is and how it behaves,
+and it is expensive because every token is present in every interaction regardless of relevance.
+*Dynamic context* is loaded on demand – skill instructions triggered by task matching, tool results
+retrieved during execution, documents fetched from RAG pipelines, windowed session history. It is
+efficient because the agent pays the token cost only when the information is needed.
 
-Too much static context wastes tokens and dilutes signals. Too little means the
-agent forgets critical rules. The best systems treat this boundary as a
-first-class architectural decision, reviewed and versioned like any other
-configuration. xref:agent-skills.adoc[*Agent skills*] are the key pattern for
-managing this trade-off at scale via progressive disclosure.
+Too much static context wastes tokens and dilutes signals. Too little means the agent forgets
+critical rules. The best systems treat this boundary as a first-class architectural decision,
+reviewed and versioned like any other configuration. xref:agent-skills.adoc[*Agent skills*] are the
+key pattern for managing this trade-off at scale via progressive disclosure.
 
 == Keeping context lean
 
-Two families of mechanism keep the always-loaded layer small. The first is
-*progressive disclosure*: instead of loading every instruction, skill, and tool
-definition up front, the harness loads a short pointer (a name and description)
-and fetches the full body only when the task calls for it. Context pointers,
-xref:agent-memory.adoc[*agent memory*], and `AGENTS.md` all work this way. See
-the agent memory page for the detail.
+Two families of mechanism keep the always-loaded layer small. The first is *progressive disclosure*:
+instead of loading every instruction, skill, and tool definition up front, the harness loads a short
+pointer (a name and description) and fetches the full body only when the task calls for it. Context
+pointers, xref:agent-memory.adoc[*agent memory*], and `AGENTS.md` all work this way. See the agent
+memory page for the detail.
 
-The second is *clearing and compaction*. As a session runs, accumulated tool
-output and conversation history stop paying for themselves — they crowd the
-window and degrade attention. Compaction summarizes and discards the parts that
-no longer earn their place; autocompact does this when the window nears its
-limit. Clearing is the same idea applied deliberately, by you or the harness, to
-reset the working set. See xref:large-language-model.adoc[*large language model*]
-for why this matters, and xref:agent-handoff.adoc[*agent handoff*] for the
-framing of carrying work forward without dragging the old session along.
+The second is *clearing and compaction*. As a session runs, accumulated tool output and conversation
+history stop paying for themselves — they crowd the window and degrade attention. Compaction
+summarizes and discards the parts that no longer earn their place; autocompact does this when the
+window nears its limit. Clearing is the same idea applied deliberately, by you or the harness, to
+reset the working set. See xref:large-language-model.adoc[*large language model*] for why this
+matters, and xref:agent-handoff.adoc[*agent handoff*] for the framing of carrying work forward
+without dragging the old session along.
 
 ''''
 
@@ -126,5 +111,4 @@ framing of carrying work forward without dragging the old session along.
 
 == References
 
-* _The New SDLC With Vibe Coding_, Addy Osmani, Shubham Saboo & Sokratis
-  Kartakis (2026).
+* _The New SDLC With Vibe Coding_, Addy Osmani, Shubham Saboo & Sokratis Kartakis (2026).

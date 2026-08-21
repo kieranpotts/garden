@@ -1,115 +1,96 @@
 = JSON Schema
 
-JSON Schema is a JSON-based vocabulary for describing the structure of
-xref:json.adoc[*JSON*] documents. A schema is itself a JSON object, and it
-annotates and validates other JSON documents against a set of keywords that
-express the allowed types, ranges, shapes, and relationships a value must
-satisfy.
+JSON Schema is a JSON-based vocabulary for describing the structure of xref:json.adoc[*JSON*]
+documents. A schema is itself a JSON object, and it annotates and validates other JSON documents
+against a set of keywords that express the allowed types, ranges, shapes, and relationships a value
+must satisfy.
 
-JSON is a format, not a type system. It describes values but says nothing about
-the shape they must take. JSON Schema fills that gap. It is the standard way to
-express a machine-checkable contract for JSON data, and it underpins
-xref:input-validation.adoc[*input validation*], documentation, code generation,
-and API description.
+JSON is a format, not a type system. It describes values but says nothing about the shape they must
+take. JSON Schema fills that gap. It is the standard way to express a machine-checkable contract for
+JSON data, and it underpins xref:input-validation.adoc[*input validation*], documentation, code
+generation, and API description.
 
 == Keywords and dialects
 
-A schema is authored with keywords. The most familiar are structural:
-`type` fixes a value's JSON type, `properties` describes object fields,
-`required` lists which properties must be present, `items` constrains array
-elements, and `enum` bounds a value to a fixed set. Beyond these, `minimum` and
-`maximum` set numeric bounds, `pattern` applies a regular expression to
-strings, and `format` hints at a semantic shape such as `date-time` or `email`
-for tooling that understands it.
+A schema is authored with keywords. The most familiar are structural: `type` fixes a value's JSON
+type, `properties` describes object fields, `required` lists which properties must be present,
+`items` constrains array elements, and `enum` bounds a value to a fixed set. Beyond these, `minimum`
+and `maximum` set numeric bounds, `pattern` applies a regular expression to strings, and `format`
+hints at a semantic shape such as `date-time` or `email` for tooling that understands it.
 
-Larger schemas are built compositionally. `$ref` points at another schema by
-URI so definitions can be reused, and `$defs` collects the reusable shapes in
-one place. `allOf`, `anyOf`, and `oneOf` combine sub-schemas with AND, OR, and
-exactly-one semantics, and `if`/`then`/`else` expresses conditional constraints.
-`$schema` declares which dialect of the vocabulary the document is written
+Larger schemas are built compositionally. `$ref` points at another schema by URI so definitions can
+be reused, and `$defs` collects the reusable shapes in one place. `allOf`, `anyOf`, and `oneOf`
+combine sub-schemas with AND, OR, and exactly-one semantics, and `if`/`then`/`else` expresses
+conditional constraints. `$schema` declares which dialect of the vocabulary the document is written
 against.
 
-That last keyword matters because JSON Schema is released in versioned drafts,
-and the drafts are not mutually compatible. A schema written for Draft-07 will
-not validate correctly under a 2020-12 validator without porting. The two most
-widely deployed dialects are Draft-07, which dominated the 2010s, and 2020-12,
-the current stable release. `$schema` is how a document declares which one it
+That last keyword matters because JSON Schema is released in versioned drafts, and the drafts are
+not mutually compatible. A schema written for Draft-07 will not validate correctly under a 2020-12
+validator without porting. The two most widely deployed dialects are Draft-07, which dominated the
+2010s, and 2020-12, the current stable release. `$schema` is how a document declares which one it
 uses, and the validator must be selected to match.
 
 == Validation
 
-Validation produces two kinds of result. *Assertions* are pass-or-fail checks
-that a document violates, and they become the errors a validator reports.
-*Annotations* are attached to locations that pass and carry information such as
-the matched type or a default value, which user interfaces and code generators
-consume. The 2020-12 release standardized an output format so that validators
-return results in a consistent shape, addressing a long-standing source of
-implementation-specific behavior.
+Validation produces two kinds of result. *Assertions* are pass-or-fail checks that a document
+violates, and they become the errors a validator reports. *Annotations* are attached to locations
+that pass and carry information such as the matched type or a default value, which user interfaces
+and code generators consume. The 2020-12 release standardized an output format so that validators
+return results in a consistent shape, addressing a long-standing source of implementation-specific
+behavior.
 
-In practice, JSON Schema is most useful at trust boundaries, where untrusted
-data crosses into a component that assumes it is well-formed. A schema check
-at an API endpoint or message consumer rejects malformed input before any
-side-effectful work begins, which is the cheap, mechanical layer of syntactic
-validation. Semantic checks that need business knowledge still live in the
-application, as the schema can only express structural rules.
+In practice, JSON Schema is most useful at trust boundaries, where untrusted data crosses into a
+component that assumes it is well-formed. A schema check at an API endpoint or message consumer
+rejects malformed input before any side-effectful work begins, which is the cheap, mechanical layer
+of syntactic validation. Semantic checks that need business knowledge still live in the application,
+as the schema can only express structural rules.
 
 == Uses
 
 JSON Schema's single vocabulary supports several distinct activities.
 
-* *Input and form validation.* Schemas validate request bodies and configuration
-  files at the edge, and front-end tooling uses the same schema to drive form
-  generation and field-level feedback.
-* *API description.* OpenAPI 3.1 adopts JSON Schema 2020-12 as its schema
-  vocabulary, so a REST API's request and response shapes are JSON Schemas. This
-  makes JSON Schema a de facto
-  xref:interface-definition-language.adoc[*interface definition language (IDL)*]
-  for HTTP APIs.
-* *Code generation.* Toolchains emit typed clients, serializers, and TypeScript
-  or model classes from a schema, giving polyglot systems a shared source of
-  truth for data shapes.
-* *Contract testing.* A schema is an executable contract that a producer's
-  output and a consumer's expectations are checked against, catching drift
-  before it reaches production.
+* *Input and form validation.* Schemas validate request bodies and configuration files at the edge,
+  and front-end tooling uses the same schema to drive form generation and field-level feedback.
+* *API description.* OpenAPI 3.1 adopts JSON Schema 2020-12 as its schema vocabulary, so a REST
+  API's request and response shapes are JSON Schemas. This makes JSON Schema a de facto
+  xref:interface-definition-language.adoc[*interface definition language (IDL)*] for HTTP APIs.
+* *Code generation.* Toolchains emit typed clients, serializers, and TypeScript or model classes
+  from a schema, giving polyglot systems a shared source of truth for data shapes.
+* *Contract testing.* A schema is an executable contract that a producer's output and a consumer's
+  expectations are checked against, catching drift before it reaches production.
 
 == JSON Hyper-Schema
 
-JSON Hyper-Schema is an extension to JSON Schema that adds keywords for
-embedding hypermedia links in JSON documents. A link object declares a relation
-type, a target URI template, an HTTP method, and an optional submission
-encoding, so a client that knows the schema can discover how to navigate and
-mutate the API's resources.
+JSON Hyper-Schema is an extension to JSON Schema that adds keywords for embedding hypermedia links
+in JSON documents. A link object declares a relation type, a target URI template, an HTTP method,
+and an optional submission encoding, so a client that knows the schema can discover how to navigate
+and mutate the API's resources.
 
-The main use case is describing the relationships between resources in a
-xref:rest.adoc[*REST*] API. Where a plain schema says what a resource looks
-like, JSON Hyper-Schema says how resources link to one another, which is a
-schema-driven expression of the HATEOAS constraint. The current release,
+The main use case is describing the relationships between resources in a xref:rest.adoc[*REST*] API.
+Where a plain schema says what a resource looks like, JSON Hyper-Schema says how resources link to
+one another, which is a schema-driven expression of the HATEOAS constraint. The current release,
 JSON Hyper-Schema 2020-12, is kept in step with the core specification.
 
 == Trade-offs
 
-JSON Schema validates, it does not transform. The core vocabulary checks
-shape and rejects violations, but it does not coerce types or apply defaults in
-a standardized way, so producers and consumers still need agreement beyond the
-schema for anything that mutates the data.
+JSON Schema validates, it does not transform. The core vocabulary checks shape and rejects
+violations, but it does not coerce types or apply defaults in a standardized way, so producers and
+consumers still need agreement beyond the schema for anything that mutates the data.
 
-The dialect fragmentation is a recurring cost. Schemas are pinned to a draft,
-tooling support varies between drafts, and the same document can validate
-differently under different validators. Pinning `$schema` and the validator
-version together is essential discipline.
+The dialect fragmentation is a recurring cost. Schemas are pinned to a draft, tooling support varies
+between drafts, and the same document can validate differently under different validators. Pinning
+`$schema` and the validator version together is essential discipline.
 
-The keyword set is expressive enough that constraints written with `oneOf` and
-conditionals can become hard to reason about, and the validation algorithm's
-non-obvious rules – `required` governs property presence rather than type, for
-example – trip up authors regularly. Schemas also tend to be verbose, sometimes
-larger than the data they describe.
+The keyword set is expressive enough that constraints written with `oneOf` and conditionals can
+become hard to reason about, and the validation algorithm's non-obvious rules – `required` governs
+property presence rather than type, for example – trip up authors regularly. Schemas also tend to be
+verbose, sometimes larger than the data they describe.
 
-JSON Schema validates structure, not semantics. Cross-field business rules
-beyond what the keywords express remain the application's responsibility, which
-is why it complements rather than replaces domain-layer validation. Compared
-with a typed IDL such as xref:protocol-buffers.adoc[*Protocol Buffers*], which
-defines the wire format and generates code from it, JSON Schema validates JSON
-that already exists; it does not own the serialization.
+JSON Schema validates structure, not semantics. Cross-field business rules beyond what the keywords
+express remain the application's responsibility, which is why it complements rather than replaces
+domain-layer validation. Compared with a typed IDL such as
+xref:protocol-buffers.adoc[*Protocol Buffers*], which defines the wire format and generates code
+from it, JSON Schema validates JSON that already exists; it does not own the serialization.
 
 == See also
 
@@ -127,6 +108,5 @@ that already exists; it does not own the serialization.
 * JSON Schema Organization. _JSON Schema 2020-12_.
   https://json-schema.org/draft/2020-12/json-schema-core.html
 * Wright, A., Andrews, H., Hutton, B., and Gao, K. (2022).
-  _JSON Schema: A Media Type for Describing JSON Documents_. IETF
-  Internet-Draft.
+  _JSON Schema: A Media Type for Describing JSON Documents_. IETF Internet-Draft.
   https://datatracker.ietf.org/doc/draft-bhutton-json-schema/

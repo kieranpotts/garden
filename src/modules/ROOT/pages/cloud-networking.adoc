@@ -1,83 +1,75 @@
 = Cloud networking
 
 Cloud networking is the body of networking capabilities that
-xref:cloud-computing.adoc[*cloud computing*] providers expose to their customers.
-It covers the same concerns as traditional enterprise networking – addressing,
-routing, switching, firewalls, load balancing, and name resolution – but
-delivered as xref:virtualization.adoc[*virtualized*], API-provisioned services
-rather than physical hardware. The customer consumes networking as software:
-subnets, route tables, firewalls, and load balancers are all defined in code and
-brought up in seconds.
+xref:cloud-computing.adoc[*cloud computing*] providers expose to their customers. It covers the same
+concerns as traditional enterprise networking – addressing, routing, switching, firewalls, load
+balancing, and name resolution – but delivered as xref:virtualization.adoc[*virtualized*],
+API-provisioned services rather than physical hardware. The customer consumes networking as
+software: subnets, route tables, firewalls, and load balancers are all defined in code and brought
+up in seconds.
 
 == Foundations
 
-The underlying protocols are the ones the public internet already runs on. Cloud
-networks carry traffic over xref:internet-protocol.adoc[*IP*], segment their
-address space with xref:cidr.adoc[*CIDR*] blocks, and exchange routes between
-regions and on-premises data centers using
-xref:border-gateway-protocol.adoc[*BGP*]. What distinguishes cloud networking
-from running the same protocols on owned hardware is the consumption model. A
-customer provisions a subnet, attaches a route table, or opens a port through an
-API or xref:infrastructure-as-code.adoc[*infrastructure as code*], and pays only
-for the capacity actually used.
+The underlying protocols are the ones the public internet already runs on. Cloud networks carry
+traffic over xref:internet-protocol.adoc[*IP*], segment their address space with
+xref:cidr.adoc[*CIDR*] blocks, and exchange routes between regions and on-premises data centers
+using xref:border-gateway-protocol.adoc[*BGP*]. What distinguishes cloud networking from running the
+same protocols on owned hardware is the consumption model. A customer provisions a subnet, attaches
+a route table, or opens a port through an API or
+xref:infrastructure-as-code.adoc[*infrastructure as code*], and pays only for the capacity actually
+used.
 
 == Core constructs
 
-Although every xref:cloud-service-providers.adoc[*cloud service provider*] names
-them differently, the building blocks of a cloud network are broadly the same.
+Although every xref:cloud-service-providers.adoc[*cloud service provider*] names them differently,
+the building blocks of a cloud network are broadly the same.
 
-* *Virtual private cloud (VPC).* An isolated, customer-defined address space
-  within a provider's network, subdivided into subnets that are typically pinned
-  to a single xref:availability-zone.adoc[*availability zone*] for fault isolation.
+* *Virtual private cloud (VPC).* An isolated, customer-defined address space within a provider's
+  network, subdivided into subnets that are typically pinned to a single
+  xref:availability-zone.adoc[*availability zone*] for fault isolation.
 
-* *Route tables.* Per-subnet rules that direct traffic, eg. a default route to
-  the internet or a more specific route to a peered network.
+* *Route tables.* Per-subnet rules that direct traffic, eg. a default route to the internet or a
+  more specific route to a peered network.
 
-* *Security groups and network ACLs.* Stateful and stateless packet filters that
-  replace the perimeter xref:firewalls.adoc[*firewall*] with finer-grained rules
-  attached to individual network interfaces.
+* *Security groups and network ACLs.* Stateful and stateless packet filters that replace the
+  perimeter xref:firewalls.adoc[*firewall*] with finer-grained rules attached to individual network
+  interfaces.
 
-* *Internet and NAT gateways.* The boundary between a private subnet and the
-  public internet, providing outbound connectivity without exposing instances
-  directly.
+* *Internet and NAT gateways.* The boundary between a private subnet and the public internet,
+  providing outbound connectivity without exposing instances directly.
 
-* *xref:load-balancing.adoc[Load balancing].* Managed
-  xref:load-balancer.adoc[*load balancers*] that distribute traffic across
-  instances, often across multiple availability zones.
+* *xref:load-balancing.adoc[Load balancing].* Managed xref:load-balancer.adoc[*load balancers*] that
+  distribute traffic across instances, often across multiple availability zones.
 
-* *xref:dns.adoc[DNS].* Managed name resolution, eg. AWS Route 53 or Google
-  Cloud DNS, used to route requests to load balancers and other endpoints.
+* *xref:dns.adoc[DNS].* Managed name resolution, eg. AWS Route 53 or Google Cloud DNS, used to route
+  requests to load balancers and other endpoints.
 
-* *Peering and transit gateways.* Private connectivity between VPCs, between
-  regions, and back to on-premises networks, keeping traffic off the public
-  internet.
+* *Peering and transit gateways.* Private connectivity between VPCs, between regions, and back to
+  on-premises networks, keeping traffic off the public internet.
 
 == North-south and east-west traffic
 
-Cloud networking also mediates the two broad directions traffic flows.
-North-south traffic, between users and the application, is shaped at the edge by
-xref:content-delivery-networks.adoc[*content delivery networks*] for static
-content and by xref:api-gateway.adoc[*API gateways*] for API requests. East-west
-traffic, between services inside the cloud, is increasingly handled by a
-xref:service-mesh.adoc[*service mesh*] that moves routing, retries, and mutual
-TLS out of application code and into a sidecar.
+Cloud networking also mediates the two broad directions traffic flows. North-south traffic, between
+users and the application, is shaped at the edge by
+xref:content-delivery-networks.adoc[*content delivery networks*] for static content and by
+xref:api-gateway.adoc[*API gateways*] for API requests. East-west traffic, between services inside
+the cloud, is increasingly handled by a xref:service-mesh.adoc[*service mesh*] that moves routing,
+retries, and mutual TLS out of application code and into a sidecar.
 
 == Trade-offs
 
-* *Vendor lock-in.* VPCs, route tables, and security group models are
-  proprietary. Migrating a network topology between providers means redesigning
-  it against a different abstraction.
+* *Vendor lock-in.* VPCs, route tables, and security group models are proprietary. Migrating a
+  network topology between providers means redesigning it against a different abstraction.
 
-* *Shared responsibility.* The provider secures the underlying network, but the
-  customer is responsible for the rules they put on top. Misconfigured security
-  groups are a leading cause of cloud data exposures.
+* *Shared responsibility.* The provider secures the underlying network, but the customer is
+  responsible for the rules they put on top. Misconfigured security groups are a leading cause of
+  cloud data exposures.
 
-* *Network dependency.* Every request crosses the provider's network, adding hop
-  latency and a dependency on its availability.
+* *Network dependency.* Every request crosses the provider's network, adding hop latency and a
+  dependency on its availability.
 
-* *Cost surprises.* Inter-AZ and egress traffic are billed where intra-AZ traffic
-  often is not, so a chatty service spread across zones can run up a large bill
-  invisibly.
+* *Cost surprises.* Inter-AZ and egress traffic are billed where intra-AZ traffic often is not, so a
+  chatty service spread across zones can run up a large bill invisibly.
 
 == See also
 
@@ -93,5 +85,4 @@ TLS out of application code and into a sidecar.
 == References
 
 * Amazon Web Services (n.d.).
-  https://aws.amazon.com/what-is/cloud-networking/[What is cloud networking?].
-  AWS.
+  https://aws.amazon.com/what-is/cloud-networking/[What is cloud networking?]. AWS.

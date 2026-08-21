@@ -1,66 +1,59 @@
 = JSON
 
-JSON (JavaScript Object Notation) is a lightweight, text-based format for
-interchanging structured data. It originated as a subset of
-xref:javascript.adoc[*JavaScript*] object literal syntax, but it is
-language-independent. Nearly every modern programming language can parse and
-produce JSON without needing a JavaScript runtime.
+JSON (JavaScript Object Notation) is a lightweight, text-based format for interchanging structured
+data. It originated as a subset of xref:javascript.adoc[*JavaScript*] object literal syntax, but it
+is language-independent. Nearly every modern programming language can parse and produce JSON without
+needing a JavaScript runtime.
 
-Two specifications define it. ECMA-404, published by ECMA International, fixes the
-syntax. RFC 8259, from the IETF, covers the interchange format and registers the
-`application/json` media type. The two are kept in alignment.
+Two specifications define it. ECMA-404, published by ECMA International, fixes the syntax. RFC 8259,
+from the IETF, covers the interchange format and registers the `application/json` media type. The
+two are kept in alignment.
 
 == Data model
 
-JSON is built on a small set of types, mirroring the primitives most languages
-already provide.
+JSON is built on a small set of types, mirroring the primitives most languages already provide.
 
-* *Objects* are unordered collections of name/value pairs, written in braces.
-  Names are strings; values may be any JSON type.
+* *Objects* are unordered collections of name/value pairs, written in braces. Names are strings;
+  values may be any JSON type.
 * *Arrays* are ordered lists of values, written in brackets.
 * *Strings* are double-quoted and Unicode.
-* *Numbers* are a single numeric type. JSON makes no distinction between
-  integers and xref:floating-point-arithmetic.adoc[*floating-point*] values.
+* *Numbers* are a single numeric type. JSON makes no distinction between integers and
+  xref:floating-point-arithmetic.adoc[*floating-point*] values.
 * *Booleans* (`true`, `false`) and *null* round out the set.
 
-The format is human-readable and self-describing, which is a large part of why
-it spread so quickly. It is also strict. There are no comments, no trailing
-commas, no bare identifiers, and strings must use double quotes.
+The format is human-readable and self-describing, which is a large part of why it spread so quickly.
+It is also strict. There are no comments, no trailing commas, no bare identifiers, and strings must
+use double quotes.
 
 == Adoption
 
-For much of the late 1990s and early 2000s, XML was the default interchange
-format for web services. JSON overtook it as the dominant format for web APIs
-because it is far less verbose and maps directly onto the native data structures
-of most languages – objects, arrays, strings, and numbers – without a separate
-parsing layer. Its close alignment with JavaScript was decisive on the web,
-where the browser's native `JSON.parse` and `JSON.stringify` made client-side
-handling trivial.
+For much of the late 1990s and early 2000s, XML was the default interchange format for web services.
+JSON overtook it as the dominant format for web APIs because it is far less verbose and maps
+directly onto the native data structures of most languages – objects, arrays, strings, and numbers –
+without a separate parsing layer. Its close alignment with JavaScript was decisive on the web, where
+the browser's native `JSON.parse` and `JSON.stringify` made client-side handling trivial.
 
-Today JSON is the de facto payload format for xref:rest.adoc[*REST*] and other
-HTTP APIs. It is also the base for several companion formats.
-xref:json-schema.adoc[*JSON Schema*] describes and validates the structure of
-JSON documents. xref:json-ld.adoc[*JSON-LD*] layers linked-data semantics on top
-of JSON, giving plain JSON objects a machine-readable meaning.
-xref:jwt.adoc[*JSON Web Tokens*] carry signed claims as JSON.
+Today JSON is the de facto payload format for xref:rest.adoc[*REST*] and other HTTP APIs. It is also
+the base for several companion formats. xref:json-schema.adoc[*JSON Schema*] describes and validates
+the structure of JSON documents. xref:json-ld.adoc[*JSON-LD*] layers linked-data semantics on top of
+JSON, giving plain JSON objects a machine-readable meaning. xref:jwt.adoc[*JSON Web Tokens*] carry
+signed claims as JSON.
 
 == Trade-offs
 
 JSON's simplicity is also its limitation.
 
 * *Text, not binary.* JSON is verbose relative to binary formats such as
-  xref:protocol-buffers.adoc[*Protocol Buffers*], and parsing it is slower. For
-  high-throughput internal communication, binary formats and frameworks such as
-  xref:grpc.adoc[*gRPC]* are often preferred.
-* *One number type.* Because JSON inherits JavaScript's single numeric type,
-  integers above 2^53 lose precision when round-tripped through a
-  JavaScript-based producer or consumer. Systems exchanging large 64-bit
-  identifiers typically encode them as strings.
-* *No native schema.* JSON describes values, not the shape they must take.
-  Schema and validation are handled by the separate JSON Schema specification.
-* *No comments.* The grammar forbids comments, which makes JSON awkward as a
-  configuration format that humans edit by hand. Formats such as TOML and YAML
-  fill that niche instead.
+  xref:protocol-buffers.adoc[*Protocol Buffers*], and parsing it is slower. For high-throughput
+  internal communication, binary formats and frameworks such as xref:grpc.adoc[*gRPC]* are often
+  preferred.
+* *One number type.* Because JSON inherits JavaScript's single numeric type, integers above 2^53
+  lose precision when round-tripped through a JavaScript-based producer or consumer. Systems
+  exchanging large 64-bit identifiers typically encode them as strings.
+* *No native schema.* JSON describes values, not the shape they must take. Schema and validation are
+  handled by the separate JSON Schema specification.
+* *No comments.* The grammar forbids comments, which makes JSON awkward as a configuration format
+  that humans edit by hand. Formats such as TOML and YAML fill that niche instead.
 
 == See also
 

@@ -1,113 +1,94 @@
 = Single source of truth
 
-*Single source of truth* (SSOT) is a design principle that every piece of
-data, and more broadly every piece of knowledge, in a system should have one
-authoritative representation. All other occurrences are derived copies that
-trace back to that one source and are kept in step with it. The principle
-applies to data in databases, to logic and configuration in code, and to
-information in organizations; the same idea expressed in code is
-xref:dry.adoc[*DRY*], where it is framed as "every piece of knowledge has a
-single, unambiguous, authoritative representation within a system".
+*Single source of truth* (SSOT) is a design principle that every piece of data, and more broadly
+every piece of knowledge, in a system should have one authoritative representation. All other
+occurrences are derived copies that trace back to that one source and are kept in step with it. The
+principle applies to data in databases, to logic and configuration in code, and to information in
+organizations; the same idea expressed in code is xref:dry.adoc[*DRY*], where it is framed as "every
+piece of knowledge has a single, unambiguous, authoritative representation within a system".
 
-A closely related phrase, *single version of the truth*, is used in business
-intelligence and data warehousing to describe the same goal at the level of an
-organization: one agreed, trusted view of each business fact — a customer, a
-product, an order — that every report and dashboard draws from, rather than
-each team maintaining its own spreadsheet. SSOT and "single version of the
-truth" are often used interchangeably, with the latter carrying more of an
-organizational and reporting connotation.
+A closely related phrase, *single version of the truth*, is used in business intelligence and data
+warehousing to describe the same goal at the level of an organization: one agreed, trusted view of
+each business fact — a customer, a product, an order — that every report and dashboard draws from,
+rather than each team maintaining its own spreadsheet. SSOT and "single version of the truth" are
+often used interchangeably, with the latter carrying more of an organizational and reporting
+connotation.
 
 == Why it matters
 
-When a fact lives in more than one place and the copies are not derived from a
-common source, each change to that fact must be made in every copy. Any update
-that misses a copy leaves the system in a state where different parts disagree
-about the same thing. The bugs that follow are not just data errors; they are
-*inconsistencies*, which are harder to find than value errors because each
-copy, taken alone, looks plausible. The cost also grows with the number of
-copies and the distance between the teams that own them.
+When a fact lives in more than one place and the copies are not derived from a common source, each
+change to that fact must be made in every copy. Any update that misses a copy leaves the system in a
+state where different parts disagree about the same thing. The bugs that follow are not just data
+errors; they are *inconsistencies*, which are harder to find than value errors because each copy,
+taken alone, looks plausible. The cost also grows with the number of copies and the distance between
+the teams that own them.
 
-An SSOT design reduces this to a single write site. Updates happen in one
-place, and downstream representations are derived from it, either eagerly
-through propagation or lazily by recomputing on read. The trade is simpler
-correctness on the write side for the cost of building and operating the
+An SSOT design reduces this to a single write site. Updates happen in one place, and downstream
+representations are derived from it, either eagerly through propagation or lazily by recomputing on
+read. The trade is simpler correctness on the write side for the cost of building and operating the
 derivation path.
 
 == Where it shows up
 
-The principle recurs across several domains, each with its own expression of
-the same idea.
+The principle recurs across several domains, each with its own expression of the same idea.
 
-* *Relational modeling.* xref:normalization.adoc[*Normalization*] is the
-  relational expression of SSOT, removing duplicated data so that each fact
-  lives in exactly one row of one table.
-* *Code.* xref:dry.adoc[*DRY*] restates SSOT for knowledge embedded in source
-  — logic, constants, configuration, and documentation — rather than data.
-* *Event-sourced systems.* In
-  xref:event-sourcing.adoc[*event sourcing*] the append-only event log is the
-  single source of truth; the current state of any entity is a projection
-  derived by replaying the events, never an independent copy.
-* *Command/query segregation.* xref:cqrs.adoc[*CQRS*] makes the write model
-  the source of truth and treats every read model as a derived projection,
-  which lets the read side be optimized for queries without compromising the
-  authority of the write side.
-* *Data warehousing and ERP.* An
-  xref:enterprise-resource-planning.adoc[*ERP*] system or operational database
-  is designated the source of truth for the data it owns, and analytical
-  systems draw from it rather than capturing their own. xref:fanout.adoc
-  [*Fanout*] and xref:change-data-capture.adoc[*change data capture*] are the
-  propagation mechanisms that keep the derived representations in step.
-* *Infrastructure as code.* In a GitOps workflow the version-controlled
-  declaration is the source of truth for desired system state, and the
-  runtime converges toward it rather than the other way around.
+* *Relational modeling.* xref:normalization.adoc[*Normalization*] is the relational expression of
+  SSOT, removing duplicated data so that each fact lives in exactly one row of one table.
+* *Code.* xref:dry.adoc[*DRY*] restates SSOT for knowledge embedded in source — logic, constants,
+  configuration, and documentation — rather than data.
+* *Event-sourced systems.* In xref:event-sourcing.adoc[*event sourcing*] the append-only event log
+  is the single source of truth; the current state of any entity is a projection derived by
+  replaying the events, never an independent copy.
+* *Command/query segregation.* xref:cqrs.adoc[*CQRS*] makes the write model the source of truth and
+  treats every read model as a derived projection, which lets the read side be optimized for queries
+  without compromising the authority of the write side.
+* *Data warehousing and ERP.* An xref:enterprise-resource-planning.adoc[*ERP*] system or operational
+  database is designated the source of truth for the data it owns, and analytical systems draw from
+  it rather than capturing their own. xref:fanout.adoc [*Fanout*] and
+  xref:change-data-capture.adoc[*change data capture*] are the propagation mechanisms that keep the
+  derived representations in step.
+* *Infrastructure as code.* In a GitOps workflow the version-controlled declaration is the source of
+  truth for desired system state, and the runtime converges toward it rather than the other way
+  around.
 
 == Trade-offs and deliberate violations
 
-Many common techniques are *deliberate* violations of SSOT, accepted because
-the read-side benefit outweighs the cost of keeping a copy in step.
+Many common techniques are *deliberate* violations of SSOT, accepted because the read-side benefit
+outweighs the cost of keeping a copy in step.
 
-xref:denormalization.adoc[*Denormalization*] copies selected data into
-denormalized tables to avoid joins, and
-xref:materialized-view.adoc[*materialized views*] persist the result of a
-query as a managed redundant copy. xref:caching.adoc[*Caching*] at every layer
-introduces copies whose staleness must be bounded by invalidation or TTL. In
-each case the original remains the source of truth and the copy is a
-performance optimization; the cost is the refresh path and the staleness
+xref:denormalization.adoc[*Denormalization*] copies selected data into denormalized tables to avoid
+joins, and xref:materialized-view.adoc[*materialized views*] persist the result of a query as a
+managed redundant copy. xref:caching.adoc[*Caching*] at every layer introduces copies whose
+staleness must be bounded by invalidation or TTL. In each case the original remains the source of
+truth and the copy is a performance optimization; the cost is the refresh path and the staleness
 window.
 
-In xref:distributed-system.adoc[*distributed systems*] a single physical
-source is rarely achievable. Replication for
-xref:availability.adoc[*availability*] and
-xref:latency.adoc[*latency*] forces copies by design, and the practical
-discipline is to designate one logical source of truth per type of data and
-let replicas converge to it under
-xref:eventual-consistency.adoc[*eventual consistency*]. SSOT in that setting is
-a design agreement about which copy is authoritative, not a guarantee that
-only one copy exists.
+In xref:distributed-system.adoc[*distributed systems*] a single physical source is rarely
+achievable. Replication for xref:availability.adoc[*availability*] and xref:latency.adoc[*latency*]
+forces copies by design, and the practical discipline is to designate one logical source of truth
+per type of data and let replicas converge to it under
+xref:eventual-consistency.adoc[*eventual consistency*]. SSOT in that setting is a design agreement
+about which copy is authoritative, not a guarantee that only one copy exists.
 
 == Common pitfalls
 
-*SSOT is not "one database".* The principle calls for one authoritative
-representation per fact, not one store for the whole system. A system can have
-many databases and still honor SSOT, provided each fact has a designated owner
-and the rest are derived. Conversely, a single database that stores the same
-fact in two tables violates it.
+*SSOT is not "one database".* The principle calls for one authoritative representation per fact, not
+one store for the whole system. A system can have many databases and still honor SSOT, provided each
+fact has a designated owner and the rest are derived. Conversely, a single database that stores the
+same fact in two tables violates it.
 
-*SSOT is not a single point of failure.* A common confusion is to read
-"single" as a reliability risk. The "single" refers to authority, not to
-physical instance; the authoritative source can itself be replicated for
-availability, as long as one logical copy is designated as the writer.
+*SSOT is not a single point of failure.* A common confusion is to read "single" as a reliability
+risk. The "single" refers to authority, not to physical instance; the authoritative source can
+itself be replicated for availability, as long as one logical copy is designated as the writer.
 
-*SSOT is not a xref:singleton.adoc[*singleton*].* The "single" in SSOT refers
-to authoritative representation of data, not to the number of object
-instances. A singleton class that caches a value does not make that value the
-source of truth, and a single source of truth needs no singleton to enforce
-it.
+*SSOT is not a xref:singleton.adoc[*singleton*].* The "single" in SSOT refers to authoritative
+representation of data, not to the number of object instances. A singleton class that caches a value
+does not make that value the source of truth, and a single source of truth needs no singleton to
+enforce it.
 
-*SSOT is not free.* Designating a source of truth commits the system to
-building and maintaining the propagation path that keeps derived copies in
-step. Where that path is expensive or fragile, the principle may be traded
-away deliberately, as in the techniques above.
+*SSOT is not free.* Designating a source of truth commits the system to building and maintaining the
+propagation path that keeps derived copies in step. Where that path is expensive or fragile, the
+principle may be traded away deliberately, as in the techniques above.
 
 == See also
 
@@ -128,4 +109,5 @@ away deliberately, as in the techniques above.
 * Wikipedia contributors (n.d.).
   https://en.wikipedia.org/wiki/Single_source_of_truth[_Single source of truth_]. Wikipedia.
 * Wikipedia contributors (n.d.).
-  https://en.wikipedia.org/wiki/Single_version_of_the_truth[_Single version of the truth_]. Wikipedia.
+  https://en.wikipedia.org/wiki/Single_version_of_the_truth[_Single version of the truth_].
+  Wikipedia.

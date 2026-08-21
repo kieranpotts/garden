@@ -1,93 +1,81 @@
 = Voice-to-text
 
-Voice-to-text (or speech-to-text) software converts spoken audio into written
-text in real time. Because speaking is typically 4–5x faster than typing, these
-tools can significantly accelerate any text-heavy workflow.
+Voice-to-text (or speech-to-text) software converts spoken audio into written text in real time.
+Because speaking is typically 4–5x faster than typing, these tools can significantly accelerate any
+text-heavy workflow.
 
-The underlying technical task is *automatic speech recognition (ASR)*, a
-sub-field of
-xref:natural-language-processing.adoc[*natural language processing*]. ASR is
-distinct from *voice recognition*, which identifies _who_ is speaking rather
-than _what_ they said. A voice-to-text product wraps an ASR model in a
-user-facing application that handles recording, formatting, and editing.
+The underlying technical task is *automatic speech recognition (ASR)*, a sub-field of
+xref:natural-language-processing.adoc[*natural language processing*]. ASR is distinct from
+*voice recognition*, which identifies _who_ is speaking rather than _what_ they said. A
+voice-to-text product wraps an ASR model in a user-facing application that handles recording,
+formatting, and editing.
 
-Modern AI-powered tools go beyond raw transcription. They remove filler words,
-fix grammar, apply punctuation, and format output to suit the context,
-producing clean written prose from natural speech.
+Modern AI-powered tools go beyond raw transcription. They remove filler words, fix grammar, apply
+punctuation, and format output to suit the context, producing clean written prose from natural
+speech.
 
 == How it works
 
-Voice-to-text tools generally work by combining an acoustic model, which
-recognizes the individual sounds, or phonemes, in an audio signal, with a
-xref:large-language-model.adoc[*language model*], which interprets meaning and
-corrects errors using surrounding context.
+Voice-to-text tools generally work by combining an acoustic model, which recognizes the individual
+sounds, or phonemes, in an audio signal, with a xref:large-language-model.adoc[*language model*],
+which interprets meaning and corrects errors using surrounding context.
 
 ASR modeling has moved through three broad phases. Through the 1980s and 1990s,
-*hidden Markov models (HMMs)* treated speech as a sequence of piecewise
-stationary states and dominated the field. From 2009 onward, deep neural
-networks replaced the Gaussian-mixture acoustic models, cutting error rates by
-around 30%. The 2010s brought recurrent architectures trained with
-*connectionist temporal classification (CTC)* — notably Baidu's DeepSpeech —
-and then attention-based encoder-decoder models such as Listen, Attend and
-Spell. The xref:transformer.adoc[*transformer*] architecture now underpins most
-state-of-the-art systems.
+*hidden Markov models (HMMs)* treated speech as a sequence of piecewise stationary states and
+dominated the field. From 2009 onward, deep neural networks replaced the Gaussian-mixture acoustic
+models, cutting error rates by around 30%. The 2010s brought recurrent architectures trained with
+*connectionist temporal classification (CTC)* — notably Baidu's DeepSpeech — and then
+attention-based encoder-decoder models such as Listen, Attend and Spell. The
+xref:transformer.adoc[*transformer*] architecture now underpins most state-of-the-art systems.
 
 == Whisper
 
-Many modern tools are built on or inspired by OpenAI's open-source Whisper
-model, released in September 2022. Whisper is an encoder-decoder transformer
-trained on 680,000 hours of weakly supervised, multilingual audio collected
-from the web. Audio is split into 30-second chunks, converted to a log-Mel
-spectrogram, and encoded; a decoder then predicts the transcript, interleaved
-with special tokens that drive language identification, timestamping,
-transcription, and translation into English from a single model.
+Many modern tools are built on or inspired by OpenAI's open-source Whisper model, released in
+September 2022. Whisper is an encoder-decoder transformer trained on 680,000 hours of weakly
+supervised, multilingual audio collected from the web. Audio is split into 30-second chunks,
+converted to a log-Mel spectrogram, and encoded; a decoder then predicts the transcript, interleaved
+with special tokens that drive language identification, timestamping, transcription, and translation
+into English from a single model.
 
-Because it was trained on a large and diverse dataset rather than tuned to any
-one benchmark, Whisper is markedly more robust to accents, background noise,
-and technical language than specialist models, making around 50% fewer errors
-in zero-shot settings. Its open-source release under the MIT license made it a
-common foundation for downstream products and research.
+Because it was trained on a large and diverse dataset rather than tuned to any one benchmark,
+Whisper is markedly more robust to accents, background noise, and technical language than specialist
+models, making around 50% fewer errors in zero-shot settings. Its open-source release under the MIT
+license made it a common foundation for downstream products and research.
 
 == Trade-offs and pitfalls
 
-Accuracy is the central concern and is usually reported as *word error rate (WER)* — the share of substituted, deleted, and inserted words. WER degrades
-with accents and dialects outside the training distribution, background noise
-and reverberation, domain jargon, code-switching between languages, and the
-disfluencies of spontaneous speech such as "um", false starts, and incomplete
-sentences. Speaker-independent systems, trained on many voices, are harder
-than speaker-dependent ones that adapt to a single user.
+Accuracy is the central concern and is usually reported as *word error rate (WER)* — the share of
+substituted, deleted, and inserted words. WER degrades with accents and dialects outside the
+training distribution, background noise and reverberation, domain jargon, code-switching between
+languages, and the disfluencies of spontaneous speech such as "um", false starts, and incomplete
+sentences. Speaker-independent systems, trained on many voices, are harder than speaker-dependent
+ones that adapt to a single user.
 
-Like other neural models, ASR systems can hallucinate, fabricating plausible
-but incorrect text during silent or noisy stretches, and they offer limited
-control over formatting such as capitalization and punctuation. Latency
-matters for real-time use. Streaming models trade a little accuracy for lower
-delay, while batch transcription favors precision. Privacy is a further
-consideration, since cloud-based transcription sends audio off-device.
-On-device models such as Whisper's smaller variants avoid that at the cost of
-compute and accuracy.
+Like other neural models, ASR systems can hallucinate, fabricating plausible but incorrect text
+during silent or noisy stretches, and they offer limited control over formatting such as
+capitalization and punctuation. Latency matters for real-time use. Streaming models trade a little
+accuracy for lower delay, while batch transcription favors precision. Privacy is a further
+consideration, since cloud-based transcription sends audio off-device. On-device models such as
+Whisper's smaller variants avoid that at the cost of compute and accuracy.
 
 == Examples
 
-* https://wisprflow.ai/[Wispr Flow]: AI dictation app for Mac, Windows, iOS,
-  and Android that works in any text field, with filler-word removal, tone
-  adjustment, voice snippets, and developer-specific features such as
-  camelCase/snake_case parsing.
+* https://wisprflow.ai/[Wispr Flow]: AI dictation app for Mac, Windows, iOS, and Android that works
+  in any text field, with filler-word removal, tone adjustment, voice snippets, and
+  developer-specific features such as camelCase/snake_case parsing.
 
-* Whisper itself, run locally or via API, underpins many transcription products
-  and is the basis for derivatives such as the
-  https://github.com/openai/whisper[reference implementation] and
+* Whisper itself, run locally or via API, underpins many transcription products and is the basis for
+  derivatives such as the https://github.com/openai/whisper[reference implementation] and
   https://github.com/argmaxinc/WhisperKit[WhisperKit].
 
-* Built-in dictation in macOS, Windows, iOS, and Android, and cloud ASR APIs
-  from Google, Microsoft, and Amazon, power everything from operating-system
-  voice typing to subtitling and xref:ai-assistant.adoc[*AI assistant*] voice
-  input.
+* Built-in dictation in macOS, Windows, iOS, and Android, and cloud ASR APIs from Google, Microsoft,
+  and Amazon, power everything from operating-system voice typing to subtitling and
+  xref:ai-assistant.adoc[*AI assistant*] voice input.
 
-Voice-to-text underpins a range of applications beyond dictation: meeting and
-lecture transcription, automatic subtitling and captioning, voicemail-to-text,
-and accessibility support for users who cannot easily type. As an audio
-modality, it is one of the inputs a xref:multimodal-ai.adoc[*multimodal AI*]
-system can combine with text and images.
+Voice-to-text underpins a range of applications beyond dictation: meeting and lecture transcription,
+automatic subtitling and captioning, voicemail-to-text, and accessibility support for users who
+cannot easily type. As an audio modality, it is one of the inputs a
+xref:multimodal-ai.adoc[*multimodal AI*] system can combine with text and images.
 
 == See also
 
@@ -101,4 +89,5 @@ system can combine with text and images.
 == References
 
 * Radford, A. et al. (2022).
-  https://arxiv.org/abs/2212.04356[_Robust Speech Recognition via Large-Scale Weak Supervision_]. OpenAI.
+  https://arxiv.org/abs/2212.04356[_Robust Speech Recognition via Large-Scale Weak Supervision_].
+  OpenAI.

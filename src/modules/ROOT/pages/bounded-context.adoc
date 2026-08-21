@@ -1,47 +1,38 @@
 = Bounded context
 
-A bounded context is a xref:domain-driven-design.adoc[*domain-driven design*]
-concept that defines the boundary within which a particular
-xref:domain-model.adoc[*domain model*] and its
+A bounded context is a xref:domain-driven-design.adoc[*domain-driven design*] concept that defines
+the boundary within which a particular xref:domain-model.adoc[*domain model*] and its
 xref:ubiquitous-language.adoc[*ubiquitous language*] apply.
 
-Inside a bounded context, every term has exactly one meaning and every entity
-has a consistent representation. Across bounded contexts, the same real-world
-concept may be modeled differently – a "customer" in a billing context carries
-payment data, while the same person in a support context carries ticket history.
-The boundary makes each model internally consistent without forcing a single
+Inside a bounded context, every term has exactly one meaning and every entity has a consistent
+representation. Across bounded contexts, the same real-world concept may be modeled differently – a
+"customer" in a billing context carries payment data, while the same person in a support context
+carries ticket history. The boundary makes each model internally consistent without forcing a single
 unified model across an entire business domain.
 
-Bounded contexts are the primary mechanism in DDD's strategic design for
-managing complexity in large domains. A complex business is decomposed into
-subdomains, and each subdomain (or group of closely related subdomains) is
-assigned a bounded context. The bounded context becomes the unit of autonomy. It
-maps to a team, a codebase, a
-xref:deployment-pipeline.adoc[*deployment pipeline*], and potentially a set of
-xref:microservices.adoc[*microservices*]. Aligning the context boundary with the
-team boundary is an application of xref:conways-law.adoc[*Conway's law*]: the
-communication structure of the team is made to match the boundary the model
-needs.
-xref:service-oriented-architecture.adoc[*Service-oriented architecture*]
-benefits when service boundaries align with bounded contexts, since each service
-then owns a coherent slice of the domain.
+Bounded contexts are the primary mechanism in DDD's strategic design for managing complexity in
+large domains. A complex business is decomposed into subdomains, and each subdomain (or group of
+closely related subdomains) is assigned a bounded context. The bounded context becomes the unit of
+autonomy. It maps to a team, a codebase, a xref:deployment-pipeline.adoc[*deployment pipeline*], and
+potentially a set of xref:microservices.adoc[*microservices*]. Aligning the context boundary with
+the team boundary is an application of xref:conways-law.adoc[*Conway's law*]: the communication
+structure of the team is made to match the boundary the model needs.
+xref:service-oriented-architecture.adoc[*Service-oriented architecture*] benefits when service
+boundaries align with bounded contexts, since each service then owns a coherent slice of the domain.
 
-The relationships between bounded contexts are described on a _context map_.
-Eric Evans defined a set of named patterns for these relationships – including
-_shared kernel_, _customer/supplier_, _conformist_, and _anti-corruption layer_
-– that characterize how one context's model relates to another's and how teams
-coordinate across the boundary. An *anti-corruption layer (ACL)* translates
-between the models of two contexts so that one context's terminology and
-assumptions do not leak into the other.
+The relationships between bounded contexts are described on a _context map_. Eric Evans defined a
+set of named patterns for these relationships – including _shared kernel_, _customer/supplier_,
+_conformist_, and _anti-corruption layer_ – that characterize how one context's model relates to
+another's and how teams coordinate across the boundary. An *anti-corruption layer (ACL)* translates
+between the models of two contexts so that one context's terminology and assumptions do not leak
+into the other.
 
-In xref:ontology.adoc[*ontology*] terms, a bounded context defines the scope of
-an ontology – a coherent set of concepts and their relationships. A system's
-complexity grows not so much from the number of subdomains as from the number of
-bounded contexts and the complexity of the mappings between them. Keeping the
-number of contexts small and their relationships simple is a key goal of
+In xref:ontology.adoc[*ontology*] terms, a bounded context defines the scope of an ontology – a
+coherent set of concepts and their relationships. A system's complexity grows not so much from the
+number of subdomains as from the number of bounded contexts and the complexity of the mappings
+between them. Keeping the number of contexts small and their relationships simple is a key goal of
 strategic design.
 
-Bounded contexts also define the ownership boundary in a
-xref:data-mesh.adoc[*data mesh*], where each domain team owns its analytical
-data products end to end. The context boundary, the team boundary, and the data
-ownership boundary are made to coincide.
+Bounded contexts also define the ownership boundary in a xref:data-mesh.adoc[*data mesh*], where
+each domain team owns its analytical data products end to end. The context boundary, the team
+boundary, and the data ownership boundary are made to coincide.

@@ -1,25 +1,22 @@
 = Protocol Buffers
 
-Protocol Buffers (protobuf) is Google's language- and platform-neutral mechanism
-for serializing structured data. It pairs a small
-xref:interface-definition-language.adoc[*interface definition language (IDL)*]
-with a compact binary wire format and a compiler that generates typed
-serialization code for many programming languages. Google developed it
-internally in the early 2000s and open-sourced it; it is now the dominant
-binary serialization format for internal service-to-service communication and
-the data format underpinning xref:grpc.adoc[*gRPC*].
+Protocol Buffers (protobuf) is Google's language- and platform-neutral mechanism for serializing
+structured data. It pairs a small
+xref:interface-definition-language.adoc[*interface definition language (IDL)*] with a compact binary
+wire format and a compiler that generates typed serialization code for many programming languages.
+Google developed it internally in the early 2000s and open-sourced it; it is now the dominant binary
+serialization format for internal service-to-service communication and the data format underpinning
+xref:grpc.adoc[*gRPC*].
 
-The design goal is the same one that drove earlier IDL systems such as CORBA
-and DCE/RPC: fix the contract for exchanged data in one place, in a form no
-single language owns, and generate the glue code from it. Protocol Buffers
-differs from those systems in leaning hard on binary encoding for performance
-and on simple, codified rules for schema evolution.
+The design goal is the same one that drove earlier IDL systems such as CORBA and DCE/RPC: fix the
+contract for exchanged data in one place, in a form no single language owns, and generate the glue
+code from it. Protocol Buffers differs from those systems in leaning hard on binary encoding for
+performance and on simple, codified rules for schema evolution.
 
 == Schema
 
-A Protocol Buffers schema is written in a `.proto` file. It declares messages
-– typed records of named fields – and, optionally, services whose methods
-exchange those messages.
+A Protocol Buffers schema is written in a `.proto` file. It declares messages – typed records of
+named fields – and, optionally, services whose methods exchange those messages.
 
 ----
 syntax = "proto3";
@@ -36,120 +33,106 @@ message GetBookRequest {
 }
 ----
 
-Each field has a type, a name, and a numbered *tag*. The tag is what identifies
-the field on the wire, not the name. Tags are stable for the lifetime of the
-schema: renumbering a field is a breaking change, because existing encoded
-messages still carry the old numbers. The tag is also where the field's
-*wire type* is encoded, which tells the parser how to read the following bytes.
+Each field has a type, a name, and a numbered *tag*. The tag is what identifies the field on the
+wire, not the name. Tags are stable for the lifetime of the schema: renumbering a field is a
+breaking change, because existing encoded messages still carry the old numbers. The tag is also
+where the field's *wire type* is encoded, which tells the parser how to read the following bytes.
 
-The `proto3` dialect is the modern default. The older `proto2` syntax keeps
-explicit presence tracking and required-field semantics that `proto3` dropped
-in the name of simplicity and evolvability.
+The `proto3` dialect is the modern default. The older `proto2` syntax keeps explicit presence
+tracking and required-field semantics that `proto3` dropped in the name of simplicity and
+evolvability.
 
 == Encoding
 
-Protocol Buffers encodes messages as a sequence of tag-value pairs. Most
-fields use *varint* encoding, which uses only as many bytes as the value needs:
-the integer `1` occupies a single byte. Field values are not delimited; the
-parser reads the wire type from the tag to know how long each value is. Fields
-absent from a message are simply not encoded – there is no on-wire marker for a
+Protocol Buffers encodes messages as a sequence of tag-value pairs. Most fields use *varint*
+encoding, which uses only as many bytes as the value needs: the integer `1` occupies a single byte.
+Field values are not delimited; the parser reads the wire type from the tag to know how long each
+value is. Fields absent from a message are simply not encoded – there is no on-wire marker for a
 missing field.
 
-The result is a payload typically 3–10x smaller than the equivalent
-xref:json.adoc[*JSON*], and faster to serialize and deserialize, because the
-parser walks a fixed binary layout rather than scanning and interpreting text.
-The trade-off is the obvious one: the bytes are not human-readable, and a
-reader needs the `.proto` schema to interpret them.
+The result is a payload typically 3–10x smaller than the equivalent xref:json.adoc[*JSON*], and
+faster to serialize and deserialize, because the parser walks a fixed binary layout rather than
+scanning and interpreting text. The trade-off is the obvious one: the bytes are not human-readable,
+and a reader needs the `.proto` schema to interpret them.
 
 == Code generation
 
-The `protoc` compiler reads a `.proto` file and emits typed code for each
-target language – Go, Java, Python, C++, TypeScript, Ruby, C#, and many
-others. The generated code provides a class or struct for each message, with
-accessors, serialization, and deserialization built in. Developers call into
-generated methods; they never hand-write marshalling code.
+The `protoc` compiler reads a `.proto` file and emits typed code for each target language – Go,
+Java, Python, C++, TypeScript, Ruby, C#, and many others. The generated code provides a class or
+struct for each message, with accessors, serialization, and deserialization built in. Developers
+call into generated methods; they never hand-write marshalling code.
 
-This is what makes Protocol Buffers polyglot. A service written in Go and a
-client written in Java can interoperate because both sides were generated from
-the same `.proto` file. The same property is what makes it the IDL of choice
-for xref:grpc.adoc[*gRPC*], which generates client and server stubs from
-service definitions in the same file.
+This is what makes Protocol Buffers polyglot. A service written in Go and a client written in Java
+can interoperate because both sides were generated from the same `.proto` file. The same property is
+what makes it the IDL of choice for xref:grpc.adoc[*gRPC*], which generates client and server stubs
+from service definitions in the same file.
 
 == Schema evolution
 
-Protocol Buffers is engineered for backward- and forward-compatible change.
-The rules are part of the format, not a convention layered on top.
+Protocol Buffers is engineered for backward- and forward-compatible change. The rules are part of
+the format, not a convention layered on top.
 
-* *Adding a field* is safe. Old readers ignore unknown tags; new readers see
-  the default value when the field is absent.
-* *Removing a field* is safe only if its tag is *reserved*, so a future field
-  cannot reuse the number and be misread from old messages.
-* *Changing a field's type* is allowed only between wire-compatible types
-  (eg. `int32` to `int64`). Changing the wire type breaks old messages.
-* *Renaming a field* is always safe, because the wire format keys on the tag,
-  not the name.
+* *Adding a field* is safe. Old readers ignore unknown tags; new readers see the default value when
+  the field is absent.
+* *Removing a field* is safe only if its tag is *reserved*, so a future field cannot reuse the
+  number and be misread from old messages.
+* *Changing a field's type* is allowed only between wire-compatible types (eg. `int32` to `int64`).
+  Changing the wire type breaks old messages.
+* *Renaming a field* is always safe, because the wire format keys on the tag, not the name.
 
-These rules are why Protocol Buffers scales to systems with many independent
-services releasing on their own schedules. A producer can add fields without
-coordinating with every consumer; a consumer can be updated ahead of the
-producers it talks to.
+These rules are why Protocol Buffers scales to systems with many independent services releasing on
+their own schedules. A producer can add fields without coordinating with every consumer; a consumer
+can be updated ahead of the producers it talks to.
 
 == Protocol Buffers and JSON
 
-The TODO that prompted this entry asked for the comparison with JSON. The two
-formats serve overlapping but distinct needs.
+The TODO that prompted this entry asked for the comparison with JSON. The two formats serve
+overlapping but distinct needs.
 
-*Protocol Buffers* is binary, schema-bound, and code-generated. It is small on
-the wire, fast to parse, and self-documenting only when the `.proto` file is
-available. It shines for internal, high-throughput communication where both
-ends are under the same engineering control.
+*Protocol Buffers* is binary, schema-bound, and code-generated. It is small on the wire, fast to
+parse, and self-documenting only when the `.proto` file is available. It shines for internal,
+high-throughput communication where both ends are under the same engineering control.
 
-*JSON* is text, schema-optional, and dynamically parsed. It is human-readable,
-trivial to produce and consume from any language, and the default for
-public-facing HTTP APIs and browser-side data. Its cost is verbosity, slower
-parsing, and a single numeric type that loses precision on large 64-bit
-integers.
+*JSON* is text, schema-optional, and dynamically parsed. It is human-readable, trivial to produce
+and consume from any language, and the default for public-facing HTTP APIs and browser-side data.
+Its cost is verbosity, slower parsing, and a single numeric type that loses precision on large
+64-bit integers.
 
-The same system often uses both: Protocol Buffers on the hot internal paths
-where every byte and millisecond matters, JSON at the edges where
-interoperability and debuggability matter more. Recent versions of Protocol
-Buffers ship a canonical JSON mapping, so a single `.proto` schema can be
+The same system often uses both: Protocol Buffers on the hot internal paths where every byte and
+millisecond matters, JSON at the edges where interoperability and debuggability matter more. Recent
+versions of Protocol Buffers ship a canonical JSON mapping, so a single `.proto` schema can be
 serialized to either format.
 
 == Where it appears
 
-Protocol Buffers is the IDL and serialization format for
-xref:grpc.adoc[*gRPC*], Google's internal communication mechanism of choice
-and the basis for many open-source microservice stacks. Beyond gRPC, it is
-used as a storage format (Google's Spanner and various internal systems store
-protobuf-encoded rows) and as the interchange format for protocols such as
-the xref:agent2agent.adoc[*Agent2Agent*] data model.
+Protocol Buffers is the IDL and serialization format for xref:grpc.adoc[*gRPC*], Google's internal
+communication mechanism of choice and the basis for many open-source microservice stacks. Beyond
+gRPC, it is used as a storage format (Google's Spanner and various internal systems store
+protobuf-encoded rows) and as the interchange format for protocols such as the
+xref:agent2agent.adoc[*Agent2Agent*] data model.
 
 == Trade-offs
 
-* *Performance.* Binary encoding and code generation make protobuf faster and
-  smaller than text formats on hot paths.
-* *Strong contract.* The `.proto` file is a single source of truth from which
-  clients, servers, and documentation can all be generated.
+* *Performance.* Binary encoding and code generation make protobuf faster and smaller than text
+  formats on hot paths.
+* *Strong contract.* The `.proto` file is a single source of truth from which clients, servers, and
+  documentation can all be generated.
 * *Polyglot.* The same schema compiles to typed code in many languages.
-* *Not human-readable.* Debugging raw protobuf payloads needs tooling and the
-  schema. JSON, by contrast, can be read in any text editor.
-* *Toolchain weight.* Every build must run `protoc`. Schema changes must
-  respect the evolution rules to keep compatibility.
-* *Schema coupling.* Producer and consumer must agree on the schema, which is
-  a tighter coupling than JSON's loose, ad-hoc shape.
+* *Not human-readable.* Debugging raw protobuf payloads needs tooling and the schema. JSON, by
+  contrast, can be read in any text editor.
+* *Toolchain weight.* Every build must run `protoc`. Schema changes must respect the evolution rules
+  to keep compatibility.
+* *Schema coupling.* Producer and consumer must agree on the schema, which is a tighter coupling
+  than JSON's loose, ad-hoc shape.
 
 == See also
 
-* xref:interface-definition-language.adoc[*Interface definition language (IDL)*]:
-  the category of specification language that `.proto` files belong to.
-* xref:grpc.adoc[*gRPC*]: the RPC framework that uses Protocol Buffers as its
-  IDL and wire format.
-* xref:remote-procedure-call.adoc[*Remote procedure call (RPC)*]: the protocol
-  family Protocol Buffers was built to support.
-* xref:json.adoc[*JSON*]: the text-based alternative most often contrasted with
-  Protocol Buffers.
-* xref:json-schema.adoc[*JSON Schema*]: the schema approach for JSON, in
-  contrast to Protocol Buffers' schema-as-format.
-* xref:agent2agent.adoc[*Agent2Agent*]: a protocol whose data model is defined
-  in Protocol Buffers.
+* xref:interface-definition-language.adoc[*Interface definition language (IDL)*]: the category of
+  specification language that `.proto` files belong to.
+* xref:grpc.adoc[*gRPC*]: the RPC framework that uses Protocol Buffers as its IDL and wire format.
+* xref:remote-procedure-call.adoc[*Remote procedure call (RPC)*]: the protocol family Protocol
+  Buffers was built to support.
+* xref:json.adoc[*JSON*]: the text-based alternative most often contrasted with Protocol Buffers.
+* xref:json-schema.adoc[*JSON Schema*]: the schema approach for JSON, in contrast to Protocol
+  Buffers' schema-as-format.
+* xref:agent2agent.adoc[*Agent2Agent*]: a protocol whose data model is defined in Protocol Buffers.

@@ -1,99 +1,85 @@
 = Spatial databases
 
-A spatial database is a database optimized to store and query data representing
-objects defined in a geometric space — points, lines, and polygons, along with
-more complex shapes such as multi-polygons and geometry collections. Where a
-conventional database treats each column as an atomic value, a spatial
-database treats a geometry as a first-class value with its own operators,
-indexes, and constraints.
+A spatial database is a database optimized to store and query data representing objects defined in a
+geometric space — points, lines, and polygons, along with more complex shapes such as multi-polygons
+and geometry collections. Where a conventional database treats each column as an atomic value, a
+spatial database treats a geometry as a first-class value with its own operators, indexes, and
+constraints.
 
-Spatial databases are usually implemented as extensions to general-purpose
-database systems rather than as standalone engines. Most commonly,
-xref:relational-databases.adoc[*relational databases*] provide the underlying
-storage, query planner, and transaction machinery, and a spatial extension
-layer adds a geometry type, spatial functions, and spatial
-xref:database-indexes.adoc[*indexes*]. The Open Geospatial Consortium (OGC)
-Simple Features for SQL standard, and the corresponding SQL/MM Part 3: Spatial
-clause of the xref:sql.adoc[*SQL*] standard, codify the geometry types,
-predicates, and functions that a conforming spatial database should expose.
+Spatial databases are usually implemented as extensions to general-purpose database systems rather
+than as standalone engines. Most commonly, xref:relational-databases.adoc[*relational databases*]
+provide the underlying storage, query planner, and transaction machinery, and a spatial extension
+layer adds a geometry type, spatial functions, and spatial xref:database-indexes.adoc[*indexes*].
+The Open Geospatial Consortium (OGC) Simple Features for SQL standard, and the corresponding SQL/MM
+Part 3: Spatial clause of the xref:sql.adoc[*SQL*] standard, codify the geometry types, predicates,
+and functions that a conforming spatial database should expose.
 
 == Spatial queries
 
-The queries a spatial database is built to answer go beyond ordinary key
-lookups. The common families are the following.
+The queries a spatial database is built to answer go beyond ordinary key lookups. The common
+families are the following.
 
-* *Containment and within.* Does one geometry contain another, or lie inside
-  another? Used to find which administrative boundary a given point falls in.
-* *Intersection and overlap.* Do two geometries share any points? Used to find
-  features crossed by a proposed road or pipeline.
-* *Distance and proximity.* How far apart are two geometries, or which
-  features lie within a given radius of a point? Backs the "find nearby"
-  queries behind mapping and ridesharing applications.
-* *Nearest-neighbour.* Which K features are closest to a given point, ordered
-  by distance?
-* *Bounding-box and window queries.* Which geometries intersect a rectangular
-  region of interest?
+* *Containment and within.* Does one geometry contain another, or lie inside another? Used to find
+  which administrative boundary a given point falls in.
+* *Intersection and overlap.* Do two geometries share any points? Used to find features crossed by a
+  proposed road or pipeline.
+* *Distance and proximity.* How far apart are two geometries, or which features lie within a given
+  radius of a point? Backs the "find nearby" queries behind mapping and ridesharing applications.
+* *Nearest-neighbour.* Which K features are closest to a given point, ordered by distance?
+* *Bounding-box and window queries.* Which geometries intersect a rectangular region of interest?
 
 == Spatial indexing
 
-Conventional database indexes such as B-trees order values along a single
-dimension. Coordinates are two-dimensional (or three, with elevation; four,
-with time), so a B-tree on latitude and longitude separately cannot answer a
-two-dimensional range query without scanning one dimension wholesale. Spatial
-databases use index structures that partition space itself.
+Conventional database indexes such as B-trees order values along a single dimension. Coordinates are
+two-dimensional (or three, with elevation; four, with time), so a B-tree on latitude and longitude
+separately cannot answer a two-dimensional range query without scanning one dimension wholesale.
+Spatial databases use index structures that partition space itself.
 
-* *R-trees* group nearby geometries into *minimum bounding rectangles (MBRs)*
-  and nest those rectangles recursively. A query for geometries intersecting a
-  region descends only the branches whose MBRs overlap the query region,
-  pruning the rest. R-trees are the default in PostGIS, Oracle Spatial, and
-  SQLite SpatiaLite.
-* *Quadtrees* recursively subdivide a two-dimensional region into four
-  quadrants, stopping when a cell holds few enough geometries. They suit
-  uniformly distributed point data.
-* *Space-filling curves* such as the Z-order (Morton) curve linearise
-  two-dimensional coordinates into a single sortable key, letting a standard
-  B-tree answer spatial range queries approximately.
+* *R-trees* group nearby geometries into *minimum bounding rectangles (MBRs)* and nest those
+  rectangles recursively. A query for geometries intersecting a region descends only the branches
+  whose MBRs overlap the query region, pruning the rest. R-trees are the default in PostGIS, Oracle
+  Spatial, and SQLite SpatiaLite.
+* *Quadtrees* recursively subdivide a two-dimensional region into four quadrants, stopping when a
+  cell holds few enough geometries. They suit uniformly distributed point data.
+* *Space-filling curves* such as the Z-order (Morton) curve linearise two-dimensional coordinates
+  into a single sortable key, letting a standard B-tree answer spatial range queries approximately.
   xref:geohashing.adoc[*Geohashing*] is one application of this idea.
 
 == Coordinate reference systems
 
-A coordinate pair only means something relative to a *coordinate reference system (CRS)* — the model that maps coordinates to positions on the Earth.
-Spatial databases store an integer identifier, the *spatial reference system identifier (SRID)*, alongside each geometry to record which CRS it uses. The
-EPSG registry is the conventional source of SRID values, eg. `EPSG:4326` for
-WGS 84 latitude/longitude, or `EPSG:3857` for the Web Mercator projection used
-by online map tiles.
+A coordinate pair only means something relative to a *coordinate reference system (CRS)* — the model
+that maps coordinates to positions on the Earth. Spatial databases store an integer identifier, the
+*spatial reference system identifier (SRID)*, alongside each geometry to record which CRS it uses.
+The EPSG registry is the conventional source of SRID values, eg. `EPSG:4326` for WGS 84
+latitude/longitude, or `EPSG:3857` for the Web Mercator projection used by online map tiles.
 
-Operations between geometries require both to be in the same CRS, or one must
-be transformed into the other's. Spatial databases provide functions such as
-`ST_Transform` for this. Getting the CRS wrong is a common and silent source
-of error — distance computed between two points stored in projected meters
-differs by orders of magnitude from distance between the same points stored
-in geographic degrees.
+Operations between geometries require both to be in the same CRS, or one must be transformed into
+the other's. Spatial databases provide functions such as `ST_Transform` for this. Getting the CRS
+wrong is a common and silent source of error — distance computed between two points stored in
+projected meters differs by orders of magnitude from distance between the same points stored in
+geographic degrees.
 
 == Geographic databases
 
-A *geographic database* (or *geodatabase*) is a category of spatial database
-in which the spatial data represents geographic data (or geodata) – data
-representing locations on Earth. Geodatabases are the storage layer of
-*geographic information systems (GIS)*. The distinction is mostly one of
-domain. A spatial database may hold the floor plan of a building or the layout
-of a VLSI chip, neither of which is geographic, while a geodatabase is
-concerned with the Earth.
+A *geographic database* (or *geodatabase*) is a category of spatial database in which the spatial
+data represents geographic data (or geodata) – data representing locations on Earth. Geodatabases
+are the storage layer of *geographic information systems (GIS)*. The distinction is mostly one of
+domain. A spatial database may hold the floor plan of a building or the layout of a VLSI chip,
+neither of which is geographic, while a geodatabase is concerned with the Earth.
 
 == Notable implementations
 
-* *PostGIS* is the spatial extension for PostgreSQL, and the _de facto_ open
-  source spatial database. It implements the OGC Simple Features standard and
-  adds raster, topology, and geography (geodetic) types.
-* *Oracle Spatial* (licensed separately from Oracle Database) provides spatial
-  types, indexing, and analysis aimed at enterprise GIS workloads.
-* *SpatiaLite* is the spatial extension for SQLite, providing a lightweight,
-  embeddable spatial database.
-* *SQL Server Spatial* ships built into Microsoft SQL Server as the `geometry`
-  and `geography` types.
-* Several NoSQL stores, including MongoDB and Elasticsearch, support
-  geo-queries and geo-indexes, though without the full OGC type and predicate
-  model.
+* *PostGIS* is the spatial extension for PostgreSQL, and the _de facto_ open source spatial
+  database. It implements the OGC Simple Features standard and adds raster, topology, and geography
+  (geodetic) types.
+* *Oracle Spatial* (licensed separately from Oracle Database) provides spatial types, indexing, and
+  analysis aimed at enterprise GIS workloads.
+* *SpatiaLite* is the spatial extension for SQLite, providing a lightweight, embeddable spatial
+  database.
+* *SQL Server Spatial* ships built into Microsoft SQL Server as the `geometry` and `geography`
+  types.
+* Several NoSQL stores, including MongoDB and Elasticsearch, support geo-queries and geo-indexes,
+  though without the full OGC type and predicate model.
 
 == See also
 

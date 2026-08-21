@@ -1,113 +1,94 @@
 = Multi-tenant
 
-A multi-tenant system is one in which a single deployment of software serves
-multiple distinct customers, or *tenants*, from shared infrastructure. A
-tenant is a group of users who share a common view of the system and a common
-data space, typically an organization, company, or business unit. Tenants are
-distinct from users. A single tenant usually contains many users, and those
-users expect their data and configuration to be isolated from every other
-tenant's.
+A multi-tenant system is one in which a single deployment of software serves multiple distinct
+customers, or *tenants*, from shared infrastructure. A tenant is a group of users who share a common
+view of the system and a common data space, typically an organization, company, or business unit.
+Tenants are distinct from users. A single tenant usually contains many users, and those users expect
+their data and configuration to be isolated from every other tenant's.
 
 Multi-tenancy is the architectural property that makes
-xref:software-as-a-service.adoc[*Software-as-a-service (SaaS)*] economically
-viable. By sharing one deployment across many tenants, the provider spreads
-infrastructure and operational costs that would otherwise be paid per customer.
-The alternative, a dedicated deployment per tenant, is sometimes called
-single-tenant or *silo* tenancy. It is simpler to reason about but loses the
-cost and operational advantages of sharing.
+xref:software-as-a-service.adoc[*Software-as-a-service (SaaS)*] economically viable. By sharing one
+deployment across many tenants, the provider spreads infrastructure and operational costs that would
+otherwise be paid per customer. The alternative, a dedicated deployment per tenant, is sometimes
+called single-tenant or *silo* tenancy. It is simpler to reason about but loses the cost and
+operational advantages of sharing.
 
 == Tenancy isolation models
 
-Multi-tenancy is not a single design but a spectrum of *isolation models* that
-trade cost efficiency against isolation between tenants. The common models, in
-rough order from most shared to most isolated, are the following.
+Multi-tenancy is not a single design but a spectrum of *isolation models* that trade cost efficiency
+against isolation between tenants. The common models, in rough order from most shared to most
+isolated, are the following.
 
-* *Shared everything.* One application instance and one database serve all
-  tenants. Rows are distinguished by a tenant identifier column on every
-  table. This is the cheapest model to operate and the most demanding to get
-  right, because a bug in tenant scoping exposes every tenant's data to every
-  other.
+* *Shared everything.* One application instance and one database serve all tenants. Rows are
+  distinguished by a tenant identifier column on every table. This is the cheapest model to operate
+  and the most demanding to get right, because a bug in tenant scoping exposes every tenant's data
+  to every other.
 
-* *Shared database, separate schemas.* One database engine serves all tenants,
-  but each tenant gets its own schema or namespace. Logical separation is
-  stronger than a discriminator column, while storage and compute are still
-  shared.
+* *Shared database, separate schemas.* One database engine serves all tenants, but each tenant gets
+  its own schema or namespace. Logical separation is stronger than a discriminator column, while
+  storage and compute are still shared.
 
-* *Database-per-tenant.* A shared application instance connects to a separate
-  database for each tenant. Storage is isolated at the database boundary,
-  which simplifies per-tenant backup, restore, and residency, while compute and
-  deployment remain shared.
+* *Database-per-tenant.* A shared application instance connects to a separate database for each
+  tenant. Storage is isolated at the database boundary, which simplifies per-tenant backup, restore,
+  and residency, while compute and deployment remain shared.
 
-* *Instance- or silo-per-tenant.* Each tenant gets its own deployment of the
-  application and its own data store. This approaches single-tenant
-  architecture but is managed as one product, typically through automation that
-  provisions and upgrades every tenant's stack in lockstep.
+* *Instance- or silo-per-tenant.* Each tenant gets its own deployment of the application and its own
+  data store. This approaches single-tenant architecture but is managed as one product, typically
+  through automation that provisions and upgrades every tenant's stack in lockstep.
 
-These models compose with xref:horizontal-scaling.adoc[*horizontal scaling*]
-techniques. A large multi-tenant system often combines them, running a
-shared-everything core for small tenants and dedicated databases or cells for
-the largest ones, partitioned by xref:sharding.adoc[*shard*] key or tenant
-identifier.
+These models compose with xref:horizontal-scaling.adoc[*horizontal scaling*] techniques. A large
+multi-tenant system often combines them, running a shared-everything core for small tenants and
+dedicated databases or cells for the largest ones, partitioned by xref:sharding.adoc[*shard*] key or
+tenant identifier.
 
 == Isolation and blast radius
 
-The central design tension in multi-tenancy is between the efficiency of
-sharing and the xref:isolation.adoc[*isolation*] each tenant expects. Sharing
-infrastructure means one tenant's behavior can affect another's. A runaway
-query from one tenant can saturate a shared database, and a *noisy neighbor*
-can consume disproportionate CPU or network on a shared application instance.
-The *blast radius* of any failure, whether a bad deployment, a corrupt row, or
-a misconfigured feature flag, is the set of tenants that share the affected
-component.
+The central design tension in multi-tenancy is between the efficiency of sharing and the
+xref:isolation.adoc[*isolation*] each tenant expects. Sharing infrastructure means one tenant's
+behavior can affect another's. A runaway query from one tenant can saturate a shared database, and a
+*noisy neighbor* can consume disproportionate CPU or network on a shared application instance. The
+*blast radius* of any failure, whether a bad deployment, a corrupt row, or a misconfigured feature
+flag, is the set of tenants that share the affected component.
 
 Stronger isolation models shrink the blast radius by reducing what is shared.
-xref:cell-based-architecture.adoc[*Cell-based architecture*] takes this to its
-logical extreme by partitioning the entire stack — compute, storage, and
-network — into cells, often along tenant boundaries, so that a failure in one
-cell cannot reach another. Weaker models accept a larger blast radius in
-exchange for lower cost and simpler operations.
+xref:cell-based-architecture.adoc[*Cell-based architecture*] takes this to its logical extreme by
+partitioning the entire stack — compute, storage, and network — into cells, often along tenant
+boundaries, so that a failure in one cell cannot reach another. Weaker models accept a larger blast
+radius in exchange for lower cost and simpler operations.
 
 == Access control
 
-Sharing infrastructure also raises the stakes on access control. Every request
-must be scoped to the requesting tenant, and every query must carry a tenant
-predicate that the database cannot accidentally drop. See
-xref:authorization.adoc[*authorization*]. In
-xref:role-based-access-controls.adoc[*role-based access control*] deployments,
-the tenant identifier scopes every role lookup, so a role name in one tenant
-is a distinct assignment from the same name in another. An *insecure direct object reference*
-flaw that, in a single-tenant system, only exposes one customer's data to its
-own users becomes a cross-tenant data leak in a multi-tenant system – a
+Sharing infrastructure also raises the stakes on access control. Every request must be scoped to the
+requesting tenant, and every query must carry a tenant predicate that the database cannot
+accidentally drop. See xref:authorization.adoc[*authorization*]. In
+xref:role-based-access-controls.adoc[*role-based access control*] deployments, the tenant identifier
+scopes every role lookup, so a role name in one tenant is a distinct assignment from the same name
+in another. An *insecure direct object reference* flaw that, in a single-tenant system, only exposes
+one customer's data to its own users becomes a cross-tenant data leak in a multi-tenant system – a
 xref:privacy.adoc[*privacy*] failure, not just a security one.
 
 == Enabling technologies
 
 Multi-tenancy at scale is enabled by xref:virtualization.adoc[*virtualization*],
 xref:containerization.adoc[*containerization*], and
-xref:container-orchestration.adoc[*container orchestration*], which make it
-cheap to provision and operate many isolated runtime environments on shared
-hardware. Multi-tenant applications are commonly built as
-xref:microservices.adoc[*microservices*] or other
-xref:service-oriented-architecture.adoc[*service-oriented*] styles so that
-individual components can be scaled and isolated independently of the others.
+xref:container-orchestration.adoc[*container orchestration*], which make it cheap to provision and
+operate many isolated runtime environments on shared hardware. Multi-tenant applications are
+commonly built as xref:microservices.adoc[*microservices*] or other
+xref:service-oriented-architecture.adoc[*service-oriented*] styles so that individual components can
+be scaled and isolated independently of the others.
 
 == See also
 
-* xref:software-as-a-service.adoc[*Software-as-a-service (SaaS)*], the delivery
-  model multitenancy makes economically viable.
-* xref:isolation.adoc[*Isolation*], the design principle the tenancy models
-  trade against cost.
-* xref:cell-based-architecture.adoc[*Cell-based architecture*], whole-system
-  isolation often partitioned by tenant.
-* xref:sharding.adoc[*Sharding*], data partitioning that can implement tenant
-  isolation.
-* xref:authorization.adoc[*Authorization*], which must scope every request to
-  its tenant.
-* xref:horizontal-scaling.adoc[*Horizontal scaling*], with which the tenancy
-  models compose.
-* xref:virtualization.adoc[*Virtualization*] and
-  xref:containerization.adoc[*containerization*], the enabling runtime
-  technologies.
+* xref:software-as-a-service.adoc[*Software-as-a-service (SaaS)*], the delivery model multitenancy
+  makes economically viable.
+* xref:isolation.adoc[*Isolation*], the design principle the tenancy models trade against cost.
+* xref:cell-based-architecture.adoc[*Cell-based architecture*], whole-system isolation often
+  partitioned by tenant.
+* xref:sharding.adoc[*Sharding*], data partitioning that can implement tenant isolation.
+* xref:authorization.adoc[*Authorization*], which must scope every request to its tenant.
+* xref:horizontal-scaling.adoc[*Horizontal scaling*], with which the tenancy models compose.
+* xref:virtualization.adoc[*Virtualization*] and xref:containerization.adoc[*containerization*], the
+  enabling runtime technologies.
 
 == References
 

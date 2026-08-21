@@ -1,55 +1,47 @@
 = Chaos engineering (aka. chaos testing)
 
-Chaos engineering is the discipline of running experiments on a system in order
-to build confidence in its ability to withstand turbulent and unexpected
-conditions. Rather than waiting for failures to surface on their own in
-production, chaos engineering deliberately injects them – a crashed process, a
-severed network link, a saturated disk – to discover weaknesses before they
-cause an outage.
+Chaos engineering is the discipline of running experiments on a system in order to build confidence
+in its ability to withstand turbulent and unexpected conditions. Rather than waiting for failures to
+surface on their own in production, chaos engineering deliberately injects them – a crashed process,
+a severed network link, a saturated disk – to discover weaknesses before they cause an outage.
 
-The practice originated at Netflix, which in 2011 open-sourced
-*Chaos Monkey*, a tool that randomly terminates virtual machine instances in
-production. Netflix had migrated its infrastructure to
-xref:cloud-computing.adoc[*cloud computing*], where instance failures are
-routine, and wanted to prove that its services could tolerate them. Chaos
-Monkey was later joined by a suite of related tools known as the _Simian Army_, each targeting a different failure mode.
+The practice originated at Netflix, which in 2011 open-sourced *Chaos Monkey*, a tool that randomly
+terminates virtual machine instances in production. Netflix had migrated its infrastructure to
+xref:cloud-computing.adoc[*cloud computing*], where instance failures are routine, and wanted to
+prove that its services could tolerate them. Chaos Monkey was later joined by a suite of related
+tools known as the _Simian Army_, each targeting a different failure mode.
 
 == Why it matters
 
-In a xref:distributed-system.adoc[*distributed system*] the number of
-independent components – and therefore the number of ways things can fail – is
-far higher than in a single-node application. Many of these failure modes are
-hidden. A service may depend on another that has never been unavailable in
-practice, so the path that handles its absence is never exercised and may be
-broken without anyone knowing.
+In a xref:distributed-system.adoc[*distributed system*] the number of independent components – and
+therefore the number of ways things can fail – is far higher than in a single-node application. Many
+of these failure modes are hidden. A service may depend on another that has never been unavailable
+in practice, so the path that handles its absence is never exercised and may be broken without
+anyone knowing.
 
-Chaos engineering treats these latent failure paths as a form of technical
-debt that decays silently. Proactively triggering failures surfaces them while
-the blast radius is still controllable, instead of during a peak traffic event
-when the impact is greatest. It is therefore a complement to defensive design
-techniques such as xref:redundancy.adoc[*redundancy*],
-xref:fault-tolerance.adoc[*fault tolerance*] and
-xref:circuit-breaker.adoc[*circuit breakers*], which are only proven to work
-once the failures they guard against have actually occurred.
+Chaos engineering treats these latent failure paths as a form of technical debt that decays
+silently. Proactively triggering failures surfaces them while the blast radius is still
+controllable, instead of during a peak traffic event when the impact is greatest. It is therefore a
+complement to defensive design techniques such as xref:redundancy.adoc[*redundancy*],
+xref:fault-tolerance.adoc[*fault tolerance*] and xref:circuit-breaker.adoc[*circuit breakers*],
+which are only proven to work once the failures they guard against have actually occurred.
 
 == Running an experiment
 
 A chaos experiment follows a small, repeatable loop, summarized in the
-_Principles of Chaos Engineering_ published by the community around the
-practice.
+_Principles of Chaos Engineering_ published by the community around the practice.
 
 . Define a *steady-state hypothesis*. Describe the measurable behavior the
-   system exhibits when it is healthy – eg. error rate below a threshold, or
-   request latency within a band.
+system exhibits when it is healthy – eg. error rate below a threshold, or request latency within a
+band.
 . Inject a real-world failure. Terminate a process, drop or delay network
-   traffic, exhaust a resource, or take down a dependency. The failure should
-   reflect something that genuinely happens in production.
+traffic, exhaust a resource, or take down a dependency. The failure should reflect something that
+genuinely happens in production.
 . Observe whether steady state is maintained. If the system's behavior stays
-   within the hypothesized bounds, the hypothesis holds. If it degrades, a
-   weakness has been found.
+within the hypothesized bounds, the hypothesis holds. If it degrades, a weakness has been found.
 . Expand the blast radius gradually. Start with a single instance or a single
-   availability zone, and only broaden the scope once smaller experiments
-   pass. The goal is to learn, not to break the system for its own sake.
+availability zone, and only broaden the scope once smaller experiments pass. The goal is to learn,
+not to break the system for its own sake.
 
 [NOTE]
 ====
@@ -61,30 +53,26 @@ and the experiment cannot be aborted cleanly. Strong observability is a
 prerequisite, not an afterthought.
 ====
 
-Experiments are most valuable when run against production, or an environment
-closely resembling it. Failures injected into a staging environment may not
-reveal the same weaknesses, because the traffic, data and configuration
-differ. For the same reason, experiments should be automated and run
-continuously, so that new regressions are caught as the system evolves rather
-than during a one-off exercise.
+Experiments are most valuable when run against production, or an environment closely resembling it.
+Failures injected into a staging environment may not reveal the same weaknesses, because the
+traffic, data and configuration differ. For the same reason, experiments should be automated and run
+continuously, so that new regressions are caught as the system evolves rather than during a one-off
+exercise.
 
 == Relationship to other testing
 
-Chaos engineering overlaps with, but is distinct from, conventional testing
-categories. xref:automated-testing.adoc[*Automated testing*] and
-xref:stress-testing.adoc[*stress testing*] validate that the system behaves
-correctly under expected and overload conditions respectively. Chaos
-engineering asks a different question: not whether the system handles load,
-but whether it handles _failure_. The three are complementary. A test suite
-that passes, a stress test that survives, and a chaos experiment that holds
-its steady state together describe a system's resilience more completely than
-any one of them alone.
+Chaos engineering overlaps with, but is distinct from, conventional testing categories.
+xref:automated-testing.adoc[*Automated testing*] and xref:stress-testing.adoc[*stress testing*]
+validate that the system behaves correctly under expected and overload conditions respectively.
+Chaos engineering asks a different question: not whether the system handles load, but whether it
+handles _failure_. The three are complementary. A test suite that passes, a stress test that
+survives, and a chaos experiment that holds its steady state together describe a system's resilience
+more completely than any one of them alone.
 
-Within xref:site-reliability-engineering.adoc[*site reliability engineering*],
-chaos engineering is one of several practices – alongside error budgets and
-blameless postmortems – for steadily improving the reliability of a service
-over time. Planned exercises known as _game days_ bring engineers together to
-run a sequence of chaos experiments against a shared environment, rehearsing
+Within xref:site-reliability-engineering.adoc[*site reliability engineering*], chaos engineering is
+one of several practices – alongside error budgets and blameless postmortems – for steadily
+improving the reliability of a service over time. Planned exercises known as _game days_ bring
+engineers together to run a sequence of chaos experiments against a shared environment, rehearsing
 the team's response as well as the system's.
 
 == See also
@@ -100,5 +88,5 @@ the team's response as well as the system's.
 
 * Ros-Oscar Muñoz, Ariel Jatib, Carlos Marcano, Daniel Ballesteros (2021).
   _Chaos Engineering: A Literature Review_. IEEE Access.
-* Casey Rosenthal, Nora Jones (2020). _Chaos Engineering: System Resilience in
-  Practice_. O'Reilly Media.
+* Casey Rosenthal, Nora Jones (2020). _Chaos Engineering: System Resilience in Practice_. O'Reilly
+  Media.

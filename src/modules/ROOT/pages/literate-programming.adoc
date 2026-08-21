@@ -1,105 +1,85 @@
 = Literate programming
 
-Literate programming is a programming methodology, introduced by Donald
-Knuth in the early 1980s, in which a program is written as a document that
-reads like a piece of technical prose. The author interleaves natural-language
-explanation with fragments of source code, presenting the program in the
-order that best suits a human reader rather than the order a compiler
-requires. A pair of tools then derives two outputs from the single source: a
-typeset document meant to be read, and the machine-compilable source code
-itself.
+Literate programming is a programming methodology, introduced by Donald Knuth in the early 1980s, in
+which a program is written as a document that reads like a piece of technical prose. The author
+interleaves natural-language explanation with fragments of source code, presenting the program in
+the order that best suits a human reader rather than the order a compiler requires. A pair of tools
+then derives two outputs from the single source: a typeset document meant to be read, and the
+machine-compilable source code itself.
 
-Knuth developed the technique while writing _TeX: The Program_, his
-book-length literate implementation of the TeX typesetting system, and
-formalized it in his 1984 paper _Literate Programming_, published in _The Computer Journal_. The toolchain he built for that work, called WEB, pairs
-two programs. `WEAVE` produces a TeX document with the code rendered, indexed,
-and cross-referenced, and `TANGLE` reassembles the code fragments into a
-compilable source file in the order the target language demands. Later
-systems such as CWEB, noweb, and `literate` follow the same two-tool pattern,
-and modern incarnations embed the same idea in *computational notebooks* and
-in Markdown extensions that can _tangle_ fenced code blocks into separate
-files.
+Knuth developed the technique while writing _TeX: The Program_, his book-length literate
+implementation of the TeX typesetting system, and formalized it in his 1984 paper
+_Literate Programming_, published in _The Computer Journal_. The toolchain he built for that work,
+called WEB, pairs two programs. `WEAVE` produces a TeX document with the code rendered, indexed, and
+cross-referenced, and `TANGLE` reassembles the code fragments into a compilable source file in the
+order the target language demands. Later systems such as CWEB, noweb, and `literate` follow the same
+two-tool pattern, and modern incarnations embed the same idea in *computational notebooks* and in
+Markdown extensions that can _tangle_ fenced code blocks into separate files.
 
-The motivating claim is that a program is primarily a piece of communication
-between people, and only secondarily a set of instructions for a machine. This
-is a stance literate programming shares with
-xref:clean-code.adoc[*clean code*], though the two take it in different
-directions. Clean code pursues legibility at the level of names, functions,
-and structure, treating comments as a last resort when the code cannot speak
-for itself. Literate programming moves the prose to the foreground and lets it
-carry the explanation, on the grounds that some designs are easier to convey
-in a paragraph than in a name.
+The motivating claim is that a program is primarily a piece of communication between people, and
+only secondarily a set of instructions for a machine. This is a stance literate programming shares
+with xref:clean-code.adoc[*clean code*], though the two take it in different directions. Clean code
+pursues legibility at the level of names, functions, and structure, treating comments as a last
+resort when the code cannot speak for itself. Literate programming moves the prose to the foreground
+and lets it carry the explanation, on the grounds that some designs are easier to convey in a
+paragraph than in a name.
 
 == How it works
 
 A literate source file is a document, not a code file. The author writes in a
-xref:lightweight-text-markup-languages.adoc[*lightweight markup*] such as TeX
-(in WEB and CWEB) or Markdown (in newer tools), and embeds code in labeled
-chunks. Each chunk has a name and can be referenced elsewhere, so a single
-piece of code can appear in the narrative order the author chooses while being
-emitted in whatever order the target language requires.
+xref:lightweight-text-markup-languages.adoc[*lightweight markup*] such as TeX (in WEB and CWEB) or
+Markdown (in newer tools), and embeds code in labeled chunks. Each chunk has a name and can be
+referenced elsewhere, so a single piece of code can appear in the narrative order the author chooses
+while being emitted in whatever order the target language requires.
 
 Two transformations turn the document into runnable software.
 
-* _Weaving_ produces a formatted document, typically PDF or HTML, with the
-  code typeset, indexed, and cross-referenced. This is the artifact a reader
-  studies.
-* _Tangling_ strips the prose and emits one or more source files in the order
-  the compiler or interpreter expects. This is the artifact the toolchain
-  consumes.
+* _Weaving_ produces a formatted document, typically PDF or HTML, with the code typeset, indexed,
+  and cross-referenced. This is the artifact a reader studies.
+* _Tangling_ strips the prose and emits one or more source files in the order the compiler or
+  interpreter expects. This is the artifact the toolchain consumes.
 
-Because both come from the same source, the documentation and the code cannot
-drift apart in the way they can when the two are kept in separate files. The
-narrative is the program.
+Because both come from the same source, the documentation and the code cannot drift apart in the way
+they can when the two are kept in separate files. The narrative is the program.
 
 == Why it did not take over
 
-Literate programming has always had more admirers than practitioners. The
-technique adds a build step, ties the project to a particular toolchain, and
-asks contributors to learn a markup and a chunk-naming convention before they
-can land a patch. It also sits awkwardly with modern development practices.
-xref:code-conventions.adoc[*Code conventions*] enforced by formatters and
-linters, API documentation generated from docstrings, and pull-request review
-together cover much of the same ground with less ceremony, and most teams have
-reached for those instead.
+Literate programming has always had more admirers than practitioners. The technique adds a build
+step, ties the project to a particular toolchain, and asks contributors to learn a markup and a
+chunk-naming convention before they can land a patch. It also sits awkwardly with modern development
+practices. xref:code-conventions.adoc[*Code conventions*] enforced by formatters and linters, API
+documentation generated from docstrings, and pull-request review together cover much of the same
+ground with less ceremony, and most teams have reached for those instead.
 
-The idea did flourish in one niche. Notebooks such as Jupyter, Org mode's
-Babel, R Markdown, and Quarto are direct descendants: a single document
-interleaves prose, code, and output, and can be executed as a program. They
-trade literate programming's strict separation of reading order from
-execution order for interactivity, and have paid for that trade with
-well-documented reproducibility and version-control problems. The descendants
-are popular where the audience is a researcher rather than a software
-maintainer.
+The idea did flourish in one niche. Notebooks such as Jupyter, Org mode's Babel, R Markdown, and
+Quarto are direct descendants: a single document interleaves prose, code, and output, and can be
+executed as a program. They trade literate programming's strict separation of reading order from
+execution order for interactivity, and have paid for that trade with well-documented reproducibility
+and version-control problems. The descendants are popular where the audience is a researcher rather
+than a software maintainer.
 
 == Literate testing
 
-The same chunk-reference mechanism that lets an author present code out of
-order also lets a test harness pull in only the fragments it needs. Adam Ard
-argues in a 2025 essay that this makes literate programming's most underrated
-application the writing of tests. Because the tangler copies named chunks
-verbatim rather than importing whole modules, a test can substitute a mock
-definition for any function the unit under test calls – including system
-functions in a language like C – without a mocking framework, linker tricks,
-or dependency injection. The test sits beside the code it verifies in the same
-document, and the two share a single source of truth.
+The same chunk-reference mechanism that lets an author present code out of order also lets a test
+harness pull in only the fragments it needs. Adam Ard argues in a 2025 essay that this makes
+literate programming's most underrated application the writing of tests. Because the tangler copies
+named chunks verbatim rather than importing whole modules, a test can substitute a mock definition
+for any function the unit under test calls – including system functions in a language like C –
+without a mocking framework, linker tricks, or dependency injection. The test sits beside the code
+it verifies in the same document, and the two share a single source of truth.
 
-This is a different proposition from
-xref:test-driven-development.adoc[*test-driven development*], which drives
-implementation through tests written first. Literate testing is a structural
-technique for placing and assembling tests, not a design discipline. The two
-compose. Nothing prevents writing the test chunks before the implementation
-chunks in the same document.
+This is a different proposition from xref:test-driven-development.adoc[*test-driven development*],
+which drives implementation through tests written first. Literate testing is a structural technique
+for placing and assembling tests, not a design discipline. The two compose. Nothing prevents writing
+the test chunks before the implementation chunks in the same document.
 
 Literate programming descends from the same top-down, narrative tradition as
-xref:stepwise-refinement.adoc[*stepwise refinement*], which likewise asks the
-author to present a solution at the level of explanation first and to defer
-mechanical detail. Its chunk-naming convention is itself a small
-xref:domain-specific-language.adoc[*domain-specific language*] for describing
-how a program is assembled. And like
-xref:software-craftsmanship.adoc[*software craftsmanship*], it treats the
-program as a crafted artifact made for human readers, not merely a deliverable
-that happens to compile.
+xref:stepwise-refinement.adoc[*stepwise refinement*], which likewise asks the author to present a
+solution at the level of explanation first and to defer mechanical detail. Its chunk-naming
+convention is itself a small xref:domain-specific-language.adoc[*domain-specific language*] for
+describing how a program is assembled. And like
+xref:software-craftsmanship.adoc[*software craftsmanship*], it treats the program as a crafted
+artifact made for human readers, not merely a deliverable that happens to compile.
 
 == See also
 
@@ -113,9 +93,7 @@ that happens to compile.
 
 == References
 
-* Donald E. Knuth (1984). _Literate Programming_. _The Computer Journal_,
-  27(2), pp. 97–111.
-* Donald E. Knuth (1986). _TeX: The Program_, Volume B of _Computers &
-  Typesetting_. Addison-Wesley.
-* Adam Ard (2025).
-  https://rethinkingsoftware.substack.com/p/literate-testing[_Literate Testing_]. Rethinking Software.
+* Donald E. Knuth (1984). _Literate Programming_. _The Computer Journal_, 27(2), pp. 97–111.
+* Donald E. Knuth (1986). _TeX: The Program_, Volume B of _Computers & Typesetting_. Addison-Wesley.
+* Adam Ard (2025). https://rethinkingsoftware.substack.com/p/literate-testing[_Literate Testing_].
+  Rethinking Software.

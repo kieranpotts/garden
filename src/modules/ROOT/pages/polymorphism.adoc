@@ -1,52 +1,48 @@
 = Polymorphism
 
-Polymorphism, from the Greek for "many forms", is the property that lets a
-single piece of code operate over objects of more than one type. In
-xref:object-oriented-programming.adoc[*object-oriented programming*] it is the
-mechanism by which objects of different types can be treated as the same type,
-because they share a common xref:interfaces.adoc[*interface*]. A caller names
-the operations it needs through that interface, and any object that satisfies
-them can be supplied in their place. Which concrete operation runs is decided
-by the type of the object received, not by a branch the caller writes.
+Polymorphism, from the Greek for "many forms", is the property that lets a single piece of code
+operate over objects of more than one type. In
+xref:object-oriented-programming.adoc[*object-oriented programming*] it is the mechanism by which
+objects of different types can be treated as the same type, because they share a common
+xref:interfaces.adoc[*interface*]. A caller names the operations it needs through that interface,
+and any object that satisfies them can be supplied in their place. Which concrete operation runs is
+decided by the type of the object received, not by a branch the caller writes.
 
 That decoupling is the source of polymorphism's value. Code written against an
-xref:abstraction.adoc[*abstraction*] rather than a concrete class can be given a
-new implementation without editing the callers, which is the property the
+xref:abstraction.adoc[*abstraction*] rather than a concrete class can be given a new implementation
+without editing the callers, which is the property the
 xref:open-closed-principle.adoc[*open-closed principle*] aims for and that
 xref:extensibility.adoc[*extensibility*] depends on. It is also what makes
-xref:composition.adoc[*composition*] work as an alternative to
-xref:inheritance.adoc[*inheritance*]. An object reaches a collaborator through
-an interface, so the collaborator's concrete type can vary, or be swapped for a
-test double, without the holder knowing. xref:dependency-inversion.adoc[*Dependency inversion*] and xref:dependency-injection.adoc[*dependency injection*] both rely
-on the same seam to hand a caller an implementation it never names directly.
+xref:composition.adoc[*composition*] work as an alternative to xref:inheritance.adoc[*inheritance*].
+An object reaches a collaborator through an interface, so the collaborator's concrete type can vary,
+or be swapped for a test double, without the holder knowing.
+xref:dependency-inversion.adoc[*Dependency inversion*] and
+xref:dependency-injection.adoc[*dependency injection*] both rely on the same seam to hand a caller
+an implementation it never names directly.
 
-The form OOP relies on is *subtype polymorphism*. An instance of a subtype is
-acceptable wherever its supertype is expected, and the call dispatches to the
-subtype's overriding method at runtime, a mechanism known as *dynamic dispatch*. It is safe only when each subtype genuinely honors the contract of
-its supertype, which is the concern of the
-xref:liskov-substitution-principle.adoc[*Liskov substitution principle*]. A
-subtype that strengthens preconditions, weakens postconditions, or throws on
-inputs the supertype accepts defeats the substitution. Callers that believed
-they could stay oblivious to the concrete type are quietly wrong, and the
-abstraction they trusted becomes a xref:leaky-abstractions.adoc[*leaky abstraction*].
+The form OOP relies on is *subtype polymorphism*. An instance of a subtype is acceptable wherever
+its supertype is expected, and the call dispatches to the subtype's overriding method at runtime, a
+mechanism known as *dynamic dispatch*. It is safe only when each subtype genuinely honors the
+contract of its supertype, which is the concern of the
+xref:liskov-substitution-principle.adoc[*Liskov substitution principle*]. A subtype that strengthens
+preconditions, weakens postconditions, or throws on inputs the supertype accepts defeats the
+substitution. Callers that believed they could stay oblivious to the concrete type are quietly
+wrong, and the abstraction they trusted becomes a xref:leaky-abstractions.adoc[*leaky abstraction*].
 
-Several xref:design-patterns.adoc[*design patterns*] are built on this
-mechanism. The xref:strategy-pattern.adoc[*strategy pattern*] lets a context
-hold an algorithm behind an interface and swap implementations at runtime. The
-xref:adapter-pattern.adoc[*adapter pattern*] wraps an incompatible type behind
-an interface a caller already knows. The xref:factory.adoc[*factory*] pattern
-hands back a concrete product typed as the interface the caller depends on. In
-each case the caller is written against the abstraction and polymorphism
-selects the right implementation.
+Several xref:design-patterns.adoc[*design patterns*] are built on this mechanism. The
+xref:strategy-pattern.adoc[*strategy pattern*] lets a context hold an algorithm behind an interface
+and swap implementations at runtime. The xref:adapter-pattern.adoc[*adapter pattern*] wraps an
+incompatible type behind an interface a caller already knows. The xref:factory.adoc[*factory*]
+pattern hands back a concrete product typed as the interface the caller depends on. In each case the
+caller is written against the abstraction and polymorphism selects the right implementation.
 
-The same word names two other forms of polymorphism that are not specific to
-OOP. *Ad hoc polymorphism* is function overloading. One name resolves to
-several implementations selected by the static types of the arguments, at
-compile time. *Parametric polymorphism* is *generic programming*, code that
-works uniformly over any type that meets a constraint, as in the generics or
-templates of modern languages. The three forms are often presented together in
-the taxonomy of Luca Cardelli and Peter Wegner. This entry, and the garden's
-other entries that reference polymorphism, are concerned with the subtype form.
+The same word names two other forms of polymorphism that are not specific to OOP.
+*Ad hoc polymorphism* is function overloading. One name resolves to several implementations selected
+by the static types of the arguments, at compile time. *Parametric polymorphism* is
+*generic programming*, code that works uniformly over any type that meets a constraint, as in the
+generics or templates of modern languages. The three forms are often presented together in the
+taxonomy of Luca Cardelli and Peter Wegner. This entry, and the garden's other entries that
+reference polymorphism, are concerned with the subtype form.
 
 == See also
 
@@ -68,5 +64,5 @@ other entries that reference polymorphism, are concerned with the subtype form.
 
 == References
 
-* Cardelli, Luca; Wegner, Peter (1985). _On Understanding Types, Data
-  Abstraction, and Polymorphism_. ACM Computing Surveys.
+* Cardelli, Luca; Wegner, Peter (1985).
+  _On Understanding Types, Data Abstraction, and Polymorphism_. ACM Computing Surveys.

@@ -1,52 +1,45 @@
 = Serverless architecture
 
-Serverless architecture is an architectural style in which an application is
-composed of small, independently deployed functions or services that run on
-demand, without the application owner provisioning or managing any servers.
+Serverless architecture is an architectural style in which an application is composed of small,
+independently deployed functions or services that run on demand, without the application owner
+provisioning or managing any servers.
 
 Serverless architecture is the design-level counterpart to
-xref:serverless-computing.adoc[*serverless computing*], which is the underlying
-cloud delivery model (no server management, automatic scaling, pay-per-use).
-Serverless architecture is how an application is shaped to take advantage of
-that model.
+xref:serverless-computing.adoc[*serverless computing*], which is the underlying cloud delivery model
+(no server management, automatic scaling, pay-per-use). Serverless architecture is how an
+application is shaped to take advantage of that model.
 
 Applications built in this style are typically composed of:
 
-* xref:function-as-a-service.adoc[*Function-as-a-Service (FaaS)*] units: Small,
-  single-purpose functions that each handle one task or respond to one type of
-  event.
+* xref:function-as-a-service.adoc[*Function-as-a-Service (FaaS)*] units: Small, single-purpose
+  functions that each handle one task or respond to one type of event.
 
-* Managed back-end services: Authentication, databases, storage, and messaging
-  provided by the cloud platform rather than self-hosted.
+* Managed back-end services: Authentication, databases, storage, and messaging provided by the cloud
+  platform rather than self-hosted.
 
-* Event triggers: Functions are invoked in response to events (an HTTP request,
-  a file upload, a queue message, a scheduled timer) rather than running as a
-  continuously listening process.
+* Event triggers: Functions are invoked in response to events (an HTTP request, a file upload, a
+  queue message, a scheduled timer) rather than running as a continuously listening process.
 
 This makes serverless architecture a natural fit for
-xref:event-driven-architecture.adoc[*event-driven architecture*]. The functions
-are the event consumers, and the platform handles routing events to the right
-function instance.
+xref:event-driven-architecture.adoc[*event-driven architecture*]. The functions are the event
+consumers, and the platform handles routing events to the right function instance.
 
-Serverless architecture is sometimes confused with
-xref:microservices.adoc[*microservices*], but the two are distinct.
-Microservices describes how a system is decomposed into independently deployable
-services, while serverless architecture describes how those services (or even
-finer-grained functions) are hosted and invoked. A microservice can be deployed
-as a long-running container or as a serverless function. Serverless is one
-possible deployment style for a microservice, not a synonym for it.
+Serverless architecture is sometimes confused with xref:microservices.adoc[*microservices*], but the
+two are distinct. Microservices describes how a system is decomposed into independently deployable
+services, while serverless architecture describes how those services (or even finer-grained
+functions) are hosted and invoked. A microservice can be deployed as a long-running container or as
+a serverless function. Serverless is one possible deployment style for a microservice, not a synonym
+for it.
 
 Trade-offs that follow from this architectural style:
 
-* Functions are stateless by design: Any state that must persist between
-  invocations has to be stored externally (eg. a database or cache), since the
-  platform may not reuse the same function instance for the next invocation.
+* Functions are stateless by design: Any state that must persist between invocations has to be
+  stored externally (eg. a database or cache), since the platform may not reuse the same function
+  instance for the next invocation.
 
-* Composing many small functions can introduce its own complexity: Tracing a
-  single user request across dozens of functions requires good observability
-  tooling.
+* Composing many small functions can introduce its own complexity: Tracing a single user request
+  across dozens of functions requires good observability tooling.
 
-* Cold start latency (the time to initialize a function that hasn't run
-  recently) is a property of the underlying serverless computing platform, but
-  it directly shapes architectural decisions like how finely to split functions
-  and which paths need to stay "warm".
+* Cold start latency (the time to initialize a function that hasn't run recently) is a property of
+  the underlying serverless computing platform, but it directly shapes architectural decisions like
+  how finely to split functions and which paths need to stay "warm".

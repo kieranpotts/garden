@@ -1,90 +1,79 @@
 = FTP
 
-The *File Transfer Protocol (FTP)* is an application-layer protocol for
-transferring files between hosts over a TCP/IP network. It is a
-xref:osi-model.adoc[*Layer 7*] protocol that runs over xref:tcp.adoc[*TCP*],
-using separate connections for control and data.
+The *File Transfer Protocol (FTP)* is an application-layer protocol for transferring files between
+hosts over a TCP/IP network. It is a xref:osi-model.adoc[*Layer 7*] protocol that runs over
+xref:tcp.adoc[*TCP*], using separate connections for control and data.
 
-FTP predates the web and remained the standard way to move files between
-machines for decades. It has been largely displaced for public downloads by
-xref:http.adoc[*HTTP*] and for authenticated transfers by its secure
-successors, but it still appears in legacy integrations and bulk transfers
+FTP predates the web and remained the standard way to move files between machines for decades. It
+has been largely displaced for public downloads by xref:http.adoc[*HTTP*] and for authenticated
+transfers by its secure successors, but it still appears in legacy integrations and bulk transfers
 between servers.
 
 == Control and data connections
 
-FTP is unusual among application protocols in that it uses two TCP connections
-per session.
+FTP is unusual among application protocols in that it uses two TCP connections per session.
 
 * *Control connection.* The client opens a TCP connection to the server on port
   21. This channel carries commands and reply codes for the whole session and
-  stays open until the client quits.
+stays open until the client quits.
 
-* *Data connection.* A separate connection is opened for each file transfer and
-  directory listing, then closed again when the transfer completes.
+* *Data connection.* A separate connection is opened for each file transfer and directory listing,
+  then closed again when the transfer completes.
 
-The control connection is text-based and human-readable. Commands such as
-`USER`, `PASS`, `RETR`, `STOR`, and `LIST` are sent as plain lines, and the
-server replies with three-digit status codes whose first digit indicates the
-class of response, much like HTTP status codes.
+The control connection is text-based and human-readable. Commands such as `USER`, `PASS`, `RETR`,
+`STOR`, and `LIST` are sent as plain lines, and the server replies with three-digit status codes
+whose first digit indicates the class of response, much like HTTP status codes.
 
 == Active and passive mode
 
-The two sides must agree on how the data connection is established, and this is
-where FTP's age shows.
+The two sides must agree on how the data connection is established, and this is where FTP's age
+shows.
 
-* *Active mode.* The client tells the server which IP address and port it is
-  listening on, and the server opens the data connection back to the client from
-  port 20. This fails when the client sits behind a NAT router or
-  xref:firewalls.adoc[*firewall*] that rejects inbound connections to ephemeral
-  client ports, which is the common case today.
+* *Active mode.* The client tells the server which IP address and port it is listening on, and the
+  server opens the data connection back to the client from port 20. This fails when the client sits
+  behind a NAT router or xref:firewalls.adoc[*firewall*] that rejects inbound connections to
+  ephemeral client ports, which is the common case today.
 
-* *Passive mode.* The server opens an ephemeral port and tells the client the
-  address and port to connect to. The client initiates the data connection,
-  which suits clients behind NAT and firewalls. Passive mode is the de facto
-  default in modern clients.
+* *Passive mode.* The server opens an ephemeral port and tells the client the address and port to
+  connect to. The client initiates the data connection, which suits clients behind NAT and
+  firewalls. Passive mode is the de facto default in modern clients.
 
-Either way, FTP needs more than one port opened through a firewall, which makes
-it awkward to secure at the network boundary compared with single-port
-protocols.
+Either way, FTP needs more than one port opened through a firewall, which makes it awkward to secure
+at the network boundary compared with single-port protocols.
 
 == Authentication
 
-FTP authenticates with a username and password sent over the control
-connection. Many servers also offer *anonymous FTP*, where the username
-`anonymous` and any password, by convention the user's email address, grant
-read access to a public archive. Anonymous FTP was the dominant distribution
+FTP authenticates with a username and password sent over the control connection. Many servers also
+offer *anonymous FTP*, where the username `anonymous` and any password, by convention the user's
+email address, grant read access to a public archive. Anonymous FTP was the dominant distribution
 mechanism for free software and large datasets before HTTP took over that role.
 
 == Security shortcomings
 
-FTP was designed before confidentiality and integrity were concerns on the
-internet. Its weaknesses are fundamental to the protocol, not implementation
-flaws.
+FTP was designed before confidentiality and integrity were concerns on the internet. Its weaknesses
+are fundamental to the protocol, not implementation flaws.
 
-* Credentials and data travel in cleartext. Anyone on the path can capture
-  passwords or file contents.
-* There is no integrity protection. A man-in-the-middle can alter a transfer in
-  flight without detection.
-* The separate data connection and active-mode callback are awkward to pass
-  through firewalls and NAT.
+* Credentials and data travel in cleartext. Anyone on the path can capture passwords or file
+  contents.
+* There is no integrity protection. A man-in-the-middle can alter a transfer in flight without
+  detection.
+* The separate data connection and active-mode callback are awkward to pass through firewalls and
+  NAT.
 
 == Secure alternatives
 
 Two protocols fill FTP's security gap, and they are commonly confused.
 
-* *FTPS* (FTP over TLS) is FTP with TLS wrapping the control connection, the
-  data connection, or both. It keeps FTP's command set and two-connection
-  structure, so it inherits FTP's firewall complications alongside its
-  encryption.
+* *FTPS* (FTP over TLS) is FTP with TLS wrapping the control connection, the data connection, or
+  both. It keeps FTP's command set and two-connection structure, so it inherits FTP's firewall
+  complications alongside its encryption.
 
-* *SFTP* (SSH File Transfer Protocol) is a different protocol that runs over
-  SSH, not FTP at all. It uses a single connection and port, which makes it
-  simpler to pass through firewalls. Despite the name, it shares no protocol
-  machinery with FTP.
+* *SFTP* (SSH File Transfer Protocol) is a different protocol that runs over SSH, not FTP at all. It
+  uses a single connection and port, which makes it simpler to pass through firewalls. Despite the
+  name, it shares no protocol machinery with FTP.
 
-SFTP's single-port design and strong default posture have made it the more
-widely adopted choice for authenticated file transfer in modern systems.
+SFTP's single-port design and strong default posture have made it the more widely adopted choice for
+authenticated file transfer in modern systems.
 
 == See also
 

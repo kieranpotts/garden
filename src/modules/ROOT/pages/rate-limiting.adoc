@@ -1,86 +1,73 @@
 = Rate limiting
 
-Rate limiting is a xref:system-design.adoc[*system design*] strategy that bounds
-the rate at which a service accepts requests from a single client, tenant, or
-source, rejecting or deferring whatever exceeds the configured limit. It protects
-a service from being overwhelmed by too many requests, whether the cause is a
-misbehaving client, a flash crowd, or a deliberate abuse attempt such as a
+Rate limiting is a xref:system-design.adoc[*system design*] strategy that bounds the rate at which a
+service accepts requests from a single client, tenant, or source, rejecting or deferring whatever
+exceeds the configured limit. It protects a service from being overwhelmed by too many requests,
+whether the cause is a misbehaving client, a flash crowd, or a deliberate abuse attempt such as a
 denial-of-service attack or brute-force credential guessing against an
 xref:authentication.adoc[*authentication*] endpoint.
 
-Rate limiting is one of the principal tactics for keeping
-xref:load.adoc[*load*] within xref:capacity.adoc[*capacity*]. Where
-xref:load-balancing.adoc[*load balancing*] spreads work across more resources and
-xref:auto-scaling.adoc[*auto-scaling*] adds capacity in response to rising load,
-rate limiting sheds load at the boundary, so the excess never reaches the back
-end. The three are complementary: balance and scale what you can, limit what you
-cannot.
+Rate limiting is one of the principal tactics for keeping xref:load.adoc[*load*] within
+xref:capacity.adoc[*capacity*]. Where xref:load-balancing.adoc[*load balancing*] spreads work across
+more resources and xref:auto-scaling.adoc[*auto-scaling*] adds capacity in response to rising load,
+rate limiting sheds load at the boundary, so the excess never reaches the back end. The three are
+complementary: balance and scale what you can, limit what you cannot.
 
-It is usually enforced at a traffic entry point – an
-xref:api-gateway.adoc[*API gateway*], xref:edge-proxy.adoc[*edge proxy*], or
-xref:load-balancer.adoc[*load balancer*] – where every request passes through a
-single point at which policy can be applied. The limit is expressed as a number
-of requests per unit of time, scoped to a key: the client's IP address, an
-authenticated user or tenant, an API key, or the targeted resource. A global
-limit protects the service as a whole; a per-key limit keeps one client's
-behaviour from affecting another, which is the xref:multi-tenant.adoc[*multi-tenant*]
-form of the xref:bulkhead.adoc[*bulkhead*] idea.
+It is usually enforced at a traffic entry point – an xref:api-gateway.adoc[*API gateway*],
+xref:edge-proxy.adoc[*edge proxy*], or xref:load-balancer.adoc[*load balancer*] – where every
+request passes through a single point at which policy can be applied. The limit is expressed as a
+number of requests per unit of time, scoped to a key: the client's IP address, an authenticated user
+or tenant, an API key, or the targeted resource. A global limit protects the service as a whole; a
+per-key limit keeps one client's behaviour from affecting another, which is the
+xref:multi-tenant.adoc[*multi-tenant*] form of the xref:bulkhead.adoc[*bulkhead*] idea.
 
-Rate limiting is often spoken of alongside *throttling*, and the two are
-frequently conflated. Rate limiting is the decision to reject (or defer)
-requests above a limit. Throttling is the broader act of shaping traffic, which
-may slow requests rather than refuse them. A rate limiter is one mechanism a
-throttling policy might use.
+Rate limiting is often spoken of alongside *throttling*, and the two are frequently conflated. Rate
+limiting is the decision to reject (or defer) requests above a limit. Throttling is the broader act
+of shaping traffic, which may slow requests rather than refuse them. A rate limiter is one mechanism
+a throttling policy might use.
 
 == Rate limiting algorithms
 
 Each algorithm trades off memory, accuracy, and how smoothly it handles bursts.
 
-* *Token bucket.* A counter holds tokens, replenished at a fixed rate up to a
-  bucket capacity. Each request consumes a token, and requests arriving when the
-  bucket is empty are rejected. The capacity allows short bursts up to the bucket
-  size while the long-run rate stays at the refill rate. It is the most widely
-  deployed algorithm, and the basis of many CDN and API gateway limiters.
-* *Leaky bucket.* Requests enter a queue that drains at a constant rate, like a
-  bucket with a hole. Where the token bucket allows bursts, the leaky bucket
-  smooths traffic into a steady outflow. If the queue is full, new requests are
-  dropped. Leaky bucket variants are often used to shape outbound traffic to a
-  downstream service.
-* *Fixed window counter.* A counter is reset at the start of each fixed interval
-  – a minute, say. Requests within the interval increment the counter, and once
-  it exceeds the limit, further requests are rejected until the window resets.
-  It is simple and memory-cheap, but suffers a *boundary burst*: a client can
-  send twice the limit by splitting its traffic across the edge of two adjacent
-  windows.
-* *Sliding window log.* Every request is timestamped and stored in a log. The
-  window slides with time, and entries older than the window are pruned. The
-  count is exact at every instant, but the per-request memory and pruning cost
-  make it expensive at high rates.
-* *Sliding window counter.* A hybrid of the two preceding. The current and
-  previous fixed windows are weighted by how far the current time has moved into
-  the new window, giving an estimate that smooths the boundary burst of the fixed
-  window counter without keeping a per-request log. It is the algorithm behind
-  the common "requests per minute" limiters in cloud APIs.
+* *Token bucket.* A counter holds tokens, replenished at a fixed rate up to a bucket capacity. Each
+  request consumes a token, and requests arriving when the bucket is empty are rejected. The
+  capacity allows short bursts up to the bucket size while the long-run rate stays at the refill
+  rate. It is the most widely deployed algorithm, and the basis of many CDN and API gateway
+  limiters.
+* *Leaky bucket.* Requests enter a queue that drains at a constant rate, like a bucket with a hole.
+  Where the token bucket allows bursts, the leaky bucket smooths traffic into a steady outflow. If
+  the queue is full, new requests are dropped. Leaky bucket variants are often used to shape
+  outbound traffic to a downstream service.
+* *Fixed window counter.* A counter is reset at the start of each fixed interval – a minute, say.
+  Requests within the interval increment the counter, and once it exceeds the limit, further
+  requests are rejected until the window resets. It is simple and memory-cheap, but suffers a
+  *boundary burst*: a client can send twice the limit by splitting its traffic across the edge of
+  two adjacent windows.
+* *Sliding window log.* Every request is timestamped and stored in a log. The window slides with
+  time, and entries older than the window are pruned. The count is exact at every instant, but the
+  per-request memory and pruning cost make it expensive at high rates.
+* *Sliding window counter.* A hybrid of the two preceding. The current and previous fixed windows
+  are weighted by how far the current time has moved into the new window, giving an estimate that
+  smooths the boundary burst of the fixed window counter without keeping a per-request log. It is
+  the algorithm behind the common "requests per minute" limiters in cloud APIs.
 
 == Where it fits among load-shedding tactics
 
-Rate limiting is one of a family of mechanisms that shed or shape load to keep a
-system stable. A xref:circuit-breaker.adoc[*circuit breaker*] trips on the error
-rate of outbound calls and stops a client from hammering a failing dependency;
-rate limiting trips on the request rate of inbound calls and protects the
-service from its callers. A xref:retry.adoc[*retry*] with backoff is what a
-well-behaved client does when it is rate-limited, so that the rejection
-propagates as a slowdown rather than an immediate retry storm. Together these
-tactics realise the broader aim of xref:resilience.adoc[*resilience*] under
-overload.
+Rate limiting is one of a family of mechanisms that shed or shape load to keep a system stable. A
+xref:circuit-breaker.adoc[*circuit breaker*] trips on the error rate of outbound calls and stops a
+client from hammering a failing dependency; rate limiting trips on the request rate of inbound calls
+and protects the service from its callers. A xref:retry.adoc[*retry*] with backoff is what a
+well-behaved client does when it is rate-limited, so that the rejection propagates as a slowdown
+rather than an immediate retry storm. Together these tactics realise the broader aim of
+xref:resilience.adoc[*resilience*] under overload.
 
-Distributed rate limiting – where the limit is shared across a cluster of
-limiters rather than enforced per instance – raises its own consistency problem,
-since the counters must be coordinated, often through a shared store such as
-xref:redis.adoc[*Redis*]. The trade-off is between accuracy and the latency cost
-of checking the store on every request. Many systems accept a per-instance limit
-multiplied by the replica count to avoid that cost, at the price of a looser
-global limit during membership changes.
+Distributed rate limiting – where the limit is shared across a cluster of limiters rather than
+enforced per instance – raises its own consistency problem, since the counters must be coordinated,
+often through a shared store such as xref:redis.adoc[*Redis*]. The trade-off is between accuracy and
+the latency cost of checking the store on every request. Many systems accept a per-instance limit
+multiplied by the replica count to avoid that cost, at the price of a looser global limit during
+membership changes.
 
 == See also
 

@@ -1,93 +1,82 @@
 = Redundancy
 
-In the context of a xref:distributed-system.adoc[*distributed software*],
-redundancy refers to the duplication of critical components or functions of the
-system. Adding redundancy reduces xref:single-point-of-failure.adoc[*single points of failure*], thus increasing xref:fault-tolerance.adoc[*reliability*]
-and xref:availability.adoc[*availability*]. If one part of the system fails,
-another can take over its tasks, minimizing xref:downtime.adoc[*downtime*] and
+In the context of a xref:distributed-system.adoc[*distributed software*], redundancy refers to the
+duplication of critical components or functions of the system. Adding redundancy reduces
+xref:single-point-of-failure.adoc[*single points of failure*], thus increasing
+xref:fault-tolerance.adoc[*reliability*] and xref:availability.adoc[*availability*]. If one part of
+the system fails, another can take over its tasks, minimizing xref:downtime.adoc[*downtime*] and
 preventing data loss.
 
-Redundancy in distributed software can be applied to data, program code,
-hardware, and network components:
+Redundancy in distributed software can be applied to data, program code, hardware, and network
+components:
 
-* *Data redundancy*: Storing copies of the same data on multiple nodes. In
-  practice this is realized through xref:replication.adoc[*replication*], which
-  keeps the copies in step across nodes and, in cloud deployments, across
-  xref:availability-zone.adoc[*availability zones*].
+* *Data redundancy*: Storing copies of the same data on multiple nodes. In practice this is realized
+  through xref:replication.adoc[*replication*], which keeps the copies in step across nodes and, in
+  cloud deployments, across xref:availability-zone.adoc[*availability zones*].
 
-* *Software redundancy*: Deploying multiple instances of the same application.
-  An xref:active-active.adoc[*active-active*] topology puts every instance to
-  work serving live traffic, whereas an active-passive setup keeps the
-  duplicates idle as standby.
+* *Software redundancy*: Deploying multiple instances of the same application. An
+  xref:active-active.adoc[*active-active*] topology puts every instance to work serving live
+  traffic, whereas an active-passive setup keeps the duplicates idle as standby.
 
-* *Hardware redundancy*: Using additional hardware components, such as servers.
-  A xref:clustering.adoc[*cluster*] is the usual vehicle for this — a group of
-  nodes that present a single service and survive the loss of any one node.
+* *Hardware redundancy*: Using additional hardware components, such as servers. A
+  xref:clustering.adoc[*cluster*] is the usual vehicle for this — a group of nodes that present a
+  single service and survive the loss of any one node.
 
 * *Network redundancy*: Implementing multiple network paths and connections.
 
-Redundancy is a property of a system, not a single technique. Replication is the
-mechanism that produces data redundancy, and xref:failover.adoc[*failover*] is
-the action that redirects traffic to a redundant component when its primary
-fails. The three are complementary: redundancy provides the spare capacity,
-failover is what makes it usable, and replication keeps the spares current.
+Redundancy is a property of a system, not a single technique. Replication is the mechanism that
+produces data redundancy, and xref:failover.adoc[*failover*] is the action that redirects traffic to
+a redundant component when its primary fails. The three are complementary: redundancy provides the
+spare capacity, failover is what makes it usable, and replication keeps the spares current.
 
-Redundancy is an important xref:quality-attributes.adoc[*quality attribute*] in
-distributed software that requires high xref:availability.adoc[*availability*]
-and xref:fault-tolerance.adoc[*resilience*]. Examples of systems that have high
-levels of redundancy include data centres and the cloud services that are
-served from them.
+Redundancy is an important xref:quality-attributes.adoc[*quality attribute*] in distributed software
+that requires high xref:availability.adoc[*availability*] and
+xref:fault-tolerance.adoc[*resilience*]. Examples of systems that have high levels of redundancy
+include data centres and the cloud services that are served from them.
 
 == Sizing redundancy
 
-Redundant capacity is sized against the expected rate and duration of failure.
-The simplest rule is *N+1*: run one more instance than the working set needs, so
-that a single failure still leaves enough capacity to serve traffic. Tighter
-objectives call for *N+M*, keeping several spares to ride out concurrent or
-cascading failures. Sizing is coupled to xref:capacity.adoc[*capacity*] — a
-fleet with no headroom gains nothing from redundancy, because the surviving
-nodes saturate the moment they absorb a failed peer. Traffic is spread across
-the redundant instances with xref:load-balancing.adoc[*load balancing*], so
-that no single node is a bottleneck and a failed node can be routed around.
+Redundant capacity is sized against the expected rate and duration of failure. The simplest rule is
+*N+1*: run one more instance than the working set needs, so that a single failure still leaves
+enough capacity to serve traffic. Tighter objectives call for *N+M*, keeping several spares to ride
+out concurrent or cascading failures. Sizing is coupled to xref:capacity.adoc[*capacity*] — a fleet
+with no headroom gains nothing from redundancy, because the surviving nodes saturate the moment they
+absorb a failed peer. Traffic is spread across the redundant instances with
+xref:load-balancing.adoc[*load balancing*], so that no single node is a bottleneck and a failed node
+can be routed around.
 
 == Geographic redundancy
 
-Redundancy within a single location protects against component failure but not
-against the loss of the location itself. *Geographic redundancy* spreads
-replicas and standbys across physically separated sites — multiple availability
-zones within a region, or multiple regions entirely. This is the foundation of
-xref:disaster-recovery.adoc[*disaster recovery*] for regional outages. A failure
-that takes out a whole data center, such as a power loss or a fiber cut, is
-absorbed by a counterpart in another zone or region.
+Redundancy within a single location protects against component failure but not against the loss of
+the location itself. *Geographic redundancy* spreads replicas and standbys across physically
+separated sites — multiple availability zones within a region, or multiple regions entirely. This is
+the foundation of xref:disaster-recovery.adoc[*disaster recovery*] for regional outages. A failure
+that takes out a whole data center, such as a power loss or a fiber cut, is absorbed by a
+counterpart in another zone or region.
 
 == Trade-offs
 
-Redundancy is not free. Each additional copy costs compute, storage, and network
-bandwidth, and every replica that must stay in step introduces
-xref:consistency.adoc[*consistency*] challenges and operational
-xref:complexity.adoc[*complexity*]. More replicas also mean more failure modes
-to reason about: replica lag, split-brain, and the coordination required to
-keep a quorum. Redundancy is therefore a deliberate trade of resources for
-xref:resilience.adoc[*resilience*], sized to the availability objective the
-system has to meet rather than applied uniformly everywhere.
+Redundancy is not free. Each additional copy costs compute, storage, and network bandwidth, and
+every replica that must stay in step introduces xref:consistency.adoc[*consistency*] challenges and
+operational xref:complexity.adoc[*complexity*]. More replicas also mean more failure modes to reason
+about: replica lag, split-brain, and the coordination required to keep a quorum. Redundancy is
+therefore a deliberate trade of resources for xref:resilience.adoc[*resilience*], sized to the
+availability objective the system has to meet rather than applied uniformly everywhere.
 
-Redundancy is also undermined by *common-mode failures* — faults that take out
-the "redundant" components together because they share a hidden dependency. Two
-application instances are not truly independent if they read the same
-configuration, run on the same host, depend on the same network switch, or
-share a single xref:load-balancer.adoc[*load balancer*] in front of them.
-Genuine redundancy requires xref:isolation.adoc[*isolation*] between the
-redundant units, or the single point of failure simply moves. A
-xref:stand-in.adoc[*stand-in*] takes this isolation to the disaster-recovery
-scale: a separate system with different code, data, and infrastructure, so a
+Redundancy is also undermined by *common-mode failures* — faults that take out the "redundant"
+components together because they share a hidden dependency. Two application instances are not truly
+independent if they read the same configuration, run on the same host, depend on the same network
+switch, or share a single xref:load-balancer.adoc[*load balancer*] in front of them. Genuine
+redundancy requires xref:isolation.adoc[*isolation*] between the redundant units, or the single
+point of failure simply moves. A xref:stand-in.adoc[*stand-in*] takes this isolation to the
+disaster-recovery scale: a separate system with different code, data, and infrastructure, so a
 software bug in the primary cannot cascade into it.
 
-Isolation is a complementary design principle. It is about limiting the impact
-of failures so that they don't affect the entire system. For example, if the
-primary node for a service fails, and if its failovers fail too, the rest of
-the system should continue to operate (albeit with reduced functionality).
-xref:cell-based-architecture.adoc[*Cell-based architecture*] combines
-redundancy with partitioning to achieve this at the scale of a whole system.
+Isolation is a complementary design principle. It is about limiting the impact of failures so that
+they don't affect the entire system. For example, if the primary node for a service fails, and if
+its failovers fail too, the rest of the system should continue to operate (albeit with reduced
+functionality). xref:cell-based-architecture.adoc[*Cell-based architecture*] combines redundancy
+with partitioning to achieve this at the scale of a whole system.
 
 == See also
 

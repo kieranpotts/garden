@@ -1,104 +1,88 @@
 = System testing (aka end-to-end or e2e testing)
 
-System testing is the level of xref:testing.adoc[*testing*] at which the
-complete, integrated application is exercised as a whole through its external
-interfaces. Every component that will ship in production is stood up together –
-the user interface, application services, databases, message brokers, and any
-external integrations – and the system is driven from the outside, just as a
-real user or client would drive it. The application under test is treated as an
-opaque xref:black-box-testing.adoc[*black box*]: the test supplies inputs at the
-boundary, observes the outputs, and judges correctness against the system's
-xref:system-requirements-specification.adoc[*specification*], without reference
-to the internals.
+System testing is the level of xref:testing.adoc[*testing*] at which the complete, integrated
+application is exercised as a whole through its external interfaces. Every component that will ship
+in production is stood up together – the user interface, application services, databases, message
+brokers, and any external integrations – and the system is driven from the outside, just as a real
+user or client would drive it. The application under test is treated as an opaque
+xref:black-box-testing.adoc[*black box*]: the test supplies inputs at the boundary, observes the
+outputs, and judges correctness against the system's
+xref:system-requirements-specification.adoc[*specification*], without reference to the internals.
 
-The objective is to confirm that the assembled system meets its requirements –
-both functional and non-functional – and that the pieces behave correctly once
-they are wired together. It targets the class of defects that no lower level can
-reach: mismatches at the seams between independently built components,
-configuration that is correct in isolation but wrong in combination, and
-emergent behavior that only appears when the full system runs under realistic
-conditions.
+The objective is to confirm that the assembled system meets its requirements – both functional and
+non-functional – and that the pieces behave correctly once they are wired together. It targets the
+class of defects that no lower level can reach: mismatches at the seams between independently built
+components, configuration that is correct in isolation but wrong in combination, and emergent
+behavior that only appears when the full system runs under realistic conditions.
 
-System testing is also called *end-to-end testing (e2e)*, and the two terms are
-used interchangeably here. The name emphasizes the shape of the exercise. A
-single test drives a complete user-visible flow from one end of the system to the
-other, entering through the front door – a browser, a command line, a public
-API – and traversing every layer down to the persistence tier and back. Where an
-xref:integration-testing.adoc[*integration test*] deliberately stops short of the
-full system, an end-to-end test refuses to stop until the flow has been observed
-at the boundary. In web applications the entry point is typically a browser
-driven by a tool such as Selenium, Playwright, or Cypress; in service-oriented
-systems it may be a public API client. In each case the defining property is the
-same. The test interacts only with surfaces a real consumer could reach, and the
+System testing is also called *end-to-end testing (e2e)*, and the two terms are used interchangeably
+here. The name emphasizes the shape of the exercise. A single test drives a complete user-visible
+flow from one end of the system to the other, entering through the front door – a browser, a command
+line, a public API – and traversing every layer down to the persistence tier and back. Where an
+xref:integration-testing.adoc[*integration test*] deliberately stops short of the full system, an
+end-to-end test refuses to stop until the flow has been observed at the boundary. In web
+applications the entry point is typically a browser driven by a tool such as Selenium, Playwright,
+or Cypress; in service-oriented systems it may be a public API client. In each case the defining
+property is the same. The test interacts only with surfaces a real consumer could reach, and the
 whole system behind those surfaces is real.
 
 == Place in the testing hierarchy
 
-System testing sits at the top of the developer-run testing levels. Below it
-lie xref:unit-testing.adoc[*unit testing*], which verifies a single component in
-isolation, and integration testing, which verifies interactions across a
-bounded set of components. System testing takes the widest scope of all: the
-entire system, through its external interfaces, with no collaborators replaced
-by test doubles.
+System testing sits at the top of the developer-run testing levels. Below it lie
+xref:unit-testing.adoc[*unit testing*], which verifies a single component in isolation, and
+integration testing, which verifies interactions across a bounded set of components. System testing
+takes the widest scope of all: the entire system, through its external interfaces, with no
+collaborators replaced by test doubles.
 
-It is distinct from, and precedes,
-xref:acceptance-testing.adoc[*acceptance testing*]. System testing asks whether
-the system meets its specification, and is performed by the development or
-quality-assurance team. Acceptance testing asks whether the system is fit for
-purpose, and is performed by or on behalf of the customer. A system can pass its
-system tests and still fail acceptance, and vice versa; the two answer different
-questions for different audiences.
+It is distinct from, and precedes, xref:acceptance-testing.adoc[*acceptance testing*]. System
+testing asks whether the system meets its specification, and is performed by the development or
+quality-assurance team. Acceptance testing asks whether the system is fit for purpose, and is
+performed by or on behalf of the customer. A system can pass its system tests and still fail
+acceptance, and vice versa; the two answer different questions for different audiences.
 
-The conventional xref:automated-testing.adoc[*test pyramid*] reflects the
-economics of these levels. Unit tests are cheap and fast, so a suite should
-contain many of them. End-to-end tests are expensive and slow, so a suite should
-contain few. The narrow apex is not a judgement that end-to-end tests are
-unimportant, but that their cost – in execution time, environment setup, and
+The conventional xref:automated-testing.adoc[*test pyramid*] reflects the economics of these levels.
+Unit tests are cheap and fast, so a suite should contain many of them. End-to-end tests are
+expensive and slow, so a suite should contain few. The narrow apex is not a judgement that
+end-to-end tests are unimportant, but that their cost – in execution time, environment setup, and
 maintenance – rises steeply with each one added.
 
 == Trade-offs
 
-End-to-end tests give the highest confidence of any level that a real flow
-through the system works. They are also the most expensive to run, the slowest to
-execute, and the hardest to maintain. A failing end-to-end test indicates that
-something is broken somewhere along a long path, but it rarely says where;
-localizing the failure often requires reproducing it with more targeted tests.
+End-to-end tests give the highest confidence of any level that a real flow through the system works.
+They are also the most expensive to run, the slowest to execute, and the hardest to maintain. A
+failing end-to-end test indicates that something is broken somewhere along a long path, but it
+rarely says where; localizing the failure often requires reproducing it with more targeted tests.
 
-They are also the most prone to *flakiness*. Because they depend on the whole
-system standing up and behaving – external services, databases, network
-latency, and timing all included – their results can vary between runs even when
-the code under test has not changed. A suite whose end-to-end tests fail
-intermittently soon loses the trust that automation depends on, so flakiness in
-this layer must be hunted down and eliminated, not tolerated.
+They are also the most prone to *flakiness*. Because they depend on the whole system standing up and
+behaving – external services, databases, network latency, and timing all included – their results
+can vary between runs even when the code under test has not changed. A suite whose end-to-end tests
+fail intermittently soon loses the trust that automation depends on, so flakiness in this layer must
+be hunted down and eliminated, not tolerated.
 
-Because of these costs, end-to-end tests are usually reserved for a small number
-of critical user journeys – the flows whose breakage would do the most damage –
-and supplemented below by a broader layer of integration and unit tests. A
-xref:smoke-testing.adoc[*smoke test*] is sometimes used as a fast preliminary
-gate: a minimal end-to-end check that the system holds together enough to be
-worth testing further.
+Because of these costs, end-to-end tests are usually reserved for a small number of critical user
+journeys – the flows whose breakage would do the most damage – and supplemented below by a broader
+layer of integration and unit tests. A xref:smoke-testing.adoc[*smoke test*] is sometimes used as a
+fast preliminary gate: a minimal end-to-end check that the system holds together enough to be worth
+testing further.
 
 == In distributed systems
 
-System testing is markedly harder across xref:microservices.adoc[*microservices*]
-service boundaries than within a single process. Each service may be owned by a
-different team, released on its own cadence, and reachable only over the
-network. End-to-end tests that span the whole topology require every service, and
-its data, to be deployed into a shared environment, which scales poorly as the
+System testing is markedly harder across xref:microservices.adoc[*microservices*] service boundaries
+than within a single process. Each service may be owned by a different team, released on its own
+cadence, and reachable only over the network. End-to-end tests that span the whole topology require
+every service, and its data, to be deployed into a shared environment, which scales poorly as the
 number of services grows. The result is often a dedicated staging environment, a
-xref:deployment-pipeline.adoc[*deployment pipeline*] concern, that is expensive
-to provision and keep stable.
+xref:deployment-pipeline.adoc[*deployment pipeline*] concern, that is expensive to provision and
+keep stable.
 
-A xref:walking-skeleton.adoc[*walking skeleton*] is one common response. It is a
-thin end-to-end slice, kept working from the start of a project, that links the
-main architectural components with a single trivial flow. Maintained as the
-system grows, it gives the end-to-end path a place to be exercised continuously
-rather than retrofitted late.
+A xref:walking-skeleton.adoc[*walking skeleton*] is one common response. It is a thin end-to-end
+slice, kept working from the start of a project, that links the main architectural components with a
+single trivial flow. Maintained as the system grows, it gives the end-to-end path a place to be
+exercised continuously rather than retrofitted late.
 
-End-to-end tests are natural candidates for
-xref:regression-testing.adoc[*regression testing*] once a flow is captured as a
-passing test, and they are typically run as a gate in xref:ci-cd.adoc[*CI/CD*]
-against a deployed environment.
+End-to-end tests are natural candidates for xref:regression-testing.adoc[*regression testing*] once
+a flow is captured as a passing test, and they are typically run as a gate in
+xref:ci-cd.adoc[*CI/CD*] against a deployed environment.
 
 == See also
 

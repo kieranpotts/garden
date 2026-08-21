@@ -1,65 +1,52 @@
 = Modular design
 
-Modular design is an approach to xref:software-design.adoc[*software design*]
-that emphasizes the separation of concerns and the creation of self-contained,
-reusable components called
-*modules*. A module is a unit of code that owns a cohesive set of
-responsibilities, exposes a narrow public
-xref:interfaces.adoc[*interface*], and hides its internal workings behind that
-interface. The rest of the system depends on what a module does, not on how it
-does it.
+Modular design is an approach to xref:software-design.adoc[*software design*] that emphasizes the
+separation of concerns and the creation of self-contained, reusable components called *modules*. A
+module is a unit of code that owns a cohesive set of responsibilities, exposes a narrow public
+xref:interfaces.adoc[*interface*], and hides its internal workings behind that interface. The rest
+of the system depends on what a module does, not on how it does it.
 
-Modularity is a static xref:quality-attributes.adoc[*quality attribute*] of a
-software system. It describes how the system is structured rather than how it
-behaves at run time, and a design either has it or lacks it regardless of the
-work the system happens to perform. Its payoff is felt most when the system
-needs to change. A modular system can be understood, tested, and modified one
-module at a time, where an undifferentiated whole must be grasped and edited
-all at once. That is why modularity is a foundation of
-xref:evolvability.adoc[*evolvability*] and of
+Modularity is a static xref:quality-attributes.adoc[*quality attribute*] of a software system. It
+describes how the system is structured rather than how it behaves at run time, and a design either
+has it or lacks it regardless of the work the system happens to perform. Its payoff is felt most
+when the system needs to change. A modular system can be understood, tested, and modified one module
+at a time, where an undifferentiated whole must be grasped and edited all at once. That is why
+modularity is a foundation of xref:evolvability.adoc[*evolvability*] and of
 xref:refactoring.adoc[*refactoring*] at scale.
 
-The driving mechanism of modular design is
-xref:abstraction.adoc[*abstraction*]. Abstraction is the general practice of
-distilling a system down to its essentials and hiding the rest. Modularity is
-abstraction applied to the structure of a system, dividing it into smaller,
-self-contained modules that can be developed and maintained independently, each
-one hiding its xref:complexity.adoc[*complexity*] from the other parts. The
-discipline that enforces the boundary is
-xref:encapsulation.adoc[*encapsulation*], also known as *information hiding*.
-A caller only needs to understand a module's interface, not its implementation,
-which keeps the *cognitive overhead* of using the module low.
+The driving mechanism of modular design is xref:abstraction.adoc[*abstraction*]. Abstraction is the
+general practice of distilling a system down to its essentials and hiding the rest. Modularity is
+abstraction applied to the structure of a system, dividing it into smaller, self-contained modules
+that can be developed and maintained independently, each one hiding its
+xref:complexity.adoc[*complexity*] from the other parts. The discipline that enforces the boundary
+is xref:encapsulation.adoc[*encapsulation*], also known as *information hiding*. A caller only needs
+to understand a module's interface, not its implementation, which keeps the *cognitive overhead* of
+using the module low.
 
-A well-modularized system keeps xref:coupling.adoc[*coupling*] between modules
-low and xref:cohesion.adoc[*cohesion*] within each module high. The two pull in
-the same direction. A module that groups only closely related responsibilities
-has fewer reasons to reach outside itself, and so tends to depend less on its
-neighbors. The active work of keeping that coupling low is
-xref:decoupling.adoc[*decoupling*], and the broader discipline of drawing the
-boundaries in the right place is
-xref:separation-of-concerns.adoc[*separation of concerns*].
+A well-modularized system keeps xref:coupling.adoc[*coupling*] between modules low and
+xref:cohesion.adoc[*cohesion*] within each module high. The two pull in the same direction. A module
+that groups only closely related responsibilities has fewer reasons to reach outside itself, and so
+tends to depend less on its neighbors. The active work of keeping that coupling low is
+xref:decoupling.adoc[*decoupling*], and the broader discipline of drawing the boundaries in the
+right place is xref:separation-of-concerns.adoc[*separation of concerns*].
 
-Modularity is the result of xref:decomposition.adoc[*decomposition*], the
-technique of breaking a system down into smaller parts. A
-xref:top-down-design.adoc[*top-down*] design proceeds by decomposing the whole
-into a hierarchy of modules, while a
-xref:bottom-up-design.adoc[*bottom-up*] design composes a system from small,
-reusable modules. Both target the same modular structure, seen from opposite
-ends. At the scale of a whole deployment, the same impulse produces a
-xref:modular-monolith.adoc[*modular monolith*], a single process whose internal
-modules are kept as independent as if they were separate services, and, taken
-further, a xref:microservices.adoc[*microservices*] system.
+Modularity is the result of xref:decomposition.adoc[*decomposition*], the technique of breaking a
+system down into smaller parts. A xref:top-down-design.adoc[*top-down*] design proceeds by
+decomposing the whole into a hierarchy of modules, while a xref:bottom-up-design.adoc[*bottom-up*]
+design composes a system from small, reusable modules. Both target the same modular structure, seen
+from opposite ends. At the scale of a whole deployment, the same impulse produces a
+xref:modular-monolith.adoc[*modular monolith*], a single process whose internal modules are kept as
+independent as if they were separate services, and, taken further, a
+xref:microservices.adoc[*microservices*] system.
 
-Modularity is not free, and pursued for its own sake it becomes its own
-problem. Every module boundary is a seam a reader must follow and a place where
-behavior can go wrong. Splitting too eagerly produces a swarm of tiny modules
-whose interactions are harder to follow than the original whole, the pitfall
-decomposition flags as over-decomposition. The
-xref:single-responsibility-principle.adoc[*single responsibility principle*] is
-often misread as "do one thing" and used to justify this over-splitting. The
-aim is not to maximize the number of modules but to draw boundaries that align
-with likely axes of change, so that each module can be replaced, tested, and
-xref:code-reuse.adoc[*reused*] without dragging its neighbors along.
+Modularity is not free, and pursued for its own sake it becomes its own problem. Every module
+boundary is a seam a reader must follow and a place where behavior can go wrong. Splitting too
+eagerly produces a swarm of tiny modules whose interactions are harder to follow than the original
+whole, the pitfall decomposition flags as over-decomposition. The
+xref:single-responsibility-principle.adoc[*single responsibility principle*] is often misread as "do
+one thing" and used to justify this over-splitting. The aim is not to maximize the number of modules
+but to draw boundaries that align with likely axes of change, so that each module can be replaced,
+tested, and xref:code-reuse.adoc[*reused*] without dragging its neighbors along.
 
 == See also
 

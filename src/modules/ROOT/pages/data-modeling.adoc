@@ -1,181 +1,156 @@
 = Data modeling
 
-Data modeling is the process of creating a xref:modeling.adoc[*model*] of the
-data that an information system must store and use. It is a specialist branch of
-modeling concerned with defining data elements, the structures that hold them,
-the relationships between those structures, and the constraints that keep the
-data valid. A data model is eventually implemented as a schema in a
-xref:relational-databases.adoc[*relational database*] or an equivalent store, so
-the discipline is sometimes called *database modeling*.
+Data modeling is the process of creating a xref:modeling.adoc[*model*] of the data that an
+information system must store and use. It is a specialist branch of modeling concerned with defining
+data elements, the structures that hold them, the relationships between those structures, and the
+constraints that keep the data valid. A data model is eventually implemented as a schema in a
+xref:relational-databases.adoc[*relational database*] or an equivalent store, so the discipline is
+sometimes called *database modeling*.
 
-Data modeling is distinct from the broader modeling of
-software, which also covers behavior and process, and from
-xref:diagramming.adoc[*diagramming*], which only produces pictures. A data model
+Data modeling is distinct from the broader modeling of software, which also covers behavior and
+process, and from xref:diagramming.adoc[*diagramming*], which only produces pictures. A data model
 is a structured, non-visual artifact; the
-xref:entity-relationship-diagram.adoc[*entity-relationship diagrams (ERDs)*]
-that accompany it are just one view onto that model. It is also distinct from
-the xref:domain-model.adoc[*domain model*] of
-xref:domain-driven-design.adoc[*domain-driven design*], which describes the
-behavioral concepts of a domain. A domain model informs a data model, but the
-two are not the same artifact.
+xref:entity-relationship-diagram.adoc[*entity-relationship diagrams (ERDs)*] that accompany it are
+just one view onto that model. It is also distinct from the xref:domain-model.adoc[*domain model*]
+of xref:domain-driven-design.adoc[*domain-driven design*], which describes the behavioral concepts
+of a domain. A domain model informs a data model, but the two are not the same artifact.
 
 == Conceptual, logical, and physical schemas
 
-Mature data modeling practice separates the work into three levels of
-abstraction, mirroring the ANSI/SPARC three-schema architecture described in
+Mature data modeling practice separates the work into three levels of abstraction, mirroring the
+ANSI/SPARC three-schema architecture described in
 1975. Keeping the levels independent lets the storage technology change without
 forcing a rewrite of the business-facing model.
 
-* *Conceptual schema.* Describes the semantics of the domain in
-  technology-independent terms: the entity classes that matter and the
-  relationships between them. It is the artifact used to agree requirements with
-  business stakeholders, before any database product has been chosen.
+* *Conceptual schema.* Describes the semantics of the domain in technology-independent terms: the
+  entity classes that matter and the relationships between them. It is the artifact used to agree
+  requirements with business stakeholders, before any database product has been chosen.
 
-* *Logical schema.* Translates the conceptual schema into a structure a database
-  can implement, such as tables and columns for a relational model, without yet
-  committing to a specific product. One conceptual schema may give rise to
-  several logical schemas targeting different storage engines.
+* *Logical schema.* Translates the conceptual schema into a structure a database can implement, such
+  as tables and columns for a relational model, without yet committing to a specific product. One
+  conceptual schema may give rise to several logical schemas targeting different storage engines.
 
-* *Physical schema.* Fixes how the data is stored on a concrete platform:
-  tablespaces, partitions, data types, and
-  xref:database-indexes.adoc[*indexes*]. It accounts for access patterns,
-  performance, and storage constraints, and is expressed in a data definition
-  language such as xref:sql.adoc[*SQL*].
+* *Physical schema.* Fixes how the data is stored on a concrete platform: tablespaces, partitions,
+  data types, and xref:database-indexes.adoc[*indexes*]. It accounts for access patterns,
+  performance, and storage constraints, and is expressed in a data definition language such as
+  xref:sql.adoc[*SQL*].
 
-The conceptual-to-logical step is where
-xref:normalization.adoc[*normalization*] is applied to remove redundancy, and
-the logical-to-physical step is where
-xref:denormalization.adoc[*denormalization*] is selectively undone to meet read
-performance targets. The two are not opposites so much as pressures applied at
-different layers.
+The conceptual-to-logical step is where xref:normalization.adoc[*normalization*] is applied to
+remove redundancy, and the logical-to-physical step is where
+xref:denormalization.adoc[*denormalization*] is selectively undone to meet read performance targets.
+The two are not opposites so much as pressures applied at different layers.
 
 == Modeling methodologies
 
 Data models are built in two broad directions, after Len Silverston (1997).
 
-* *Top-down* models start from a subject-area understanding gathered from domain
-  experts and are worked down into entities and relationships. They serve as a
-  reference template even when a given system implements only part of them. This
-  mirrors xref:top-down-design.adoc[*top-down design*] more generally.
+* *Top-down* models start from a subject-area understanding gathered from domain experts and are
+  worked down into entities and relationships. They serve as a reference template even when a given
+  system implements only part of them. This mirrors xref:top-down-design.adoc[*top-down design*]
+  more generally.
 
-* *Bottom-up* or *view-integration* models are assembled from existing data
-  structures, screens, and reports, often during a xref:reverse-engineering.adoc[*reverse-engineering*] effort.
-  They tend to be physical and application-specific, and they may not promote
-  data sharing across an organization. This mirrors
-  xref:bottom-up-design.adoc[*bottom-up design*].
+* *Bottom-up* or *view-integration* models are assembled from existing data structures, screens, and
+  reports, often during a xref:reverse-engineering.adoc[*reverse-engineering*] effort. They tend to
+  be physical and application-specific, and they may not promote data sharing across an
+  organization. This mirrors xref:bottom-up-design.adoc[*bottom-up design*].
 
-In practice most projects blend the two, drafting a top-down reference model and
-refining it against real data structures. The distinction is also blurred by
-xref:case.adoc[*CASE*] tools that collapse the logical and physical layers into
-one.
+In practice most projects blend the two, drafting a top-down reference model and refining it against
+real data structures. The distinction is also blurred by xref:case.adoc[*CASE*] tools that collapse
+the logical and physical layers into one.
 
 == Notations
 
 Several notations exist for drawing data models, most of them variants of the
-xref:entity-relationship-diagram.adoc[*entity-relationship model*] introduced by
-Peter Chen in 1976. Common notations include Chen's notation, Barker's notation,
-IDEF1X, and Object-Role Modeling. They differ mainly in how they represent
-cardinality and optionality, but the underlying model, entities plus
-relationships plus attributes, is shared. Two modelers given the same notation
-will still produce different models, so the notation is a means of
-communication rather than a guarantee of a correct design.
+xref:entity-relationship-diagram.adoc[*entity-relationship model*] introduced by Peter Chen in 1976.
+Common notations include Chen's notation, Barker's notation, IDEF1X, and Object-Role Modeling. They
+differ mainly in how they represent cardinality and optionality, but the underlying model, entities
+plus relationships plus attributes, is shared. Two modelers given the same notation will still
+produce different models, so the notation is a means of communication rather than a guarantee of a
+correct design.
 
 == Schema-less and NoSQL modeling
 
-The three-schema discipline assumes a fixed schema.
-xref:nosql-databases.adoc[*NoSQL databases*] complicate that assumption.
-Document, key-value, wide-column, and xref:graph-databases.adoc[*graph stores*]
-each favor a different shape of data, and many are schema-less or schema-on-read, letting each record
-carry its own structure.
+The three-schema discipline assumes a fixed schema. xref:nosql-databases.adoc[*NoSQL databases*]
+complicate that assumption. Document, key-value, wide-column, and
+xref:graph-databases.adoc[*graph stores*] each favor a different shape of data, and many are
+schema-less or schema-on-read, letting each record carry its own structure.
 
-Schema freedom is a trade-off, not a free lunch. Without a schema enforced by
-the store, the data model lives in the application code that writes and reads
-the records, and xref:data-integrity.adoc[*data integrity*] and
-xref:referential-integrity.adoc[*referential integrity*] become the
-application's responsibility. Data modeling is no less relevant here, but it
-shifts from designing tables to designing the document shapes, access keys, and
-aggregate boundaries that the store will use, and these decisions are driven by
-xref:access-patterns.adoc[*access patterns*] as much as by the shape of the real
+Schema freedom is a trade-off, not a free lunch. Without a schema enforced by the store, the data
+model lives in the application code that writes and reads the records, and
+xref:data-integrity.adoc[*data integrity*] and
+xref:referential-integrity.adoc[*referential integrity*] become the application's responsibility.
+Data modeling is no less relevant here, but it shifts from designing tables to designing the
+document shapes, access keys, and aggregate boundaries that the store will use, and these decisions
+are driven by xref:access-patterns.adoc[*access patterns*] as much as by the shape of the real
 world.
 
 == Common pitfalls
 
-Several failure modes recur in data models, and they are expensive because they
-are baked into the structure rather than the code that sits on top of it.
+Several failure modes recur in data models, and they are expensive because they are baked into the
+structure rather than the code that sits on top of it.
 
-* *Business rules frozen into structure.* When rules specific to how one
-  organization operates are hard-coded into entity shapes, small changes to the
-  business require large changes to schemas and the interfaces built on them.
-  Rules that vary should be data, not structure.
+* *Business rules frozen into structure.* When rules specific to how one organization operates are
+  hard-coded into entity shapes, small changes to the business require large changes to schemas and
+  the interfaces built on them. Rules that vary should be data, not structure.
 
-* *Missed or misidentified entities.* An entity that is not recognized gets
-  duplicated across systems, with the attendant cost of keeping the copies in
-  step.
+* *Missed or misidentified entities.* An entity that is not recognized gets duplicated across
+  systems, with the attendant cost of keeping the copies in step.
 
-* *Divergent per-system models.* When each system designs its own data model in
-  isolation, the interfaces between them become the dominant cost, estimated at
-  25 to 70% of total system cost. A shared enterprise model reduces this
-  rework.
+* *Divergent per-system models.* When each system designs its own data model in isolation, the
+  interfaces between them become the dominant cost, estimated at 25 to 70% of total system cost. A
+  shared enterprise model reduces this rework.
 
-* *Sacrificing integrity for flexibility.* In schema-less stores the
-  convenience of accepting any document shape is paid for in silent data
-  corruption when producers and consumers drift apart. A documented contract,
-  even an informal one, recovers most of the safety a schema would provide.
+* *Sacrificing integrity for flexibility.* In schema-less stores the convenience of accepting any
+  document shape is paid for in silent data corruption when producers and consumers drift apart. A
+  documented contract, even an informal one, recovers most of the safety a schema would provide.
 
 == Tools
 
-The following tools specialize in database modeling. They are used to design
-database schemas, including the relationships and constraints in SQL databases.
-These are proper xref:modeling.adoc[*modeling*] tools, not just
-xref:diagramming.adoc[*diagramming*] tools, which means they can be used to
-generate SQL code from their models.
+The following tools specialize in database modeling. They are used to design database schemas,
+including the relationships and constraints in SQL databases. These are proper
+xref:modeling.adoc[*modeling*] tools, not just xref:diagramming.adoc[*diagramming*] tools, which
+means they can be used to generate SQL code from their models.
 
-Some database administration tools such as https://www.heidisql.com/[HeidiSQL]
-and https://www.mysql.com/products/workbench/[MySQL Workbench] also support
-visual database design.
+Some database administration tools such as https://www.heidisql.com/[HeidiSQL] and
+https://www.mysql.com/products/workbench/[MySQL Workbench] also support visual database design.
 
-* https://databasediagram.com/[Database Diagram]: Online tool for generating
-  entity-relationship diagrams from text.
+* https://databasediagram.com/[Database Diagram]: Online tool for generating entity-relationship
+  diagrams from text.
 
-* https://dbml.dbdiagram.io/home/[Database Markup Language (DBML)]: Open-source
-  DSL for defining and documenting database schemas and data structures.
-  https://dbdiagram.io/[dbdiagram.io] and https://dbdocs.io/[dbdocs.io] are
-  tools that support DBML. There's also a
-  https://dbml.dbdiagram.io/cli[command line tool] for converting DBML to SQL
-  table definitions, and a
-  https://dbml.dbdiagram.io/js-module/core/[JavaScript module] for
-  programmatically working with DBML.
+* https://dbml.dbdiagram.io/home/[Database Markup Language (DBML)]: Open-source DSL for defining and
+  documenting database schemas and data structures. https://dbdiagram.io/[dbdiagram.io] and
+  https://dbdocs.io/[dbdocs.io] are tools that support DBML. There's also a
+  https://dbml.dbdiagram.io/cli[command line tool] for converting DBML to SQL table definitions, and
+  a https://dbml.dbdiagram.io/js-module/core/[JavaScript module] for programmatically working with
+  DBML.
 
 * https://www.dbdesigner.net/[DB Designer]: Online database design tool.
 
-* https://www.fabforce.net/dbdesigner4/[DbDesigner 4]: Open-source design tool
-  for MySQL databases.
+* https://www.fabforce.net/dbdesigner4/[DbDesigner 4]: Open-source design tool for MySQL databases.
 
-* https://dbdiagram.io/[Dbdiagram.io]: Online database design tool. From data
-  models defined in a lightweight, plain text markup language, the UI
-  dynamically renders Entity-Relationship (ER) diagrams and exports SQL
-  statements for table creation.
+* https://dbdiagram.io/[Dbdiagram.io]: Online database design tool. From data models defined in a
+  lightweight, plain text markup language, the UI dynamically renders Entity-Relationship (ER)
+  diagrams and exports SQL statements for table creation.
 
-* https://dbschema.com/[DbSchema]: Powerful modeling tool for both SQL and
-  NoSQL databases. Supports reverse engineering of existing databases, visual
-  query building, generation of dummy test data, and more.
+* https://dbschema.com/[DbSchema]: Powerful modeling tool for both SQL and NoSQL databases. Supports
+  reverse engineering of existing databases, visual query building, generation of dummy test data,
+  and more.
 
-* https://soft-builder.com/erbuilder-data-modeler/[ER Builder Data Modeler]:
-  Automatically generates SQL code for popular databases from ER diagrams.
-  Desktop subscription software.
+* https://soft-builder.com/erbuilder-data-modeler/[ER Builder Data Modeler]: Automatically generates
+  SQL code for popular databases from ER diagrams. Desktop subscription software.
 
-* https://github.com/BurntSushi/erd[erd]: CLI utility for generating
-  entity-relationship diagrams from a plain-text description.
+* https://github.com/BurntSushi/erd[erd]: CLI utility for generating entity-relationship diagrams
+  from a plain-text description.
 
-* https://hackolade.com/[Hackolade]: Data modeling tool for SQL and NoSQL
-  databases, as well as APIs and storage formats.
+* https://hackolade.com/[Hackolade]: Data modeling tool for SQL and NoSQL databases, as well as APIs
+  and storage formats.
 
-* http://www.modelsphere.com/[ModelSphere]: Free and open-source tool for
-  business process modeling, data modeling, and UML modeling. Cross-platform
-  compatible, but it requires a Java 7 Virtual Machine to be installed locally.
+* http://www.modelsphere.com/[ModelSphere]: Free and open-source tool for business process modeling,
+  data modeling, and UML modeling. Cross-platform compatible, but it requires a Java 7 Virtual
+  Machine to be installed locally.
 
-* https://www.quickdatabasediagrams.com/[Quick Database Diagrams]:
-  Text-to-diagram web tool that does what it says on the tin.
+* https://www.quickdatabasediagrams.com/[Quick Database Diagrams]: Text-to-diagram web tool that
+  does what it says on the tin.
 
 * https://www.oracle.com/database/sqldeveloper/technologies/sql-data-modeler/[Oracle SQL Developer Data Modeler]:
   Free graphical tool for designing database schemas.
@@ -201,12 +176,11 @@ visual database design.
 
 == References
 
-* ANSI/X3/SPARC (1975). _Study Group on Data Base Management Systems; Interim
-  Report_. FDT (Bulletin of ACM SIGMOD) 7(2).
-* Chen, P. P. (1976). "The entity-relationship model: toward a unified view of
-  data". _ACM Transactions on Database Systems_, 1(1), 9–36.
+* ANSI/X3/SPARC (1975). _Study Group on Data Base Management Systems; Interim Report_. FDT (Bulletin
+  of ACM SIGMOD) 7(2).
+* Chen, P. P. (1976). "The entity-relationship model: toward a unified view of data".
+  _ACM Transactions on Database Systems_, 1(1), 9–36.
 * Silverston, L. (1997). _The Data Model Resource Book_. Wiley.
-* Simsion, G. C. and Witt, G. C. (2005). _Data Modeling Essentials_. 3rd ed.
-  Morgan Kaufmann.
-* Whitten, J. L., Bentley, L. D. and Dittman, K. C. (2005). _Systems Analysis
-  and Design Methods_. 6th ed. McGraw-Hill.
+* Simsion, G. C. and Witt, G. C. (2005). _Data Modeling Essentials_. 3rd ed. Morgan Kaufmann.
+* Whitten, J. L., Bentley, L. D. and Dittman, K. C. (2005). _Systems Analysis and Design Methods_.
+  6th ed. McGraw-Hill.

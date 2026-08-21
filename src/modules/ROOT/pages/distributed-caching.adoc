@@ -1,34 +1,27 @@
 = Distributed caching
 
-Distributed caching is a xref:caching.adoc[*caching*] technique in which cached
-data is spread across multiple nodes (servers) rather than held in a single
-machine. It lets a cache xref:horizontal-scaling.adoc[*scale horizontally*] to
-match the needs of large, xref:distributed-system.adoc[*distributed*]
-applications whose working set or request volume outgrows what one node can
-hold or serve.
+Distributed caching is a xref:caching.adoc[*caching*] technique in which cached data is spread
+across multiple nodes (servers) rather than held in a single machine. It lets a cache
+xref:horizontal-scaling.adoc[*scale horizontally*] to match the needs of large,
+xref:distributed-system.adoc[*distributed*] applications whose working set or request volume
+outgrows what one node can hold or serve.
 
-A local cache – one that lives in the process or on the host of the application
-that uses it – is fast and simple, but every replica of the application keeps
-its own copy. As the number of replicas grows, those copies diverge, memory is
-wasted on duplicates, and a cache miss on one node does not benefit another. A
-distributed cache moves the cache out of the application process and into a
-shared cluster of cache servers that all application nodes read from and write
-to.
+A local cache – one that lives in the process or on the host of the application that uses it – is
+fast and simple, but every replica of the application keeps its own copy. As the number of replicas
+grows, those copies diverge, memory is wasted on duplicates, and a cache miss on one node does not
+benefit another. A distributed cache moves the cache out of the application process and into a
+shared cluster of cache servers that all application nodes read from and write to.
 
 == How it works
 
-Each cached entry is addressed by a key. A client library applies a
-xref:hashing.adoc[*hashing*] function to the key to decide which cache node owns
-it. The most common partitioning scheme is
-xref:consistent-hashing.adoc[*consistent hashing*], which spreads keys evenly
-across the cluster and minimizes the amount of data that must be moved when
-nodes are added or removed.
+Each cached entry is addressed by a key. A client library applies a xref:hashing.adoc[*hashing*]
+function to the key to decide which cache node owns it. The most common partitioning scheme is
+xref:consistent-hashing.adoc[*consistent hashing*], which spreads keys evenly across the cluster and
+minimizes the amount of data that must be moved when nodes are added or removed.
 
-For xref:resilience.adoc[*resilience*], entries are often
-xref:replication.adoc[*replicated*] across two or more nodes, so that the
-failure of one node does not lose its share of the cache. Reads can then be
-served from any replica, and a failed node's workload is redistributed among
-the survivors.
+For xref:resilience.adoc[*resilience*], entries are often xref:replication.adoc[*replicated*] across
+two or more nodes, so that the failure of one node does not lose its share of the cache. Reads can
+then be served from any replica, and a failed node's workload is redistributed among the survivors.
 
 == Why use it
 
@@ -36,16 +29,16 @@ the survivors.
 data or serve more reads, without re-architecting the application.
 
 * *Fault tolerance.* Because data is spread and replicated, no single node is a
-xref:single-point-of-failure.adoc[*single point of failure*]. A failed node
-degrades rather than breaks the cache.
+xref:single-point-of-failure.adoc[*single point of failure*]. A failed node degrades rather than
+breaks the cache.
 
 * *Shared state.* All application replicas see the same cached values, avoiding
 the divergence and duplicate work of per-node local caches.
 
-These benefits come at the cost of a network hop on every cache access, which
-adds xref:latency.adoc[*latency*] compared with an in-process cache. For
-workloads where every microsecond counts, a small local cache in front of the
-distributed cache can absorb the hottest keys.
+These benefits come at the cost of a network hop on every cache access, which adds
+xref:latency.adoc[*latency*] compared with an in-process cache. For workloads where every
+microsecond counts, a small local cache in front of the distributed cache can absorb the hottest
+keys.
 
 == Trade-offs and pitfalls
 
@@ -53,35 +46,32 @@ A distributed cache is itself a distributed system, and inherits its hazards.
 
 * *xref:consistency.adoc[Consistency].* Keeping cached copies in step with the
 source-of-truth – and with each other – is the central difficulty. The
-xref:cap-theorem.adoc[*CAP theorem*] applies: under a network partition, the
-cache must choose between availability and consistency. Most distributed caches
-favour availability and tolerate
+xref:cap-theorem.adoc[*CAP theorem*] applies: under a network partition, the cache must choose
+between availability and consistency. Most distributed caches favour availability and tolerate
 xref:eventual-consistency.adoc[*eventual consistency*].
 
 * *Cache invalidation.* Deciding when cached data is stale is hard in any cache,
-and harder when many nodes hold copies. Invalidation strategies such as
-write-through, write-back, cache-aside, and time-to-live are covered in
-xref:caching.adoc[*caching*].
+and harder when many nodes hold copies. Invalidation strategies such as write-through, write-back,
+cache-aside, and time-to-live are covered in xref:caching.adoc[*caching*].
 
 * *Network failures.* A cache node may be slow or unreachable, turning a fast
-cache read into a timeout. Clients must degrade gracefully, typically by
-falling back to the source-of-truth.
+cache read into a timeout. Clients must degrade gracefully, typically by falling back to the
+source-of-truth.
 
 * *Thundering herd and cold starts.* When many keys expire together or the
-cache starts empty, a surge of misses can overload the backing store. These
-failure modes and their mitigations are described in xref:caching.adoc[*caching*].
+cache starts empty, a surge of misses can overload the backing store. These failure modes and their
+mitigations are described in xref:caching.adoc[*caching*].
 
 == Implementations
 
-The two most widely used distributed caches are xref:redis.adoc[*Redis*] (run
-as a Redis Cluster) and https://memcached.org/[Memcached]. Redis Cluster shards
-data across nodes using a hash-slot scheme and supports replication and
-automatic failover. Memcached is simpler: a pure in-memory key-value cache with
-no persistence, relying on the client library to hash keys across a pool of
+The two most widely used distributed caches are xref:redis.adoc[*Redis*] (run as a Redis Cluster)
+and https://memcached.org/[Memcached]. Redis Cluster shards data across nodes using a hash-slot
+scheme and supports replication and automatic failover. Memcached is simpler: a pure in-memory
+key-value cache with no persistence, relying on the client library to hash keys across a pool of
 servers.
 
-Managed cloud offerings such as Amazon ElastiCache run Redis or Memcached as a
-service and handle clustering, replication, and failover on your behalf.
+Managed cloud offerings such as Amazon ElastiCache run Redis or Memcached as a service and handle
+clustering, replication, and failover on your behalf.
 
 == See also
 

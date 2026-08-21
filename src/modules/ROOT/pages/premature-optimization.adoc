@@ -1,53 +1,45 @@
 = Premature optimization
 
-"Premature optimization is the root of all evil" is one of the most quoted
-aphorisms in software engineering. It is attributed to Donald Knuth, who
-popularized it in his 1974 paper "Structured Programming with go to Statements",
-where he in turn credited a version of the remark to C.A.R. Hoare. The full
-sentence is more careful than the slogan usually repeated. "We should forget
-about small efficiencies, say about 97% of the time: premature optimization is
-the root of all evil. Yet we should not pass up our opportunities in that
-critical 3%."
+"Premature optimization is the root of all evil" is one of the most quoted aphorisms in software
+engineering. It is attributed to Donald Knuth, who popularized it in his 1974 paper "Structured
+Programming with go to Statements", where he in turn credited a version of the remark to C.A.R.
+Hoare. The full sentence is more careful than the slogan usually repeated. "We should forget about
+small efficiencies, say about 97% of the time: premature optimization is the root of all evil. Yet
+we should not pass up our opportunities in that critical 3%."
 
-The point is not that optimization is bad. It is that optimization done too
-early – before there is evidence about where the costs actually lie – is bad.
-"Premature" is the operative word. Optimizing before measuring usually means
-optimizing the wrong thing. A hot path is guessed at, an allocation is assumed
-to matter, a data structure is chosen for a workload that turns out not to be
-the one the system has. The gains, if any, are paid for in code that is harder
-to read, harder to change, and more tightly bound to assumptions the next
-change will invalidate. It is a common xref:anti-pattern.adoc[*anti-pattern*] and a reliable source
-of xref:complexity.adoc[*accidental complexity*].
+The point is not that optimization is bad. It is that optimization done too early – before there is
+evidence about where the costs actually lie – is bad. "Premature" is the operative word. Optimizing
+before measuring usually means optimizing the wrong thing. A hot path is guessed at, an allocation
+is assumed to matter, a data structure is chosen for a workload that turns out not to be the one the
+system has. The gains, if any, are paid for in code that is harder to read, harder to change, and
+more tightly bound to assumptions the next change will invalidate. It is a common
+xref:anti-pattern.adoc[*anti-pattern*] and a reliable source of
+xref:complexity.adoc[*accidental complexity*].
 
-The remedy is the second half of Knuth's sentence. Establish the critical 3%
-with evidence. xref:profiling.adoc[*Profiling*] identifies where time is
-actually spent, and xref:performance-testing.adoc[*performance testing*]
-confirms that a change moves the number that matters. Optimize the
-xref:critical-path-analysis.adoc[*critical path*] once it is known, and measure
-again afterwards. Optimization without measurement is what the aphorism warns
-against; optimization after measurement is exactly the critical 3% Knuth is
-defending.
+The remedy is the second half of Knuth's sentence. Establish the critical 3% with evidence.
+xref:profiling.adoc[*Profiling*] identifies where time is actually spent, and
+xref:performance-testing.adoc[*performance testing*] confirms that a change moves the number that
+matters. Optimize the xref:critical-path-analysis.adoc[*critical path*] once it is known, and
+measure again afterwards. Optimization without measurement is what the aphorism warns against;
+optimization after measurement is exactly the critical 3% Knuth is defending.
 
 Premature optimization is often bracketed with a family of
-xref:design-principles.adoc[*design principles*] that share its instinct for
-deferred commitment. xref:yagni.adoc[*YAGNI*] warns against building for
-hypothetical needs. xref:do-the-simplest-thing.adoc[*Do the simplest thing*]
-asks for the minimal solution that could possibly work. The
-xref:kiss-principle.adoc[*KISS principle*] names simplicity as a goal in its
-own right. All four point the same way. Solve the problem you actually have,
-and let the next problem reveal itself before you pay for it.
+xref:design-principles.adoc[*design principles*] that share its instinct for deferred commitment.
+xref:yagni.adoc[*YAGNI*] warns against building for hypothetical needs.
+xref:do-the-simplest-thing.adoc[*Do the simplest thing*] asks for the minimal solution that could
+possibly work. The xref:kiss-principle.adoc[*KISS principle*] names simplicity as a goal in its own
+right. All four point the same way. Solve the problem you actually have, and let the next problem
+reveal itself before you pay for it.
 
-The aphorism is also misread in the other direction. "Premature optimization is
-the root of all evil" is sometimes shortened to "optimization is the root of
-all evil," which it is not. Knuth spent a career optimizing. The distinction the
-aphorism draws is between optimization driven by measurement and optimization
-driven by guesswork. xref:mechanical-sympathy.adoc[*Mechanical sympathy*], for
-example, is not premature optimization: it assumes measurable goals exist and
-that changes are driven by profiling rather than intuition. Code that has to
-meet a performance budget – a tight inner loop, a real-time system, a
-xref:latency.adoc[*latency*]-sensitive hot path – is exactly the critical 3%,
-and there the discipline is not to avoid optimization but to make it
-deliberate.
+The aphorism is also misread in the other direction. "Premature optimization is the root of all
+evil" is sometimes shortened to "optimization is the root of all evil," which it is not. Knuth spent
+a career optimizing. The distinction the aphorism draws is between optimization driven by
+measurement and optimization driven by guesswork.
+xref:mechanical-sympathy.adoc[*Mechanical sympathy*], for example, is not premature optimization: it
+assumes measurable goals exist and that changes are driven by profiling rather than intuition. Code
+that has to meet a performance budget – a tight inner loop, a real-time system, a
+xref:latency.adoc[*latency*]-sensitive hot path – is exactly the critical 3%, and there the
+discipline is not to avoid optimization but to make it deliberate.
 
 == See also
 
@@ -62,5 +54,5 @@ deliberate.
 == References
 
 * Donald E. Knuth (1974).
-  https://doi.org/10.1145/356635.356640[_Structured Programming with go to Statements_].
-  ACM Computing Surveys 6 (4): 261–301.
+  https://doi.org/10.1145/356635.356640[_Structured Programming with go to Statements_]. ACM
+  Computing Surveys 6 (4): 261–301.

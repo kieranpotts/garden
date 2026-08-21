@@ -1,17 +1,14 @@
 = Law of Demeter
 
 The Law of Demeter is a xref:design-principles.adoc[*design principle*] for
-xref:object-oriented-programming.adoc[*object-oriented programs*] that
-restricts how far an object reaches into the structure of its collaborators.
-Colloquially it is summarized as "talk only to your immediate friends, not to
-friends of friends." The name comes from the Demeter project at Northeastern
-University, an investigation into adaptive programming led by Karl Lieberherr in
-the late 1980s and named after the Greek goddess of agriculture. The guideline
-was formulated by Ian Holland during that work and first published by
-Lieberherr and Holland in 1989.
+xref:object-oriented-programming.adoc[*object-oriented programs*] that restricts how far an object
+reaches into the structure of its collaborators. Colloquially it is summarized as "talk only to your
+immediate friends, not to friends of friends." The name comes from the Demeter project at
+Northeastern University, an investigation into adaptive programming led by Karl Lieberherr in the
+late 1980s and named after the Greek goddess of agriculture. The guideline was formulated by Ian
+Holland during that work and first published by Lieberherr and Holland in 1989.
 
-Formally, a method `m` of an object `o` should only invoke methods of the
-following.
+Formally, a method `m` of an object `o` should only invoke methods of the following.
 
 * `o` itself
 * objects passed to `m` as parameters
@@ -19,64 +16,56 @@ following.
 * the direct component objects of `o`
 * a global variable accessible to `o`
 
-Anything beyond this set is treated as a stranger. Calling a stranger's methods
-– typically through a chain of accessors – couples the caller to the internal
-shape of objects it does not own.
+Anything beyond this set is treated as a stranger. Calling a stranger's methods – typically through
+a chain of accessors – couples the caller to the internal shape of objects it does not own.
 
 == The train wreck smell
 
 The most visible symptom of a violation is a long method chain such as
-`order.getCustomer().getAddress().getCity()`. Each hop assumes the next object's
-shape, so a change anywhere along the chain can break the caller. Such
-expressions are sometimes called *train wrecks*, after the long line of
-carriages. They read fluently but are expensive to change: the caller has
+`order.getCustomer().getAddress().getCity()`. Each hop assumes the next object's shape, so a change
+anywhere along the chain can break the caller. Such expressions are sometimes called *train wrecks*,
+after the long line of carriages. They read fluently but are expensive to change: the caller has
 reached through several collaborators and now depends on all of them.
 
-The remedy is to push the behavior closer to the data it acts on. Instead of
-asking the order for the customer, the address, and the city, the caller asks
-the order for what it actually needs and lets the order delegate inward. This
-is the same instinct the *tell, don't ask* heuristic expresses, and it keeps
-each object's internals behind a narrow xref:interfaces.adoc[*interface*].
+The remedy is to push the behavior closer to the data it acts on. Instead of asking the order for
+the customer, the address, and the city, the caller asks the order for what it actually needs and
+lets the order delegate inward. This is the same instinct the *tell, don't ask* heuristic expresses,
+and it keeps each object's internals behind a narrow xref:interfaces.adoc[*interface*].
 
 == Why it matters
 
-Each hop in a method chain is a hidden dependency. The caller knows not only
-its immediate collaborator but the collaborator's collaborator, and so on. That
-knowledge is invisible in the collaborator's interface and survives no
-xref:refactoring.adoc[*refactoring*] of the path between them. Following the
-law keeps xref:coupling.adoc[*coupling*] narrow and visible, which is the same
-goal as xref:decoupling.adoc[*decoupling*] and xref:encapsulation.adoc[*encapsulation*] more broadly. The
-xref:connascence.adoc[*connascence*] locality heuristic captures the same point
-at a finer grain: strong coupling is tolerable where it is local and becomes a
-liability only when it crosses boundaries.
+Each hop in a method chain is a hidden dependency. The caller knows not only its immediate
+collaborator but the collaborator's collaborator, and so on. That knowledge is invisible in the
+collaborator's interface and survives no xref:refactoring.adoc[*refactoring*] of the path between
+them. Following the law keeps xref:coupling.adoc[*coupling*] narrow and visible, which is the same
+goal as xref:decoupling.adoc[*decoupling*] and xref:encapsulation.adoc[*encapsulation*] more
+broadly. The xref:connascence.adoc[*connascence*] locality heuristic captures the same point at a
+finer grain: strong coupling is tolerable where it is local and becomes a liability only when it
+crosses boundaries.
 
-There is a practical testing benefit too. An object that talks only to its
-immediate collaborators is easier to unit-test, because only those collaborators
-need to be stood up or replaced. A class that reaches through chains forces
-the test to build out a longer object graph, which makes the test brittle to
-changes in parts of the system the class does not directly depend on.
+There is a practical testing benefit too. An object that talks only to its immediate collaborators
+is easier to unit-test, because only those collaborators need to be stood up or replaced. A class
+that reaches through chains forces the test to build out a longer object graph, which makes the test
+brittle to changes in parts of the system the class does not directly depend on.
 
 == Trade-offs
 
-Strictly applied, the law tends to produce many small forwarding methods – one
-on each intermediate object to delegate the request inward. Critics call this
-the *shovel pattern*, after the proliferation of single-line methods that exist
-only to satisfy the guideline. Each one is a new seam the reader must follow,
-and a new place where a request can be misrouted. The cure can reproduce the
-disease at one remove.
+Strictly applied, the law tends to produce many small forwarding methods – one on each intermediate
+object to delegate the request inward. Critics call this the *shovel pattern*, after the
+proliferation of single-line methods that exist only to satisfy the guideline. Each one is a new
+seam the reader must follow, and a new place where a request can be misrouted. The cure can
+reproduce the disease at one remove.
 
-The law is therefore a heuristic, not a rule. Fluent interfaces, builder
-chains, and monadic pipelines deliberately chain method calls because each
-intermediate value is the intended collaborator, not a stranger's internals.
-The shape looks like a train wreck but does not carry the same coupling,
-because each link returns a fresh, self-contained value rather than exposing
-the next object's private structure.
+The law is therefore a heuristic, not a rule. Fluent interfaces, builder chains, and monadic
+pipelines deliberately chain method calls because each intermediate value is the intended
+collaborator, not a stranger's internals. The shape looks like a train wreck but does not carry the
+same coupling, because each link returns a fresh, self-contained value rather than exposing the next
+object's private structure.
 
-For the same reason the law sits alongside rather than inside
-xref:grasp.adoc[*GRASP*]. GRASP answers _which_ object should own a
-responsibility, where the Law of Demeter constrains _how_ an object talks to
-the one it has chosen. Both are heuristics that pull toward low coupling and
-high cohesion, and both are best applied with the trade-off in view.
+For the same reason the law sits alongside rather than inside xref:grasp.adoc[*GRASP*]. GRASP
+answers _which_ object should own a responsibility, where the Law of Demeter constrains _how_ an
+object talks to the one it has chosen. Both are heuristics that pull toward low coupling and high
+cohesion, and both are best applied with the trade-off in view.
 
 == See also
 
@@ -91,5 +80,5 @@ high cohesion, and both are best applied with the trade-off in view.
 
 == References
 
-- Lieberherr, K. and Holland, I. (1989). "Assuring good style for
-  object-oriented programs." _IEEE Software_, 6(5), pp. 38–48.
+- Lieberherr, K. and Holland, I. (1989). "Assuring good style for object-oriented programs."
+  _IEEE Software_, 6(5), pp. 38–48.

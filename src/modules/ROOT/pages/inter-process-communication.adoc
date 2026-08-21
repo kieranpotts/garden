@@ -1,61 +1,55 @@
 = Inter-process communication (IPC)
 
-Inter-process communication (IPC) is the set of mechanisms that operating
-systems and runtimes provide for exchanging data and signals between processes,
-or between threads in separate processes. A process owns a private address
-space, so one process cannot directly read or write another's memory. IPC is the
-controlled channel through which isolated processes cooperate.
+Inter-process communication (IPC) is the set of mechanisms that operating systems and runtimes
+provide for exchanging data and signals between processes, or between threads in separate processes.
+A process owns a private address space, so one process cannot directly read or write another's
+memory. IPC is the controlled channel through which isolated processes cooperate.
 
-IPC is used wherever independent units of execution must coordinate: between the
-components of a xref:client-server-architecture.adoc[*client-server*] system,
-between the services of a xref:distributed-system.adoc[*distributed system*],
-and between the operating system and the programs it hosts. The communicating
-processes may run on the same machine or on different machines connected by a
-network.
+IPC is used wherever independent units of execution must coordinate: between the components of a
+xref:client-server-architecture.adoc[*client-server*] system, between the services of a
+xref:distributed-system.adoc[*distributed system*], and between the operating system and the
+programs it hosts. The communicating processes may run on the same machine or on different machines
+connected by a network.
 
 == Mechanisms
 
-IPC mechanisms fall into two broad families, distinguished by whether the
-participating processes share state.
+IPC mechanisms fall into two broad families, distinguished by whether the participating processes
+share state.
 
-*Message passing* moves data through a kernel-mediated channel. The sender
-writes a message to a pipe, queue, or socket, and the receiver reads it. No
-shared address space is exposed, so the kernel preserves isolation between the
-peers. Message passing is the basis of xref:message-queues.adoc[*message queues*], xref:remote-procedure-call.adoc[*RPC*], xref:rest.adoc[*REST*], and
-most xref:network-protocols.adoc[*network protocols*]. It generalizes naturally
-to processes on different machines, which is why distributed software is built
-almost entirely on message-passing styles of IPC.
+*Message passing* moves data through a kernel-mediated channel. The sender writes a message to a
+pipe, queue, or socket, and the receiver reads it. No shared address space is exposed, so the kernel
+preserves isolation between the peers. Message passing is the basis of
+xref:message-queues.adoc[*message queues*], xref:remote-procedure-call.adoc[*RPC*],
+xref:rest.adoc[*REST*], and most xref:network-protocols.adoc[*network protocols*]. It generalizes
+naturally to processes on different machines, which is why distributed software is built almost
+entirely on message-passing styles of IPC.
 
-*Shared memory* maps a region of memory into the address spaces of two or more
-processes, so they can read and write the same locations directly. This is the
-fastest form of IPC, because it avoids the copy and serialization costs of
-message passing. The trade-off is that the participating processes must use
-xref:synchronization.adoc[*synchronization*] primitives such as mutexes and
-semaphores to coordinate access, or risk data races and corruption. Shared
-memory is strictly local. It cannot span machines.
+*Shared memory* maps a region of memory into the address spaces of two or more processes, so they
+can read and write the same locations directly. This is the fastest form of IPC, because it avoids
+the copy and serialization costs of message passing. The trade-off is that the participating
+processes must use xref:synchronization.adoc[*synchronization*] primitives such as mutexes and
+semaphores to coordinate access, or risk data races and corruption. Shared memory is strictly local.
+It cannot span machines.
 
-Other common IPC mechanisms include *pipes* and *named pipes* (FIFOs), *signals*
-(asynchronous notifications such as `SIGTERM`), *Unix domain sockets*, and
-xref:posix.adoc[*POSIX*] message queues. Sockets, in particular, underpin both
-local and remote IPC. The same API serves a Unix domain socket on one host and a
-xref:tcp.adoc[*TCP*] connection across a network.
+Other common IPC mechanisms include *pipes* and *named pipes* (FIFOs), *signals* (asynchronous
+notifications such as `SIGTERM`), *Unix domain sockets*, and xref:posix.adoc[*POSIX*] message
+queues. Sockets, in particular, underpin both local and remote IPC. The same API serves a Unix
+domain socket on one host and a xref:tcp.adoc[*TCP*] connection across a network.
 
 == Local versus remote IPC
 
-A useful distinction is whether the peers share a host. Local IPC between
-processes on one machine can rely on the kernel to mediate access and on shared
-memory for high throughput. Remote IPC between processes on different machines
-must traverse a network, which introduces xref:latency.adoc[*latency*], partial
-failure, and the need for xref:messaging-protocols.adoc[*messaging protocols*].
-The same logical operation — sending a request, receiving a reply — has very
-different failure modes in the two cases.
+A useful distinction is whether the peers share a host. Local IPC between processes on one machine
+can rely on the kernel to mediate access and on shared memory for high throughput. Remote IPC
+between processes on different machines must traverse a network, which introduces
+xref:latency.adoc[*latency*], partial failure, and the need for
+xref:messaging-protocols.adoc[*messaging protocols*]. The same logical operation — sending a
+request, receiving a reply — has very different failure modes in the two cases.
 
 The xref:synchronous-communication.adoc[*synchronous*] versus
-xref:asynchronous-communication.adoc[*asynchronous*] character of an
-interaction is orthogonal to whether it is local or remote. A local pipe can be
-used asynchronously, and an RPC over a network can block the caller. The two
-axes are frequently conflated, but they answer different questions: where the
-peers run, and how the sender waits for a response.
+xref:asynchronous-communication.adoc[*asynchronous*] character of an interaction is orthogonal to
+whether it is local or remote. A local pipe can be used asynchronously, and an RPC over a network
+can block the caller. The two axes are frequently conflated, but they answer different questions:
+where the peers run, and how the sender waits for a response.
 
 == See also
 

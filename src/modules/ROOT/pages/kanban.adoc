@@ -1,109 +1,100 @@
 = Kanban
 
-Kanban is a workflow management method that visualizes work as cards moving
-through stages, pulling tasks through a process in response to demand rather
-than pushing work through based on predicted demand. This pull-based approach
-promotes focus, ensures work gets finished before new work is started, and
-provides at-a-glance status visibility.
+Kanban is a workflow management method that visualizes work as cards moving through stages, pulling
+tasks through a process in response to demand rather than pushing work through based on predicted
+demand. This pull-based approach promotes focus, ensures work gets finished before new work is
+started, and provides at-a-glance status visibility.
 
-The word "kanban" (看板) is Japanese for "sign board" or "billboard". The
-methodology has deep roots in Japanese working culture, predating its modern
-form by many decades. A staged card or ticket system for tracking work was a
-culturally embedded practice among Japanese shopkeepers, restaurateurs, and
-street traders from around the early 1900s. Notably, the Tekiya – organised
-gangs of street peddlers operating in shopping districts – used kanban systems
-to match work going through each business against claimed takings.
+The word "kanban" (看板) is Japanese for "sign board" or "billboard". The methodology has deep roots
+in Japanese working culture, predating its modern form by many decades. A staged card or ticket
+system for tracking work was a culturally embedded practice among Japanese shopkeepers,
+restaurateurs, and street traders from around the early 1900s. Notably, the Tekiya – organised gangs
+of street peddlers operating in shopping districts – used kanban systems to match work going through
+each business against claimed takings.
 
-In the late 1940s, Taiichi Ohno (1912–1990) led Toyota's adoption of Kanban
-within its manufacturing processes. Toyota's success with the system popularised
-Kanban among larger businesses worldwide, and it subsequently became a
-foundational practice of lean manufacturing and agile working.
+In the late 1940s, Taiichi Ohno (1912–1990) led Toyota's adoption of Kanban within its manufacturing
+processes. Toyota's success with the system popularised Kanban among larger businesses worldwide,
+and it subsequently became a foundational practice of lean manufacturing and agile working.
 
 == From the factory to knowledge work
 
-Kanban's migration from the shop floor to software development is largely the
-work of David J. Anderson. Drawing on a 2004 engagement at Microsoft that
-applied a *theory-of-constraints* drum-buffer-rope schedule, Anderson and
-collaborators refined the approach at Corbis in 2006–2007 and codified it in
-his 2010 book _Kanban: Successful Evolutionary Change for Your Technology Business_. The result is the *Kanban Method*, a method that prescribes a
-small set of practices but leaves their implementation detail to the team. Don Reinertsen's _The Principles of Product Development Flow_ (2009)
-supplied much of the economic and queueing-theory reasoning the method relies
-on, and Corey Ladas's _Scrumban_ (2008) sketched a path from
-xref:scrum.adoc[*Scrum*] toward a pure flow system.
+Kanban's migration from the shop floor to software development is largely the work of David J.
+Anderson. Drawing on a 2004 engagement at Microsoft that applied a *theory-of-constraints*
+drum-buffer-rope schedule, Anderson and collaborators refined the approach at Corbis in 2006–2007
+and codified it in his 2010 book
+_Kanban: Successful Evolutionary Change for Your Technology Business_. The result is the
+*Kanban Method*, a method that prescribes a small set of practices but leaves their implementation
+detail to the team. Don Reinertsen's _The Principles of Product Development Flow_ (2009) supplied
+much of the economic and queueing-theory reasoning the method relies on, and Corey Ladas's
+_Scrumban_ (2008) sketched a path from xref:scrum.adoc[*Scrum*] toward a pure flow system.
 
-Kanban is considered an xref:agile.adoc[*agile*] working practice on a par with
-more modern methods like Scrum and xref:extreme-programming.adoc[*Extreme Programming (XP)*]. Unlike those frameworks, it prescribes no iterations,
-roles, or ceremonies. It instead offers a small set of practices that teams
-adopt and adapt to their own xref:ways-of-working.adoc[*ways of working*].
+Kanban is considered an xref:agile.adoc[*agile*] working practice on a par with more modern methods
+like Scrum and xref:extreme-programming.adoc[*Extreme Programming (XP)*]. Unlike those frameworks,
+it prescribes no iterations, roles, or ceremonies. It instead offers a small set of practices that
+teams adopt and adapt to their own xref:ways-of-working.adoc[*ways of working*].
 
 == Practices
 
-The Kanban Method rests on six general practices, applied continually rather
-than in discrete phases.
+The Kanban Method rests on six general practices, applied continually rather than in discrete
+phases.
 
-* *Visualize the workflow.* Render the system as a board of columns (the
-  workflow states) and cards (the work items), so that the state of work is
-  visible to everyone at a glance. The board encodes the team's _definition of workflow_: what counts as a work item, where each item starts and finishes,
-  and the policies that govern movement between states.
+* *Visualize the workflow.* Render the system as a board of columns (the workflow states) and cards
+  (the work items), so that the state of work is visible to everyone at a glance. The board encodes
+  the team's _definition of workflow_: what counts as a work item, where each item starts and
+  finishes, and the policies that govern movement between states.
 
-* *Limit work-in-progress (WIP).* Assign an explicit cap to each workflow
-  state. New work may only enter a state when capacity frees up. This converts
-  the board from a passive status display into an active flow-control
-  mechanism.
+* *Limit work-in-progress (WIP).* Assign an explicit cap to each workflow state. New work may only
+  enter a state when capacity frees up. This converts the board from a passive status display into
+  an active flow-control mechanism.
 
-* *Manage flow.* Watch how work moves through the system and act to keep it
-  smooth and predictable, rather than chasing individual tasks to completion.
+* *Manage flow.* Watch how work moves through the system and act to keep it smooth and predictable,
+  rather than chasing individual tasks to completion.
 
-* *Make process policies explicit.* State the rules for entering, moving
-  within, and leaving each column – the per-column "done rules" – so that
-  pull decisions are objective rather than negotiated afresh each time.
+* *Make process policies explicit.* State the rules for entering, moving within, and leaving each
+  column – the per-column "done rules" – so that pull decisions are objective rather than negotiated
+  afresh each time.
 
-* *Implement feedback loops.* Cadenced reviews at the team, service-delivery,
-  and operations levels close the loop between what was predicted and what
-  happened, feeding learning back into the system.
+* *Implement feedback loops.* Cadenced reviews at the team, service-delivery, and operations levels
+  close the loop between what was predicted and what happened, feeding learning back into the
+  system.
 
-* *Improve collaboratively, evolve experimentally.* Use the shared,
-  visual model as the basis for agreed, small-scale changes rather than
-  top-down redesigns.
+* *Improve collaboratively, evolve experimentally.* Use the shared, visual model as the basis for
+  agreed, small-scale changes rather than top-down redesigns.
 
 == Work-in-progress and flow
 
-The distinctive lever Kanban pulls is the WIP limit. Holding less work open at
-once shortens *lead time* (the elapsed time from a request being made to its
-delivery) and *cycle time* (the time work is actively in progress), reduces
-context-switching overhead, and surfaces *bottlenecks* by leaving idle capacity
-visible on the board. The relationship is captured by
-xref:littles-law.adoc[*Little's law*] – in its simplest form, average lead
-time equals average WIP divided by average throughput – which is why
-constraining WIP is the most direct way to shorten lead time.
+The distinctive lever Kanban pulls is the WIP limit. Holding less work open at once shortens
+*lead time* (the elapsed time from a request being made to its delivery) and *cycle time* (the time
+work is actively in progress), reduces context-switching overhead, and surfaces *bottlenecks* by
+leaving idle capacity visible on the board. The relationship is captured by
+xref:littles-law.adoc[*Little's law*] – in its simplest form, average lead time equals average WIP
+divided by average throughput – which is why constraining WIP is the most direct way to shorten lead
+time.
 
-Flow is typically monitored with a *cumulative flow diagram*, plotting the
-count of items in each state over time. A widening band between two states
-signals a building queue; a narrowing band signals draining capacity. These
-metrics are the same ones that underpin xref:value-stream-management.adoc[*value stream management*] and the flow perspective in xref:devops.adoc[*DevOps*],
-which is why Kanban boards are a common visualization layer for delivery
+Flow is typically monitored with a *cumulative flow diagram*, plotting the count of items in each
+state over time. A widening band between two states signals a building queue; a narrowing band
+signals draining capacity. These metrics are the same ones that underpin
+xref:value-stream-management.adoc[*value stream management*] and the flow perspective in
+xref:devops.adoc[*DevOps*], which is why Kanban boards are a common visualization layer for delivery
 pipelines.
 
 == Compared with Scrum
 
-Scrum and Kanban are the two most widely adopted agile approaches, and they
-differ chiefly in how they pace work. Scrum batches work into fixed-length
-_sprints_ and resets the board each iteration. Kanban runs continuously,
-pulling one item at a time as capacity frees, with no fixed iteration
-boundary. Scrum prescribes roles and ceremonies; Kanban prescribes neither,
-only the practices above. Scrum's commitment mechanism is the sprint goal;
-Kanban's is the WIP limit.
+Scrum and Kanban are the two most widely adopted agile approaches, and they differ chiefly in how
+they pace work. Scrum batches work into fixed-length _sprints_ and resets the board each iteration.
+Kanban runs continuously, pulling one item at a time as capacity frees, with no fixed iteration
+boundary. Scrum prescribes roles and ceremonies; Kanban prescribes neither, only the practices
+above. Scrum's commitment mechanism is the sprint goal; Kanban's is the WIP limit.
 
-The two are not mutually exclusive. _Scrumban_, introduced by Ladas, blends
-Scrum's roles and retrospectives with Kanban's WIP limits and continuous
-flow, often as a transitional step from one toward the other. It is itself a
-distinct approach worth its own treatment.
+The two are not mutually exclusive. _Scrumban_, introduced by Ladas, blends Scrum's roles and
+retrospectives with Kanban's WIP limits and continuous flow, often as a transitional step from one
+toward the other. It is itself a distinct approach worth its own treatment.
 
 [CAUTION]
 ======
-Kanban is sometimes adopted as a board with no WIP limits – columns and
-cards alone. Without the pull discipline that limits enforce, the board
-degrades into a passive to-do list and the method's flow benefits evaporate.
+Kanban is sometimes adopted as a board with no WIP limits – columns and cards alone. Without the
+pull discipline that limits enforce, the board degrades into a passive to-do list and the method's
+flow benefits evaporate.
 ======
 
 == See also
@@ -118,11 +109,12 @@ degrades into a passive to-do list and the method's flow benefits evaporate.
 
 == References
 
-* Anderson, David J. (2010). _Kanban: Successful Evolutionary Change for Your
-  Technology Business_. Blue Hole Press.
-* Reinertsen, Donald G. (2009). _The Principles of Product Development Flow:
-  Second Generation Lean Product Development_. Celeritas Publishing.
-* Ladas, Corey (2008). _Scrumban: Essays on Kanban Systems for Lean Software
-  Development_. Modus Cooperandi Press.
-* Benson, Jim and DeMaria Barry, Tonianne (2011). _Personal Kanban: Mapping
-  Work, Navigating Life_. Modus Cooperandi Press.
+* Anderson, David J. (2010). _Kanban: Successful Evolutionary Change for Your Technology Business_.
+  Blue Hole Press.
+* Reinertsen, Donald G. (2009).
+  _The Principles of Product Development Flow: Second Generation Lean Product Development_.
+  Celeritas Publishing.
+* Ladas, Corey (2008). _Scrumban: Essays on Kanban Systems for Lean Software Development_. Modus
+  Cooperandi Press.
+* Benson, Jim and DeMaria Barry, Tonianne (2011). _Personal Kanban: Mapping Work, Navigating Life_.
+  Modus Cooperandi Press.

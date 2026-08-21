@@ -1,51 +1,44 @@
 = Envelope encryption
 
-Envelope encryption is the practice of encrypting plaintext data with a Data
-Encryption Key (DEK), and then encrypting the DEK with a Key Encryption Key
-(KEK). The encrypted DEK, sometimes called the *wrapped key*, is stored
-alongside the ciphertext it produced. To decrypt, the holder retrieves the
-wrapped DEK, asks the holder of the KEK to unwrap it, and then uses the
-recovered DEK to decrypt the data.
+Envelope encryption is the practice of encrypting plaintext data with a Data Encryption Key (DEK),
+and then encrypting the DEK with a Key Encryption Key (KEK). The encrypted DEK, sometimes called the
+*wrapped key*, is stored alongside the ciphertext it produced. To decrypt, the holder retrieves the
+wrapped DEK, asks the holder of the KEK to unwrap it, and then uses the recovered DEK to decrypt the
+data.
 
-The DEK is a fresh symmetric xref:encryption.adoc[*encryption*] key, usually
-generated for one data item — a file, a database row, a message — and then
-discarded from memory. Because each item gets its own key, compromising one
-DEK exposes only that one item, not every item the system has ever encrypted.
-The KEK, by contrast, is long-lived and held centrally by a Key Management
-Service (KMS), which is the only thing permitted to see it in plaintext.
+The DEK is a fresh symmetric xref:encryption.adoc[*encryption*] key, usually generated for one data
+item — a file, a database row, a message — and then discarded from memory. Because each item gets
+its own key, compromising one DEK exposes only that one item, not every item the system has ever
+encrypted. The KEK, by contrast, is long-lived and held centrally by a Key Management Service (KMS),
+which is the only thing permitted to see it in plaintext.
 
 == Why two layers
 
 The two layers solve different problems that a single key cannot.
 
-Symmetric encryption is fast enough for bulk data, but it leaves the question
-of where the key lives. Storing the key next to the data it protects defeats
-the purpose; distributing it to every system that needs to encrypt or decrypt
-multiplies the surface area where it can be leaked. A KMS solves the storage
-and access problem, but calling it to encrypt every byte of payload is slow,
-rate-limited, and ties the availability of the data to the availability of the
-KMS for every read.
+Symmetric encryption is fast enough for bulk data, but it leaves the question of where the key
+lives. Storing the key next to the data it protects defeats the purpose; distributing it to every
+system that needs to encrypt or decrypt multiplies the surface area where it can be leaked. A KMS
+solves the storage and access problem, but calling it to encrypt every byte of payload is slow,
+rate-limited, and ties the availability of the data to the availability of the KMS for every read.
 
-Envelope encryption splits the difference. The DEK is generated locally and
-encrypts the payload at full symmetric speed, so the KMS is not in the hot path
-for bulk data. The KMS is consulted only to wrap and unwrap the small DEK,
-which keeps its call volume low and its access logs meaningful. The KEK never
-leaves the KMS, so a compromised application host cannot exfiltrate the key
-that protects everything else.
+Envelope encryption splits the difference. The DEK is generated locally and encrypts the payload at
+full symmetric speed, so the KMS is not in the hot path for bulk data. The KMS is consulted only to
+wrap and unwrap the small DEK, which keeps its call volume low and its access logs meaningful. The
+KEK never leaves the KMS, so a compromised application host cannot exfiltrate the key that protects
+everything else.
 
 == Rotation and revocation
 
-Because the KEK is centralized, it can be rotated without re-encrypting every
-piece of data the system holds. Rotating the KEK means re-wrapping the DEKs,
-which is cheap relative to re-encrypting the underlying payloads. Data
-encrypted under an old KEK can be re-wrapped on demand the next time it is
-accessed, or migrated in the background.
+Because the KEK is centralized, it can be rotated without re-encrypting every piece of data the
+system holds. Rotating the KEK means re-wrapping the DEKs, which is cheap relative to re-encrypting
+the underlying payloads. Data encrypted under an old KEK can be re-wrapped on demand the next time
+it is accessed, or migrated in the background.
 
-The trade-off is that the KMS becomes a single point of trust and availability.
-If the KMS is unreachable, wrapped DEKs cannot be unwrapped and the data is
-effectively inaccessible until it returns. If the KEK is destroyed without
-backup, every DEK it ever wrapped is lost, and with it all the data. Access
-control on the KMS — who can call wrap and unwrap, on which keys — becomes the
+The trade-off is that the KMS becomes a single point of trust and availability. If the KMS is
+unreachable, wrapped DEKs cannot be unwrapped and the data is effectively inaccessible until it
+returns. If the KEK is destroyed without backup, every DEK it ever wrapped is lost, and with it all
+the data. Access control on the KMS — who can call wrap and unwrap, on which keys — becomes the
 primary security boundary for the whole system.
 
 == See also

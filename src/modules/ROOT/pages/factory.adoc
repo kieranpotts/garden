@@ -1,90 +1,77 @@
 = Factory
 
-A factory is a creational xref:design-patterns.adoc[*design pattern*] that
-encapsulates the construction of other objects. A class or method dedicated to
-this task shields the rest of the system from the details of how its products
-are assembled, validated, and wired together. Factories turn object creation
-into a named operation with its own responsibilities, rather than something
+A factory is a creational xref:design-patterns.adoc[*design pattern*] that encapsulates the
+construction of other objects. A class or method dedicated to this task shields the rest of the
+system from the details of how its products are assembled, validated, and wired together. Factories
+turn object creation into a named operation with its own responsibilities, rather than something
 scattered through every caller.
 
 == Why use a factory
 
-Construction logic tends to accumulate. Defaults, invariants, collaborator
-selection, and validation all grow around a class's constructor as the system
-matures. When that logic is non-trivial, calling the constructor directly in
-every client spreads the knowledge of how to build the object across the
-codebase. A factory collects it in one place, so changes to how an object is
-built touch only the factory.
+Construction logic tends to accumulate. Defaults, invariants, collaborator selection, and validation
+all grow around a class's constructor as the system matures. When that logic is non-trivial, calling
+the constructor directly in every client spreads the knowledge of how to build the object across the
+codebase. A factory collects it in one place, so changes to how an object is built touch only the
+factory.
 
 This is an application of xref:encapsulation.adoc[*encapsulation*] and of
-xref:abstraction.adoc[*abstraction*]. Clients depend on what is constructed,
-not on how. By returning products through an
-xref:interfaces.adoc[*interface*] or base type, a factory also
-xref:decoupling.adoc[*decouples*] clients from concrete classes. The client
-asks for an object that satisfies a contract, and the factory decides which
-concrete type to instantiate. That indirection relies on
-xref:polymorphism.adoc[*polymorphism*], and it is the same seam through which
-xref:dependency-injection.adoc[*dependency injection*] containers supply an
-implementation at runtime, putting
-xref:dependency-inversion.adoc[*dependency inversion*] into practice.
+xref:abstraction.adoc[*abstraction*]. Clients depend on what is constructed, not on how. By
+returning products through an xref:interfaces.adoc[*interface*] or base type, a factory also
+xref:decoupling.adoc[*decouples*] clients from concrete classes. The client asks for an object that
+satisfies a contract, and the factory decides which concrete type to instantiate. That indirection
+relies on xref:polymorphism.adoc[*polymorphism*], and it is the same seam through which
+xref:dependency-injection.adoc[*dependency injection*] containers supply an implementation at
+runtime, putting xref:dependency-inversion.adoc[*dependency inversion*] into practice.
 
-The same indirection pairs factories with the xref:strategy-pattern.adoc[*strategy pattern*]: a factory selects which concrete strategy to instantiate, and the
-client receives it through the strategy interface without naming the concrete
-class.
+The same indirection pairs factories with the xref:strategy-pattern.adoc[*strategy pattern*]: a
+factory selects which concrete strategy to instantiate, and the client receives it through the
+strategy interface without naming the concrete class.
 
 == Common forms
 
-The Gang of Four catalogue two formal variants, and a third simpler form is in
-widespread use.
+The Gang of Four catalogue two formal variants, and a third simpler form is in widespread use.
 
-* *Simple factory.* A single class with a method that selects and returns a
-  concrete product based on a parameter. It is not one of the Gang of Four
-  patterns, but it is the form most often meant when people say "factory". It
-  centralizes construction, but at the cost of a single point of change – every
-  new product type edits the factory's selection logic.
-* *Factory method.* Define an interface or abstract class for creating an
-  object, but let subclasses decide which concrete class to instantiate. The
-  choice is deferred to xref:inheritance.adoc[*inheritance*], so each subclass
-  specialises the product without the base class knowing which one. The base
-  class stays closed to modification while remaining open to new products.
-* *Abstract factory.* An interface for creating families of related objects
-  without naming their concrete classes. It is used when a system must be
-  configured for one of several product families. A UI toolkit that ships a
-  light theme and a dark theme, each providing a button, text field, and scroll
-  bar that belong together, is the canonical example. The abstract factory
-  guarantees that the products from one family are used consistently.
+* *Simple factory.* A single class with a method that selects and returns a concrete product based
+  on a parameter. It is not one of the Gang of Four patterns, but it is the form most often meant
+  when people say "factory". It centralizes construction, but at the cost of a single point of
+  change – every new product type edits the factory's selection logic.
+* *Factory method.* Define an interface or abstract class for creating an object, but let subclasses
+  decide which concrete class to instantiate. The choice is deferred to
+  xref:inheritance.adoc[*inheritance*], so each subclass specialises the product without the base
+  class knowing which one. The base class stays closed to modification while remaining open to new
+  products.
+* *Abstract factory.* An interface for creating families of related objects without naming their
+  concrete classes. It is used when a system must be configured for one of several product families.
+  A UI toolkit that ships a light theme and a dark theme, each providing a button, text field, and
+  scroll bar that belong together, is the canonical example. The abstract factory guarantees that
+  the products from one family are used consistently.
 
 == In domain-driven design
 
-The factory pattern is recommended in
-xref:domain-driven-design.adoc[*domain-driven design*] to encapsulate the logic
-needed to create entities and value objects, ensuring that they are created in
-a consistent and valid state. Factories encode the business rules for creating
-business objects, and therefore they belong in the domain layer.
+The factory pattern is recommended in xref:domain-driven-design.adoc[*domain-driven design*] to
+encapsulate the logic needed to create entities and value objects, ensuring that they are created in
+a consistent and valid state. Factories encode the business rules for creating business objects, and
+therefore they belong in the domain layer.
 
-A factory for an *aggregate* is responsible for constructing the root entity
-together with its initial value objects and for enforcing the aggregate's
-invariants before the new instance is handed back to the caller. An aggregate
-is a form of xref:composition.adoc[*composition*]. Putting the construction
-logic in a factory keeps it out of the entities themselves, which can then
-focus on behaviour rather than on the mechanics of their own assembly.
+A factory for an *aggregate* is responsible for constructing the root entity together with its
+initial value objects and for enforcing the aggregate's invariants before the new instance is handed
+back to the caller. An aggregate is a form of xref:composition.adoc[*composition*]. Putting the
+construction logic in a factory keeps it out of the entities themselves, which can then focus on
+behaviour rather than on the mechanics of their own assembly.
 
 == Trade-offs
 
-A factory earns its place when construction is genuinely complex or when
-clients must be shielded from concrete types. For an object with a trivial
-constructor, wrapping it in a factory adds indirection without buying anything
-– the construction logic the factory would centralize is already trivial.
+A factory earns its place when construction is genuinely complex or when clients must be shielded
+from concrete types. For an object with a trivial constructor, wrapping it in a factory adds
+indirection without buying anything – the construction logic the factory would centralize is already
+trivial.
 
-Introducing a factory speculatively, before more than one product or
-construction variant exists, is the same mistake that
-xref:yagni.adoc[*YAGNI*] warns against in other forms of premature abstraction.
-A simple factory built around a long switch over type strings is also a smell:
-it centralizes creation but violates the
-xref:open-closed-principle.adoc[*open-closed principle*], since every new
-product forces an edit to the factory. The factory method and abstract factory
-forms avoid this by pushing the choice into subclasses or separate factory
-implementations.
+Introducing a factory speculatively, before more than one product or construction variant exists, is
+the same mistake that xref:yagni.adoc[*YAGNI*] warns against in other forms of premature
+abstraction. A simple factory built around a long switch over type strings is also a smell: it
+centralizes creation but violates the xref:open-closed-principle.adoc[*open-closed principle*],
+since every new product forces an edit to the factory. The factory method and abstract factory forms
+avoid this by pushing the choice into subclasses or separate factory implementations.
 
 == See also
 
@@ -101,6 +88,6 @@ implementations.
 
 == References
 
-* Gamma, Helm, Johnson & Vlissides (1994). _Design Patterns: Elements of
-  Reusable Object-Oriented Software_. Addison-Wesley. The creational patterns
-  chapter defines Factory Method and Abstract Factory.
+* Gamma, Helm, Johnson & Vlissides (1994).
+  _Design Patterns: Elements of Reusable Object-Oriented Software_. Addison-Wesley. The creational
+  patterns chapter defines Factory Method and Abstract Factory.

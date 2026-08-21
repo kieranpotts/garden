@@ -1,39 +1,34 @@
 = Relational database management systems (RDBMS)
 
-Relational database management systems (RDBMS), also known as
-*relational databases* or *SQL databases*, are built on the relational model
-that stores data against predefined schemas, and structured as interlinked
-tabular data. Each row in a data table typically maps to an entity or object,
-and the table's columns define the entity's fields. Relationships between
-tables are expressed through xref:foreign-keys.adoc[*foreign keys*]. Those
-schemas are the output of xref:data-modeling.adoc[*data modeling*].
+Relational database management systems (RDBMS), also known as *relational databases* or
+*SQL databases*, are built on the relational model that stores data against predefined schemas, and
+structured as interlinked tabular data. Each row in a data table typically maps to an entity or
+object, and the table's columns define the entity's fields. Relationships between tables are
+expressed through xref:foreign-keys.adoc[*foreign keys*]. Those schemas are the output of
+xref:data-modeling.adoc[*data modeling*].
 
-The relational model was introduced by E. F. Codd in 1970. Its name comes from
-the *relation*, the formal mathematical object that a table represents, and it
-treated a database as data structures manipulated by a small algebra of
-operations, independent of physical storage. That separation of logical model
-from physical implementation is what lets the same schema run on a laptop
-database engine or a clustered server without the application changing.
+The relational model was introduced by E. F. Codd in 1970. Its name comes from the *relation*, the
+formal mathematical object that a table represents, and it treated a database as data structures
+manipulated by a small algebra of operations, independent of physical storage. That separation of
+logical model from physical implementation is what lets the same schema run on a laptop database
+engine or a clustered server without the application changing.
 
-These databases are highly structured and offer powerful query languages,
-usually a form of xref:sql.adoc[*SQL*], making them ideal for complex queries
-and xref:transaction.adoc[*transactions*]. Relational databases tend to be
-xref:acid-principles.adoc[*ACID compliant*], making them good choices for
-applications that require xref:data-integrity.adoc[*data integrity*] to be
-prioritized over performance.
+These databases are highly structured and offer powerful query languages, usually a form of
+xref:sql.adoc[*SQL*], making them ideal for complex queries and
+xref:transaction.adoc[*transactions*]. Relational databases tend to be
+xref:acid-principles.adoc[*ACID compliant*], making them good choices for applications that require
+xref:data-integrity.adoc[*data integrity*] to be prioritized over performance.
 
-Relational databases can be challenging to scale horizontally. They tend,
-instead, to be xref:vertical-scaling.adoc[*scaled vertically*] (the capacity of
-individual nodes is increased as data grows). However,
-xref:sharding.adoc[*sharding*] can also be used to distribute data horizontally
-across multiple RDBMS instances. A newer generation of distributed relational
-systems, sometimes called *NewSQL*, preserves ACID transactions while sharding
-and replicating across nodes, and is covered under
-xref:distributed-databases.adoc[*distributed databases*].
+Relational databases can be challenging to scale horizontally. They tend, instead, to be
+xref:vertical-scaling.adoc[*scaled vertically*] (the capacity of individual nodes is increased as
+data grows). However, xref:sharding.adoc[*sharding*] can also be used to distribute data
+horizontally across multiple RDBMS instances. A newer generation of distributed relational systems,
+sometimes called *NewSQL*, preserves ACID transactions while sharding and replicating across nodes,
+and is covered under xref:distributed-databases.adoc[*distributed databases*].
 
-By comparison, xref:nosql-databases.adoc[*non-relational databases*] (aka NoSQL
-databases) are more flexible and scalable, but may sacrifice some of the
-consistency and transactional guarantees of relational databases.
+By comparison, xref:nosql-databases.adoc[*non-relational databases*] (aka NoSQL databases) are more
+flexible and scalable, but may sacrifice some of the consistency and transactional guarantees of
+relational databases.
 
 Another way to classify databases is between
 xref:transactional-databases.adoc[*transactional or operational databases*] and
@@ -41,33 +36,32 @@ xref:analytical-databases.adoc[*analytical databases*].
 
 == Relationships between tables
 
-The relational model connects rows in different tables through three
-cardinalities, each implemented with foreign keys in a characteristic way.
+The relational model connects rows in different tables through three cardinalities, each implemented
+with foreign keys in a characteristic way.
 
-* *One-to-one (1:1).* A row in one table corresponds to exactly one row in
-  another. It is implemented by placing a foreign key on one side and
-  constraining it to be unique. One-to-one tables are often used to split a
-  wide entity, eg. to keep sensitive columns behind separate access controls or
-  to move rarely populated columns out of the hot row.
+* *One-to-one (1:1).* A row in one table corresponds to exactly one row in another. It is
+  implemented by placing a foreign key on one side and constraining it to be unique. One-to-one
+  tables are often used to split a wide entity, eg. to keep sensitive columns behind separate access
+  controls or to move rarely populated columns out of the hot row.
 
-* *One-to-many (1:N).* A row in the parent table corresponds to zero, one, or
-  many rows in the child table. This is the most common relationship in a
-  relational schema. It is implemented by a foreign key on the child side that
-  points back to the parent's primary key.
+* *One-to-many (1:N).* A row in the parent table corresponds to zero, one, or many rows in the child
+  table. This is the most common relationship in a relational schema. It is implemented by a foreign
+  key on the child side that points back to the parent's primary key.
 
-* *Many-to-many (N:N).* A row in each table may correspond to many rows in the
-  other. The relational model implements this with a third table, the *join table* or *junction table*, whose rows hold one foreign key to each side. The
-  two foreign keys together usually form the junction table's primary key.
+* *Many-to-many (N:N).* A row in each table may correspond to many rows in the other. The relational
+  model implements this with a third table, the *join table* or *junction table*, whose rows hold
+  one foreign key to each side. The two foreign keys together usually form the junction table's
+  primary key.
 
 The cardinalities are drawn on an
-xref:entity-relationship-diagram.adoc[*entity-relationship diagram*] during
-data modeling, and the foreign-key constraints that implement them are what
+xref:entity-relationship-diagram.adoc[*entity-relationship diagram*] during data modeling, and the
+foreign-key constraints that implement them are what
 xref:referential-integrity.adoc[*referential integrity*] keeps consistent.
 
 == Examples of relational databases
 
-Well-known relational database management systems differ in licensing, scale
-targets, and deployment model.
+Well-known relational database management systems differ in licensing, scale targets, and deployment
+model.
 
 * MySQL
 * PostgreSQL
@@ -75,9 +69,8 @@ targets, and deployment model.
 * Oracle Database
 * Microsoft SQL Server
 
-SQLite is the outlier of the group: an embedded, serverless engine that runs
-in-process against a single file, where the others are client-server engines
-designed for concurrent network access.
+SQLite is the outlier of the group: an embedded, serverless engine that runs in-process against a
+single file, where the others are client-server engines designed for concurrent network access.
 
 == See also
 
@@ -96,5 +89,6 @@ designed for concurrent network access.
 
 * Codd, E. F. (1970). "A relational model of data for large shared data banks".
   _Communications of the ACM_, 13(6), 377–387.
-* Connolly, T. and Begg, C. (2014). _Database Systems: A Practical Approach to
-  Design, Implementation, and Management_. 6th ed. Pearson.
+* Connolly, T. and Begg, C. (2014).
+  _Database Systems: A Practical Approach to Design, Implementation, and Management_. 6th ed.
+  Pearson.

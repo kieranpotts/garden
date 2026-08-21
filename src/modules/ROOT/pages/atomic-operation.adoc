@@ -1,82 +1,69 @@
 = Atomic operation
 
-An *atomic operation* is an operation that executes as a single, indivisible
-step. Once it begins, no other process or thread can observe or interfere with
-its intermediate state. The operation either completes in full or has no
-effect at all. No half-finished result is ever visible to the rest of the
-system.
+An *atomic operation* is an operation that executes as a single, indivisible step. Once it begins,
+no other process or thread can observe or interfere with its intermediate state. The operation
+either completes in full or has no effect at all. No half-finished result is ever visible to the
+rest of the system.
 
-The word "atomic" comes from the Greek _atomos_, meaning "indivisible". In
-computing it describes a guarantee about *visibility*, not about speed. An
-atomic operation may take many CPU cycles to run, but from the perspective of
-every other thread it appears to happen instantaneously, with no observable
-in-between state.
+The word "atomic" comes from the Greek _atomos_, meaning "indivisible". In computing it describes a
+guarantee about *visibility*, not about speed. An atomic operation may take many CPU cycles to run,
+but from the perspective of every other thread it appears to happen instantaneously, with no
+observable in-between state.
 
-Atomic operations are the basic building block of
-xref:synchronization.adoc[*synchronization*] in
-xref:concurrency.adoc[*concurrent*] and xref:parallelism.adoc[*parallel*]
-programs. When several threads share data, unsynchronized reads and writes can
-interleave in ways that corrupt it. An increment such as `x = x + 1` is not
-atomic on most architectures. It reads `x`, adds one, and writes the result
-back. Two threads doing this at the same time can both read the old value, both
-add one, and both write the new value back, so two increments produce a single
-update. Making the increment atomic forces the read-modify-write to run as one
-step, the two operations serialise, and the count is correct. This class of bug
-is a *race condition*, where the outcome depends on the precise timing of
-interleaved access to shared state.
+Atomic operations are the basic building block of xref:synchronization.adoc[*synchronization*] in
+xref:concurrency.adoc[*concurrent*] and xref:parallelism.adoc[*parallel*] programs. When several
+threads share data, unsynchronized reads and writes can interleave in ways that corrupt it. An
+increment such as `x = x + 1` is not atomic on most architectures. It reads `x`, adds one, and
+writes the result back. Two threads doing this at the same time can both read the old value, both
+add one, and both write the new value back, so two increments produce a single update. Making the
+increment atomic forces the read-modify-write to run as one step, the two operations serialise, and
+the count is correct. This class of bug is a *race condition*, where the outcome depends on the
+precise timing of interleaved access to shared state.
 
 == Hardware support
 
-Atomicity is ultimately provided by the hardware. Modern CPUs expose special
-instructions that read and modify memory in a single uninterruptible bus cycle,
-or that guarantee exclusive access across a short sequence of operations.
+Atomicity is ultimately provided by the hardware. Modern CPUs expose special instructions that read
+and modify memory in a single uninterruptible bus cycle, or that guarantee exclusive access across a
+short sequence of operations.
 
-* *Test-and-set* atomically writes a value to a memory location and returns its
-  previous contents. It is the classic primitive for building a spinlock.
-* *Compare-and-swap (CAS)* reads a location and writes a new value to it only
-  if it still holds an expected value. CAS is the foundation of most
-  *lock-free* data structures, which manipulate shared state without taking a
-  mutex.
-* *Fetch-and-add* atomically adds a value to a location and returns the
-  previous value, supporting counters and sequence-number generation.
-* *Load-link/store-conditional* loads a value and, later, stores to it only if
-  no other write has occurred in between, sidestepping the *ABA problem* that
-  plain CAS can suffer from.
+* *Test-and-set* atomically writes a value to a memory location and returns its previous contents.
+  It is the classic primitive for building a spinlock.
+* *Compare-and-swap (CAS)* reads a location and writes a new value to it only if it still holds an
+  expected value. CAS is the foundation of most *lock-free* data structures, which manipulate shared
+  state without taking a mutex.
+* *Fetch-and-add* atomically adds a value to a location and returns the previous value, supporting
+  counters and sequence-number generation.
+* *Load-link/store-conditional* loads a value and, later, stores to it only if no other write has
+  occurred in between, sidestepping the *ABA problem* that plain CAS can suffer from.
 
-Heavier primitives such as mutexes and xref:locking.adoc[*locks*] are themselves
-built on top of these instructions. When an atomic operation would span several
-memory locations and no single instruction can cover it, programs fall back to a
-lock that serialises access to the whole region.
+Heavier primitives such as mutexes and xref:locking.adoc[*locks*] are themselves built on top of
+these instructions. When an atomic operation would span several memory locations and no single
+instruction can cover it, programs fall back to a lock that serialises access to the whole region.
 
 == Granularity
 
 Atomic operations come in two rough sizes.
 
-* *Small* operations act on a single word of memory, such as a load, a store,
-  or a CAS. These map directly to hardware instructions and are the fastest form
-  of synchronization.
-* *Large* operations group several smaller steps into one indivisible unit. A
-  database xref:transaction.adoc[*transaction*] is the canonical large atomic
-  operation, but application code can also build composite atomic blocks using
-  locks or transactional memory.
+* *Small* operations act on a single word of memory, such as a load, a store, or a CAS. These map
+  directly to hardware instructions and are the fastest form of synchronization.
+* *Large* operations group several smaller steps into one indivisible unit. A database
+  xref:transaction.adoc[*transaction*] is the canonical large atomic operation, but application code
+  can also build composite atomic blocks using locks or transactional memory.
 
 == Atomicity versus ACID atomicity
 
-The "atomicity" in the xref:acid-principles.adoc[*ACID principles*] is the same
-idea lifted to the level of a database transaction. Either every statement in
-the transaction commits, or none of them do. The mechanism is different,
-write-ahead logs and rollback rather than a single CPU instruction, but the
-guarantee that no partial result is ever observable is identical.
+The "atomicity" in the xref:acid-principles.adoc[*ACID principles*] is the same idea lifted to the
+level of a database transaction. Either every statement in the transaction commits, or none of them
+do. The mechanism is different, write-ahead logs and rollback rather than a single CPU instruction,
+but the guarantee that no partial result is ever observable is identical.
 
 == Trade-offs
 
-Atomic operations avoid the overhead of acquiring and releasing a lock, which
-makes them cheaper for contention on a single word. They are not free, though.
-A busy-waiting CAS loop burns CPU cycles while it retries, and under heavy
-contention this *livelock* can perform worse than a blocking lock that parks the
-waiting thread. They are also limited to operations the hardware can express.
-Anything touching several unrelated memory locations generally still needs a
-lock.
+Atomic operations avoid the overhead of acquiring and releasing a lock, which makes them cheaper for
+contention on a single word. They are not free, though. A busy-waiting CAS loop burns CPU cycles
+while it retries, and under heavy contention this *livelock* can perform worse than a blocking lock
+that parks the waiting thread. They are also limited to operations the hardware can express.
+Anything touching several unrelated memory locations generally still needs a lock.
 
 == See also
 

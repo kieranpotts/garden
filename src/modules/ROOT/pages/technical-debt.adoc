@@ -1,152 +1,126 @@
 = Technical debt
 
-Technical debt is the implied cost of additional rework caused by choosing an
-easy solution now instead of a better approach that would take longer. It uses
-financial debt as a metaphor. Just as a loan borrows money against future
-income to get something done sooner, technical debt borrows productivity
-against future maintenance to ship a feature or fix faster. And like a loan,
-the debt accrues interest: the longer it is left unpaid, the more expensive the
-eventual rework becomes.
+Technical debt is the implied cost of additional rework caused by choosing an easy solution now
+instead of a better approach that would take longer. It uses financial debt as a metaphor. Just as a
+loan borrows money against future income to get something done sooner, technical debt borrows
+productivity against future maintenance to ship a feature or fix faster. And like a loan, the debt
+accrues interest: the longer it is left unpaid, the more expensive the eventual rework becomes.
 
-The clearest definition is not "bad code". Technical debt is the gap between
-the design as it stands now and the design the team now knows it wants, given
-what it has learned through recent iterations. It is a property of the
-alignment between the current design and the current requirements, not of the
-code itself. A piece of code can be perfectly well written and still be debt,
-if the design it embodies no longer fits what the system needs to do. The
-converse is also true: a scrappy but isolated component that works and rarely
-needs to change may carry no debt at all.
+The clearest definition is not "bad code". Technical debt is the gap between the design as it stands
+now and the design the team now knows it wants, given what it has learned through recent iterations.
+It is a property of the alignment between the current design and the current requirements, not of
+the code itself. A piece of code can be perfectly well written and still be debt, if the design it
+embodies no longer fits what the system needs to do. The converse is also true: a scrappy but
+isolated component that works and rarely needs to change may carry no debt at all.
 
 == Origin
 
-The metaphor was coined by Ward Cunningham, one of the seventeen signatories
-of the _Manifesto for Agile Software Development_, to explain to
-non-technical stakeholders why time spent restructuring working code is an
-investment rather than a cost overrun. Cunningham discusses the origin and
-meaning of the metaphor in a short
-https://www.youtube.com/watch?v=pqeJFYwnkjE[video] that is well worth watching.
+The metaphor was coined by Ward Cunningham, one of the seventeen signatories of the
+_Manifesto for Agile Software Development_, to explain to non-technical stakeholders why time spent
+restructuring working code is an investment rather than a cost overrun. Cunningham discusses the
+origin and meaning of the metaphor in a short https://www.youtube.com/watch?v=pqeJFYwnkjE[video]
+that is well worth watching.
 
-By Cunningham's definition, technical debt is a normal and expected
-consequence of xref:iterative-and-incremental-development.adoc[*iterative and incremental development*]. In a plan-driven,
-xref:big-design-up-front.adoc[*big design up-front*] process, the design is
-– theoretically – settled before construction begins, so it never has to be
-adjusted as a consequence of building. In an
-xref:agile.adoc[*agile*] process the team builds without complete knowledge of
-the final solution, and learns more about the problem as it goes. Each
-iteration reveals that yesterday's design no longer fits today's
-understanding, and xref:refactoring.adoc[*refactoring*] is how that gap is
-closed. A healthy, fully-resourced agile project should therefore have a
-steady flow of technical debt passing through its ticketing system. Technical
-debt is not bad; shortcuts are.
+By Cunningham's definition, technical debt is a normal and expected consequence of
+xref:iterative-and-incremental-development.adoc[*iterative and incremental development*]. In a
+plan-driven, xref:big-design-up-front.adoc[*big design up-front*] process, the design is –
+theoretically – settled before construction begins, so it never has to be adjusted as a consequence
+of building. In an xref:agile.adoc[*agile*] process the team builds without complete knowledge of
+the final solution, and learns more about the problem as it goes. Each iteration reveals that
+yesterday's design no longer fits today's understanding, and xref:refactoring.adoc[*refactoring*] is
+how that gap is closed. A healthy, fully-resourced agile project should therefore have a steady flow
+of technical debt passing through its ticketing system. Technical debt is not bad; shortcuts are.
 
 == The financial analogy
 
-The metaphor is widely used because it stretches to cover a range of ideas
-from finance.
+The metaphor is widely used because it stretches to cover a range of ideas from finance.
 
-* *Debt* is code that requires revisiting later because its design no longer
-  fits. It accrues interest the longer it is left, so the eventual repayment is
-  higher.
-* *Interest* is the additional work every future change incurs because of the
-  debt's presence: longer debugging sessions, more fragile fixes, slower
-  onboarding.
-* *Bankruptcy* is the state in which so much debt has accumulated that the
-  codebase can no longer be changed faster than it breaks. Further change
-  grinds to a halt, or the cost of changing anything exceeds the value of
-  doing so. Many enterprise systems live in this state: kept running but not
+* *Debt* is code that requires revisiting later because its design no longer fits. It accrues
+  interest the longer it is left, so the eventual repayment is higher.
+* *Interest* is the additional work every future change incurs because of the debt's presence:
+  longer debugging sessions, more fragile fixes, slower onboarding.
+* *Bankruptcy* is the state in which so much debt has accumulated that the codebase can no longer be
+  changed faster than it breaks. Further change grinds to a halt, or the cost of changing anything
+  exceeds the value of doing so. Many enterprise systems live in this state: kept running but not
   otherwise changed or extended, until they are replaced wholesale.
 
-Not all debt is bad. A household takes a loan to invest in a house or a car,
-and a project may release an incomplete feature early to solicit feedback,
-knowing the implementation will be reworked as a result. As long as the team is
-in a position to pay the debt down, this can be a worthwhile trade.
+Not all debt is bad. A household takes a loan to invest in a house or a car, and a project may
+release an incomplete feature early to solicit feedback, knowing the implementation will be reworked
+as a result. As long as the team is in a position to pay the debt down, this can be a worthwhile
+trade.
 
-The analogy has two weaknesses that are worth keeping in mind. First, in
-software the loan is taken out from our future selves: there is no third party
-enforcing repayment, so the slope into debt is slipperier than for financial
-debt. Second, financial debt is typically repaid in small, regular
-installments over a long period, whereas technical debt is more often repaid
-as a lump sum – a dedicated refactor, a rewrite, a migration – which makes
-repayment harder to schedule and easier to defer in the face of more
-pressing requirements.
+The analogy has two weaknesses that are worth keeping in mind. First, in software the loan is taken
+out from our future selves: there is no third party enforcing repayment, so the slope into debt is
+slipperier than for financial debt. Second, financial debt is typically repaid in small, regular
+installments over a long period, whereas technical debt is more often repaid as a lump sum – a
+dedicated refactor, a rewrite, a migration – which makes repayment harder to schedule and easier to
+defer in the face of more pressing requirements.
 
 == Categories by severity
 
-How a team prioritizes refactoring work is driven more by urgency and utility
-than by time and resources, so it is useful to categorize debt by its
-severity. Stretching the monetary metaphor, there are three grades.
+How a team prioritizes refactoring work is driven more by urgency and utility than by time and
+resources, so it is useful to categorize debt by its severity. Stretching the monetary metaphor,
+there are three grades.
 
-* *Friendly debt*, like money borrowed from friends and family. There are
-  unlikely to be severe consequences if it is not repaid, and there may be no
-  interest at all. In software this is sub-standard code in a discrete,
-  well-encapsulated component that works, that no other part depends on, and
-  that rarely needs to change. It is acceptable to leave it, provided it is
-  recorded so it is not forgotten.
-* *Bank loans*, which charge interest and expect regular repayments but will
-  negotiate on terms. In software this is the cost of, for example, relying on
-  manual testing rather than automated tests for ongoing correctness: a real,
-  recurring cost in time, but one that can be paid down incrementally.
-* *Loan sharks*, whose interest is extreme, whose debt grows fast, and whose
-  consequences of default are severe. In software this is a codebase so
-  riddled with shortcuts that regular releases become a struggle – a
-  xref:big-ball-of-mud.adoc[*big ball of mud*]. It is the natural output of a
-  xref:feature-factory.adoc[*feature factory*], where the rate of feature
-  production is prioritized above all else, and the destination of legacy
-  systems where the debt has grown so high that no one is even trying to pay
-  it off, except perhaps through a "big bang" replacement of the whole system.
+* *Friendly debt*, like money borrowed from friends and family. There are unlikely to be severe
+  consequences if it is not repaid, and there may be no interest at all. In software this is
+  sub-standard code in a discrete, well-encapsulated component that works, that no other part
+  depends on, and that rarely needs to change. It is acceptable to leave it, provided it is recorded
+  so it is not forgotten.
+* *Bank loans*, which charge interest and expect regular repayments but will negotiate on terms. In
+  software this is the cost of, for example, relying on manual testing rather than automated tests
+  for ongoing correctness: a real, recurring cost in time, but one that can be paid down
+  incrementally.
+* *Loan sharks*, whose interest is extreme, whose debt grows fast, and whose consequences of default
+  are severe. In software this is a codebase so riddled with shortcuts that regular releases become
+  a struggle – a xref:big-ball-of-mud.adoc[*big ball of mud*]. It is the natural output of a
+  xref:feature-factory.adoc[*feature factory*], where the rate of feature production is prioritized
+  above all else, and the destination of legacy systems where the debt has grown so high that no one
+  is even trying to pay it off, except perhaps through a "big bang" replacement of the whole system.
 
-Organizations that reach the loan-shark stage also tend to believe the way to
-scale is to add more people, so teams of hundreds end up working in a big ball
-of mud, afraid to change anything significant. They no longer think about the
-design of the system – there probably is not one to speak of – and they no
-longer worry about improving maintainability, since the system is already a
+Organizations that reach the loan-shark stage also tend to believe the way to scale is to add more
+people, so teams of hundreds end up working in a big ball of mud, afraid to change anything
+significant. They no longer think about the design of the system – there probably is not one to
+speak of – and they no longer worry about improving maintainability, since the system is already a
 mess. This is a death spiral, and ultimately these systems fail.
 
 == Managing and paying down
 
-Technical debt is a useful resource, but it must be deliberately logged and
-monitored. Every shortcut taken should be recorded in the task tracking
-system with enough context to prioritize it later. Debt that is not written
-down is debt the team will forget it owes, and forgotten debt compounds in the
-dark.
+Technical debt is a useful resource, but it must be deliberately logged and monitored. Every
+shortcut taken should be recorded in the task tracking system with enough context to prioritize it
+later. Debt that is not written down is debt the team will forget it owes, and forgotten debt
+compounds in the dark.
 
-Paying down debt is what xref:refactoring.adoc[*refactoring*] is for, and the
-two ideas are best thought of together: the debt is the gap, refactoring is
-the act of closing it. The xref:boy-scout-rule.adoc[*boy scout rule*] gives
-this a cadence – leave the code a little better than you found it, on every
-commit – so that repayment happens continuously rather than in disruptive
-bursts. A team with the autonomy to schedule its own work can keep a steady
-drip of debt reduction running alongside feature delivery, often with one
-person on a debt ticket while others work on current features. Without that
-autonomy, repayment is deferred indefinitely in favor of the next deadline.
+Paying down debt is what xref:refactoring.adoc[*refactoring*] is for, and the two ideas are best
+thought of together: the debt is the gap, refactoring is the act of closing it. The
+xref:boy-scout-rule.adoc[*boy scout rule*] gives this a cadence – leave the code a little better
+than you found it, on every commit – so that repayment happens continuously rather than in
+disruptive bursts. A team with the autonomy to schedule its own work can keep a steady drip of debt
+reduction running alongside feature delivery, often with one person on a debt ticket while others
+work on current features. Without that autonomy, repayment is deferred indefinitely in favor of the
+next deadline.
 
-The investment framing cuts the other way too. Working code into a
-high-quality, easy-to-maintain shape is the most efficient way to deliver
-features – not only in the medium and long term but often in the short term
-as well, because well-structured code is faster to change safely. When a
-business asks for the next release more quickly, it can always reduce scope
-to achieve that; the overall speed of delivery is a technical decision, and
-borrowing from the team's future productivity is rarely the right answer to
-it. xref:code-for-the-maintainer.adoc[*Code for the maintainer*] captures the
-same point from the writing side: code written for the person who will change
-it next accrues less interest.
+The investment framing cuts the other way too. Working code into a high-quality, easy-to-maintain
+shape is the most efficient way to deliver features – not only in the medium and long term but often
+in the short term as well, because well-structured code is faster to change safely. When a business
+asks for the next release more quickly, it can always reduce scope to achieve that; the overall
+speed of delivery is a technical decision, and borrowing from the team's future productivity is
+rarely the right answer to it. xref:code-for-the-maintainer.adoc[*Code for the maintainer*] captures
+the same point from the writing side: code written for the person who will change it next accrues
+less interest.
 
 == Relation to software rot and evolvability
 
-Technical debt is related to but distinct from
-xref:software-rot.adoc[*software rot*]. Rot is the decay of fit between a
-program and a changing environment, driven by forces outside the code;
-technical debt is the gap inside the design, driven by the team's own
-shortcuts and learning. The two reinforce each other. A system carrying high
-debt is harder to adapt, so it rots faster; a rotting system accumulates debt
-as expedient patches are applied to keep it working. Both pull a system
-toward a big ball of mud, and both are pushed back by the same disciplines:
-refactoring, an ongoing sense of design, and the
-xref:evolvability.adoc[*evolvability*] that those disciplines sustain.
-xref:laws-of-software-evolution.adoc[*Lehman's laws of software evolution*]
-describe the underlying dynamic from the other side: an E-type system that is
-not continually adapted becomes progressively less satisfactory, and its
-complexity rises unless explicit work holds it down.
+Technical debt is related to but distinct from xref:software-rot.adoc[*software rot*]. Rot is the
+decay of fit between a program and a changing environment, driven by forces outside the code;
+technical debt is the gap inside the design, driven by the team's own shortcuts and learning. The
+two reinforce each other. A system carrying high debt is harder to adapt, so it rots faster; a
+rotting system accumulates debt as expedient patches are applied to keep it working. Both pull a
+system toward a big ball of mud, and both are pushed back by the same disciplines: refactoring, an
+ongoing sense of design, and the xref:evolvability.adoc[*evolvability*] that those disciplines
+sustain. xref:laws-of-software-evolution.adoc[*Lehman's laws of software evolution*] describe the
+underlying dynamic from the other side: an E-type system that is not continually adapted becomes
+progressively less satisfactory, and its complexity rises unless explicit work holds it down.
 
 [NOTE]
 ====
@@ -175,8 +149,7 @@ the team finds the debt.
 
 == References
 
-* Cunningham, Ward (2009). _The Wy'Tech Debt Metaphor_.
-  https://www.youtube.com/watch?v=pqeJFYwnkjE
+* Cunningham, Ward (2009). _The Wy'Tech Debt Metaphor_. https://www.youtube.com/watch?v=pqeJFYwnkjE
 * Agile Alliance. _Introduction to the technical debt concept_.
   https://agilealliance.org/introduction-to-the-technical-debt-concept/
 * Jeffries, Ron (2019). _Technical Debt_. Ron Jeffries' blog.

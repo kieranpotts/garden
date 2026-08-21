@@ -1,103 +1,89 @@
 = Synchronization
 
-*Synchronization* is the coordination of concurrent activities so that they
-agree on order and avoid corrupting shared state. When two or more threads,
-processes, or nodes act on the same data, their operations can interleave in
-ways the programmer never intended. Synchronization imposes a discipline that
-makes the legal interleavings explicit, turning arbitrary concurrency into
+*Synchronization* is the coordination of concurrent activities so that they agree on order and avoid
+corrupting shared state. When two or more threads, processes, or nodes act on the same data, their
+operations can interleave in ways the programmer never intended. Synchronization imposes a
+discipline that makes the legal interleavings explicit, turning arbitrary concurrency into
 predictable cooperation.
 
-The need for synchronization follows directly from
-xref:concurrency.adoc[*concurrency*] and xref:parallelism.adoc[*parallelism*].
-A single-threaded program has one obvious order of execution, and every read
-sees every prior write. The moment work proceeds on two threads, or two cores,
-or two machines, that guarantee breaks down. Reads and writes to shared state
-can overtake each other, and a *race condition* appears whenever the result
-depends on which one wins. Synchronization is the body of techniques that
-prevents races.
+The need for synchronization follows directly from xref:concurrency.adoc[*concurrency*] and
+xref:parallelism.adoc[*parallelism*]. A single-threaded program has one obvious order of execution,
+and every read sees every prior write. The moment work proceeds on two threads, or two cores, or two
+machines, that guarantee breaks down. Reads and writes to shared state can overtake each other, and
+a *race condition* appears whenever the result depends on which one wins. Synchronization is the
+body of techniques that prevents races.
 
 == Two problems: mutual exclusion and condition synchronization
 
-Synchronization solves two distinct problems, and the primitives used to
-address them are not always the same.
+Synchronization solves two distinct problems, and the primitives used to address them are not always
+the same.
 
-*Mutual exclusion* keeps overlapping accesses to shared state from interfering.
-Only one thread at a time may enter the critical section that reads or
-modifies the state, so the others wait. The mechanism is
-xref:locking.adoc[*locking*] or, for the smallest critical sections, a single
+*Mutual exclusion* keeps overlapping accesses to shared state from interfering. Only one thread at a
+time may enter the critical section that reads or modifies the state, so the others wait. The
+mechanism is xref:locking.adoc[*locking*] or, for the smallest critical sections, a single
 xref:atomic-operation.adoc[*atomic operation*].
 
-*Condition synchronization* orders threads that must wait for something to
-become true, not merely for a resource to be free. A producer signals a
-consumer that data is ready; a worker waits until a queue is non-empty. Here
-the point is not to serialize access but to communicate readiness, and the
+*Condition synchronization* orders threads that must wait for something to become true, not merely
+for a resource to be free. A producer signals a consumer that data is ready; a worker waits until a
+queue is non-empty. Here the point is not to serialize access but to communicate readiness, and the
 primitives are condition variables, semaphores, and events.
 
-The two are often combined. A *monitor* bundles shared state with the mutex
-that protects it and the condition variables that signal changes, so callers
-never touch the state directly. Most modern languages ship a monitor-like
-synchronization facility, from Java's `synchronized` methods to Go's channels.
+The two are often combined. A *monitor* bundles shared state with the mutex that protects it and the
+condition variables that signal changes, so callers never touch the state directly. Most modern
+languages ship a monitor-like synchronization facility, from Java's `synchronized` methods to Go's
+channels.
 
 == Primitives
 
-Synchronization primitives differ chiefly in what they serialize and how the
-waiter spends its time.
+Synchronization primitives differ chiefly in what they serialize and how the waiter spends its time.
 
-* *Mutex.* The simplest lock. One holder at a time; others block. Mutexes are
-  covered in xref:locking.adoc[*Locking*].
-* *Semaphore.* A counter that admits up to N holders at once. A binary
-  semaphore is equivalent to a mutex, but a counting semaphore also models
-  resource pools with bounded capacity.
-* *Condition variable.* A thread releases an associated mutex, waits for a
-  signal, and reacquires the mutex on wake-up. It is the building block of
-  *wait/notify* styles of coordination.
-* *Barrier.* A rendezvous point at which a set of threads all block until the
-  last one arrives, after which they all proceed. Barriers suit phased
-  computations where each phase depends on the previous one being complete.
-* *Atomic operation.* The lightest primitive, used directly in lock-free
-  algorithms. See xref:atomic-operation.adoc[*Atomic operation*].
+* *Mutex.* The simplest lock. One holder at a time; others block. Mutexes are covered in
+  xref:locking.adoc[*Locking*].
+* *Semaphore.* A counter that admits up to N holders at once. A binary semaphore is equivalent to a
+  mutex, but a counting semaphore also models resource pools with bounded capacity.
+* *Condition variable.* A thread releases an associated mutex, waits for a signal, and reacquires
+  the mutex on wake-up. It is the building block of *wait/notify* styles of coordination.
+* *Barrier.* A rendezvous point at which a set of threads all block until the last one arrives,
+  after which they all proceed. Barriers suit phased computations where each phase depends on the
+  previous one being complete.
+* *Atomic operation.* The lightest primitive, used directly in lock-free algorithms. See
+  xref:atomic-operation.adoc[*Atomic operation*].
 
-Every primitive ultimately rests on hardware support — test-and-set,
-compare-and-swap, or load-link/store-conditional — that the CPU exposes as a
-single indivisible step. Heavier primitives compose these into larger
-guarantees.
+Every primitive ultimately rests on hardware support — test-and-set, compare-and-swap, or
+load-link/store-conditional — that the CPU exposes as a single indivisible step. Heavier primitives
+compose these into larger guarantees.
 
 == Hazards
 
-Synchronization is what makes concurrent code correct, and it is also what
-makes it fail in new ways.
+Synchronization is what makes concurrent code correct, and it is also what makes it fail in new
+ways.
 
-* *Deadlock.* Threads that wait on each other forever. It is the central hazard
-  of mutual exclusion, and is covered in xref:deadlock.adoc[*Deadlock*].
-* *Starvation.* A thread never gets a turn, even though others make progress.
-  Fair queuing and priority-aware scheduling are the usual remedies.
-* *Livelock.* Threads keep changing state in response to each other but never
-  make progress, as when two people in a corridor step aside in the same
-  direction repeatedly.
-* *Priority inversion.* A high-priority thread blocks behind a low-priority
-  one holding a lock, and the scheduler cannot see why.
-* *Performance loss.* Every lock is a serialization point. Contention on a
-  popular lock can erase the xref:parallelism.adoc[*parallelism*] the program
-  was built to exploit.
+* *Deadlock.* Threads that wait on each other forever. It is the central hazard of mutual exclusion,
+  and is covered in xref:deadlock.adoc[*Deadlock*].
+* *Starvation.* A thread never gets a turn, even though others make progress. Fair queuing and
+  priority-aware scheduling are the usual remedies.
+* *Livelock.* Threads keep changing state in response to each other but never make progress, as when
+  two people in a corridor step aside in the same direction repeatedly.
+* *Priority inversion.* A high-priority thread blocks behind a low-priority one holding a lock, and
+  the scheduler cannot see why.
+* *Performance loss.* Every lock is a serialization point. Contention on a popular lock can erase
+  the xref:parallelism.adoc[*parallelism*] the program was built to exploit.
 
 == Distributed synchronization
 
-Across the nodes of a xref:distributed-system.adoc[*distributed system*] there
-is no shared memory and no global clock, so the techniques above do not apply
-unchanged. Mutual exclusion becomes
-xref:distributed-locking.adoc[*distributed locking*], where a lock service
-must contend with independent failures, unbounded network delays, and clock
-skew. Reaching agreement on a single value or leader is the domain of
-xref:consensus-algorithms.adoc[*consensus algorithms*]. Ordering events
-without a global clock calls for logical or vector clocks, and reproducing the
-all-or-nothing semantics of a local critical section across multiple data
-stores is the job of xref:distributed-transaction.adoc[*distributed transactions*].
+Across the nodes of a xref:distributed-system.adoc[*distributed system*] there is no shared memory
+and no global clock, so the techniques above do not apply unchanged. Mutual exclusion becomes
+xref:distributed-locking.adoc[*distributed locking*], where a lock service must contend with
+independent failures, unbounded network delays, and clock skew. Reaching agreement on a single value
+or leader is the domain of xref:consensus-algorithms.adoc[*consensus algorithms*]. Ordering events
+without a global clock calls for logical or vector clocks, and reproducing the all-or-nothing
+semantics of a local critical section across multiple data stores is the job of
+xref:distributed-transaction.adoc[*distributed transactions*].
 
-Distributed synchronization is strictly harder than its local counterpart.
-Many of the guarantees a single machine can take for granted — that a mutex
-is held by at most one thread, that a wait will eventually return — become
-probabilistic, and correctness rests on assumptions about timing and failure
-that real systems only approximate.
+Distributed synchronization is strictly harder than its local counterpart. Many of the guarantees a
+single machine can take for granted — that a mutex is held by at most one thread, that a wait will
+eventually return — become probabilistic, and correctness rests on assumptions about timing and
+failure that real systems only approximate.
 
 == See also
 
@@ -114,5 +100,4 @@ that real systems only approximate.
 
 == References
 
-* Fernando, F. (2024). _Synchronization_.
-  https://newsletter.francofernando.com/p/synchronization
+* Fernando, F. (2024). _Synchronization_. https://newsletter.francofernando.com/p/synchronization

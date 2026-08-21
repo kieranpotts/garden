@@ -7,57 +7,51 @@ ____
 Be liberal in what you accept, and conservative in what you send.
 ____
 
-Named after Jon Postel, one of the early pioneers of the internet, it suggests
-that:
+Named after Jon Postel, one of the early pioneers of the internet, it suggests that:
 
-* Servers (or any system component) should be tolerant of variations or errors
-  in incoming data, such as client requests. By being forgiving, they can handle
-  different client implementations and unexpected input gracefully.
+* Servers (or any system component) should be tolerant of variations or errors in incoming data,
+  such as client requests. By being forgiving, they can handle different client implementations and
+  unexpected input gracefully.
 
-* Servers should adhere strictly to protocols and standards when sending data.
-  Ensuring that the data sent is accurate, well-formed, and compliant with
-  interface definitions helps to maintain compatibility.
+* Servers should adhere strictly to protocols and standards when sending data. Ensuring that the
+  data sent is accurate, well-formed, and compliant with interface definitions helps to maintain
+  compatibility.
 
-Applying Postel's law can lead to more robust and interoperable systems. It is
-particularly relevant in the context of
-xref:distributed-system.adoc[*distributed systems*] and network APIs, where
+Applying Postel's law can lead to more robust and interoperable systems. It is particularly relevant
+in the context of xref:distributed-system.adoc[*distributed systems*] and network APIs, where
 components may be developed independently and may evolve over time, and in
-xref:network-protocols.adoc[*network protocols*], where different
-implementations may have varying levels of compliance with specifications. It
-also applies wherever systems interact with each other, such as file formats,
-data serialization, and user interfaces.
+xref:network-protocols.adoc[*network protocols*], where different implementations may have varying
+levels of compliance with specifications. It also applies wherever systems interact with each other,
+such as file formats, data serialization, and user interfaces.
 
-The principle encourages developers to create systems that are strict in their
-own behavior while being tolerant of variations and imperfections in the
-behavior of other systems. In practical terms, this means that programs that
-send messages to other programs should strictly adhere to the interface
-specifications of the target programs, but programs that receive messages should
-accept non-conformant input (as long as the meaning of that input is clear).
+The principle encourages developers to create systems that are strict in their own behavior while
+being tolerant of variations and imperfections in the behavior of other systems. In practical terms,
+this means that programs that send messages to other programs should strictly adhere to the
+interface specifications of the target programs, but programs that receive messages should accept
+non-conformant input (as long as the meaning of that input is clear).
 
-In other words, programs should be contravariant in the input type, and
-covariant in the output type.
+In other words, programs should be contravariant in the input type, and covariant in the output
+type.
 
-For example, a program should attempt to process messages received from clients
-that use an older version of its API (rather than forcing clients to upgrade
-immediately when a new API version is released), or fill in missing attributes
-with default values and ignore unrecognized input attributes.
+For example, a program should attempt to process messages received from clients that use an older
+version of its API (rather than forcing clients to upgrade immediately when a new API version is
+released), or fill in missing attributes with default values and ignore unrecognized input
+attributes.
 
 The robustness principle supports
-xref:iterative-and-incremental-development.adoc[*iterative and incremental development*]
-of individual components of xref:distributed-system.adoc[*distributed systems*].
-It allows for the gradual evolution of APIs and protocols, enabling developers
-to introduce new features and improvements without breaking existing
-functionality. This is particularly important in large-scale systems such as
-xref:microservices.adoc[*microservices*] where services may be developed and
+xref:iterative-and-incremental-development.adoc[*iterative and incremental development*] of
+individual components of xref:distributed-system.adoc[*distributed systems*]. It allows for the
+gradual evolution of APIs and protocols, enabling developers to introduce new features and
+improvements without breaking existing functionality. This is particularly important in large-scale
+systems such as xref:microservices.adoc[*microservices*] where services may be developed and
 maintained by different teams or even different organizations.
 
-However, this principle needs to be balanced against security considerations.
-For example, servers should avoid unintentionally accepting harmful or
-malicious input. It also sits in tension with xref:fail-fast.adoc[*fail-fast*] design,
-which favors rejecting bad input immediately rather than tolerating it. The two
-are complementary rather than contradictory: strictness fits the inside of a
-component, where a bad input usually signals a defect, while the robustness
-principle fits the boundaries between independently-evolving components.
+However, this principle needs to be balanced against security considerations. For example, servers
+should avoid unintentionally accepting harmful or malicious input. It also sits in tension with
+xref:fail-fast.adoc[*fail-fast*] design, which favors rejecting bad input immediately rather than
+tolerating it. The two are complementary rather than contradictory: strictness fits the inside of a
+component, where a bad input usually signals a defect, while the robustness principle fits the
+boundaries between independently-evolving components.
 
 See also xref:backwards-compatibility.adoc[*backwards compatibility*],
 xref:do-what-i-mean.adoc[*do what I mean*], and

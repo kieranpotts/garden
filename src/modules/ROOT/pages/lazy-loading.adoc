@@ -1,84 +1,75 @@
 = Lazy loading
 
-Lazy loading is a xref:design-patterns.adoc[*design pattern*] in which the
-initialization or loading of an object, data, or other resource is deferred
-until the moment it is actually needed, rather than being loaded eagerly
-upfront at startup.
+Lazy loading is a xref:design-patterns.adoc[*design pattern*] in which the initialization or loading
+of an object, data, or other resource is deferred until the moment it is actually needed, rather
+than being loaded eagerly upfront at startup.
 
-The pattern trades a small amount of accidental complexity for meaningful
-gains in xref:performance.adoc[*performance*] and resource utilization. By
-loading only what is used, a system avoids spending time, memory, and
-bandwidth on resources that may never be requested. This is most valuable when
-the resource is expensive to load, when only a subset is typically needed, or
-when it is needed only under certain conditions. A common example is an image
-gallery that loads thumbnails on demand as the user scrolls, rather than
-fetching every high-resolution image when the page first opens.
+The pattern trades a small amount of accidental complexity for meaningful gains in
+xref:performance.adoc[*performance*] and resource utilization. By loading only what is used, a
+system avoids spending time, memory, and bandwidth on resources that may never be requested. This is
+most valuable when the resource is expensive to load, when only a subset is typically needed, or
+when it is needed only under certain conditions. A common example is an image gallery that loads
+thumbnails on demand as the user scrolls, rather than fetching every high-resolution image when the
+page first opens.
 
 == How it works
 
-A lazily loaded resource is fronted by a placeholder that exposes the same
-interface as the real object but holds no data itself. The first time the
-placeholder is accessed, it triggers the real load, caches the result, and
-serves it. Subsequent accesses return the cached value without repeating the
-work. Four classic implementations are described in the literature.
+A lazily loaded resource is fronted by a placeholder that exposes the same interface as the real
+object but holds no data itself. The first time the placeholder is accessed, it triggers the real
+load, caches the result, and serves it. Subsequent accesses return the cached value without
+repeating the work. Four classic implementations are described in the literature.
 
-* *Virtual proxy.* A proxy object stands in for the real subject and creates
-  it on first use. The client is unaware whether the object has been
-  materialized yet.
-* *Lazy initialization.* A getter checks whether a field is populated. If not,
-  it loads the value before returning it. This is the lightest form, but it
-  offers no inherent thread safety.
-* *Value holder.* A generic wrapper object mediates access to a value. The
-  caller asks the holder for its value, and the holder loads it from a data
-  source on first request.
-* *Ghost object.* An object is loaded in a partial state, eg. with only its
-  identifier. The remaining fields are populated on demand when first accessed.
+* *Virtual proxy.* A proxy object stands in for the real subject and creates it on first use. The
+  client is unaware whether the object has been materialized yet.
+* *Lazy initialization.* A getter checks whether a field is populated. If not, it loads the value
+  before returning it. This is the lightest form, but it offers no inherent thread safety.
+* *Value holder.* A generic wrapper object mediates access to a value. The caller asks the holder
+  for its value, and the holder loads it from a data source on first request.
+* *Ghost object.* An object is loaded in a partial state, eg. with only its identifier. The
+  remaining fields are populated on demand when first accessed.
 
 == Where it is used
 
-Lazy loading appears across the stack, always expressing the same idea: defer
-the load until it is warranted.
+Lazy loading appears across the stack, always expressing the same idea: defer the load until it is
+warranted.
 
-* *Web front-ends.* Images, iframes, and below-the-fold media can be marked for
-  lazy loading so the browser fetches them only as they scroll into view.
-  Single-page applications use *code splitting* to load JavaScript bundles on
-  demand, shrinking the initial payload and improving time-to-interactive.
-* *Data access.* Object-relational mappers often load related entities lazily,
-  fetching a child collection only when the application navigates to it. The
-  well-known pitfall is the *N+1 query problem*, where iterating a list and
-  touching a lazy association fires one query per item. The usual remedy is to
-  switch to *eager loading* for that access path.
-* *xref:caching.adoc[Caching].* The cache-aside strategy is also known as lazy
-  loading: on a cache miss the application loads the value from the
-  source-of-truth and backfills the cache, so the cache is populated on demand
-  rather than up front.
+* *Web front-ends.* Images, iframes, and below-the-fold media can be marked for lazy loading so the
+  browser fetches them only as they scroll into view. Single-page applications use *code splitting*
+  to load JavaScript bundles on demand, shrinking the initial payload and improving
+  time-to-interactive.
+* *Data access.* Object-relational mappers often load related entities lazily, fetching a child
+  collection only when the application navigates to it. The well-known pitfall is the
+  *N+1 query problem*, where iterating a list and touching a lazy association fires one query per
+  item. The usual remedy is to switch to *eager loading* for that access path.
+* *xref:caching.adoc[Caching].* The cache-aside strategy is also known as lazy loading: on a cache
+  miss the application loads the value from the source-of-truth and backfills the cache, so the
+  cache is populated on demand rather than up front.
 
 == Trade-offs
 
 Lazy loading is not free. The cost of loading is not eliminated, only moved.
 
-* *First-access latency.* The consumer that triggers the load pays its full
-  cost, producing a stall where an eager system would already have the data
-  ready. Prefetching or background warming can smooth this out.
-* *Concurrency hazards.* If several callers request an unloaded resource at
-  once, they may each trigger the load, racing to do duplicate work. The
-  thundering-herd variant of this affects cache-aside populations. Guards such
-  as locking or single-flight deduplication are needed in concurrent settings.
-* *Hidden cost and debuggability.* Because work is deferred and triggered by
-  access, performance problems and unexpected side effects can surface far from
-  the code that set them up, making failures harder to trace.
-* *Added complexity.* Every consumer must tolerate the not-yet-loaded state,
-  and the loading trigger has to be wired in correctly.
+* *First-access latency.* The consumer that triggers the load pays its full cost, producing a stall
+  where an eager system would already have the data ready. Prefetching or background warming can
+  smooth this out.
+* *Concurrency hazards.* If several callers request an unloaded resource at once, they may each
+  trigger the load, racing to do duplicate work. The thundering-herd variant of this affects
+  cache-aside populations. Guards such as locking or single-flight deduplication are needed in
+  concurrent settings.
+* *Hidden cost and debuggability.* Because work is deferred and triggered by access, performance
+  problems and unexpected side effects can surface far from the code that set them up, making
+  failures harder to trace.
+* *Added complexity.* Every consumer must tolerate the not-yet-loaded state, and the loading trigger
+  has to be wired in correctly.
 
-The counterpart is *eager loading*, which loads everything up front. Eager
-loading is preferable when the resource is almost always needed and one bulk
-load is cheaper than many small ones, eg. to avoid the N+1 query problem. The
-choice between the two is a trade-off between startup cost and on-demand cost.
+The counterpart is *eager loading*, which loads everything up front. Eager loading is preferable
+when the resource is almost always needed and one bulk load is cheaper than many small ones, eg. to
+avoid the N+1 query problem. The choice between the two is a trade-off between startup cost and
+on-demand cost.
 
-Lazy loading is a close cousin of xref:memoization.adoc[*memoization*]. Both
-defer work and cache the result. Memoization caches the result of a computation
-keyed by its inputs, while lazy loading defers the loading of a resource until
-it is first accessed.
+Lazy loading is a close cousin of xref:memoization.adoc[*memoization*]. Both defer work and cache
+the result. Memoization caches the result of a computation keyed by its inputs, while lazy loading
+defers the loading of a resource until it is first accessed.
 
 == See also
 
@@ -91,4 +82,5 @@ it is first accessed.
 == References
 
 * GeeksforGeeks (2026).
-  https://www.geeksforgeeks.org/system-design/lazy-loading-design-pattern/[_Lazy Loading Design Pattern_]. GeeksforGeeks.
+  https://www.geeksforgeeks.org/system-design/lazy-loading-design-pattern/[_Lazy Loading Design Pattern_].
+  GeeksforGeeks.

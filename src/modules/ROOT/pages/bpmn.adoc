@@ -1,76 +1,66 @@
 = Business Process Model and Notation (BPMN)
 
-*Business Process Model and Notation (BPMN)* is a graphical
-xref:modeling.adoc[*modeling*] language for specifying business processes as
-flowcharts. It gives business analysts, process owners, and developers a shared
-notation for describing the sequence of activities, events, and decisions that
+*Business Process Model and Notation (BPMN)* is a graphical xref:modeling.adoc[*modeling*] language
+for specifying business processes as flowcharts. It gives business analysts, process owners, and
+developers a shared notation for describing the sequence of activities, events, and decisions that
 make up a workflow. BPMN is maintained by the
-https://www.omg.org/spec/BPMN/2.0[Object Management Group (OMG)], the same
-consortium that stewards xref:uml.adoc[*UML*].
+https://www.omg.org/spec/BPMN/2.0[Object Management Group (OMG)], the same consortium that stewards
+xref:uml.adoc[*UML*].
 
-BPMN was originally developed by the Business Process Management Initiative
-(BPMI), which merged with the OMG in 2005. The current version, BPMN 2.0, was
-released in 2011. It consolidated earlier revisions and, significantly, added a
-formal execution semantics and a common metamodel. The accompanying XML
-serialization makes process definitions portable between tools and executable
+BPMN was originally developed by the Business Process Management Initiative (BPMI), which merged
+with the OMG in 2005. The current version, BPMN 2.0, was released in 2011. It consolidated earlier
+revisions and, significantly, added a formal execution semantics and a common metamodel. The
+accompanying XML serialization makes process definitions portable between tools and executable
 directly by a process engine.
 
 == Elements
 
 A BPMN diagram is built from a small set of element categories.
 
-* *Flow objects.* The building blocks of a process. *Events* mark something
-  that happens, such as a message arriving or a timer firing. *Activities* are
-  units of work, such as a task or a sub-process. *Gateways* are points where the
-  flow splits, merges, or branches on a condition.
+* *Flow objects.* The building blocks of a process. *Events* mark something that happens, such as a
+  message arriving or a timer firing. *Activities* are units of work, such as a task or a
+  sub-process. *Gateways* are points where the flow splits, merges, or branches on a condition.
 
-* *Connecting objects.* *Sequence flows* order activities within a process.
-  *Message flows* cross the boundary between independent participants.
-  *Associations* link artifacts such as data and comments to flow objects.
+* *Connecting objects.* *Sequence flows* order activities within a process. *Message flows* cross
+  the boundary between independent participants. *Associations* link artifacts such as data and
+  comments to flow objects.
 
-* *Swimlanes.* A *pool* represents one participant in a collaboration. A
-  *lane* subdivides a pool to show who or what performs each activity.
+* *Swimlanes.* A *pool* represents one participant in a collaboration. A *lane* subdivides a pool to
+  show who or what performs each activity.
 
-* *Data and artifacts.* *Data objects* and *data stores* show information that is
-  consumed or produced by the process. *Annotations* and *groups* carry
-  explanatory notes and visual grouping.
+* *Data and artifacts.* *Data objects* and *data stores* show information that is consumed or
+  produced by the process. *Annotations* and *groups* carry explanatory notes and visual grouping.
 
 == Descriptive and executable models
 
-BPMN serves two audiences. At the *descriptive* level it is a communication
-tool. Business stakeholders use diagrams to document and discuss how a process
-works, without committing to execution detail. At the *executable* level a
-process definition carries enough precision – attribute values, event
-triggers, conditional expressions – to be run directly by a BPMN engine such
+BPMN serves two audiences. At the *descriptive* level it is a communication tool. Business
+stakeholders use diagrams to document and discuss how a process works, without committing to
+execution detail. At the *executable* level a process definition carries enough precision –
+attribute values, event triggers, conditional expressions – to be run directly by a BPMN engine such
 as https://camunda.com/[Camunda], https://www.flowable.com/[Flowable], or
 https://www.activiti.org/[Activiti].
 
-The same notation thus spans the gap between business analysis and
-implementation. A process modeled for discussion can, in principle, be refined
-into one a process engine executes. This makes BPMN a common input to
-xref:domain-driven-design.adoc[*domain-driven design*], where business process
-models can seed the identification of domains and the bounded contexts that
-serve them.
+The same notation thus spans the gap between business analysis and implementation. A process modeled
+for discussion can, in principle, be refined into one a process engine executes. This makes BPMN a
+common input to xref:domain-driven-design.adoc[*domain-driven design*], where business process
+models can seed the identification of domains and the bounded contexts that serve them.
 
 == Relationship to other notations
 
-BPMN overlaps with several adjacent notations, each tuned to a different
-audience or layer of abstraction.
+BPMN overlaps with several adjacent notations, each tuned to a different audience or layer of
+abstraction.
 
-* xref:uml.adoc[*UML*] activity diagrams describe flows of work and data, and
-  are sometimes used for business process modeling. UML is oriented toward the
-  internal design of software systems, whereas BPMN is purpose-built for
-  business processes and carries executable semantics that UML activity diagrams
-  lack.
+* xref:uml.adoc[*UML*] activity diagrams describe flows of work and data, and are sometimes used for
+  business process modeling. UML is oriented toward the internal design of software systems, whereas
+  BPMN is purpose-built for business processes and carries executable semantics that UML activity
+  diagrams lack.
 
-* xref:archimate.adoc[*ArchiMate*] models an enterprise across strategy,
-  business, application, and technology layers. Its business layer describes
-  processes at a coarse grain. BPMN can detail those same processes down to the
-  level of individual tasks and events.
+* xref:archimate.adoc[*ArchiMate*] models an enterprise across strategy, business, application, and
+  technology layers. Its business layer describes processes at a coarse grain. BPMN can detail those
+  same processes down to the level of individual tasks and events.
 
-* xref:togaf.adoc[*TOGAF*] supplies the method for developing enterprise
-  architectures. BPMN, like ArchiMate, supplies a notation for one part of that
-  picture.
+* xref:togaf.adoc[*TOGAF*] supplies the method for developing enterprise architectures. BPMN, like
+  ArchiMate, supplies a notation for one part of that picture.
 
 == See also
 

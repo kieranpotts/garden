@@ -1,116 +1,102 @@
 = Event stream
 
-An *event stream* is an append-only, ordered log of *immutable events*. Events
-are written once, in the order they occur, and retained for a period of time so
-that they can be read and re-read by multiple independent consumers. An event
-stream is the substrate on which
-xref:stream-processing-systems.adoc[*stream processing systems*] are built, and
-it is one of the channels used to integrate services in an
-xref:event-driven-architecture.adoc[*event-driven*] system.
+An *event stream* is an append-only, ordered log of *immutable events*. Events are written once, in
+the order they occur, and retained for a period of time so that they can be read and re-read by
+multiple independent consumers. An event stream is the substrate on which
+xref:stream-processing-systems.adoc[*stream processing systems*] are built, and it is one of the
+channels used to integrate services in an xref:event-driven-architecture.adoc[*event-driven*]
+system.
 
 As a communication channel, an event stream supports
-xref:asynchronous-communication.adoc[*asynchronous*] interaction between
-producers and consumers in a
-xref:distributed-system.adoc[*distributed system*]. Producers append events to
-the stream and move on without waiting for consumers. Consumers read from the
-stream at their own pace, and each consumer keeps track of its own position so
-that it can resume where it left off or rewind to replay earlier events.
+xref:asynchronous-communication.adoc[*asynchronous*] interaction between producers and consumers in
+a xref:distributed-system.adoc[*distributed system*]. Producers append events to the stream and move
+on without waiting for consumers. Consumers read from the stream at their own pace, and each
+consumer keeps track of its own position so that it can resume where it left off or rewind to replay
+earlier events.
 
 == Key properties
 
-An event stream is characterized by a small set of properties that distinguish
-it from other messaging constructs.
+An event stream is characterized by a small set of properties that distinguish it from other
+messaging constructs.
 
-* *Append-only.* Events are added to the end of the log and never modified or
-  deleted within their retention window. The stream is a record of facts, not a
-  mutable queue of work items.
+* *Append-only.* Events are added to the end of the log and never modified or deleted within their
+  retention window. The stream is a record of facts, not a mutable queue of work items.
 
-* *Ordering.* Events are ordered within the stream, so consumers see them in the
-  sequence they were produced. Many implementations shard a logical stream into
-  parallel partitions to scale xref:throughput.adoc[*throughput*], in which case
-  ordering is guaranteed only within a partition.
+* *Ordering.* Events are ordered within the stream, so consumers see them in the sequence they were
+  produced. Many implementations shard a logical stream into parallel partitions to scale
+  xref:throughput.adoc[*throughput*], in which case ordering is guaranteed only within a partition.
 
-* *Retention and replay.* Events are persisted for a configured time-to-live or
-  size limit, rather than removed as soon as a consumer acknowledges them. Any
-  consumer can re-read the retained history, which makes it possible to replay
-  events to rebuild views, recover from failures, or onboard new consumers.
+* *Retention and replay.* Events are persisted for a configured time-to-live or size limit, rather
+  than removed as soon as a consumer acknowledges them. Any consumer can re-read the retained
+  history, which makes it possible to replay events to rebuild views, recover from failures, or
+  onboard new consumers.
 
-* *Fan-out.* A single stream can have many independent consumers, each reading
-  the same events at its own offset. This is the
-  xref:publish-subscribe-pattern.adoc[*publish-subscribe (pubsub)*] pattern, in
-  contrast to a xref:message-queues.adoc[*message queue*], which delivers each
-  message to exactly one consumer and discards it once acknowledged.
+* *Fan-out.* A single stream can have many independent consumers, each reading the same events at
+  its own offset. This is the xref:publish-subscribe-pattern.adoc[*publish-subscribe (pubsub)*]
+  pattern, in contrast to a xref:message-queues.adoc[*message queue*], which delivers each message
+  to exactly one consumer and discards it once acknowledged.
 
 == Event stream vs. message queue
 
-The clearest contrast is with a xref:message-queues.adoc[*message queue*]. A
-message queue is designed to distribute discrete units of work across a pool of
-workers. Each message is destined for one consumer and is deleted once that
-consumer has acknowledged it. The queue is a transient buffer, not a durable
-record.
+The clearest contrast is with a xref:message-queues.adoc[*message queue*]. A message queue is
+designed to distribute discrete units of work across a pool of workers. Each message is destined for
+one consumer and is deleted once that consumer has acknowledged it. The queue is a transient buffer,
+not a durable record.
 
-An event stream, by contrast, is designed to record a sequence of occurrences
-and let any number of consumers read them, repeatedly, over time. The stream is
-a log of facts, and its value comes from being retained and replayed rather than
-consumed and discarded. This is why event streams suit
-xref:event-sourcing.adoc[*event sourcing*], audit, and analytics, where the
-history matters, while message queues suit point-to-point work distribution.
+An event stream, by contrast, is designed to record a sequence of occurrences and let any number of
+consumers read them, repeatedly, over time. The stream is a log of facts, and its value comes from
+being retained and replayed rather than consumed and discarded. This is why event streams suit
+xref:event-sourcing.adoc[*event sourcing*], audit, and analytics, where the history matters, while
+message queues suit point-to-point work distribution.
 
 == Event stream vs. event bus
 
-An xref:event-bus.adoc[*event bus*] is also a pubsub channel, but it is
-generally concerned with dispatching events to live subscribers. Once an event
-has been delivered to its current subscribers, the bus has done its job, and the
-event is not necessarily retained. An event stream retains events regardless of
-whether any consumer was listening at the time they were produced, so late or
-new consumers can catch up from the beginning of the retention window.
+An xref:event-bus.adoc[*event bus*] is also a pubsub channel, but it is generally concerned with
+dispatching events to live subscribers. Once an event has been delivered to its current subscribers,
+the bus has done its job, and the event is not necessarily retained. An event stream retains events
+regardless of whether any consumer was listening at the time they were produced, so late or new
+consumers can catch up from the beginning of the retention window.
 
 == Offsets and consumer position
 
-Consumers track their position in a stream with an *offset*, an index into the
-log. A consumer reads forward from its current offset, processes the events, and
-periodically commits its offset back to the stream. If a consumer crashes and
-restarts, it resumes from its last committed offset. Because each consumer keeps
-its own offset, multiple consumers can read the same stream independently and at
+Consumers track their position in a stream with an *offset*, an index into the log. A consumer reads
+forward from its current offset, processes the events, and periodically commits its offset back to
+the stream. If a consumer crashes and restarts, it resumes from its last committed offset. Because
+each consumer keeps its own offset, multiple consumers can read the same stream independently and at
 different speeds.
 
-xref:kafka.adoc[*Kafka*] is the canonical example. A Kafka topic is an event
-stream, partitioned for parallelism, with consumers tracking offsets and the
-broker retaining messages until a time-to-live or size limit is reached.
+xref:kafka.adoc[*Kafka*] is the canonical example. A Kafka topic is an event stream, partitioned for
+parallelism, with consumers tracking offsets and the broker retaining messages until a time-to-live
+or size limit is reached.
 
 == Use cases
 
-Event streams are a good fit whenever the history of events is itself valuable,
-not just the latest state.
+Event streams are a good fit whenever the history of events is itself valuable, not just the latest
+state.
 
-* xref:event-sourcing.adoc[*Event sourcing*] treats the event stream as the
-  system's source of truth, deriving current state by replaying events.
+* xref:event-sourcing.adoc[*Event sourcing*] treats the event stream as the system's source of
+  truth, deriving current state by replaying events.
 
-* xref:change-data-capture.adoc[*Change data capture (CDC)*] emits row-level
-  database changes as an event stream, so downstream systems can replicate or
-  index data without batch xref:etl.adoc[*ETL*].
+* xref:change-data-capture.adoc[*Change data capture (CDC)*] emits row-level database changes as an
+  event stream, so downstream systems can replicate or index data without batch
+  xref:etl.adoc[*ETL*].
 
-* Real-time analytics, monitoring, and
-  xref:observability.adoc[*observability*] pipelines consume event streams to
-  aggregate and react to data as it arrives.
+* Real-time analytics, monitoring, and xref:observability.adoc[*observability*] pipelines consume
+  event streams to aggregate and react to data as it arrives.
 
-* Rebuilding read models or
-  xref:materialized-view.adoc[*materialized views*] by replaying the stream from
-  the beginning.
+* Rebuilding read models or xref:materialized-view.adoc[*materialized views*] by replaying the
+  stream from the beginning.
 
 == Trade-offs
 
-Retention and replay come with costs. Storage grows with the volume and
-retention period of events, and the stream must be operated as durable
-infrastructure rather than a transient queue. Because consumers read
-asynchronously and at their own pace, downstream views tend toward
-xref:eventual-consistency.adoc[*eventual consistency*] rather than strong
-consistency. Schema evolution is an ongoing concern. Once events are persisted,
-old events cannot be rewritten, so
-xref:backwards-compatibility.adoc[*backwards-compatible*] schema changes and
-versioning are essential to keep consumers working across the full history.
-Ordering across partitions is not guaranteed, which complicates consumers that
-need a global order.
+Retention and replay come with costs. Storage grows with the volume and retention period of events,
+and the stream must be operated as durable infrastructure rather than a transient queue. Because
+consumers read asynchronously and at their own pace, downstream views tend toward
+xref:eventual-consistency.adoc[*eventual consistency*] rather than strong consistency. Schema
+evolution is an ongoing concern. Once events are persisted, old events cannot be rewritten, so
+xref:backwards-compatibility.adoc[*backwards-compatible*] schema changes and versioning are
+essential to keep consumers working across the full history. Ordering across partitions is not
+guaranteed, which complicates consumers that need a global order.
 
 == See also
 
@@ -125,5 +111,5 @@ need a global order.
 
 == References
 
-* Tun Shwe (2023). _Choosing between message queues and event streams_. The New
-  Stack. https://thenewstack.io/choosing-between-message-queues-and-event-streams/
+* Tun Shwe (2023). _Choosing between message queues and event streams_. The New Stack.
+  https://thenewstack.io/choosing-between-message-queues-and-event-streams/

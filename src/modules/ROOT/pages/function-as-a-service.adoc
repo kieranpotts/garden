@@ -1,91 +1,75 @@
 = Function-as-a-service (FaaS)
 
-Function-as-a-service (FaaS) is a xref:cloud-computing.adoc[*cloud computing*]
-service model in which the xref:cloud-service-providers.adoc[*cloud service provider*] runs short-lived functions on demand, in response to events, and
-charges the customer only for the time each invocation actually runs. The
-developer supplies the code. The provider supplies everything else: the
-runtime, the execution environment, scaling, and the wiring that decides when
-to invoke the function. A FaaS function is, in effect, a
-xref:nanoservices.adoc[*nanoservice*]: a single-operation service whose
+Function-as-a-service (FaaS) is a xref:cloud-computing.adoc[*cloud computing*] service model in
+which the xref:cloud-service-providers.adoc[*cloud service provider*] runs short-lived functions on
+demand, in response to events, and charges the customer only for the time each invocation actually
+runs. The developer supplies the code. The provider supplies everything else: the runtime, the
+execution environment, scaling, and the wiring that decides when to invoke the function. A FaaS
+function is, in effect, a xref:nanoservices.adoc[*nanoservice*]: a single-operation service whose
 deployment, scaling, and lifecycle the platform absorbs.
 
-FaaS is the compute layer underneath
-xref:serverless-computing.adoc[*serverless computing*], the broader delivery
-model, and xref:serverless-architecture.adoc[*serverless architecture*], the
-design style an application adopts to exploit it. A FaaS platform is what
-makes the per-invocation, event-triggered execution model concrete. The
-terms are often used interchangeably, but serverless covers more than
-compute. It also includes managed back-end services such as databases,
-storage, and messaging that share the same no-server-management,
-pay-per-use properties.
+FaaS is the compute layer underneath xref:serverless-computing.adoc[*serverless computing*], the
+broader delivery model, and xref:serverless-architecture.adoc[*serverless architecture*], the design
+style an application adopts to exploit it. A FaaS platform is what makes the per-invocation,
+event-triggered execution model concrete. The terms are often used interchangeably, but serverless
+covers more than compute. It also includes managed back-end services such as databases, storage, and
+messaging that share the same no-server-management, pay-per-use properties.
 
-FaaS refines xref:platform-as-a-service.adoc[*Platform as a Service (PaaS)*].
-In PaaS, the developer deploys a long-running application and the provider
-runs it. In FaaS, the developer deploys individual functions and the provider
-runs them only when invoked. There is no always-on process to size, patch, or
-pay for during quiet periods.
+FaaS refines xref:platform-as-a-service.adoc[*Platform as a Service (PaaS)*]. In PaaS, the developer
+deploys a long-running application and the provider runs it. In FaaS, the developer deploys
+individual functions and the provider runs them only when invoked. There is no always-on process to
+size, patch, or pay for during quiet periods.
 
 == How it works
 
-A FaaS function is a small, single-purpose unit of code with a defined entry
-point. The platform listens for trigger events and, on each one, spins up an
-instance of the function, passes it the event payload, and returns the
-result. Triggers are typically xref:event-driven-architecture.adoc[*event-driven*]:
-an HTTP request, a message landing on a queue, a change to an object in
-storage, or a timer firing. The function runs to completion and the platform
-then tears the instance down, or keeps it warm briefly in case another
-invocation follows.
+A FaaS function is a small, single-purpose unit of code with a defined entry point. The platform
+listens for trigger events and, on each one, spins up an instance of the function, passes it the
+event payload, and returns the result. Triggers are typically
+xref:event-driven-architecture.adoc[*event-driven*]: an HTTP request, a message landing on a queue,
+a change to an object in storage, or a timer firing. The function runs to completion and the
+platform then tears the instance down, or keeps it warm briefly in case another invocation follows.
 
-Functions are xref:stateless.adoc[*stateless*] by design. Each invocation
-must carry everything it needs in the request, or fetch it from an external
-store. Any state that must persist between invocations has to live outside
-the function, in a database, cache, or xref:message-queues.adoc[*queue*]. The
-platform does not guarantee that two consecutive calls hit the same instance,
-or even the same host.
+Functions are xref:stateless.adoc[*stateless*] by design. Each invocation must carry everything it
+needs in the request, or fetch it from an external store. Any state that must persist between
+invocations has to live outside the function, in a database, cache, or
+xref:message-queues.adoc[*queue*]. The platform does not guarantee that two consecutive calls hit
+the same instance, or even the same host.
 
-Scaling is implicit and per-request. When load rises, the platform simply
-starts more concurrent instances of the function, up to the provider's
-concurrency limit. The developer never specifies an instance count. This is
-the same xref:auto-scaling.adoc[*auto-scaling*] property that
-xref:container-orchestration.adoc[*container orchestration*] platforms expose
-explicitly, taken to its finest grain.
+Scaling is implicit and per-request. When load rises, the platform simply starts more concurrent
+instances of the function, up to the provider's concurrency limit. The developer never specifies an
+instance count. This is the same xref:auto-scaling.adoc[*auto-scaling*] property that
+xref:container-orchestration.adoc[*container orchestration*] platforms expose explicitly, taken to
+its finest grain.
 
 == Billing
 
-FaaS billing is metered per invocation. A typical formula charges for the
-number of requests and for the compute time consumed, rounded up to the
-nearest 100 milliseconds or so, multiplied by the memory allocated to the
-function. Idle functions cost nothing. This makes FaaS economical for
-sporadic or bursty workloads, and wasteful for steady, high-throughput ones
-that would be cheaper on an always-on xref:container.adoc[*container*] or
-virtual machine.
+FaaS billing is metered per invocation. A typical formula charges for the number of requests and for
+the compute time consumed, rounded up to the nearest 100 milliseconds or so, multiplied by the
+memory allocated to the function. Idle functions cost nothing. This makes FaaS economical for
+sporadic or bursty workloads, and wasteful for steady, high-throughput ones that would be cheaper on
+an always-on xref:container.adoc[*container*] or virtual machine.
 
 == Trade-offs
 
-* *Cold start latency.* The first invocation of a function after a quiet
-  period, or a scaling event, pays an initialization cost as the platform
-  provisions the runtime and loads the code. Cold starts range from tens of
-  milliseconds to several seconds depending on language, runtime, and payload
+* *Cold start latency.* The first invocation of a function after a quiet period, or a scaling event,
+  pays an initialization cost as the platform provisions the runtime and loads the code. Cold starts
+  range from tens of milliseconds to several seconds depending on language, runtime, and payload
   size. They shape which workloads fit FaaS and which do not.
 
-* *Execution limits.* FaaS platforms cap how long a single invocation may
-  run, typically from one to fifteen minutes, and impose limits on memory,
-  concurrency, and payload size. Long-running or memory-heavy workloads do
-  not fit.
+* *Execution limits.* FaaS platforms cap how long a single invocation may run, typically from one to
+  fifteen minutes, and impose limits on memory, concurrency, and payload size. Long-running or
+  memory-heavy workloads do not fit.
 
-* *Vendor lock-in.* Trigger sources, event formats, deployment tooling, and
-  runtime versions are provider-specific. Moving a FaaS workload between CSPs
-  usually means rewriting the wiring around the functions, even when the
-  function code itself is portable.
+* *Vendor lock-in.* Trigger sources, event formats, deployment tooling, and runtime versions are
+  provider-specific. Moving a FaaS workload between CSPs usually means rewriting the wiring around
+  the functions, even when the function code itself is portable.
 
-* *Observability.* A single user request fanned out across many short-lived
-  functions is hard to trace without dedicated
-  xref:observability.adoc[*observability*] tooling. Distributed tracing is
+* *Observability.* A single user request fanned out across many short-lived functions is hard to
+  trace without dedicated xref:observability.adoc[*observability*] tooling. Distributed tracing is
   not optional at any non-trivial scale.
 
-* *Local development and testing.* Functions depend on the platform's trigger
-  and runtime behavior, which is hard to reproduce on a developer's machine.
-  Emulators exist but lag the real platform.
+* *Local development and testing.* Functions depend on the platform's trigger and runtime behavior,
+  which is hard to reproduce on a developer's machine. Emulators exist but lag the real platform.
 
 == Examples
 

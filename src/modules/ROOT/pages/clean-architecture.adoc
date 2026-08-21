@@ -1,79 +1,68 @@
 = Clean architecture
 
-Clean architecture is a software *[architectural design pattern]* introduced
-by Robert C. Martin ("Uncle Bob") in 2012. It organizes a system into
-concentric layers, with the business rules at the center and infrastructure
-concerns on the outside, and enforces a single *dependency rule*: dependencies
-may only point inward, toward the center.
+Clean architecture is a software *[architectural design pattern]* introduced by Robert C. Martin
+("Uncle Bob") in 2012. It organizes a system into concentric layers, with the business rules at the
+center and infrastructure concerns on the outside, and enforces a single *dependency rule*:
+dependencies may only point inward, toward the center.
 
-The pattern is a refinement of earlier layered approaches, notably Alistair
-Cockburn's xref:hexagonal-architecture.adoc[*hexagonal architecture*] (2005)
-and Jeffrey Palermo's xref:onion-architecture.adoc[*onion architecture*]
-(2008). All three share the same underlying objective — the
-xref:separation-of-concerns.adoc[*separation of concerns*] — but clean
-architecture articulates it as an explicit set of named layers and a rule that
-governs the direction of every dependency between them.
+The pattern is a refinement of earlier layered approaches, notably Alistair Cockburn's
+xref:hexagonal-architecture.adoc[*hexagonal architecture*] (2005) and Jeffrey Palermo's
+xref:onion-architecture.adoc[*onion architecture*] (2008). All three share the same underlying
+objective — the xref:separation-of-concerns.adoc[*separation of concerns*] — but clean architecture
+articulates it as an explicit set of named layers and a rule that governs the direction of every
+dependency between them.
 
 == The layers
 
 Clean architecture describes four concentric layers, from the center outward:
 
-* *Entities.* Enterprise business rules. The core domain model and the rules
-  that are most stable and least likely to change for external reasons. These
-  objects would exist even if there were no application to use them.
+* *Entities.* Enterprise business rules. The core domain model and the rules that are most stable
+  and least likely to change for external reasons. These objects would exist even if there were no
+  application to use them.
 
-* *Use cases.* Application business rules. The operations the application
-  supports, orchestrating the flow of data to and from the entities and
-  enforcing the rules that define how the application behaves. This is where
-  the application layer of xref:domain-driven-design.adoc[*domain-driven design*] typically lives.
+* *Use cases.* Application business rules. The operations the application supports, orchestrating
+  the flow of data to and from the entities and enforcing the rules that define how the application
+  behaves. This is where the application layer of
+  xref:domain-driven-design.adoc[*domain-driven design*] typically lives.
 
-* *Interface adapters.* Convert data between the formats convenient for the
-  use cases and entities and the formats convenient for the outer layers.
-  Controllers, presenters, and gateways live here.
+* *Interface adapters.* Convert data between the formats convenient for the use cases and entities
+  and the formats convenient for the outer layers. Controllers, presenters, and gateways live here.
 
-* *Frameworks and drivers.* The outermost layer, holding the details that
-  change most often: the web framework, the database, external APIs, and the
-  UI. This layer is kept intentionally thin, containing only the glue code that
-  connects infrastructure to the interface adapters.
+* *Frameworks and drivers.* The outermost layer, holding the details that change most often: the web
+  framework, the database, external APIs, and the UI. This layer is kept intentionally thin,
+  containing only the glue code that connects infrastructure to the interface adapters.
 
 == The dependency rule
 
-The dependency rule states that source code dependencies must point only
-inward, toward the more central layers. An inner layer may know nothing about
-the layers outside it: no names, no types, no behavior. The outer layers, by
-contrast, may reference the inner layers directly or through
+The dependency rule states that source code dependencies must point only inward, toward the more
+central layers. An inner layer may know nothing about the layers outside it: no names, no types, no
+behavior. The outer layers, by contrast, may reference the inner layers directly or through
 xref:dependency-inversion.adoc[*dependency inversion*].
 
-This is the mechanism by which clean architecture achieves its separation of
-concerns. Because the business rules at the center have no knowledge of the
-database, the web framework, or the UI, they can be tested in isolation and
-are insulated from changes in the infrastructure around them. The
-xref:layered-architecture.adoc[*layered architecture*] that clean architecture
-builds on is the same idea expressed as horizontal tiers. Clean architecture
-rearranges it as concentric rings and makes the inward dependency direction a
-rule rather than a convention.
+This is the mechanism by which clean architecture achieves its separation of concerns. Because the
+business rules at the center have no knowledge of the database, the web framework, or the UI, they
+can be tested in isolation and are insulated from changes in the infrastructure around them. The
+xref:layered-architecture.adoc[*layered architecture*] that clean architecture builds on is the same
+idea expressed as horizontal tiers. Clean architecture rearranges it as concentric rings and makes
+the inward dependency direction a rule rather than a convention.
 
 == Benefits and trade-offs
 
 The primary benefits follow from the dependency rule:
 
-* *Testability.* The business rules can be tested without the database, the
-  UI, or any external system, since they depend on nothing outside
-  themselves.
+* *Testability.* The business rules can be tested without the database, the UI, or any external
+  system, since they depend on nothing outside themselves.
 
-* *Independence.* The application does not depend on any particular
-  framework, database, or UI. Each can be swapped by changing only the outer
-  layer that adapts it.
+* *Independence.* The application does not depend on any particular framework, database, or UI. Each
+  can be swapped by changing only the outer layer that adapts it.
 
-* xref:evolvability.adoc[*Evolvability*]. Because the most stable code is the
-  most central, routine changes to infrastructure have no reason to touch the
-  business rules, so the surface area affected by any given change is smaller.
+* xref:evolvability.adoc[*Evolvability*]. Because the most stable code is the most central, routine
+  changes to infrastructure have no reason to touch the business rules, so the surface area affected
+  by any given change is smaller.
 
-The trade-off is xref:complexity.adoc[*accidental complexity*]. Every layer
-adds interfaces, data conversion, and indirection. For small or
-straightforward applications the discipline of four strict layers can be more
-cost than benefit, and a simpler layered architecture may serve the same
-ends.
+The trade-off is xref:complexity.adoc[*accidental complexity*]. Every layer adds interfaces, data
+conversion, and indirection. For small or straightforward applications the discipline of four strict
+layers can be more cost than benefit, and a simpler layered architecture may serve the same ends.
 
 == References
 

@@ -1,42 +1,36 @@
 = Clustering
 
-Clustering is the technique of grouping multiple computers – called *nodes* –
-into a single logical system that works together as one. A group of nodes
-operating this way is called a *cluster*. To the outside world, a cluster
-typically appears as a single service, even though the work is shared across
-several physical or virtual machines.
+Clustering is the technique of grouping multiple computers – called *nodes* – into a single logical
+system that works together as one. A group of nodes operating this way is called a *cluster*. To the
+outside world, a cluster typically appears as a single service, even though the work is shared
+across several physical or virtual machines.
 
-Clustering is a foundational building block of
-xref:distributed-system.adoc[*distributed systems*]. It is used to raise
-xref:scalability.adoc[*scalability*] and
-xref:fault-tolerance.adoc[*fault tolerance*], and to keep a service available
-when individual nodes fail. A cluster gains capacity by adding more nodes,
-which is a form of xref:horizontal-scaling.adoc[*horizontal scaling*].
+Clustering is a foundational building block of xref:distributed-system.adoc[*distributed systems*].
+It is used to raise xref:scalability.adoc[*scalability*] and
+xref:fault-tolerance.adoc[*fault tolerance*], and to keep a service available when individual nodes
+fail. A cluster gains capacity by adding more nodes, which is a form of
+xref:horizontal-scaling.adoc[*horizontal scaling*].
 
-Cluster nodes cooperate by coordinating their work. Incoming requests are
-spread across the nodes using xref:load-balancing.adoc[*load balancing*], often
-through a dedicated xref:load-balancer.adoc[*load balancer*]. Nodes that share
-state typically rely on xref:replication.adoc[*replication*] to keep their data
-in step, and on xref:consensus-algorithms.adoc[*consensus algorithms*] when they
-must agree on a single value despite concurrent writes or failures.
+Cluster nodes cooperate by coordinating their work. Incoming requests are spread across the nodes
+using xref:load-balancing.adoc[*load balancing*], often through a dedicated
+xref:load-balancer.adoc[*load balancer*]. Nodes that share state typically rely on
+xref:replication.adoc[*replication*] to keep their data in step, and on
+xref:consensus-algorithms.adoc[*consensus algorithms*] when they must agree on a single value
+despite concurrent writes or failures.
 
-A common deployment pattern is the
-xref:active-active.adoc[*active-active*] cluster, where every node handles live
-traffic. The alternative is an active-passive arrangement, where a standby
-node takes over only when the active node fails, a process known as
-xref:failover.adoc[*failover*]. Either way, the goal is that the failure of one
-node does not bring down the whole service.
+A common deployment pattern is the xref:active-active.adoc[*active-active*] cluster, where every
+node handles live traffic. The alternative is an active-passive arrangement, where a standby node
+takes over only when the active node fails, a process known as xref:failover.adoc[*failover*].
+Either way, the goal is that the failure of one node does not bring down the whole service.
 
-Clustering is not free. Coordinating nodes adds communication overhead, and
-shared state introduces consistency challenges. Adding nodes can expose new
-bottlenecks, and managing a cluster is more complex than managing a single
-machine. These costs are the trade-off for the availability and capacity that
-clustering buys.
+Clustering is not free. Coordinating nodes adds communication overhead, and shared state introduces
+consistency challenges. Adding nodes can expose new bottlenecks, and managing a cluster is more
+complex than managing a single machine. These costs are the trade-off for the availability and
+capacity that clustering buys.
 
 xref:container-orchestration.adoc[*Container orchestration*] systems such as
-xref:kubernetes.adoc[*Kubernetes*] build on clustering. They run containerized
-workloads across a cluster of machines and automate the deployment, scaling,
-and recovery of nodes within it.
+xref:kubernetes.adoc[*Kubernetes*] build on clustering. They run containerized workloads across a
+cluster of machines and automate the deployment, scaling, and recovery of nodes within it.
 
 == See also
 

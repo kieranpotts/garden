@@ -1,56 +1,49 @@
 = Clean code
 
-Clean code is a philosophy and a set of heuristics for writing source code
-that is easy for humans to read, understand, and change. It treats code
-primarily as a communication medium between developers and only secondarily as
-instructions for a machine. The name is also the title of Robert C. Martin's
-2008 book _Clean Code_, which gathered practices from the object-oriented and
-agile communities and gave them a single banner.
+Clean code is a philosophy and a set of heuristics for writing source code that is easy for humans
+to read, understand, and change. It treats code primarily as a communication medium between
+developers and only secondarily as instructions for a machine. The name is also the title of Robert
+C. Martin's 2008 book _Clean Code_, which gathered practices from the object-oriented and agile
+communities and gave them a single banner.
 
-The motivating claim is simple. Code is read far more often than it is written,
-and most of the cost of a software system is spent reading and changing it
-after it was first written. xref:code-for-the-maintainer.adoc[*Code for the maintainer*] is the stance this implies. Clean code is what that stance looks
-like at the level of individual functions, names, and files.
+The motivating claim is simple. Code is read far more often than it is written, and most of the cost
+of a software system is spent reading and changing it after it was first written.
+xref:code-for-the-maintainer.adoc[*Code for the maintainer*] is the stance this implies. Clean code
+is what that stance looks like at the level of individual functions, names, and files.
 
-Clean code is not a single rule but a family of habits. Meaningful names that
-say what a thing is rather than how it is stored. Small functions that do one
-thing, in line with
+Clean code is not a single rule but a family of habits. Meaningful names that say what a thing is
+rather than how it is stored. Small functions that do one thing, in line with
 xref:single-responsibility-principle.adoc[*single responsibility*] and high
-xref:cohesion.adoc[*cohesion*]. Minimal duplication, so that a change lives in
-one place. Control flow that reads top to bottom without surprises, aligned with
-the xref:principle-of-least-astonishment.adoc[*principle of least astonishment*]. Comments that explain why, not what, and then only when the
-code cannot speak for itself.
+xref:cohesion.adoc[*cohesion*]. Minimal duplication, so that a change lives in one place. Control
+flow that reads top to bottom without surprises, aligned with the
+xref:principle-of-least-astonishment.adoc[*principle of least astonishment*]. Comments that explain
+why, not what, and then only when the code cannot speak for itself.
 
 These habits are not enforced by a compiler. They are sustained by
 xref:code-conventions.adoc[*code conventions*] that teams agree to and by the
-xref:boy-scout-rule.adoc[*boy scout rule*], which makes tidying a continuous
-part of every change rather than a separate phase.
-xref:refactoring.adoc[*Refactoring*] is the mechanism. Clean code is not code
-that was clean the day it was written, but code that has been kept clean as the
-system grew.
+xref:boy-scout-rule.adoc[*boy scout rule*], which makes tidying a continuous part of every change
+rather than a separate phase. xref:refactoring.adoc[*Refactoring*] is the mechanism. Clean code is
+not code that was clean the day it was written, but code that has been kept clean as the system
+grew.
 
-The discipline pays back as resistance to
-xref:technical-debt.adoc[*technical debt*]. Code that is hard to read is hard
-to change safely, so changes made under pressure introduce more cruft, and the
-cruft compounds. Clean code narrows the surface a change has to touch, which
-makes each change cheaper and less likely to break something unrelated.
+The discipline pays back as resistance to xref:technical-debt.adoc[*technical debt*]. Code that is
+hard to read is hard to change safely, so changes made under pressure introduce more cruft, and the
+cruft compounds. Clean code narrows the surface a change has to touch, which makes each change
+cheaper and less likely to break something unrelated.
 
-Clean code is not the same as correct code, and the two should not be confused.
-Readable code that is wrong is still wrong, and there are cases – tight inner
-loops, low-level systems code, performance-critical paths – where clarity gives
-way to other demands. The heuristics are also not absolute. Taken to excess,
-the pursuit of tiny functions and zero duplication can itself become
-xref:complexity.adoc[*accidental complexity*], scattering one idea across many
-units until neither the idea nor the units are easy to follow. Clean code is a
-disposition toward legibility, not a checklist to be applied without judgment.
+Clean code is not the same as correct code, and the two should not be confused. Readable code that
+is wrong is still wrong, and there are cases – tight inner loops, low-level systems code,
+performance-critical paths – where clarity gives way to other demands. The heuristics are also not
+absolute. Taken to excess, the pursuit of tiny functions and zero duplication can itself become
+xref:complexity.adoc[*accidental complexity*], scattering one idea across many units until neither
+the idea nor the units are easy to follow. Clean code is a disposition toward legibility, not a
+checklist to be applied without judgment.
 
-The book that popularized the term has aged unevenly. Its Java examples reflect
-the style of a specific era, and several of its prescriptions – the strong
-preference for treating comments as a smell, the rigid rules about function
-size – have been revisited in the years since. The lasting contribution is less
-any individual rule than the framing: that code is written for people, and
-that the effort of making it readable is repaid every time someone opens the
-file.
+The book that popularized the term has aged unevenly. Its Java examples reflect the style of a
+specific era, and several of its prescriptions – the strong preference for treating comments as a
+smell, the rigid rules about function size – have been revisited in the years since. The lasting
+contribution is less any individual rule than the framing: that code is written for people, and that
+the effort of making it readable is repaid every time someone opens the file.
 
 == See also
 
@@ -67,5 +60,4 @@ file.
 
 == References
 
-* Robert C. Martin (2008). _Clean Code: A Handbook of Agile Software
-  Craftsmanship_. Prentice Hall.
+* Robert C. Martin (2008). _Clean Code: A Handbook of Agile Software Craftsmanship_. Prentice Hall.

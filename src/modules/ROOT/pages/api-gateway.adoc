@@ -3,86 +3,73 @@
 // TODO: https://www.f5.com/glossary/api-gateway
 // TODO: https://blog.algomaster.io/p/what-is-an-api-gateway
 
-In a xref:service-oriented-architecture.adoc[*service-oriented architecture*]
-and other back-end xref:distributed-system.adoc[*distributed software*], an API
-gateway is a server that acts as a single-entry point for API clients. Rather
-than exposing every service endpoint directly, all incoming client requests go
-through the gateway, which routes them to the appropriate back-end services.
+In a xref:service-oriented-architecture.adoc[*service-oriented architecture*] and other back-end
+xref:distributed-system.adoc[*distributed software*], an API gateway is a server that acts as a
+single-entry point for API clients. Rather than exposing every service endpoint directly, all
+incoming client requests go through the gateway, which routes them to the appropriate back-end
+services.
 
-API gateways are especially valuable in microservices architectures, where many
-services exist and requests need to be managed, secured, routed, and
-orchestrated efficiently. They provide a unified interface to the outside world
-while keeping internal service complexity hidden.
+API gateways are especially valuable in microservices architectures, where many services exist and
+requests need to be managed, secured, routed, and orchestrated efficiently. They provide a unified
+interface to the outside world while keeping internal service complexity hidden.
 
 == Key features
 
 API gateways provide a convenient centralized point for implementing
 xref:cross-cutting-concern.adoc[*Cross-cutting concerns*] across all API traffic:
 
-* Request routing: Routes requests to the correct back-end service based on URL
-  path, HTTP method, headers, query parameters, or service discovery metadata.
-* xref:authentication.adoc[*Authentication*] and authorization: Integrates with
-  identity providers (OAuth 2.0, OpenID Connect), validates tokens (eg.
-  xref:jwt.adoc[*JWT*]), and enforces role-based or scope-based access controls,
-  centralizing security policy enforcement across all services.
-* xref:rate-limiting.adoc[*Rate limiting*] and throttling: Restricts the
-  number of requests a client can make per unit of time, protecting back-end
-  services from overuse or abuse.
-* Request and response transformation: Modifies requests or responses in
-  transit, adding or removing headers, converting between formats (e.g. XML ↔
-  JSON), filtering or reshaping response payloads, or modifying query
-  parameters.
-* API composition and aggregation: Aggregates responses from multiple
-  microservices into a single response, reducing the number of round-trips the
-  client needs to make. For example, a `/user-dashboard` endpoint might fetch
-  user profile, orders, and notifications from three different services and
-  return them as one payload.
-* Caching: Caches frequently requested data (product listings, slowly-changing
-  API responses, token validations) to reduce back-end load and improve latency.
-* Logging, monitoring, and analytics: Provides centralized logging and metrics
-  for all API traffic, request counts, response times, error rates, status
-  codes, and latency bottlenecks, supporting observability and debugging.
-* Protocol translation: Translates between protocols (e.g. HTTP ↔ gRPC,
-  WebSocket ↔ REST, SOAP ↔ REST), allowing clients to use simpler protocols
-  while internal services use more efficient ones.
-* xref:input-validation.adoc[*Input validation*],
-  xref:circuit-breaker.adoc[*circuit breaking*],
-  xref:firewalls.adoc[*firewalling*] (allow-listing/deny-listing), and service
-  discovery.
+* Request routing: Routes requests to the correct back-end service based on URL path, HTTP method,
+  headers, query parameters, or service discovery metadata.
+* xref:authentication.adoc[*Authentication*] and authorization: Integrates with identity providers
+  (OAuth 2.0, OpenID Connect), validates tokens (eg. xref:jwt.adoc[*JWT*]), and enforces role-based
+  or scope-based access controls, centralizing security policy enforcement across all services.
+* xref:rate-limiting.adoc[*Rate limiting*] and throttling: Restricts the number of requests a client
+  can make per unit of time, protecting back-end services from overuse or abuse.
+* Request and response transformation: Modifies requests or responses in transit, adding or removing
+  headers, converting between formats (e.g. XML ↔ JSON), filtering or reshaping response payloads,
+  or modifying query parameters.
+* API composition and aggregation: Aggregates responses from multiple microservices into a single
+  response, reducing the number of round-trips the client needs to make. For example, a
+  `/user-dashboard` endpoint might fetch user profile, orders, and notifications from three
+  different services and return them as one payload.
+* Caching: Caches frequently requested data (product listings, slowly-changing API responses, token
+  validations) to reduce back-end load and improve latency.
+* Logging, monitoring, and analytics: Provides centralized logging and metrics for all API traffic,
+  request counts, response times, error rates, status codes, and latency bottlenecks, supporting
+  observability and debugging.
+* Protocol translation: Translates between protocols (e.g. HTTP ↔ gRPC, WebSocket ↔ REST, SOAP ↔
+  REST), allowing clients to use simpler protocols while internal services use more efficient ones.
+* xref:input-validation.adoc[*Input validation*], xref:circuit-breaker.adoc[*circuit breaking*],
+  xref:firewalls.adoc[*firewalling*] (allow-listing/deny-listing), and service discovery.
 
 == Relationship to load balancers and reverse proxies
 
-An API gateway is a specialised xref:reverse-proxy.adoc[*reverse proxy*]
-designed specifically for API management. While a
-xref:reverse-proxy.adoc[*reverse proxy*] focuses on forwarding HTTP traffic,
-abstracting back-end infrastructure, and providing caching and SSL termination,
-an API gateway adds API-specific capabilities: authentication, rate limiting,
-request transformation, aggregation, and API lifecycle management (versioning,
-developer portals).
+An API gateway is a specialised xref:reverse-proxy.adoc[*reverse proxy*] designed specifically for
+API management. While a xref:reverse-proxy.adoc[*reverse proxy*] focuses on forwarding HTTP traffic,
+abstracting back-end infrastructure, and providing caching and SSL termination, an API gateway adds
+API-specific capabilities: authentication, rate limiting, request transformation, aggregation, and
+API lifecycle management (versioning, developer portals).
 
-Since an API gateway is a potential
-xref:single-point-of-failure.adoc[*single point of failure*], it is typically
-deployed in a xref:load-balancing.adoc[*load-balanced*] configuration, with
-traffic distributed between multiple instances. Additional
-xref:load-balancer.adoc[*load balancers*] may sit behind the API gateway to
-further distribute traffic between multiple instances of the back-end services.
+Since an API gateway is a potential xref:single-point-of-failure.adoc[*single point of failure*], it
+is typically deployed in a xref:load-balancing.adoc[*load-balanced*] configuration, with traffic
+distributed between multiple instances. Additional xref:load-balancer.adoc[*load balancers*] may sit
+behind the API gateway to further distribute traffic between multiple instances of the back-end
+services.
 
-In large-scale architectures, all three may be used together: an edge load
-balancer distributes traffic across regions, a reverse proxy handles SSL
-termination and static content caching, and an API gateway manages API security,
-routing, and transformation before passing requests to internal service load
-balancers.
+In large-scale architectures, all three may be used together: an edge load balancer distributes
+traffic across regions, a reverse proxy handles SSL termination and static content caching, and an
+API gateway manages API security, routing, and transformation before passing requests to internal
+service load balancers.
 
-Where an API gateway governs north-south traffic from external clients to the
-system, a xref:service-mesh.adoc[*service mesh*] governs the east-west traffic
-between the internal services behind it. The two are commonly deployed
-together, with the gateway handling client-facing policy and the mesh handling
-service-to-service policy.
+Where an API gateway governs north-south traffic from external clients to the system, a
+xref:service-mesh.adoc[*service mesh*] governs the east-west traffic between the internal services
+behind it. The two are commonly deployed together, with the gateway handling client-facing policy
+and the mesh handling service-to-service policy.
 
 == API gateway systems
 
-* https://konghq.com/products/kong-gateway[Kong Gateway]: Open-source API
-  gateway built on top of Nginx.
+* https://konghq.com/products/kong-gateway[Kong Gateway]: Open-source API gateway built on top of
+  Nginx.
 * Amazon API Gateway, Apigee (Google Cloud), Zuul (Netflix).
 
 == See also

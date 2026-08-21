@@ -1,84 +1,68 @@
 = Internet Control Message Protocol (ICMP)
 
-The Internet Control Message Protocol (ICMP) is a control and diagnostic protocol
-that runs alongside xref:internet-protocol.adoc[*IP*] at Layer 3 of the
-xref:osi-model.adoc[*OSI model*]. IP itself is a best-effort, connectionless
-protocol with no built-in way to report errors or probe for reachability. ICMP
-fills that gap, carrying the messages that hosts and routers use to signal
+The Internet Control Message Protocol (ICMP) is a control and diagnostic protocol that runs
+alongside xref:internet-protocol.adoc[*IP*] at Layer 3 of the xref:osi-model.adoc[*OSI model*]. IP
+itself is a best-effort, connectionless protocol with no built-in way to report errors or probe for
+reachability. ICMP fills that gap, carrying the messages that hosts and routers use to signal
 problems and query the state of the network.
 
-ICMP is not a transport protocol. It carries no application data, and is not
-used by xref:tcp.adoc[*TCP*] or xref:udp.adoc[*UDP*] to deliver streams or
-datagrams. Instead, both transport protocols rely on ICMP to report the errors
-that IP encounters while routing their packets, such as an unreachable
-destination or a fragmentation failure.
+ICMP is not a transport protocol. It carries no application data, and is not used by
+xref:tcp.adoc[*TCP*] or xref:udp.adoc[*UDP*] to deliver streams or datagrams. Instead, both
+transport protocols rely on ICMP to report the errors that IP encounters while routing their
+packets, such as an unreachable destination or a fragmentation failure.
 
 == How ICMP is carried
 
-ICMP messages travel inside IP packets, identified by protocol number 1 in the
-IP header. An ICMP message has a small fixed header — a type, a code, a
-xref:checksum.adoc[*checksum*], and a few fields that depend on the message
-type — followed by a data section. The type and code together identify the
-specific message, eg. echo request is type 8 code 0, and destination
-unreachable is type 3 with codes that distinguish "network unreachable",
-"port unreachable", and several others.
+ICMP messages travel inside IP packets, identified by protocol number 1 in the IP header. An ICMP
+message has a small fixed header — a type, a code, a xref:checksum.adoc[*checksum*], and a few
+fields that depend on the message type — followed by a data section. The type and code together
+identify the specific message, eg. echo request is type 8 code 0, and destination unreachable is
+type 3 with codes that distinguish "network unreachable", "port unreachable", and several others.
 
-Because ICMP rides on IP, it inherits IP's unreliability. Error messages can
-themselves be lost, and they are never generated about other ICMP messages, to
-prevent error-reporting loops.
+Because ICMP rides on IP, it inherits IP's unreliability. Error messages can themselves be lost, and
+they are never generated about other ICMP messages, to prevent error-reporting loops.
 
 == Common message types
 
-* *Echo request and echo reply* (types 8 and 0). The basis of `ping`. A host
-  sends an echo request and the target returns an echo reply with the same
-  data. This tests reachability and measures
+* *Echo request and echo reply* (types 8 and 0). The basis of `ping`. A host sends an echo request
+  and the target returns an echo reply with the same data. This tests reachability and measures
   xref:rtt.adoc[*round-trip time*].
-* *Destination unreachable* (type 3). A router or host reports that a packet
-  could not be delivered, with a code indicating why: network, host, protocol,
-  or port unreachable, or fragmentation needed when the "don't fragment" flag
-  was set.
-* *Time exceeded* (type 11). Sent when a packet's IP *time-to-live* field
-  reaches zero. This is the mechanism `traceroute` exploits to map a path hop
-  by hop.
-* *Redirect* (type 5). A router tells a host about a better next hop for a
-  particular destination. Largely ignored on modern networks for security
-  reasons.
+* *Destination unreachable* (type 3). A router or host reports that a packet could not be delivered,
+  with a code indicating why: network, host, protocol, or port unreachable, or fragmentation needed
+  when the "don't fragment" flag was set.
+* *Time exceeded* (type 11). Sent when a packet's IP *time-to-live* field reaches zero. This is the
+  mechanism `traceroute` exploits to map a path hop by hop.
+* *Redirect* (type 5). A router tells a host about a better next hop for a particular destination.
+  Largely ignored on modern networks for security reasons.
 * *Parameter problem* (type 12). Reports a malformed IP header.
 
 == ping and traceroute
 
-The two best-known uses of ICMP are diagnostic tools built on its echo and
-time-exceeded messages.
+The two best-known uses of ICMP are diagnostic tools built on its echo and time-exceeded messages.
 
-`ping` sends a stream of ICMP echo requests to a target and reports which
-replies come back, the loss ratio, and the round-trip latency. It is the
-quickest way to answer whether a host is reachable from here, and how fast.
+`ping` sends a stream of ICMP echo requests to a target and reports which replies come back, the
+loss ratio, and the round-trip latency. It is the quickest way to answer whether a host is reachable
+from here, and how fast.
 
-`traceroute` discovers the sequence of routers between a source and a
-destination. It sends probe packets with progressively larger TTL values,
-starting at 1. Each router along the path decrements the TTL and, when it
-reaches zero, discards the packet and returns an ICMP "time exceeded" message
-whose source address identifies that router. Repeating for TTL 1, 2, 3, and so
-on reveals each hop in turn.
+`traceroute` discovers the sequence of routers between a source and a destination. It sends probe
+packets with progressively larger TTL values, starting at 1. Each router along the path decrements
+the TTL and, when it reaches zero, discards the packet and returns an ICMP "time exceeded" message
+whose source address identifies that router. Repeating for TTL 1, 2, 3, and so on reveals each hop
+in turn.
 
 == Security considerations
 
-ICMP's usefulness as a diagnostic tool makes it useful to attackers too. A
-*ping flood* overwhelms a target with echo requests, forcing it to generate a
-reply for each one, a simple form of denial of service. *Smurf* attacks extend
-this by spoofing the source address and bouncing echo requests off broadcast
-addresses. For these reasons xref:firewalls.adoc[*firewalls*] commonly restrict
-or rate-limit ICMP, though blocking it entirely breaks path MTU discovery and
-other mechanisms that depend on "fragmentation needed" messages reaching the
-sender.
+ICMP's usefulness as a diagnostic tool makes it useful to attackers too. A *ping flood* overwhelms a
+target with echo requests, forcing it to generate a reply for each one, a simple form of denial of
+service. *Smurf* attacks extend this by spoofing the source address and bouncing echo requests off
+broadcast addresses. For these reasons xref:firewalls.adoc[*firewalls*] commonly restrict or
+rate-limit ICMP, though blocking it entirely breaks path MTU discovery and other mechanisms that
+depend on "fragmentation needed" messages reaching the sender.
 
 [NOTE]
---
-ICMPv6, the IPv6 counterpart, is considerably more central than ICMPv4. IPv6
-relies on it for neighbour discovery (replacing ARP), stateless address
-autoconfiguration, and multicast management, not just diagnostics and error
-reporting.
---
+-- ICMPv6, the IPv6 counterpart, is considerably more central than ICMPv4. IPv6 relies on it for
+neighbour discovery (replacing ARP), stateless address autoconfiguration, and multicast management,
+not just diagnostics and error reporting. --
 
 == See also
 

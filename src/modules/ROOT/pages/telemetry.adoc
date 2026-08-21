@@ -1,106 +1,87 @@
 = Telemetry
 
-Telemetry is the automatic recording of data from a running system, and its
-transmission to a separate location where the data can be collected, stored, and
-analyzed. The word comes from the Greek _tele_ ("remote") and _metron_
-("measure"), and it originates in the early twentieth-century practice of
-relaying measurements from distant physical instruments – weather balloons,
-power plants, spacecraft – back to a receiving station over a wire or radio
-link. In software, the instruments are the application and the platform it
-runs on, and the measurements are signals that describe how the system is
-behaving.
+Telemetry is the automatic recording of data from a running system, and its transmission to a
+separate location where the data can be collected, stored, and analyzed. The word comes from the
+Greek _tele_ ("remote") and _metron_ ("measure"), and it originates in the early twentieth-century
+practice of relaying measurements from distant physical instruments – weather balloons, power
+plants, spacecraft – back to a receiving station over a wire or radio link. In software, the
+instruments are the application and the platform it runs on, and the measurements are signals that
+describe how the system is behaving.
 
-Telemetry is the plumbing. It is the collection and movement of data, not the
-interpretation of it. Once the data arrives at a receiving station, it is
-xref:monitoring.adoc[*monitored*] and analyzed, eg. using
-xref:observability.adoc[*observability*] tools. The distinction matters in
-practice. Monitoring is a _reactive_ activity that watches known signals against
-predefined rules and fires xref:alerting.adoc[*alerts*] when they cross a
-threshold, while observability is a _proactive_ activity that lets engineers
-explore the same telemetry to answer questions they did not know to ask in
-advance. Telemetry feeds both, but is neither.
+Telemetry is the plumbing. It is the collection and movement of data, not the interpretation of it.
+Once the data arrives at a receiving station, it is xref:monitoring.adoc[*monitored*] and analyzed,
+eg. using xref:observability.adoc[*observability*] tools. The distinction matters in practice.
+Monitoring is a _reactive_ activity that watches known signals against predefined rules and fires
+xref:alerting.adoc[*alerts*] when they cross a threshold, while observability is a _proactive_
+activity that lets engineers explore the same telemetry to answer questions they did not know to ask
+in advance. Telemetry feeds both, but is neither.
 
 == The three signals
 
-Telemetry is gathered from different sources – application code, the runtime,
-the operating system, and the network – and at different granularities,
-depending on the observability strategy. The three conventional signals are the
-three pillars of xref:observability.adoc[*observability*].
+Telemetry is gathered from different sources – application code, the runtime, the operating system,
+and the network – and at different granularities, depending on the observability strategy. The three
+conventional signals are the three pillars of xref:observability.adoc[*observability*].
 
 * xref:logging.adoc[*Logs*] are discrete, timestamped records of events.
 * xref:metrics.adoc[*Metrics*] are numerical measurements aggregated over time.
-* xref:tracing.adoc[*Traces*] follow a single request as it moves through the
-  system.
+* xref:tracing.adoc[*Traces*] follow a single request as it moves through the system.
 
-The three are complementary rather than interchangeable. Metrics are cheap and
-queryable and suit broad system-wide baselines; logs are rich and contextual
-and suit diagnosis; traces connect cause to effect across service boundaries.
-The balance between them shifts with system complexity – see the
-xref:observability.adoc[*observability*] entry for how.
+The three are complementary rather than interchangeable. Metrics are cheap and queryable and suit
+broad system-wide baselines; logs are rich and contextual and suit diagnosis; traces connect cause
+to effect across service boundaries. The balance between them shifts with system complexity – see
+the xref:observability.adoc[*observability*] entry for how.
 
 == The telemetry pipeline
 
-A telemetry system is a data pipeline. The same shape recurs across logs,
-metrics, and traces, even when the tools differ.
+A telemetry system is a data pipeline. The same shape recurs across logs, metrics, and traces, even
+when the tools differ.
 
-* *Instrumentation.* Code emits signals – a log line, a counter increment, a
-  span start and stop – either hand-written or produced by an agent that
-  instruments the runtime automatically.
-* *Collection.* A shipper runs on or near each source and forwards the
-  records, eg. Fluent Bit and Promtail for logs, a Prometheus scrape target or
-  the OpenTelemetry Collector for metrics and traces.
-* *Processing.* A transformer parses, enriches, samples, and routes the stream
-  before it lands – adding fields, redacting secrets, dropping noisy records,
-  or biasing the sample toward errors.
-* *Storage.* The processed stream is written to a backend optimized for its
-  signal type, eg. a xref:time-series-databases.adoc[*time-series database*] for
-  metrics or a search index for logs.
-* *Query and visualization.* Dashboards and query languages let operators
-  explore the data and drive alerts off it.
+* *Instrumentation.* Code emits signals – a log line, a counter increment, a span start and stop –
+  either hand-written or produced by an agent that instruments the runtime automatically.
+* *Collection.* A shipper runs on or near each source and forwards the records, eg. Fluent Bit and
+  Promtail for logs, a Prometheus scrape target or the OpenTelemetry Collector for metrics and
+  traces.
+* *Processing.* A transformer parses, enriches, samples, and routes the stream before it lands –
+  adding fields, redacting secrets, dropping noisy records, or biasing the sample toward errors.
+* *Storage.* The processed stream is written to a backend optimized for its signal type, eg. a
+  xref:time-series-databases.adoc[*time-series database*] for metrics or a search index for logs.
+* *Query and visualization.* Dashboards and query languages let operators explore the data and drive
+  alerts off it.
 
-OpenTelemetry has become the de facto standard for emitting all three signals
-with shared context, so that a log record can be correlated to the span it
-occurred within without bespoke plumbing.
+OpenTelemetry has become the de facto standard for emitting all three signals with shared context,
+so that a log record can be correlated to the span it occurred within without bespoke plumbing.
 
 == Use cases
 
-Telemetry underwrites most operational practice. It feeds
-xref:alerting.adoc[*alerting*] for incident detection; supports
-xref:profiling.adoc[*profiling*] and
-xref:application-performance-management.adoc[*application performance management*]
-for performance work; informs capacity and
-xref:scalability.adoc[*scalability*] planning; and supplies the numbers behind
-xref:service-level-agreement.adoc[*service level objectives*]. Beyond
-operations, the same data feeds business intelligence – feature usage,
-transaction volumes, user engagement – and
-xref:compliance.adoc[*compliance*] regimes that require an auditable record of
-system activity.
+Telemetry underwrites most operational practice. It feeds xref:alerting.adoc[*alerting*] for
+incident detection; supports xref:profiling.adoc[*profiling*] and
+xref:application-performance-management.adoc[*application performance management*] for performance
+work; informs capacity and xref:scalability.adoc[*scalability*] planning; and supplies the numbers
+behind xref:service-level-agreement.adoc[*service level objectives*]. Beyond operations, the same
+data feeds business intelligence – feature usage, transaction volumes, user engagement – and
+xref:compliance.adoc[*compliance*] regimes that require an auditable record of system activity.
 
 == Trade-offs
 
-Telemetry is not free. Every signal costs CPU and memory to emit, network to
-ship, and storage to keep. At scale the ingest bill can dwarf the cost of the
-systems being observed. The standard mitigations are *sampling* (keeping only a
-fraction of high-volume signals, or biasing toward errors), *tiered storage*
-(moving older data to cheaper, slower media), and aggressive
-xref:data-retention.adoc[*data retention*] windows for low-value categories.
-Cardinality is the other lever. High-cardinality data – per-request tags, user
-IDs – is more powerful for exploration but far more expensive to index, so the
-choice of which dimensions to keep is itself a design decision.
+Telemetry is not free. Every signal costs CPU and memory to emit, network to ship, and storage to
+keep. At scale the ingest bill can dwarf the cost of the systems being observed. The standard
+mitigations are *sampling* (keeping only a fraction of high-volume signals, or biasing toward
+errors), *tiered storage* (moving older data to cheaper, slower media), and aggressive
+xref:data-retention.adoc[*data retention*] windows for low-value categories. Cardinality is the
+other lever. High-cardinality data – per-request tags, user IDs – is more powerful for exploration
+but far more expensive to index, so the choice of which dimensions to keep is itself a design
+decision.
 
 == Privacy
 
-Telemetry about a system can become telemetry about its users. Request bodies,
-headers, and identifiers routinely carry
-xref:privacy.adoc[*personally identifiable information*], and a naive pipeline
-ships it to long-lived aggregators where it lingers long after the request that
-produced it. The reliable fix is to never emit the value in the first place,
-with redaction at the processing stage as a backstop. *User telemetry* –
-collecting product-usage events from client devices – raises the further
-question of consent. Many jurisdictions require that users be told what is
-collected and given a way to opt out, and the
-xref:compliance.adoc[*compliance*] regimes around this are increasingly
-enforced.
+Telemetry about a system can become telemetry about its users. Request bodies, headers, and
+identifiers routinely carry xref:privacy.adoc[*personally identifiable information*], and a naive
+pipeline ships it to long-lived aggregators where it lingers long after the request that produced
+it. The reliable fix is to never emit the value in the first place, with redaction at the processing
+stage as a backstop. *User telemetry* – collecting product-usage events from client devices – raises
+the further question of consent. Many jurisdictions require that users be told what is collected and
+given a way to opt out, and the xref:compliance.adoc[*compliance*] regimes around this are
+increasingly enforced.
 
 == See also
 

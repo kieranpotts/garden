@@ -1,60 +1,50 @@
 = Data-driven programming
 
-Data-driven programming is a
-xref:programming-paradigm.adoc[*programming paradigm*] in which program
-statements describe the data to be matched and the processing to perform,
-rather than defining an explicit sequence of steps. Control flow is implicit.
-A runtime loop reads input, matches it against declared patterns, and executes
-the associated actions. The programmer specifies the patterns and actions, not
-the loop itself.
+Data-driven programming is a xref:programming-paradigm.adoc[*programming paradigm*] in which program
+statements describe the data to be matched and the processing to perform, rather than defining an
+explicit sequence of steps. Control flow is implicit. A runtime loop reads input, matches it against
+declared patterns, and executes the associated actions. The programmer specifies the patterns and
+actions, not the loop itself.
 
-This is distinct from
-xref:data-oriented-design.adoc[*data-oriented design*], which is about laying
-out data in memory for hardware efficiency rather than about how program logic
-is expressed. The two are often confused because both put data first, but they
-address different concerns.
+This is distinct from xref:data-oriented-design.adoc[*data-oriented design*], which is about laying
+out data in memory for hardware efficiency rather than about how program logic is expressed. The two
+are often confused because both put data first, but they address different concerns.
 
 == Characteristic languages
 
-Canonical data-driven languages include `sed`, AWK, and XSLT. These are
-sometimes called _line-oriented languages_ because their input is a stream of
-lines and matching relies on regular expressions or line numbers. AWK and
-`sed` are Turing-complete, while others are deliberately limited to filtering.
-Sieve, for example, has no variables or loops in its base standard. Each input
+Canonical data-driven languages include `sed`, AWK, and XSLT. These are sometimes called
+_line-oriented languages_ because their input is a stream of lines and matching relies on regular
+expressions or line numbers. AWK and `sed` are Turing-complete, while others are deliberately
+limited to filtering. Sieve, for example, has no variables or loops in its base standard. Each input
 message is processed independently, allowing only stateless filtering.
 
-Many data-driven languages are
-xref:domain-specific-language.adoc[*domain-specific languages*] tuned for a
-narrow task such as email filtering (Sieve, procmail) or packet capture
-(`pcap`). Their limited power is often a virtue, an application of the
-xref:rule-of-least-power.adoc[*rule of least power*]. A language that cannot
-express arbitrary computation is easier to reason about and harder to misuse.
+Many data-driven languages are xref:domain-specific-language.adoc[*domain-specific languages*] tuned
+for a narrow task such as email filtering (Sieve, procmail) or packet capture (`pcap`). Their
+limited power is often a virtue, an application of the
+xref:rule-of-least-power.adoc[*rule of least power*]. A language that cannot express arbitrary
+computation is easier to reason about and harder to misuse.
 
 == Relation to other paradigms
 
 Data-driven programming is structurally similar to
-xref:event-driven-architecture.adoc[*event-driven architecture*]. Both are
-built around a loop that matches patterns and dispatches actions, though they
-are usually applied in different domains. Data-driven programming processes
-streams of records, while event-driven systems react to discrete events. The
-condition-and-action model also resembles *aspect-oriented programming*, where
-reaching a join point triggers an associated pointcut.
+xref:event-driven-architecture.adoc[*event-driven architecture*]. Both are built around a loop that
+matches patterns and dispatches actions, though they are usually applied in different domains.
+Data-driven programming processes streams of records, while event-driven systems react to discrete
+events. The condition-and-action model also resembles *aspect-oriented programming*, where reaching
+a join point triggers an associated pointcut.
 
 == Benefits and pitfalls
 
-Decoupling control flow from data matching lets the same patterns and actions
-be reused across different inputs, and new behavior can be added by declaring
-new patterns rather than rewriting loop logic. Data-driven languages
-frequently provide a default action when no pattern matches, such as printing
-the line in `sed` or delivering a message in Sieve.
+Decoupling control flow from data matching lets the same patterns and actions be reused across
+different inputs, and new behavior can be added by declaring new patterns rather than rewriting loop
+logic. Data-driven languages frequently provide a default action when no pattern matches, such as
+printing the line in `sed` or delivering a message in Sieve.
 
-The main pitfall is that data-driven designs couple behavior tightly to the
-shape of the data. Because a purely data-driven entity is defined by how it is
-represented, any restructuring of the data breaks the functions that depend on
-it. This is a particular risk in
-xref:object-oriented-programming.adoc[*object-oriented*] code, where
-data-driven design can undermine xref:encapsulation.adoc[*encapsulation*] by
-exposing representation rather than behavior.
+The main pitfall is that data-driven designs couple behavior tightly to the shape of the data.
+Because a purely data-driven entity is defined by how it is represented, any restructuring of the
+data breaks the functions that depend on it. This is a particular risk in
+xref:object-oriented-programming.adoc[*object-oriented*] code, where data-driven design can
+undermine xref:encapsulation.adoc[*encapsulation*] by exposing representation rather than behavior.
 
 == See also
 
@@ -68,4 +58,5 @@ exposing representation rather than behavior.
 == References
 
 * Stutz, Michael (2006). _Get started with GAWK: AWK language fundamentals_. IBM developerWorks.
-* Wirfs-Brock, Rebecca; Wilkerson, Brian (1989). _Object-oriented design: A responsibility-driven approach_. OOPSLA '89 proceedings, ACM.
+* Wirfs-Brock, Rebecca; Wilkerson, Brian (1989).
+  _Object-oriented design: A responsibility-driven approach_. OOPSLA '89 proceedings, ACM.

@@ -1,20 +1,17 @@
 = NoSQL databases
 
-"NoSQL" is an umbrella term for a range of non-relational databases, ie.
-database designs that are not based on the traditional model of
-xref:relational-databases.adoc[*relational*], tabular data. NoSQL refers to any
-database management system that is based on schema-less data models, and
+"NoSQL" is an umbrella term for a range of non-relational databases, ie. database designs that are
+not based on the traditional model of xref:relational-databases.adoc[*relational*], tabular data.
+NoSQL refers to any database management system that is based on schema-less data models, and
 therefore does not require stored data to be highly structured.
 
-The label was coined in 2009, at a meetup in San Francisco organized by Johan
-Oskarsson to discuss the then-new wave of distributed, non-relational stores.
-It was soon backronymed to "Not Only SQL" to signal that these systems
-complement rather than necessarily replace relational databases. The category
-was propelled by two influential papers from the web-scale pioneers: Google's
-*Bigtable* (2006) and Amazon's *Dynamo* (2007), which showed how to store
-petabyte-scale, loosely structured data across clusters of commodity hardware.
-The systems that followed, from Cassandra and HBase to Riak and MongoDB, drew
-on those ideas to varying degrees and turned them into products.
+The label was coined in 2009, at a meetup in San Francisco organized by Johan Oskarsson to discuss
+the then-new wave of distributed, non-relational stores. It was soon backronymed to "Not Only SQL"
+to signal that these systems complement rather than necessarily replace relational databases. The
+category was propelled by two influential papers from the web-scale pioneers: Google's *Bigtable*
+(2006) and Amazon's *Dynamo* (2007), which showed how to store petabyte-scale, loosely structured
+data across clusters of commodity hardware. The systems that followed, from Cassandra and HBase to
+Riak and MongoDB, drew on those ideas to varying degrees and turned them into products.
 
 NoSQL databases have varied data storage models. The four main types are:
 
@@ -23,105 +20,89 @@ NoSQL databases have varied data storage models. The four main types are:
 * xref:key-value-stores.adoc[*Key-value stores*]
 * xref:wide-column-stores.adoc[*Wide-column stores*]
 
-Other types of NoSQL databases include
-xref:time-series-databases.adoc[*time-series databases*].
+Other types of NoSQL databases include xref:time-series-databases.adoc[*time-series databases*].
 
 == Schema flexibility
 
-"Schema-less" is the headline feature of NoSQL, but it is more accurately
-*schema-on-read* than schema-free. The database does not enforce a fixed shape
-on write. Each record carries its own structure, and the application interprets
-it on read. The schema still exists — it is implicit, encoded in the
-application code and the queries it issues, and it can drift between records of
-the same collection. That flexibility is what lets the
-xref:data-modeling.adoc[*data model*] evolve quickly. A new field can be added
-to one record without migrating the rest, and old records keep working until
-the application stops reading the retired fields.
+"Schema-less" is the headline feature of NoSQL, but it is more accurately *schema-on-read* than
+schema-free. The database does not enforce a fixed shape on write. Each record carries its own
+structure, and the application interprets it on read. The schema still exists — it is implicit,
+encoded in the application code and the queries it issues, and it can drift between records of the
+same collection. That flexibility is what lets the xref:data-modeling.adoc[*data model*] evolve
+quickly. A new field can be added to one record without migrating the rest, and old records keep
+working until the application stops reading the retired fields.
 
 The price of that flexibility is that the database gives up the
-xref:data-integrity.adoc[*data integrity*] and
-xref:acid-principles.adoc[*transactional guarantees*] a relational schema
-enforces. Validation moves to the application layer, which must defend its own
-invariants. Without a fixed schema, secondary indexes and query planning are
-also harder, since the optimizer cannot rely on a known column shape.
+xref:data-integrity.adoc[*data integrity*] and xref:acid-principles.adoc[*transactional guarantees*]
+a relational schema enforces. Validation moves to the application layer, which must defend its own
+invariants. Without a fixed schema, secondary indexes and query planning are also harder, since the
+optimizer cannot rely on a known column shape.
 
 == Scaling and distribution
 
-Compared to xref:relational-databases.adoc[*relational databases*], NoSQL
-databases are more amenable to
-xref:horizontal-scaling.adoc[*horizontal scaling*]. The advantage comes from
-designing for distribution from the start. Some NoSQL databases are built
-specifically to run as xref:distributed-databases.adoc[*distributed databases*].
-Cassandra and MongoDB are familiar examples.
+Compared to xref:relational-databases.adoc[*relational databases*], NoSQL databases are more
+amenable to xref:horizontal-scaling.adoc[*horizontal scaling*]. The advantage comes from designing
+for distribution from the start. Some NoSQL databases are built specifically to run as
+xref:distributed-databases.adoc[*distributed databases*]. Cassandra and MongoDB are familiar
+examples.
 
-They spread a dataset across a cluster with xref:sharding.adoc[*sharding*] —
-often placing keys on a ring with
-xref:consistent-hashing.adoc[*consistent hashing*] so that adding or removing a
-node moves only a small slice of the data — and keep copies available with
-xref:replication.adoc[*replication*]. Because each node owns a slice of both the
-data and the query, throughput scales roughly with the size of the cluster,
-where a single relational node would hit a xref:vertical-scaling.adoc[*vertical*]
-ceiling.
+They spread a dataset across a cluster with xref:sharding.adoc[*sharding*] — often placing keys on a
+ring with xref:consistent-hashing.adoc[*consistent hashing*] so that adding or removing a node moves
+only a small slice of the data — and keep copies available with
+xref:replication.adoc[*replication*]. Because each node owns a slice of both the data and the query,
+throughput scales roughly with the size of the cluster, where a single relational node would hit a
+xref:vertical-scaling.adoc[*vertical*] ceiling.
 
 == The consistency trade-off
 
-Spreading data across shards and replicas forces a choice about how consistent
-those copies must be. This is the domain of the
-xref:cap-theorem.adoc[*CAP theorem*] and its refinement, the
-xref:pacelc-theorem.adoc[*PACELC theorem*]. A replicated store that must keep
-operating through network partitions has to trade consistency against
-availability, and even when the network is healthy it trades consistency
-against latency. Most NoSQL systems land on the available, low-latency side,
-offering xref:eventual-consistency.adoc[*eventual consistency*] rather than the
-strong, linearizable reads of a relational database. The associated body of
-informal guarantees is sometimes summarized as
-*BASE* — *Basically Available, Soft state, Eventually consistent* — a deliberate
+Spreading data across shards and replicas forces a choice about how consistent those copies must be.
+This is the domain of the xref:cap-theorem.adoc[*CAP theorem*] and its refinement, the
+xref:pacelc-theorem.adoc[*PACELC theorem*]. A replicated store that must keep operating through
+network partitions has to trade consistency against availability, and even when the network is
+healthy it trades consistency against latency. Most NoSQL systems land on the available, low-latency
+side, offering xref:eventual-consistency.adoc[*eventual consistency*] rather than the strong,
+linearizable reads of a relational database. The associated body of informal guarantees is sometimes
+summarized as *BASE* — *Basically Available, Soft state, Eventually consistent* — a deliberate
 counterpoint to the ACID guarantees of relational transactions.
 
-This makes NoSQL suited for handling large volumes of unstructured or
-semi-structured data (in which data structures may be changed, to some degree,
-on a per-record basis), and for applications requiring quick iterations in the
-design of their xref:data-modeling.adoc[*data model*]. It is a common choice for
-xref:big-data.adoc[*big data*] workloads, where throughput and availability
-matter more than per-record transactional correctness.
+This makes NoSQL suited for handling large volumes of unstructured or semi-structured data (in which
+data structures may be changed, to some degree, on a per-record basis), and for applications
+requiring quick iterations in the design of their xref:data-modeling.adoc[*data model*]. It is a
+common choice for xref:big-data.adoc[*big data*] workloads, where throughput and availability matter
+more than per-record transactional correctness.
 
 == Data modeling: denormalization over normalization
 
-Relational design xref:normalization.adoc[*normalizes*] data to remove
-redundancy. NoSQL design generally goes the other way. Document, wide-column,
-and key-value stores encourage embedding related data together — a whole order
-with its line items in one document — so that a single read retrieves an
-aggregate without joins. This is xref:denormalization.adoc[*denormalization*]
-applied to the storage model, and it is driven by
-xref:access-patterns.adoc[*access patterns*]. The schema is shaped to the
-queries the application actually runs, not to a generic ideal of non-redundancy.
+Relational design xref:normalization.adoc[*normalizes*] data to remove redundancy. NoSQL design
+generally goes the other way. Document, wide-column, and key-value stores encourage embedding
+related data together — a whole order with its line items in one document — so that a single read
+retrieves an aggregate without joins. This is xref:denormalization.adoc[*denormalization*] applied
+to the storage model, and it is driven by xref:access-patterns.adoc[*access patterns*]. The schema
+is shaped to the queries the application actually runs, not to a generic ideal of non-redundancy.
 
-The trade is the same one denormalization always makes. Reads get cheaper, but
-writes get more complex, updates touch several places, and the application
-takes responsibility for keeping redundant copies in step. Joins that a
-relational database handles in the engine become application-level work or
-multi-query orchestration, which is why NoSQL stores pair naturally with
-aggregation frameworks and xref:map-reduce.adoc[*MapReduce*]-style processing
-for anything more complex than a key lookup.
+The trade is the same one denormalization always makes. Reads get cheaper, but writes get more
+complex, updates touch several places, and the application takes responsibility for keeping
+redundant copies in step. Joins that a relational database handles in the engine become
+application-level work or multi-query orchestration, which is why NoSQL stores pair naturally with
+aggregation frameworks and xref:map-reduce.adoc[*MapReduce*]-style processing for anything more
+complex than a key lookup.
 
 == SQL versus NoSQL
 
-NoSQL is not a replacement for relational databases so much as a different
-point in the design space. Relational databases assume a stable, well-known
-schema and reward normalization, ad-hoc queries, and multi-entity transactions.
-NoSQL databases assume access patterns that are known up front and reward
-horizontal scale, schema flexibility, and high write throughput. The two also
-differ in query language — xref:sql.adoc[*SQL*] is standardized and declarative,
-while NoSQL query interfaces are store-specific — and in transactional scope.
-Relational databases offer multi-statement ACID transactions across rows, while
-most NoSQL stores limit atomicity to a single record or shard.
+NoSQL is not a replacement for relational databases so much as a different point in the design
+space. Relational databases assume a stable, well-known schema and reward normalization, ad-hoc
+queries, and multi-entity transactions. NoSQL databases assume access patterns that are known up
+front and reward horizontal scale, schema flexibility, and high write throughput. The two also
+differ in query language — xref:sql.adoc[*SQL*] is standardized and declarative, while NoSQL query
+interfaces are store-specific — and in transactional scope. Relational databases offer
+multi-statement ACID transactions across rows, while most NoSQL stores limit atomicity to a single
+record or shard.
 
-Where an application needs both, a common pattern is *polyglot persistence*:
-using a relational database for the parts that need strong transactional
-guarantees and a NoSQL store for the parts that need scale or schema
-flexibility, with each system doing what it is good at. A further branch,
-*NewSQL*, attempts to recover the SQL and ACID model on top of a horizontally
-scalable, distributed architecture, closing the gap from the other direction.
+Where an application needs both, a common pattern is *polyglot persistence*: using a relational
+database for the parts that need strong transactional guarantees and a NoSQL store for the parts
+that need scale or schema flexibility, with each system doing what it is good at. A further branch,
+*NewSQL*, attempts to recover the SQL and ACID model on top of a horizontally scalable, distributed
+architecture, closing the gap from the other direction.
 
 Another way to classify databases is between
 xref:transactional-databases.adoc[*transactional or operational databases*] and

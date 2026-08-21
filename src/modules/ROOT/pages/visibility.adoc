@@ -1,89 +1,77 @@
 = Visibility
 
-Visibility is a xref:quality-attributes.adoc[*quality attribute*] of a system.
-Broadly, visibility refers to the ability to understand and analyze a system's
-behavior, performance, and health when it is running in production.
+Visibility is a xref:quality-attributes.adoc[*quality attribute*] of a system. Broadly, visibility
+refers to the ability to understand and analyze a system's behavior, performance, and health when it
+is running in production.
 
 Visibility is implemented using xref:monitoring.adoc[*monitoring*] and
-xref:observability.adoc[*observability*] strategies. Monitoring and
-observability are closely related, but serve different purposes:
+xref:observability.adoc[*observability*] strategies. Monitoring and observability are closely
+related, but serve different purposes:
 
-* Monitoring is about tracking xref:metrics.adoc[*metrics*] against predefined
-  thresholds, and triggering xref:alerting.adoc[*alerts*] when metrics fall
-  outside of the acceptable ranges.
+* Monitoring is about tracking xref:metrics.adoc[*metrics*] against predefined thresholds, and
+  triggering xref:alerting.adoc[*alerts*] when metrics fall outside of the acceptable ranges.
 
-* Observability is about using various xref:telemetry.adoc[*telemetry*] data
-  sources to gain insights into a system's behavior, typically to diagnose
-  issues and respond to incidents.
+* Observability is about using various xref:telemetry.adoc[*telemetry*] data sources to gain
+  insights into a system's behavior, typically to diagnose issues and respond to incidents.
 
-In simple terms, monitoring tells you when something is wrong, while
-observability is about diagnosing why something is wrong and learning how to fix
-it.
+In simple terms, monitoring tells you when something is wrong, while observability is about
+diagnosing why something is wrong and learning how to fix it.
 
-In monitoring, telemetry data is used to continuously track system health by
-comparing metrics against predefined thresholds, with the report data fed into
-dashboards and alerting systems. Thresholds define acceptable operating ranges
-for the metrics, and if a metric falls outside that range, an alert is
-triggered.
+In monitoring, telemetry data is used to continuously track system health by comparing metrics
+against predefined thresholds, with the report data fed into dashboards and alerting systems.
+Thresholds define acceptable operating ranges for the metrics, and if a metric falls outside that
+range, an alert is triggered.
 
-In observability, telemetry data is used to create ad-hoc queries and
-visualizations to help diagnose issues and incidents, or to better understand
-specific system behaviors, without the need for additional testing or coding.
+In observability, telemetry data is used to create ad-hoc queries and visualizations to help
+diagnose issues and incidents, or to better understand specific system behaviors, without the need
+for additional testing or coding.
 
-Thus, monitoring activities are more reactive, while observability activities
-are more proactive and exploratory.
+Thus, monitoring activities are more reactive, while observability activities are more proactive and
+exploratory.
 
-The same underlying telemetry data may feed both monitoring and observability
-tools. For this reason, many monitoring tools also provide observability
-capabilities, and vice versa. The distinction between monitoring and
-observability is not always clear-cut, and the terms are often used
-interchangeably. Since metrics are one of the three pillars of observability,
-monitoring is commonly considered a subset of observability strategies. Thus,
-the term observability has come to refer to the entire process of monitoring,
-alerting, and troubleshooting production systems.
+The same underlying telemetry data may feed both monitoring and observability tools. For this
+reason, many monitoring tools also provide observability capabilities, and vice versa. The
+distinction between monitoring and observability is not always clear-cut, and the terms are often
+used interchangeably. Since metrics are one of the three pillars of observability, monitoring is
+commonly considered a subset of observability strategies. Thus, the term observability has come to
+refer to the entire process of monitoring, alerting, and troubleshooting production systems.
 
-In that usage observability swallows monitoring, but visibility is the broader
-umbrella. Visibility is the quality attribute itself – the property a system
-has when its internal state can be inferred from the outside. Monitoring and
-observability are the strategies that deliver it, the "how" to visibility's
-"what". The distinction matters because a team can adopt observability tooling
-and still lack visibility, if the telemetry collected does not actually let
-them answer the questions that matter about their system.
+In that usage observability swallows monitoring, but visibility is the broader umbrella. Visibility
+is the quality attribute itself – the property a system has when its internal state can be inferred
+from the outside. Monitoring and observability are the strategies that deliver it, the "how" to
+visibility's "what". The distinction matters because a team can adopt observability tooling and
+still lack visibility, if the telemetry collected does not actually let them answer the questions
+that matter about their system.
 
 == Why visibility matters
 
-Visibility is what makes a running system operable. Without it, teams cannot
-detect degradations before users do, cannot diagnose incidents under pressure,
-and cannot learn how a system behaves as it scales. The attribute becomes more
-important, and harder to achieve, as a system grows more
-xref:distributed-system.adoc[*distributed*] and asynchronous. Failures in such
-systems arise from interactions between components rather than from isolated
-events, and the questions an operator needs to ask are often unknown until
-the failure occurs. This is why observability, the exploratory side of
-visibility, originated in distributed software design.
+Visibility is what makes a running system operable. Without it, teams cannot detect degradations
+before users do, cannot diagnose incidents under pressure, and cannot learn how a system behaves as
+it scales. The attribute becomes more important, and harder to achieve, as a system grows more
+xref:distributed-system.adoc[*distributed*] and asynchronous. Failures in such systems arise from
+interactions between components rather than from isolated events, and the questions an operator
+needs to ask are often unknown until the failure occurs. This is why observability, the exploratory
+side of visibility, originated in distributed software design.
 
-Visibility is also the foundation for the practices that hold a service to its
-promised behaviour. xref:service-level-agreement.adoc[*Service level objectives*]
-are only meaningful if the team can see whether they are being met.
-xref:application-performance-management.adoc[*Application performance management*] turns the same telemetry into a user-facing view of performance,
-and xref:system-health-checks.adoc[*system health checks*] provide a
-complementary, lightweight signal that a component is alive. Visibility is
-what feeds an xref:on-call.adoc[*on-call*] response and what a
-xref:runbook.adoc[*runbook*] assumes is available when it tells an engineer
-what to look at.
+Visibility is also the foundation for the practices that hold a service to its promised behaviour.
+xref:service-level-agreement.adoc[*Service level objectives*] are only meaningful if the team can
+see whether they are being met.
+xref:application-performance-management.adoc[*Application performance management*] turns the same
+telemetry into a user-facing view of performance, and
+xref:system-health-checks.adoc[*system health checks*] provide a complementary, lightweight signal
+that a component is alive. Visibility is what feeds an xref:on-call.adoc[*on-call*] response and
+what a xref:runbook.adoc[*runbook*] assumes is available when it tells an engineer what to look at.
 
 == Trade-offs
 
-Visibility is never free. Every log line, metric, and trace carries a cost in
-collection, storage, and processing, and the volume rises quickly with
-cardinality and traffic. There is also a tension with
-xref:privacy.adoc[*privacy*]. Telemetry rich enough to diagnose a failure may
-also be rich enough to expose sensitive user data. Designing for visibility
-means choosing what to capture, at what fidelity, and for how long, and
-accepting that the wrong choice is either blindness when something breaks or a
-bill that dwarfs the system being observed. The
-xref:observability.adoc[*observability*] entry discusses balancing that cost
-against the value the data provides.
+Visibility is never free. Every log line, metric, and trace carries a cost in collection, storage,
+and processing, and the volume rises quickly with cardinality and traffic. There is also a tension
+with xref:privacy.adoc[*privacy*]. Telemetry rich enough to diagnose a failure may also be rich
+enough to expose sensitive user data. Designing for visibility means choosing what to capture, at
+what fidelity, and for how long, and accepting that the wrong choice is either blindness when
+something breaks or a bill that dwarfs the system being observed. The
+xref:observability.adoc[*observability*] entry discusses balancing that cost against the value the
+data provides.
 
 == See also
 

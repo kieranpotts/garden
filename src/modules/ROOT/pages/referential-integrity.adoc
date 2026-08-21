@@ -1,29 +1,24 @@
 = Referential integrity
 
-Referential integrity is a concept in
-xref:relational-databases.adoc[*relational databases*] that ensures the
-relationships between tables are maintained. It enforces the consistency and
-validity of the relationships between tables by defining rules that must be
-followed when inserting, updating, or deleting records. Those rules are part of
-the xref:data-modeling.adoc[*data model*], declared as foreign-key constraints
-in the xref:foreign-keys.adoc[*foreign keys*] that link a child table to its
+Referential integrity is a concept in xref:relational-databases.adoc[*relational databases*] that
+ensures the relationships between tables are maintained. It enforces the consistency and validity of
+the relationships between tables by defining rules that must be followed when inserting, updating,
+or deleting records. Those rules are part of the xref:data-modeling.adoc[*data model*], declared as
+foreign-key constraints in the xref:foreign-keys.adoc[*foreign keys*] that link a child table to its
 parent.
 
-*Eventual referential integrity* refers to a state in which the relationships
-between tables are xref:eventual-consistency.adoc[*eventually consistent*], even
-if they are not immediately consistent at all times. This concept is often used
-in xref:distributed-databases.adoc[*distributed databases*] and other
-xref:distributed-system.adoc[*distributed software*] that persists state, where
-immediate consistency is not always feasible due to latency, network partitions,
-or other factors. *Delayed enforcement* of referential integrity constraints may
-be necessary to ensure that the system remains operational even when immediate
-consistency is not possible.
+*Eventual referential integrity* refers to a state in which the relationships between tables are
+xref:eventual-consistency.adoc[*eventually consistent*], even if they are not immediately consistent
+at all times. This concept is often used in xref:distributed-databases.adoc[*distributed databases*]
+and other xref:distributed-system.adoc[*distributed software*] that persists state, where immediate
+consistency is not always feasible due to latency, network partitions, or other factors.
+*Delayed enforcement* of referential integrity constraints may be necessary to ensure that the
+system remains operational even when immediate consistency is not possible.
 
 Referential integrity is one aspect of the broader goal of
-xref:data-integrity.adoc[*data integrity*]. xref:normalization.adoc[*Normalization*]
-is the schema-level discipline that keeps redundant copies of the same
-relationships from arising in the first place, so referential integrity has
-fewer references to police.
+xref:data-integrity.adoc[*data integrity*]. xref:normalization.adoc[*Normalization*] is the
+schema-level discipline that keeps redundant copies of the same relationships from arising in the
+first place, so referential integrity has fewer references to police.
 
 == See also
 

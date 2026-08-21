@@ -1,88 +1,77 @@
 = Observer pattern
 
-The observer pattern is a xref:design-patterns.adoc[*behavioral design pattern*] that
-defines a one-to-many dependency between objects. A *subject* (also called the
-*observable* or *publisher*) maintains a list of dependent *observers* (or
-*subscribers*) and notifies them automatically whenever its state changes. The
-pattern lets one object broadcast changes to an unknown, dynamically changing
-set of collaborators, without either side knowing the other's concrete type.
+The observer pattern is a xref:design-patterns.adoc[*behavioral design pattern*] that defines a
+one-to-many dependency between objects. A *subject* (also called the *observable* or *publisher*)
+maintains a list of dependent *observers* (or *subscribers*) and notifies them automatically
+whenever its state changes. The pattern lets one object broadcast changes to an unknown, dynamically
+changing set of collaborators, without either side knowing the other's concrete type.
 
 == Mechanism
 
-The pattern has three moving parts. The subject holds the state of interest and
-a collection of observer references. An observer interface declares a single
-notification method, conventionally called `update`. Concrete observers
-implement that method to react to changes in whatever way they need.
+The pattern has three moving parts. The subject holds the state of interest and a collection of
+observer references. An observer interface declares a single notification method, conventionally
+called `update`. Concrete observers implement that method to react to changes in whatever way they
+need.
 
-At runtime, observers attach themselves to the subject through a subscription
-method and detach when they no longer care. When the subject's state changes,
-it iterates its observer list and invokes each observer's notification method.
-The notification may carry a description of the change, or it may pass the
-subject itself and let observers pull whatever details they need. The subject
-talks to its observers only through the observer interface, so it stays
-xref:decoupling.adoc[*decoupled*] from any concrete observer class. New observer
-types can be added without modifying the subject, which is the pattern's main
-payoff and an application of the
+At runtime, observers attach themselves to the subject through a subscription method and detach when
+they no longer care. When the subject's state changes, it iterates its observer list and invokes
+each observer's notification method. The notification may carry a description of the change, or it
+may pass the subject itself and let observers pull whatever details they need. The subject talks to
+its observers only through the observer interface, so it stays xref:decoupling.adoc[*decoupled*]
+from any concrete observer class. New observer types can be added without modifying the subject,
+which is the pattern's main payoff and an application of the
 xref:open-closed-principle.adoc[*open-closed principle*].
 
-Because the subject owns the list and pushes notifications, the dependency
-between the two sides runs through an abstraction rather than from one concrete
-type to another. This is one form of
-xref:dependency-inversion.adoc[*dependency inversion*], where neither the subject
-nor the observer needs to depend on the other's concrete type.
+Because the subject owns the list and pushes notifications, the dependency between the two sides
+runs through an abstraction rather than from one concrete type to another. This is one form of
+xref:dependency-inversion.adoc[*dependency inversion*], where neither the subject nor the observer
+needs to depend on the other's concrete type.
 
 == Common uses
 
-The pattern appears wherever one piece of state must drive several independent
-reactions. The classic examples are graphical user interfaces, where a button
-or text field is the subject and event handlers are the observers, and the
-model-view-controller family, where a view observes its model and repaints when
-the model changes. Data binding in user interface frameworks is the same
-arrangement. The bound property is the subject, and the control that renders it
-is the observer.
+The pattern appears wherever one piece of state must drive several independent reactions. The
+classic examples are graphical user interfaces, where a button or text field is the subject and
+event handlers are the observers, and the model-view-controller family, where a view observes its
+model and repaints when the model changes. Data binding in user interface frameworks is the same
+arrangement. The bound property is the subject, and the control that renders it is the observer.
 
-The pattern is also the foundation of
-xref:reactive-programming.adoc[*reactive programming*], which generalizes it from
-individual subjects to whole streams of values and composes observers into
+The pattern is also the foundation of xref:reactive-programming.adoc[*reactive programming*], which
+generalizes it from individual subjects to whole streams of values and composes observers into
 pipelines.
 
 == Trade-offs
 
-The pattern's strength is its runtime flexibility. Observers can subscribe and
-unsubscribe at any point, and the subject can grow its set of dependents without
-changing its own code. The cost is a layer of indirection that makes control
-flow harder to follow. A state change triggers an `update` call on an unknown
-set of objects, and the reader of the subject's code cannot see who will react.
+The pattern's strength is its runtime flexibility. Observers can subscribe and unsubscribe at any
+point, and the subject can grow its set of dependents without changing its own code. The cost is a
+layer of indirection that makes control flow harder to follow. A state change triggers an `update`
+call on an unknown set of objects, and the reader of the subject's code cannot see who will react.
 
-Two pitfalls recur. The first is the *lapsed listener problem*. Observers that
-detach themselves incorrectly, or that the subject never removes, keep the
-subject alive and continue to receive notifications long after they are useful.
-The second is *cascading updates*, where one observer's reaction changes the
-subject's state again, re-entering the notification loop. Many implementations
-guard against this with a flag that suppresses re-entrant notifications, or by
-deferring notification until the subject has finished its own update. The Gang
-of Four also notes that the order in which observers are notified is
-unspecified, so observers must not depend on a particular sequence.
+Two pitfalls recur. The first is the *lapsed listener problem*. Observers that detach themselves
+incorrectly, or that the subject never removes, keep the subject alive and continue to receive
+notifications long after they are useful. The second is *cascading updates*, where one observer's
+reaction changes the subject's state again, re-entering the notification loop. Many implementations
+guard against this with a flag that suppresses re-entrant notifications, or by deferring
+notification until the subject has finished its own update. The Gang of Four also notes that the
+order in which observers are notified is unspecified, so observers must not depend on a particular
+sequence.
 
 == Relationship to publish-subscribe
 
 The observer pattern is closely related to the
-xref:publish-subscribe-pattern.adoc[*publish-subscribe (pubsub) pattern*]. The two
-share the same shape. Producers emit notifications, and consumers register to
-receive them. The difference is the broker. In the observer pattern, the subject
-knows its observers directly and calls them itself. In pubsub, an intermediary
-xref:message-broker.adoc[*message broker*] sits between publishers and
+xref:publish-subscribe-pattern.adoc[*publish-subscribe (pubsub) pattern*]. The two share the same
+shape. Producers emit notifications, and consumers register to receive them. The difference is the
+broker. In the observer pattern, the subject knows its observers directly and calls them itself. In
+pubsub, an intermediary xref:message-broker.adoc[*message broker*] sits between publishers and
 subscribers, so the two sides never know about each other, only about the broker.
 
-That difference places the two patterns at different levels of abstraction. The
-observer pattern is most often a program-level construct in
-xref:object-oriented-programming.adoc[*object-oriented programming*], where one
-object observes another within a single process. Pubsub is most often a
-system-level construct, used to manage communication between distributed
-components in an xref:event-driven-architecture.adoc[*event-driven architecture*].
-An in-process xref:event-bus.adoc[*event bus*] sits at the boundary. It applies
-pubsub-style routing inside one program, and at that level the distinction from
-the observer pattern blurs.
+That difference places the two patterns at different levels of abstraction. The observer pattern is
+most often a program-level construct in
+xref:object-oriented-programming.adoc[*object-oriented programming*], where one object observes
+another within a single process. Pubsub is most often a system-level construct, used to manage
+communication between distributed components in an
+xref:event-driven-architecture.adoc[*event-driven architecture*]. An in-process
+xref:event-bus.adoc[*event bus*] sits at the boundary. It applies pubsub-style routing inside one
+program, and at that level the distinction from the observer pattern blurs.
 
 == See also
 
@@ -98,7 +87,6 @@ the observer pattern blurs.
 
 == References
 
-* Gamma, Helm, Johnson & Vlissides (1994). _Design Patterns: Elements of
-  Reusable Object-Oriented Software_. Addison-Wesley.
-* Shvets, A. (2019). _Observer_. Refactoring.Guru.
-  https://refactoring.guru/design-patterns/observer
+* Gamma, Helm, Johnson & Vlissides (1994).
+  _Design Patterns: Elements of Reusable Object-Oriented Software_. Addison-Wesley.
+* Shvets, A. (2019). _Observer_. Refactoring.Guru. https://refactoring.guru/design-patterns/observer

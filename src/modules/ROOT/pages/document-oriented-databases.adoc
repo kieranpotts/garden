@@ -1,117 +1,95 @@
 = Document-oriented databases
 
-A document-oriented database is a class of
-xref:nosql-databases.adoc[*NoSQL database*] that stores data as
-*documents* – self-contained, hierarchically structured records that hold
-all of the fields needed to query and update a single logical entity in one
-place. Where a xref:relational-databases.adoc[*relational database*] splits
-an entity across normalized rows in several tables and reassembles it with
-joins, a document store keeps the entity together as a single value, often
-a xref:json.adoc[*JSON*], BSON, or XML object, that the application can read
-and write in one round trip.
+A document-oriented database is a class of xref:nosql-databases.adoc[*NoSQL database*] that stores
+data as *documents* – self-contained, hierarchically structured records that hold all of the fields
+needed to query and update a single logical entity in one place. Where a
+xref:relational-databases.adoc[*relational database*] splits an entity across normalized rows in
+several tables and reassembles it with joins, a document store keeps the entity together as a single
+value, often a xref:json.adoc[*JSON*], BSON, or XML object, that the application can read and write
+in one round trip.
 
 == Documents and collections
 
-A document is an associative structure of named fields and values. Values may
-be scalars, nested objects, or arrays, so a single document can represent a
-rich, tree-shaped aggregate such as an order with its line items and shipping
-address embedded inside it. Documents are grouped into *collections*, the
-rough analogue of a table, but a collection imposes no schema on its members.
-Two documents in the same collection may carry entirely different fields, and
-the shape of any one document can change from one write to the next. This is
-the *schema-less* or *schema-on-read* property shared with other NoSQL
-families, and it shifts the work of
-xref:data-modeling.adoc[*data modeling*] from the database into the
-application code that produces and consumes the records.
+A document is an associative structure of named fields and values. Values may be scalars, nested
+objects, or arrays, so a single document can represent a rich, tree-shaped aggregate such as an
+order with its line items and shipping address embedded inside it. Documents are grouped into
+*collections*, the rough analogue of a table, but a collection imposes no schema on its members. Two
+documents in the same collection may carry entirely different fields, and the shape of any one
+document can change from one write to the next. This is the *schema-less* or *schema-on-read*
+property shared with other NoSQL families, and it shifts the work of
+xref:data-modeling.adoc[*data modeling*] from the database into the application code that produces
+and consumes the records.
 
-That freedom is a trade-off, not a free lunch. With no schema enforced by the
-store, xref:data-integrity.adoc[*data integrity*] and
-xref:referential-integrity.adoc[*referential integrity*] become the
-application's responsibility, and producers and consumers can drift apart
-silently until reads fail at runtime. Most document stores therefore offer
-optional *schema validation* – a per-collection rule set that rejects
-non-conforming writes – as a middle ground between a fixed relational schema
-and no schema at all. Many implement it with a
-xref:json-schema.adoc[*JSON Schema*]-based validator, such as MongoDB's
-`$jsonSchema`, so the same vocabulary that validates JSON at an API boundary
-can also guard the data written to the store.
+That freedom is a trade-off, not a free lunch. With no schema enforced by the store,
+xref:data-integrity.adoc[*data integrity*] and
+xref:referential-integrity.adoc[*referential integrity*] become the application's responsibility,
+and producers and consumers can drift apart silently until reads fail at runtime. Most document
+stores therefore offer optional *schema validation* – a per-collection rule set that rejects
+non-conforming writes – as a middle ground between a fixed relational schema and no schema at all.
+Many implement it with a xref:json-schema.adoc[*JSON Schema*]-based validator, such as MongoDB's
+`$jsonSchema`, so the same vocabulary that validates JSON at an API boundary can also guard the data
+written to the store.
 
 == Querying and access patterns
 
-Document stores are queried by document identifier, by field equality, or by
-richer predicates over nested fields, usually through a product-specific query
-API rather than xref:sql.adoc[*SQL*]. xref:database-indexes.adoc[*Indexes*]
-on individual fields, including fields inside nested objects and arrays, make
-these predicates efficient. Reads are driven by
-xref:access-patterns.adoc[*access patterns*]: documents are shaped to answer
-the queries the application actually issues, which is the opposite of the
-xref:normalization.adoc[*normalization*]-first approach of relational design,
-where the shape is derived from the real-world entity and joins do the
-assembly.
+Document stores are queried by document identifier, by field equality, or by richer predicates over
+nested fields, usually through a product-specific query API rather than xref:sql.adoc[*SQL*].
+xref:database-indexes.adoc[*Indexes*] on individual fields, including fields inside nested objects
+and arrays, make these predicates efficient. Reads are driven by
+xref:access-patterns.adoc[*access patterns*]: documents are shaped to answer the queries the
+application actually issues, which is the opposite of the
+xref:normalization.adoc[*normalization*]-first approach of relational design, where the shape is
+derived from the real-world entity and joins do the assembly.
 
-Because joins are absent or limited, relationships between entities are
-usually modeled in one of two ways. *Embedding* nests the related data inside
-the parent document, which is fast to read but duplicates data and must be
-updated wherever it appears – a deliberate, bounded form of
-xref:denormalization.adoc[*denormalization*]. *Referencing* stores a pointer
-such as an ID to the related document, which avoids duplication but requires
-a second round trip or a manual lookup to assemble the entity. Choosing
-between the two is the central modeling decision in a document store, and it
-is settled by read and write frequency rather than by an abstract notion of
-correctness.
+Because joins are absent or limited, relationships between entities are usually modeled in one of
+two ways. *Embedding* nests the related data inside the parent document, which is fast to read but
+duplicates data and must be updated wherever it appears – a deliberate, bounded form of
+xref:denormalization.adoc[*denormalization*]. *Referencing* stores a pointer such as an ID to the
+related document, which avoids duplication but requires a second round trip or a manual lookup to
+assemble the entity. Choosing between the two is the central modeling decision in a document store,
+and it is settled by read and write frequency rather than by an abstract notion of correctness.
 
 == Transactional and consistency guarantees
 
 Early document stores such as the original MongoDB release sacrificed
-xref:acid-principles.adoc[*ACID*] guarantees for
-xref:horizontal-scaling.adoc[*horizontal scaling*] and accepted
-xref:eventual-consistency.adoc[*eventual consistency*] across replicas, a
-trade-off framed by the xref:cap-theorem.adoc[*CAP theorem*]. The picture has
-changed: MongoDB has supported multi-document ACID transactions since 4.0,
-and CouchDB offers MVCC with strict per-document consistency. Even so,
-cross-document transactions remain more expensive than single-document ones,
-and most practitioners still design documents so that a single write can
-commit an entire aggregate atomically, avoiding the need for distributed
-coordination.
+xref:acid-principles.adoc[*ACID*] guarantees for xref:horizontal-scaling.adoc[*horizontal scaling*]
+and accepted xref:eventual-consistency.adoc[*eventual consistency*] across replicas, a trade-off
+framed by the xref:cap-theorem.adoc[*CAP theorem*]. The picture has changed: MongoDB has supported
+multi-document ACID transactions since 4.0, and CouchDB offers MVCC with strict per-document
+consistency. Even so, cross-document transactions remain more expensive than single-document ones,
+and most practitioners still design documents so that a single write can commit an entire aggregate
+atomically, avoiding the need for distributed coordination.
 
 == Scaling and distribution
 
-Document stores are built to scale out. Data is
-xref:sharding.adoc[*sharded*] across nodes, typically by a shard key derived
-from a field in each document, so that reads and writes for a given key land
-on a single node. This makes a document store a common choice for
-xref:distributed-databases.adoc[*distributed databases*] workloads where the
-working set is large and the access pattern is known in advance. Sharding by a
-poorly chosen key, eg. one that concentrates all traffic on a single shard,
-is a common and costly pitfall.
+Document stores are built to scale out. Data is xref:sharding.adoc[*sharded*] across nodes,
+typically by a shard key derived from a field in each document, so that reads and writes for a given
+key land on a single node. This makes a document store a common choice for
+xref:distributed-databases.adoc[*distributed databases*] workloads where the working set is large
+and the access pattern is known in advance. Sharding by a poorly chosen key, eg. one that
+concentrates all traffic on a single shard, is a common and costly pitfall.
 
 == Relation to other NoSQL families
 
-Among xref:nosql-databases.adoc[*NoSQL databases*], document stores are
-distinguished by the structure of their values.
-xref:key-value-stores.adoc[*Key-value stores*] treat the value as an opaque
-blob and can query only by key; a document store inspects the value's fields
-and indexes them.
-xref:wide-column-stores.adoc[*Wide-column stores*] hold a similar nested
-shape but organize it into column families optimized for very wide, sparse
-rows and analytical access.
-xref:graph-databases.adoc[*Graph databases*] prioritize relationships between
-entities over the entities themselves, storing edges as first-class records
-rather than as embedded or referenced data.
+Among xref:nosql-databases.adoc[*NoSQL databases*], document stores are distinguished by the
+structure of their values. xref:key-value-stores.adoc[*Key-value stores*] treat the value as an
+opaque blob and can query only by key; a document store inspects the value's fields and indexes
+them. xref:wide-column-stores.adoc[*Wide-column stores*] hold a similar nested shape but organize it
+into column families optimized for very wide, sparse rows and analytical access.
+xref:graph-databases.adoc[*Graph databases*] prioritize relationships between entities over the
+entities themselves, storing edges as first-class records rather than as embedded or referenced
+data.
 
 == Examples
 
-* *MongoDB.* The most widely deployed document store, storing BSON documents
-  with a rich JSON-like query language, secondary indexes, and sharding by a
-  user-chosen key.
-* *CouchDB.* An Apache project that stores JSON documents and exposes them
-  over HTTP, using MVCC for concurrency and multi-master
-  xref:replication.adoc[*replication*].
-* *Couchbase.* A document store combined with a built-in cache and a
-  SQL-over-JSON query dialect (N1QL).
+* *MongoDB.* The most widely deployed document store, storing BSON documents with a rich JSON-like
+  query language, secondary indexes, and sharding by a user-chosen key.
+* *CouchDB.* An Apache project that stores JSON documents and exposes them over HTTP, using MVCC for
+  concurrency and multi-master xref:replication.adoc[*replication*].
+* *Couchbase.* A document store combined with a built-in cache and a SQL-over-JSON query dialect
+  (N1QL).
 * *Amazon DocumentDB.* A managed MongoDB-compatible service running on AWS.
-* *RavenDB.* A transactional document store for .NET with multi-document ACID
-  transactions.
+* *RavenDB.* A transactional document store for .NET with multi-document ACID transactions.
 
 == See also
 

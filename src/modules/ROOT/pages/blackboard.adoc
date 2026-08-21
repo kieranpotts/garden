@@ -1,49 +1,44 @@
 = Blackboard
 
-The blackboard pattern is an xref:architectural-pattern.adoc[*architectural pattern*] for problems that have no known deterministic solution strategy. A
-set of independent, specialized components called *knowledge sources*
-cooperate to build a solution incrementally, communicating only through a
+The blackboard pattern is an xref:architectural-pattern.adoc[*architectural pattern*] for problems
+that have no known deterministic solution strategy. A set of independent, specialized components
+called *knowledge sources* cooperate to build a solution incrementally, communicating only through a
 shared data structure known as the *blackboard*.
 
-The blackboard holds the partial, evolving state of the problem. Each
-knowledge source watches that state and contributes its own piece of
-expertise whenever it can make progress. There is no fixed order of execution.
-A separate *control* component decides which knowledge source acts next, based
-on what is currently on the blackboard. The solution emerges opportunistically,
-piece by piece, until it is complete.
+The blackboard holds the partial, evolving state of the problem. Each knowledge source watches that
+state and contributes its own piece of expertise whenever it can make progress. There is no fixed
+order of execution. A separate *control* component decides which knowledge source acts next, based
+on what is currently on the blackboard. The solution emerges opportunistically, piece by piece,
+until it is complete.
 
-The pattern originated in artificial intelligence. Its canonical example is
-the HEARSAY-II speech recognition system, developed at Carnegie Mellon
-University in the 1970s, in which acoustic, phonetic, lexical, and semantic
-specialists each refined a shared hypothesis about a spoken utterance. The
-pattern was later codified as an architectural pattern in _Pattern-Oriented Software Architecture_.
+The pattern originated in artificial intelligence. Its canonical example is the HEARSAY-II speech
+recognition system, developed at Carnegie Mellon University in the 1970s, in which acoustic,
+phonetic, lexical, and semantic specialists each refined a shared hypothesis about a spoken
+utterance. The pattern was later codified as an architectural pattern in
+_Pattern-Oriented Software Architecture_.
 
-The blackboard pattern suits problems that combine incomplete knowledge,
-uncertain data, and several distinct areas of expertise, eg. image
-understanding, fault diagnosis, and complex planning. When a problem can be
-decomposed into a fixed pipeline of stages,
+The blackboard pattern suits problems that combine incomplete knowledge, uncertain data, and several
+distinct areas of expertise, eg. image understanding, fault diagnosis, and complex planning. When a
+problem can be decomposed into a fixed pipeline of stages,
 xref:pipe-and-filter.adoc[*pipe and filter*] is the simpler choice.
 
 == Trade-offs
 
-* *Opportunistic control.* Knowledge sources need not know about each other,
-  only about the blackboard. New specialists can be added without disturbing
-  the rest of the system.
-* *Loose coupling.* Because all communication flows through the shared space,
-  knowledge sources are decoupled from one another and independently testable.
-* *Shared state as a bottleneck.* The blackboard is a single point of failure
-  and a serialization point. Scaling it across many nodes is hard; keeping
-  replicas consistent generally requires
+* *Opportunistic control.* Knowledge sources need not know about each other, only about the
+  blackboard. New specialists can be added without disturbing the rest of the system.
+* *Loose coupling.* Because all communication flows through the shared space, knowledge sources are
+  decoupled from one another and independently testable.
+* *Shared state as a bottleneck.* The blackboard is a single point of failure and a serialization
+  point. Scaling it across many nodes is hard; keeping replicas consistent generally requires
   xref:scatter-and-gather.adoc[*scatter-and-gather*] style coordination.
-* *Non-deterministic execution.* With no fixed control flow, debugging and
-  reproducing failures is difficult.
+* *Non-deterministic execution.* With no fixed control flow, debugging and reproducing failures is
+  difficult.
 
 == Implementations
 
-The tuple-space model introduced by the Linda language is the best-known
-mechanism for implementing a blackboard. Workers read, write, and take typed
-tuples from a shared space. JavaSpaces, part of the Jini framework, and the
-commercial GigaSpaces product bring tuple spaces to the JVM.
+The tuple-space model introduced by the Linda language is the best-known mechanism for implementing
+a blackboard. Workers read, write, and take typed tuples from a shared space. JavaSpaces, part of
+the Jini framework, and the commercial GigaSpaces product bring tuple spaces to the JVM.
 
 == See also
 
@@ -57,6 +52,5 @@ commercial GigaSpaces product bring tuple spaces to the JVM.
 
 == References
 
-* Ho, R. (2010). _Scalable System Design Patterns_. Pragmatic Programming
-  Techniques (blog).
+* Ho, R. (2010). _Scalable System Design Patterns_. Pragmatic Programming Techniques (blog).
   https://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html

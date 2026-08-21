@@ -1,180 +1,152 @@
 = Reactive programming
 
-Reactive programming is a xref:programming-paradigm.adoc[*programming paradigm*]
-based on the asynchronous propagation of changes. It is a declarative style of
-programming, in the same family as *functional programming* and *dataflow programming*. The paradigm first emerged in the earliest implementations of
-graphical user interfaces, but has since been applied to many other types of
+Reactive programming is a xref:programming-paradigm.adoc[*programming paradigm*] based on the
+asynchronous propagation of changes. It is a declarative style of programming, in the same family as
+*functional programming* and *dataflow programming*. The paradigm first emerged in the earliest
+implementations of graphical user interfaces, but has since been applied to many other types of
 software systems, including xref:distributed-system.adoc[*distributed software*].
 
-The defining idea is that a program is expressed as a network of dependencies
-between values, and the runtime automatically recomputes any value when the
-values it depends on change. A spreadsheet is the canonical analogy: change one
-cell, and every cell that references it updates itself. Reactive programming
-generalises that mechanism from single values to
-xref:event-stream.adoc[*event streams*]. A program is described in terms of
-*observables* – sources of values over time – and the
-xref:asynchronous-processing.adoc[*asynchronous processing*] of those streams by
-a graph of composable *operators* such as `map`, `filter`, `flatMap`, `merge`,
-and `combineLatest`. The developer declares what the streams produce, not the
-order in which to step through them.
+The defining idea is that a program is expressed as a network of dependencies between values, and
+the runtime automatically recomputes any value when the values it depends on change. A spreadsheet
+is the canonical analogy: change one cell, and every cell that references it updates itself.
+Reactive programming generalises that mechanism from single values to
+xref:event-stream.adoc[*event streams*]. A program is described in terms of *observables* – sources
+of values over time – and the xref:asynchronous-processing.adoc[*asynchronous processing*] of those
+streams by a graph of composable *operators* such as `map`, `filter`, `flatMap`, `merge`, and
+`combineLatest`. The developer declares what the streams produce, not the order in which to step
+through them.
 
-In a reactive program, the system reacts to changes in its environment, such as
-user input, messages from other systems, or changes in the state of the system
-itself. These changes are represented as events, which are processed
-asynchronously. The mechanism for propagating them is an implementation of the
-xref:observer-pattern.adoc[*observer pattern*], in which *subscribers* register
-their interest in an *observable* and are notified whenever it emits a new
-value. Where the classic observer pattern wires one subject to one set of
-listeners, reactive programming generalises it to whole streams of values and
-composes subscribers into pipelines.
+In a reactive program, the system reacts to changes in its environment, such as user input, messages
+from other systems, or changes in the state of the system itself. These changes are represented as
+events, which are processed asynchronously. The mechanism for propagating them is an implementation
+of the xref:observer-pattern.adoc[*observer pattern*], in which *subscribers* register their
+interest in an *observable* and are notified whenever it emits a new value. Where the classic
+observer pattern wires one subject to one set of listeners, reactive programming generalises it to
+whole streams of values and composes subscribers into pipelines.
 
 == Origins of reactive programming
 
-The origins of reactive programming can be traced back to the first GUI
-applications. Even today, GUIs are implemented using an endlessly-running
-*event loop*, which is responsible for listening for user input (or other
-events) and updating the UI in response. But in the earliest GUIs this process
-was synchronous. When a user input triggered a UI update, nothing else could
-happen until the update was complete. This led to unresponsive user interfaces.
-The UI would "hang" – not respond to new user input – while prior events were
-being processed.
+The origins of reactive programming can be traced back to the first GUI applications. Even today,
+GUIs are implemented using an endlessly-running *event loop*, which is responsible for listening for
+user input (or other events) and updating the UI in response. But in the earliest GUIs this process
+was synchronous. When a user input triggered a UI update, nothing else could happen until the update
+was complete. This led to unresponsive user interfaces. The UI would "hang" – not respond to new
+user input – while prior events were being processed.
 
-The solution was to decouple the event handling from the GUI update. This is
-done by introducing an *event queue*, which is processed asynchronously. A
-producer thread handling user input pushes events to the queue, and a consumer
-thread takes those events and processes them. This is an implementation of the
-xref:observer-pattern.adoc[*observer pattern*].
+The solution was to decouple the event handling from the GUI update. This is done by introducing an
+*event queue*, which is processed asynchronously. A producer thread handling user input pushes
+events to the queue, and a consumer thread takes those events and processes them. This is an
+implementation of the xref:observer-pattern.adoc[*observer pattern*].
 
-The term *reactive programming* itself was coined in the late 1990s. The
-modern, stream-oriented form of the paradigm is generally credited to Erik
-Meijer and colleagues at Microsoft, whose
-https://reactivex.io/intro.html[Reactive Extensions (Rx)] library for .NET,
-released in 2009, introduced the now-standard vocabulary of observables,
-operators, and schedulers, and showed that the model could be applied beyond
-GUIs to general-purpose asynchronous programming.
+The term *reactive programming* itself was coined in the late 1990s. The modern, stream-oriented
+form of the paradigm is generally credited to Erik Meijer and colleagues at Microsoft, whose
+https://reactivex.io/intro.html[Reactive Extensions (Rx)] library for .NET, released in 2009,
+introduced the now-standard vocabulary of observables, operators, and schedulers, and showed that
+the model could be applied beyond GUIs to general-purpose asynchronous programming.
 
 == Streams, operators, and backpressure
 
-A reactive program is built from *observables* – sources that emit a sequence
-of values over time. An observable may be *cold*, starting to emit values only
-when a subscriber attaches (and emitting an independent sequence to each
-subscriber), or *hot*, sharing a single source with all subscribers regardless
-of when they join. A database query is typically cold; a stream of mouse
-movements is typically hot.
+A reactive program is built from *observables* – sources that emit a sequence of values over time.
+An observable may be *cold*, starting to emit values only when a subscriber attaches (and emitting
+an independent sequence to each subscriber), or *hot*, sharing a single source with all subscribers
+regardless of when they join. A database query is typically cold; a stream of mouse movements is
+typically hot.
 
-Observables are transformed and combined by *operators*, which form a
-declarative pipeline. Most operators are borrowed directly from functional
-programming: `map` transforms each value, `filter` keeps values that satisfy a
-predicate, `flatMap` flattens nested streams, and `scan` produces a running
-accumulation. Time-oriented operators such as `debounce`, `throttle`, and
-`buffer` shape the temporal behaviour of the stream. The behaviour of these
-operators is conventionally illustrated with *marble diagrams*, in which each
-input and output stream is drawn as a horizontal line of values flowing left to
-right.
+Observables are transformed and combined by *operators*, which form a declarative pipeline. Most
+operators are borrowed directly from functional programming: `map` transforms each value, `filter`
+keeps values that satisfy a predicate, `flatMap` flattens nested streams, and `scan` produces a
+running accumulation. Time-oriented operators such as `debounce`, `throttle`, and `buffer` shape the
+temporal behaviour of the stream. The behaviour of these operators is conventionally illustrated
+with *marble diagrams*, in which each input and output stream is drawn as a horizontal line of
+values flowing left to right.
 
-A fast producer can easily overwhelm a slow consumer in an asynchronous stream.
-*Backpressure* is the mechanism that lets a subscriber signal to its publisher
-how many more items it is ready to receive, so the publisher can hold off
-emitting – or apply a strategy such as dropping, buffering, or failing – rather
-than piling up unbounded work in memory. Backpressure is the central concern of
+A fast producer can easily overwhelm a slow consumer in an asynchronous stream. *Backpressure* is
+the mechanism that lets a subscriber signal to its publisher how many more items it is ready to
+receive, so the publisher can hold off emitting – or apply a strategy such as dropping, buffering,
+or failing – rather than piling up unbounded work in memory. Backpressure is the central concern of
 the Reactive Streams specification (below) and is the main reason it exists.
 
 == The Reactive Manifesto
 
-Today, the reactive programming paradigm has been extended to many other types
-of software systems, notably distributed cloud systems. In these systems, the
-events are not just user input, but messages from other systems, changes in the
-state of the system, or other environmental changes.
+Today, the reactive programming paradigm has been extended to many other types of software systems,
+notably distributed cloud systems. In these systems, the events are not just user input, but
+messages from other systems, changes in the state of the system, or other environmental changes.
 
-The Reactive Manifesto is an https://www.reactivemanifesto.org/[online document]
-authored in 2014 by Jonas Bonér, Dave Farley, Roland Kuhn, and Martin Thompson.
-It outlines the principles of *reactive systems* – an architectural style for
-highly scalable xref:distributed-system.adoc[*distributed software*]. The
-manifesto characterises such systems as *responsive*, *resilient*, *elastic*,
-and *message-driven*, and treats asynchronous message passing as the
-foundation on which the other three traits are built.
+The Reactive Manifesto is an https://www.reactivemanifesto.org/[online document] authored in 2014 by
+Jonas Bonér, Dave Farley, Roland Kuhn, and Martin Thompson. It outlines the principles of
+*reactive systems* – an architectural style for highly scalable
+xref:distributed-system.adoc[*distributed software*]. The manifesto characterises such systems as
+*responsive*, *resilient*, *elastic*, and *message-driven*, and treats asynchronous message passing
+as the foundation on which the other three traits are built.
 
 [IMPORTANT]
-The manifesto is often read as a description of reactive programming, but the
-two are not the same thing. The manifesto is about *reactive systems*, an
-architectural style; reactive programming is a programming technique. The
-distinction is drawn explicitly in xref:reactive-systems.adoc[*Reactive systems*]
-and in Bonér and Kuhn's 2016 essay, "Reactive Programming vs. Reactive Systems".
+The manifesto is often read as a description of reactive programming, but the two are not the same
+thing. The manifesto is about *reactive systems*, an architectural style; reactive programming is a
+programming technique. The distinction is drawn explicitly in
+xref:reactive-systems.adoc[*Reactive systems*] and in Bonér and Kuhn's 2016 essay, "Reactive
+Programming vs. Reactive Systems".
 
 == Reactive programming vs. reactive systems
 
-Reactive programming is a programming technique for composing asynchronous
-streams of data with declarative operators. xref:reactive-systems.adoc[*Reactive systems*] is an architectural style for building systems that are responsive,
-resilient, elastic, and message-driven.
+Reactive programming is a programming technique for composing asynchronous streams of data with
+declarative operators. xref:reactive-systems.adoc[*Reactive systems*] is an architectural style for
+building systems that are responsive, resilient, elastic, and message-driven.
 
-The two are commonly conflated because they share a name and an emphasis on
-asynchrony, but they operate at different levels of abstraction. Reactive
-programming is a tool one might use *inside* a reactive system, but it is
-neither necessary nor sufficient to build one. A service can be built with
-blocking, imperative code on a thread-per-request model and still form part of
-a reactive system. Conversely, an application built entirely on reactive
-streams can still fail the manifesto's traits if its components are
-synchronously coupled, brittle, or unable to scale under load.
+The two are commonly conflated because they share a name and an emphasis on asynchrony, but they
+operate at different levels of abstraction. Reactive programming is a tool one might use *inside* a
+reactive system, but it is neither necessary nor sufficient to build one. A service can be built
+with blocking, imperative code on a thread-per-request model and still form part of a reactive
+system. Conversely, an application built entirely on reactive streams can still fail the manifesto's
+traits if its components are synchronously coupled, brittle, or unable to scale under load.
 
 == Reactive programming libraries and standards
 
-In Java, https://github.com/ReactiveX/RxJava[RxJava] – Reactive Extensions (Rx)
-in Java – was one of the first open-source libraries to implement the reactive
-programming model. Its API is similar to Java 8 Streams, but is designed to be
-more fluent and expressive.
+In Java, https://github.com/ReactiveX/RxJava[RxJava] – Reactive Extensions (Rx) in Java – was one of
+the first open-source libraries to implement the reactive programming model. Its API is similar to
+Java 8 Streams, but is designed to be more fluent and expressive.
 
-RxJava is part of the larger https://reactivex.io/intro.html[ReactiveX] project,
-which provides equivalent libraries for many other languages, all sharing a
-common API. *RxJS*, the JavaScript implementation, is widely used in
-browser-side frameworks and is bundled with Angular. *Akka Streams* implements
-the same model on the JVM atop the Akka actor toolkit.
+RxJava is part of the larger https://reactivex.io/intro.html[ReactiveX] project, which provides
+equivalent libraries for many other languages, all sharing a common API. *RxJS*, the JavaScript
+implementation, is widely used in browser-side frameworks and is bundled with Angular.
+*Akka Streams* implements the same model on the JVM atop the Akka actor toolkit.
 
-ReactiveX has become something of a _de facto_ standard for implementing
-reactive programming. There's a separate initiative to standardize the API of
-the event streams themselves, called
-https://www.reactive-streams.org/[Reactive Streams]. Reactive Streams is a
-small specification, just four interfaces (`Publisher`, `Subscriber`,
-`Subscription`, and `Processor`), that defines asynchronous stream processing
-with non-blocking backpressure. It was adopted into the Java platform in Java
-9 (2017) as the `java.util.concurrent.Flow` class, giving the JVM a standard,
-interoperable reactive contract that libraries can build on.
+ReactiveX has become something of a _de facto_ standard for implementing reactive programming.
+There's a separate initiative to standardize the API of the event streams themselves, called
+https://www.reactive-streams.org/[Reactive Streams]. Reactive Streams is a small specification, just
+four interfaces (`Publisher`, `Subscriber`, `Subscription`, and `Processor`), that defines
+asynchronous stream processing with non-blocking backpressure. It was adopted into the Java platform
+in Java 9 (2017) as the `java.util.concurrent.Flow` class, giving the JVM a standard, interoperable
+reactive contract that libraries can build on.
 
-Other notable libraries include *Project Reactor*, which underpins Spring
-WebFlux and exposes two composable types – `Mono` for a stream of zero or one
-value and `Flux` for a stream of zero to N values – and *Mutiny*, the reactive
-library of the Quarkus stack. Reactive streams are also closely related to
-xref:stream-processing-systems.adoc[*stream processing systems*] such as Kafka
-Streams and Flink, which apply the same model at the level of distributed data
-pipelines rather than in-process programs.
+Other notable libraries include *Project Reactor*, which underpins Spring WebFlux and exposes two
+composable types – `Mono` for a stream of zero or one value and `Flux` for a stream of zero to N
+values – and *Mutiny*, the reactive library of the Quarkus stack. Reactive streams are also closely
+related to xref:stream-processing-systems.adoc[*stream processing systems*] such as Kafka Streams
+and Flink, which apply the same model at the level of distributed data pipelines rather than
+in-process programs.
 
 == Trade-offs
 
-Reactive programming excels at *concurrency over asynchrony* – orchestrating
-many independent, time-varying sources in a single, declarative expression. It
-shines in user interfaces that combine events from many inputs, and in
-back-end services that fan work out across many remote calls. Because the
-program is described as a graph of dependencies, the runtime is free to
-schedule work efficiently and to propagate cancellation through the graph when
-a result is no longer needed.
+Reactive programming excels at *concurrency over asynchrony* – orchestrating many independent,
+time-varying sources in a single, declarative expression. It shines in user interfaces that combine
+events from many inputs, and in back-end services that fan work out across many remote calls.
+Because the program is described as a graph of dependencies, the runtime is free to schedule work
+efficiently and to propagate cancellation through the graph when a result is no longer needed.
 
-The costs are substantial. The control flow of a reactive program is implicit
-in the wiring of its operators, which makes it harder to read than equivalent
-imperative code. Stack traces across asynchronous boundaries are notoriously
-unhelpful, since the point of failure is far in execution order from the point
-of subscription. Debugging and profiling reactive code require tooling that
-understands streams. Backpressure, when mishandled, can deadlock a pipeline or
-silently lose data. And the paradigm is a poor fit for workloads that are
-inherently synchronous or request-response – wrapping a single blocking call in
-`Mono.fromCallable` does not make the underlying work any faster, only harder
-to reason about.
+The costs are substantial. The control flow of a reactive program is implicit in the wiring of its
+operators, which makes it harder to read than equivalent imperative code. Stack traces across
+asynchronous boundaries are notoriously unhelpful, since the point of failure is far in execution
+order from the point of subscription. Debugging and profiling reactive code require tooling that
+understands streams. Backpressure, when mishandled, can deadlock a pipeline or silently lose data.
+And the paradigm is a poor fit for workloads that are inherently synchronous or request-response –
+wrapping a single blocking call in `Mono.fromCallable` does not make the underlying work any faster,
+only harder to reason about.
 
-A common mistake is to adopt reactive programming on the assumption that it
-will make a system xref:scalability.adoc[*scalable*] or
-xref:resilience.adoc[*resilient*]. Asynchronous code releases threads while
-waiting, which can improve throughput under I/O-bound load, but it does not by
-itself confer the traits of a xref:reactive-systems.adoc[*reactive system*].
-Those come from the architecture of the system, not from the programming model
-of its components.
+A common mistake is to adopt reactive programming on the assumption that it will make a system
+xref:scalability.adoc[*scalable*] or xref:resilience.adoc[*resilient*]. Asynchronous code releases
+threads while waiting, which can improve throughput under I/O-bound load, but it does not by itself
+confer the traits of a xref:reactive-systems.adoc[*reactive system*]. Those come from the
+architecture of the system, not from the programming model of its components.
 
 == See also
 
@@ -187,7 +159,6 @@ of its components.
 
 == References
 
-* Bonér, J., Farley, D., Kuhn, R. and Thompson, M. (2014). _The Reactive
-  Manifesto_. reactivemanifesto.org.
-* Bonér, J. and Kuhn, R. (2016). _Reactive Programming vs. Reactive Systems_.
-  infoq.com.
+* Bonér, J., Farley, D., Kuhn, R. and Thompson, M. (2014). _The Reactive Manifesto_.
+  reactivemanifesto.org.
+* Bonér, J. and Kuhn, R. (2016). _Reactive Programming vs. Reactive Systems_. infoq.com.

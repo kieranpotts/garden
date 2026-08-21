@@ -1,51 +1,47 @@
 = Pull architecture
 
-Pull architecture is a communication model in which the consumer of data
-initiates each transfer by requesting it from the producer. The producer sits
-passive between requests, waiting to be asked. It is the opposite of
-xref:push-architecture.adoc[*push architecture*], where the producer initiates
+Pull architecture is a communication model in which the consumer of data initiates each transfer by
+requesting it from the producer. The producer sits passive between requests, waiting to be asked. It
+is the opposite of xref:push-architecture.adoc[*push architecture*], where the producer initiates
 delivery and sends data to the consumer as it becomes available.
 
 Pull is the data-flow model underlying the familiar
 xref:client-server-architecture.adoc[*client-server*] arrangement and the
-xref:request-response.adoc[*request-response*] exchange. A web browser that
-fetches a page with xref:http.adoc[*HTTP*] `GET`, an application that reads from
-a xref:rest.adoc[*REST*] API, and a client that issues a database query are all
-pull consumers. In every case the consumer decides when to fetch and how much,
-and the producer simply answers.
+xref:request-response.adoc[*request-response*] exchange. A web browser that fetches a page with
+xref:http.adoc[*HTTP*] `GET`, an application that reads from a xref:rest.adoc[*REST*] API, and a
+client that issues a database query are all pull consumers. In every case the consumer decides when
+to fetch and how much, and the producer simply answers.
 
-The model rests on a few assumptions. The consumer must know, or be able to
-discover, the producer's address. The producer must be reachable on the
-consumer's schedule, which is why pull works especially well over the
-request-oriented infrastructure of the web. Firewalls, proxies, and load
-balancers generally allow outbound requests from consumers and inbound
-responses from producers, but not the reverse. And because each request is
-self-contained, pull composes naturally with xref:caching.adoc[*caching*],
-xref:load-balancing.adoc[*load balancing*], and xref:stateless.adoc[*stateless*]
-servers. This is a large part of why the HTTP and REST style scales as well as
-it does.
+The model rests on a few assumptions. The consumer must know, or be able to discover, the producer's
+address. The producer must be reachable on the consumer's schedule, which is why pull works
+especially well over the request-oriented infrastructure of the web. Firewalls, proxies, and load
+balancers generally allow outbound requests from consumers and inbound responses from producers, but
+not the reverse. And because each request is self-contained, pull composes naturally with
+xref:caching.adoc[*caching*], xref:load-balancing.adoc[*load balancing*], and
+xref:stateless.adoc[*stateless*] servers. This is a large part of why the HTTP and REST style scales
+as well as it does.
 
-The trade-off is immediacy. The producer has no way to notify the consumer
-that new data exists, so the consumer only learns of changes when it next
-asks. Two strategies address this, each with its own cost.
+The trade-off is immediacy. The producer has no way to notify the consumer that new data exists, so
+the consumer only learns of changes when it next asks. Two strategies address this, each with its
+own cost.
 
-* *Poll periodically.* The consumer issues requests on a fixed interval. This
-  is simple but wasteful, as most polls return nothing, and it bounds the
-  latency of any update to the polling interval. xref:long-polling.adoc[*Long polling*] is a refinement that holds each request open until data is ready,
-  recovering near-real-time delivery while still using a pull transport.
-* *Switch to push.* For genuinely real-time, high-frequency, or
-  server-initiated flows, a push mechanism is usually a better fit.
-  xref:webhook.adoc[*Webhooks*] let a producer call the consumer back when an
-  event occurs, and xref:server-sent-events.adoc[*Server-Sent Events (SSE)*]
-  and xref:websockets.adoc[*WebSockets*] open a long-lived channel along which
-  the producer can stream updates. xref:event-driven-architecture.adoc[*Event-driven architecture (EDA)*] is the broader style in which push delivery is the norm.
+* *Poll periodically.* The consumer issues requests on a fixed interval. This is simple but
+  wasteful, as most polls return nothing, and it bounds the latency of any update to the polling
+  interval. xref:long-polling.adoc[*Long polling*] is a refinement that holds each request open
+  until data is ready, recovering near-real-time delivery while still using a pull transport.
+* *Switch to push.* For genuinely real-time, high-frequency, or server-initiated flows, a push
+  mechanism is usually a better fit. xref:webhook.adoc[*Webhooks*] let a producer call the consumer
+  back when an event occurs, and xref:server-sent-events.adoc[*Server-Sent Events (SSE)*] and
+  xref:websockets.adoc[*WebSockets*] open a long-lived channel along which the producer can stream
+  updates. xref:event-driven-architecture.adoc[*Event-driven architecture (EDA)*] is the broader
+  style in which push delivery is the norm.
 
-Pull and push are not mutually exclusive. Many real systems combine them: a
-client pulls the current state on load and then subscribes to a push channel
-for subsequent updates, or pulls on a slow schedule and relies on webhooks for
-time-sensitive events. xref:content-delivery-networks.adoc[*Content delivery networks (CDNs)*] come in both pull-based and push-based flavours for the same
-reason. A pull CDN fetches content from the origin on first request; a push
-CDN is pre-populated.
+Pull and push are not mutually exclusive. Many real systems combine them: a client pulls the current
+state on load and then subscribes to a push channel for subsequent updates, or pulls on a slow
+schedule and relies on webhooks for time-sensitive events.
+xref:content-delivery-networks.adoc[*Content delivery networks (CDNs)*] come in both pull-based and
+push-based flavours for the same reason. A pull CDN fetches content from the origin on first
+request; a push CDN is pre-populated.
 
 == See also
 

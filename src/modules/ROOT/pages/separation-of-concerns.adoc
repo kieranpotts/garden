@@ -1,80 +1,68 @@
 = Separation of concerns
 
-Separation of concerns is a xref:design-principles.adoc[*design principle*] that
-asks a system to be organized so that each element addresses one distinct
-concern, and each concern is addressed by as few elements as possible. A
-*concern* is anything the system must do or account for: a feature, a policy, a
-responsibility, or a xref:quality-attributes.adoc[*quality attribute*] such as
-security or performance. The principle is attributed to Edsger Dijkstra, who
-described it in 1974 as "the art of... letting one aspect predominate over the
-others" by focusing on each in turn.
+Separation of concerns is a xref:design-principles.adoc[*design principle*] that asks a system to be
+organized so that each element addresses one distinct concern, and each concern is addressed by as
+few elements as possible. A *concern* is anything the system must do or account for: a feature, a
+policy, a responsibility, or a xref:quality-attributes.adoc[*quality attribute*] such as security or
+performance. The principle is attributed to Edsger Dijkstra, who described it in 1974 as "the art
+of... letting one aspect predominate over the others" by focusing on each in turn.
 
-The principle is broader than any one method. It names an instinct — that a
-reader, tester, or maintainer should be able to reason about one concern
-without holding the rest of the system in mind — rather than a particular
-mechanism. The mechanisms that realize it are the techniques of
-xref:decomposition.adoc[*decomposition*] and
-xref:modular-design.adoc[*modular design*]: break the system into parts, give
-each part a cohesive set of responsibilities, and expose only a narrow
+The principle is broader than any one method. It names an instinct — that a reader, tester, or
+maintainer should be able to reason about one concern without holding the rest of the system in mind
+— rather than a particular mechanism. The mechanisms that realize it are the techniques of
+xref:decomposition.adoc[*decomposition*] and xref:modular-design.adoc[*modular design*]: break the
+system into parts, give each part a cohesive set of responsibilities, and expose only a narrow
 xref:interfaces.adoc[*interface*] to the rest. What keeps the boundary honest is
-xref:encapsulation.adoc[*encapsulation*] (information hiding), and the broader
-discipline that makes the boundary possible is
-xref:abstraction.adoc[*abstraction*].
+xref:encapsulation.adoc[*encapsulation*] (information hiding), and the broader discipline that makes
+the boundary possible is xref:abstraction.adoc[*abstraction*].
 
-A system that separates concerns well tends to be both highly
-xref:cohesion.adoc[*cohesive*] within each part and loosely
-xref:coupling.adoc[*coupled*] between parts. The two are the same boundary seen
-from opposite sides: a module that owns a single concern has fewer reasons to
-reach outside itself, and so drags fewer neighbors along when it changes. The
-active work of keeping that coupling low is
-xref:decoupling.adoc[*decoupling*].
+A system that separates concerns well tends to be both highly xref:cohesion.adoc[*cohesive*] within
+each part and loosely xref:coupling.adoc[*coupled*] between parts. The two are the same boundary
+seen from opposite sides: a module that owns a single concern has fewer reasons to reach outside
+itself, and so drags fewer neighbors along when it changes. The active work of keeping that coupling
+low is xref:decoupling.adoc[*decoupling*].
 
 == Where the principle surfaces
 
 The principle is general enough to appear under several specialized names. The
-xref:single-responsibility-principle.adoc[*single responsibility principle*] is
-separation of concerns narrowed to the unit of a single class or module, and
-reframed around the *actor* whose interests the module serves. At the method
-level, xref:command-query-separation.adoc[*command query separation*] separates
-the concern of mutating state from the concern of observing it.
+xref:single-responsibility-principle.adoc[*single responsibility principle*] is separation of
+concerns narrowed to the unit of a single class or module, and reframed around the *actor* whose
+interests the module serves. At the method level,
+xref:command-query-separation.adoc[*command query separation*] separates the concern of mutating
+state from the concern of observing it.
 
-At the scale of a whole application, the principle is the organizing idea
-behind xref:layered-architecture.adoc[*layered architecture*], which stacks
-presentation, business, and persistence concerns into distinct layers, and
-behind xref:hexagonal-architecture.adoc[*hexagonal architecture*] and
-xref:clean-architecture.adoc[*clean architecture*], which isolate the domain
-from the infrastructure that delivers and persists data. The same instinct,
-applied to operating systems and command-line tools, is one of the tenets of
-the xref:unix-philosophy.adoc[*Unix philosophy*]: each program does one thing
-well, and programs are combined to address larger concerns.
+At the scale of a whole application, the principle is the organizing idea behind
+xref:layered-architecture.adoc[*layered architecture*], which stacks presentation, business, and
+persistence concerns into distinct layers, and behind
+xref:hexagonal-architecture.adoc[*hexagonal architecture*] and
+xref:clean-architecture.adoc[*clean architecture*], which isolate the domain from the infrastructure
+that delivers and persists data. The same instinct, applied to operating systems and command-line
+tools, is one of the tenets of the xref:unix-philosophy.adoc[*Unix philosophy*]: each program does
+one thing well, and programs are combined to address larger concerns.
 
 == The boundary case
 
 Not every concern can be assigned to a single module. A
-xref:cross-cutting-concern.adoc[*cross-cutting concern*] — logging, security,
-transaction management — cuts across many modules that each have a different
-primary responsibility. Separation of concerns still applies, but the
-technique changes: the concern is factored out into a middleware pipeline, an
-aspect, or an infrastructure layer rather than localized in one module. The
-principle is the same; only the shape of the boundary differs.
+xref:cross-cutting-concern.adoc[*cross-cutting concern*] — logging, security, transaction management
+— cuts across many modules that each have a different primary responsibility. Separation of concerns
+still applies, but the technique changes: the concern is factored out into a middleware pipeline, an
+aspect, or an infrastructure layer rather than localized in one module. The principle is the same;
+only the shape of the boundary differs.
 
 == Trade-offs
 
-Pursued without judgment, separation of concerns becomes its own problem.
-Splitting a feature across many modules to keep each "pure" scatters a single
-thread of logic across the codebase, and the reader must follow that thread
-through a chain of indirections to understand what the feature does. This is
-the *locality of behavior* critique: code that does one thing is easier to
-reason about when the doing of it lives in one place. The
-xref:grug-brained-developer.adoc[*grug-brained developer*] makes the same point
-more bluntly, warning that excessive separation spreads a feature across so
+Pursued without judgment, separation of concerns becomes its own problem. Splitting a feature across
+many modules to keep each "pure" scatters a single thread of logic across the codebase, and the
+reader must follow that thread through a chain of indirections to understand what the feature does.
+This is the *locality of behavior* critique: code that does one thing is easier to reason about when
+the doing of it lives in one place. The xref:grug-brained-developer.adoc[*grug-brained developer*]
+makes the same point more bluntly, warning that excessive separation spreads a feature across so
 many files that neither the feature nor its boundaries are easy to see.
 
-The aim, then, is not to maximize the number of modules but to draw boundaries
-that align with distinct concerns and likely axes of change. A concern is
-worth separating when it changes at a different rate, or for different reasons,
-than its neighbors — the same test that guides the single responsibility
-principle.
+The aim, then, is not to maximize the number of modules but to draw boundaries that align with
+distinct concerns and likely axes of change. A concern is worth separating when it changes at a
+different rate, or for different reasons, than its neighbors — the same test that guides the single
+responsibility principle.
 
 == See also
 

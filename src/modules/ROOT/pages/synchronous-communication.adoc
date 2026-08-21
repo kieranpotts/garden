@@ -1,65 +1,59 @@
 = Synchronous communication
 
-Synchronous and xref:asynchronous-communication.adoc[*asynchronous*]
-communication are two approaches to interaction in software design,
-distinguished by whether the sender and receiver interact in real-time.
+Synchronous and xref:asynchronous-communication.adoc[*asynchronous*] communication are two
+approaches to interaction in software design, distinguished by whether the sender and receiver
+interact in real-time.
 
-In synchronous communication, the sender and receiver interact in real-time. The
-sender issues a request and blocks until the receiver returns a response. The
-interaction is therefore said to be blocking, and it creates *temporal coupling*
-between the two components: the sender depends on the _immediate availability_
-of the receiver.
+In synchronous communication, the sender and receiver interact in real-time. The sender issues a
+request and blocks until the receiver returns a response. The interaction is therefore said to be
+blocking, and it creates *temporal coupling* between the two components: the sender depends on the
+_immediate availability_ of the receiver.
 
-This is the default mode of interaction for most components _within_ a
-monolithic software system. In most programming languages, function calls are
-synchronous by default, meaning that the caller waits for the callee to return a
-value before it proceeds further with its own execution.
+This is the default mode of interaction for most components _within_ a monolithic software system.
+In most programming languages, function calls are synchronous by default, meaning that the caller
+waits for the callee to return a value before it proceeds further with its own execution.
 
 Synchronous communication is more commonly discussed in the context of
-xref:distributed-system.adoc[*distributed software*], where it is implemented
-using xref:request-response.adoc[*request-response*] communication protocols
-such as xref:http.adoc[*HTTP*] or xref:grpc.adoc[*gRPC*]. Distributed
-synchronous communication requires individual services within the network to
-expose their own APIs, rather than relying on a xref:message-broker.adoc[*message broker*], xref:event-bus.adoc[*event bus*], or other intermediary system to
-manage communication between services.
+xref:distributed-system.adoc[*distributed software*], where it is implemented using
+xref:request-response.adoc[*request-response*] communication protocols such as
+xref:http.adoc[*HTTP*] or xref:grpc.adoc[*gRPC*]. Distributed synchronous communication requires
+individual services within the network to expose their own APIs, rather than relying on a
+xref:message-broker.adoc[*message broker*], xref:event-bus.adoc[*event bus*], or other intermediary
+system to manage communication between services.
 
-Synchronous communication is conceptually simpler than its asynchronous
-counterpart. A client that blocks on a response gets immediate feedback: it can
-branch on the result, raise an error to its own caller, or retry straight away.
-Reasoning about a chain of synchronous calls follows the familiar call-stack
-model, which makes synchronous designs easier to write and debug in the common
-case. This simplicity is a large part of why the default mode of interaction
-within a single process is synchronous.
+Synchronous communication is conceptually simpler than its asynchronous counterpart. A client that
+blocks on a response gets immediate feedback: it can branch on the result, raise an error to its own
+caller, or retry straight away. Reasoning about a chain of synchronous calls follows the familiar
+call-stack model, which makes synchronous designs easier to write and debug in the common case. This
+simplicity is a large part of why the default mode of interaction within a single process is
+synchronous.
 
-The trade-off is coupling. Synchronous communication in distributed software can
-lead to tight xref:coupling.adoc[*coupling*] between services, making it
-difficult to change services independently of each other. The temporal coupling
-inherent in blocking calls means the caller inherits the failure modes of the
-callee. If the callee is slow or unavailable, the caller's thread is held open
-and resources accumulate, and a localized failure can propagate across the
-system as a *cascading failure*.
+The trade-off is coupling. Synchronous communication in distributed software can lead to tight
+xref:coupling.adoc[*coupling*] between services, making it difficult to change services
+independently of each other. The temporal coupling inherent in blocking calls means the caller
+inherits the failure modes of the callee. If the callee is slow or unavailable, the caller's thread
+is held open and resources accumulate, and a localized failure can propagate across the system as a
+*cascading failure*.
 
 Despite these costs, synchronous communication is often necessary when low
-xref:latency.adoc[*latency*] or real-time data processing is a requirement, or
-when data xref:consistency.adoc[*consistency*] is a primary constraint. A client
-that needs a definitive answer before it can proceed, such as an authentication
-lookup, a payment authorization, or a read for the current state of an entity,
-has little choice but to wait for it.
+xref:latency.adoc[*latency*] or real-time data processing is a requirement, or when data
+xref:consistency.adoc[*consistency*] is a primary constraint. A client that needs a definitive
+answer before it can proceed, such as an authentication lookup, a payment authorization, or a read
+for the current state of an entity, has little choice but to wait for it.
 
-Several patterns mitigate the downsides of synchronous communication without
-abandoning it. xref:retry.adoc[*Retries*] with backoff recover from transient
-failures. xref:circuit-breaker.adoc[*Circuit breakers*] stop a caller from
-repeatedly hammering a failing callee, protecting the callee and freeing the
-caller to fail fast. Timeouts bound the maximum time a caller will wait,
-preventing a slow callee from holding the caller's resources indefinitely. Such
-xref:resilience.adoc[*resilience*] patterns restore some of the fault tolerance
-that asynchronous communication gains by construction, though they add
-xref:complexity.adoc[*complexity*] of their own.
+Several patterns mitigate the downsides of synchronous communication without abandoning it.
+xref:retry.adoc[*Retries*] with backoff recover from transient failures.
+xref:circuit-breaker.adoc[*Circuit breakers*] stop a caller from repeatedly hammering a failing
+callee, protecting the callee and freeing the caller to fail fast. Timeouts bound the maximum time a
+caller will wait, preventing a slow callee from holding the caller's resources indefinitely. Such
+xref:resilience.adoc[*resilience*] patterns restore some of the fault tolerance that asynchronous
+communication gains by construction, though they add xref:complexity.adoc[*complexity*] of their
+own.
 
-It is best practice for services that depend on synchronous communication to
-serve a health check endpoint. This allows clients to check the availability of
-the services on which they depend. Alternatively, xref:load-balancer.adoc[*load balancers*] can monitor the health check endpoints and route traffic only to
-healthy services.
+It is best practice for services that depend on synchronous communication to serve a health check
+endpoint. This allows clients to check the availability of the services on which they depend.
+Alternatively, xref:load-balancer.adoc[*load balancers*] can monitor the health check endpoints and
+route traffic only to healthy services.
 
 == See also
 

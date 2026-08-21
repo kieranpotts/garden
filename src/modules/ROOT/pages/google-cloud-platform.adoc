@@ -1,23 +1,21 @@
 = Google Cloud Platform (GCP)
 
-Google Cloud Platform (GCP) is the suite of
-xref:cloud-computing.adoc[*cloud computing*] services offered by Google. It
-runs on the same global infrastructure that powers Google's consumer products,
+Google Cloud Platform (GCP) is the suite of xref:cloud-computing.adoc[*cloud computing*] services
+offered by Google. It runs on the same global infrastructure that powers Google's consumer products,
 including Search, YouTube, and Gmail, and it is one of the three hyperscale
-xref:cloud-service-providers.adoc[*cloud service providers*], alongside Amazon
-Web Services and Microsoft Azure.
+xref:cloud-service-providers.adoc[*cloud service providers*], alongside Amazon Web Services and
+Microsoft Azure.
 
-GCP is sold under the broader *Google Cloud* brand, which also bundles
-enterprise products such as Google Workspace. The platform itself launched in
-2008 with the preview of App Engine, Google's
-xref:platform-as-a-service.adoc[*Platform as a Service (PaaS)*] offering, and
-reached general availability in 2011. Google has since layered compute,
-storage, data, and machine-learning services on top of that foundation.
+GCP is sold under the broader *Google Cloud* brand, which also bundles enterprise products such as
+Google Workspace. The platform itself launched in 2008 with the preview of App Engine, Google's
+xref:platform-as-a-service.adoc[*Platform as a Service (PaaS)*] offering, and reached general
+availability in 2011. Google has since layered compute, storage, data, and machine-learning services
+on top of that foundation.
 
-The compute portfolio spans the cloud service stack. *Compute Engine* provides
-virtual machines, the IaaS layer. *App Engine* is the PaaS. *Cloud Functions*
-is Google's xref:function-as-a-service.adoc[*Function-as-a-Service (FaaS)*]
-product. *Cloud Run* runs containerized workloads without a cluster. *Google Kubernetes Engine (GKE)* is a managed
+The compute portfolio spans the cloud service stack. *Compute Engine* provides virtual machines, the
+IaaS layer. *App Engine* is the PaaS. *Cloud Functions* is Google's
+xref:function-as-a-service.adoc[*Function-as-a-Service (FaaS)*] product. *Cloud Run* runs
+containerized workloads without a cluster. *Google Kubernetes Engine (GKE)* is a managed
 xref:container-orchestration.adoc[*container orchestration*] service built on
 xref:kubernetes.adoc[*Kubernetes*].
 
@@ -25,30 +23,25 @@ xref:kubernetes.adoc[*Kubernetes*].
 
 Google Cloud Run is a fully managed compute platform that runs
 xref:containerization.adoc[*containerized*] applications on request. It is a
-xref:managed-hosting.adoc[*managed hosting*] service. Google provisions,
-scales, and retires the infrastructure, and the operator supplies only the
-container image and a concurrency setting. There is no cluster to size, no
-node to patch, and no control plane to keep available.
+xref:managed-hosting.adoc[*managed hosting*] service. Google provisions, scales, and retires the
+infrastructure, and the operator supplies only the container image and a concurrency setting. There
+is no cluster to size, no node to patch, and no control plane to keep available.
 
-Cloud Run is built on Knative, the open-source Kubernetes extension that
-Google originated, and it inherits the container orchestration model's
-declarative, reconciling behaviour. Where Kubernetes asks the operator to run
-a cluster, Cloud Run hides the cluster entirely. A request arrives, the
-platform starts one or more instances of the container to serve it, and the
-platform xref:auto-scaling.adoc[*auto-scales*] those instances with traffic. It
-can scale down to zero when there is no work. Billing follows the same per-use
-model as FaaS. The customer pays for the CPU, memory, and time each instance
-actually consumes, and an idle service costs nothing.
+Cloud Run is built on Knative, the open-source Kubernetes extension that Google originated, and it
+inherits the container orchestration model's declarative, reconciling behaviour. Where Kubernetes
+asks the operator to run a cluster, Cloud Run hides the cluster entirely. A request arrives, the
+platform starts one or more instances of the container to serve it, and the platform
+xref:auto-scaling.adoc[*auto-scales*] those instances with traffic. It can scale down to zero when
+there is no work. Billing follows the same per-use model as FaaS. The customer pays for the CPU,
+memory, and time each instance actually consumes, and an idle service costs nothing.
 
-This makes Cloud Run a middle ground between FaaS and a full Kubernetes
-deployment. The workload is a xref:container.adoc[*container*], so it can carry
-any language, library, or binary that fits the image, and it is not bound by
-the runtime and execution limits of a FaaS platform. The operator is spared
-the operational burden of running a cluster. The trade-off is the loss of
-control. The platform owns the scheduling, networking, and lifecycle
-decisions, and workloads that need persistent background processes,
-long-lived connections, or tight placement control fit a full orchestrator
-better.
+This makes Cloud Run a middle ground between FaaS and a full Kubernetes deployment. The workload is
+a xref:container.adoc[*container*], so it can carry any language, library, or binary that fits the
+image, and it is not bound by the runtime and execution limits of a FaaS platform. The operator is
+spared the operational burden of running a cluster. The trade-off is the loss of control. The
+platform owns the scheduling, networking, and lifecycle decisions, and workloads that need
+persistent background processes, long-lived connections, or tight placement control fit a full
+orchestrator better.
 
 == See also
 

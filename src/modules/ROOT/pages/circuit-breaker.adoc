@@ -2,28 +2,30 @@
 
 // TODO: https://medium.com/geekculture/design-patterns-for-microservices-circuit-breaker-pattern-276249ffab33
 
-The circuit breaker pattern is a xref:design-patterns.adoc[*design pattern*] for handling transient failures in
-xref:distributed-system.adoc[*distributed software*].
+The circuit breaker pattern is a xref:design-patterns.adoc[*design pattern*] for handling transient
+failures in xref:distributed-system.adoc[*distributed software*].
 
-When requests to services fail, a circuit breaker will automatically open,
-preventing any further requests from being sent to the failing service. The
-circuit breaker will remain open for a configurable amount of time, after which
-it will automatically close, allowing further requests to be sent again to the
-service.
+When requests to services fail, a circuit breaker will automatically open, preventing any further
+requests from being sent to the failing service. The circuit breaker will remain open for a
+configurable amount of time, after which it will automatically close, allowing further requests to
+be sent again to the service.
 
-Circuit breakers complement the xref:retry.adoc[*retry mechanism*]. Whereas a
-retry mechanism will keep retrying a failing service until it succeeds, a
-circuit breaker will trip when the error rate exceeds a configured threshold.
-Where xref:rate-limiting.adoc[*rate limiting*] caps the rate of inbound requests
-to protect a service from its callers, a circuit breaker stops a caller from
+Circuit breakers complement the xref:retry.adoc[*retry mechanism*]. Whereas a retry mechanism will
+keep retrying a failing service until it succeeds, a circuit breaker will trip when the error rate
+exceeds a configured threshold. Where xref:rate-limiting.adoc[*rate limiting*] caps the rate of
+inbound requests to protect a service from its callers, a circuit breaker stops a caller from
 continuing to hit a service that is already failing.
 
-Both improve xref:fault-tolerance.adoc[*fault tolerance*], and work
-particularly well in combination. If a service is failing, it is likely to keep
-failing until its failure mode is resolved through
-xref:disaster-recovery.adoc[*disaster recovery*] mechanisms. While disaster
-recovery is ongoing, a circuit breaker will help prevent the recovering system
-from being overwhelmed by retries. Circuit breakers are also commonly paired with xref:bulkhead.adoc[*bulkheads*], which partition the resources used to call a dependency so that one failing call cannot exhaust the threads or connections available to other callers. In a xref:service-mesh.adoc[*service mesh*], circuit breaking is enforced at the infrastructure layer by the data-plane proxies rather than in application code, applying the same policy to every service-to-service call.
+Both improve xref:fault-tolerance.adoc[*fault tolerance*], and work particularly well in
+combination. If a service is failing, it is likely to keep failing until its failure mode is
+resolved through xref:disaster-recovery.adoc[*disaster recovery*] mechanisms. While disaster
+recovery is ongoing, a circuit breaker will help prevent the recovering system from being
+overwhelmed by retries. Circuit breakers are also commonly paired with
+xref:bulkhead.adoc[*bulkheads*], which partition the resources used to call a dependency so that one
+failing call cannot exhaust the threads or connections available to other callers. In a
+xref:service-mesh.adoc[*service mesh*], circuit breaking is enforced at the infrastructure layer by
+the data-plane proxies rather than in application code, applying the same policy to every
+service-to-service call.
 
 ////
 
@@ -38,35 +40,45 @@ Problems Without Circuit Breaker
 
 • Service Overload:
 
-If the PaymentService starts to fail (e.g., due to a high load or a bug), every request to the OrderService that tries to call the PaymentService will also fail.
+If the PaymentService starts to fail (e.g., due to a high load or a bug), every request to the
+OrderService that tries to call the PaymentService will also fail.
 
-This can lead to a cascading failure where the OrderService is overwhelmed by failed requests and cannot serve other customers effectively.
+This can lead to a cascading failure where the OrderService is overwhelmed by failed requests and
+cannot serve other customers effectively.
 
 • Slow Responses:
 
-If the PaymentService is slow to respond, the OrderService might wait for a long time before timing out, leading to a poor user experience.
+If the PaymentService is slow to respond, the OrderService might wait for a long time before timing
+out, leading to a poor user experience.
 
 • Resource Waste:
 
-Repeatedly trying to call a failing PaymentService wastes resources and can slow down the entire system.
+Repeatedly trying to call a failing PaymentService wastes resources and can slow down the entire
+system.
 
 How the Circuit Breaker Pattern Helps
 
-The Circuit Breaker pattern solves these problems by wrapping the calls to the PaymentService in a "circuit breaker."
+The Circuit Breaker pattern solves these problems by wrapping the calls to the PaymentService in a
+"circuit breaker."
 
 Here's how it works:
 
-• Closed State: Initially, the circuit breaker is in a closed state, allowing requests to pass through to the PaymentService.
+• Closed State: Initially, the circuit breaker is in a closed state, allowing requests to pass
+through to the PaymentService.
 
-• Open State: If the PaymentService fails too often within a specified period, the circuit breaker "trips" and moves to an open state.
+• Open State: If the PaymentService fails too often within a specified period, the circuit breaker
+"trips" and moves to an open state.
 
-In this state, calls to the PaymentService fail immediately without trying to make a real request. This prevents the PaymentService from being overwhelmed and allows it time to recover.
+In this state, calls to the PaymentService fail immediately without trying to make a real request.
+This prevents the PaymentService from being overwhelmed and allows it time to recover.
 
 • Half-Open State:
 
-After a timeout period, the circuit breaker moves to a half-open state. It allows a few test requests to see if the PaymentService has recovered.
+After a timeout period, the circuit breaker moves to a half-open state. It allows a few test
+requests to see if the PaymentService has recovered.
 
-If the test requests are successful, the circuit breaker returns to the closed state. If they fail, it goes back to the open state.
+If the test requests are successful, the circuit breaker returns to the closed state. If they fail,
+it goes back to the open state.
 
 ////
 

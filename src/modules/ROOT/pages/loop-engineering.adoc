@@ -1,210 +1,181 @@
 = Loop engineering
 
 Loop engineering is the practice of designing self-running systems in which an
-xref:agent.adoc[*agent*] operates repeatedly, with minimal human involvement, on
-a recurring cadence rather than a single request-response turn.
+xref:agent.adoc[*agent*] operates repeatedly, with minimal human involvement, on a recurring cadence
+rather than a single request-response turn.
 
-Loop engineering is a specialized form of
-xref:agent-orchestration.adoc[*agent orchestration*]. It coordinates agents over
-repeated turns and long-running goals, but with a narrower focus on unattended
-execution and self-running loops.
+Loop engineering is a specialized form of xref:agent-orchestration.adoc[*agent orchestration*]. It
+coordinates agents over repeated turns and long-running goals, but with a narrower focus on
+unattended execution and self-running loops.
 
-The term and framework come from Peter Steinberger, Boris Cherny, and Addy
-Osmani's paper
+The term and framework come from Peter Steinberger, Boris Cherny, and Addy Osmani's paper
 _https://asixiv.org/pdf/curated/2606.00001[Loop Engineering: The Anthropic Playbook for Designing Systems That Prompt Your Agents]_.
-Cherny, an Anthropic engineer, has summarized the shift in practice it names:
-"I don't prompt Claude anymore. I have loops running that prompt Claude and
-figuring out what to do. My job is to write loops."
+Cherny, an Anthropic engineer, has summarized the shift in practice it names: "I don't prompt Claude
+anymore. I have loops running that prompt Claude and figuring out what to do. My job is to write
+loops."
 
-The technique predates the paper's terminology. Geoffrey Huntley's "Ralph
-Wiggum" pattern — named for the _The Simpsons_ character, for its relentless,
-uncomprehending persistence — ran roughly a year earlier and reduces to a
-single shell loop: `while :; do cat PROMPT.md | agent ; done`. Each pass feeds
-the same prompt back to a fresh agent invocation, which rereads the
-accumulated state on disk and picks up where the last pass left off. It is the
-minimal case loop engineering formalizes: no scheduler, no persistence layer
-beyond the filesystem, no verification stage beyond whatever the prompt asks
-the agent to check for itself.
+The technique predates the paper's terminology. Geoffrey Huntley's "Ralph Wiggum" pattern — named
+for the _The Simpsons_ character, for its relentless, uncomprehending persistence — ran roughly a
+year earlier and reduces to a single shell loop: `while :; do cat PROMPT.md | agent ; done`. Each
+pass feeds the same prompt back to a fresh agent invocation, which rereads the accumulated state on
+disk and picks up where the last pass left off. It is the minimal case loop engineering formalizes:
+no scheduler, no persistence layer beyond the filesystem, no verification stage beyond whatever the
+prompt asks the agent to check for itself.
 
-Don't confuse this with the xref:agent-loop.adoc[*agent loop*], which is the
-cycle within which an agent runs. Loop engineering operates at a higher level of
-abstraction. It is the design of an agentic away-from-keyboard workflow that
-autonomously decides when and how often to run that inner agent loop,
-unattended, until a goal is reached. In other words, loop engineering is the
-design of a system that runs an agent loop, rather than the design of an agent
-loop itself. Or, to explain it another way, loop engineering is the practice of
-designing automated systems that prompt agents on behalf of humans, rather than
-humans prompting agents directly.
+Don't confuse this with the xref:agent-loop.adoc[*agent loop*], which is the cycle within which an
+agent runs. Loop engineering operates at a higher level of abstraction. It is the design of an
+agentic away-from-keyboard workflow that autonomously decides when and how often to run that inner
+agent loop, unattended, until a goal is reached. In other words, loop engineering is the design of a
+system that runs an agent loop, rather than the design of an agent loop itself. Or, to explain it
+another way, loop engineering is the practice of designing automated systems that prompt agents on
+behalf of humans, rather than humans prompting agents directly.
 
 Loop engineering builds on prompt/context and harness engineering.
-xref:context-engineering.adoc[*Context engineering*] curates what a model sees
-on one turn. xref:agent-harness.adoc[*Harness engineering*] builds a machine for
-running one or more agents. Loop engineering sits a level above the harness. It
-designs a system that decides when and how often an agent runs, often with
-agents prompting other agents, rather than a human managing the turns.
+xref:context-engineering.adoc[*Context engineering*] curates what a model sees on one turn.
+xref:agent-harness.adoc[*Harness engineering*] builds a machine for running one or more agents. Loop
+engineering sits a level above the harness. It designs a system that decides when and how often an
+agent runs, often with agents prompting other agents, rather than a human managing the turns.
 
-The explicit objective of loop engineering is to remove the human from the loop
-entirely. Loop engineering designs for the human to step back into a supervisory
-role — setting up discovery, verification, and scheduling once, then letting the
-system run unattended across many iterations. Agent execution in this detached,
-no-chat-interface mode is sometimes described as
+The explicit objective of loop engineering is to remove the human from the loop entirely. Loop
+engineering designs for the human to step back into a supervisory role — setting up discovery,
+verification, and scheduling once, then letting the system run unattended across many iterations.
+Agent execution in this detached, no-chat-interface mode is sometimes described as
 xref:away-from-keyboard.adoc[*AFK*].
 
-As per the original paper, loop engineering decomposes the design of a recurring
-agent system into five concerns:
+As per the original paper, loop engineering decomposes the design of a recurring agent system into
+five concerns:
 
-* *Discovery*: Finding what work needs to be done, eg. scanning a queue, an
-  inbox, a repository, or a schedule for items that warrant a run.
+* *Discovery*: Finding what work needs to be done, eg. scanning a queue, an inbox, a repository, or
+  a schedule for items that warrant a run.
 
-* *Delegation*: Handing the work to an agent (or a team of agents) equipped to
-  carry it out.
+* *Delegation*: Handing the work to an agent (or a team of agents) equipped to carry it out.
 
-* *Verification*: Checking the quality of an iteration's output before it is
-  acted on or trusted.
+* *Verification*: Checking the quality of an iteration's output before it is acted on or trusted.
 
-* *Persistence*: Maintaining state and memory across iterations, so each run can
-  build on what came before rather than starting cold.
+* *Persistence*: Maintaining state and memory across iterations, so each run can build on what came
+  before rather than starting cold.
 
-* *Scheduling*: Deciding when the loop fires — locally on a fixed interval, or
-  in the cloud against an event or queue — trading off responsiveness against
-  state-management complexity.
+* *Scheduling*: Deciding when the loop fires — locally on a fixed interval, or in the cloud against
+  an event or queue — trading off responsiveness against state-management complexity.
 
-The paper's central architectural principle is to structurally separate the
-agent that generates work from the agent that evaluates it, rather than asking
-one agent to critique its own output. *Self-evaluation* is prone to self-praise
-bias. A generator grading its own work tends to rate it more favorably than an
-independent evaluator would.
+The paper's central architectural principle is to structurally separate the agent that generates
+work from the agent that evaluates it, rather than asking one agent to critique its own output.
+*Self-evaluation* is prone to self-praise bias. A generator grading its own work tends to rate it
+more favorably than an independent evaluator would.
 
 == Verification layering
 
-The "verification" concern is operationalized as a layered set of checks, each
-catching a different class of failure at a different cost.
+The "verification" concern is operationalized as a layered set of checks, each catching a different
+class of failure at a different cost.
 
 === Automated check
 
-An *automated check* is a deterministic verification in the environment — tests,
-type checks, lints, build, pre-commit hooks. It is pass/fail with no judgement.
-The signal is something an agent can self-correct from without involving anyone
-else. Self-correction works as a loop: the agent makes a change, runs the check
-as a tool call, and the failure output lands in its context — a type error with
-file and line, a failing assertion with expected and actual — enough to fix and
-re-run, around and around until it passes, with no human in the loop.
+An *automated check* is a deterministic verification in the environment — tests, type checks, lints,
+build, pre-commit hooks. It is pass/fail with no judgement. The signal is something an agent can
+self-correct from without involving anyone else. Self-correction works as a loop: the agent makes a
+change, runs the check as a tool call, and the failure output lands in its context — a type error
+with file and line, a failing assertion with expected and actual — enough to fix and re-run, around
+and around until it passes, with no human in the loop.
 
-Determinism is what makes the loop trustworthy. A flaky check poisons it: the
-agent "fixes" code that was fine, or retries past a real failure. Good checks
-are a large part of a codebase's xref:agent-harness.adoc[*AX*]. A check only
-catches what it asserts — green checks mean the asserted properties hold, not
-that the code is right. See xref:automated-testing.adoc[*automated testing*].
+Determinism is what makes the loop trustworthy. A flaky check poisons it: the agent "fixes" code
+that was fine, or retries past a real failure. Good checks are a large part of a codebase's
+xref:agent-harness.adoc[*AX*]. A check only catches what it asserts — green checks mean the asserted
+properties hold, not that the code is right. See xref:automated-testing.adoc[*automated testing*].
 
 === Automated review
 
-An *automated review* is an agent reviewing another agent's work, often with a
-different model or a review-specific system prompt. It is non-deterministic — it
-forms a judgement. The separation from the working agent is what makes it work.
-Asking the agent that wrote the code to review itself gets little: the session
-that produced the bug contains the reasoning that produced it, so a
-fresh-context reviewer sees the diff the way a stranger would. A different
-model or review-specific system prompt sharpens this.
+An *automated review* is an agent reviewing another agent's work, often with a different model or a
+review-specific system prompt. It is non-deterministic — it forms a judgement. The separation from
+the working agent is what makes it work. Asking the agent that wrote the code to review itself gets
+little: the session that produced the bug contains the reasoning that produced it, so a
+fresh-context reviewer sees the diff the way a stranger would. A different model or review-specific
+system prompt sharpens this.
 
-Automated review slots between the other layers. Automated checks are
-deterministic and catch the mechanical. Human review is expensive and scales
-worst. Automated review catches judgement-shaped problems — a misleading
-function name, a missed edge case — at machine cost. It is non-deterministic, so
-it can miss things and flag non-issues. It is a filter that raises the floor
+Automated review slots between the other layers. Automated checks are deterministic and catch the
+mechanical. Human review is expensive and scales worst. Automated review catches judgement-shaped
+problems — a misleading function name, a missed edge case — at machine cost. It is
+non-deterministic, so it can miss things and flag non-issues. It is a filter that raises the floor
 before a human looks, not a gate that replaces one.
 
 === Human review
 
-*Human review* is the user reading the code the agent produced and forming a
-judgement. Reading the diff or changed files counts; reading the agent's
-description of what it did does not. Narration is not the artifact — the
-description is a secondary source written by the party being reviewed, while
+*Human review* is the user reading the code the agent produced and forming a judgement. Reading the
+diff or changed files counts; reading the agent's description of what it did does not. Narration is
+not the artifact — the description is a secondary source written by the party being reviewed, while
 the diff is the primary source (see xref:agent-handoff.adoc[*agent handoff*]).
 
-Agents raise the volume of code produced, so review becomes the bottleneck.
-Layer the strategies: automated checks catch mechanical failures, automated
-review catches describable ones, and human review is reserved for what only you
-can judge — is the change the right change, does the approach fit, should this
-exist at all. Review is cheaper earlier. Reading a plan before work starts, or a
+Agents raise the volume of code produced, so review becomes the bottleneck. Layer the strategies:
+automated checks catch mechanical failures, automated review catches describable ones, and human
+review is reserved for what only you can judge — is the change the right change, does the approach
+fit, should this exist at all. Review is cheaper earlier. Reading a plan before work starts, or a
 small diff mid-flight, takes minutes; excavating a finished branch after an
-xref:away-from-keyboard.adoc[*AFK*] run takes longer. Dropping review entirely is
-what xref:vibe-coding.adoc[*vibe coding*] names.
+xref:away-from-keyboard.adoc[*AFK*] run takes longer. Dropping review entirely is what
+xref:vibe-coding.adoc[*vibe coding*] names.
 
 === Trajectory evaluation
 
-Testing AI-generated work requires evaluating not just the final artifact but
-how the agent got there. *Output evaluation* checks the result – does it compile,
-do tests pass. *Trajectory evaluation* checks the full sequence of tool calls and
-intermediate reasoning that produced it. Both are necessary. A fluent output
-that skipped its verification steps is a more dangerous failure than one with a
-visible error, because the silence hides the gap. This is why the
-generator/evaluator separation matters – an independent evaluator with fresh
-context judges the trajectory, not just the result. See
-xref:agent-loop.adoc[*agent loop*] for the loop and
+Testing AI-generated work requires evaluating not just the final artifact but how the agent got
+there. *Output evaluation* checks the result – does it compile, do tests pass.
+*Trajectory evaluation* checks the full sequence of tool calls and intermediate reasoning that
+produced it. Both are necessary. A fluent output that skipped its verification steps is a more
+dangerous failure than one with a visible error, because the silence hides the gap. This is why the
+generator/evaluator separation matters – an independent evaluator with fresh context judges the
+trajectory, not just the result. See xref:agent-loop.adoc[*agent loop*] for the loop and
 xref:automated-testing.adoc[*automated testing*].
 
-The paper catalogs six structural components that recur across loop-engineered
-systems: automations, worktrees, xref:agent-skills.adoc[*skills*], connectors,
-sub-agents, and memory systems. Further patterns are emerging in early open
-source implementations (see below). For example, a common pattern is to define
-agentic workflows declaratively as a
-xref:directed-acyclic-graph.adoc[*directed acyclic graph (DAG)*] — typically
-expressed in YAML or JSON — where each node is a task or specialized
-xref:agent.adoc[*agent*] and each edge is a dependency.
+The paper catalogs six structural components that recur across loop-engineered systems: automations,
+worktrees, xref:agent-skills.adoc[*skills*], connectors, sub-agents, and memory systems. Further
+patterns are emerging in early open source implementations (see below). For example, a common
+pattern is to define agentic workflows declaratively as a
+xref:directed-acyclic-graph.adoc[*directed acyclic graph (DAG)*] — typically expressed in YAML or
+JSON — where each node is a task or specialized xref:agent.adoc[*agent*] and each edge is a
+dependency.
 
 == Layers
 
 Cobus Greyling's
-https://cobusgreyling.substack.com/p/loop-engineering-playbook[Loop Engineering Playbook] organizes loop implementations into three operational layers, which
-correspond to how far a loop has moved from an interactive session toward
-unattended execution:
+https://cobusgreyling.substack.com/p/loop-engineering-playbook[Loop Engineering Playbook] organizes
+loop implementations into three operational layers, which correspond to how far a loop has moved
+from an interactive session toward unattended execution:
 
-* *Harness layer*: An interactive surface — a terminal-based coding agent with
-  a built-in `/loop` command, skills, and sub-agents in a single environment.
-  This is the xref:agent-harness.adoc[*harness*] itself taking on scheduling
-  duties. It suits a solo developer at a keyboard, running loops on demand
-  rather than unattended.
+* *Harness layer*: An interactive surface — a terminal-based coding agent with a built-in `/loop`
+  command, skills, and sub-agents in a single environment. This is the
+  xref:agent-harness.adoc[*harness*] itself taking on scheduling duties. It suits a solo developer
+  at a keyboard, running loops on demand rather than unattended.
 
-* *Runtime layer*: Production infrastructure providing scheduled execution,
-  state persistence, sandboxed isolation, and tool access independent of any
-  one terminal session. This is what unattended, xref:away-from-keyboard.adoc[*AFK*]
-  operation requires — a loop that fires at 3 a.m., survives a crash, and
-  resumes correctly after a multi-day pause needs somewhere to run that isn't
+* *Runtime layer*: Production infrastructure providing scheduled execution, state persistence,
+  sandboxed isolation, and tool access independent of any one terminal session. This is what
+  unattended, xref:away-from-keyboard.adoc[*AFK*] operation requires — a loop that fires at 3 a.m.,
+  survives a crash, and resumes correctly after a multi-day pause needs somewhere to run that isn't
   a laptop with a terminal left open.
 
-* *Integration layer*: Connectors — including
-  xref:model-context-protocol.adoc[*MCP*] servers — that bridge the loop to
-  external systems: issue trackers, monitoring alerts, chat platforms.
-  *Discovery* and *delegation* both depend on this layer, since a loop cannot
-  find work in a queue or an inbox it has no connector to.
+* *Integration layer*: Connectors — including xref:model-context-protocol.adoc[*MCP*] servers — that
+  bridge the loop to external systems: issue trackers, monitoring alerts, chat platforms.
+  *Discovery* and *delegation* both depend on this layer, since a loop cannot find work in a queue
+  or an inbox it has no connector to.
 
-A loop's xref:agent-memory.adoc[*memory*] pattern splits along a similar axis.
-A *stateful* loop reuses the same thread or session identifier across runs, so
-the agent's history accumulates — suited to nightly research or ongoing
-monitoring, where each run should know what the last one found. A *stateless*
-loop starts a fresh thread per execution — suited to batch operations and
-one-off sweeps, where cross-run history would only add noise. Persistence, as
-a concern, is the choice between these two patterns as much as it is the choice
-of where state is written.
+A loop's xref:agent-memory.adoc[*memory*] pattern splits along a similar axis. A *stateful* loop
+reuses the same thread or session identifier across runs, so the agent's history accumulates —
+suited to nightly research or ongoing monitoring, where each run should know what the last one
+found. A *stateless* loop starts a fresh thread per execution — suited to batch operations and
+one-off sweeps, where cross-run history would only add noise. Persistence, as a concern, is the
+choice between these two patterns as much as it is the choice of where state is written.
 
 == Cost and safety controls
 
-An unattended loop can run up an unbounded bill or cause unbounded damage if
-nothing bounds it. Recurring controls in practice:
+An unattended loop can run up an unbounded bill or cause unbounded damage if nothing bounds it.
+Recurring controls in practice:
 
-* *Iteration caps*: A fixed retry budget — three attempts, then escalate to a
-  human — rather than looping indefinitely against a check that never passes.
-* *Cheap triage before expensive verification*: A single fast model pass to
-  decide whether a change warrants the full generator/evaluator split above,
-  rather than running that more expensive review on every iteration
-  regardless of stakes.
-* *Conditional sub-agent spawning*: Delegating to a sub-agent only when a
-  discovery signal changes state, rather than spawning one on every tick of
-  the schedule.
+* *Iteration caps*: A fixed retry budget — three attempts, then escalate to a human — rather than
+  looping indefinitely against a check that never passes.
+* *Cheap triage before expensive verification*: A single fast model pass to decide whether a change
+  warrants the full generator/evaluator split above, rather than running that more expensive review
+  on every iteration regardless of stakes.
+* *Conditional sub-agent spawning*: Delegating to a sub-agent only when a discovery signal changes
+  state, rather than spawning one on every tick of the schedule.
 
-These are cost and safety defaults, distinct from the verification layering
-below — they bound how much a loop is allowed to spend, not whether its output
-is trustworthy.
+These are cost and safety defaults, distinct from the verification layering below — they bound how
+much a loop is allowed to spend, not whether its output is trustworthy.
 
 == Implementations
 
@@ -212,57 +183,48 @@ is trustworthy.
 * https://github.com/GitHubSecurityLab/seclab-taskflow-agent[GitHub Security Lab Taskflow Agent]
 * https://github.com/ohitslaurence/agent-loop[Laurence Davies' agent-loop]
 
-The https://www.openagentspec.dev/[Open Agent Spec] is an attempt to define a
-common schema for defining agents declaratively. It is strictly linear and
-cannot orchestrate multiple agents or complex workflows involving a mix of
-agentic and deterministic steps. It is unclear how widely this has been
-implemented as of July 2026.
+The https://www.openagentspec.dev/[Open Agent Spec] is an attempt to define a common schema for
+defining agents declaratively. It is strictly linear and cannot orchestrate multiple agents or
+complex workflows involving a mix of agentic and deterministic steps. It is unclear how widely this
+has been implemented as of July 2026.
 
-By May 2026, several harnesses — Codex, Hermes, and Claude Code among them —
-had shipped a `/goal` command that collapses much of the manual setup above
-into a single instruction. Rather than hand-wiring discovery, scheduling, and
-a stop condition, a goal declares the outcome and the harness keeps invoking
-the agent until it holds. OpenAI's own framing: "A Goal says: keep working
-until this outcome is true." This is a harness-layer convenience over the same
-five concerns, not a different architecture.
+By May 2026, several harnesses — Codex, Hermes, and Claude Code among them — had shipped a `/goal`
+command that collapses much of the manual setup above into a single instruction. Rather than
+hand-wiring discovery, scheduling, and a stop condition, a goal declares the outcome and the harness
+keeps invoking the agent until it holds. OpenAI's own framing: "A Goal says: keep working until this
+outcome is true." This is a harness-layer convenience over the same five concerns, not a different
+architecture.
 
 == Trade-offs and critique
 
-Practitioner reporting on loop engineering has surfaced doubts alongside the
-adoption:
+Practitioner reporting on loop engineering has surfaced doubts alongside the adoption:
 
-* *Drift*: across many unattended iterations, an agent can wander from the
-  original intent, each pass compounding a small deviation from the last
-  rather than converging on the goal.
+* *Drift*: across many unattended iterations, an agent can wander from the original intent, each
+  pass compounding a small deviation from the last rather than converging on the goal.
 
-* *Cost*: token spend scales with iteration count, and a loop with a loose or
-  absent stop condition can run up a bill disproportionate to the value of the
-  work — informally, "tokenmaxxing." This is what the cost controls above are
-  for.
+* *Cost*: token spend scales with iteration count, and a loop with a loose or absent stop condition
+  can run up a bill disproportionate to the value of the work — informally, "tokenmaxxing." This is
+  what the cost controls above are for.
 
-* *Comprehension debt*: speed can outpace understanding. Gergely Orosz's
-  newsletter frames it as a new counterpart to technical debt — a team ships
-  faster via loops than it can build a mental model of what shipped,
-  accumulating a gap that surfaces later as the cost of finally understanding
-  code nobody on the team read closely the first time. The corrective is to
-  engineer loops "like someone who intends to stay the engineer": keeping
-  xref:agent-handoff.adoc[*human review*] and judgement in the loop rather than
-  treating unattended operation as license to stop paying attention.
+* *Comprehension debt*: speed can outpace understanding. Gergely Orosz's newsletter frames it as a
+  new counterpart to technical debt — a team ships faster via loops than it can build a mental model
+  of what shipped, accumulating a gap that surfaces later as the cost of finally understanding code
+  nobody on the team read closely the first time. The corrective is to engineer loops "like someone
+  who intends to stay the engineer": keeping xref:agent-handoff.adoc[*human review*] and judgement
+  in the loop rather than treating unattended operation as license to stop paying attention.
 
-* *A possibly temporary workaround*: distinguished engineer Max Kanat-Alexander
-  has argued that loop engineering substantially compensates for a limited
-  context window — an agent forgets or drifts within a single long session, so
-  the loop restarts it with a trimmed, refreshed context. On this view, as
-  underlying context windows and long-horizon coherence improve, some of what
-  loop engineering solves today may need less scaffolding tomorrow. Whether
-  that holds depends on how much of the five-concern framework is really about
-  context limits versus genuinely separate concerns — discovery and
-  verification, for instance, do not obviously shrink as context windows grow.
+* *A possibly temporary workaround*: distinguished engineer Max Kanat-Alexander has argued that loop
+  engineering substantially compensates for a limited context window — an agent forgets or drifts
+  within a single long session, so the loop restarts it with a trimmed, refreshed context. On this
+  view, as underlying context windows and long-horizon coherence improve, some of what loop
+  engineering solves today may need less scaffolding tomorrow. Whether that holds depends on how
+  much of the five-concern framework is really about context limits versus genuinely separate
+  concerns — discovery and verification, for instance, do not obviously shrink as context windows
+  grow.
 
-Given these costs, Orosz's newsletter suggests loop engineering is a
-specialism most developers can defer: for engineers outside AI infrastructure
-roles, depth in xref:context-engineering.adoc[*context engineering*] pays off
-sooner than depth in loop engineering.
+Given these costs, Orosz's newsletter suggests loop engineering is a specialism most developers can
+defer: for engineers outside AI infrastructure roles, depth in
+xref:context-engineering.adoc[*context engineering*] pays off sooner than depth in loop engineering.
 
 ''''
 

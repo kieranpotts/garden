@@ -1,174 +1,146 @@
 = AI coding assistant
 
-An AI coding assistant is an xref:ai-assistant.adoc[*AI assistant*] specialized
-in helping developers write, understand, test, and refactor computer program
-code using large language models.
+An AI coding assistant is an xref:ai-assistant.adoc[*AI assistant*] specialized in helping
+developers write, understand, test, and refactor computer program code using large language models.
 
 An AI code assistant is typically a _front-end_ to one or more
-xref:large-language-model.adoc[*large language model*] services. The front-end
-provides the user experience (for example, editor integration, chat, patch
-application, and tool execution), while the back-end model provides the language
-model and reasoning capabilities.
+xref:large-language-model.adoc[*large language model*] services. The front-end provides the user
+experience (for example, editor integration, chat, patch application, and tool execution), while the
+back-end model provides the language model and reasoning capabilities.
 
-Coding assistant front-ends may be implemented via terminal-based interfaces
-(TUIs), standalone GUI applications, or via integrations into existing
-xref:integrated-development-environments.adoc[*IDEs*] and other software
-applications and services.
+Coding assistant front-ends may be implemented via terminal-based interfaces (TUIs), standalone GUI
+applications, or via integrations into existing
+xref:integrated-development-environments.adoc[*IDEs*] and other software applications and services.
 
-Some vendors of coding assistants develop and host their own models, fine-tuned
-for coding tasks, rather than relying entirely on third-party providers.
-Anthropic is an example. Its Claude models are optimized for coding tasks and
-the company provides its own first-party front-ends, such as Claude Code, which
-offers both terminal-based and GUI interfaces (including via IDE integrations).
+Some vendors of coding assistants develop and host their own models, fine-tuned for coding tasks,
+rather than relying entirely on third-party providers. Anthropic is an example. Its Claude models
+are optimized for coding tasks and the company provides its own first-party front-ends, such as
+Claude Code, which offers both terminal-based and GUI interfaces (including via IDE integrations).
 
-At the simplest end, coding assistants provide autocomplete and inline
-suggestions. More advanced assistants can explain unfamiliar code, generate
-tests, propose patches, and analyze a codebase and answer questions about it.
+At the simplest end, coding assistants provide autocomplete and inline suggestions. More advanced
+assistants can explain unfamiliar code, generate tests, propose patches, and analyze a codebase and
+answer questions about it.
 
-Some coding assistants also have xref:agent.adoc[*agentic*] properties. They can
-plan multi-step tasks, use tools such as terminal commands and test runners, and
-iteratively revise changes based on results and feedback – all with a high
-degree of autonomy.
+Some coding assistants also have xref:agent.adoc[*agentic*] properties. They can plan multi-step
+tasks, use tools such as terminal commands and test runners, and iteratively revise changes based on
+results and feedback – all with a high degree of autonomy.
 
 == TUIs
 
-* https://aider.chat/[Aider]: Open-source terminal coding assistant that
-  supports multiple model providers.
+* https://aider.chat/[Aider]: Open-source terminal coding assistant that supports multiple model
+  providers.
 
-* https://ampcode.com/[Amp]: Sourcegraph's commercial terminal-based agentic
-  coding tool, noted for its strong product UX.
+* https://ampcode.com/[Amp]: Sourcegraph's commercial terminal-based agentic coding tool, noted for
+  its strong product UX.
 
-* https://github.com/yetone/avante.nvim[avante.nvim]: Integrates various
-  generative AI services into Neovim.
+* https://github.com/yetone/avante.nvim[avante.nvim]: Integrates various generative AI services into
+  Neovim.
 
-* https://claude.ai/code[Claude Code]: Anthropic's first-party terminal-based
-  agentic coding assistant. Also available as a standalone GUI application, and
-  via IDE integrations.
+* https://claude.ai/code[Claude Code]: Anthropic's first-party terminal-based agentic coding
+  assistant. Also available as a standalone GUI application, and via IDE integrations.
 
-* https://github.com/openai/codex[Codex CLI]: OpenAI's open-source, Rust-based
-  local terminal agent. Lightweight and fast. (Codex is also available as an IDE
-  extension and cloud agent — see GUIs.)
+* https://github.com/openai/codex[Codex CLI]: OpenAI's open-source, Rust-based local terminal agent.
+  Lightweight and fast. (Codex is also available as an IDE extension and cloud agent — see GUIs.)
 
-* https://cursor.com/cli[Cursor CLI]: Cursor's terminal-native agent (beta),
-  with sandboxed permissions. Runs the Cursor agent headlessly in any
-  environment, including CI and scripts.
+* https://cursor.com/cli[Cursor CLI]: Cursor's terminal-native agent (beta), with sandboxed
+  permissions. Runs the Cursor agent headlessly in any environment, including CI and scripts.
 
-* https://github.com/google-gemini/gemini-cli[Gemini CLI]: Google's official
-  open-source terminal agent, strong on long-context repository exploration.
+* https://github.com/google-gemini/gemini-cli[Gemini CLI]: Google's official open-source terminal
+  agent, strong on long-context repository exploration.
 
-* https://goose-docs.ai/[Goose]: Open-source, general-purpose agentic AI
-  assistant that runs on your machine, widely used for coding. Built in Rust;
-  available as a CLI and a desktop app (macOS, Linux, Windows). Supports 15+
-  model providers and connects to tools via
+* https://goose-docs.ai/[Goose]: Open-source, general-purpose agentic AI assistant that runs on your
+  machine, widely used for coding. Built in Rust; available as a CLI and a desktop app (macOS,
+  Linux, Windows). Supports 15+ model providers and connects to tools via
   xref:model-context-protocol.adoc[*MCP*].
 
-* https://kilo.ai/cli[Kilo CLI]: Terminal agent from the Kilo project, with
-  selectable modes (Architect, Ask, Debug, Orchestrator) and a unified gateway
-  to 500+ models (bring-your-own-key). The CLI counterpart to the Kilo Code IDE
-  extensions (see GUIs).
+* https://kilo.ai/cli[Kilo CLI]: Terminal agent from the Kilo project, with selectable modes
+  (Architect, Ask, Debug, Orchestrator) and a unified gateway to 500+ models (bring-your-own-key).
+  The CLI counterpart to the Kilo Code IDE extensions (see GUIs).
 
-* https://github.com/mistralai/mistral-vibe[Mistral Vibe]: Mistral's
-  open-source agentic coding CLI, powered by the Devstral models. Integrates
-  into IDEs (eg. Zed) via the Agent Communication Protocol (ACP).
+* https://github.com/mistralai/mistral-vibe[Mistral Vibe]: Mistral's open-source agentic coding CLI,
+  powered by the Devstral models. Integrates into IDEs (eg. Zed) via the Agent Communication
+  Protocol (ACP).
 
-* https://github.com/Nano-Collective/nanocoder[Nanocoder]: Private, local-first
-  terminal agent built by a community collective. Bring your own model; designed
-  to run against local inference via Ollama, LM Studio, llama.cpp, or vLLM.
+* https://github.com/Nano-Collective/nanocoder[Nanocoder]: Private, local-first terminal agent built
+  by a community collective. Bring your own model; designed to run against local inference via
+  Ollama, LM Studio, llama.cpp, or vLLM.
 
-* https://opencode.ai/[OpenCode]: Open-source terminal-based agentic coding
-  assistant supporting 75+ LLM providers. Its optional
-  https://opencode.ai/docs/zen/[Zen] gateway offers a curated set of
+* https://opencode.ai/[OpenCode]: Open-source terminal-based agentic coding assistant supporting 75+
+  LLM providers. Its optional https://opencode.ai/docs/zen/[Zen] gateway offers a curated set of
   coding-benchmarked models.
 
-* https://github.com/All-Hands-AI/OpenHands[OpenHands]: Open-source autonomous
-  software-engineering platform (formerly OpenDevin), in which agents operate a
-  full browser + shell + editor loop. Usable headless/CLI and via a web UI.
+* https://github.com/All-Hands-AI/OpenHands[OpenHands]: Open-source autonomous software-engineering
+  platform (formerly OpenDevin), in which agents operate a full browser + shell + editor loop.
+  Usable headless/CLI and via a web UI.
 
 * https://pi.dev/[Pi]: Highly-customizable terminal-based coding agent.
 
-* https://github.com/QwenLM/qwen-code[Qwen Code]: Alibaba's open-source
-  terminal coding agent, optimized for the Qwen models. (A fork of Gemini CLI.)
+* https://github.com/QwenLM/qwen-code[Qwen Code]: Alibaba's open-source terminal coding agent,
+  optimized for the Qwen models. (A fork of Gemini CLI.)
 
 == GUIs
 
-* [Amazon Q Developer]: AWS's coding assistant, deeply integrated with AWS
-  tooling.
+* [Amazon Q Developer]: AWS's coding assistant, deeply integrated with AWS tooling.
 
-* https://www.augmentcode.com/[Augment Code]: Premium code generation service.
-  VS Code and JetBrains integrations.
+* https://www.augmentcode.com/[Augment Code]: Premium code generation service. VS Code and JetBrains
+  integrations.
 
-* https://bolt.new/[Bolt]: Build and deploy full-stack web applications using
-  only prompt engineering.
+* https://bolt.new/[Bolt]: Build and deploy full-stack web applications using only prompt
+  engineering.
 
-* https://github.com/cline/cline[Cline]: VS Code extensions with support for
-  multiple LLM providers.
+* https://github.com/cline/cline[Cline]: VS Code extensions with support for multiple LLM providers.
 
-* https://codeium.com/[Codeium]: Coding assistant-as-a-service. Extensions for
-  many IDEs and text editors.
+* https://codeium.com/[Codeium]: Coding assistant-as-a-service. Extensions for many IDEs and text
+  editors.
 
-* https://chatgpt.com/codex/[Codex]: OpenAI's coding agent, available as an IDE
-  extension and a cloud/web agent. Its terminal client is listed under TUIs
-  (Codex CLI).
+* https://chatgpt.com/codex/[Codex]: OpenAI's coding agent, available as an IDE extension and a
+  cloud/web agent. Its terminal client is listed under TUIs (Codex CLI).
 
 * https://sourcegraph.com/cody[Cody]: Coding assistant with IDE integration.
 
-* https://www.continue.dev/[Continue]: Coding assistant for VS Code and
-  JetBrains. Also available as a CLI tool, but this requires a paid
-  subscription.
+* https://www.continue.dev/[Continue]: Coding assistant for VS Code and JetBrains. Also available as
+  a CLI tool, but this requires a paid subscription.
 
-* https://cursor.com/[Cursor]: AI-native code editor, widely adopted for
-  agentic coding workflows.
+* https://cursor.com/[Cursor]: AI-native code editor, widely adopted for agentic coding workflows.
 
-* [Devin], by Cognition, is marketed as the first fully autonomous AI software
-  engineer.
+* [Devin], by Cognition, is marketed as the first fully autonomous AI software engineer.
 
-* https://factory.ai/[Factory]: Delegate tasks for "droids" from your IDE, CLI,
-  or CI/CD system.
+* https://factory.ai/[Factory]: Delegate tasks for "droids" from your IDE, CLI, or CI/CD system.
 
-* [Gemini Code Assist]: Google's IDE coding assistant, distinct from Jules and
-  Antigravity.
+* [Gemini Code Assist]: Google's IDE coding assistant, distinct from Jules and Antigravity.
 
-* https://github.com/features/copilot[GitHub Copilot]: Currently the most
-  widely adopted coding assistant. Deeply integrated into GitHub and VS Code.
-  Powered by OpenAI's models but supports other providers, including
-  locally-running models.
+* https://github.com/features/copilot[GitHub Copilot]: Currently the most widely adopted coding
+  assistant. Deeply integrated into GitHub and VS Code. Powered by OpenAI's models but supports
+  other providers, including locally-running models.
 
-* https://antigravity.google/[Google Antigravity]: VS Code-based integrated
-  development environment with built-in agent manager and Chrome browser
-  integration.
+* https://antigravity.google/[Google Antigravity]: VS Code-based integrated development environment
+  with built-in agent manager and Chrome browser integration.
 
-* https://jules.google/[Google Jules]: Software-as-a-service agentic coding
-  environment.
+* https://jules.google/[Google Jules]: Software-as-a-service agentic coding environment.
 
 * [JetBrains AI Assistant]: JetBrains' native coding assistant.
 
-* https://kilo.ai/[Kilo Code]: Open-source AI coding agent available as a suite
-  of IDE extensions, plus a CLI (see TUIs) and a cloud agent.
+* https://kilo.ai/[Kilo Code]: Open-source AI coding agent available as a suite of IDE extensions,
+  plus a CLI (see TUIs) and a cloud agent.
 
-* https://supermaven.com/[Supermaven]: Code assistance for VS Code and
-  JetBrains, and also Neovim. Acquired by Cursor in 2024 and likely to be
-  discontinued as a standalone product.
+* https://supermaven.com/[Supermaven]: Code assistance for VS Code and JetBrains, and also Neovim.
+  Acquired by Cursor in 2024 and likely to be discontinued as a standalone product.
 
 * https://replit.com/ai[Replit Agent]: AI coding assistant for Replit.
 
 * [Tabnine]: One of the oldest and most established code completion tools.
 
-* https://marketplace.visualstudio.com/items?itemName=rjmacarthy.twinny[Twinny]:
-  Lightweight VS Code extension, focused on fast local autocomplete (no longer
-  maintained).
+* https://marketplace.visualstudio.com/items?itemName=rjmacarthy.twinny[Twinny]: Lightweight VS Code
+  extension, focused on fast local autocomplete (no longer maintained).
 
-* https://v0.dev/[V0]: Text-to-design for React and Next.js front-ends, from
-  Vercel.
+* https://v0.dev/[V0]: Text-to-design for React and Next.js front-ends, from Vercel.
 
-* https://code.visualstudio.com/docs/copilot/agents-app[VS Code Agents]: A
-  companion app for VS Code dedicated to managing agentic sessions. Currently
-  available via the VS Code "insiders" channel.
+* https://code.visualstudio.com/docs/copilot/agents-app[VS Code Agents]: A companion app for VS Code
+  dedicated to managing agentic sessions. Currently available via the VS Code "insiders" channel.
 
-* https://www.warp.dev/[Warp]: Cursor-like desktop app for orchestrating local
-  and cloud agents.
+* https://www.warp.dev/[Warp]: Cursor-like desktop app for orchestrating local and cloud agents.
 
-* [Windsurf], by Codeium, is an AI-native code editor. Alongside Cursor, it is
-  widely adopted.
+* [Windsurf], by Codeium, is an AI-native code editor. Alongside Cursor, it is widely adopted.
 
 ''''
 

@@ -1,100 +1,89 @@
 = Pipe and filter
 
-*Pipe and filter* is an xref:architectural-pattern.adoc[*architectural pattern*]
-in which a data stream flows through a sequence of independent processing
-stages called *filters*, connected by conduits called *pipes*. Each filter
-performs a single, self-contained transformation on its input and writes the
-result to its output pipe. The pipe carries that data to the next filter,
-decoupling the two stages so that neither knows anything about the other
-beyond the format of what passes between them. The pattern is also referred
-to as *dataflow programming*, particularly when the focus is on the
-programming model rather than the system structure.
+*Pipe and filter* is an xref:architectural-pattern.adoc[*architectural pattern*] in which a data
+stream flows through a sequence of independent processing stages called *filters*, connected by
+conduits called *pipes*. Each filter performs a single, self-contained transformation on its input
+and writes the result to its output pipe. The pipe carries that data to the next filter, decoupling
+the two stages so that neither knows anything about the other beyond the format of what passes
+between them. The pattern is also referred to as *dataflow programming*, particularly when the focus
+is on the programming model rather than the system structure.
 
-The pattern was codified in _Pattern-Oriented Software Architecture_, where its
-canonical small-scale example is the Unix pipeline: a chain of small,
-single-purpose programs such as `grep`, `sort`, `uniq`, and `wc` strung
-together by the xref:shell.adoc[*shell*]'s pipe operator (`|`). Each program
-reads from standard input and writes to standard output, and the kernel's pipe
-mechanism connects them. The pipe was the decisive enabler of the
-xref:unix-philosophy.adoc[*Unix philosophy*]'s emphasis on small, composable
-tools, and the same shape recurs at every scale, from a one-line
-shell command to enterprise integration flows that span many machines.
+The pattern was codified in _Pattern-Oriented Software Architecture_, where its canonical
+small-scale example is the Unix pipeline: a chain of small, single-purpose programs such as `grep`,
+`sort`, `uniq`, and `wc` strung together by the xref:shell.adoc[*shell*]'s pipe operator (`|`). Each
+program reads from standard input and writes to standard output, and the kernel's pipe mechanism
+connects them. The pipe was the decisive enabler of the
+xref:unix-philosophy.adoc[*Unix philosophy*]'s emphasis on small, composable tools, and the same
+shape recurs at every scale, from a one-line shell command to enterprise integration flows that span
+many machines.
 
 == Structure
 
 A pipe-and-filter system has two kinds of component.
 
-* *Filters* are the processing stages. Each filter has a well-defined input
-  and output, transforms the data it receives, and holds no state between
-  items beyond what its transformation requires. A filter does not know what
-  produced its input or what consumes its output.
+* *Filters* are the processing stages. Each filter has a well-defined input and output, transforms
+  the data it receives, and holds no state between items beyond what its transformation requires. A
+  filter does not know what produced its input or what consumes its output.
 
-* *Pipes* are the connectors. They carry data from one filter's output to the
-  next filter's input, and may buffer it. By taking responsibility for
-  transport and buffering out of the filters, pipes keep the filters simple and
-  interchangeable.
+* *Pipes* are the connectors. They carry data from one filter's output to the next filter's input,
+  and may buffer it. By taking responsibility for transport and buffering out of the filters, pipes
+  keep the filters simple and interchangeable.
 
-Because filters are independent and uniform in shape, the same filter can be
-reused in many pipelines, and a pipeline can be restructured with stages
-added, removed, or reordered without rewriting the filters themselves.
-Filters that have no inter-stage dependencies can also run in parallel, with
-the pipes absorbing the differences in speed between stages.
+Because filters are independent and uniform in shape, the same filter can be reused in many
+pipelines, and a pipeline can be restructured with stages added, removed, or reordered without
+rewriting the filters themselves. Filters that have no inter-stage dependencies can also run in
+parallel, with the pipes absorbing the differences in speed between stages.
 
 == Where it appears
 
-The pattern's home territory is data integration and transformation, where a
-fixed sequence of stages is the natural shape of the work.
+The pattern's home territory is data integration and transformation, where a fixed sequence of
+stages is the natural shape of the work.
 
-* xref:etl.adoc[*Extract, transform, load (ETL)*] pipelines are pipe-and-filter
-  systems almost by definition. Extract, transform, and load are three
-  filters, and the staging tables and queues between them are the pipes.
+* xref:etl.adoc[*Extract, transform, load (ETL)*] pipelines are pipe-and-filter systems almost by
+  definition. Extract, transform, and load are three filters, and the staging tables and queues
+  between them are the pipes.
 
-* *xref:stream-processing-systems.adoc[Stream processing*] systems generalize
-  the pattern to unbounded data. Filters operate on records as they arrive,
-  and the pipes are log-backed topics that retain and replay the stream.
+* *xref:stream-processing-systems.adoc[Stream processing*] systems generalize the pattern to
+  unbounded data. Filters operate on records as they arrive, and the pipes are log-backed topics
+  that retain and replay the stream.
 
-* Enterprise application integration (EAI) uses pipe-and-filter to mediate
-  message flows between systems, with message channels acting as the pipes.
+* Enterprise application integration (EAI) uses pipe-and-filter to mediate message flows between
+  systems, with message channels acting as the pipes.
 
 == When it is not the right shape
 
-Pipe and filter assumes the work decomposes into a fixed, linear sequence of
-stages. When a problem has no known deterministic strategy and the next step
-depends on what has been learned so far,
-xref:blackboard.adoc[*blackboard*] is the better fit. It lets independent
-specialists cooperate opportunistically through a shared structure rather than
-a fixed pipeline.
+Pipe and filter assumes the work decomposes into a fixed, linear sequence of stages. When a problem
+has no known deterministic strategy and the next step depends on what has been learned so far,
+xref:blackboard.adoc[*blackboard*] is the better fit. It lets independent specialists cooperate
+opportunistically through a shared structure rather than a fixed pipeline.
 
-Pipe and filter is also a *non-mediated* pattern: data flows through the pipes
-themselves, with no central component deciding which stage runs next. Where
-stages have complex dependencies, or where the workflow needs centralized
-retries, timeouts, and compensation,
-xref:execution-orchestrator.adoc[*execution orchestrator*] adds a coordinator
-on top. The two patterns are often combined. The orchestrator sequences
-coarse-grained stages, each of which is internally a pipe-and-filter pipeline.
+Pipe and filter is also a *non-mediated* pattern: data flows through the pipes themselves, with no
+central component deciding which stage runs next. Where stages have complex dependencies, or where
+the workflow needs centralized retries, timeouts, and compensation,
+xref:execution-orchestrator.adoc[*execution orchestrator*] adds a coordinator on top. The two
+patterns are often combined. The orchestrator sequences coarse-grained stages, each of which is
+internally a pipe-and-filter pipeline.
 
 == Trade-offs
 
-* *Simplicity and reusability.* Uniform filter interfaces make stages easy to
-  combine, test in isolation, and reuse across pipelines.
+* *Simplicity and reusability.* Uniform filter interfaces make stages easy to combine, test in
+  isolation, and reuse across pipelines.
 
-* *Parallelism.* Independent filters can run concurrently, and buffering in
-  the pipes smooths out differences in stage speed. The model maps naturally
-  onto xref:parallelism.adoc[*parallel*] execution.
+* *Parallelism.* Independent filters can run concurrently, and buffering in the pipes smooths out
+  differences in stage speed. The model maps naturally onto xref:parallelism.adoc[*parallel*]
+  execution.
 
-* *No feedback or branching.* The classic shape is linear and one-way. Loops,
-  conditional routing, and request/response interactions have to be bolted on,
-  and once they are, much of the pattern's simplicity is lost.
+* *No feedback or branching.* The classic shape is linear and one-way. Loops, conditional routing,
+  and request/response interactions have to be bolted on, and once they are, much of the pattern's
+  simplicity is lost.
 
-* *Error handling across stages.* A failure in a downstream filter does not
-  naturally propagate back to the stage that produced the bad input. Error
-  handling tends to be added as out-of-band side channels, which erodes the
-  uniformity of the pipe abstraction.
+* *Error handling across stages.* A failure in a downstream filter does not naturally propagate back
+  to the stage that produced the bad input. Error handling tends to be added as out-of-band side
+  channels, which erodes the uniformity of the pipe abstraction.
 
-* *Latency.* Each pipe is a boundary, and each filter is a transformation. In
-  a long pipeline the end-to-end latency is the sum of the stages plus any
-  buffering, which makes the pattern better suited to throughput-oriented
-  workloads than to latency-bound ones.
+* *Latency.* Each pipe is a boundary, and each filter is a transformation. In a long pipeline the
+  end-to-end latency is the sum of the stages plus any buffering, which makes the pattern better
+  suited to throughput-oriented workloads than to latency-bound ones.
 
 == See also
 
@@ -111,6 +100,5 @@ coarse-grained stages, each of which is internally a pipe-and-filter pipeline.
 
 * Buschmann, F., Meunier, R., Rohnert, H., Sommerlad, P., and Stal, M. (1996).
   _Pattern-Oriented Software Architecture: A System of Patterns_. Wiley.
-* Ho, R. (2010). _Scalable System Design Patterns_. Pragmatic Programming
-  Techniques (blog).
+* Ho, R. (2010). _Scalable System Design Patterns_. Pragmatic Programming Techniques (blog).
   https://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html

@@ -1,97 +1,84 @@
 = Vector database
 
-A *vector database* is a xref:databases.adoc[*database*] designed to store,
-index, and retrieve *vector embeddings* – mathematical representations of data
-in a high-dimensional space – so that records can be found by *similarity*
-rather than by exact match. Where a xref:relational-databases.adoc[*relational database*] looks up rows whose column values satisfy a predicate, a vector
-database returns the items whose vectors lie closest to a query vector, ranked
-by a distance function such as cosine similarity, dot product, or Euclidean
-distance. The closest items are the *nearest neighbors* of the query.
+A *vector database* is a xref:databases.adoc[*database*] designed to store, index, and retrieve
+*vector embeddings* – mathematical representations of data in a high-dimensional space – so that
+records can be found by *similarity* rather than by exact match. Where a
+xref:relational-databases.adoc[*relational database*] looks up rows whose column values satisfy a
+predicate, a vector database returns the items whose vectors lie closest to a query vector, ranked
+by a distance function such as cosine similarity, dot product, or Euclidean distance. The closest
+items are the *nearest neighbors* of the query.
 
 The vectors themselves are produced by *embedding models*, a class of
-xref:machine-learning.adoc[*machine learning*] model trained so that
-semantically similar inputs map to nearby points in the space. Text is the
-most common input – a sentence, a paragraph, or a whole document is encoded
-into a single vector of a few hundred to several thousand dimensions – but
-images, audio, code, and tabular rows can be embedded just as well. The
-embedding turns an item's meaning into geometry: items that "mean the same
-thing" sit close together, and unrelated items sit far apart. That property is
-what makes similarity search work, and it is also why vector databases have
-become central to
-xref:natural-language-processing.adoc[*natural language processing*] and
+xref:machine-learning.adoc[*machine learning*] model trained so that semantically similar inputs map
+to nearby points in the space. Text is the most common input – a sentence, a paragraph, or a whole
+document is encoded into a single vector of a few hundred to several thousand dimensions – but
+images, audio, code, and tabular rows can be embedded just as well. The embedding turns an item's
+meaning into geometry: items that "mean the same thing" sit close together, and unrelated items sit
+far apart. That property is what makes similarity search work, and it is also why vector databases
+have become central to xref:natural-language-processing.adoc[*natural language processing*] and
 generative AI workloads.
 
 == Nearest-neighbor search and the ANN trade-off
 
-The core query against a vector database is *k-nearest neighbor (k-NN) search*:
-given a query vector, return the *k* stored vectors closest to it. A brute
-force scan computes the distance to every vector and sorts the results. That
-is exact but O(n), and on a corpus of millions or billions of vectors it is far
-too slow for interactive queries.
+The core query against a vector database is *k-nearest neighbor (k-NN) search*: given a query
+vector, return the *k* stored vectors closest to it. A brute force scan computes the distance to
+every vector and sorts the results. That is exact but O(n), and on a corpus of millions or billions
+of vectors it is far too slow for interactive queries.
 
-Practical vector databases instead build an *approximate nearest neighbor (ANN)* index, a specialized data structure – distinct from a conventional
-xref:database-indexes.adoc[*index*] – that prunes the search space and returns
-"good enough" neighbors in sub-millisecond time. The trade-off is *recall*: the
-index may miss some true nearest neighbors in exchange for speed and lower
-memory. The main families of ANN index are:
+Practical vector databases instead build an *approximate nearest neighbor (ANN)* index, a
+specialized data structure – distinct from a conventional xref:database-indexes.adoc[*index*] – that
+prunes the search space and returns "good enough" neighbors in sub-millisecond time. The trade-off
+is *recall*: the index may miss some true nearest neighbors in exchange for speed and lower memory.
+The main families of ANN index are:
 
-* *Hierarchical Navigable Small World (HNSW)* graphs. A layered proximity graph
-  that navigates from coarse to fine. HNSW consistently tops ANN benchmarks and
-  is the default in many systems.
-* *Inverted file (IVF)* indexes. The vector space is partitioned into cells
-  with a clustering algorithm, and only the cell closest to the query is
-  searched. Often combined with *product quantization (PQ)*, which compresses
-  vectors into short codes to fit larger corpora in memory.
-* *Locality-sensitive hashing (LSH)*. Hash functions that map similar vectors to
-  the same bucket, collapsing the search into a bucket lookup.
+* *Hierarchical Navigable Small World (HNSW)* graphs. A layered proximity graph that navigates from
+  coarse to fine. HNSW consistently tops ANN benchmarks and is the default in many systems.
+* *Inverted file (IVF)* indexes. The vector space is partitioned into cells with a clustering
+  algorithm, and only the cell closest to the query is searched. Often combined with
+  *product quantization (PQ)*, which compresses vectors into short codes to fit larger corpora in
+  memory.
+* *Locality-sensitive hashing (LSH)*. Hash functions that map similar vectors to the same bucket,
+  collapsing the search into a bucket lookup.
 
-Real systems frequently compose these, eg. an IVF partition wrapping an HNSW
-graph inside each cell, with PQ-compressed vectors. The choice is a tuning
-exercise: recall against latency against memory against index-build time.
+Real systems frequently compose these, eg. an IVF partition wrapping an HNSW graph inside each cell,
+with PQ-compressed vectors. The choice is a tuning exercise: recall against latency against memory
+against index-build time.
 
 == Hybrid search and metadata filtering
 
-A pure vector query finds items that are semantically close, but it ignores
-everything else an application might know. A vector database therefore pairs
-similarity with *metadata filtering* – restricting the nearest-neighbor search
-to items that also satisfy a structured predicate, such as a tenant ID, a
-date range, or a tag. Many also support *hybrid search*, which fuses vector
-similarity with lexical scoring (typically
-xref:document-search.adoc[*BM25*]) so that exact keyword matches and semantic
-matches reinforce each other. Reciprocal rank fusion is a common way to merge
-the two result lists. See xref:document-search.adoc[*document search*] for the
-retrieval model this extends.
+A pure vector query finds items that are semantically close, but it ignores everything else an
+application might know. A vector database therefore pairs similarity with *metadata filtering* –
+restricting the nearest-neighbor search to items that also satisfy a structured predicate, such as a
+tenant ID, a date range, or a tag. Many also support *hybrid search*, which fuses vector similarity
+with lexical scoring (typically xref:document-search.adoc[*BM25*]) so that exact keyword matches and
+semantic matches reinforce each other. Reciprocal rank fusion is a common way to merge the two
+result lists. See xref:document-search.adoc[*document search*] for the retrieval model this extends.
 
 == Use cases
 
-Vector databases back any application that ranks items by similarity rather
-than by equality:
+Vector databases back any application that ranks items by similarity rather than by equality:
 
-* *Semantic search* – retrieving passages whose meaning matches a query, even
-  when no terms overlap, as described in
-  xref:document-search.adoc[*document search*].
+* *Semantic search* – retrieving passages whose meaning matches a query, even when no terms overlap,
+  as described in xref:document-search.adoc[*document search*].
 * *Recommendation systems* – finding items similar to one a user liked.
-* *Multimodal search* – querying with one modality (eg. a photo) and retrieving
-  related items in another (eg. product listings).
-* *Deduplication and near-duplicate detection* – clustering vectors that fall
-  within a small radius of one another.
-* *Retrieval-augmented generation (RAG)* – the use case that drove the category's
-  growth after 2023. A corpus is embedded into a vector database, the user's
-  prompt is embedded, and the nearest passages are retrieved and injected into
-  the model's context window so it answers from that evidence rather than from
-  its frozen training data. See
-  xref:large-language-model.adoc[*large language models*] for the full RAG
-  pattern.
+* *Multimodal search* – querying with one modality (eg. a photo) and retrieving related items in
+  another (eg. product listings).
+* *Deduplication and near-duplicate detection* – clustering vectors that fall within a small radius
+  of one another.
+* *Retrieval-augmented generation (RAG)* – the use case that drove the category's growth after 2023.
+  A corpus is embedded into a vector database, the user's prompt is embedded, and the nearest
+  passages are retrieved and injected into the model's context window so it answers from that
+  evidence rather than from its frozen training data. See
+  xref:large-language-model.adoc[*large language models*] for the full RAG pattern.
 
 == Where vector databases fit in the landscape
 
-Vector databases are a young family. Some are purpose-built – Milvus, Pinecone,
-Weaviate, Qdrant, Chroma – while others are vector capabilities added to an
-existing store: `pgvector` for PostgreSQL, Atlas Vector Search for MongoDB,
-OpenSearch and Elasticsearch vector indexes, and Redis Stack. The
-xref:nosql-databases.adoc[*NoSQL*] category that emerged from the web-scale
-stores of the late 2000s supplied much of the sharding, replication, and
-eventual-consistency machinery that purpose-built vector databases reuse.
+Vector databases are a young family. Some are purpose-built – Milvus, Pinecone, Weaviate, Qdrant,
+Chroma – while others are vector capabilities added to an existing store: `pgvector` for PostgreSQL,
+Atlas Vector Search for MongoDB, OpenSearch and Elasticsearch vector indexes, and Redis Stack. The
+xref:nosql-databases.adoc[*NoSQL*] category that emerged from the web-scale stores of the late 2000s
+supplied much of the sharding, replication, and eventual-consistency machinery that purpose-built
+vector databases reuse.
 
 [IMPORTANT]
 ====
@@ -102,13 +89,12 @@ reindexed. Treating embeddings as a stable, immutable datatype is a common and
 costly mistake.
 ====
 
-The other characteristic pitfall is the *curse of dimensionality*. As the number
-of dimensions grows, the distance between any two random vectors converges, and
-nearest-neighbor distinctions blur. ANN indexes and distance-aware embedding
-models are what keep high-dimensional similarity search tractable, but they do
-not remove the underlying cost: vector indexes are memory-hungry, and a corpus
-that fits comfortably as text may need several times its size as vectors plus
-index overhead.
+The other characteristic pitfall is the *curse of dimensionality*. As the number of dimensions
+grows, the distance between any two random vectors converges, and nearest-neighbor distinctions
+blur. ANN indexes and distance-aware embedding models are what keep high-dimensional similarity
+search tractable, but they do not remove the underlying cost: vector indexes are memory-hungry, and
+a corpus that fits comfortably as text may need several times its size as vectors plus index
+overhead.
 
 == See also
 
@@ -124,8 +110,11 @@ index overhead.
 == References
 
 * Pan, Wang & Li (2023).
-  link:https://arxiv.org/abs/2310.14021[_Survey of vector database management systems_]. arXiv:2310.14021.
+  link:https://arxiv.org/abs/2310.14021[_Survey of vector database management systems_].
+  arXiv:2310.14021.
 * Lewis et al. (2020).
-  link:https://arxiv.org/abs/2005.11401[_Retrieval-augmented generation for knowledge-intensive NLP tasks_]. NeurIPS 33.
+  link:https://arxiv.org/abs/2005.11401[_Retrieval-augmented generation for knowledge-intensive NLP tasks_].
+  NeurIPS 33.
 * Aumüller, Bernhardsson & Faithfull (2017).
-  link:https://arxiv.org/abs/1807.05614[_ANN-Benchmarks: a benchmarking tool for approximate nearest neighbor algorithms_]. SISAP.
+  link:https://arxiv.org/abs/1807.05614[_ANN-Benchmarks: a benchmarking tool for approximate nearest neighbor algorithms_].
+  SISAP.

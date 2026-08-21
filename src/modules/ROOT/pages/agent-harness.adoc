@@ -1,405 +1,342 @@
 = Agent harness
 
-An *agent harness* is the execution environment and control framework that wraps
-an xref:agent.adoc[*AI agent*] so it can operate reliably against tools,
-systems, and tasks.
+An *agent harness* is the execution environment and control framework that wraps an
+xref:agent.adoc[*AI agent*] so it can operate reliably against tools, systems, and tasks.
 
-*Agent harness engineering* is the discipline of designing, building, and
-operating these harnesses. It works backwards from the behaviour you want the
-agent to produce: for each thing the model cannot do out of the box — durable
-state, code execution, up-to-date knowledge, self-verification — design a
-harness feature that supplies it. As models grow more capable, harnesses are
-used less to patch over model deficiencies and more to engineer systems around
-model intelligence that make it useful.
+*Agent harness engineering* is the discipline of designing, building, and operating these harnesses.
+It works backwards from the behaviour you want the agent to produce: for each thing the model cannot
+do out of the box — durable state, code execution, up-to-date knowledge, self-verification — design
+a harness feature that supplies it. As models grow more capable, harnesses are used less to patch
+over model deficiencies and more to engineer systems around model intelligence that make it useful.
 
 ----
 agent = model + harness
 ----
 
-If the model is the decision-maker, the harness is the runtime infrastructure
-that lets it act – the scaffolding around the model that handles:
+If the model is the decision-maker, the harness is the runtime infrastructure that lets it act – the
+scaffolding around the model that handles:
 
 * *Tool invocation*: Shell, APIs, browser, database, code execution.
 * *State management*: Memory, context, scratchpads.
 * *Input/output mediation*: Formatting prompts, validating outputs.
 * *Safety guardrails*: Permissions, sandboxing, rate limits.
-* *Observation and feedback loops*: Capturing tool results and feeding them
-  back.
+* *Observation and feedback loops*: Capturing tool results and feeding them back.
 * *Task orchestration*: Retry logic, planning, branching, checkpoints.
 
-The term is borrowed from the concept of the
-xref:test-harness.adoc[*test harness*], which is the
-xref:scaffolding.adoc[*scaffolding*] of drivers, stubs, and fixtures that wraps
-a unit of code so it can be exercised in isolation – supplying its inputs,
-invoking it repeatedly, and capturing its outputs for inspection. An agent
-harness plays the same role for a model. It wraps the model in a controlled,
-observable environment, feeds it inputs (prompts, context, tools), and captures
-its outputs (tool calls and their results) so they can be validated and fed
-back.
+The term is borrowed from the concept of the xref:test-harness.adoc[*test harness*], which is the
+xref:scaffolding.adoc[*scaffolding*] of drivers, stubs, and fixtures that wraps a unit of code so it
+can be exercised in isolation – supplying its inputs, invoking it repeatedly, and capturing its
+outputs for inspection. An agent harness plays the same role for a model. It wraps the model in a
+controlled, observable environment, feeds it inputs (prompts, context, tools), and captures its
+outputs (tool calls and their results) so they can be validated and fed back.
 
-In both cases the harness is not the thing being run – it is the rig that makes
-running it safe, repeatable, and observable.
+In both cases the harness is not the thing being run – it is the rig that makes running it safe,
+repeatable, and observable.
 
 There are two broad categories of agent harness in practice:
 
-* *Developer-facing harnesses*: Tools used by software developers to delegate
-  coding tasks to an agent, such as file editing, shell execution, running
-  tests, and reading documentation. The developer specifies a goal, and the
-  harness plans and executes a sequence of steps to reach it autonomously.
-  Examples include Claude Code, OpenCode, and Aider. These are distinct from
-  xref:ai-coding-assistant.adoc[*IDE coding assistants*] (GitHub Copilot,
-  Cursor), which are inline tools where the developer drives the interaction at
-  a fine-grained level. Developer-facing harnesses operate at the task level.
-  IDE assistants operate at the line or block level.
+* *Developer-facing harnesses*: Tools used by software developers to delegate coding tasks to an
+  agent, such as file editing, shell execution, running tests, and reading documentation. The
+  developer specifies a goal, and the harness plans and executes a sequence of steps to reach it
+  autonomously. Examples include Claude Code, OpenCode, and Aider. These are distinct from
+  xref:ai-coding-assistant.adoc[*IDE coding assistants*] (GitHub Copilot, Cursor), which are inline
+  tools where the developer drives the interaction at a fine-grained level. Developer-facing
+  harnesses operate at the task level. IDE assistants operate at the line or block level.
 
-* *Production/infrastructure harnesses*: Platforms for deploying, running, and
-  governing agents in production systems. These manage agent lifecycles, enforce
-  permission boundaries, wire observability pipelines, and coordinate
-  multi-agent workflows. Examples include Microsoft Agent Framework, n8n, and
-  OpenClaw.
+* *Production/infrastructure harnesses*: Platforms for deploying, running, and governing agents in
+  production systems. These manage agent lifecycles, enforce permission boundaries, wire
+  observability pipelines, and coordinate multi-agent workflows. Examples include Microsoft Agent
+  Framework, n8n, and OpenClaw.
 
-For production and multi-agent systems, *harness engineering* broadens into
-something close to platform engineering for agents: defining agent lifecycles,
-enforcing permission boundaries, wiring observability pipelines, and
-xref:agent-orchestration.adoc[*orchestrating*] multi-agent workflows. The
-concern is the reliability, governance, and operational characteristics of
-agentic systems, rather than the raw capability of the underlying model. It is
-an emerging discipline, analogous to platform engineering in the DevOps world.
+For production and multi-agent systems, *harness engineering* broadens into something close to
+platform engineering for agents: defining agent lifecycles, enforcing permission boundaries, wiring
+observability pipelines, and xref:agent-orchestration.adoc[*orchestrating*] multi-agent workflows.
+The concern is the reliability, governance, and operational characteristics of agentic systems,
+rather than the raw capability of the underlying model. It is an emerging discipline, analogous to
+platform engineering in the DevOps world.
 
 == The factory model
 
-In xref:agentic-engineering.adoc[*agentic engineering*] the developer's primary
-output is not code but the system that produces code – specifications and context
-that define what to build, agents that translate specifications into
-implementation, tests and quality gates that verify correctness, feedback loops
-that route failures back to agents for correction, and guardrails that constrain
-agents to safe, predictable behaviour. A factory manager does not assemble every
-widget by hand; they design the assembly line and ensure quality control. The
-modern developer designs the development system and ensures its output meets the
-required standard, giving agents success criteria rather than step-by-step
-instructions and letting them iterate.
+In xref:agentic-engineering.adoc[*agentic engineering*] the developer's primary output is not code
+but the system that produces code – specifications and context that define what to build, agents
+that translate specifications into implementation, tests and quality gates that verify correctness,
+feedback loops that route failures back to agents for correction, and guardrails that constrain
+agents to safe, predictable behaviour. A factory manager does not assemble every widget by hand;
+they design the assembly line and ensure quality control. The modern developer designs the
+development system and ensures its output meets the required standard, giving agents success
+criteria rather than step-by-step instructions and letting them iterate.
 
-Most agent failures, examined honestly, are *configuration failures*. When an
-agent does something wrong the first instinct is to blame the model, but more
-often the failure traces to a missing tool, a vague rule, an absent guardrail,
-or a context window stuffed with noise – the harness, not the model, is usually
-the lever.
+Most agent failures, examined honestly, are *configuration failures*. When an agent does something
+wrong the first instinct is to blame the model, but more often the failure traces to a missing tool,
+a vague rule, an absent guardrail, or a context window stuffed with noise – the harness, not the
+model, is usually the lever.
 
 === Harness across the SDLC
 
-The harness is present in every phase where an agent operates. In requirements
-and planning it is configured – rule files, tool access, and architectural
-constraints set the boundaries before work begins. In implementation it runs –
-sandboxes, execution environments, and tools keep the model focused, secure, and
-productive. In testing and QA it is the feedback loop – the orchestration runs
-tests in a sandboxed terminal, captures failure output, and routes it back to
-the model, the xref:agent-loop.adoc[*think-act-observe loop*]. In code review,
-deployment, and maintenance it is observed – deterministic hooks block bad
-commits, and observability tracks token cost, latency, and drift so engineers
-can audit why an agent made a specific decision. See
-xref:loop-engineering.adoc[*loop engineering*] and
-xref:automated-testing.adoc[*automated testing*].
+The harness is present in every phase where an agent operates. In requirements and planning it is
+configured – rule files, tool access, and architectural constraints set the boundaries before work
+begins. In implementation it runs – sandboxes, execution environments, and tools keep the model
+focused, secure, and productive. In testing and QA it is the feedback loop – the orchestration runs
+tests in a sandboxed terminal, captures failure output, and routes it back to the model, the
+xref:agent-loop.adoc[*think-act-observe loop*]. In code review, deployment, and maintenance it is
+observed – deterministic hooks block bad commits, and observability tracks token cost, latency, and
+drift so engineers can audit why an agent made a specific decision. See
+xref:loop-engineering.adoc[*loop engineering*] and xref:automated-testing.adoc[*automated testing*].
 
 === Model routing
 
-A well-designed harness routes tasks across models by complexity. Large,
-advanced models handle requirements, architecture, and hard implementation;
-smaller, faster, cheaper models handle test generation, code review, and CI/CD
-monitoring. Orchestrating a multi-model ecosystem maintains quality while
-driving down operational token cost. See
+A well-designed harness routes tasks across models by complexity. Large, advanced models handle
+requirements, architecture, and hard implementation; smaller, faster, cheaper models handle test
+generation, code review, and CI/CD monitoring. Orchestrating a multi-model ecosystem maintains
+quality while driving down operational token cost. See
 xref:large-language-model.adoc[*large language models*] for model tiers and
 xref:agent-orchestration.adoc[*agent orchestration*] for routing.
 
 == Environment, filesystem, and tools
 
-The *environment* is the world the agent acts on – anything outside the harness
-the agent perceives through tool results and changes through tool calls. The
-harness runs the agent; the environment is what the agent works in. A file like
-`AGENTS.md` lives in the environment; the harness loads it into the context
-window. A filesystem is the most common environment but not the only one – a
-database, a remote API, a browser session can all be environments.
+The *environment* is the world the agent acts on – anything outside the harness the agent perceives
+through tool results and changes through tool calls. The harness runs the agent; the environment is
+what the agent works in. A file like `AGENTS.md` lives in the environment; the harness loads it into
+the context window. A filesystem is the most common environment but not the only one – a database, a
+remote API, a browser session can all be environments.
 
-The agent only sees the environment when it looks. Its picture is a collection of
-snapshots, each accurate when taken. If a file changes after the agent read it,
-the agent keeps reasoning from the stale copy until something prompts a re-read.
-The environment is the layer that persists. It is always stateful. A session's
-context is gone when the session ends, but files remain for the next session.
-You decide how big the environment is – a xref:sandbox.adoc[*sandbox*] shrinks
-it, adding a tool extends it. See also xref:agent-memory.adoc[*agent memory*]
-(how the agent carries information across a session) and
-xref:agent-handoff.adoc[*agent handoff*] (how work survives across sessions).
+The agent only sees the environment when it looks. Its picture is a collection of snapshots, each
+accurate when taken. If a file changes after the agent read it, the agent keeps reasoning from the
+stale copy until something prompts a re-read. The environment is the layer that persists. It is
+always stateful. A session's context is gone when the session ends, but files remain for the next
+session. You decide how big the environment is – a xref:sandbox.adoc[*sandbox*] shrinks it, adding a
+tool extends it. See also xref:agent-memory.adoc[*agent memory*] (how the agent carries information
+across a session) and xref:agent-handoff.adoc[*agent handoff*] (how work survives across sessions).
 
-A *filesystem* is a tree of files and directories the agent reads, writes, and
-executes within – the default kind of environment for a coding agent. `AGENTS.md`,
-xref:agent-skills.adoc[*skills*], source code, build scripts, and tool configs
-all live in a filesystem. The agent touches it only through tool calls. Some
-harnesses load the current directory's filenames into context by default (not
-contents, just the tree) as context pointers. A filesystem is shared with you –
-the files the agent edits are the same ones you open in your editor and diff in
-git.
+A *filesystem* is a tree of files and directories the agent reads, writes, and executes within – the
+default kind of environment for a coding agent. `AGENTS.md`, xref:agent-skills.adoc[*skills*],
+source code, build scripts, and tool configs all live in a filesystem. The agent touches it only
+through tool calls. Some harnesses load the current directory's filenames into context by default
+(not contents, just the tree) as context pointers. A filesystem is shared with you – the files the
+agent edits are the same ones you open in your editor and diff in git.
 
-The filesystem is arguably the most foundational harness primitive because of
-what it unlocks. Models were trained on billions of tokens of filesystem use, so
-file operations are a natural interface. It gives the agent a workspace to read
-data, code, and documentation, and lets it offload information that does not fit
-in the context window rather than holding everything in working memory. Work
-can be incrementally added and intermediate outputs stored, so state outlasts a
-single session — see xref:agent-handoff.adoc[*agent handoff*] and
-xref:agent-memory.adoc[*agent memory*]. The filesystem is also a natural
-collaboration surface: multiple agents and humans can coordinate through shared
-files, which is what xref:agent-orchestration.adoc[*agent teams*] rely on.
-Adding git lets an agent track work, roll back errors, and branch experiments,
-and lets a fresh agent quickly get up to speed on a project's history.
+The filesystem is arguably the most foundational harness primitive because of what it unlocks.
+Models were trained on billions of tokens of filesystem use, so file operations are a natural
+interface. It gives the agent a workspace to read data, code, and documentation, and lets it offload
+information that does not fit in the context window rather than holding everything in working
+memory. Work can be incrementally added and intermediate outputs stored, so state outlasts a single
+session — see xref:agent-handoff.adoc[*agent handoff*] and xref:agent-memory.adoc[*agent memory*].
+The filesystem is also a natural collaboration surface: multiple agents and humans can coordinate
+through shared files, which is what xref:agent-orchestration.adoc[*agent teams*] rely on. Adding git
+lets an agent track work, roll back errors, and branch experiments, and lets a fresh agent quickly
+get up to speed on a project's history.
 
-A *tool* is a function the harness exposes for the agent to call – Read, Write,
-Bash, Search. Tools are how an agent perceives and acts on the environment. It
-cannot see the environment except through tool results, and cannot change it
-except through tool calls. Each tool call costs an extra model provider request:
-the result goes back to the model before it can decide what is next. A tool is
-defined by a name, a description, and a parameter schema. The model chooses a
-tool the same way it produces everything else – by writing tokens, a structured
-call with arguments. The model never executes anything. The harness reads the
-call, runs the function, and sends back the result.
+A *tool* is a function the harness exposes for the agent to call – Read, Write, Bash, Search. Tools
+are how an agent perceives and acts on the environment. It cannot see the environment except through
+tool results, and cannot change it except through tool calls. Each tool call costs an extra model
+provider request: the result goes back to the model before it can decide what is next. A tool is
+defined by a name, a description, and a parameter schema. The model chooses a tool the same way it
+produces everything else – by writing tokens, a structured call with arguments. The model never
+executes anything. The harness reads the call, runs the function, and sends back the result.
 
-The tool list sets what the agent can do. A capable model with a narrow tool set
-is a narrow agent. Rather than pre-designing a tool for every possible action,
-the default general-purpose strategy is to give the agent a shell: bash and code
-execution let the model solve problems autonomously by writing and running code,
-designing its own tools on the fly instead of being constrained to a fixed set.
-Tool definitions occupy context on every request, so a large tool set has a
-standing cost before any tool is called. Many similarly-described tools make the
-model worse at picking the right one. Large tool outputs also clutter the
-context window — harnesses mitigate this *tool-call offloading* by keeping the
-head and tail tokens of a result and offloading the full output to the
-filesystem, where the model can retrieve it if needed (see
+The tool list sets what the agent can do. A capable model with a narrow tool set is a narrow agent.
+Rather than pre-designing a tool for every possible action, the default general-purpose strategy is
+to give the agent a shell: bash and code execution let the model solve problems autonomously by
+writing and running code, designing its own tools on the fly instead of being constrained to a fixed
+set. Tool definitions occupy context on every request, so a large tool set has a standing cost
+before any tool is called. Many similarly-described tools make the model worse at picking the right
+one. Large tool outputs also clutter the context window — harnesses mitigate this
+*tool-call offloading* by keeping the head and tail tokens of a result and offloading the full
+output to the filesystem, where the model can retrieve it if needed (see
 xref:large-language-model.adoc[*context rot*]). See
-xref:model-context-protocol.adoc[*Model Context Protocol*] for plugging in
-outside tools, xref:agent-loop.adoc[*agent loop*] for the call/result lifecycle,
-and xref:large-language-model.adoc[*large language model*] for the model
-provider request.
+xref:model-context-protocol.adoc[*Model Context Protocol*] for plugging in outside tools,
+xref:agent-loop.adoc[*agent loop*] for the call/result lifecycle, and
+xref:large-language-model.adoc[*large language model*] for the model provider request.
 
 == Permissions and modes
 
-A *permission request* is what the harness shows the user before executing a
-tool call that isn't pre-approved. The model produces a tool call. Instead of
-running it immediately, the harness pauses and asks. Approve and it runs; deny
-and the harness reports the denial back to the model as a tool result. This is
-the mechanism for putting a human in the loop for risky or sensitive actions.
-Denying steers the agent – it reads the denial and reacts. The cost is that
-every request is a synchronous wait on you. An agent that triggers requests
-constantly cannot be left AFK.
+A *permission request* is what the harness shows the user before executing a tool call that isn't
+pre-approved. The model produces a tool call. Instead of running it immediately, the harness pauses
+and asks. Approve and it runs; deny and the harness reports the denial back to the model as a tool
+result. This is the mechanism for putting a human in the loop for risky or sensitive actions.
+Denying steers the agent – it reads the denial and reacts. The cost is that every request is a
+synchronous wait on you. An agent that triggers requests constantly cannot be left AFK.
 
-A *permission mode* is the permission-gating slice: which tool calls trigger a
-request and which run automatically. It is a ladder:
+A *permission mode* is the permission-gating slice: which tool calls trigger a request and which run
+automatically. It is a ladder:
 
 * Read-only/plan: auto reads, blocked writes – for research, planning, reviewing.
 * Default: auto reads, ask writes – day-to-day supervised work.
 * Auto-edit: auto edits, ask shell – trusted repos.
 * "Yolo"/full-auto: auto everything – sandboxes, AFK.
 
-You trade between safety and interruption. Too tight and you rubber-stamp
-approvals, the worst of both worlds. Too loose and the agent edits files you'd
-have wanted to see first.
+You trade between safety and interruption. Too tight and you rubber-stamp approvals, the worst of
+both worlds. Too loose and the agent edits files you'd have wanted to see first.
 
-An *agent mode* is a preset that shapes how the agent operates at runtime. It
-bundles a permission mode with behavioral instructions injected into the system
-prompt. Examples include a default that prompts on risky calls, a plan mode
-that blocks edits and steers toward research, an accept-edits mode, and a
-bypass-permissions ("YOLO") mode. The bundling distinguishes a mode from a bare
-permission setting. The injected instructions remove the want: plan mode doesn't
-just block edits, it tells the agent it's planning, so it reads, asks, and
-proposes instead of straining against the gate. Change mode as trust changes
-over a task. Changing costs nothing.
+An *agent mode* is a preset that shapes how the agent operates at runtime. It bundles a permission
+mode with behavioral instructions injected into the system prompt. Examples include a default that
+prompts on risky calls, a plan mode that blocks edits and steers toward research, an accept-edits
+mode, and a bypass-permissions ("YOLO") mode. The bundling distinguishes a mode from a bare
+permission setting. The injected instructions remove the want: plan mode doesn't just block edits,
+it tells the agent it's planning, so it reads, asks, and proposes instead of straining against the
+gate. Change mode as trust changes over a task. Changing costs nothing.
 
 == Agent experience
 
-*Agent experience (AX)* is how well the environment is set up for an agent to do
-good work in a codebase – the agent-facing counterpart to
-xref:developer-experience.adoc[*developer experience*] (DX). When the same
-agent performs well in one repo and badly in another (same model, same
-harness), the difference is usually AX. Three dimensions matter:
+*Agent experience (AX)* is how well the environment is set up for an agent to do good work in a
+codebase – the agent-facing counterpart to xref:developer-experience.adoc[*developer experience*]
+(DX). When the same agent performs well in one repo and badly in another (same model, same harness),
+the difference is usually AX. Three dimensions matter:
 
-* Automated checks: fast, deterministic types, tests, and lints the agent can
-  self-correct from.
-* Architecture: predictable structure, behavior behind small interfaces, names
-  that say what things do.
-* Free context: `AGENTS.md`, skills, and tools kept lean so the window stays in
-  the smart zone.
+* Automated checks: fast, deterministic types, tests, and lints the agent can self-correct from.
+* Architecture: predictable structure, behavior behind small interfaces, names that say what things
+  do.
+* Free context: `AGENTS.md`, skills, and tools kept lean so the window stays in the smart zone.
 
-AX and DX overlap – good checks and clean architecture help both – but they
-diverge. Humans tolerate tribal knowledge, slow CI, and "ask Sarah"; agents
-cannot. Don't treat AX as a synonym for DX. See also
-xref:agent-memory.adoc[*agent memory*] and
-xref:automated-testing.adoc[*automated testing*].
+AX and DX overlap – good checks and clean architecture help both – but they diverge. Humans tolerate
+tribal knowledge, slow CI, and "ask Sarah"; agents cannot. Don't treat AX as a synonym for DX. See
+also xref:agent-memory.adoc[*agent memory*] and xref:automated-testing.adoc[*automated testing*].
 
 == Guides and sensors
 
-A well-built outer harness combines two kinds of control. *Guides* are
-feedforward controls: they anticipate the agent's behaviour and steer it before
-it acts, increasing the probability of a good first attempt. `AGENTS.md`,
-xref:agent-skills.adoc[*skills*], code-mod tools, and bootstrap scripts are all
-guides. *Sensors* are feedback controls: they observe after the agent acts and
-help it self-correct. They are most powerful when they produce signals optimised
-for LLM consumption — custom linter messages that include the fix instruction, a
-positive kind of prompt injection. Tests, type checkers, linters, structural
-analysis, and AI code review are all sensors.
+A well-built outer harness combines two kinds of control. *Guides* are feedforward controls: they
+anticipate the agent's behaviour and steer it before it acts, increasing the probability of a good
+first attempt. `AGENTS.md`, xref:agent-skills.adoc[*skills*], code-mod tools, and bootstrap scripts
+are all guides. *Sensors* are feedback controls: they observe after the agent acts and help it
+self-correct. They are most powerful when they produce signals optimised for LLM consumption —
+custom linter messages that include the fix instruction, a positive kind of prompt injection. Tests,
+type checkers, linters, structural analysis, and AI code review are all sensors.
 
-Feedback-only gives an agent that repeats the same mistakes. Feedforward-only
-gives an agent that encodes rules but never finds out whether they worked. The
-two reinforce each other: when an issue recurs, improve the guides to make it
-less likely and the sensors to catch it sooner.
+Feedback-only gives an agent that repeats the same mistakes. Feedforward-only gives an agent that
+encodes rules but never finds out whether they worked. The two reinforce each other: when an issue
+recurs, improve the guides to make it less likely and the sensors to catch it sooner.
 
-Each control is either *computational* (deterministic and fast, run on the CPU
-— tests, linters, type checkers, structural analysis) or *inferential* (semantic,
-run on a GPU or NPU — AI code review, LLM-as-judge; slower and more
-non-deterministic, but able to add semantic judgement). The verification
-layering in xref:loop-engineering.adoc[*loop engineering*] maps onto this:
-automated checks are computational sensors, automated review is an inferential
-sensor.
+Each control is either *computational* (deterministic and fast, run on the CPU — tests, linters,
+type checkers, structural analysis) or *inferential* (semantic, run on a GPU or NPU — AI code
+review, LLM-as-judge; slower and more non-deterministic, but able to add semantic judgement). The
+verification layering in xref:loop-engineering.adoc[*loop engineering*] maps onto this: automated
+checks are computational sensors, automated review is an inferential sensor.
 
 == Regulation categories
 
-A harness regulates the codebase toward a desired state. Three categories are
-worth distinguishing, because harnessability and complexity vary across them:
+A harness regulates the codebase toward a desired state. Three categories are worth distinguishing,
+because harnessability and complexity vary across them:
 
 * *Maintainability harness*: regulates internal code quality. The easiest
-category today, because so much pre-existing tooling applies. Computational
-sensors catch duplicate code, cyclomatic complexity, missing coverage,
-architectural drift, and style violations reliably and cheaply. Inferential
-sensors can partially address problems needing semantic judgement (semantically
-duplicate code, redundant tests, brute-force fixes, over-engineering), but
-expensively and probabilistically. Neither reliably catches misdiagnosis,
-overengineering, or misunderstood instructions — correctness is outside any
-sensor's remit if the human didn't clearly specify what they wanted.
+category today, because so much pre-existing tooling applies. Computational sensors catch duplicate
+code, cyclomatic complexity, missing coverage, architectural drift, and style violations reliably
+and cheaply. Inferential sensors can partially address problems needing semantic judgement
+(semantically duplicate code, redundant tests, brute-force fixes, over-engineering), but expensively
+and probabilistically. Neither reliably catches misdiagnosis, overengineering, or misunderstood
+instructions — correctness is outside any sensor's remit if the human didn't clearly specify what
+they wanted.
 * *Architecture fitness harness*: guides and sensors that define and check the
 architecture characteristics of the application — essentially
-xref:fitness-function.adoc[*fitness functions*]. Skills that feed forward
-performance requirements, performance tests that feed back, logging standards
-with debugging instructions that ask the agent to reflect on log quality.
+xref:fitness-function.adoc[*fitness functions*]. Skills that feed forward performance requirements,
+performance tests that feed back, logging standards with debugging instructions that ask the agent
+to reflect on log quality.
 * *Behaviour harness*: how to guide and sense whether the application
-functionally behaves as needed. The hardest category. The common pattern — a
-functional specification as feedforward, a green AI-generated test suite as
-feedback, plus manual testing — puts a lot of faith in AI-generated tests, which
-is not yet good enough. The approved-fixtures pattern helps in some areas. Good
-behavioural harnesses that reduce supervision and manual testing remain an open
-problem.
+functionally behaves as needed. The hardest category. The common pattern — a functional
+specification as feedforward, a green AI-generated test suite as feedback, plus manual testing —
+puts a lot of faith in AI-generated tests, which is not yet good enough. The approved-fixtures
+pattern helps in some areas. Good behavioural harnesses that reduce supervision and manual testing
+remain an open problem.
 
 == Harnessability
 
-Not every codebase is equally amenable to harnessing. A strongly typed language
-gives you type-checking as a sensor; clearly definable module boundaries afford
-architectural constraint rules; frameworks like Spring abstract away details the
-agent need not worry about and so implicitly raise its chance of success.
-Without those properties the controls aren't available to build. Ned Letcher
-calls the structural properties that make an environment legible, navigable, and
-tractable to agents *ambient affordances*. This is the deeper form of
-xref:developer-experience.adoc[*agent experience*] (AX): greenfield teams can
-bake harnessability in from day one, while legacy teams face the harder problem
-that the harness is most needed where it is hardest to build.
+Not every codebase is equally amenable to harnessing. A strongly typed language gives you
+type-checking as a sensor; clearly definable module boundaries afford architectural constraint
+rules; frameworks like Spring abstract away details the agent need not worry about and so implicitly
+raise its chance of success. Without those properties the controls aren't available to build. Ned
+Letcher calls the structural properties that make an environment legible, navigable, and tractable
+to agents *ambient affordances*. This is the deeper form of
+xref:developer-experience.adoc[*agent experience*] (AX): greenfield teams can bake harnessability in
+from day one, while legacy teams face the harder problem that the harness is most needed where it is
+hardest to build.
 
 == The steering loop
 
-The human's job is to steer the agent by iterating on the harness. When an
-issue recurs, improve the feedforward and feedback controls to make it less
-probable, or prevent it. Agents can help build the harness too — writing
-structural tests, drafting rules from observed patterns, scaffolding custom
-linters, generating how-to guides from codebase archaeology. Distribute sensors
-across the change lifecycle to keep quality left: fast controls (linters, fast
-test suites, basic code review) before a commit is even created; expensive ones
-(mutation testing, broader review) post-integration; and continuous drift and
-health sensors (dead-code detection, coverage analysis, dependency scanning)
+The human's job is to steer the agent by iterating on the harness. When an issue recurs, improve the
+feedforward and feedback controls to make it less probable, or prevent it. Agents can help build the
+harness too — writing structural tests, drafting rules from observed patterns, scaffolding custom
+linters, generating how-to guides from codebase archaeology. Distribute sensors across the change
+lifecycle to keep quality left: fast controls (linters, fast test suites, basic code review) before
+a commit is even created; expensive ones (mutation testing, broader review) post-integration; and
+continuous drift and health sensors (dead-code detection, coverage analysis, dependency scanning)
 running against the codebase outside the change lifecycle.
 
 == Harness templates and variety reduction
 
-Most enterprises have a few common service topologies that cover most of what
-they build — business services exposing data via APIs, event-processing
-services, data dashboards. Mature organisations codify these in service
-templates, which may evolve into *harness templates*: bundles of guides and
-sensors that leash an agent to the structure, conventions, and tech stack of a
-topology, so teams may come to pick tech stacks partly by what harnesses already
-exist for them. The motivation is *Ashby's Law of Requisite Variety*: a
-regulator must have at least as much variety as the system it governs, and can
-only regulate what it has a model of. An LLM agent can produce almost anything,
-but committing to a topology narrows that space, making a comprehensive harness
-achievable — a variety-reduction move.
+Most enterprises have a few common service topologies that cover most of what they build — business
+services exposing data via APIs, event-processing services, data dashboards. Mature organisations
+codify these in service templates, which may evolve into *harness templates*: bundles of guides and
+sensors that leash an agent to the structure, conventions, and tech stack of a topology, so teams
+may come to pick tech stacks partly by what harnesses already exist for them. The motivation is
+*Ashby's Law of Requisite Variety*: a regulator must have at least as much variety as the system it
+governs, and can only regulate what it has a model of. An LLM agent can produce almost anything, but
+committing to a topology narrows that space, making a comprehensive harness achievable — a
+variety-reduction move.
 
 == The role of the human
 
-Human developers bring an implicit harness to every codebase: absorbed
-conventions, the cognitive pain of complexity, social accountability (our name
-is on the commit), and organisational alignment — awareness of what the team is
-trying to achieve, which debt is tolerated, what "good" looks like here. We go
-in small steps at human pace, which creates the thinking space for experience to
-trigger. A coding agent has none of this: no social accountability, no aesthetic
-disgust at a 300-line function, no intuition that "we don't do it that way
-here", no organisational memory. Harnesses externalise and make explicit what
-human experience brings, but only so far. A good harness should not aim to fully
-eliminate human input but to direct it to where it matters most.
+Human developers bring an implicit harness to every codebase: absorbed conventions, the cognitive
+pain of complexity, social accountability (our name is on the commit), and organisational alignment
+— awareness of what the team is trying to achieve, which debt is tolerated, what "good" looks like
+here. We go in small steps at human pace, which creates the thinking space for experience to
+trigger. A coding agent has none of this: no social accountability, no aesthetic disgust at a
+300-line function, no intuition that "we don't do it that way here", no organisational memory.
+Harnesses externalise and make explicit what human experience brings, but only so far. A good
+harness should not aim to fully eliminate human input but to direct it to where it matters most.
 
 == Long-horizon execution
 
-The earlier primitives compound when work stretches across many context
-windows. Durable state, planning, observation, and verification are what keep an
-agent coherent over a long task.
+The earlier primitives compound when work stretches across many context windows. Durable state,
+planning, observation, and verification are what keep an agent coherent over a long task.
 
-The filesystem and git track work across sessions — an agent produces millions
-of tokens over a long task, and the filesystem durably captures progress so a
-fresh agent can pick up where the last left off (see
-xref:agent-handoff.adoc[*agent handoff*]). A *Ralph Loop* is a harness pattern
-for continuing work: a hook intercepts the model's attempt to exit and reinjects
-the original prompt into a clean context window, forcing the agent to continue
-toward a completion goal. Each iteration starts with fresh context but reads
-state from the previous iteration via the filesystem — a way to push past early
-stopping and context-window limits (see xref:away-from-keyboard.adoc[*AFK*]
-work and xref:loop-engineering.adoc[*loop engineering*]).
+The filesystem and git track work across sessions — an agent produces millions of tokens over a long
+task, and the filesystem durably captures progress so a fresh agent can pick up where the last left
+off (see xref:agent-handoff.adoc[*agent handoff*]). A *Ralph Loop* is a harness pattern for
+continuing work: a hook intercepts the model's attempt to exit and reinjects the original prompt
+into a clean context window, forcing the agent to continue toward a completion goal. Each iteration
+starts with fresh context but reads state from the previous iteration via the filesystem — a way to
+push past early stopping and context-window limits (see xref:away-from-keyboard.adoc[*AFK*] work and
+xref:loop-engineering.adoc[*loop engineering*]).
 
-Planning and self-verification keep the agent on track. The harness can prompt
-the model to decompose a goal into steps and maintain a plan file in the
-filesystem. After each step, self-verification grounds the work: hooks can run a
-test suite and loop back to the model on failure with the error message, or the
-model can be prompted to evaluate its own output. Verification creates a
-feedback signal for self-improvement.
+Planning and self-verification keep the agent on track. The harness can prompt the model to
+decompose a goal into steps and maintain a plan file in the filesystem. After each step,
+self-verification grounds the work: hooks can run a test suite and loop back to the model on failure
+with the error message, or the model can be prompted to evaluate its own output. Verification
+creates a feedback signal for self-improvement.
 
 == Model-harness co-evolution
 
-Today's agent products are post-trained with the model and the harness in the
-loop, so models get better at the actions harness designers think they should be
-good at natively — filesystem operations, bash execution, planning, spawning
-subagents. Useful primitives are discovered, added to the harness, and then
-used when training the next generation of models, creating a feedback loop.
+Today's agent products are post-trained with the model and the harness in the loop, so models get
+better at the actions harness designers think they should be good at natively — filesystem
+operations, bash execution, planning, spawning subagents. Useful primitives are discovered, added to
+the harness, and then used when training the next generation of models, creating a feedback loop.
 
-This co-evolution has side effects. Training with a harness in the loop can
-overfit a model to a particular tool's logic, so changing that logic degrades
-performance even when the model should in principle handle either approach.
-And the best harness for a task is not necessarily the one the model was
-post-trained with: the same model can score far differently across harnesses on
-benchmarks like Terminal Bench, and harness-only changes can move an agent
-significantly in the rankings.
+This co-evolution has side effects. Training with a harness in the loop can overfit a model to a
+particular tool's logic, so changing that logic degrades performance even when the model should in
+principle handle either approach. And the best harness for a task is not necessarily the one the
+model was post-trained with: the same model can score far differently across harnesses on benchmarks
+like Terminal Bench, and harness-only changes can move an agent significantly in the rankings.
 
-As models grow more capable, some of what lives in the harness today — planning,
-self-verification, long-horizon coherence — will be absorbed into the model and
-require less context injection. But as with xref:prompt-engineering.adoc[*prompt engineering*], that does not make harness engineering obsolete: a
-well-configured environment, the right tools, durable state, and verification
-loops make any model more effective regardless of its base intelligence.
+As models grow more capable, some of what lives in the harness today — planning, self-verification,
+long-horizon coherence — will be absorbed into the model and require less context injection. But as
+with xref:prompt-engineering.adoc[*prompt engineering*], that does not make harness engineering
+obsolete: a well-configured environment, the right tools, durable state, and verification loops make
+any model more effective regardless of its base intelligence.
 
 == Useful links
 
-* https://martinfowler.com/articles/harness-engineering.html[Harness Engineering]:
-  Birgitta Böckeler's article on the system of controls (guides and sensors)
-  that surround a coding agent.
+* https://martinfowler.com/articles/harness-engineering.html[Harness Engineering]: Birgitta
+  Böckeler's article on the system of controls (guides and sensors) that surround a coding agent.
 
 * https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html[Harness engineering memo]:
   A shorter companion memo introducing the idea.
 
-* https://www.langchain.com/blog/the-anatomy-of-an-agent-harness[The Anatomy of an Agent Harness], Vivek Trivedy (LangChain): Derives the core harness
-  components by working backwards from desired agent behaviour, covering
-  filesystems, bash, sandboxes, context rot, Ralph Loops, and model-harness
-  co-evolution.
+* https://www.langchain.com/blog/the-anatomy-of-an-agent-harness[The Anatomy of an Agent Harness],
+  Vivek Trivedy (LangChain): Derives the core harness components by working backwards from desired
+  agent behaviour, covering filesystems, bash, sandboxes, context rot, Ralph Loops, and
+  model-harness co-evolution.
 
-* _The New SDLC With Vibe Coding_, Addy Osmani, Shubham Saboo & Sokratis
-  Kartakis (2026): From ad-hoc prompting to agentic engineering, covering the
-  factory model and harness across the SDLC.
+* _The New SDLC With Vibe Coding_, Addy Osmani, Shubham Saboo & Sokratis Kartakis (2026): From
+  ad-hoc prompting to agentic engineering, covering the factory model and harness across the SDLC.
 
 == See also
 

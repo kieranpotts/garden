@@ -1,65 +1,53 @@
 = Object-oriented programming (OOP)
 
-Object-oriented programming (OOP) is a
-xref:programming-paradigm.adoc[*programming paradigm*] that organizes a program
-around *objects*, units that bundle state with the behavior that operates on
-that state. An object exposes its capabilities through an
-xref:interfaces.adoc[*interface*] of methods while keeping its internal
-representation private. Code outside the object interacts with it by sending
-messages, invoking those methods, rather than by reaching into its data
-directly.
+Object-oriented programming (OOP) is a xref:programming-paradigm.adoc[*programming paradigm*] that
+organizes a program around *objects*, units that bundle state with the behavior that operates on
+that state. An object exposes its capabilities through an xref:interfaces.adoc[*interface*] of
+methods while keeping its internal representation private. Code outside the object interacts with it
+by sending messages, invoking those methods, rather than by reaching into its data directly.
 
-OOP grew out of xref:structured-programming.adoc[*structured programming*] and
-the simulation work of Ole-Johan Dahl and Kristen Nygaard on Simula in the
-1960s. Alan Kay coined the term "object-oriented" around 1970 to describe
-Smalltalk, his vision of a system built entirely from objects that exchange
-messages. Smalltalk's message-passing framing receded as class-based
-languages such as C++ and Java made objects a compile-time construct defined
-by classes, and the dominant idiom shifted from message passing toward method
-calls resolved over inheritance hierarchies.
+OOP grew out of xref:structured-programming.adoc[*structured programming*] and the simulation work
+of Ole-Johan Dahl and Kristen Nygaard on Simula in the 1960s. Alan Kay coined the term
+"object-oriented" around 1970 to describe Smalltalk, his vision of a system built entirely from
+objects that exchange messages. Smalltalk's message-passing framing receded as class-based languages
+such as C++ and Java made objects a compile-time construct defined by classes, and the dominant
+idiom shifted from message passing toward method calls resolved over inheritance hierarchies.
 
 == Core concepts
 
-* xref:encapsulation.adoc[*Encapsulation*] bundles data with the methods that
-  operate on that data into a single unit of code, and hides the rest behind
-  an interface.
-* xref:abstraction.adoc[*Abstraction*] hides the complex implementation
-  details of a class behind a simpler outward-facing model.
-* xref:polymorphism.adoc[*Polymorphism*] lets objects of different types be
-  treated as the same type due to a common interface.
-* xref:inheritance.adoc[*Inheritance*] allows a software component to inherit
-  properties and behaviors of another component.
-* xref:composition.adoc[*Composition*] combines simple objects to build more
-  complex ones.
-* xref:association.adoc[*Association*] is a relationship between two
-  components, where one uses or depends on the other.
+* xref:encapsulation.adoc[*Encapsulation*] bundles data with the methods that operate on that data
+  into a single unit of code, and hides the rest behind an interface.
+* xref:abstraction.adoc[*Abstraction*] hides the complex implementation details of a class behind a
+  simpler outward-facing model.
+* xref:polymorphism.adoc[*Polymorphism*] lets objects of different types be treated as the same type
+  due to a common interface.
+* xref:inheritance.adoc[*Inheritance*] allows a software component to inherit properties and
+  behaviors of another component.
+* xref:composition.adoc[*Composition*] combines simple objects to build more complex ones.
+* xref:association.adoc[*Association*] is a relationship between two components, where one uses or
+  depends on the other.
 
-Inheritance and composition are alternative routes to the same end, reusing
-behavior across types. *Composition over inheritance* is the common
-recommendation: favor composing small, focused objects over building deep
-inheritance trees, which tend to couple classes rigidly and resist change.
+Inheritance and composition are alternative routes to the same end, reusing behavior across types.
+*Composition over inheritance* is the common recommendation: favor composing small, focused objects
+over building deep inheritance trees, which tend to couple classes rigidly and resist change.
 
 == Design principles and patterns
 
 OOP accumulated a body of guidance on how to arrange objects and classes. The
-xref:solid.adoc[*SOLID*] principles, popularized by Robert C. Martin, distill
-five rules for keeping classes extensible and robust against change.
-xref:grasp.adoc[*GRASP*] catalogs nine heuristics for assigning
-responsibilities to the right object. The
-xref:law-of-demeter.adoc[*Law of Demeter*] constrains how far an object reaches
-into its collaborators. xref:design-patterns.adoc[*Design patterns*], as
-catalogued by the "Gang of Four", capture reusable object-level arrangements
-for recurring problems.
+xref:solid.adoc[*SOLID*] principles, popularized by Robert C. Martin, distill five rules for keeping
+classes extensible and robust against change. xref:grasp.adoc[*GRASP*] catalogs nine heuristics for
+assigning responsibilities to the right object. The xref:law-of-demeter.adoc[*Law of Demeter*]
+constrains how far an object reaches into its collaborators.
+xref:design-patterns.adoc[*Design patterns*], as catalogued by the "Gang of Four", capture reusable
+object-level arrangements for recurring problems.
 
-Because objects hide their state behind methods, the paradigm pairs naturally
-with xref:domain-driven-design.adoc[*domain-driven design*], which models a
-business domain as a graph of interacting objects. The same hiding is what
-makes OOP costly where data layout and bulk transformation matter more than
-behavioral separation. xref:data-oriented-design.adoc[*Data-oriented design*]
-organizes code around data layout instead, trading encapsulation for
-memory-access xref:performance.adoc[*performance*].
-xref:data-driven-programming.adoc[*Data-driven programming*] is a related
-contrast.
+Because objects hide their state behind methods, the paradigm pairs naturally with
+xref:domain-driven-design.adoc[*domain-driven design*], which models a business domain as a graph of
+interacting objects. The same hiding is what makes OOP costly where data layout and bulk
+transformation matter more than behavioral separation.
+xref:data-oriented-design.adoc[*Data-oriented design*] organizes code around data layout instead,
+trading encapsulation for memory-access xref:performance.adoc[*performance*].
+xref:data-driven-programming.adoc[*Data-driven programming*] is a related contrast.
 
 == See also
 

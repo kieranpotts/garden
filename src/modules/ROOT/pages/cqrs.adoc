@@ -2,54 +2,46 @@
 
 Command Query Responsibility Segregation (CQRS) is an
 xref:architectural-pattern.adoc[*architectural pattern*] and
-xref:design-principles.adoc[*design principle*] that separates command handling
-(write) logic from query (read) logic. It was introduced by Greg Young, who
-defined it as the creation of two objects where there was previously only one.
-The split follows the same distinction Bertrand Meyer drew in
-xref:command-query-separation.adoc[*command query separation*]: a command is any
-method that mutates state, and a query is any method that returns a value. CQRS
-lifts that method-level principle to the level of separate models.
+xref:design-principles.adoc[*design principle*] that separates command handling (write) logic from
+query (read) logic. It was introduced by Greg Young, who defined it as the creation of two objects
+where there was previously only one. The split follows the same distinction Bertrand Meyer drew in
+xref:command-query-separation.adoc[*command query separation*]: a command is any method that mutates
+state, and a query is any method that returns a value. CQRS lifts that method-level principle to the
+level of separate models.
 
-Splitting the read and write models lets each be optimized independently. The
-write model enforces business invariants and accepts commands. The read model
-is shaped to suit queries, often as xref:materialized-view.adoc[*materialized views*] or
-xref:denormalization.adoc[*denormalized*] shapes that are
-kept up to date asynchronously. This pays off most when read and write
-xref:access-patterns.adoc[*access patterns*] differ significantly, so that
-optimizing them together would force compromises on one side.
+Splitting the read and write models lets each be optimized independently. The write model enforces
+business invariants and accepts commands. The read model is shaped to suit queries, often as
+xref:materialized-view.adoc[*materialized views*] or xref:denormalization.adoc[*denormalized*]
+shapes that are kept up to date asynchronously. This pays off most when read and write
+xref:access-patterns.adoc[*access patterns*] differ significantly, so that optimizing them together
+would force compromises on one side.
 
-A common misconception is that CQRS requires separate databases. It does not.
-The pattern separates the command and query _models_, not the storage beneath
-them. The two models may share a single database, use separate databases, or
-dispense with a database entirely. Physically isolating reads from writes,
-sometimes across different engines tuned for each workload, is an optional
-implementation detail that suits some systems but is no part of the pattern
-itself.
+A common misconception is that CQRS requires separate databases. It does not. The pattern separates
+the command and query _models_, not the storage beneath them. The two models may share a single
+database, use separate databases, or dispense with a database entirely. Physically isolating reads
+from writes, sometimes across different engines tuned for each workload, is an optional
+implementation detail that suits some systems but is no part of the pattern itself.
 
-CQRS is frequently combined with xref:event-sourcing.adoc[*event sourcing*].
-The write model appends events to an append-only log, and the read model is
-built from projections over those events, kept current by
-xref:change-data-capture.adoc[*change data capture*] or a similar mechanism. The
-pairing is natural but not mandatory. CQRS can be applied to a system that
-stores state conventionally.
+CQRS is frequently combined with xref:event-sourcing.adoc[*event sourcing*]. The write model appends
+events to an append-only log, and the read model is built from projections over those events, kept
+current by xref:change-data-capture.adoc[*change data capture*] or a similar mechanism. The pairing
+is natural but not mandatory. CQRS can be applied to a system that stores state conventionally.
 
 == Trade-offs
 
-* *Independent scaling.* Read and write workloads flow through separate models,
-  so each can be scaled and provisioned on its own.
+* *Independent scaling.* Read and write workloads flow through separate models, so each can be
+  scaled and provisioned on its own.
 
-* *Eventual consistency.* Read views may not immediately reflect the latest
-  writes, as is typical in distributed software. They synchronize once the
-  projection or replication pipeline catches up.
+* *Eventual consistency.* Read views may not immediately reflect the latest writes, as is typical in
+  distributed software. They synchronize once the projection or replication pipeline catches up.
 
-* *Added complexity.* Maintaining two models, the synchronization between them,
-  and the schemas of the read views adds design and operational cost. CQRS is a
-  poor fit for systems whose read and write workloads are similar and modest.
+* *Added complexity.* Maintaining two models, the synchronization between them, and the schemas of
+  the read views adds design and operational cost. CQRS is a poor fit for systems whose read and
+  write workloads are similar and modest.
 
-CQRS originated in the xref:domain-driven-design.adoc[*domain-driven design*]
-community, where Greg Young first described it as a way to ease the tension
-between a richly modeled write side and the varied, often denormalized queries
-that applications need to serve.
+CQRS originated in the xref:domain-driven-design.adoc[*domain-driven design*] community, where Greg
+Young first described it as a way to ease the tension between a richly modeled write side and the
+varied, often denormalized queries that applications need to serve.
 
 == See also
 

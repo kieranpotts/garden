@@ -1,75 +1,68 @@
 = Site reliability engineering (SRE)
 
-*Site reliability engineering (SRE)* is a discipline that treats operations as a
-software problem. It applies engineering methods – automation, measurement,
-and design – to the work of keeping production systems reliable, in place of
-the manual, ticket-driven operations model that preceded it. The name comes
-from Google, where the "site" was originally google.com, but the practices have
-since been adopted across the industry under several titles, including
-*production engineering* and, more loosely, xref:devops.adoc[*DevOps*].
+*Site reliability engineering (SRE)* is a discipline that treats operations as a software problem.
+It applies engineering methods – automation, measurement, and design – to the work of keeping
+production systems reliable, in place of the manual, ticket-driven operations model that preceded
+it. The name comes from Google, where the "site" was originally google.com, but the practices have
+since been adopted across the industry under several titles, including *production engineering* and,
+more loosely, xref:devops.adoc[*DevOps*].
 
 == Origins
 
-SRE emerged at Google in 2003, when Ben Treynor Sloss was tasked with building
-the company's production team. He later described the result as "what happens
-when you ask a software engineer to design an operations team." Google's fleet
-was crossing into six figures of machines, and the prevailing system
-administration practices could not scale with it. The solution was a
-specialized role, staffed by people who could both operate systems and write
-the tooling to operate them automatically.
+SRE emerged at Google in 2003, when Ben Treynor Sloss was tasked with building the company's
+production team. He later described the result as "what happens when you ask a software engineer to
+design an operations team." Google's fleet was crossing into six figures of machines, and the
+prevailing system administration practices could not scale with it. The solution was a specialized
+role, staffed by people who could both operate systems and write the tooling to operate them
+automatically.
 
-The discipline stayed internal to Google for a decade. It became public through
-the _Site Reliability Engineering_ book (2016) and its sequels, and spread
-through conferences such as USENIX SREcon. By the mid-2010s, dedicated SRE or
-reliability teams were common at large and mid-sized technology companies.
+The discipline stayed internal to Google for a decade. It became public through the
+_Site Reliability Engineering_ book (2016) and its sequels, and spread through conferences such as
+USENIX SREcon. By the mid-2010s, dedicated SRE or reliability teams were common at large and
+mid-sized technology companies.
 
 == Relationship to DevOps
 
-SRE predates *DevOps* by several years – Google's practice began in 2003, the
-DevOps Days conference that gave DevOps its name followed in 2009 – and the two
-are closely related. SRE is best understood as a concrete implementation of the
-DevOps philosophy, with one distinguishing artifact: an explicit *error budget*
-that contracts how much unreliability a service may exhibit and governs the
-tradeoff between feature velocity and stability.
+SRE predates *DevOps* by several years – Google's practice began in 2003, the DevOps Days conference
+that gave DevOps its name followed in 2009 – and the two are closely related. SRE is best understood
+as a concrete implementation of the DevOps philosophy, with one distinguishing artifact: an explicit
+*error budget* that contracts how much unreliability a service may exhibit and governs the tradeoff
+between feature velocity and stability.
 
-Where DevOps is a cultural movement with no prescribed role, SRE defines a job.
-Whether reliability work is done by a dedicated SRE team or folded into product
-engineering ("you build it, you run it") is an organizational choice, not a
-difference in the underlying practices.
+Where DevOps is a cultural movement with no prescribed role, SRE defines a job. Whether reliability
+work is done by a dedicated SRE team or folded into product engineering ("you build it, you run it")
+is an organizational choice, not a difference in the underlying practices.
 
 == Core practices
 
-SRE is realized through a cluster of practices, most of which have their own
-entries in this garden.
+SRE is realized through a cluster of practices, most of which have their own entries in this garden.
 
-* xref:service-level-agreement.adoc[*Service level indicators, objectives, and agreements*] (SLIs, SLOs, SLAs) make reliability measurable. An SLI is a raw
-  measurement of service behavior, an SLO is the internal target the team sets
-  for it, and an SLA is the external, contractual promise derived from it.
-* The *error budget* is the gap between the SLO and the SLA. It is a quantity of
-  permitted unreliability the team can spend on risk-taking, such as shipping
-  new features or running deployments. When the budget is exhausted, the team
-  shifts effort from features back toward stabilization.
-* xref:observability.adoc[*Observability*], xref:monitoring.adoc[*monitoring*],
-  and xref:alerting.adoc[*alerting*] close the feedback loop. Symptom-based,
-  multi-window, multi-burn-rate alerting ties pages to user impact rather than
-  to fixed thresholds.
-* xref:on-call.adoc[*On-call*] rotations and xref:runbook.adoc[*runbooks*] make
-  operational responsibility explicit and survivable.
-* xref:chaos-engineering.adoc[*Chaos engineering*] and *blameless postmortems*
-  surface latent failure modes and turn incidents into systemic improvements
-  without assigning individual blame.
-* xref:infrastructure-as-code.adoc[*Infrastructure as code*] and automation
-  reduce *toil* – the manual, repetitive, automatable work that crowds out
-  engineering. SRE teams explicitly cap toil as a fraction of their time.
+* xref:service-level-agreement.adoc[*Service level indicators, objectives, and agreements*] (SLIs,
+  SLOs, SLAs) make reliability measurable. An SLI is a raw measurement of service behavior, an SLO
+  is the internal target the team sets for it, and an SLA is the external, contractual promise
+  derived from it.
+* The *error budget* is the gap between the SLO and the SLA. It is a quantity of permitted
+  unreliability the team can spend on risk-taking, such as shipping new features or running
+  deployments. When the budget is exhausted, the team shifts effort from features back toward
+  stabilization.
+* xref:observability.adoc[*Observability*], xref:monitoring.adoc[*monitoring*], and
+  xref:alerting.adoc[*alerting*] close the feedback loop. Symptom-based, multi-window,
+  multi-burn-rate alerting ties pages to user impact rather than to fixed thresholds.
+* xref:on-call.adoc[*On-call*] rotations and xref:runbook.adoc[*runbooks*] make operational
+  responsibility explicit and survivable.
+* xref:chaos-engineering.adoc[*Chaos engineering*] and *blameless postmortems* surface latent
+  failure modes and turn incidents into systemic improvements without assigning individual blame.
+* xref:infrastructure-as-code.adoc[*Infrastructure as code*] and automation reduce *toil* – the
+  manual, repetitive, automatable work that crowds out engineering. SRE teams explicitly cap toil as
+  a fraction of their time.
 
 == Trade-offs
 
-Reliability is not free, and SRE is explicit about the cost curve. Every
-additional "nine" of availability – the step from 99% to 99.9%, or from 99.9% to
-99.99% – is estimated to scale overall cost by roughly an order of magnitude,
-across staffing, development, testing, and slower release cycles. A
-well-run SRE team states how much reliability the business actually needs, and
-resists the reflex to chase perfect xref:availability.adoc[*availability*].
+Reliability is not free, and SRE is explicit about the cost curve. Every additional "nine" of
+availability – the step from 99% to 99.9%, or from 99.9% to 99.99% – is estimated to scale overall
+cost by roughly an order of magnitude, across staffing, development, testing, and slower release
+cycles. A well-run SRE team states how much reliability the business actually needs, and resists the
+reflex to chase perfect xref:availability.adoc[*availability*].
 
 [CAUTION]
 ====
@@ -80,10 +73,9 @@ useful question is which elements of SRE fit the organization's actual
 reliability needs, not how much of the original can be reproduced.
 ====
 
-Where a dedicated SRE team is not justified, the same practices can be
-distributed across product teams, or absorbed into a
-xref:platform-engineering.adoc[*platform engineering*] function that exposes
-reliability primitives as self-service infrastructure.
+Where a dedicated SRE team is not justified, the same practices can be distributed across product
+teams, or absorbed into a xref:platform-engineering.adoc[*platform engineering*] function that
+exposes reliability primitives as self-service infrastructure.
 
 == See also
 
@@ -102,10 +94,9 @@ reliability primitives as self-service infrastructure.
 
 == References
 
-* Beyer, Betsy, Chris Jones, Jennifer Petoff, Niall Richard Murphy (eds.)
-  (2016). _Site Reliability Engineering: How Google Runs Production Systems_.
-  O'Reilly Media.
-* Beyer, Betsy, et al. (2018). _The Site Reliability Workbook: Practical
-  Approaches to Implementing and Scaling SRE_. O'Reilly Media.
-* O'Connor, Dave (2024). _What is Reliability Engineering?_. The Pragmatic
-  Engineer.
+* Beyer, Betsy, Chris Jones, Jennifer Petoff, Niall Richard Murphy (eds.) (2016).
+  _Site Reliability Engineering: How Google Runs Production Systems_. O'Reilly Media.
+* Beyer, Betsy, et al. (2018).
+  _The Site Reliability Workbook: Practical Approaches to Implementing and Scaling SRE_. O'Reilly
+  Media.
+* O'Connor, Dave (2024). _What is Reliability Engineering?_. The Pragmatic Engineer.

@@ -1,137 +1,121 @@
 = Waterfall (aka. stepwise) model
 
-The waterfall model is the earliest documented software development life cycle
-methodology. It organizes development as a linear sequence of phases – typically
-requirements, design, implementation, testing, deployment, and maintenance – in
-which each phase is completed and signed off before the next begins, and the
-output of each phase becomes the input to the one that follows. Progress flows
-in one direction, like a waterfall, and revisiting an earlier phase is treated
-as a defect in planning rather than a normal part of the work.
+The waterfall model is the earliest documented software development life cycle methodology. It
+organizes development as a linear sequence of phases – typically requirements, design,
+implementation, testing, deployment, and maintenance – in which each phase is completed and signed
+off before the next begins, and the output of each phase becomes the input to the one that follows.
+Progress flows in one direction, like a waterfall, and revisiting an earlier phase is treated as a
+defect in planning rather than a normal part of the work.
 
-The model is almost as old as the discipline of software development itself.
-Strict, single-pass stepwise development was only practical in the field's
-earliest years, when changing code after it was written was expensive, because
-compile times were long, machine time was scarce, and a faulty build could
-waste an entire scheduled run on a mainframe. As hardware got cheaper and
-tooling improved, the cost of revisiting earlier work fell, and the assumptions
-that made a single pass seem sensible weakened with it.
+The model is almost as old as the discipline of software development itself. Strict, single-pass
+stepwise development was only practical in the field's earliest years, when changing code after it
+was written was expensive, because compile times were long, machine time was scarce, and a faulty
+build could waste an entire scheduled run on a mainframe. As hardware got cheaper and tooling
+improved, the cost of revisiting earlier work fell, and the assumptions that made a single pass seem
+sensible weakened with it.
 
 == History
 
-The first published description of a staged software process is Herbert D.
-Benington's 1956 paper _Production of Large Computer Programs_, presented at a
-symposium on advanced programming methods for digital computers. Benington was
-describing the software built for SAGE, the US air-defense system, and he laid
-out the work as a sequence of phases – program design, coding, assembly, test
-planning, and so on – ordered by the specialization of the teams doing them. He
-later republished the paper in 1983 with a foreword correcting the record. The
-work had not in fact been performed in a strict top-down fashion, but had
-depended on a prototype and on feedback between the phases.
+The first published description of a staged software process is Herbert D. Benington's 1956 paper
+_Production of Large Computer Programs_, presented at a symposium on advanced programming methods
+for digital computers. Benington was describing the software built for SAGE, the US air-defense
+system, and he laid out the work as a sequence of phases – program design, coding, assembly, test
+planning, and so on – ordered by the specialization of the teams doing them. He later republished
+the paper in 1983 with a foreword correcting the record. The work had not in fact been performed in
+a strict top-down fashion, but had depended on a prototype and on feedback between the phases.
 
-The diagram most often reproduced as "the waterfall" comes from a 1970 paper by
-Winston W. Royce, _Managing the Development of Large Software Systems_. Royce
-never used the word "waterfall" in it. He drew the sequential flow as a
-_baseline_ and immediately called it out as flawed, because it left testing to
-the very end, where a flaw discovered late is most expensive to fix. The rest
-of the paper proposed five additions meant to "eliminate most of the
-development risks" of that baseline: program design before analysis and coding,
-current and complete documentation, doing the job twice where possible,
-planned and monitored testing, and involving the customer throughout.
+The diagram most often reproduced as "the waterfall" comes from a 1970 paper by Winston W. Royce,
+_Managing the Development of Large Software Systems_. Royce never used the word "waterfall" in it.
+He drew the sequential flow as a _baseline_ and immediately called it out as flawed, because it left
+testing to the very end, where a flaw discovered late is most expensive to fix. The rest of the
+paper proposed five additions meant to "eliminate most of the development risks" of that baseline:
+program design before analysis and coding, current and complete documentation, doing the job twice
+where possible, planned and monitored testing, and involving the customer throughout.
 
-The term "waterfall" itself appears to have been coined later. The earliest
-cited use is in a 1976 paper by Thomas E. Bell and T. A. Thayer, _Software Requirements: Are They Really a Problem?_, which referred to the staged process
-by that name. The model was codified as doctrine in 1985, when the United States
-Department of Defense adopted it in DOD-STD-2167, the standard that governed
-contracted software development for defense systems and prescribed a fixed
-sequence of six phases.
+The term "waterfall" itself appears to have been coined later. The earliest cited use is in a 1976
+paper by Thomas E. Bell and T. A. Thayer, _Software Requirements: Are They Really a Problem?_, which
+referred to the staged process by that name. The model was codified as doctrine in 1985, when the
+United States Department of Defense adopted it in DOD-STD-2167, the standard that governed
+contracted software development for defense systems and prescribed a fixed sequence of six phases.
 
 == Royce was not a waterfall advocate
 
-Royce's paper is regularly cited as the origin of waterfall, and on the strength
-of that diagram it is. But the paper's own argument is the opposite of a defence
-of single-pass development. Royce described the sequential model as "risky and
-invites failure", and his proposed additions – feedback between phases,
-documentation done once and kept current, building a throwaway first pass,
-customer involvement – are recognizably the ingredients of
-xref:iterative-and-incremental-development.adoc[*iterative and incremental development*]. Read in full, the paper is one of the earliest published
-arguments _against_ the pure waterfall that Royce is credited with inventing.
+Royce's paper is regularly cited as the origin of waterfall, and on the strength of that diagram it
+is. But the paper's own argument is the opposite of a defence of single-pass development. Royce
+described the sequential model as "risky and invites failure", and his proposed additions – feedback
+between phases, documentation done once and kept current, building a throwaway first pass, customer
+involvement – are recognizably the ingredients of
+xref:iterative-and-incremental-development.adoc[*iterative and incremental development*]. Read in
+full, the paper is one of the earliest published arguments _against_ the pure waterfall that Royce
+is credited with inventing.
 
-This history is the reason "waterfall" is so often used today as a straw man
-against which xref:agile.adoc[*agile*] development is contrasted. The contrast
-is real at the level of practice, but the lineage is not the one the shorthand
-implies. Iterative, incremental development is not a reaction _to_ Royce; it
-continues a tradition that runs back through Barry Boehm's
-xref:spiral-model.adoc[*spiral model*], the
-xref:unified-process.adoc[*Unified Process*] and its best-known instance the
-xref:rational-unified-process.adoc[*Rational Unified Process (RUP)*], and
-James Martin's xref:rad.adoc[*rapid application development (RAD)*], all of which
-sit in the same iterative family as Royce's actual proposal. Agile methods are
-the most recent and most visible expression of that family, codified around
-shared values rather than a single process.
+This history is the reason "waterfall" is so often used today as a straw man against which
+xref:agile.adoc[*agile*] development is contrasted. The contrast is real at the level of practice,
+but the lineage is not the one the shorthand implies. Iterative, incremental development is not a
+reaction _to_ Royce; it continues a tradition that runs back through Barry Boehm's
+xref:spiral-model.adoc[*spiral model*], the xref:unified-process.adoc[*Unified Process*] and its
+best-known instance the xref:rational-unified-process.adoc[*Rational Unified Process (RUP)*], and
+James Martin's xref:rad.adoc[*rapid application development (RAD)*], all of which sit in the same
+iterative family as Royce's actual proposal. Agile methods are the most recent and most visible
+expression of that family, codified around shared values rather than a single process.
 
 == The phases
 
-The model describes a linear sequence of steps. The exact phase list varies by
-source, but the essence is the same.
+The model describes a linear sequence of steps. The exact phase list varies by source, but the
+essence is the same.
 
 * *Requirements.* Gather and document what the system must do, producing a
-  xref:system-requirements-specification.adoc[*system requirements specification*] that is signed off as complete before design begins. This is
-  the work of xref:requirements-engineering.adoc[*requirements engineering*].
-* *Design.* Translate the requirements into a system design – architecture,
-  module decomposition, interfaces, data structures.
+  xref:system-requirements-specification.adoc[*system requirements specification*] that is signed
+  off as complete before design begins. This is the work of
+  xref:requirements-engineering.adoc[*requirements engineering*].
+* *Design.* Translate the requirements into a system design – architecture, module decomposition,
+  interfaces, data structures.
 * *Implementation.* Write the code from the design.
-* *Testing.* Assemble and verify the built system against the requirements, with
-  defects fed back for rework.
+* *Testing.* Assemble and verify the built system against the requirements, with defects fed back
+  for rework.
 * *Deployment.* Put the system into production.
-* *Maintenance.* Keep the system running, fixing defects and making modest
-  changes, until it is retired.
+* *Maintenance.* Keep the system running, fixing defects and making modest changes, until it is
+  retired.
 
-Each phase produces a deliverable – a document, a design, a build – that is
-reviewed and approved before the next phase starts. The discipline of phase
-boundaries and sign-off is what gives the model its structure, and its
-documentation is what allows a new team member to pick up a project from where a
-departing one left it.
+Each phase produces a deliverable – a document, a design, a build – that is reviewed and approved
+before the next phase starts. The discipline of phase boundaries and sign-off is what gives the
+model its structure, and its documentation is what allows a new team member to pick up a project
+from where a departing one left it.
 
 == Where it works, and where it fails
 
-The model's strength is its predictability. When requirements are stable and
-well understood, and the cost of getting them wrong up front is lower than the
-cost of revisiting them later, a linear sequence lets a project be planned,
-estimated, and staffed with confidence. It is one response to the
-xref:project-paradox.adoc[*project paradox*], investing in up-front analysis so
-the high-stakes early decisions are better informed. It pairs naturally with
-xref:big-design-up-front.adoc[*big design up-front*], which applies the same
-logic to design rather than to the whole life cycle, and with the document-heavy
-methodologies that dominated enterprise and public-sector IT in the 1980s and
-1990s, of which the UK government's xref:ssadm.adoc[*SSADM*] was a notable
-example. The xref:case.adoc[*computer-aided software engineering (CASE)*] tools
-of that era were built to support exactly this style of working.
+The model's strength is its predictability. When requirements are stable and well understood, and
+the cost of getting them wrong up front is lower than the cost of revisiting them later, a linear
+sequence lets a project be planned, estimated, and staffed with confidence. It is one response to
+the xref:project-paradox.adoc[*project paradox*], investing in up-front analysis so the high-stakes
+early decisions are better informed. It pairs naturally with
+xref:big-design-up-front.adoc[*big design up-front*], which applies the same logic to design rather
+than to the whole life cycle, and with the document-heavy methodologies that dominated enterprise
+and public-sector IT in the 1980s and 1990s, of which the UK government's xref:ssadm.adoc[*SSADM*]
+was a notable example. The xref:case.adoc[*computer-aided software engineering (CASE)*] tools of
+that era were built to support exactly this style of working.
 
-The model's weakness is the assumption that requirements can be known in full
-before design begins, and that design can be known in full before construction
-begins. In practice, clients rarely know their exact requirements until they see
-working software, and designers rarely know every difficulty they will meet
-until they try to build the thing. Defects discovered in testing – the last
-phase before deployment – are the most expensive to fix, because they force
-rework of every phase that came before. The later a flaw is found, the more it
-costs, and the waterfall model deliberately postpones the activity that finds
-flaws to the end.
+The model's weakness is the assumption that requirements can be known in full before design begins,
+and that design can be known in full before construction begins. In practice, clients rarely know
+their exact requirements until they see working software, and designers rarely know every difficulty
+they will meet until they try to build the thing. Defects discovered in testing – the last phase
+before deployment – are the most expensive to fix, because they force rework of every phase that
+came before. The later a flaw is found, the more it costs, and the waterfall model deliberately
+postpones the activity that finds flaws to the end.
 
-The empirical case against the model was made most directly by the methods that
-replaced it. Boehm's spiral model keeps the phase discipline of waterfall but
-reorders work around risk, addressing the most dangerous unknowns first with a
-prototype rather than deferring them. The iterative tradition argues, and
-decades of experience have borne out, that short cycles with working software at
-the end of each one surface flaws early, when they are cheap to fix. Even bodies
-that once mandated waterfall have moved on. The US Department of Defense
-replaced DOD-STD-2167 with MIL-STD-498 in 1994, which explicitly encourages
-evolutionary acquisition and iterative and incremental development.
+The empirical case against the model was made most directly by the methods that replaced it. Boehm's
+spiral model keeps the phase discipline of waterfall but reorders work around risk, addressing the
+most dangerous unknowns first with a prototype rather than deferring them. The iterative tradition
+argues, and decades of experience have borne out, that short cycles with working software at the end
+of each one surface flaws early, when they are cheap to fix. Even bodies that once mandated
+waterfall have moved on. The US Department of Defense replaced DOD-STD-2167 with MIL-STD-498 in
+1994, which explicitly encourages evolutionary acquisition and iterative and incremental
+development.
 
-The waterfall model is not wrong. It is a method that fits a specific class of
-problem – one with stable requirements, a well-understood domain, and a high
-cost of change after construction begins. For dynamic, uncertain, or innovative
-work, the assumptions that make it efficient are the assumptions that make it
-fail.
+The waterfall model is not wrong. It is a method that fits a specific class of problem – one with
+stable requirements, a well-understood domain, and a high cost of change after construction begins.
+For dynamic, uncertain, or innovative work, the assumptions that make it efficient are the
+assumptions that make it fail.
 
 == See also
 
@@ -152,16 +136,14 @@ fail.
 
 == References
 
-- Benington, Herbert D. (1956). _Production of Large Computer Programs_.
-  Proceedings of the Symposium on Advanced Programming Methods for Digital
-  Computers. Republished 1983 in IEEE Annals of the History of Computing,
-  5(4), pp. 350–361.
-- Royce, Winston W. (1970). _Managing the Development of Large Software
-  Systems_. Proceedings of IEEE WESCON, 26, pp. 1–9.
-- Bell, Thomas E.; Thayer, T. A. (1976). _Software Requirements: Are They Really
-  a Problem?_. Proceedings of the 2nd International Conference on Software
-  Engineering.
-- US Department of Defense (1985). _Military Standard: Defense System
-  Software Development_ (DOD-STD-2167).
-- Larman, Craig; Basili, Victor R. (2003). _Iterative and Incremental
-  Development: A Brief History_. IEEE Computer, 36(6), pp. 47–56.
+- Benington, Herbert D. (1956). _Production of Large Computer Programs_. Proceedings of the
+  Symposium on Advanced Programming Methods for Digital Computers. Republished 1983 in IEEE Annals
+  of the History of Computing, 5(4), pp. 350–361.
+- Royce, Winston W. (1970). _Managing the Development of Large Software Systems_. Proceedings of
+  IEEE WESCON, 26, pp. 1–9.
+- Bell, Thomas E.; Thayer, T. A. (1976). _Software Requirements: Are They Really a Problem?_.
+  Proceedings of the 2nd International Conference on Software Engineering.
+- US Department of Defense (1985). _Military Standard: Defense System Software Development_
+  (DOD-STD-2167).
+- Larman, Craig; Basili, Victor R. (2003). _Iterative and Incremental Development: A Brief History_.
+  IEEE Computer, 36(6), pp. 47–56.

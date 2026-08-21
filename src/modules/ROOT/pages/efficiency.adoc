@@ -1,40 +1,35 @@
 = Efficiency
 
-Efficiency is a measure of how well a system converts the resources it consumes
-into useful work. It is the ratio of output to input. A more efficient system
-delivers more output for the same resources, or the same output for fewer
-resources.
+Efficiency is a measure of how well a system converts the resources it consumes into useful work. It
+is the ratio of output to input. A more efficient system delivers more output for the same
+resources, or the same output for fewer resources.
 
-The inputs to a software system are the resources it spends, such as CPU
-cycles, memory, storage, network xref:throughput.adoc[*bandwidth*], energy, and
-money. The outputs are the operations the system completes, characterized
-chiefly by two measures.
+The inputs to a software system are the resources it spends, such as CPU cycles, memory, storage,
+network xref:throughput.adoc[*bandwidth*], energy, and money. The outputs are the operations the
+system completes, characterized chiefly by two measures.
 
-* xref:latency.adoc[*Latency*]: the time it takes for a single operation or
-  communication to complete.
+* xref:latency.adoc[*Latency*]: the time it takes for a single operation or communication to
+  complete.
 
-* xref:throughput.adoc[*Throughput*]: the number of operations the system
-  processes in a given amount of time.
+* xref:throughput.adoc[*Throughput*]: the number of operations the system processes in a given
+  amount of time.
 
-Efficiency is closely related to xref:performance.adoc[*performance*], but the
-two are not identical. Performance describes how well a system responds in
-absolute terms – how fast, and how much. Efficiency adds the dimension of cost.
-It asks how much resource was spent to achieve that performance. A system that
-doubles its throughput by doubling its server count has improved its
-xref:scalability.adoc[*scalability*] and xref:capacity.adoc[*capacity*], but not
-necessarily its efficiency. Efficiency improves only when the ratio of useful
-work to resources consumed improves.
+Efficiency is closely related to xref:performance.adoc[*performance*], but the two are not
+identical. Performance describes how well a system responds in absolute terms – how fast, and how
+much. Efficiency adds the dimension of cost. It asks how much resource was spent to achieve that
+performance. A system that doubles its throughput by doubling its server count has improved its
+xref:scalability.adoc[*scalability*] and xref:capacity.adoc[*capacity*], but not necessarily its
+efficiency. Efficiency improves only when the ratio of useful work to resources consumed improves.
 
-This distinction matters in xref:distributed-system.adoc[*distributed systems*],
-where it is often straightforward to add more resources – more nodes, more
-bandwidth – but harder to extract more work from each unit of resource. The
-xref:access-patterns.adoc[*access patterns*] of the workload determine which
-efficiency gains are even available. xref:parallelism.adoc[*Parallelism*] and
-batching can raise throughput, for example, but they may also increase the time
-individual requests spend waiting in queues, raising latency. An efficient
-design navigates these trade-offs at the lowest resource cost. Designing for
-efficiency therefore requires xref:mechanical-sympathy.adoc[*mechanical sympathy*], an awareness of how software interacts with the underlying
-hardware.
+This distinction matters in xref:distributed-system.adoc[*distributed systems*], where it is often
+straightforward to add more resources – more nodes, more bandwidth – but harder to extract more work
+from each unit of resource. The xref:access-patterns.adoc[*access patterns*] of the workload
+determine which efficiency gains are even available. xref:parallelism.adoc[*Parallelism*] and
+batching can raise throughput, for example, but they may also increase the time individual requests
+spend waiting in queues, raising latency. An efficient design navigates these trade-offs at the
+lowest resource cost. Designing for efficiency therefore requires
+xref:mechanical-sympathy.adoc[*mechanical sympathy*], an awareness of how software interacts with
+the underlying hardware.
 
 == See also
 

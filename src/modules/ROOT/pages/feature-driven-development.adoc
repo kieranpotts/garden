@@ -1,87 +1,78 @@
 = Feature-driven development
 
-*Feature-driven development (FDD)* is an
-xref:agile.adoc[*agile*] software development methodology that organizes work
-around *features* – small, client-valued pieces of functionality – and
-delivers them in short, regular iterations. It was devised by Jeff De Luca in
-1997 for a 50-person, 15-month project at a Singapore lending institution,
-with Peter Coad contributing the object-modeling approach on which the
-method's design step rests. FDD was first set out in print by Stephen Palmer
+*Feature-driven development (FDD)* is an xref:agile.adoc[*agile*] software development methodology
+that organizes work around *features* – small, client-valued pieces of functionality – and delivers
+them in short, regular iterations. It was devised by Jeff De Luca in 1997 for a 50-person, 15-month
+project at a Singapore lending institution, with Peter Coad contributing the object-modeling
+approach on which the method's design step rests. FDD was first set out in print by Stephen Palmer
 and Mac Felsing in _A Practical Guide to Feature-Driven Development_ (2002).
 
-FDD is
-xref:iterative-and-incremental-development.adoc[*iterative and incremental*],
-but it carries out more up-front modeling than the other methods in the agile
-family. The xref:domain.adoc[*domain*] is modeled collaboratively before
-delivery begins, and that model is then decomposed into the feature list that
-drives the rest of the project. This makes FDD a fit for larger teams working
-in a complex, reasonably well-understood domain, where a shared model up front
+FDD is xref:iterative-and-incremental-development.adoc[*iterative and incremental*], but it carries
+out more up-front modeling than the other methods in the agile family. The
+xref:domain.adoc[*domain*] is modeled collaboratively before delivery begins, and that model is then
+decomposed into the feature list that drives the rest of the project. This makes FDD a fit for
+larger teams working in a complex, reasonably well-understood domain, where a shared model up front
 reduces integration risk.
 
 == The five processes
 
-FDD is defined by five processes. The first three are performed once at the
-start of a project; the last two repeat for every batch of features through to
-delivery.
+FDD is defined by five processes. The first three are performed once at the start of a project; the
+last two repeat for every batch of features through to delivery.
 
 . *Develop an overall model.* Domain experts and developers collaborate in a
-   workshop to produce an object model of the domain, using Peter Coad's
-   *modeling in color* to distinguish kinds of classes by role.
+workshop to produce an object model of the domain, using Peter Coad's *modeling in color* to
+distinguish kinds of classes by role.
 
 . *Build a features list.* The team decomposes the overall model into a
-   hierarchy of features. Features are grouped into feature sets, which are
-   themselves grouped into major feature sets corresponding to business
-   activities.
+hierarchy of features. Features are grouped into feature sets, which are themselves grouped into
+major feature sets corresponding to business activities.
 
 . *Plan by feature.* The feature list is sequenced and assigned. Chief
-   programmers take ownership of feature sets, and the order of work is
-   planned around dependencies and business priority.
+programmers take ownership of feature sets, and the order of work is planned around dependencies and
+business priority.
 
 . *Design by feature.* A chief programmer leads a small feature team through a
-   design for a small batch of features, producing sequence diagrams and
-   refining the model where needed.
+design for a small batch of features, producing sequence diagrams and refining the model where
+needed.
 
 . *Build by feature.* The feature team implements, tests, and integrates the
-   features from that batch. A feature is only counted as complete once it has
-   been inspected and integrated into the main build.
+features from that batch. A feature is only counted as complete once it has been inspected and
+integrated into the main build.
 
 == Features
 
-A feature is a small piece of functionality that is meaningful to a client of
-the system. It is written in a standard form, `<action> the <result> <by/for/of> <object>`, eg. `calculate the total of a sale` or `list the scheduled departures of an airport`. The constraint that a feature be
-completable in under two weeks keeps work batches small and progress visible.
-A feature is either done or it is not, and the percentage of features complete
-is the project's primary progress metric.
+A feature is a small piece of functionality that is meaningful to a client of the system. It is
+written in a standard form, `<action> the <result> <by/for/of> <object>`, eg.
+`calculate the total of a sale` or `list the scheduled departures of an airport`. The constraint
+that a feature be completable in under two weeks keeps work batches small and progress visible. A
+feature is either done or it is not, and the percentage of features complete is the project's
+primary progress metric.
 
-This use of "feature" is unrelated to the pejorative
-xref:feature-factory.adoc[*feature factory*]. The two terms share a word but
-describe different things. An FDD feature is a fine-grained unit of delivery,
-whereas a feature factory is a dysfunction in which a team is reduced to a
-pipeline of feature output.
+This use of "feature" is unrelated to the pejorative xref:feature-factory.adoc[*feature factory*].
+The two terms share a word but describe different things. An FDD feature is a fine-grained unit of
+delivery, whereas a feature factory is a dysfunction in which a team is reduced to a pipeline of
+feature output.
 
 == Roles and feature teams
 
 FDD assigns explicit ownership. A *chief programmer*, modeled on the
-xref:surgical-team.adoc[*surgical team*]'s chief surgeon, leads design and
-integration for a set of features and mentors the team working on them. A
-*feature team* is a small, dynamically formed group that assembles for the
-duration of a feature batch and disbands when the work is integrated. This
-keeps knowledge flowing across the team rather than siloed, while still
-placing a single experienced developer in charge of each design.
+xref:surgical-team.adoc[*surgical team*]'s chief surgeon, leads design and integration for a set of
+features and mentors the team working on them. A *feature team* is a small, dynamically formed group
+that assembles for the duration of a feature batch and disbands when the work is integrated. This
+keeps knowledge flowing across the team rather than siloed, while still placing a single experienced
+developer in charge of each design.
 
 == Compared with other agile methods
 
 FDD sits alongside xref:scrum.adoc[*Scrum*],
-xref:extreme-programming.adoc[*Extreme Programming (XP)*],
-xref:dsdm.adoc[*DSDM*], and xref:crystal-clear.adoc[*Crystal Clear*] in the
-agile family, but differs in emphasis. Scrum prescribes time-boxed sprints and
-a set of ceremonies without prescribing engineering practice. XP prescribes
-engineering practices such as
-xref:test-driven-development.adoc[*test-driven development*] without
-prescribing a planning unit. FDD prescribes both a planning unit, the feature,
-and an up-front modeling step, which makes it more prescriptive about design
-than its siblings. It suits teams large enough to need a shared model and a
-degree of coordination that lighter methods do not address.
+xref:extreme-programming.adoc[*Extreme Programming (XP)*], xref:dsdm.adoc[*DSDM*], and
+xref:crystal-clear.adoc[*Crystal Clear*] in the agile family, but differs in emphasis. Scrum
+prescribes time-boxed sprints and a set of ceremonies without prescribing engineering practice. XP
+prescribes engineering practices such as
+xref:test-driven-development.adoc[*test-driven development*] without prescribing a planning unit.
+FDD prescribes both a planning unit, the feature, and an up-front modeling step, which makes it more
+prescriptive about design than its siblings. It suits teams large enough to need a shared model and
+a degree of coordination that lighter methods do not address.
 
 == See also
 
@@ -96,5 +87,4 @@ degree of coordination that lighter methods do not address.
 
 == References
 
-* Palmer and Felsing (2002). _A Practical Guide to Feature-Driven
-  Development_. Prentice Hall.
+* Palmer and Felsing (2002). _A Practical Guide to Feature-Driven Development_. Prentice Hall.

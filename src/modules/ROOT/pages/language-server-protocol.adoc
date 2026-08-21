@@ -1,69 +1,59 @@
 = Language Server Protocol
 
-The *Language Server Protocol (LSP)* is an open standard that defines a
-JSON-RPC-based message format for communication between a *language server* – a
-process that provides language intelligence for a programming language – and a
-*language client*, which is typically embedded in an editor or
+The *Language Server Protocol (LSP)* is an open standard that defines a JSON-RPC-based message
+format for communication between a *language server* – a process that provides language intelligence
+for a programming language – and a *language client*, which is typically embedded in an editor or
 xref:integrated-development-environments.adoc[*IDE*].
 
-It was developed at Microsoft to power language support in Visual Studio Code
-and was open-sourced in 2016. The protocol is now a de facto standard adopted by
-a wide range of editors and language tooling.
+It was developed at Microsoft to power language support in Visual Studio Code and was open-sourced
+in 2016. The protocol is now a de facto standard adopted by a wide range of editors and language
+tooling.
 
 == The problem it solves
 
-Before LSP, language intelligence – completion, go-to-definition, hover
-documentation, diagnostics, refactoring – had to be implemented separately for
-each pairing of editor and language. Supporting M editors across N languages
-meant building M×N integrations. LSP collapses that to M+N: each editor
-implements a single LSP client, and each language tool implements a single LSP
-server.
+Before LSP, language intelligence – completion, go-to-definition, hover documentation, diagnostics,
+refactoring – had to be implemented separately for each pairing of editor and language. Supporting M
+editors across N languages meant building M×N integrations. LSP collapses that to M+N: each editor
+implements a single LSP client, and each language tool implements a single LSP server.
 
-The same decoupling lets a language server be reused across every editor that
-speaks LSP, and lets an editor adopt a new language simply by hosting a new
-server. This is why a new editor can offer strong multi-language support soon
-after launch, and why a language community's tooling investment benefits every
-editor at once.
+The same decoupling lets a language server be reused across every editor that speaks LSP, and lets
+an editor adopt a new language simply by hosting a new server. This is why a new editor can offer
+strong multi-language support soon after launch, and why a language community's tooling investment
+benefits every editor at once.
 
 == How it works
 
-An LSP server runs as a separate process, most commonly spawned by the editor
-and communicated with over standard input and output, though TCP and WebSockets
-are also supported. Messages are encoded as *JSON-RPC 2.0* requests, responses,
-and notifications.
+An LSP server runs as a separate process, most commonly spawned by the editor and communicated with
+over standard input and output, though TCP and WebSockets are also supported. Messages are encoded
+as *JSON-RPC 2.0* requests, responses, and notifications.
 
-The protocol is transport-agnostic and language-agnostic. The server
-understands the target language, while the client owns the editor surface. The
-two coordinate through a set of standardized request and notification types,
-exchanged in either direction.
+The protocol is transport-agnostic and language-agnostic. The server understands the target
+language, while the client owns the editor surface. The two coordinate through a set of standardized
+request and notification types, exchanged in either direction.
 
 == Features
 
 The protocol standardizes the building blocks of language support.
 
-* *Text document synchronization*, so the server tracks the client's open
-  documents and incremental edits.
-* *Diagnostics* – errors, warnings, and hints pushed from the server to the
-  client and surfaced as squiggles in the editor. This is the channel through
-  which xref:linting.adoc[*linting*] and
+* *Text document synchronization*, so the server tracks the client's open documents and incremental
+  edits.
+* *Diagnostics* – errors, warnings, and hints pushed from the server to the client and surfaced as
+  squiggles in the editor. This is the channel through which xref:linting.adoc[*linting*] and
   xref:static-analysis.adoc[*static analysis*] reach the developer while typing.
 * *Hover* documentation, *completion*, and *signature help*.
 * *Go-to-definition*, *find references*, and *document/workspace symbol* search.
-* xref:refactoring.adoc[*Refactoring*] operations such as rename and code
-  actions.
+* xref:refactoring.adoc[*Refactoring*] operations such as rename and code actions.
 * *Formatting*, *semantic highlighting*, and *inlay hints*.
 
 == Implementations
 
-Notable language servers include `rust-analyzer` for Rust, `clangd` for C and
-C++, `pyright` for Python, `gopls` for Go, and the TypeScript language server.
-Because they all speak the same protocol, each is reusable across every
-LSP-compatible editor.
+Notable language servers include `rust-analyzer` for Rust, `clangd` for C and C++, `pyright` for
+Python, `gopls` for Go, and the TypeScript language server. Because they all speak the same
+protocol, each is reusable across every LSP-compatible editor.
 
 By standardizing the editor↔tooling boundary, LSP has been a significant
-xref:developer-experience.adoc[*developer experience*] multiplier: language
-features that once required per-editor engineering now ship once and work
-everywhere.
+xref:developer-experience.adoc[*developer experience*] multiplier: language features that once
+required per-editor engineering now ship once and work everywhere.
 
 == See also
 

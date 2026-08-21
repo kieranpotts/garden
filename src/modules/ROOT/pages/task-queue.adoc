@@ -1,158 +1,130 @@
 = Task queue
 
-A task queue is a system that receives units of computational work — *tasks* —
-together with their arguments, dispatches those tasks to be executed, and
-returns the results to the application. It is a higher-level abstraction than a
-xref:message-queues.adoc[*message queue*]: where a message queue moves data
-between producers and consumers and leaves what to do with it up to the
-consumer, a task queue treats each message as a callable unit of work and
-concerns itself with executing it, tracking its state, and reporting its
-outcome.
+A task queue is a system that receives units of computational work — *tasks* — together with their
+arguments, dispatches those tasks to be executed, and returns the results to the application. It is
+a higher-level abstraction than a xref:message-queues.adoc[*message queue*]: where a message queue
+moves data between producers and consumers and leaves what to do with it up to the consumer, a task
+queue treats each message as a callable unit of work and concerns itself with executing it, tracking
+its state, and reporting its outcome.
 
-Task queues are the workhorse of
-xref:asynchronous-processing.adoc[*asynchronous processing*] in distributed
-systems. Web request handlers offload slow, variable, or fault-prone work —
-sending email, transcoding media, generating reports, calling third-party APIs
-— to a background worker so the foreground request returns quickly and the
-work is decoupled from the request lifecycle.
+Task queues are the workhorse of xref:asynchronous-processing.adoc[*asynchronous processing*] in
+distributed systems. Web request handlers offload slow, variable, or fault-prone work — sending
+email, transcoding media, generating reports, calling third-party APIs — to a background worker so
+the foreground request returns quickly and the work is decoupled from the request lifecycle.
 
 == How it is structured
 
 A task queue has four cooperating parts.
 
-* *Producers* are the application code that submits a task. They serialise the
-  task's name and arguments into a message and hand it to a broker, then return
-  immediately without waiting for the task to run.
+* *Producers* are the application code that submits a task. They serialise the task's name and
+  arguments into a message and hand it to a broker, then return immediately without waiting for the
+  task to run.
 
 * A xref:message-broker.adoc[*message broker*] (often a dedicated
-  xref:message-queues.adoc[*message queue*] such as
-  xref:rabbitmq.adoc[*RabbitMQ*] or Amazon SQS, or a
-  xref:redis.adoc[*Redis*] list or stream) holds the queued task until a worker
-  is ready for it. The broker provides the durability and ordering semantics
-  the queue relies on.
+  xref:message-queues.adoc[*message queue*] such as xref:rabbitmq.adoc[*RabbitMQ*] or Amazon SQS, or
+  a xref:redis.adoc[*Redis*] list or stream) holds the queued task until a worker is ready for it.
+  The broker provides the durability and ordering semantics the queue relies on.
 
-* *Workers* are processes that pull tasks from the broker, deserialise them,
-  execute the function they name, and report success or failure. Workers run
-  independently of the producers and can be scaled, restarted, and isolated
-  from the application servers that submit work.
+* *Workers* are processes that pull tasks from the broker, deserialise them, execute the function
+  they name, and report success or failure. Workers run independently of the producers and can be
+  scaled, restarted, and isolated from the application servers that submit work.
 
-* A *result backend* stores the outcome and any return value of each task, so
-  producers or other components can retrieve them later. Not every workload
-  needs one — fire-and-forget tasks such as sending email often run without a
-  result backend — but it is what turns a queue into something callers can poll
-  or await.
+* A *result backend* stores the outcome and any return value of each task, so producers or other
+  components can retrieve them later. Not every workload needs one — fire-and-forget tasks such as
+  sending email often run without a result backend — but it is what turns a queue into something
+  callers can poll or await.
 
 == Worker models
 
-A worker process can execute tasks in several concurrency models, each suited
-to a different workload shape.
+A worker process can execute tasks in several concurrency models, each suited to a different
+workload shape.
 
-* *Prefork (multiprocess).* The worker spawns a pool of child processes, each
-  handling one task at a time. This is the safe default for CPU-bound tasks and
-  for code that is not thread-safe, at the cost of higher memory per concurrent
-  task.
+* *Prefork (multiprocess).* The worker spawns a pool of child processes, each handling one task at a
+  time. This is the safe default for CPU-bound tasks and for code that is not thread-safe, at the
+  cost of higher memory per concurrent task.
 
-* *Thread pool.* A pool of threads within one process shares memory and is
-  cheaper to scale, but only works when the task code is thread-safe and
-  releases the interpreter around blocking calls.
+* *Thread pool.* A pool of threads within one process shares memory and is cheaper to scale, but
+  only works when the task code is thread-safe and releases the interpreter around blocking calls.
 
-* *Coroutine or event loop.* A single-threaded event loop runs many tasks
-  concurrently through cooperative scheduling, ideal for I/O-bound tasks that
-  spend most of their time waiting on the network. It collapses under
-  CPU-bound work, which blocks the loop.
+* *Coroutine or event loop.* A single-threaded event loop runs many tasks concurrently through
+  cooperative scheduling, ideal for I/O-bound tasks that spend most of their time waiting on the
+  network. It collapses under CPU-bound work, which blocks the loop.
 
-* *Hybrid.* Some systems combine a small prefork pool with a coroutine loop in
-  each child, trading complexity for the ability to mix CPU- and I/O-bound
-  work in one deployment.
+* *Hybrid.* Some systems combine a small prefork pool with a coroutine loop in each child, trading
+  complexity for the ability to mix CPU- and I/O-bound work in one deployment.
 
-Choosing the wrong model is a common failure mode. A thread pool running
-CPU-bound Python will not scale beyond one core because of the global
-interpreter lock, and an event loop running a CPU-bound task will stall every
-other task on that worker.
+Choosing the wrong model is a common failure mode. A thread pool running CPU-bound Python will not
+scale beyond one core because of the global interpreter lock, and an event loop running a CPU-bound
+task will stall every other task on that worker.
 
 == Delivery guarantees and idempotency
 
-Task queues almost always provide *at-least-once delivery*. A worker that
-crashes mid-task, or whose acknowledgement is lost, will have the task
-redelivered to another worker. Exactly-once delivery is generally not
-achievable across a distributed broker and worker pool without giving up
-availability, so the practical contract is "delivered at least once, possibly
-more than once".
+Task queues almost always provide *at-least-once delivery*. A worker that crashes mid-task, or whose
+acknowledgement is lost, will have the task redelivered to another worker. Exactly-once delivery is
+generally not achievable across a distributed broker and worker pool without giving up availability,
+so the practical contract is "delivered at least once, possibly more than once".
 
-This makes task handlers
-xref:idempotent.adoc[*idempotent*] by necessity. A handler that charges a card
-or writes a row on every invocation will double-charge or double-write on
-redelivery. The remedy is the same as for any other at-least-once system:
-design the side effect to be naturally idempotent (eg. upsert by key), or
-guard it with an *idempotency key* so a redelivery is recognised and
-short-circuited.
+This makes task handlers xref:idempotent.adoc[*idempotent*] by necessity. A handler that charges a
+card or writes a row on every invocation will double-charge or double-write on redelivery. The
+remedy is the same as for any other at-least-once system: design the side effect to be naturally
+idempotent (eg. upsert by key), or guard it with an *idempotency key* so a redelivery is recognised
+and short-circuited.
 
 == Retries, dead letters, and the result backend
 
-Tasks fail for both transient and permanent reasons. A task queue applies a
-xref:retry.adoc[*retry*] policy — typically exponential backoff with jitter —
-to absorb transient failures such as a downstream API timeout. When the
-retry budget is exhausted, the task is diverted to a
-xref:dead-letter-queue.adoc[*dead letter queue*] rather than retried forever
-or dropped silently, so an operator can inspect, fix, and replay it.
+Tasks fail for both transient and permanent reasons. A task queue applies a xref:retry.adoc[*retry*]
+policy — typically exponential backoff with jitter — to absorb transient failures such as a
+downstream API timeout. When the retry budget is exhausted, the task is diverted to a
+xref:dead-letter-queue.adoc[*dead letter queue*] rather than retried forever or dropped silently, so
+an operator can inspect, fix, and replay it.
 
-The result backend records the terminal state of each task — succeeded,
-failed, or revoked — and its return value or exception. It is usually a
-short-lived store such as Redis or a database table. Producers poll it, or
-the queue pushes a callback, to learn how a task ended. Treating the result
-backend as durable long-term storage is an anti-pattern: it is meant for
-recent, retrievable results, not a system of record.
+The result backend records the terminal state of each task — succeeded, failed, or revoked — and its
+return value or exception. It is usually a short-lived store such as Redis or a database table.
+Producers poll it, or the queue pushes a callback, to learn how a task ended. Treating the result
+backend as durable long-term storage is an anti-pattern: it is meant for recent, retrievable
+results, not a system of record.
 
 == Scheduling
 
-Most task queues can schedule tasks to run at a future time or on a recurring
-schedule, providing an application-level alternative to system `cron`. A
-scheduler process submits tasks to the broker at the configured moments, so
-the actual execution still flows through the normal worker pool and inherits
-its retry, monitoring, and scaling behaviour. Because the schedule lives in
-the application, it can be versioned with the code and survives node
-restarts, unlike a host crontab that is invisible to the deployment.
+Most task queues can schedule tasks to run at a future time or on a recurring schedule, providing an
+application-level alternative to system `cron`. A scheduler process submits tasks to the broker at
+the configured moments, so the actual execution still flows through the normal worker pool and
+inherits its retry, monitoring, and scaling behaviour. Because the schedule lives in the
+application, it can be versioned with the code and survives node restarts, unlike a host crontab
+that is invisible to the deployment.
 
 == Task queues versus adjacent abstractions
 
-A task queue sits between two neighbouring concepts, and the boundary is worth
-drawing clearly.
+A task queue sits between two neighbouring concepts, and the boundary is worth drawing clearly.
 
-* *Versus a bare message queue.* A message queue is a transport: it moves
-  messages and lets the consumer decide what to do with them. A task queue
-  adds execution semantics — function dispatch, worker pools, retries, result
-  storage — on top of that transport. You can build a task queue on a message
-  queue (Celery on RabbitMQ), on a cache (Celery on Redis), or even on a
-  database table, but the queue itself is not the task system.
+* *Versus a bare message queue.* A message queue is a transport: it moves messages and lets the
+  consumer decide what to do with them. A task queue adds execution semantics — function dispatch,
+  worker pools, retries, result storage — on top of that transport. You can build a task queue on a
+  message queue (Celery on RabbitMQ), on a cache (Celery on Redis), or even on a database table, but
+  the queue itself is not the task system.
 
-* *Versus an execution orchestrator.* A task queue runs independent,
-  stateless units of work with no knowledge of one another. An
-  xref:execution-orchestrator.adoc[*execution orchestrator*] models a workflow
-  as a dependency graph of steps, sequencing them, handling compensation, and
-  persisting intermediate state so a long-running process can resume after a
-  crash. Use a task queue for many independent jobs; use an orchestrator when
-  the jobs form a multi-step, durable workflow.
+* *Versus an execution orchestrator.* A task queue runs independent, stateless units of work with no
+  knowledge of one another. An xref:execution-orchestrator.adoc[*execution orchestrator*] models a
+  workflow as a dependency graph of steps, sequencing them, handling compensation, and persisting
+  intermediate state so a long-running process can resume after a crash. Use a task queue for many
+  independent jobs; use an orchestrator when the jobs form a multi-step, durable workflow.
 
 == Examples
 
-https://docs.celeryq.dev/[Celery] is the canonical distributed task queue for
-Python. Tasks are defined as ordinary Python functions and executed either
-synchronously (in the foreground, for instant execution) or asynchronously (in
-the background). Celery is commonly paired with
+https://docs.celeryq.dev/[Celery] is the canonical distributed task queue for Python. Tasks are
+defined as ordinary Python functions and executed either synchronously (in the foreground, for
+instant execution) or asynchronously (in the background). Celery is commonly paired with
 xref:rabbitmq.adoc[*RabbitMQ*] as its broker, but it can also use Amazon SQS,
-xref:redis.adoc[*Redis*], or a database. Its communication protocol has been
-reimplemented in other languages, with libraries available for JavaScript,
-TypeScript, and PHP.
+xref:redis.adoc[*Redis*], or a database. Its communication protocol has been reimplemented in other
+languages, with libraries available for JavaScript, TypeScript, and PHP.
 
-The same pattern appears across most language ecosystems:
-https://python-rq.org/[RQ] and https://dramatiq.io/[Dramatiq] for Python,
-https://sidekiq.org/[Sidekiq] for Ruby, https://docs.bullmq.io/[BullMQ] for
-Node.js, and https://masstransit.io/[MassTransit] and
-https://www.hangfire.io/[Hangfire] for .NET. Cloud platforms offer hosted
-equivalents such as Google Cloud Tasks and Amazon SQS with
-xref:function-as-a-service.adoc[*serverless functions*], which remove the
-operational burden of running workers at the cost of less control over the
-worker model and the result backend.
+The same pattern appears across most language ecosystems: https://python-rq.org/[RQ] and
+https://dramatiq.io/[Dramatiq] for Python, https://sidekiq.org/[Sidekiq] for Ruby,
+https://docs.bullmq.io/[BullMQ] for Node.js, and https://masstransit.io/[MassTransit] and
+https://www.hangfire.io/[Hangfire] for .NET. Cloud platforms offer hosted equivalents such as Google
+Cloud Tasks and Amazon SQS with xref:function-as-a-service.adoc[*serverless functions*], which
+remove the operational burden of running workers at the cost of less control over the worker model
+and the result backend.
 
 == See also
 

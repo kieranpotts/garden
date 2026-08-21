@@ -1,70 +1,57 @@
 = Code conventions
 
-Code conventions are a set of guidelines for a specific programming language
-that recommend how source code should be written. They cover the surface a
-reader sees first: file organization, indentation, line length, naming of
-variables and types, placement of comments, and the structure of declarations
-and statements. Some conventions also reach into programming practice,
-recommending how to format control flow, how to order members in a class, or
-when to extract a function. The guidelines are addressed to the human
-maintainers and peer reviewers of a project, not to the compiler. A compiler
-will accept any text that parses. Conventions govern the text that people read.
+Code conventions are a set of guidelines for a specific programming language that recommend how
+source code should be written. They cover the surface a reader sees first: file organization,
+indentation, line length, naming of variables and types, placement of comments, and the structure of
+declarations and statements. Some conventions also reach into programming practice, recommending how
+to format control flow, how to order members in a class, or when to extract a function. The
+guidelines are addressed to the human maintainers and peer reviewers of a project, not to the
+compiler. A compiler will accept any text that parses. Conventions govern the text that people read.
 
-The driving motivation is xref:code-for-the-maintainer.adoc[*coding for the maintainer*]. Most of the lifetime cost of a piece of software is spent after
-it was first written, and almost none of it is spent by the original author.
-Code that follows a shared shape is faster to read, because the reader does
-not have to relearn the layout of every file. They know where to look for a
-declaration, what a name means, and how a block will be indented. Conventions
-turn a collection of individual styles into a single, predictable idiom. That
-predictability is what makes xref:clean-code.adoc[*clean code*] sustainable as
-a codebase grows rather than an accident that holds only while one person
-remembers it. It is also the surface on which the
-xref:principle-of-least-astonishment.adoc[*principle of least astonishment*]
-rests. A reader who knows what a name means and how a block will be indented is
-not surprised by what they find, and the convention is what lets them know.
+The driving motivation is xref:code-for-the-maintainer.adoc[*coding for the maintainer*]. Most of
+the lifetime cost of a piece of software is spent after it was first written, and almost none of it
+is spent by the original author. Code that follows a shared shape is faster to read, because the
+reader does not have to relearn the layout of every file. They know where to look for a declaration,
+what a name means, and how a block will be indented. Conventions turn a collection of individual
+styles into a single, predictable idiom. That predictability is what makes
+xref:clean-code.adoc[*clean code*] sustainable as a codebase grows rather than an accident that
+holds only while one person remembers it. It is also the surface on which the
+xref:principle-of-least-astonishment.adoc[*principle of least astonishment*] rests. A reader who
+knows what a name means and how a block will be indented is not surprised by what they find, and the
+convention is what lets them know.
 
-Conventions range from the informal habits of an individual to a documented
-standard adopted across a whole organization. Where a set of conventions has
-been deliberately designed to produce high-quality code and then formally
-adopted, it is often called a coding standard. The distinction is one of
-authority, not of content. The same rules, agreed by a team and checked in
-review, are conventions. The same rules, mandated and audited, become a
-standard. Industry examples include MISRA C and the CERT C coding standard,
-both of which target safety- and security-critical C.
+Conventions range from the informal habits of an individual to a documented standard adopted across
+a whole organization. Where a set of conventions has been deliberately designed to produce
+high-quality code and then formally adopted, it is often called a coding standard. The distinction
+is one of authority, not of content. The same rules, agreed by a team and checked in review, are
+conventions. The same rules, mandated and audited, become a standard. Industry examples include
+MISRA C and the CERT C coding standard, both of which target safety- and security-critical C.
 
-Conventions are not self-enforcing. A team agrees on them, and then has to hold
-the line. The lightest form of enforcement is peer review, where reviewers ask
-for changes that bring code into line. The heavier and more reliable form is
-automation. Formatters such as `gofmt` or Prettier rewrite code to a fixed
-layout and remove most formatting questions entirely.
-xref:linting.adoc[*Linters*] flag violations of naming and structural rules,
-and sit within the broader practice of
-xref:static-analysis.adoc[*static analysis*]. Running these tools in
-xref:ci-cd.adoc[*continuous integration*] turns the conventions from a
-guideline that can be ignored into a gate that fails the build. The
-convention and the tool are complements. The convention states the intent,
-and the tool removes the temptation to argue about it.
+Conventions are not self-enforcing. A team agrees on them, and then has to hold the line. The
+lightest form of enforcement is peer review, where reviewers ask for changes that bring code into
+line. The heavier and more reliable form is automation. Formatters such as `gofmt` or Prettier
+rewrite code to a fixed layout and remove most formatting questions entirely.
+xref:linting.adoc[*Linters*] flag violations of naming and structural rules, and sit within the
+broader practice of xref:static-analysis.adoc[*static analysis*]. Running these tools in
+xref:ci-cd.adoc[*continuous integration*] turns the conventions from a guideline that can be ignored
+into a gate that fails the build. The convention and the tool are complements. The convention states
+the intent, and the tool removes the temptation to argue about it.
 
-Language shape blurs the line between convention and requirement. What is a
-convention in one language may be enforced by the compiler in another. Python
-uses indentation as block structure, so consistent indentation is not a matter
-of taste. Java permits at most one public class per source file. Languages
-with strong formatting cultures, such as Go, ship a canonical formatter and
-treat its output as the style. Where the language already fixes a choice,
-there is nothing left to convention. Where it leaves the choice open, the
-convention fills the gap.
+Language shape blurs the line between convention and requirement. What is a convention in one
+language may be enforced by the compiler in another. Python uses indentation as block structure, so
+consistent indentation is not a matter of taste. Java permits at most one public class per source
+file. Languages with strong formatting cultures, such as Go, ship a canonical formatter and treat
+its output as the style. Where the language already fixes a choice, there is nothing left to
+convention. Where it leaves the choice open, the convention fills the gap.
 
-Conventions are not the same as good code. Consistent indentation and uniform
-naming make code easier to read, but they say nothing about whether the design
-is sound, the abstractions are right, or the logic is correct. Code that
-follows every formatting rule can still be
-xref:technical-debt.adoc[*technical debt*] if it is poorly structured. The
-conventions are the floor. They remove the friction of inconsistent style so
-that attention is free for the harder problems of design. Bringing existing
-code up to the floor is a common motive for
-xref:refactoring.adoc[*refactoring*], and the
-xref:boy-scout-rule.adoc[*boy scout rule*] keeps the floor from slipping as the
-code evolves.
+Conventions are not the same as good code. Consistent indentation and uniform naming make code
+easier to read, but they say nothing about whether the design is sound, the abstractions are right,
+or the logic is correct. Code that follows every formatting rule can still be
+xref:technical-debt.adoc[*technical debt*] if it is poorly structured. The conventions are the
+floor. They remove the friction of inconsistent style so that attention is free for the harder
+problems of design. Bringing existing code up to the floor is a common motive for
+xref:refactoring.adoc[*refactoring*], and the xref:boy-scout-rule.adoc[*boy scout rule*] keeps the
+floor from slipping as the code evolves.
 
 == See also
 
@@ -79,5 +66,4 @@ code evolves.
 
 == References
 
-* Sun Microsystems (1999). _Code Conventions for the Java Programming
-  Language_.
+* Sun Microsystems (1999). _Code Conventions for the Java Programming Language_.

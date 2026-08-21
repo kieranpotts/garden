@@ -1,127 +1,108 @@
 = Durability
 
-Durability is a xref:quality-attributes.adoc[*quality attribute*] of an IT
-system. It is the property that data, once written or committed, survives
-failures of the processes and hardware that hold it. A durable system can lose
-power, crash, or shed nodes and still present the data it acknowledged
-preserving.
+Durability is a xref:quality-attributes.adoc[*quality attribute*] of an IT system. It is the
+property that data, once written or committed, survives failures of the processes and hardware that
+hold it. A durable system can lose power, crash, or shed nodes and still present the data it
+acknowledged preserving.
 
 The term is used in two overlapping senses. As one of the
-xref:acid-principles.adoc[*ACID properties*] of a database, durability promises
-that a committed xref:transaction.adoc[*transaction*] persists even if the
-database crashes immediately afterwards. As a broader
-xref:quality-attributes.adoc[*quality attribute*], it applies to any storage
-system and is usually expressed as a statistical guarantee, such as the chance
-of losing an object over a year.
+xref:acid-principles.adoc[*ACID properties*] of a database, durability promises that a committed
+xref:transaction.adoc[*transaction*] persists even if the database crashes immediately afterwards.
+As a broader xref:quality-attributes.adoc[*quality attribute*], it applies to any storage system and
+is usually expressed as a statistical guarantee, such as the chance of losing an object over a year.
 
-Durability is a property of the data, not of the service. A system can be
-durable yet temporarily unable to serve reads, or available yet holding data
-that a single power loss would destroy. It complements but is distinct from
-xref:data-integrity.adoc[*data integrity*]: integrity asks that the bits be
-correct, durability asks that they still exist.
+Durability is a property of the data, not of the service. A system can be durable yet temporarily
+unable to serve reads, or available yet holding data that a single power loss would destroy. It
+complements but is distinct from xref:data-integrity.adoc[*data integrity*]: integrity asks that the
+bits be correct, durability asks that they still exist.
 
 == How durability is achieved
 
-Durability rests on placing acknowledged data somewhere that outlives the
-process that wrote it, and on keeping more than one copy where any single copy
-can fail.
+Durability rests on placing acknowledged data somewhere that outlives the process that wrote it, and
+on keeping more than one copy where any single copy can fail.
 
-*Non-volatile storage.* The baseline technique is to write committed data to a
-non-volatile medium, such as disk or SSD, before acknowledging the write.
-Volatile memory, such as the RAM of an
-xref:in-memory-databases.adoc[*in-memory database*], is not durable on its own
-because a crash or power loss discards it. Systems that prioritise latency,
-such as xref:redis.adoc[*Redis*], therefore layer optional persistence on top
-of memory and trade durability against throughput through knobs such as how
-often the append-only file is flushed to disk.
+*Non-volatile storage.* The baseline technique is to write committed data to a non-volatile medium,
+such as disk or SSD, before acknowledging the write. Volatile memory, such as the RAM of an
+xref:in-memory-databases.adoc[*in-memory database*], is not durable on its own because a crash or
+power loss discards it. Systems that prioritise latency, such as xref:redis.adoc[*Redis*], therefore
+layer optional persistence on top of memory and trade durability against throughput through knobs
+such as how often the append-only file is flushed to disk.
 
-*Write-ahead logging.* A database rarely flushes every changed page to disk on
-each commit. Instead it appends a record of the change to a *write-ahead log*
-and flushes that log. On recovery the database replays the log to reconstruct
-committed state. Logging turns many small random writes into one sequential,
-durable append, which is far cheaper to force to stable storage.
+*Write-ahead logging.* A database rarely flushes every changed page to disk on each commit. Instead
+it appends a record of the change to a *write-ahead log* and flushes that log. On recovery the
+database replays the log to reconstruct committed state. Logging turns many small random writes into
+one sequential, durable append, which is far cheaper to force to stable storage.
 
-*Replication.* A single durable copy is still one fire, one flood, or one
-controller failure from being lost. xref:replication.adoc[*Replication*] keeps
-copies on independent nodes, often across
-xref:availability-zone.adoc[*availability zones*], so that the failure of one
-does not destroy the only copy. xref:distributed-databases.adoc[*Distributed databases*] typically combine sharding with a replication factor, and many
-acknowledge a write only once a quorum of replicas has it, tuning durability
-against latency.
+*Replication.* A single durable copy is still one fire, one flood, or one controller failure from
+being lost. xref:replication.adoc[*Replication*] keeps copies on independent nodes, often across
+xref:availability-zone.adoc[*availability zones*], so that the failure of one does not destroy the
+only copy. xref:distributed-databases.adoc[*Distributed databases*] typically combine sharding with
+a replication factor, and many acknowledge a write only once a quorum of replicas has it, tuning
+durability against latency.
 
 *Erasure coding.* Storage systems that hold very large datasets, such as
-xref:object-storage.adoc[*object storage*], often spread encoded fragments
-across many devices instead of keeping full replicas. *Erasure coding* delivers
-comparable durability to replication at a lower storage cost, at the price of
-more computation on read and on rebuild.
+xref:object-storage.adoc[*object storage*], often spread encoded fragments across many devices
+instead of keeping full replicas. *Erasure coding* delivers comparable durability to replication at
+a lower storage cost, at the price of more computation on read and on rebuild.
 
 == Durability is a spectrum
 
-Durability is not a binary property but a probability. No storage medium is
-infallible, so the question is how likely a loss is over a given period and how
-much loss is tolerable. Cloud xref:object-storage.adoc[*object storage*] is
-advertised at durability levels such as 99.999999999% over a year, the expected
-loss of roughly one object in 10^11, achieved through massive replication and
-continual background scrubbing.
+Durability is not a binary property but a probability. No storage medium is infallible, so the
+question is how likely a loss is over a given period and how much loss is tolerable. Cloud
+xref:object-storage.adoc[*object storage*] is advertised at durability levels such as 99.999999999%
+over a year, the expected loss of roughly one object in 10^11, achieved through massive replication
+and continual background scrubbing.
 
-Most systems expose this trade-off as a knob. A database may flush synchronously
-on every commit, group commits and flush once per second, or leave flushing to
-the operating system entirely. Each step lowers the cost of a write and raises
-the window in which a crash can lose acknowledged data. Choosing where to sit on
-this spectrum is a decision about how much acknowledged data the application can
-afford to recompute or lose.
+Most systems expose this trade-off as a knob. A database may flush synchronously on every commit,
+group commits and flush once per second, or leave flushing to the operating system entirely. Each
+step lowers the cost of a write and raises the window in which a crash can lose acknowledged data.
+Choosing where to sit on this spectrum is a decision about how much acknowledged data the
+application can afford to recompute or lose.
 
 == Related but distinct concerns
 
 Durability is frequently confused with neighbouring concepts.
 
-* *Durability versus consistency.* Durability says a committed value survives
-  failures. xref:consistency.adoc[*Consistency*] says replicas agree on what
-  that value is, right now. A system can be durable yet eventually consistent,
-  holding the same surviving data on each copy after some delay.
+* *Durability versus consistency.* Durability says a committed value survives failures.
+  xref:consistency.adoc[*Consistency*] says replicas agree on what that value is, right now. A
+  system can be durable yet eventually consistent, holding the same surviving data on each copy
+  after some delay.
 
 * *Durability versus availability.* Durability means the data is safe.
-  xref:availability.adoc[*Availability*] means the data is reachable. A failed
-  node with an intact disk is durable but not available; a live cache serving
-  data that no persistent copy holds is available but not durable.
+  xref:availability.adoc[*Availability*] means the data is reachable. A failed node with an intact
+  disk is durable but not available; a live cache serving data that no persistent copy holds is
+  available but not durable.
 
-* *Durability versus fault tolerance.* Durability is about not losing
-  acknowledged data. xref:fault-tolerance.adoc[*Fault tolerance*] is the broader
-  ability to keep operating correctly through failures, of which not losing data
-  is one part.
+* *Durability versus fault tolerance.* Durability is about not losing acknowledged data.
+  xref:fault-tolerance.adoc[*Fault tolerance*] is the broader ability to keep operating correctly
+  through failures, of which not losing data is one part.
 
-* *Durability versus disaster recovery.* Durability prevents loss under routine
-  failures. xref:disaster-recovery.adoc[*Disaster recovery*] is the plan for
-  restoring service and data after a larger, rarer event that durability alone
-  cannot fully absorb.
+* *Durability versus disaster recovery.* Durability prevents loss under routine failures.
+  xref:disaster-recovery.adoc[*Disaster recovery*] is the plan for restoring service and data after
+  a larger, rarer event that durability alone cannot fully absorb.
 
-* *Durability versus data retention.* Durability is the ability to keep data
-  safe. xref:data-retention.adoc[*Data retention*] is the policy of how long to
-  keep it, and when to remove it. A retention policy presupposes durability for
-  the period it specifies.
+* *Durability versus data retention.* Durability is the ability to keep data safe.
+  xref:data-retention.adoc[*Data retention*] is the policy of how long to keep it, and when to
+  remove it. A retention policy presupposes durability for the period it specifies.
 
 == Common pitfalls
 
-* *Acknowledging before stable storage.* A write returned to the client is not
-  durable until it has reached non-volatile storage, not merely the operating
-  system's page cache. Forgetting to flush, or trusting an in-memory
-  acknowledgement, is the classic cause of a database reporting a commit that a
-  power cut then loses.
+* *Acknowledging before stable storage.* A write returned to the client is not durable until it has
+  reached non-volatile storage, not merely the operating system's page cache. Forgetting to flush,
+  or trusting an in-memory acknowledgement, is the classic cause of a database reporting a commit
+  that a power cut then loses.
 
-* *Async replication lag.* If a leader acknowledges a commit before replicas
-  receive it, a leader failure during that window loses the commit even though
-  the client was told it succeeded. Synchronous or quorum replication closes the
-  gap at the cost of write latency.
+* *Async replication lag.* If a leader acknowledges a commit before replicas receive it, a leader
+  failure during that window loses the commit even though the client was told it succeeded.
+  Synchronous or quorum replication closes the gap at the cost of write latency.
 
-* *Silent corruption.* Bits can decay on disk through bit rot or controller
-  faults without any crash. Durability of some bytes is not durability of the
-  correct bytes; xref:checksum.adoc[*checksums*] and background scrubbing make
-  decay detectable and repairable.
+* *Silent corruption.* Bits can decay on disk through bit rot or controller faults without any
+  crash. Durability of some bytes is not durability of the correct bytes;
+  xref:checksum.adoc[*checksums*] and background scrubbing make decay detectable and repairable.
 
-* *Confusing tiers.* Memory is volatile, SSDs are durable but finite, and a
-  single replica is durable only against node failure, not site failure. Treating
-  any one tier as durable without stating which failures it survives leads to
-  under-provisioned protection.
+* *Confusing tiers.* Memory is volatile, SSDs are durable but finite, and a single replica is
+  durable only against node failure, not site failure. Treating any one tier as durable without
+  stating which failures it survives leads to under-provisioned protection.
 
 == See also
 
@@ -143,4 +124,5 @@ Durability is frequently confused with neighbouring concepts.
 
 == References
 
-* Martin Kleppmann (2017). link:https://www.dataintensive.net/[_Designing Data-Intensive Applications_]. O'Reilly.
+* Martin Kleppmann (2017).
+  link:https://www.dataintensive.net/[_Designing Data-Intensive Applications_]. O'Reilly.

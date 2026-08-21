@@ -1,119 +1,103 @@
 = Alerting
 
-Alerting is an extension of xref:monitoring.adoc[*monitoring*] activities. It is
-the process of notifying responsible parties when a system is not behaving as
-expected, as determined by pre-defined thresholds or conditions around system
-xref:metrics.adoc[*metrics*] or xref:logging.adoc[*logs*].
+Alerting is an extension of xref:monitoring.adoc[*monitoring*] activities. It is the process of
+notifying responsible parties when a system is not behaving as expected, as determined by
+pre-defined thresholds or conditions around system xref:metrics.adoc[*metrics*] or
+xref:logging.adoc[*logs*].
 
-Both metrics and logs are forms of xref:telemetry.adoc[*telemetry*] exported by
-the system under observation.
+Both metrics and logs are forms of xref:telemetry.adoc[*telemetry*] exported by the system under
+observation.
 
-For example, alerts may be configured for sudden surges in traffic, high error
-rates, or a high number of consecutive failed login attempts. Such alerts need
-to be delivered in near real-time so that responders can act before users are
-broadly affected. Delivery typically goes through dedicated channels – pagers,
-chat messages, SMS, or ticketing systems – rather than relying on engineers to
+For example, alerts may be configured for sudden surges in traffic, high error rates, or a high
+number of consecutive failed login attempts. Such alerts need to be delivered in near real-time so
+that responders can act before users are broadly affected. Delivery typically goes through dedicated
+channels – pagers, chat messages, SMS, or ticketing systems – rather than relying on engineers to
 notice a dashboard.
 
 Alerting systems tend to be built into xref:monitoring.adoc[*monitoring*] and
-xref:observability.adoc[*observability*] systems. For example, Prometheus ships
-with https://prometheus.io/docs/alerting/latest/overview/[Alertmanager], while
-Elasticsearch offers
+xref:observability.adoc[*observability*] systems. For example, Prometheus ships with
+https://prometheus.io/docs/alerting/latest/overview/[Alertmanager], while Elasticsearch offers
 https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-getting-started.html[Watcher].
-There are also standalone alerting and incident management systems that feed off
-data produced by monitoring and observability tools. They add capabilities the
-built-in tools often lack, such as on-call schedule management, escalation
-policies, alert grouping, and deduplication. Examples include the following.
+There are also standalone alerting and incident management systems that feed off data produced by
+monitoring and observability tools. They add capabilities the built-in tools often lack, such as
+on-call schedule management, escalation policies, alert grouping, and deduplication. Examples
+include the following.
 
-* https://www.pagerduty.com/[PagerDuty]: Alerting and incident management
-  services.
-* https://www.atlassian.com/software/opsgenie[OpsGenie]: Alerting and on-call
-  management, part of the Atlassian suite.
-* VictorOps: Was an on-call management system and is now part of
-  https://www.splunk.com/[Splunk].
+* https://www.pagerduty.com/[PagerDuty]: Alerting and incident management services.
+* https://www.atlassian.com/software/opsgenie[OpsGenie]: Alerting and on-call management, part of
+  the Atlassian suite.
+* VictorOps: Was an on-call management system and is now part of https://www.splunk.com/[Splunk].
 
 == Symptom-based versus cause-based alerting
 
 A long-standing best practice, popularized by
-xref:site-reliability-engineering.adoc[*site reliability engineering*], is to
-alert on *symptoms* rather than *causes*. A symptom is a user-visible
-degradation, such as an elevated error rate, increased
-xref:latency.adoc[*latency*], or a failed
-xref:system-health-checks.adoc[*health check*]. A cause is an underlying
-condition that may produce that symptom, such as high CPU usage, low disk space,
-or a stuck queue.
+xref:site-reliability-engineering.adoc[*site reliability engineering*], is to alert on *symptoms*
+rather than *causes*. A symptom is a user-visible degradation, such as an elevated error rate,
+increased xref:latency.adoc[*latency*], or a failed xref:system-health-checks.adoc[*health check*].
+A cause is an underlying condition that may produce that symptom, such as high CPU usage, low disk
+space, or a stuck queue.
 
-Symptom-based alerts are more stable and more actionable. They fire when
-something is actually broken for users, and they remain meaningful even as the
-underlying causes change. Cause-based alerts, by contrast, tend to be noisy. A
-high CPU reading may be benign under load, and the root cause of an outage may
-shift between incidents. The guidance is to page on symptoms, not on causes.
+Symptom-based alerts are more stable and more actionable. They fire when something is actually
+broken for users, and they remain meaningful even as the underlying causes change. Cause-based
+alerts, by contrast, tend to be noisy. A high CPU reading may be benign under load, and the root
+cause of an outage may shift between incidents. The guidance is to page on symptoms, not on causes.
 
 == Alerting techniques
 
 Detection methods vary, and the choice shapes both accuracy and noise.
 
-*Threshold-based alerting* fires when a single metric crosses a fixed line, eg.
-error count above 50 in five minutes. It is simple to reason about but brittle
-under changing load. The same absolute value can be normal at peak and alarming
-off-peak.
+*Threshold-based alerting* fires when a single metric crosses a fixed line, eg. error count above 50
+in five minutes. It is simple to reason about but brittle under changing load. The same absolute
+value can be normal at peak and alarming off-peak.
 
-*Ratio-based alerting* evaluates a rate or proportion rather than a raw count,
-eg. errors divided by total requests. Ratios stay meaningful as traffic varies,
-which is why error-rate and saturation alerts tend to outperform their absolute
-counterparts.
+*Ratio-based alerting* evaluates a rate or proportion rather than a raw count, eg. errors divided by
+total requests. Ratios stay meaningful as traffic varies, which is why error-rate and saturation
+alerts tend to outperform their absolute counterparts.
 
-*Anomaly-based alerting* uses statistical or machine-learned models of normal
-behaviour and pages on deviations from it. This removes manual threshold tuning
-but trades it for opacity. A model can flag behaviour no one can explain or act
-on, so anomaly alerts still need the same actionability test as any other.
+*Anomaly-based alerting* uses statistical or machine-learned models of normal behaviour and pages on
+deviations from it. This removes manual threshold tuning but trades it for opacity. A model can flag
+behaviour no one can explain or act on, so anomaly alerts still need the same actionability test as
+any other.
 
-*Heartbeat alerting*, or a dead man's switch, inverts the model. A component
-emits periodic xref:heartbeat.adoc[*heartbeats*], and the alert fires when they
-stop – an absence of signal rather than a value crossing a line. This catches
-total failures that threshold alerts miss, such as a process that has hung
-without producing an error.
+*Heartbeat alerting*, or a dead man's switch, inverts the model. A component emits periodic
+xref:heartbeat.adoc[*heartbeats*], and the alert fires when they stop – an absence of signal rather
+than a value crossing a line. This catches total failures that threshold alerts miss, such as a
+process that has hung without producing an error.
 
 Threshold, ratio, and anomaly alerts all query metrics stored in a
-xref:time-series-databases.adoc[*time series database*], which is why tools like
-Prometheus combine collection, storage, and alert evaluation in one system.
+xref:time-series-databases.adoc[*time series database*], which is why tools like Prometheus combine
+collection, storage, and alert evaluation in one system.
 
 == Alert fatigue
 
-Poorly tuned alerting generates noise. When engineers are paged for transient
-spikes, self-resolving blips, or conditions they cannot act on, they become
-desensitized. This phenomenon is known as *alert fatigue*. It is a primary
-concern of xref:on-call.adoc[*on-call*] practice and degrades both response
-quality and team well-being.
+Poorly tuned alerting generates noise. When engineers are paged for transient spikes, self-resolving
+blips, or conditions they cannot act on, they become desensitized. This phenomenon is known as
+*alert fatigue*. It is a primary concern of xref:on-call.adoc[*on-call*] practice and degrades both
+response quality and team well-being.
 
-Mitigations include tuning thresholds, retiring alerts that have no clear
-remediation, and routing low-priority notifications to dashboards or tickets
-instead of pagers. A useful test is that every page should be both actionable,
-meaning there is something a human can do, and urgent, meaning it cannot wait
-until business hours. Alerts that fail either test are better handled as records
-or warnings.
+Mitigations include tuning thresholds, retiring alerts that have no clear remediation, and routing
+low-priority notifications to dashboards or tickets instead of pagers. A useful test is that every
+page should be both actionable, meaning there is something a human can do, and urgent, meaning it
+cannot wait until business hours. Alerts that fail either test are better handled as records or
+warnings.
 
-Regular alert reviews – weekly or after each incident – catch drift before it
-becomes fatigue. Every alert should have a named owner accountable for tuning or
-retiring it.
+Regular alert reviews – weekly or after each incident – catch drift before it becomes fatigue. Every
+alert should have a named owner accountable for tuning or retiring it.
 
 == Alert design
 
-Well-designed alerts connect detection to response. Each alert should carry
-enough context for the responder to start investigating without first
-reproducing the problem: the affected service, the triggering condition, and a
-link to a xref:runbook.adoc[*runbook*]. Severity levels, such as the SEV1 to
-SEV4 scheme common in incident management, communicate urgency and drive
-escalation paths.
+Well-designed alerts connect detection to response. Each alert should carry enough context for the
+responder to start investigating without first reproducing the problem: the affected service, the
+triggering condition, and a link to a xref:runbook.adoc[*runbook*]. Severity levels, such as the
+SEV1 to SEV4 scheme common in incident management, communicate urgency and drive escalation paths.
 
-In systems that track *service level objectives (SLOs)*, alerting is tied to
-error budgets rather than fixed thresholds. Multi-window, multi-burn-rate
-alerting pairs a long window with a short one – eg. one hour and five minutes –
-and a high burn rate with a lower one. A page fires only when the error budget
-is consumed quickly across both windows, filtering transient spikes while still
-catching sustained regressions fast. Slower burns, detected over longer windows
-at lower burn rates, generate tickets instead of pages. This keeps pages tied to
-user impact rather than to arbitrary thresholds.
+In systems that track *service level objectives (SLOs)*, alerting is tied to error budgets rather
+than fixed thresholds. Multi-window, multi-burn-rate alerting pairs a long window with a short one –
+eg. one hour and five minutes – and a high burn rate with a lower one. A page fires only when the
+error budget is consumed quickly across both windows, filtering transient spikes while still
+catching sustained regressions fast. Slower burns, detected over longer windows at lower burn rates,
+generate tickets instead of pages. This keeps pages tied to user impact rather than to arbitrary
+thresholds.
 
 == See also
 

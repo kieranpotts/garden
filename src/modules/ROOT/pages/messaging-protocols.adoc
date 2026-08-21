@@ -1,89 +1,74 @@
 = Messaging protocols
 
-Messaging protocols are application layer protocols that define how messages
-are framed, addressed, and delivered between producers and consumers, usually
-mediated by a xref:message-broker.adoc[*message broker*]. They sit above
-transport layer protocols such as xref:tcp.adoc[*TCP*] and are typically
-associated with xref:message-queues.adoc[*message queues*] and
-xref:message-driven-architecture.adoc[*message-driven architectures*]. Unlike
-request-response protocols such as xref:http.adoc[*HTTP*] or the formats used
-for xref:remote-procedure-call.adoc[*remote procedure call*] (RPC), they assume
-one-way, asynchronous delivery and leave routing, buffering, and redelivery to
-the broker.
+Messaging protocols are application layer protocols that define how messages are framed, addressed,
+and delivered between producers and consumers, usually mediated by a
+xref:message-broker.adoc[*message broker*]. They sit above transport layer protocols such as
+xref:tcp.adoc[*TCP*] and are typically associated with xref:message-queues.adoc[*message queues*]
+and xref:message-driven-architecture.adoc[*message-driven architectures*]. Unlike request-response
+protocols such as xref:http.adoc[*HTTP*] or the formats used for
+xref:remote-procedure-call.adoc[*remote procedure call*] (RPC), they assume one-way, asynchronous
+delivery and leave routing, buffering, and redelivery to the broker.
 
 The most widely used messaging protocols are listed below.
 
-* *AMQP* (Advanced Message Queuing Protocol): An open standard application
-  layer protocol for message-oriented middleware. AMQP allows for complex
-  message routing configuration, including point-to-point,
-  xref:publish-subscribe-pattern.adoc[*publish-subscribe*], and store-and-forward
+* *AMQP* (Advanced Message Queuing Protocol): An open standard application layer protocol for
+  message-oriented middleware. AMQP allows for complex message routing configuration, including
+  point-to-point, xref:publish-subscribe-pattern.adoc[*publish-subscribe*], and store-and-forward
   patterns. It is commonly used in enterprise environments.
 
-  AMQP exists in two incompatible versions. AMQP 0-9-1 is the variant
-  xref:rabbitmq.adoc[*RabbitMQ*] implements natively, and it prescribes a
-  specific routing topology built from exchanges, queues, and the bindings
-  that connect them. Producers publish to an exchange, and the broker routes
-  each message to one or more queues based on the binding rules, where
-  consumers then dequeue it. AMQP 1.0, published as an OASIS standard in 2012
-  and later as ISO/IEC 19464, is a different protocol rather than a revision
-  of 0-9-1. It specifies only a wire-level framing format and leaves the
-  routing topology to the broker, which is why AMQP 1.0 brokers such as Apache
-  ActiveMQ and Microsoft Azure Service Bus expose their own, often simpler,
-  queue and topic models. RabbitMQ ships AMQP 1.0 support as a plugin.
+AMQP exists in two incompatible versions. AMQP 0-9-1 is the variant xref:rabbitmq.adoc[*RabbitMQ*]
+implements natively, and it prescribes a specific routing topology built from exchanges, queues, and
+the bindings that connect them. Producers publish to an exchange, and the broker routes each message
+to one or more queues based on the binding rules, where consumers then dequeue it. AMQP 1.0,
+published as an OASIS standard in 2012 and later as ISO/IEC 19464, is a different protocol rather
+than a revision of 0-9-1. It specifies only a wire-level framing format and leaves the routing
+topology to the broker, which is why AMQP 1.0 brokers such as Apache ActiveMQ and Microsoft Azure
+Service Bus expose their own, often simpler, queue and topic models. RabbitMQ ships AMQP 1.0 support
+as a plugin.
 
-* *MQTT* (Message Queuing Telemetry Transport): A lightweight publish-subscribe
-  messaging protocol optimized for use in resource-constrained devices and
-  low-bandwidth, high-latency, or unreliable networks. MQTT is often used in
-  Internet of Things (IoT) and home automation applications. It is also used
-  for some real-time data feeds, such as financial market data.
+* *MQTT* (Message Queuing Telemetry Transport): A lightweight publish-subscribe messaging protocol
+  optimized for use in resource-constrained devices and low-bandwidth, high-latency, or unreliable
+  networks. MQTT is often used in Internet of Things (IoT) and home automation applications. It is
+  also used for some real-time data feeds, such as financial market data.
 
-  MQTT is broker-centric and topic-based. Producers publish messages to
-  hierarchical topics, and subscribers receive them by registering topic
-  filters that use `+` as a single-level wildcard and `#` as a multi-level
-  wildcard. A key feature is the Quality of Service (QoS) setting that allows
-  for different levels of delivery assurance, eg. QoS 0 for "fire and forget"
-  (deliver each message at most once), QoS 1 for acknowledged receipt (at
-  least once), and QoS 2 for an exact-once, four-step handshake that ensures
-  no duplicates.
+MQTT is broker-centric and topic-based. Producers publish messages to hierarchical topics, and
+subscribers receive them by registering topic filters that use `+` as a single-level wildcard and
+`#` as a multi-level wildcard. A key feature is the Quality of Service (QoS) setting that allows for
+different levels of delivery assurance, eg. QoS 0 for "fire and forget" (deliver each message at
+most once), QoS 1 for acknowledged receipt (at least once), and QoS 2 for an exact-once, four-step
+handshake that ensures no duplicates.
 
-  Two further features make MQTT well suited to intermittent clients.
-  *Retained messages* let a broker keep the last message published to a topic
-  and replay it to new subscribers immediately on connection. The *Last Will and Testament* (LWT) is a message the client registers when it connects,
-  which the broker publishes on its behalf if the connection drops
-  unexpectedly, letting other clients detect the loss. Persistent sessions
-  extend this across reconnects by queuing missed messages for offline
-  clients.
+Two further features make MQTT well suited to intermittent clients. *Retained messages* let a broker
+keep the last message published to a topic and replay it to new subscribers immediately on
+connection. The *Last Will and Testament* (LWT) is a message the client registers when it connects,
+which the broker publishes on its behalf if the connection drops unexpectedly, letting other clients
+detect the loss. Persistent sessions extend this across reconnects by queuing missed messages for
+offline clients.
 
-  MQTT 3.1.1, standardized by OASIS in 2014, is the version most deployments
-  still target for compatibility. MQTT 5.0, published in 2019, added reason
-  codes on every acknowledgement, shared subscriptions for load-balanced
-  consumer groups, message and session expiry intervals, and user properties
-  for arbitrary metadata. *MQTT-SN* is a sibling spec adapted to sensor
-  networks that may not run TCP, and *Sparkplug B* is an Eclipse specification
-  that layers a stateful, industrial-automation data model on top of MQTT.
+MQTT 3.1.1, standardized by OASIS in 2014, is the version most deployments still target for
+compatibility. MQTT 5.0, published in 2019, added reason codes on every acknowledgement, shared
+subscriptions for load-balanced consumer groups, message and session expiry intervals, and user
+properties for arbitrary metadata. *MQTT-SN* is a sibling spec adapted to sensor networks that may
+not run TCP, and *Sparkplug B* is an Eclipse specification that layers a stateful,
+industrial-automation data model on top of MQTT.
 
-  RabbitMQ supports MQTT as an alternative messaging protocol to AMQP via
-  plugins. Mosquitto is an open-source, lightweight MQTT broker, while HiveMQ
-  is a commercial MQTT broker. xref:kafka.adoc[*Apache Kafka*] can integrate
-  with MQTT through connectors and proxies.
+RabbitMQ supports MQTT as an alternative messaging protocol to AMQP via plugins. Mosquitto is an
+open-source, lightweight MQTT broker, while HiveMQ is a commercial MQTT broker.
+xref:kafka.adoc[*Apache Kafka*] can integrate with MQTT through connectors and proxies.
 
-* *STOMP* (Simple (or Streaming) Text Oriented Messaging Protocol): A
-  lightweight text-based messaging protocol. Unlike the binary wire formats of
-  AMQP and MQTT, STOMP uses a human-readable frame format, which makes messages
-  easier to read and debug. A STOMP frame is a command line, a block of
-  key-value headers, a blank line, and a text body terminated by a null byte.
-  The core commands are `CONNECT`, `SUBSCRIBE`, `UNSUBSCRIBE`, `SEND`, `ACK`,
-  `NACK`, and `DISCONNECT`, plus `BEGIN`, `COMMIT`, and `ABORT` for optional
-  transactions.
+* *STOMP* (Simple (or Streaming) Text Oriented Messaging Protocol): A lightweight text-based
+  messaging protocol. Unlike the binary wire formats of AMQP and MQTT, STOMP uses a human-readable
+  frame format, which makes messages easier to read and debug. A STOMP frame is a command line, a
+  block of key-value headers, a blank line, and a text body terminated by a null byte. The core
+  commands are `CONNECT`, `SUBSCRIBE`, `UNSUBSCRIBE`, `SEND`, `ACK`, `NACK`, and `DISCONNECT`, plus
+  `BEGIN`, `COMMIT`, and `ABORT` for optional transactions.
 
-  STOMP is intentionally minimal and prescribes no routing model. Each broker
-  interprets the `destination` header on `SEND` and `SUBSCRIBE` frames
-  according to its own conventions, which makes STOMP clients portable in
-  principle but broker-specific in practice. The protocol runs over TCP and is
-  also commonly tunneled over xref:websockets.adoc[*WebSocket*] so that browser
-  clients can talk directly to a broker. ActiveMQ, ActiveMQ Artemis, HornetQ,
-  and RabbitMQ (via plugin) all expose STOMP endpoints, and the spec's
-  looseness has produced small broker-specific dialects.
+STOMP is intentionally minimal and prescribes no routing model. Each broker interprets the
+`destination` header on `SEND` and `SUBSCRIBE` frames according to its own conventions, which makes
+STOMP clients portable in principle but broker-specific in practice. The protocol runs over TCP and
+is also commonly tunneled over xref:websockets.adoc[*WebSocket*] so that browser clients can talk
+directly to a broker. ActiveMQ, ActiveMQ Artemis, HornetQ, and RabbitMQ (via plugin) all expose
+STOMP endpoints, and the spec's looseness has produced small broker-specific dialects.
 
 == See also
 
