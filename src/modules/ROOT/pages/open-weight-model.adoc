@@ -168,28 +168,91 @@ The following open-weight models are highly regarded for programming tasks.
 Small models (≤ 8B) run comfortably on a laptop or CPU-only setup. Larger models
 require a GPU with ≥ 16–24 GB VRAM.
 
+Not all of them support *tool calling* (also called function calling) — the
+ability to emit structured calls to external tools/functions as part of a
+response. This is a prerequisite for agentic coding workflows, where the model
+must be able to invoke tools such as file edits, shell commands, or search.
+Models without native tool-calling support can still be used for plain code
+generation, completion, or chat, but are not suitable as the driver of an
+agent loop without a third-party fine-tune or adapter bolted on.
+
+* *Qwen3.8-27B*: Alibaba's flagship model in the 27B class, released August
+  2026. A dense, natively multimodal model (text, image, and video input)
+  built for agentic, long-horizon coding tasks, with flexible thinking control
+  and a 262K native context window (extensible to 1M via YaRN). Available on
+  all Ollama-supported platforms. Apache 2.0 license.
+  +
+  *Tool calling: supported natively.* Uses a `<tool_call>` XML format; Qwen-Agent
+  is the recommended harness for making full use of its agentic tool-calling
+  ability.
+
+* *Nvidia Nemotron 3.5 Lightning*: A hybrid Mixture-of-Experts model (30B
+  total, 3B active) from Nvidia, released August 2026, purpose-built for the
+  execution layer of always-on agents — reading files, calling tools, sorting
+  results, and retrying failures. Designed to run on local hardware (RTX PCs,
+  RTX PRO workstations, DGX Spark/Station) rather than the datacenter, keeping
+  agent context on-device. 1M token context. Uses speculative decoding
+  (multi-token prediction, DFlash/DSpark) for up to 4x the throughput of
+  comparable open models. Open weights and open training data. Apache 2.0
+  license.
+  +
+  *Tool calling: supported natively.* Trained specifically for tool calling,
+  instruction following, and multi-turn agentic work, for use in harnesses
+  such as Claude Code, Hermes Agent, and OpenClaw.
+
+* *Muse Glimmer*: A 30B multimodal model from Meta Superintelligence Labs,
+  released August 2026 — Meta's first model under that new lab and a notable
+  departure from the Llama family's community license. Built for agent
+  workloads that run locally, with 128K+ context and controllable reasoning
+  strength (low/medium/high/xhigh — use high or xhigh for complex coding and
+  agentic tasks). Available via Ollama's MLX engine on Apple Silicon, with
+  broader platform support following. Apache 2.0 license.
+  +
+  *Tool calling: supported natively.* Reliable schema-based tool invocation
+  across extended, multi-turn workflows, including diagnosing and retrying
+  failed or unexpected tool results.
+
 * *Qwen2.5-Coder 32B Instruct*: Alibaba's dedicated coding model that
   consistently tops open-weight coding benchmarks. Strong across Python,
   JavaScript, Go, and SQL. Supports a 32K context window. Apache 2.0 license.
+  +
+  *Tool calling: supported natively.* Trained for multi-turn tool/function
+  calling using a Hermes-style `<tool_call>` format, recognized out of the box
+  by inference servers such as vLLM.
 
 * *DeepSeek-Coder-V2 Instruct*: A Mixture-of-Experts model (236B total, 21B
   active) with very strong multi-language coding performance and a 128K context
   window. One of the most capable open-weight options for complex, multi-file
   tasks. MIT license.
+  +
+  *Tool calling: not supported.* The official instruct release has no native
+  function-calling format. Community fine-tunes exist that bolt it on, but
+  it's not built in.
 
 * *Codestral 22B*: Mistral AI's dedicated code model, optimized for low-latency
   code completion and fill-in-the-middle (FIM) tasks. Well suited to IDE
   integration. Supports 32K context. Mistral AI Non-Production License
   (commercial use requires a separate agreement).
+  +
+  *Tool calling: not supported.* A deliberate design choice by Mistral —
+  Codestral targets completion/FIM, not agentic use. Other Mistral chat models
+  (eg. Mistral Large) do support tool calling.
 
 * *StarCoder2 15B*: The successor to StarCoder, trained on The Stack v2. Strong
   on Python, JavaScript, and C/C++, and well suited to code search and
   autocompletion tasks. Apache 2.0 license.
+  +
+  *Tool calling: not supported.* The base model is only lightly
+  instruction-tuned and has no function-calling format.
 
 * *Code Llama 70B Instruct*: Meta's instruction-tuned coding variant of Llama 2,
   with a 16K context window and strong performance on multi-language tasks and
   large-scale refactoring. Meta's non-commercial license restricts use to
   research.
+  +
+  *Tool calling: not supported.* No native tool-calling format from Meta for
+  this release. Later, non-coding Llama 3.x Instruct models are the better
+  choice if tool calling is required from the Llama family.
 
 == See also
 
