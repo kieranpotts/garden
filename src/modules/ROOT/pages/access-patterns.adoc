@@ -31,20 +31,17 @@ unpredictable query shapes, suited to a denormalized
 xref:materialized-view.adoc[*materialized view*]. An alternative writes each new
 post into every follower's inbox at posting time, trading a write-heavy
 fan-out for cheap point reads. Both implement the same feature, but their
-access patterns point at opposite storage and xref:data-modeling.adoc[*data
-modeling*] choices. The access pattern, not the feature, drives the design.
+access patterns point at opposite storage and xref:data-modeling.adoc[*data modeling*] choices. The access pattern, not the feature, drives the design.
 
 These dimensions drive many downstream design decisions. A read-heavy workload
 favors xref:database-indexes.adoc[*indexes*], *caching*, and
 *materialized views* that accelerate reads at the cost of slower or more
 complex writes. A write-heavy workload favors append-only storage and
 xref:sharding.adoc[*sharding*] to distribute write load. Where read and write
-patterns diverge sharply, xref:cqrs.adoc[*command query responsibility
-segregation (CQRS)*] separates the read and write models so each can be
+patterns diverge sharply, xref:cqrs.adoc[*command query responsibility segregation (CQRS)*] separates the read and write models so each can be
 optimized independently. The choice of data model and storage technology
 follows the same logic. xref:relational-databases.adoc[*Relational databases*]
-suit ad-hoc queries and complex joins, while xref:nosql-databases.adoc[*NoSQL
-databases*] are often selected for their fit to a specific, well-understood
+suit ad-hoc queries and complex joins, while xref:nosql-databases.adoc[*NoSQL databases*] are often selected for their fit to a specific, well-understood
 access pattern such as key-value lookup or xref:wide-column-stores.adoc[*wide-column reads*].
 
 Access patterns can have a significant influence on the

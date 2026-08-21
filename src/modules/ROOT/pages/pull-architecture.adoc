@@ -31,22 +31,19 @@ asks. Two strategies address this, each with its own cost.
 
 * *Poll periodically.* The consumer issues requests on a fixed interval. This
   is simple but wasteful, as most polls return nothing, and it bounds the
-  latency of any update to the polling interval. xref:long-polling.adoc[*Long
-  polling*] is a refinement that holds each request open until data is ready,
+  latency of any update to the polling interval. xref:long-polling.adoc[*Long polling*] is a refinement that holds each request open until data is ready,
   recovering near-real-time delivery while still using a pull transport.
 * *Switch to push.* For genuinely real-time, high-frequency, or
   server-initiated flows, a push mechanism is usually a better fit.
   xref:webhook.adoc[*Webhooks*] let a producer call the consumer back when an
   event occurs, and xref:server-sent-events.adoc[*Server-Sent Events (SSE)*]
   and xref:websockets.adoc[*WebSockets*] open a long-lived channel along which
-  the producer can stream updates. xref:event-driven-architecture.adoc[*Event-driven
-  architecture (EDA)*] is the broader style in which push delivery is the norm.
+  the producer can stream updates. xref:event-driven-architecture.adoc[*Event-driven architecture (EDA)*] is the broader style in which push delivery is the norm.
 
 Pull and push are not mutually exclusive. Many real systems combine them: a
 client pulls the current state on load and then subscribes to a push channel
 for subsequent updates, or pulls on a slow schedule and relies on webhooks for
-time-sensitive events. xref:content-delivery-networks.adoc[*Content delivery
-networks (CDNs)*] come in both pull-based and push-based flavours for the same
+time-sensitive events. xref:content-delivery-networks.adoc[*Content delivery networks (CDNs)*] come in both pull-based and push-based flavours for the same
 reason. A pull CDN fetches content from the origin on first request; a push
 CDN is pre-populated.
 

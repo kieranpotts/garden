@@ -40,8 +40,7 @@ A useful distinction separates two layers of checking.
   past. The referenced record actually exists.
 
 Both layers are needed. Syntactic checks are cheap and mechanical, and many
-can be delegated to a schema language such as xref:json-schema.adoc[*JSON
-Schema*]. Semantic checks usually require business knowledge and a round-trip
+can be delegated to a schema language such as xref:json-schema.adoc[*JSON Schema*]. Semantic checks usually require business knowledge and a round-trip
 to authoritative state, which is why they tend to live in the application or
 domain layer rather than at the edge.
 
@@ -54,8 +53,7 @@ attempts to enumerate the shapes that are dangerous and lets everything else
 through. Allowlists fail closed. Denylists fail open, and attackers are
 inventive at finding shapes the denylist author never imagined.
 
-The same reasoning applies to output. xref:cross-site-scripting.adoc[*Cross-
-site scripting (XSS)*] and xref:sql-injection.adoc[*SQL injection*] are both
+The same reasoning applies to output. xref:cross-site-scripting.adoc[*Cross- site scripting (XSS)*] and xref:sql-injection.adoc[*SQL injection*] are both
 injection failures, and both are routinely traced to denylist-based input
 filtering that an attacker evaded through encoding, mutation, or a parser
 quirk. Validation rejects malformed data early, but it is a secondary
@@ -81,8 +79,7 @@ xref:robustness-principle.adoc[*robustness principle*] (Postel's law), which
 counsels being liberal in what you accept. The two are not contradictions so
 much as a trade-off struck at different boundaries. At a public network API,
 accepting mildly non-conformant but recoverable input preserves
-interoperability and xref:backwards-compatibility.adoc[*backwards
-compatibility*]. At a security boundary facing hostile input, strictness is
+interoperability and xref:backwards-compatibility.adoc[*backwards compatibility*]. At a security boundary facing hostile input, strictness is
 the safer default. The discipline is to be liberal about cosmetic variation
 and strict about anything that affects safety or meaning.
 

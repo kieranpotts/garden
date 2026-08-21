@@ -2,8 +2,7 @@
 
 *SQL injection* is a code injection vulnerability in which attacker-controlled
 input is concatenated into a xref:sql.adoc[*SQL*] statement and then interpreted
-as part of the query by the xref:relational-databases.adoc[*relational
-database*] engine. The database cannot distinguish the code the application
+as part of the query by the xref:relational-databases.adoc[*relational database*] engine. The database cannot distinguish the code the application
 authored from the data the attacker supplied, so the input can alter the
 query's structure – adding predicates, closing the statement early, or
 appending entirely new ones. The result is a query the application never
@@ -113,8 +112,7 @@ vulnerability slips through.
   reads, no DDL or administrative commands, no filesystem or shell access –
   caps the damage a successful injection can do. This is a practical instance
   of xref:secure-by-design.adoc[*secure by design*].
-* xref:security-testing.adoc[*Security testing*], xref:penetration-testing.adoc[*penetration
-  testing*], and xref:static-analysis.adoc[*static analysis*] catch the defect
+* xref:security-testing.adoc[*Security testing*], xref:penetration-testing.adoc[*penetration testing*], and xref:static-analysis.adoc[*static analysis*] catch the defect
   before deployment. SAST tools in particular flag string-built SQL as a
   matter of course, since the pattern is well understood.
 

@@ -14,8 +14,7 @@ inherit HTTP's trust model. Browsers only honor them on the origin they were
 delivered from, and several – notably `Strict-Transport-Security` – are
 ignored unless the response arrives over HTTPS. They are a complement to, not
 a replacement for, xref:secure-by-design.adoc[*secure by design*] practices
-such as contextual output encoding and xref:input-validation.adoc[*input
-validation*].
+such as contextual output encoding and xref:input-validation.adoc[*input validation*].
 
 == Common headers
 
@@ -26,8 +25,7 @@ and kept current by the xref:owasp.adoc[*OWASP*] Secure Headers Project.
   may load scripts, styles, frames, images, and other resources, and can
   forbid inline script entirely. CSP is the most powerful of the set because
   it constrains execution rather than merely annotating intent. It is a
-  primary mitigation for xref:cross-site-scripting.adoc[*cross-site scripting
-  (XSS)*]: even if an injection succeeds, the browser refuses to run
+  primary mitigation for xref:cross-site-scripting.adoc[*cross-site scripting (XSS)*]: even if an injection succeeds, the browser refuses to run
   disallowed scripts.
 
 * *`Strict-Transport-Security` (HSTS).* Forces the browser to load the origin
@@ -68,8 +66,7 @@ browsers; a CSP is the correct control.
 Security headers can be added anywhere the response is produced – in
 application code, in a framework middleware, or at the network edge. In
 practice they are usually enforced centrally rather than per route. A
-xref:reverse-proxy.adoc[*reverse proxy*] or xref:edge-proxy.adoc[*edge
-proxy*] can stamp a consistent header policy onto every response, and a
+xref:reverse-proxy.adoc[*reverse proxy*] or xref:edge-proxy.adoc[*edge proxy*] can stamp a consistent header policy onto every response, and a
 xref:content-delivery-networks.adoc[*content delivery network (CDN)*] can do
 the same at the edge, often through a single configuration panel.
 Centralizing the policy keeps it uniform across many services and origin

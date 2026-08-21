@@ -103,8 +103,7 @@ Beyond the two fundamental directions and the scale cube, several other
 techniques extend a system's capacity. Each has its own entry and is linked here
 rather than re-explained.
 
-* xref:caching.adoc[*Caching*] and xref:distributed-caching.adoc[*distributed
-  caching*] absorb reads that would otherwise hit the origin.
+* xref:caching.adoc[*Caching*] and xref:distributed-caching.adoc[*distributed caching*] absorb reads that would otherwise hit the origin.
 * xref:content-delivery-networks.adoc[*Content delivery networks (CDNs)*] scale
   read serving geographically, moving static content close to users.
 * xref:replication.adoc[*Replication*] multiplies data so reads can be served
@@ -141,8 +140,7 @@ Cloud platforms and auto-scaling are what make elasticity practical.
 Scaling a stateful system out turns it into a distributed system, and that
 brings the trade-offs of distribution. Coordinating replicas costs latency and
 introduces the consistency-versus-availability trade-off named by the
-xref:cap-theorem.adoc[*CAP theorem*]. The xref:pacelc-theorem.adoc[*PACELC
-theorem*] extends that trade-off to normal operation, not just partitions, so
+xref:cap-theorem.adoc[*CAP theorem*]. The xref:pacelc-theorem.adoc[*PACELC theorem*] extends that trade-off to normal operation, not just partitions, so
 the latency-versus-consistency cost is paid every moment the system is running,
 not only when a network partition occurs. Scaling, therefore, is not free. Every
 added node is another point of coordination, and beyond a certain point the
@@ -162,8 +160,7 @@ Scaling data stores is where these limits bite hardest, because data has state.
 A xref:databases.adoc[*database*] scales through the same techniques, sharding,
 replication, and caching of read models, plus
 xref:denormalization.adoc[*denormalization*] of schemas for read-heavy paths, and
-at sufficient scale becomes a xref:distributed-databases.adoc[*distributed
-database*] in its own right, inheriting the CAP and PACELC trade-offs above.
+at sufficient scale becomes a xref:distributed-databases.adoc[*distributed database*] in its own right, inheriting the CAP and PACELC trade-offs above.
 
 == See also
 
