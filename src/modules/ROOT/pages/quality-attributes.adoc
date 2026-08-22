@@ -1,15 +1,14 @@
 = Quality attributes
 
-Quality attributes are the measurable properties of a software system that describe _how well_ it
-behaves, as distinct from what it does. They manifest as the
-xref:cross-cutting-concern.adoc[*cross-cutting concerns*] that affect the overall operation of a
-system, and they are the primary forces that drive its
-xref:software-architecture.adoc[*software architecture*]. Two systems with identical features
-can have very different architectures because one must return a result in 50ms and the other can
-take 50s. That difference is a quality attribute, and it changes the design.
+Quality attributes are the measurable properties of a software system that
+describe _how well_ it behaves, as distinct from what it does. They manifest as
+the xref:cross-cutting-concern.adoc[*cross-cutting concerns*] that affect the
+overall operation of a system, and which are the primary focus of
+xref:software-architecture.adoc[*software architecture*].
 
 Quality attributes are specified as
-xref:non-functional-requirements.adoc[*non-functional requirements*]. They include the following.
+xref:non-functional-requirements.adoc[*non-functional requirements*].
+They include the following.
 
 * xref:availability.adoc[*Availability*]
 * xref:capacity.adoc[*Capacity*]
@@ -34,54 +33,35 @@ xref:non-functional-requirements.adoc[*non-functional requirements*]. They inclu
 * xref:security.adoc[*Security*]
 * xref:visibility.adoc[*Visibility*]
 
-Many of the most influential carry names ending in _-ility_ (availability, reliability, scalability,
-modifiability, portability, testability), which is why the collection is sometimes loosely called
-the *ilities*. A useful grouping, due to Bass, Clements, and Kazman, separates attributes observable
-while the system is running (performance, availability, security, usability) from those observable
-only as the system changes over time (modifiability, testability, portability, evolvability). The
-first set is judged against the running system. The second is judged against every release that
-follows.
+Many quality attributes carry names ending in _-ility_, which is why the collection is sometimes
+called the *ilities*.
 
-== Specifying quality attributes
-
-A quality attribute named only as a word ("scalable", "secure", "fast") is too vague to design for
-or to test. The established way to make one precise is the *quality attribute scenario*, a small
-specification with a *stimulus* (a request, a failure, a change request), an *environment* (peak
-load, normal operation, a degraded network), a *response* (latency, throughput, recovery time), and
-a *response measure* that judges it (eg. 99th-percentile latency under 500ms, recovery within 30s).
-Scenarios turn adjectives into questions the architecture can be evaluated against, and they are the
-raw material for xref:acceptance-criteria.adoc[*acceptance criteria*] and the automated checks that
-guard each attribute.
-
-These scenarios are elicited, written down, and reconciled as part of
-xref:requirements-engineering.adoc[*requirements engineering*]. The non-functional requirements
-entry covers the metric-and-target form they take in a specification.
+A useful grouping separates attributes observable while a system is running (performance,
+availability, security, usability) from those observable only as the system changes over time
+(modifiability, testability, portability, evolvability).
 
 == Trade-offs between attributes
 
-Quality attributes rarely improve in isolation. Most are in tension with at least one other, and the
-work of architecture is largely the work of resolving those tensions. Hardening security usually
-costs performance. Maximizing availability adds redundancy that hurts conceptual integrity and
-maintainability. Strong consistency across a xref:distributed-system.adoc[*distributed system*]
-works against latency and availability.
-
-The xref:cap-theorem.adoc[*CAP theorem*] and its generalization the
-xref:pacelc-theorem.adoc[*PACELC theorem*] make one such trade-off precise: in replicated data
-stores, consistency, availability, and latency cannot all be maximized at once, and a system must
-declare which it sacrifices.
-
-Designers resolve these tensions with *architectural tactics*. These are catalogued design decisions
-known to move a particular attribute in a particular direction, such as caching for latency,
-replication for availability, or xref:rate-limiting.adoc[*rate limiting*] for stability under load.
-Each tactic trades one attribute for another, so choosing among them is the trade-off. Standards
-such as the ISO/IEC 25010 SQuaRE family name the attributes a tactic might target, giving the
-conversation a shared vocabulary.
+Quality attributes rarely improve in isolation. Most are in tension with at least one other attribute.
+The work of *software architecture* involves resolving those tensions.
 
 .The first law of software architecture
 [quote, Mark Richards and Neal Ford, Fundamentals of Software Architecture (O'Reilly)]
 ____
 Everything in software architecture is a trade-off.
 ____
+
+The xref:cap-theorem.adoc[*CAP theorem*] and its generalization the xref:pacelc-theorem.adoc[*PACELC theorem*]
+state one such trade-off, that in replicated data stores, consistency, availability, and latency
+cannot all be maximized at once. An architecture must therefore declare which of these competing
+qualities it sacrifices.
+
+Software architects resolve these tensions with *architectural tactics*. These are catalogued design
+decisions known to move a particular attribute in a particular direction, such as caching for latency,
+replication for availability, or xref:rate-limiting.adoc[*rate limiting*] for stability under load.
+Each tactic trades one attribute for another, so choosing among them is the trade-off. Standards
+such as the ISO/IEC 25010 SQuaRE family name the attributes a tactic might target, giving the
+conversation a shared vocabulary.
 
 Classic trade-offs in system design include:
 
@@ -201,8 +181,13 @@ evidence that a system in fact meets its specified attributes.
 
 == References
 
-* Bass, L., Clements, P., and Kazman, R. (2021). _Software Architecture in Practice_ (4th ed.).
+* Bass, L., Clements, P., and Kazman, R. (2021).
+  _Software Architecture in Practice_ (4th ed.).
   Addison-Wesley.
+
 * ISO/IEC (2023).
   _ISO/IEC 25010:2023 — Systems and software Quality Requirements and Evaluation (SQuaRE) — Quality model_.
-* Mark Richards and Neal Ford (2020). _Fundamentals of Software Architecture_. O'Reilly.
+
+* Mark Richards and Neal Ford (2020).
+  _Fundamentals of Software Architecture_.
+  O'Reilly.
