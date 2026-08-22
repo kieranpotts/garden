@@ -16,7 +16,7 @@ pipeline. Extract, transform, and load are the filters, and the staging tables a
 them are the pipes.
 
 * *Extract.* Data is read from one or more source systems —
-  xref:transactional-databases.adoc[*transactional databases*], logs, APIs, files, or third-party
+  xref:transactional-database.adoc[*transactional databases*], logs, APIs, files, or third-party
   feeds — and staged in a working area. Sources rarely share a common schema or update cadence, so
   the extract phase is where heterogeneity first has to be absorbed.
 
@@ -40,7 +40,7 @@ cadence. Batch ETL favors xref:throughput.adoc[throughput] over latency, so the 
 behind the source systems by hours.
 
 Where fresher data is needed, xref:change-data-capture.adoc[*change data capture*] and
-xref:stream-processing-systems.adoc[*stream processing*] offer streaming alternatives. CDC captures
+xref:stream-processing-system.adoc[*stream processing*] offer streaming alternatives. CDC captures
 row-level changes from a source database's transaction log and propagates them continuously,
 avoiding the periodic full-snapshot extraction of batch ETL. Stream processing systems transform
 in-flight records as they flow through a pipeline. Both approaches reduce the latency between a
@@ -56,4 +56,4 @@ source change and its appearance in the target, at the cost of more complex oper
 * xref:data-mesh.adoc[*Data mesh*]
 * xref:denormalization.adoc[*Denormalization*]
 * xref:normalization.adoc[*Normalization*]
-* xref:stream-processing-systems.adoc[*Stream processing systems*]
+* xref:stream-processing-system.adoc[*Stream processing systems*]

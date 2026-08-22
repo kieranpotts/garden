@@ -1,6 +1,6 @@
 = Extensibility
 
-Extensibility is a xref:quality-attributes.adoc[*quality attribute*] of a system: the ease with
+Extensibility is a xref:quality-attribute.adoc[*quality attribute*] of a system: the ease with
 which its behavior can be *extended* – augmented with new functionality – without modifying the code
 that already exists. An extensible system anticipates change along the axes its designers expect to
 move, and leaves deliberate *extension points* where new behavior can be plugged in.
@@ -28,7 +28,7 @@ thumb; extensibility is the property that following it produces.
 Extensibility rarely comes for free. It is engineered into a system through a handful of recurring
 techniques, all of which trade present simplicity for future flexibility.
 
-- xref:abstraction.adoc[*Abstraction*] and xref:interfaces.adoc[*interfaces*]. Coding to an
+- xref:abstraction.adoc[*Abstraction*] and xref:interface.adoc[*interfaces*]. Coding to an
   interface rather than a concrete implementation lets new implementations be added without touching
   the callers that depend on the interface.
 
@@ -49,13 +49,13 @@ techniques, all of which trade present simplicity for future flexibility.
 
 - *Extension points and hooks.* Explicit, named seams – plugin slots, event hooks, middleware
   chains, compiler passes – where third-party or after-the-fact code can attach.
-  xref:integrated-development-environments.adoc[*IDEs*] are the familiar example: most of their
+  xref:integrated-development-environment.adoc[*IDEs*] are the familiar example: most of their
   capability arrives through plugins rather than the core.
 
 - *Reserved capacity in protocols and formats.* Unknown fields in a serialized message, reserved
   bits in a protocol header, or optional parameters in an API all leave room for future additions
   that older consumers can safely ignore. This is the form extensibility takes in
-  xref:network-protocols.adoc[*network protocols*] and data formats, and it is what makes
+  xref:network-protocol.adoc[*network protocols*] and data formats, and it is what makes
   *forwards compatibility* possible.
 
 == Trade-offs
@@ -83,5 +83,5 @@ directions its early designers foresaw that it cannot evolve in the directions t
 * xref:evolvability.adoc[*Evolvability*]
 * xref:modular-design.adoc[*Modular design*]
 * xref:open-closed-principle.adoc[*Open-closed principle*]
-* xref:quality-attributes.adoc[*Quality attributes*]
+* xref:quality-attribute.adoc[*Quality attributes*]
 * xref:technical-debt.adoc[*Technical debt*]

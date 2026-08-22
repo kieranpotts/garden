@@ -16,7 +16,7 @@ same direction. Design guidance that favors high cohesion and low coupling is re
 seen from two sides, and decoupling is the active side of it.
 
 The reason decoupling matters is that it isolates change. When modules interact through narrow,
-stable xref:interfaces.adoc[*interfaces*], a change inside one rarely propagates past the boundary.
+stable xref:interface.adoc[*interfaces*], a change inside one rarely propagates past the boundary.
 Modules can be xref:refactoring.adoc[*refactored*], tested in isolation, and reused in new contexts
 without dragging their neighbors along. At larger scales the same property lets teams work and
 deploy independently, and lets each component be sized to its own load, which is the basis of
@@ -48,7 +48,7 @@ added in the name of loose coupling is a new seam the reader must follow and a n
 behavior can go wrong, whether an interface, a layer, or a message bus. Abstractions built before
 the problem is understood tend to capture the wrong essentials, a cost the xref:yagni.adoc[*YAGNI*]
 discipline guards against. A decoupling that hides a dependency in name only still assumes another
-module's behavior. It produces xref:leaky-abstractions.adoc[*leaky abstractions*] that mislead
+module's behavior. It produces xref:leaky-abstraction.adoc[*leaky abstractions*] that mislead
 callers into believing they are insulated when they are not. The aim is not to eliminate coupling,
 which is impossible. It is to keep coupling weak, narrow, and visible at a stable interface, the
 same lesson as the connascence locality heuristic.

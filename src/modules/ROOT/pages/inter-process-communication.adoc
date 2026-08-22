@@ -19,8 +19,8 @@ share state.
 *Message passing* moves data through a kernel-mediated channel. The sender writes a message to a
 pipe, queue, or socket, and the receiver reads it. No shared address space is exposed, so the kernel
 preserves isolation between the peers. Message passing is the basis of
-xref:message-queues.adoc[*message queues*], xref:remote-procedure-call.adoc[*RPC*],
-xref:rest.adoc[*REST*], and most xref:network-protocols.adoc[*network protocols*]. It generalizes
+xref:message-queue.adoc[*message queues*], xref:remote-procedure-call.adoc[*RPC*],
+xref:rest.adoc[*REST*], and most xref:network-protocol.adoc[*network protocols*]. It generalizes
 naturally to processes on different machines, which is why distributed software is built almost
 entirely on message-passing styles of IPC.
 
@@ -42,7 +42,7 @@ A useful distinction is whether the peers share a host. Local IPC between proces
 can rely on the kernel to mediate access and on shared memory for high throughput. Remote IPC
 between processes on different machines must traverse a network, which introduces
 xref:latency.adoc[*latency*], partial failure, and the need for
-xref:messaging-protocols.adoc[*messaging protocols*]. The same logical operation — sending a
+xref:messaging-protocol.adoc[*messaging protocols*]. The same logical operation — sending a
 request, receiving a reply — has very different failure modes in the two cases.
 
 The xref:synchronous-communication.adoc[*synchronous*] versus

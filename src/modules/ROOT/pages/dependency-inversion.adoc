@@ -16,7 +16,7 @@ high-level module that depends on it must change too, even though the policy it 
 Policy is held hostage to mechanism.
 
 Dependency inversion reverses this. The high-level module defines an abstraction – typically an
-xref:interfaces.adoc[*interface*] – that describes the capability it needs, and both the high-level
+xref:interface.adoc[*interface*] – that describes the capability it needs, and both the high-level
 module and the low-level implementation depend on that abstraction. The low-level module now depends
 on the abstraction that the high-level module owns. The single arrow from policy to mechanism is
 replaced by two arrows pointing toward the abstraction, which is what "inversion" names.
@@ -68,7 +68,7 @@ The principle also depends on the abstraction being honest. If the interface lea
 particular implementation – a method shaped to fit one database vendor, an error type that exposes a
 transport detail – then the high-level module is coupled to the low-level detail through the
 abstraction itself, and the inversion is only nominal. See
-xref:leaky-abstractions.adoc[*leaky abstractions*].
+xref:leaky-abstraction.adoc[*leaky abstractions*].
 
 A related pitfall is inverting dependencies prematurely. Introducing an interface for every
 collaboration, ahead of any second implementation, produces empty abstractions that multiply without
@@ -87,7 +87,7 @@ testability demands a seam, not as a blanket rule over every collaboration.
 * xref:encapsulation.adoc[*Encapsulation*]
 * xref:hexagonal-architecture.adoc[*Hexagonal architecture*]
 * xref:inversion-of-control.adoc[*Inversion of control*]
-* xref:leaky-abstractions.adoc[*Leaky abstractions*]
+* xref:leaky-abstraction.adoc[*Leaky abstractions*]
 * xref:onion-architecture.adoc[*Onion architecture*]
 * xref:polymorphism.adoc[*Polymorphism*]
 * xref:solid.adoc[*SOLID*]

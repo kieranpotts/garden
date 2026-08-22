@@ -16,7 +16,7 @@ xref:message-driven-architecture.adoc[*message-driven architecture*].
 == Routing and distribution
 
 A broker supports one or more *message distribution patterns* for deciding where each message goes.
-The two most common are point-to-point delivery to a xref:message-queues.adoc[*message queue*], in
+The two most common are point-to-point delivery to a xref:message-queue.adoc[*message queue*], in
 which each message is consumed by exactly one worker, and the
 xref:publish-subscribe-pattern.adoc[*publish-subscribe (pubsub)*] pattern, in which each message is
 fanned out to every subscriber of a topic. Many brokers support both, plus richer routing on top:
@@ -24,7 +24,7 @@ content-based routing, message filtering, and request-reply. See message-driven 
 catalog of these patterns.
 
 An xref:event-bus.adoc[*event bus*] is a broker specialized for pubsub fan-out. A
-xref:stream-processing-systems.adoc[*stream processing system*] such as xref:kafka.adoc[*Kafka*] is
+xref:stream-processing-system.adoc[*stream processing system*] such as xref:kafka.adoc[*Kafka*] is
 a broker built around a durable, replayable log rather than a queue that is drained on read.
 
 == Broker responsibilities
@@ -41,13 +41,13 @@ every producer and consumer.
 * *Dead-letter handling.* Messages that cannot be processed after repeated attempts are diverted to
   a xref:dead-letter-queue.adoc[*dead letter queue*], keeping the primary flow moving.
 * *Protocol bridging.* Brokers often speak several
-  xref:messaging-protocols.adoc[*messaging protocols*], letting components that use different wire
+  xref:messaging-protocol.adoc[*messaging protocols*], letting components that use different wire
   formats interoperate.
 
 == Message broker vs message queue
 
 The terms are often used interchangeably, but they describe different layers. A
-xref:message-queues.adoc[*message queue*] is a specific data structure and delivery model: a FIFO
+xref:message-queue.adoc[*message queue*] is a specific data structure and delivery model: a FIFO
 buffer in which each message is destined for one consumer and is removed once it has been
 acknowledged. A message broker is the broader category of middleware that mediates messaging between
 components. A broker may use queues internally, but it also supports pubsub, complex routing,
@@ -63,15 +63,15 @@ capabilities, but the vocabulary in the field is loose.
 
 * xref:asynchronous-communication.adoc[*Asynchronous communication*]
 * xref:dead-letter-queue.adoc[*Dead letter queue*]
-* xref:distributed-systems-mechanisms.adoc[*Distributed systems mechanisms*]
+* xref:distributed-system-mechanism.adoc[*Distributed systems mechanisms*]
 * xref:event-bus.adoc[*Event bus*]
 * xref:kafka.adoc[*Kafka*]
-* xref:message-queues.adoc[*Message queues*]
+* xref:message-queue.adoc[*Message queues*]
 * xref:message-driven-architecture.adoc[*Message-driven architecture*]
-* xref:messaging-protocols.adoc[*Messaging protocols*]
+* xref:messaging-protocol.adoc[*Messaging protocols*]
 * xref:publish-subscribe-pattern.adoc[*Publish-subscribe (pubsub) pattern*]
 * xref:rabbitmq.adoc[*RabbitMQ*]
-* xref:stream-processing-systems.adoc[*Stream processing systems*]
+* xref:stream-processing-system.adoc[*Stream processing systems*]
 
 == References
 

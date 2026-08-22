@@ -1,0 +1,133 @@
+= Key-value store
+
+:link-dataintensive: https://www.dataintensive.net/
+
+A *key-value store* is a class of xref:nosql-database.adoc[*NoSQL database*] that models data as an
+*associative array* (also called a dictionary, map, or hash map). Each record is a pair: a unique
+*key* that identifies it and a *value* that holds its data. The value is opaque to the store. The
+database can fetch a value by its key, but it cannot inspect, filter, or index the contents of the
+value itself, so queries are keyed lookups and richer access falls to the application.
+
+This simplicity is the key-value store's defining strength. Keyed lookup maps directly onto a
+xref:hashing.adoc[*hash map*], which gives average-case O(1) access, so a single-key read completes
+in microseconds. The model also makes the store easy to xref:sharding.adoc[*shard*]: hash the key,
+route the request to the node that owns that hash range, and every key lives in exactly one place.
+The price of this simplicity is expressive power. There are no joins, no secondary indexes over
+value contents, and no way to ask which values match a predicate without scanning.
+
+== Keys and values
+
+Keys are unique within a keyspace and are usually strings or bytes, though some stores accept
+structured keys. Values are untyped from the store's perspective: a blob of bytes, a string, a
+serialized object, or even a counter. Because the store does not interpret the value, schema lives
+in the application code that produces and consumes the records. This is the *schema-less* property
+shared with other NoSQL families, and it shifts the work of xref:data-modeling.adoc[*data modeling*]
+out of the database.
+
+Some stores blur the line by offering richer value types. They expose hashes, lists, sets, and
+sorted sets as first-class values and operate on them server-side, turning the store into a data
+structure server rather than a plain blob store. The access model remains keyed, though. The richer
+operations address a single key.
+
+== Querying and access patterns
+
+A pure key-value store supports little more than `GET`, `PUT`, and `DELETE` on a single key.
+Anything beyond a point lookup falls to the application. To answer "find all values with property X"
+the application maintains its own secondary index, often as a second keyspace that maps the property
+back to primary keys. Range queries over keys are possible only in stores that keep keys ordered
+rather than hashed, eg. LevelDB, RocksDB, and DynamoDB's sorted-key indexes.
+
+A xref:relational-database.adoc[*relational database*] answers ad-hoc queries over many tables with
+joins and secondary indexes. A pure key-value store answers none of that. Its vocabulary is a single
+key.
+
+This makes the choice of key the central modeling decision. A key that matches the dominant
+xref:access-pattern.adoc[*access pattern*] keeps every read a single lookup. A composite key such
+as `user_id:session_id`, used for a per-session counter, is a typical choice. A key that buries the
+lookup dimension inside the value forces the application to scan or maintain side indexes.
+
+== Consistency and transactions
+
+Most key-value stores guarantee atomicity on a single key. A read or write of one key is
+all-or-nothing, a thin slice of the xref:acid-principles.adoc[*ACID*] guarantees a relational
+database offers. Cross-key transactions are uncommon. Some stores offer conditional writes and
+limited multi-item transactions. Others lean on
+xref:eventual-consistency.adoc[*eventual consistency*] across replicas and leave coordination to the
+application.
+
+The trade-off is the familiar one of the xref:cap-theorem.adoc[*CAP theorem*]. Under
+xref:partition-tolerance.adoc[*partition tolerance*], a distributed key-value store must choose
+between strong xref:consistency.adoc[*consistency*] and availability, and most choose availability.
+
+== Scaling and distribution
+
+Key-value stores scale out by partitioning the keyspace across nodes. The key is hashed, and the
+hash determines the owning node. xref:consistent-hashing.adoc[*Consistent hashing*] is the usual
+scheme because it minimizes the data moved when nodes join or leave. This makes a distributed
+key-value store a natural fit for xref:distributed-database.adoc[*distributed database*] workloads
+with large working sets and known access patterns. Replication places copies of each key on several
+nodes for fault tolerance, at the cost of keeping those copies in sync.
+
+== Use cases
+
+The combination of fast keyed access and a simple data model suits a focused set of workloads.
+
+* xref:caching.adoc[*Caching*]. Key-value stores back most application caches, holding hot data in
+  memory in front of a slower source of truth.
+* *Session storage.* User sessions are naturally keyed by a session ID and read on every request, a
+  perfect fit for a keyed lookup.
+* *Counters and rate limiting.* Atomic increment on a key, often with a TTL, implements
+  sliding-window rate limiters and real-time counters.
+* *User profiles and preferences.* A per-user blob, read and written whole, maps onto a single key
+  with no joins.
+* *Shopping carts.* A cart is a per-user aggregate fetched and stored as one value.
+
+== Relation to other NoSQL families
+
+Among NoSQL databases, key-value stores are the simplest model and the substrate the others extend.
+xref:document-oriented-database.adoc[*Document stores*] keep the key-addressed foundation but make
+the value a structured document the database can query and index.
+xref:wide-column-store.adoc[*Wide-column stores*] add column families for very wide, sparse rows.
+xref:graph-database.adoc[*Graph databases*] abandon the key-value shape entirely to make
+relationships first-class. Each adds expressive power at the cost of the key-value store's lean
+access path.
+
+== Examples
+
+* xref:redis.adoc[*Redis*]. An xref:in-memory-database.adoc[*in-memory*] key-value store with
+  optional persistence and a rich set of value types.
+* *Amazon DynamoDB.* A managed, distributed key-value store with consistent-hashing-based
+  partitioning and optional sorted-key indexes.
+* *Memcached.* An in-memory key-value cache with no persistence, optimized for speed.
+* *etcd.* A distributed, strongly consistent key-value store built on Raft, used for configuration
+  and service discovery.
+* *Riak.* A distributed key-value store emphasizing availability, based on Amazon's Dynamo design.
+* *LevelDB and RocksDB.* Embedded, ordered key-value engines used as storage building blocks inside
+  larger systems.
+
+== See also
+
+* xref:access-pattern.adoc[*Access patterns*]
+* xref:acid-principles.adoc[*ACID principles*]
+* xref:caching.adoc[*Caching*]
+* xref:cap-theorem.adoc[*CAP theorem*]
+* xref:consistency.adoc[*Consistency*]
+* xref:consistent-hashing.adoc[*Consistent hashing*]
+* xref:data-modeling.adoc[*Data modeling*]
+* xref:database.adoc[*Databases*]
+* xref:distributed-database.adoc[*Distributed databases*]
+* xref:document-oriented-database.adoc[*Document-oriented databases*]
+* xref:eventual-consistency.adoc[*Eventual consistency*]
+* xref:graph-database.adoc[*Graph databases*]
+* xref:hashing.adoc[*Hashing*]
+* xref:in-memory-database.adoc[*In-memory databases*]
+* xref:nosql-database.adoc[*NoSQL databases*]
+* xref:partition-tolerance.adoc[*Partition tolerance*]
+* xref:relational-database.adoc[*Relational databases*]
+* xref:sharding.adoc[*Sharding*]
+* xref:wide-column-store.adoc[*Wide-column stores*]
+
+== References
+
+* Martin Kleppmann (2017).
+  link:{link-dataintensive}[_Designing Data-Intensive Applications_]. O'Reilly.

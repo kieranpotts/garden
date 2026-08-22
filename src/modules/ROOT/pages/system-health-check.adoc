@@ -1,0 +1,98 @@
+= System health check
+
+A system health check is a routine, automated inspection of a running service, host, or device that
+reports whether it is currently fit to do its job. The result is a small, self-contained signal –
+healthy, degraded, or unhealthy – rather than a stream of measurements. Health checks are part of a
+xref:monitoring.adoc[*monitoring*] strategy, but unlike general metric collection they are designed
+to be polled on a tight schedule and acted on automatically.
+
+A check typically probes one or more of the following.
+
+* *Resource usage.* CPU, memory, disk, and file descriptor consumption on the host.
+* *Connectivity.* Whether the process is listening on its port, and whether it can reach its
+  downstream dependencies.
+* *Self-tests.* An application-level endpoint that exercises a representative request path. It
+  returns success only if critical internals are responsive: database handles, in-memory caches,
+  background workers.
+
+The signals are deliberately shallow. A health check is not a substitute for
+xref:metrics.adoc[*metrics*], xref:tracing.adoc[*tracing*], or
+xref:observability.adoc[*observability*]. It answers a single yes-or-no question, whether the
+component can serve traffic right now.
+
+== Active and passive checks
+
+Health checks are gathered in two ways.
+
+*Active* checks are initiated by an external prober. A xref:load-balancer.adoc[*load balancer*],
+orchestrator, or monitoring agent periodically issues an HTTP `GET /healthz`, a TCP connect, or an
+ICMP ping against the target and judges the response. The prober owns the schedule, the timeout, and
+the criteria for declaring the target unhealthy. Active checks work even when the target is too
+degraded to volunteer information, which is exactly when they matter most.
+
+*Passive* checks are inferred from real traffic, without a dedicated probe. A load balancer that
+observes a backend returning 5xx responses, or timing out on its own requests, treats those failures
+as a health signal and pulls the backend out of rotation. Passive checks add no extra load and react
+to the traffic the system is already serving, but they can only judge a node that is receiving
+requests. An idle replica that has silently hung will not be noticed.
+
+Most production setups combine the two. Active checks catch failures on idle nodes. Passive checks
+catch failures that the active probe path misses because it is simpler than a real request.
+
+== Probe types in orchestrators
+
+xref:container-orchestration.adoc[*Container orchestrators*] formalize health checks as *probes* and
+use them to drive the xref:container.adoc[*container*] lifecycle. Kubernetes, the most widely
+deployed example, defines three distinct probe types that separate concerns a single "is it up?"
+check would conflate.
+
+* *Liveness.* Answers "is this process still runnable?" A failing liveness probe causes the
+  orchestrator to restart the container, on the assumption that something inside it has deadlocked
+  or leaked and only a fresh process will recover. Liveness probes are a safety net, not a recovery
+  strategy. If they fire often, the real fix is in the application.
+* *Readiness.* Answers "is this process ready to accept traffic right now?" A failing readiness
+  probe causes the orchestrator to remove the pod from its xref:service-discovery.adoc[*service*]
+  endpoints, so the load balancer stops sending it requests, but the container keeps running.
+  Readiness probes let a slow-starting instance finish warming its caches before it receives load,
+  and let an overloaded instance shed traffic without being killed.
+* *Startup.* A one-shot probe that gates liveness checks until the container has finished
+  initializing. Without it, a slow-booting application can be killed by a liveness probe that fires
+  before the process is ready to answer. Startup probes recognize that liveness and initialization
+  are different phases and should not share a deadline.
+
+The three together express a finer-grained model than a single health endpoint can. A container can
+be alive but not ready, ready but not fully initialized, or initialized but later stuck, and each
+state calls for a different response.
+
+== Consumers
+
+Health checks are not useful on their own; their value is in who consumes the result.
+
+* Load balancers poll backend health and stop routing traffic to nodes that fail, providing
+  automatic xref:failover.adoc[*failover*] in an xref:active-active.adoc[*active-active*] topology.
+* Orchestrators use probe results to restart, reschedule, or drain containers, the self-healing half
+  of their reconciliation loop.
+* Monitoring and xref:alerting.adoc[*alerting*] systems record health-check transitions and raise
+  alerts. A failing health check is a classic *symptom* rather than a cause, and so more actionable
+  than an underlying CPU or memory reading.
+
+== Health checks and heartbeats
+
+A health check is a broader signal than a xref:heartbeat.adoc[*heartbeat*]. A heartbeat only asserts
+that a node is alive; it carries little payload beyond a timestamp. A health check reports on a
+node's state: its resources, its dependencies, its readiness to serve. The two are complementary.
+Health checks say how a node is doing; heartbeats say whether it is doing anything at all. A node
+can be heartbeating but failing its health checks. It is alive, but not fit to serve.
+
+== See also
+
+* xref:active-active.adoc[*Active-active*]
+* xref:alerting.adoc[*Alerting*]
+* xref:container-orchestration.adoc[*Container orchestration*]
+* xref:failover.adoc[*Failover*]
+* xref:heartbeat.adoc[*Heartbeat*]
+* xref:load-balancer.adoc[*Load balancer*]
+* xref:monitoring.adoc[*Monitoring*]
+* xref:observability.adoc[*Observability*]
+* xref:service-discovery.adoc[*Service discovery*]
+* xref:software-delivery-and-operations.adoc[*Software delivery and operations*]

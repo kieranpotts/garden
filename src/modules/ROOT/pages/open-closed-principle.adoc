@@ -13,7 +13,7 @@ xref:inheritance.adoc[*inheritance*]: a base class is closed to modification bec
 depend on its fixed interface, yet open to extension through subclasses that add or override
 behavior. Martin restated it in 1996 around xref:abstraction.adoc[*abstraction*] and
 xref:polymorphism.adoc[*polymorphism*] rather than inheritance alone. In Martin's form, an entity is
-closed because its xref:interfaces.adoc[*interface*] and behavior are fixed once published, and open
+closed because its xref:interface.adoc[*interface*] and behavior are fixed once published, and open
 because new implementations of that interface can be added without touching the callers that depend
 on it.
 
@@ -34,7 +34,7 @@ principle asks that the two coexist: change should be additive, not surgical.
 OCP is satisfied by depending on abstractions rather than concretes. The techniques are the same
 ones that make a system xref:extensibility.adoc[*extensible*].
 
-- Code to an xref:interfaces.adoc[*interface*], not to a concrete class, so new implementations can
+- Code to an xref:interface.adoc[*interface*], not to a concrete class, so new implementations can
   be added behind the interface.
 
 - Use xref:polymorphism.adoc[*polymorphism*] to dispatch to those implementations at runtime, with
@@ -90,7 +90,7 @@ implementation is speculative generality paid for in xref:complexity.adoc[*compl
 The abstraction also has to be honest. If the interface leaks the concerns of a particular
 implementation – a method shaped to fit one database vendor, an error type that exposes a transport
 detail – then a new implementation cannot slot in without first changing the interface, and the
-principle is defeated by xref:leaky-abstractions.adoc[*leaky abstractions*] rather than by a missing
+principle is defeated by xref:leaky-abstraction.adoc[*leaky abstractions*] rather than by a missing
 abstraction.
 
 OCP is the structural complement to xref:backwards-compatibility.adoc[*backwards compatibility*].

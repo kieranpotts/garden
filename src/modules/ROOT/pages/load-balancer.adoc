@@ -13,7 +13,7 @@ Load balancers work particularly well in front of stateless services, where any 
 any request without needing to consider session state. If a database also needs to be replicated to
 handle the load, there are additional challenges to ensure xref:consistency.adoc[*consistency*].
 
-Load balancers also enable xref:rolling-deployments.adoc[*rolling deployments*]: instances can be
+Load balancers also enable xref:rolling-deployment.adoc[*rolling deployments*]: instances can be
 added and removed one at a time while deploying changes, making it possible to do thousands of
 releases to hundreds of microservices without any xref:downtime.adoc[*downtime*].
 
@@ -33,7 +33,7 @@ Load balancers can operate at different layers of the xref:osi-model.adoc[*OSI m
 
 === Health checks
 
-Load balancers continuously run xref:system-health-checks.adoc[*health checks*] against backend
+Load balancers continuously run xref:system-health-check.adoc[*health checks*] against backend
 servers. If a server becomes unresponsive, slow, or returns errors, the load balancer removes it
 from rotation and stops sending it traffic. This is how load balancers provide automatic
 xref:failover.adoc[*failover*]: when a server fails, requests are rerouted to the remaining healthy

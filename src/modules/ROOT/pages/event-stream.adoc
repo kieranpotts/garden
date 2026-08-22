@@ -3,7 +3,7 @@
 An *event stream* is an append-only, ordered log of *immutable events*. Events are written once, in
 the order they occur, and retained for a period of time so that they can be read and re-read by
 multiple independent consumers. An event stream is the substrate on which
-xref:stream-processing-systems.adoc[*stream processing systems*] are built, and it is one of the
+xref:stream-processing-system.adoc[*stream processing systems*] are built, and it is one of the
 channels used to integrate services in an xref:event-driven-architecture.adoc[*event-driven*]
 system.
 
@@ -33,12 +33,12 @@ messaging constructs.
 
 * *Fan-out.* A single stream can have many independent consumers, each reading the same events at
   its own offset. This is the xref:publish-subscribe-pattern.adoc[*publish-subscribe (pubsub)*]
-  pattern, in contrast to a xref:message-queues.adoc[*message queue*], which delivers each message
+  pattern, in contrast to a xref:message-queue.adoc[*message queue*], which delivers each message
   to exactly one consumer and discards it once acknowledged.
 
 == Event stream vs. message queue
 
-The clearest contrast is with a xref:message-queues.adoc[*message queue*]. A message queue is
+The clearest contrast is with a xref:message-queue.adoc[*message queue*]. A message queue is
 designed to distribute discrete units of work across a pool of workers. Each message is destined for
 one consumer and is deleted once that consumer has acknowledged it. The queue is a transient buffer,
 not a durable record.
@@ -105,10 +105,10 @@ guaranteed, which complicates consumers that need a global order.
 * xref:event-sourcing.adoc[*Event sourcing*]
 * xref:event-driven-architecture.adoc[*Event-driven architecture (EDA)*]
 * xref:kafka.adoc[*Kafka*]
-* xref:message-queues.adoc[*Message queues*]
+* xref:message-queue.adoc[*Message queues*]
 * xref:publish-subscribe-pattern.adoc[*Publish-subscribe (pubsub) pattern*]
 * xref:software-architecture.adoc[*Software architecture*]
-* xref:stream-processing-systems.adoc[*Stream processing systems*]
+* xref:stream-processing-system.adoc[*Stream processing systems*]
 
 == References
 

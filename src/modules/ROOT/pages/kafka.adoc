@@ -15,7 +15,7 @@ the largest deployments in the world, processing on the order of
 {link-linkedin-scale}[seven trillion events per day].
 
 Kafka is the canonical example of an xref:event-stream.adoc[*event stream*] and a
-xref:stream-processing-systems.adoc[*stream processing system*]. Its core abstraction is the
+xref:stream-processing-system.adoc[*stream processing system*]. Its core abstraction is the
 distributed, partitioned, replicated commit log. Producers append records to the log, and consumers
 read from it at their own pace, each tracking its own position. The log is retained for a
 configurable period rather than deleted on read, which is what makes replay and fan-out possible.
@@ -116,7 +116,7 @@ xref:publish-subscribe-pattern.adoc[*publish-subscribe (pubsub)*] fan-out with p
 If something goes wrong and a consumer fails to process a message, we need some way to be able to
 retry and send the message to a different consumer.
 
-How this is done varies between xref:message-queues.adoc[*message queues*] and stream processing
+How this is done varies between xref:message-queue.adoc[*message queues*] and stream processing
 systems like Kafka.
 
 In the Kafka model, there is no concept of acknowledgments, instead we have offsets. Kafka logs an
@@ -185,11 +185,11 @@ WarpStream. Redpanda is a drop-in Kafka-compatible broker written in C++.
 * xref:horizontal-scaling.adoc[*Horizontal scaling*]
 * xref:idempotent.adoc[*Idempotent*]
 * xref:message-broker.adoc[*Message broker*]
-* xref:message-queues.adoc[*Message queues*]
-* xref:messaging-protocols.adoc[*Messaging protocols*]
+* xref:message-queue.adoc[*Message queues*]
+* xref:messaging-protocol.adoc[*Messaging protocols*]
 * xref:publish-subscribe-pattern.adoc[*Publish-subscribe (pubsub) pattern*]
 * xref:replication.adoc[*Replication*]
 * xref:retry.adoc[*Retry*]
 * xref:sharding.adoc[*Sharding*]
-* xref:stream-processing-systems.adoc[*Stream processing systems*]
+* xref:stream-processing-system.adoc[*Stream processing systems*]
 * xref:throughput.adoc[*Throughput*]

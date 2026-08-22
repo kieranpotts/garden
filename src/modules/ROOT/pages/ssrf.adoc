@@ -3,7 +3,7 @@
 *Server-side request forgery (SSRF)* is a web security vulnerability in which an attacker coerces a
 vulnerable server into making xref:http.adoc[*HTTP*] requests to destinations the attacker chooses.
 The server, trusted by the network it sits on, becomes an unwitting proxy. Requests it issues travel
-from inside the perimeter, where xref:firewalls.adoc[*firewalls*] and network ACLs assume they are
+from inside the perimeter, where xref:firewall.adoc[*firewalls*] and network ACLs assume they are
 benign. The attacker never touches the internal targets directly; the server reaches them on the
 attacker's behalf.
 
@@ -105,7 +105,7 @@ keeps shifting through encoding, redirects, and DNS. Defenses stack.
 
 * *Block link-local and private ranges at the egress point.* Enforce egress filtering from the
   application's network segment so that even a fully subverted request to `169.254.169.254` or
-  `10.0.0.0/8` cannot complete. This is xref:firewalls.adoc[*firewall*] and security-group policy,
+  `10.0.0.0/8` cannot complete. This is xref:firewall.adoc[*firewall*] and security-group policy,
   applied as xref:secure-by-design.adoc[*secure by design*].
 
 * *Harden the metadata service.* Require session-oriented, token-based retrieval, such as AWS
@@ -128,7 +128,7 @@ deny everything else at the network egress.
 * xref:cloud-service-providers.adoc[*Cloud service providers (CSPs)*]
 * xref:cross-site-scripting.adoc[*Cross-site scripting (XSS)*]
 * xref:dns.adoc[*DNS*]
-* xref:firewalls.adoc[*Firewalls*]
+* xref:firewall.adoc[*Firewalls*]
 * xref:input-validation.adoc[*Input validation*]
 * xref:internet-protocol-address.adoc[*IP address*]
 * xref:owasp.adoc[*OWASP*]

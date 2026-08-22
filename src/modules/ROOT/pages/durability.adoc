@@ -2,7 +2,7 @@
 
 :link-ddia: https://www.dataintensive.net/
 
-Durability is a xref:quality-attributes.adoc[*quality attribute*] of an IT system. It is the
+Durability is a xref:quality-attribute.adoc[*quality attribute*] of an IT system. It is the
 property that data, once written or committed, survives failures of the processes and hardware that
 hold it. A durable system can lose power, crash, or shed nodes and still present the data it
 acknowledged preserving.
@@ -10,7 +10,7 @@ acknowledged preserving.
 The term is used in two overlapping senses. As one of the
 xref:acid-principles.adoc[*ACID properties*] of a database, durability promises that a committed
 xref:transaction.adoc[*transaction*] persists even if the database crashes immediately afterwards.
-As a broader xref:quality-attributes.adoc[*quality attribute*], it applies to any storage system and
+As a broader xref:quality-attribute.adoc[*quality attribute*], it applies to any storage system and
 is usually expressed as a statistical guarantee, such as the chance of losing an object over a year.
 
 Durability is a property of the data, not of the service. A system can be durable yet temporarily
@@ -25,7 +25,7 @@ on keeping more than one copy where any single copy can fail.
 
 *Non-volatile storage.* The baseline technique is to write committed data to a non-volatile medium,
 such as disk or SSD, before acknowledging the write. Volatile memory, such as the RAM of an
-xref:in-memory-databases.adoc[*in-memory database*], is not durable on its own because a crash or
+xref:in-memory-database.adoc[*in-memory database*], is not durable on its own because a crash or
 power loss discards it. Systems that prioritise latency, such as xref:redis.adoc[*Redis*], therefore
 layer optional persistence on top of memory and trade durability against throughput through knobs
 such as how often the append-only file is flushed to disk.
@@ -117,7 +117,7 @@ Durability is frequently confused with neighbouring concepts.
 * xref:distributed-database.adoc[*Distributed databases*]
 * xref:fault-tolerance.adoc[*Fault tolerance*]
 * xref:file-storage.adoc[*File storage*]
-* xref:in-memory-databases.adoc[*In-memory databases*]
+* xref:in-memory-database.adoc[*In-memory databases*]
 * xref:object-storage.adoc[*Object storage*]
 * xref:redis.adoc[*Redis*]
 * xref:redundancy.adoc[*Redundancy*]

@@ -45,12 +45,12 @@ failures and respect the database's rules.
   even if the system crashes immediately afterwards. Durability is typically achieved by writing
   committed changes to non-volatile storage — and, in fault-tolerant systems, by
   xref:replication.adoc[*replicating*] them to other nodes — before acknowledging the commit. It is
-  one of the xref:quality-attributes.adoc[*quality attributes*] of an IT system.
+  one of the xref:quality-attribute.adoc[*quality attributes*] of an IT system.
 
 == Trade-offs and limits
 
 Strict ACID guarantees are easiest to provide in a single-node
-xref:relational-databases.adoc[*relational database*], where a single lock manager and write-ahead
+xref:relational-database.adoc[*relational database*], where a single lock manager and write-ahead
 log can coordinate every transaction. They become progressively harder, and more expensive, to
 preserve as data is replicated or xref:sharding.adoc[*sharded*] across nodes and transactions span
 more than one of them.
@@ -58,7 +58,7 @@ more than one of them.
 A xref:distributed-transaction.adoc[*distributed transaction*] must coordinate atomicity and
 isolation across independent storage systems, which typically requires protocols such as
 xref:phased-commit.adoc[*two-phase commit*] that block participants and add latency. Because of
-these costs, many distributed and xref:nosql-databases.adoc[*NoSQL*] systems relax one or more ACID
+these costs, many distributed and xref:nosql-database.adoc[*NoSQL*] systems relax one or more ACID
 properties in exchange for xref:availability.adoc[*availability*] and
 xref:scalability.adoc[*scalability*]. The xref:cap-theorem.adoc[*CAP theorem*] frames the underlying
 trade-off between consistency and availability under partitions, and
@@ -73,7 +73,7 @@ favour of compensating actions.
 * xref:distributed-transaction.adoc[*Distributed transactions*]
 * xref:eventual-consistency.adoc[*Eventual consistency*]
 * xref:normalization.adoc[*Normalization*]
-* xref:relational-databases.adoc[*Relational database management systems*]
+* xref:relational-database.adoc[*Relational database management systems*]
 * xref:saga.adoc[*Sagas*]* xref:database.adoc[*Databases*]
-* xref:transactional-databases.adoc[*Transactional databases*]
+* xref:transactional-database.adoc[*Transactional databases*]
 * xref:transaction.adoc[*Transactions*]

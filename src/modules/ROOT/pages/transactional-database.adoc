@@ -1,0 +1,121 @@
+= Transactional database
+
+Also known as *operational databases*, transactional databases are a family of database management
+systems that are often contrasted with xref:analytical-database.adoc[*analytical databases*].
+
+Both transactional and analytical databases may be xref:nosql-database.adoc[*non-relational]* or
+xref:relational-database.adoc[*relational]* – which is another way to classify database management
+systems.
+
+Transactional databases are used for *Online Transaction Processing (OLTP)*. These are production
+databases that process xref:transaction.adoc[*transactions*], eg. adding customer records, checking
+stock availability, and so on. They tend to be customer-facing DBs, and the data they collect is the
+raw material that xref:etl.adoc[*ETL*] pipelines move into analytical databases for reporting and
+decision-making.
+
+== Workload characteristics
+
+OLTP workloads are dominated by many short, atomic transactions rather than the long-running
+analytical queries that characterize analytical databases. Each transaction reads or writes a small
+number of rows – a single order, a customer record, an account balance – and must complete in
+milliseconds to keep interactive applications responsive. Throughput is measured in transactions per
+second, and the limiting factor is usually the cost of coordinating concurrent access to shared
+rows, not the volume of data scanned.
+
+The access pattern is overwhelmingly point queries and lookups: fetch this record by key, update
+that row, insert a new order. Full-table scans and large joins are rare, because they block the
+short transactions the system is sized for. Indexes on primary and foreign keys carry most of the
+read load, and xref:database-index.adoc[*database indexes*] are tuned to keep the hot path in
+memory. The data itself is current and operational – the live state of the business – rather than
+the historical, append-only data that feeds analytics.
+
+== ACID and concurrency
+
+Because a single business operation often spans several reads and writes, transactional databases
+are built around the xref:acid-principles.adoc[*ACID principles*]. A transfer between two accounts
+must debit one and credit the other as one atomic unit, or neither. The database's job is to keep
+concurrent transactions from corrupting one another and to preserve every committed result across
+crashes.
+
+Concurrent access is controlled through some form of xref:concurrency.adoc[*concurrency*] control.
+*Pessimistic* strategies take xref:locking.adoc[*locks*] before touching a row, blocking other
+writers until the transaction commits, while *optimistic* strategies validate at commit time and
+retry on conflict. *Multiversion concurrency control (MVCC)*, used by PostgreSQL, MySQL's InnoDB
+engine, and Oracle, gives each transaction a consistent snapshot of the database and lets readers
+proceed without blocking writers, trading storage overhead for higher read concurrency. Strict
+isolation is expensive, so most engines offer a configurable isolation level that trades correctness
+for throughput. Read committed is a common default.
+
+== Schema design
+
+Relational transactional databases are usually xref:normalization.adoc[*normalized*]. Each fact
+lives in one place, so an update touches a single row and cannot leave the database disagreeing with
+itself. The normalized schema – customers, orders, line items, and products as separate tables
+joined by keys – maps cleanly onto the atomic transactions the application issues, and it is what
+the ACID guarantees are easiest to reason about.
+
+Indexes carry the read side. Every primary key, every foreign key, and every column used in a hot
+lookup path is typically indexed, so that a point query resolves in O(log n) rather than scanning
+the table. The cost is on the write path. Every index adds work to each insert, update, and delete,
+which is why the index set on an OLTP schema is usually kept lean and deliberately chosen.
+
+== Scaling
+
+Transactional databases are hard to scale horizontally. A transaction that touches several rows
+expects them to live together, and the ACID guarantees that make the system trustworthy also make
+sharding expensive. The default response is therefore xref:vertical-scaling.adoc[*vertical scaling*]
+– a bigger single node – supplemented by xref:replication.adoc[*read replicas*] that absorb read
+traffic while writes stay on a single primary.
+
+Where horizontal scale is unavoidable, xref:sharding.adoc[*sharding*] partitions the dataset across
+nodes, but transactions that span shards become
+xref:distributed-transaction.adoc[*distributed transactions*] with the latency and failure modes
+that implies. This is the reason most OLTP systems run on one node for as long as they can, and the
+reason analytical databases – whose workloads parallelize across partitions more naturally – scaled
+out sooner.
+
+== Modern developments
+
+A newer class of *NewSQL* systems – Google Spanner, CockroachDB, and TiDB among them – preserves the
+SQL and ACID transaction model of a traditional OLTP database while running as a
+xref:distributed-database.adoc[*distributed database*] across many nodes. They use consensus
+protocols and distributed clocks to keep cross-node transactions serializable, paying latency on
+every write to recover the horizontal scale that single-node OLTP cannot reach.
+
+More recently the boundary between OLTP and OLAP has blurred.
+*Hybrid transactional/analytical processing (HTAP)* systems, such as SAP HANA and designs that keep
+row and column layouts together in one store, run analytical queries against the same live data the
+transactions write, sidestepping the ETL hop into a separate analytical store. The trade is
+operational complexity. A workload that mixes short point transactions with long scans must be
+carefully isolated so neither starves the other.
+
+== Implementations
+
+Well-known relational transactional databases include Oracle Database, IBM DB2, Microsoft SQL
+Server, MySQL, and PostgreSQL, alongside managed cloud offerings such as Amazon RDS.
+
+Non-relational stores vary in how transactional they really are. Neo4j and MongoDB (since 4.0) offer
+multi-statement ACID transactions. Cassandra provides only lightweight, Paxos-based serial
+consistency for a single partition, and HBase offers row-level atomicity without multi-row ACID. The
+label "NoSQL" does not by itself say where a store sits on that spectrum; the guarantees have to be
+checked per system.
+
+== See also
+
+* xref:acid-principles.adoc[*ACID principles*]
+* xref:analytical-database.adoc[*Analytical databases*]
+* xref:concurrency.adoc[*Concurrency*]
+* xref:database-index.adoc[*Database indexes*]
+* xref:database.adoc[*Databases*]
+* xref:distributed-database.adoc[*Distributed databases*]
+* xref:distributed-transaction.adoc[*Distributed transaction*]
+* xref:etl.adoc[*ETL*]
+* xref:in-memory-database.adoc[*In-memory databases*]
+* xref:locking.adoc[*Locking*]
+* xref:normalization.adoc[*Normalization*]
+* xref:nosql-database.adoc[*NoSQL databases*]
+* xref:relational-database.adoc[*Relational database management systems*]
+* xref:replication.adoc[*Replication*]
+* xref:sharding.adoc[*Sharding*]
+* xref:transaction.adoc[*Transactions*]
+* xref:vertical-scaling.adoc[*Vertical scaling*]

@@ -32,7 +32,7 @@ platform then tears the instance down, or keeps it warm briefly in case another 
 Functions are xref:stateless.adoc[*stateless*] by design. Each invocation must carry everything it
 needs in the request, or fetch it from an external store. Any state that must persist between
 invocations has to live outside the function, in a database, cache, or
-xref:message-queues.adoc[*queue*]. The platform does not guarantee that two consecutive calls hit
+xref:message-queue.adoc[*queue*]. The platform does not guarantee that two consecutive calls hit
 the same instance, or even the same host.
 
 Scaling is implicit and per-request. When load rises, the platform simply starts more concurrent

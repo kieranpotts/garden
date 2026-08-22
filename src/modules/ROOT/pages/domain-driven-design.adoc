@@ -68,7 +68,7 @@ system around representations of objects and events that exist in the real world
 
 To design and build high quality domain models, close collaboration is required between the
 *technical experts* (who implement the software and hardware) and the
-xref:domain-experts.adoc[*domain experts*] (aka. subject matter experts or business stakeholders).
+xref:domain-expert.adoc[*domain experts*] (aka. subject matter experts or business stakeholders).
 The two parties are jointly responsible for iteratively refining the conceptual model of the
 solution. This is one of the most powerful aspects of domain-driven design: that development of
 software is equally driven by software developers and the customers/users (or representatives of
@@ -111,7 +111,7 @@ which will typically be undertaken during a project's xref:discovery.adoc[*disco
 Fundamentally, DDD is all about good xref:domain-model.adoc[*domain modeling*]. The goal of the
 strategic design is to end up with a high-level model of the business domain. The model is created
 by the technical experts but its design is driven by the people who know most about the domain – the
-xref:domain-experts.adoc[*domain experts*]. The model is discovered through *conversations* with the
+xref:domain-expert.adoc[*domain experts*]. The model is discovered through *conversations* with the
 domain experts. The technical experts collaborate with the domain experts through continuous
 conversation and feedback to create a model of the problem space that makes sense to all the
 project's stakeholders.
@@ -247,7 +247,7 @@ DDD calls this common language the *ubiquitous language*. It is similar in conce
 xref:ontology.adoc[*ontology*]. The language is taken from the real world business domain, and it
 should be used to specify software requirements and to name things in the application code and its
 tests. Indeed, the domain language should be used in all forms of communication (both written and
-verbal) between the technical teams and the xref:domain-experts.adoc[*domain experts*].
+verbal) between the technical teams and the xref:domain-expert.adoc[*domain experts*].
 
 Ideally, there would be a single unified model covering the whole business domain. However, in
 complex problem spaces, this is often unrealistic. Different subdomains may need to have different
@@ -726,7 +726,7 @@ have dependencies on both a `UserEntity` domain object and an `EmailTransportSer
 The domain layer should be isolated further by not having any direct dependencies on the
 infrastructure layer below it. This can be achieved by implementing
 xref:inversion-of-control.adoc[*inversion of control*] patterns at the boundary between the domain
-and infrastructure layers. xref:interfaces.adoc[*Interfaces*] and *[adapters]* are commonly used for
+and infrastructure layers. xref:interface.adoc[*Interfaces*] and *[adapters]* are commonly used for
 this purpose. The interfaces belong to the layer above (the domain layer), and the adapters to the
 layer below (the infrastructure layer). The interfaces define the dependencies required of the
 domain objects, domain events, and domain services. The adapters implement those interfaces. (And

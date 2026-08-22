@@ -1,0 +1,118 @@
+= Network protocol
+
+A *network protocol* is a set of rules that two or more parties follow to exchange data over a
+network. The rules cover how data is formatted, addressed, transmitted, routed, and received, and
+how errors or losses are detected and recovered. Without a shared protocol, two endpoints may be
+physically connected but cannot meaningfully communicate — the protocol is what turns a wire or
+radio link into a channel.
+
+A protocol specification is a contract. It defines the messages each side may send, the order in
+which they may be sent, what each message means, and how the receiver is expected to respond.
+Specifications are typically published by standards bodies — the Internet Engineering Task Force
+(IETF) through its Request for Comments (RFC) series, the International Organization for
+Standardization (ISO), the IEEE, and OASIS — so that independent implementations can interoperate.
+This is what allows a browser written by one vendor to fetch a page served by software written by
+another, across hardware from a dozen more.
+
+== Layering
+
+Network protocols are rarely single, monolithic specifications. They are organized into *layers*,
+each handling one concern and building on the one below it. The xref:osi-model.adoc[*OSI model*] is
+the standard conceptual framework for this layering; the xref:osi-model.adoc[*TCP/IP model*] is the
+four-layer suite that actually runs the internet. A protocol at one layer treats everything below as
+an opaque transport and only has to understand the headers added by its peer on the other end — a
+property called *encapsulation*.
+
+Layering is what makes the stack composable. xref:tcp.adoc[*TCP*] can provide reliable ordered
+delivery over xref:internet-protocol.adoc[*IP*] without knowing whether the packets cross Ethernet,
+Wi-Fi, or fiber; HTTP can run over TCP without knowing how segments are retransmitted. Each layer
+can evolve, be swapped, or be debugged in isolation.
+
+== Common properties
+
+Protocols along the stack differ along a few recurring axes.
+
+* *Reliability.* A reliable protocol such as xref:tcp.adoc[*TCP*] guarantees that data arrives, in
+  order, without duplication, by retransmitting lost segments. A best-effort protocol such as
+  xref:udp.adoc[*UDP*] makes no such guarantee — it sends datagrams and forgets them, leaving loss
+  detection and recovery to the application.
+* *Connection model.* Connection-oriented protocols such as TCP establish state on both sides before
+  exchanging data and tear it down afterwards. Connectionless protocols such as UDP and
+  xref:internet-protocol.adoc[*IP*] treat each message independently.
+* *State.* Some protocols carry state across messages (TCP's connection, DNS's zone transfers);
+  others are stateless, so any server can handle any request (xref:http.adoc[*HTTP*] in its original
+  form).
+* *Direction.* xref:request-response.adoc[*Request-response*] protocols such as HTTP pair each
+  client message with a server reply. xref:messaging-protocol.adoc[*Messaging protocols*] and
+  xref:publish-subscribe-pattern.adoc[*publish-subscribe*] schemes push data one way,
+  asynchronously, and decouple producers from consumers.
+
+== Examples by layer
+
+The protocols most familiar to software developers sit at the transport and application layers. A
+representative selection follows, grouped by where they live in the stack.
+
+* *Network layer.* xref:internet-protocol.adoc[*IP*] addresses and routes packets between hosts.
+  xref:icmp.adoc[*ICMP*] carries diagnostic and error messages used by tools such as `ping` and
+  `traceroute`. xref:border-gateway-protocol.adoc[*BGP*] is the interdomain routing protocol that
+  lets autonomous systems exchange reachability information and build the tables IP forwards
+  against.
+
+* *Transport layer.* xref:tcp.adoc[*TCP*] provides reliable, ordered, connection-oriented byte
+  streams. xref:udp.adoc[*UDP*] provides lightweight, connectionless datagrams with no delivery
+  guarantees, suited to DNS lookups, streaming media, and real-time games where occasional loss is
+  preferable to retransmission delay.
+
+* *Application layer.* xref:http.adoc[*HTTP*] is the request-response protocol of the web; HTTPS is
+  HTTP secured with TLS. xref:dns.adoc[*DNS*] resolves hostnames to
+  xref:internet-protocol-address.adoc[*IP addresses*]. xref:dhcp.adoc[*DHCP*] assigns IP
+  configuration to hosts joining a network. xref:smtp.adoc[*SMTP*] transfers mail between servers.
+  xref:ftp.adoc[*FTP*] transfers files between hosts. xref:websockets.adoc[*WebSockets*] and
+  xref:webrtc.adoc[*WebRTC*] provide interactive, bidirectional and real-time media channels from
+  the browser.
+
+This list is far from exhaustive. The garden has dedicated pages for many of these protocols, and
+for the xref:messaging-protocol.adoc[*messaging protocols*] that sit at the same layer but assume
+broker-mediated, asynchronous delivery rather than request-response.
+
+== Designing for heterogeneity
+
+A network protocol runs between implementations written decades and continents apart, on hardware
+its designers never saw. Robust protocols therefore follow
+xref:robustness-principle.adoc[*Postel's law*] — be conservative in what you send, be liberal in
+what you accept — so that minor deviations in a peer do not break the conversation. This robustness
+principle is also what makes xref:backwards-compatibility.adoc[*backwards compatibility*] practical
+across protocol versions, and what allows the internet to grow without flag days.
+
+The flip side is that forgiving parsers accumulate
+xref:leaky-abstraction.adoc[*leaky abstractions*] and security exposure: a protocol that tolerates
+surprising input also tolerates malicious input, which is why modern protocol design pairs tolerance
+with strict validation and xref:encryption.adoc[*encryption*].
+
+== See also
+
+* xref:cidr.adoc[*CIDR (Classless Inter-Domain Routing)*]
+* xref:communication-pattern.adoc[*Communication patterns*]
+* xref:distributed-system-mechanism.adoc[*Distributed systems mechanisms*]
+* xref:dns.adoc[*DNS*]
+* xref:gossip-protocol.adoc[*Gossip protocol*]
+* xref:graphql.adoc[*GraphQL*]
+* xref:grpc.adoc[*gRPC*]
+* xref:http.adoc[*HTTP*]
+* xref:http-api.adoc[*HTTP API*]
+* xref:inter-process-communication.adoc[*Inter-process communication*]
+* xref:internet-protocol.adoc[*Internet Protocol (IP)*]
+* xref:json.adoc[*JSON*]
+* xref:json-schema.adoc[*JSON Schema*]
+* xref:json-ld.adoc[*JSON-LD*]
+* xref:long-polling.adoc[*Long polling*]
+* xref:messaging-protocol.adoc[*Messaging protocols*]
+* xref:osi-model.adoc[*OSI model*]
+* xref:remote-procedure-call.adoc[*Remote procedure call (RPC)*]
+* xref:rest.adoc[*Representational State Transfer (REST)*]
+* xref:robustness-principle.adoc[*Robustness principle*]
+* xref:rtt.adoc[*Round-trip time (RTT)*]
+* xref:server-sent-events.adoc[*Server-sent events (SSE)*]
+* xref:tcp.adoc[*TCP*]
+* xref:udp.adoc[*UDP*]
+* xref:webhook.adoc[*Webhook*]

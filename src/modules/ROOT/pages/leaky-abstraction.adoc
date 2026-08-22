@@ -1,0 +1,71 @@
+= Leaky abstraction
+
+:link-spolsky: https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/
+
+An abstraction is a simplification of something more complicated going on underneath. Joel Spolsky's
+2002 {link-spolsky}[blog post], "The Law of Leaky Abstractions", gives that arrangement its catch:
+all non-trivial abstractions, to some degree, are leaky. The simplification holds most of the time,
+but the underlying system's behaviour eventually forces its way back through the surface, and
+consumers who trusted the abstraction to hide it are left to deal with what shows through. If they
+do not understand the layer beneath, they cannot diagnose the leak when it appears.
+
+Spolsky's canonical example is TCP, which promises reliable, in-order delivery while being built on
+the unreliable IP protocol. TCP hides packet loss and reordering by retransmitting and resequencing,
+and most of the time that is enough. When the network cable is cut or a link is saturated, though,
+the unreliability IP was concealing leaks through. The abstraction does not fail outright; it
+degrades in ways its contract never described, and the caller still has to know that the network
+underneath is unreliable to make sense of the slowdown.
+
+The same shape repeats wherever an abstraction sits over a more capable or more permissive layer.
+SQL abstracts away the procedural steps of a query, but two logically equivalent queries can run
+thousands of times slower than each other, and tuning them means reading the query plan the
+abstraction was meant to spare you from thinking about. A network file system pretends a remote file
+is local until the connection drops and reads begin to fail or hang. The
+xref:interface.adoc[*interface*] is the surface across which these leaks travel: the cleaner the
+contract, the more jarring the moment the implementation behind it shows through.
+
+== Complexity as a moat
+
+Spolsky frames leakage as an unfortunate but inevitable fact of engineering life. Mahesh
+Balakrishnan's 2024 "second law of software complexity" gives it a sharper edge: in competing
+systems, abstractions leak *deliberately*. When systems fight for adoption, the pressure to attract
+application developers pushes designers to expose implementation detail through the API. This both
+grows market share and locks the implementation in, because no rival can substitute a different one
+beneath the same interface. ZooKeeper's stronger-than-linearizable consistency coupled to
+TCP/IP-based ephemeral node semantics, and Kafka's idempotent produce semantics, are APIs that are
+nearly impossible to implement any other way.
+
+Under this reading, leaky abstractions are not just a maintenance hazard but a
+xref:complexity.adoc[*complexity*] strategy: a moat the incumbent digs with its own API, and that
+competitors and downstream engineers then have to swim across. The same leak that makes the
+abstraction easy to consume also makes it hard to replace.
+
+== The learning tax
+
+Spolsky's other claim is the one that bites practitioners. Abstractions save time working, but they
+do not save time learning. When a leak appears, the only way to debug it is to understand the layer
+the abstraction was hiding. That is the very thing the abstraction was bought to avoid having to
+learn. A programmer raised on a high-level framework still has to reach down into char pointers,
+query plans, or TCP timeouts the day the framework stops behaving as advertised.
+
+The corollary is that higher-level tools do not make proficiency easier; they raise its ceiling.
+Each new layer of abstraction widens the surface that can leak, so a competent engineer's working
+knowledge has to grow with the stack, not shrink with it. In a
+xref:layered-architecture.adoc[*layered architecture*] this compounds: a fault that surfaces in the
+top layer may have originated three layers down, and tracing it demands fluency in every layer in
+between. The remedy is not to abandon the abstractions but to treat each one as a seam that will
+eventually open, and to keep enough grasp of what lies beneath it to close the gap when it does.
+
+== See also
+
+* xref:abstraction.adoc[*Abstraction*]: What an abstraction is, and why it leaks.
+* xref:encapsulation.adoc[*Encapsulation*]: The boundary a leaky abstraction fails to hold.
+* xref:interface.adoc[*Interfaces*]: The surface across which leaks travel.
+* xref:layered-architecture.adoc[*Layered architecture*]: Stacked abstractions, each a seam that can
+  open.
+* xref:principle-of-least-astonishment.adoc[*Principle of least astonishment*]: A leak is the moment
+  an abstraction surprises its caller.
+* xref:remote-procedure-call.adoc[*Remote procedure call (RPC)*]: its location-transparency promise
+  is a classic leak.
+* xref:laws-and-principles.adoc[*Laws and principles*]
+* xref:network-protocol.adoc[*Network protocols*]

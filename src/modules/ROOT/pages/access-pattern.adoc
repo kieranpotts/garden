@@ -6,7 +6,7 @@ Access patterns describe how data is read and written, and how it is queried. Th
 of reads to writes, the shapes of the queries, the frequency with which particular records are
 touched, and the locality of those accesses over time. Systems may be read-heavy or write-heavy, or
 have a balanced mix of reads and writes. The access patterns of a system are influenced by its
-xref:domain.adoc[*domain*] and xref:requirements.adoc[*requirements*] such as
+xref:domain.adoc[*domain*] and xref:requirement.adoc[*requirements*] such as
 xref:scalability.adoc[*scalability*], xref:availability.adoc[*availability*], and
 xref:consistency.adoc[*consistency*].
 
@@ -34,10 +34,10 @@ the cost of slower or more complex writes. A write-heavy workload favors append-
 xref:sharding.adoc[*sharding*] to distribute write load. Where read and write patterns diverge
 sharply, xref:cqrs.adoc[*command query responsibility segregation (CQRS)*] separates the read and
 write models so each can be optimized independently. The choice of data model and storage technology
-follows the same logic. xref:relational-databases.adoc[*Relational databases*] suit ad-hoc queries
-and complex joins, while xref:nosql-databases.adoc[*NoSQL databases*] are often selected for their
+follows the same logic. xref:relational-database.adoc[*Relational databases*] suit ad-hoc queries
+and complex joins, while xref:nosql-database.adoc[*NoSQL databases*] are often selected for their
 fit to a specific, well-understood access pattern such as key-value lookup or
-xref:wide-column-stores.adoc[*wide-column reads*].
+xref:wide-column-store.adoc[*wide-column reads*].
 
 Access patterns can have a significant influence on the xref:software-architecture.adoc[*architecture*]
 of a system, but the patterns may not be fully understood until the system is in production. Real

@@ -10,7 +10,7 @@
 
 A task queue is a system that receives units of computational work — *tasks* — together with their
 arguments, dispatches those tasks to be executed, and returns the results to the application. It is
-a higher-level abstraction than a xref:message-queues.adoc[*message queue*]: where a message queue
+a higher-level abstraction than a xref:message-queue.adoc[*message queue*]: where a message queue
 moves data between producers and consumers and leaves what to do with it up to the consumer, a task
 queue treats each message as a callable unit of work and concerns itself with executing it, tracking
 its state, and reporting its outcome.
@@ -29,7 +29,7 @@ A task queue has four cooperating parts.
   task to run.
 
 * A xref:message-broker.adoc[*message broker*] (often a dedicated
-  xref:message-queues.adoc[*message queue*] such as xref:rabbitmq.adoc[*RabbitMQ*] or Amazon SQS, or
+  xref:message-queue.adoc[*message queue*] such as xref:rabbitmq.adoc[*RabbitMQ*] or Amazon SQS, or
   a xref:redis.adoc[*Redis*] list or stream) holds the queued task until a worker is ready for it.
   The broker provides the durability and ordering semantics the queue relies on.
 
@@ -139,9 +139,9 @@ and the result backend.
 * xref:asynchronous-processing.adoc[*Asynchronous processing*]
 * xref:batch-processing.adoc[*Batch processing*]
 * xref:dead-letter-queue.adoc[*Dead letter queue*]
-* xref:distributed-systems-mechanisms.adoc[*Distributed systems mechanisms*]
+* xref:distributed-system-mechanism.adoc[*Distributed systems mechanisms*]
 * xref:execution-orchestrator.adoc[*Execution orchestrator*]
 * xref:idempotent.adoc[*Idempotent*]
 * xref:message-broker.adoc[*Message broker*]
-* xref:message-queues.adoc[*Message queues*]
+* xref:message-queue.adoc[*Message queues*]
 * xref:retry.adoc[*Retry*]

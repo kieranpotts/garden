@@ -25,7 +25,7 @@ budgets.
 Uptime measures whether the system's process is running and reachable, not whether it is serving
 correctly. A service can be "up" in the narrow sense – its process is alive and its port is open –
 while returning errors, serving stale data, or responding so slowly that it is effectively unusable.
-This is why xref:system-health-checks.adoc[*health checks*] probe representative request paths
+This is why xref:system-health-check.adoc[*health checks*] probe representative request paths
 rather than just opening a TCP connection, and why container orchestrators split "is it alive?" from
 "is it ready to serve?" into separate probes. Uptime is a necessary input to reliability, but the
 two are not the same thing.
@@ -37,7 +37,7 @@ faults, software crashes, network outages, dependency failures, and the planned 
 for maintenance, upgrades, and deployments. Each has a corresponding mitigation.
 xref:redundancy.adoc[*Redundancy*] and xref:failover.adoc[*failover*] keep a service running through
 a component failure by routing around it. Deployment strategies such as
-xref:rolling-deployments.adoc[*rolling deployments*] and
+xref:rolling-deployment.adoc[*rolling deployments*] and
 xref:canary-deployment.adoc[*canary deployments*] avoid taking the system offline to ship a new
 version. xref:monitoring.adoc[*Monitoring*] and health checks detect failures fast enough for
 recovery to kick in before an outage lengthens. Uptime is therefore not a single property to
@@ -47,5 +47,5 @@ optimize but the aggregate result of how a system handles every class of interru
 
 * xref:availability.adoc[*Availability*]
 * xref:downtime.adoc[*Downtime*]
-* xref:quality-attributes.adoc[*Quality attributes*]
+* xref:quality-attribute.adoc[*Quality attributes*]
 * xref:service-level-agreement.adoc[*Service level agreement*]
