@@ -1,70 +1,61 @@
 = Enterprise resource planning (ERP)
 
-*Enterprise resource planning (ERP)* is the coordinated management of an organization's resources,
-including cash, raw materials, production capacity, and people, and of the business commitments that
-depend on them, such as orders, payroll, and supplier contracts. As a management discipline it
-predates computers. As a software category it denotes the suites that automate and integrate that
-management across an enterprise.
+*Enterprise resource planning (ERP)* is the coordinated management of an organization's resources, including cash, raw
+materials, production capacity, and people, and of the business commitments that depend on them, such as orders,
+payroll, and supplier contracts. As a management discipline it predates computers. As a software category it denotes the
+suites that automate and integrate that management across an enterprise.
 
-ERP software is a category of
-xref:management-information-systems.adoc[*management information systems (MIS)*], which itself is a
-category of xref:enterprise-application-software.adoc[*enterprise application software*]. Its
-distinguishing trait is integration. Where earlier business software addressed one function at a
-time, an ERP suite brings finance, human resources, manufacturing, supply chain, procurement,
-inventory, sales, and project management onto a single shared data model, so that a transaction
-recorded in one module is immediately visible to the others.
+ERP software is a category of xref:management-information-systems.adoc[*management information systems (MIS)*], which
+itself is a category of xref:enterprise-application-software.adoc[*enterprise application software*]. Its distinguishing
+trait is integration. Where earlier business software addressed one function at a time, an ERP suite brings finance,
+human resources, manufacturing, supply chain, procurement, inventory, sales, and project management onto a single shared
+data model, so that a transaction recorded in one module is immediately visible to the others.
 
 == Origins
 
-The term was coined by Gartner in 1990, but the lineage runs back to
-*material requirements planning (MRP)*, a manufacturing technique from the 1960s for scheduling raw
-materials against a production plan, and its successor *manufacturing resource planning (MRP II)*,
-which widened the plan to cover shop floor, machine, and labor capacity. ERP took MRP II's
-integrated planning logic and extended it beyond the factory to the whole enterprise, so that
-"resource" came to mean any asset the organization commits and tracks.
+The term was coined by Gartner in 1990, but the lineage runs back to *material requirements planning (MRP)*, a
+manufacturing technique from the 1960s for scheduling raw materials against a production plan, and its successor
+*manufacturing resource planning (MRP II)*, which widened the plan to cover shop floor, machine, and labor capacity. ERP
+took MRP II's integrated planning logic and extended it beyond the factory to the whole enterprise, so that "resource"
+came to mean any asset the organization commits and tracks.
 
 == The integrated data model
 
-The technical premise of an ERP suite is a single, shared view of the business. Sales orders,
-inventory postings, purchase receipts, and ledger entries all write to one common database, ideally
-providing a xref:single-source-of-truth.adoc[*single source of truth*] for operational data. This is
-what lets the warehouse see a sale the moment it is booked, and the ledger reflect a goods receipt
-the moment stock is taken on.
+The technical premise of an ERP suite is a single, shared view of the business. Sales orders, inventory postings,
+purchase receipts, and ledger entries all write to one common database, ideally providing a
+xref:single-source-of-truth.adoc[*single source of truth*] for operational data. This is what lets the warehouse see a
+sale the moment it is booked, and the ledger reflect a goods receipt the moment stock is taken on.
 
-In practice the ideal is imperfect. Legacy acquisitions, country-specific legislation, and bought
-businesses leave most large organizations running several ERP instances, and reconciling them is a
-recurring concern of xref:enterprise-architecture.adoc[*enterprise architecture*]. Where analytical
-reporting is needed, operational data is typically copied out via xref:etl.adoc[*ETL*] into
-analytical stores, leaving the transactional system to do what it does best:
-xref:transactional-database.adoc[*online transaction processing*].
+In practice the ideal is imperfect. Legacy acquisitions, country-specific legislation, and bought businesses leave most
+large organizations running several ERP instances, and reconciling them is a recurring concern of
+xref:enterprise-architecture.adoc[*enterprise architecture*]. Where analytical reporting is needed, operational data is
+typically copied out via xref:etl.adoc[*ETL*] into analytical stores, leaving the transactional system to do what it
+does best: xref:transactional-database.adoc[*online transaction processing*].
 
 == Implementation and trade-offs
 
-ERP suites are among the largest and riskiest software investments an organization can make. A full
-implementation commonly runs to years and seven- or eight-figure budgets, and the software license
-is rarely the bulk of the cost. The larger part goes on *business process reengineering*, data
-migration, integration, and training. Because the suite encodes its own view of how a process should
-work, adopting ERP usually means adapting the organization to the software as much as the software
-to the organization.
+ERP suites are among the largest and riskiest software investments an organization can make. A full implementation
+commonly runs to years and seven- or eight-figure budgets, and the software license is rarely the bulk of the cost. The
+larger part goes on *business process reengineering*, data migration, integration, and training. Because the suite
+encodes its own view of how a process should work, adopting ERP usually means adapting the organization to the software
+as much as the software to the organization.
 
-The payoff is consistency. A single chart of accounts, a single item master, and a shared process
-model reduce reconciliation, eliminate duplicate data entry, and give management a coherent picture
-of the enterprise. The costs are heavy up-front investment, long payback, a tendency to
-*customization lock-in* where bespoke modifications make upgrades painful, and dependence on a
-single vendor's roadmap. *Post-modern ERP* responds to the last of these by decomposing the
+The payoff is consistency. A single chart of accounts, a single item master, and a shared process model reduce
+reconciliation, eliminate duplicate data entry, and give management a coherent picture of the enterprise. The costs are
+heavy up-front investment, long payback, a tendency to *customization lock-in* where bespoke modifications make upgrades
+painful, and dependence on a single vendor's roadmap. *Post-modern ERP* responds to the last of these by decomposing the
 monolithic suite into loosely coupled modules, often assembled along
 xref:service-oriented-architecture.adoc[*service-oriented*] lines and consumed as
-xref:software-as-a-service.adoc[*software-as-a-service*]. *Two-tier ERP* is a related pattern: a
-corporate core runs the flagship suite, while subsidiaries run a lighter cloud product and report up
-into it.
+xref:software-as-a-service.adoc[*software-as-a-service*]. *Two-tier ERP* is a related pattern: a corporate core runs the
+flagship suite, while subsidiaries run a lighter cloud product and report up into it.
 
 == Modeling the business
 
-Because an ERP suite is, in effect, a model of the business that operates it, the work of
-configuring one overlaps with xref:domain-driven-design.adoc[*domain-driven design*] at the system
-level and with xref:bpmn.adoc[*business process modeling*] at the process level. The choices made
-during implementation, which entities are first-class, how processes flow, where the bounded
-contexts sit, outlive the project and shape the organization's flexibility for years.
+Because an ERP suite is, in effect, a model of the business that operates it, the work of configuring one overlaps with
+xref:domain-driven-design.adoc[*domain-driven design*] at the system level and with
+xref:bpmn.adoc[*business process modeling*] at the process level. The choices made during implementation, which entities
+are first-class, how processes flow, where the bounded contexts sit, outlive the project and shape the organization's
+flexibility for years.
 
 == See also
 

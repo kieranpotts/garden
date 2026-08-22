@@ -1,53 +1,44 @@
 = Snapshot test
 
-A snapshot test captures a serialized representation of a system's output – a *snapshot* – and
-stores it as a baseline. On every subsequent run the test regenerates the output and compares it
-byte-for-byte against the stored baseline. Any difference fails the test, signaling that the
-system's observable behavior has changed. When the change is intentional the developer updates the
-snapshot; when it is not, the test has caught a regression.
+A snapshot test captures a serialized representation of a system's output – a *snapshot* – and stores it as a baseline.
+On every subsequent run the test regenerates the output and compares it byte-for-byte against the stored baseline. Any
+difference fails the test, signaling that the system's observable behavior has changed. When the change is intentional
+the developer updates the snapshot; when it is not, the test has caught a regression.
 
-Snapshot tests are a form of xref:regression-testing.adoc[*regression testing*] that trades explicit
-assertions for a captured baseline. A conventional test states the expected outcome up front, eg.
-`expect(result).toBe(42)`. A snapshot test states only "the output should match this stored
-artifact", so the baseline itself encodes the expectation. This makes snapshot tests cheap to write
-for outputs that are large, nested, or tedious to enumerate by hand – serialized data structures,
-rendered user interfaces, generated code, error messages, and similar.
+Snapshot tests are a form of xref:regression-testing.adoc[*regression testing*] that trades explicit assertions for a
+captured baseline. A conventional test states the expected outcome up front, eg. `expect(result).toBe(42)`. A snapshot
+test states only "the output should match this stored artifact", so the baseline itself encodes the expectation. This
+makes snapshot tests cheap to write for outputs that are large, nested, or tedious to enumerate by hand – serialized
+data structures, rendered user interfaces, generated code, error messages, and similar.
 
-The technique is most associated with front-end and component testing, where rendering a component
-produces a deep tree of markup and styles that is impractical to assert against by hand. Frameworks
-such as Jest popularized the pattern through `toMatchSnapshot()`, which serializes the rendered
-output to a `__snapshots__` file checked into xref:version-control.adoc[*version control*] alongside
-the test. The same idea applies to any deterministic output: a CLI's `--help` text, a compiler's AST
-dump, an API response shape, a configuration object.
+The technique is most associated with front-end and component testing, where rendering a component produces a deep tree
+of markup and styles that is impractical to assert against by hand. Frameworks such as Jest popularized the pattern
+through `toMatchSnapshot()`, which serializes the rendered output to a `__snapshots__` file checked into
+xref:version-control.adoc[*version control*] alongside the test. The same idea applies to any deterministic output: a
+CLI's `--help` text, a compiler's AST dump, an API response shape, a configuration object.
 
 [IMPORTANT]
-====
-Snapshot tests only catch *changes* in output. They do not verify that the
-output is *correct* in the first place – they verify only that it matches what
-was captured previously. A snapshot taken from buggy output will faithfully
-defend the bug. Reviewing snapshots on first capture, and on every deliberate
-update, is what gives the technique its worth.
+==== Snapshot tests only catch *changes* in output. They do not verify that the output is *correct* in the first place –
+they verify only that it matches what was captured previously. A snapshot taken from buggy output will faithfully defend
+the bug. Reviewing snapshots on first capture, and on every deliberate update, is what gives the technique its worth.
 ====
 
-Determinism is the precondition for a trustworthy snapshot. If the captured output contains values
-that vary between runs – timestamps, random IDs, locale-specific formatting, volatile ordering – the
-test will fail for reasons unrelated to the change under test. Test authors must neutralize these
-sources of non-determinism, typically by injecting fixed clocks, seeded generators, stable
-serializers, and explicit sort orders, before capturing the baseline.
+Determinism is the precondition for a trustworthy snapshot. If the captured output contains values that vary between
+runs – timestamps, random IDs, locale-specific formatting, volatile ordering – the test will fail for reasons unrelated
+to the change under test. Test authors must neutralize these sources of non-determinism, typically by injecting fixed
+clocks, seeded generators, stable serializers, and explicit sort orders, before capturing the baseline.
 
-Snapshot files deserve the same scrutiny as source. Because the baseline is generated, there is a
-temptation to accept updates without reading them. A diff that adds an unexpected field to a
-serialized response, or strips a class from rendered markup, is exactly the signal a snapshot test
-exists to surface. Treating snapshot updates as mechanical – regenerating and committing without
-inspection – silently erodes the safety the tests provide and can
+Snapshot files deserve the same scrutiny as source. Because the baseline is generated, there is a temptation to accept
+updates without reading them. A diff that adds an unexpected field to a serialized response, or strips a class from
+rendered markup, is exactly the signal a snapshot test exists to surface. Treating snapshot updates as mechanical –
+regenerating and committing without inspection – silently erodes the safety the tests provide and can
 xref:technical-debt.adoc[*accumulate technical debt*] across a suite.
 
-The complementary risk is over-use. Snapshot tests are convenient, and convenience invites their
-application to outputs that would be better served by focused assertions. A test that asserts
-`expect(status).toBe(200)` fails with a clear message; the same check buried in a multi-kilobyte
-snapshot fails with a diff the reader must hunt through. Snapshot tests shine where the output is
-genuinely too large or structural to assert against concisely, and add little where a one-line
-assertion would do.
+The complementary risk is over-use. Snapshot tests are convenient, and convenience invites their application to outputs
+that would be better served by focused assertions. A test that asserts `expect(status).toBe(200)` fails with a clear
+message; the same check buried in a multi-kilobyte snapshot fails with a diff the reader must hunt through. Snapshot
+tests shine where the output is genuinely too large or structural to assert against concisely, and add little where a
+one-line assertion would do.
 
 == See also
 

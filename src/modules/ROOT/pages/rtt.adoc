@@ -1,77 +1,70 @@
 = Round-trip time (RTT)
 
-Round-trip time (RTT) is the duration between a source sending a request and receiving the
-corresponding reply. It is the two-way counterpart of one-way xref:latency.adoc[*latency*]: where
-latency measures the time for a signal to reach its destination, RTT measures the full out-and-back
-journey, including any processing at the far end before the reply is sent.
+Round-trip time (RTT) is the duration between a source sending a request and receiving the corresponding reply. It is
+the two-way counterpart of one-way xref:latency.adoc[*latency*]: where latency measures the time for a signal to reach
+its destination, RTT measures the full out-and-back journey, including any processing at the far end before the reply is
+sent.
 
-RTT is the more commonly measured quantity in practice, because a single endpoint can measure it
-without synchronized clocks at both ends. Tools such as xref:icmp.adoc[*ICMP*] `ping` send an echo
-request and time the echo reply, reporting the elapsed interval directly. The TCP handshake and
-xref:remote-procedure-call.adoc[*RPC*] request-response exchanges are similarly priced in whole
-round trips. One RTT to establish a TCP connection, another for the TLS handshake, and one more for
-each request-response cycle on top.
+RTT is the more commonly measured quantity in practice, because a single endpoint can measure it without synchronized
+clocks at both ends. Tools such as xref:icmp.adoc[*ICMP*] `ping` send an echo request and time the echo reply, reporting
+the elapsed interval directly. The TCP handshake and xref:remote-procedure-call.adoc[*RPC*] request-response exchanges
+are similarly priced in whole round trips. One RTT to establish a TCP connection, another for the TLS handshake, and one
+more for each request-response cycle on top.
 
 == What RTT is made of
 
-An RTT sample is the sum of the delays incurred on both legs of the journey. Each leg carries the
-same four contributions that make up one-way latency: propagation delay across the physical
-distance, transmission delay to push the bits onto the wire, queuing delay at shared resources along
-the path, and processing delay at the systems on either end. RTT therefore inherits all of the
-variability of latency, and then doubles it. A request that traverses ten routers has ten chances to
-queue on the way out and ten more on the way back.
+An RTT sample is the sum of the delays incurred on both legs of the journey. Each leg carries the same four
+contributions that make up one-way latency: propagation delay across the physical distance, transmission delay to push
+the bits onto the wire, queuing delay at shared resources along the path, and processing delay at the systems on either
+end. RTT therefore inherits all of the variability of latency, and then doubles it. A request that traverses ten routers
+has ten chances to queue on the way out and ten more on the way back.
 
-Because propagation delay is bounded below by the speed of light, RTT has an irreducible geographic
-floor. A round trip between London and New York is roughly 70 ms over an ideal fiber link before any
-switching or processing is added. No amount of bandwidth or hardware reduces that floor. Only moving
-the endpoints closer together does, which is the principle behind
-xref:content-delivery-network.adoc[*content delivery networks*] and
+Because propagation delay is bounded below by the speed of light, RTT has an irreducible geographic floor. A round trip
+between London and New York is roughly 70 ms over an ideal fiber link before any switching or processing is added. No
+amount of bandwidth or hardware reduces that floor. Only moving the endpoints closer together does, which is the
+principle behind xref:content-delivery-network.adoc[*content delivery networks*] and
 xref:horizontal-scaling.adoc[*regional deployment*].
 
 == Why RTT matters
 
-RTT is more than a diagnostic number. Several mechanisms inside the network stack, and the
-application above it, depend on it directly.
+RTT is more than a diagnostic number. Several mechanisms inside the network stack, and the application above it, depend
+on it directly.
 
-* *TCP congestion control.* A xref:tcp.adoc[*TCP*] sender maintains a smoothed estimate of RTT, the
-  smoothed round-trip time (SRTT), and uses it to set its retransmission timeout. If the estimate is
-  too low, the sender retransmits segments that are merely delayed, inflating load. If too high,
-  recovery from real loss is slow. RTT variance also feeds congestion detection. Sudden increases in
-  RTT signal that queues along the path are filling, and congestion-control algorithms such as BBR
-  use that signal directly.
+* *TCP congestion control.* A xref:tcp.adoc[*TCP*] sender maintains a smoothed estimate of RTT, the smoothed round-trip
+  time (SRTT), and uses it to set its retransmission timeout. If the estimate is too low, the sender retransmits segments
+  that are merely delayed, inflating load. If too high, recovery from real loss is slow. RTT variance also feeds
+  congestion detection. Sudden increases in RTT signal that queues along the path are filling, and congestion-control
+  algorithms such as BBR use that signal directly.
 
-* *Handshake costs.* Every xref:request-response.adoc[*request-response*] exchange that opens a
-  fresh connection pays a round trip before any application data can flow. The TCP three-way
-  handshake costs one RTT, and TLS adds one or two more, depending on the version. A short request
-  over a new HTTPS connection to a server 100 ms away can spend 300 ms of its total in handshakes
-  alone, before the server has done any work. Connection reuse, TLS session resumption, and
-  protocols such as QUIC that fold the handshake into the encryption exchange all exist to claw
-  those round trips back.
+* *Handshake costs.* Every xref:request-response.adoc[*request-response*] exchange that opens a fresh connection pays a
+  round trip before any application data can flow. The TCP three-way handshake costs one RTT, and TLS adds one or two
+  more, depending on the version. A short request over a new HTTPS connection to a server 100 ms away can spend 300 ms of
+  its total in handshakes alone, before the server has done any work. Connection reuse, TLS session resumption, and
+  protocols such as QUIC that fold the handshake into the encryption exchange all exist to claw those round trips back.
 
-* *Bandwidth-delay product.* The product of RTT and the link's xref:throughput.adoc[*bandwidth*]
-  gives the amount of unacknowledged data a sender must keep in flight to keep the pipe full. A 10
-  Gb/s link with a 100 ms RTT has a bandwidth-delay product of around 125 MB. TCP's window must
-  scale to that size, or throughput collapses well below the link's capacity, no matter how fast the
-  endpoints are. This is why high-bandwidth, long-distance links are hard to saturate.
+* *Bandwidth-delay product.* The product of RTT and the link's xref:throughput.adoc[*bandwidth*] gives the amount of
+  unacknowledged data a sender must keep in flight to keep the pipe full. A 10 Gb/s link with a 100 ms RTT has a
+  bandwidth-delay product of around 125 MB. TCP's window must scale to that size, or throughput collapses well below the
+  link's capacity, no matter how fast the endpoints are. This is why high-bandwidth, long-distance links are hard to
+  saturate.
 
-* *Application latency budgets.* Every synchronous hop across the network adds at least one RTT to a
-  user-visible response. A chain of services that each call the next in sequence pays the sum of
-  their RTTs, plus their processing times, plus queueing under load. This is the structural reason
-  xref:distributed-system.adoc[*distributed software*] is sensitive to call depth, and why fan-out
-  and caching are so effective. They replace many serial round trips with one.
+* *Application latency budgets.* Every synchronous hop across the network adds at least one RTT to a user-visible
+  response. A chain of services that each call the next in sequence pays the sum of their RTTs, plus their processing
+  times, plus queueing under load. This is the structural reason xref:distributed-system.adoc[*distributed software*] is
+  sensitive to call depth, and why fan-out and caching are so effective. They replace many serial round trips with one.
 
 == Measuring RTT
 
-`ping` is the crudest and most familiar RTT probe, but it measures ICMP round trips, which some
-networks deprioritize or filter, so its numbers can diverge from the RTT an application actually
-experiences. More representative measurements come from the transport itself: TCP's smoothed RTT,
-the timing of HTTP requests, or application-level probes that follow the same path as real traffic.
+`ping` is the crudest and most familiar RTT probe, but it measures ICMP round trips, which some networks deprioritize or
+filter, so its numbers can diverge from the RTT an application actually experiences. More representative measurements
+come from the transport itself: TCP's smoothed RTT, the timing of HTTP requests, or application-level probes that follow
+the same path as real traffic.
 
-Because RTT varies with queuing along the path, a single sample is not a useful summary. RTT is
-described with a distribution, and the tail matters as much as the median. A path with a median RTT
-of 20 ms and a p99 of 200 ms is, for one in a hundred requests, a 200 ms path, and timeouts sized to
-the median will fire on the tail. See xref:latency.adoc[*latency*] for the broader treatment of
-percentiles and tail behavior, which applies to RTT just as it does to one-way delay.
+Because RTT varies with queuing along the path, a single sample is not a useful summary. RTT is described with a
+distribution, and the tail matters as much as the median. A path with a median RTT of 20 ms and a p99 of 200 ms is, for
+one in a hundred requests, a 200 ms path, and timeouts sized to the median will fire on the tail. See
+xref:latency.adoc[*latency*] for the broader treatment of percentiles and tail behavior, which applies to RTT just as it
+does to one-way delay.
 
 == See also
 
@@ -88,5 +81,4 @@ percentiles and tail behavior, which applies to RTT just as it does to one-way d
 
 == References
 
-* Amazon Web Services (n.d.). _What is RTT in networking?_.
-  https://aws.amazon.com/what-is/rtt-in-networking/
+* Amazon Web Services (n.d.). _What is RTT in networking?_. https://aws.amazon.com/what-is/rtt-in-networking/

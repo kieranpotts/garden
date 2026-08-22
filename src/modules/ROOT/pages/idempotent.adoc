@@ -1,80 +1,71 @@
 = Idempotent
 
-An operation is *idempotent* if performing it once has the same effect on system state as performing
-it any number of times. The end state after one call is indistinguishable from the end state after
-many. The term comes from mathematics, where an idempotent element is one that is unchanged when
-applied to itself.
+An operation is *idempotent* if performing it once has the same effect on system state as performing it any number of
+times. The end state after one call is indistinguishable from the end state after many. The term comes from mathematics,
+where an idempotent element is one that is unchanged when applied to itself.
 
-Idempotence is a property of an operation's *effect*, not of its return value. A `GET` request may
-return different data on successive calls as the underlying resource changes, but it never alters
-the resource, so it is idempotent. An operation that appends a row to a log is not idempotent,
-because each call grows the log.
+Idempotence is a property of an operation's *effect*, not of its return value. A `GET` request may return different data
+on successive calls as the underlying resource changes, but it never alters the resource, so it is idempotent. An
+operation that appends a row to a log is not idempotent, because each call grows the log.
 
 == Pure functions versus stateful operations
 
-In mathematics and pure functional programming, idempotence means `f(f(x)) = f(x)` for every input.
-A function such as `abs` is idempotent, because the absolute value of an absolute value is the same
-value. This form is exact and timeless, because pure functions have no side effects. Their output is
-fixed by their inputs, which is also what makes them safe to memoize via
-xref:memoization.adoc[*memoization*].
+In mathematics and pure functional programming, idempotence means `f(f(x)) = f(x)` for every input. A function such as
+`abs` is idempotent, because the absolute value of an absolute value is the same value. This form is exact and timeless,
+because pure functions have no side effects. Their output is fixed by their inputs, which is also what makes them safe
+to memoize via xref:memoization.adoc[*memoization*].
 
-In distributed systems and API design the term is looser. It describes a side-effecting operation
-whose net effect on durable state is the same no matter how many times it runs. The calls are not
-strictly pure, and intermediate states may differ between executions, but the end state converges.
-This looser sense is the one that matters for building reliable services.
+In distributed systems and API design the term is looser. It describes a side-effecting operation whose net effect on
+durable state is the same no matter how many times it runs. The calls are not strictly pure, and intermediate states may
+differ between executions, but the end state converges. This looser sense is the one that matters for building reliable
+services.
 
 == In REST and HTTP
 
-REST borrows the term for HTTP method semantics. `GET`, `PUT`, and `DELETE` are idempotent by
-definition in the xref:rest.adoc[*REST*] model: repeating them leaves the resource in the same state
-as a single call. `PUT /books/42` sets book 42 to a fixed representation, so calling it twice yields
-the same book. `DELETE /books/42` removes the book, and a second call finds nothing to remove but
-leaves the state unchanged. `POST` and `PATCH` are not idempotent. `POST /books` creates a new book
-each time it is called, and `PATCH` applies a relative delta whose cumulative effect depends on how
-many times it runs.
+REST borrows the term for HTTP method semantics. `GET`, `PUT`, and `DELETE` are idempotent by definition in the
+xref:rest.adoc[*REST*] model: repeating them leaves the resource in the same state as a single call. `PUT /books/42`
+sets book 42 to a fixed representation, so calling it twice yields the same book. `DELETE /books/42` removes the book,
+and a second call finds nothing to remove but leaves the state unchanged. `POST` and `PATCH` are not idempotent.
+`POST /books` creates a new book each time it is called, and `PATCH` applies a relative delta whose cumulative effect
+depends on how many times it runs.
 
-HTTP's idempotence guarantee is a contract about method semantics, not a property the server
-enforces. A handler that creates a database row on `PUT` is broken regardless of what the method
-promises.
+HTTP's idempotence guarantee is a contract about method semantics, not a property the server enforces. A handler that
+creates a database row on `PUT` is broken regardless of what the method promises.
 
 == Why it matters
 
-Idempotence is what makes retries safe. In a xref:distributed-system.adoc[*distributed system*],
-requests fail for transient reasons – network timeouts, server restarts, dropped connections – and
-the caller often cannot tell whether the request was processed before the failure. The only safe
-response is to retry, but retrying a non-idempotent operation risks duplicating its effect:
-double-charging a customer, sending a notification twice, or creating two orders from one click.
+Idempotence is what makes retries safe. In a xref:distributed-system.adoc[*distributed system*], requests fail for
+transient reasons – network timeouts, server restarts, dropped connections – and the caller often cannot tell whether
+the request was processed before the failure. The only safe response is to retry, but retrying a non-idempotent
+operation risks duplicating its effect: double-charging a customer, sending a notification twice, or creating two orders
+from one click.
 
 Operations that are naturally idempotent can be retried freely. xref:retry.adoc[*Retry*] mechanisms,
-xref:dead-letter-queue.adoc[*dead letter queues*], and
-xref:eventual-consistency.adoc[*eventual consistency*] all lean on this property. The same logic
-underpins xref:event-driven-architecture.adoc [*event-driven architecture*], where messages may be
-delivered more than once and consumers must process duplicates as if they were a single delivery.
+xref:dead-letter-queue.adoc[*dead letter queues*], and xref:eventual-consistency.adoc[*eventual consistency*] all lean
+on this property. The same logic underpins xref:event-driven-architecture.adoc [*event-driven architecture*], where
+messages may be delivered more than once and consumers must process duplicates as if they were a single delivery.
 
 == Idempotency keys
 
-Many operations cannot be made naturally idempotent. Creating a payment, sending an email, or
-debiting an account has a different effect each time it runs. The workaround is the
-*idempotency key* pattern. The client attaches a unique key, typically a UUID, to each logical
-request, usually in an HTTP header. The key is effectively a xref:nonce.adoc[*nonce*] scoped to the
-request. The server records the key alongside the result of the first request and, on receiving a
-repeat with the same key, returns the cached result instead of reprocessing.
+Many operations cannot be made naturally idempotent. Creating a payment, sending an email, or debiting an account has a
+different effect each time it runs. The workaround is the *idempotency key* pattern. The client attaches a unique key,
+typically a UUID, to each logical request, usually in an HTTP header. The key is effectively a xref:nonce.adoc[*nonce*]
+scoped to the request. The server records the key alongside the result of the first request and, on receiving a repeat
+with the same key, returns the cached result instead of reprocessing.
 
-This turns a non-idempotent operation into one that behaves idempotently for the duration the key is
-retained. The pattern is the basis of paid APIs such as Stripe's, where it prevents double payment
-when a client retries after a network failure. Keys are typically short-lived – hours rather than
-forever – to bound storage cost while still covering the retry window. They must be tied to the
-request payload, so that a changed payload is treated as a new request rather than a replay.
+This turns a non-idempotent operation into one that behaves idempotently for the duration the key is retained. The
+pattern is the basis of paid APIs such as Stripe's, where it prevents double payment when a client retries after a
+network failure. Keys are typically short-lived – hours rather than forever – to bound storage cost while still covering
+the retry window. They must be tied to the request payload, so that a changed payload is treated as a new request rather
+than a replay.
 
 == Idempotence versus atomicity
 
-Idempotence is often confused with xref:atomic-operation.adoc[*atomicity*]. They are independent
-guarantees. Atomicity says an operation either completes in full or has no effect at all, with no
-intermediate state visible. Idempotence says an operation has the same effect no matter how many
-times it runs. A database transaction that appends a row is atomic but not idempotent. A `DELETE` is
-idempotent but not atomic if it can be observed half-complete. Retry-safe operations often need
-both: atomic, so a partial failure leaves no trace, and idempotent, so a retry after ambiguity is
-harmless.
+Idempotence is often confused with xref:atomic-operation.adoc[*atomicity*]. They are independent guarantees. Atomicity
+says an operation either completes in full or has no effect at all, with no intermediate state visible. Idempotence says
+an operation has the same effect no matter how many times it runs. A database transaction that appends a row is atomic
+but not idempotent. A `DELETE` is idempotent but not atomic if it can be observed half-complete. Retry-safe operations
+often need both: atomic, so a partial failure leaves no trace, and idempotent, so a retry after ambiguity is harmless.
 
 == See also
 
@@ -91,7 +82,7 @@ harmless.
 
 == References
 
-* Neo Kim (2024). _How Stripe Prevents Double Payment Using Idempotent API_. System Design
-  Newsletter. https://newsletter.systemdesign.one/p/idempotent-api
+* Neo Kim (2024). _How Stripe Prevents Double Payment Using Idempotent API_. System Design Newsletter.
+  https://newsletter.systemdesign.one/p/idempotent-api
 * Terence Bennett (2026). _Understanding Idempotency in APIs_. DreamFactory.
   https://blog.dreamfactory.com/what-is-idempotency

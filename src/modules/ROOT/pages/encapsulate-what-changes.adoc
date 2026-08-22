@@ -1,28 +1,23 @@
 // TODO: https://en.wikipedia.org/wiki/Information_hiding
 = Encapsulate what changes
 
-A good design identifies the hotspots most likely to change and
-xref:encapsulation.adoc[*encapsulates*] them behind an interface. When an anticipated change then
-occurs, the modifications stay local rather than rippling across the system. The stable parts of the
-design are protected from the parts most likely to shift.
+A good design identifies the hotspots most likely to change and xref:encapsulation.adoc[*encapsulates*] them behind an
+interface. When an anticipated change then occurs, the modifications stay local rather than rippling across the system.
+The stable parts of the design are protected from the parts most likely to shift.
 
-The technique is to take the concept that varies and separate it behind an
-xref:interface.adoc[*interface*]. Sometimes that means pulling the varying concept into its own
-module so that a change in requirements only touches one place. This is information hiding applied
-to volatility rather than to implementation detail.
+The technique is to take the concept that varies and separate it behind an xref:interface.adoc[*interface*]. Sometimes
+that means pulling the varying concept into its own module so that a change in requirements only touches one place. This
+is information hiding applied to volatility rather than to implementation detail.
 
-The xref:strategy-pattern.adoc[*strategy pattern*] is a direct application: it isolates an algorithm
-that varies behind its own interface, so the surrounding context stays stable when the algorithm
-changes.
+The xref:strategy-pattern.adoc[*strategy pattern*] is a direct application: it isolates an algorithm that varies behind
+its own interface, so the surrounding context stays stable when the algorithm changes.
 
-Encapsulating what changes complements xref:separation-of-concerns.adoc[*separation of concerns*]
-and xref:modular-design.adoc[*modular design*], both of which encourage sharp boundaries between
-distinct areas of the system. When those boundaries align with likely axes of change, the design
-becomes resilient to evolution.
+Encapsulating what changes complements xref:separation-of-concerns.adoc[*separation of concerns*] and
+xref:modular-design.adoc[*modular design*], both of which encourage sharp boundaries between distinct areas of the
+system. When those boundaries align with likely axes of change, the design becomes resilient to evolution.
 
-It is one of the xref:design-principle.adoc[*design principles*] that target adaptability. The goal
-is not to predict every future change but to keep the parts that shift most often isolated from the
-parts that rarely do.
+It is one of the xref:design-principle.adoc[*design principles*] that target adaptability. The goal is not to predict
+every future change but to keep the parts that shift most often isolated from the parts that rarely do.
 
 == See also
 

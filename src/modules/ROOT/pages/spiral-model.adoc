@@ -1,92 +1,82 @@
 = Spiral model
 
-The *spiral model* is a xref:iterative-and-incremental-development.adoc[*iterative and incremental*]
-approach to software development, formalized by Barry Boehm in 1988, that organizes each cycle of
-work around the reduction of risk. Where xref:waterfall-model.adoc[*waterfall*] and
-xref:big-design-up-front.adoc[*big design up-front*] attempt to fix requirements and design before
-construction begins, the spiral model treats the hardest unknowns as the first thing to address.
-Each turn of the spiral identifies the risks that most threaten the project, and resolves them
-before they become expensive.
+The *spiral model* is a xref:iterative-and-incremental-development.adoc[*iterative and incremental*] approach to
+software development, formalized by Barry Boehm in 1988, that organizes each cycle of work around the reduction of risk.
+Where xref:waterfall-model.adoc[*waterfall*] and xref:big-design-up-front.adoc[*big design up-front*] attempt to fix
+requirements and design before construction begins, the spiral model treats the hardest unknowns as the first thing to
+address. Each turn of the spiral identifies the risks that most threaten the project, and resolves them before they
+become expensive.
 
-The model combines two older ideas. From waterfall it borrows the discipline of distinct phases –
-objectives, design, construction, verification. From xref:prototyping.adoc[*prototyping*] it borrows
-the practice of building a cheap artifact to answer a question that specification alone cannot. What
-Boehm added was the framing: each iteration is a cycle of risk reduction, and the order of work is
-set by what is most risky, not by a fixed phase sequence.
+The model combines two older ideas. From waterfall it borrows the discipline of distinct phases – objectives, design,
+construction, verification. From xref:prototyping.adoc[*prototyping*] it borrows the practice of building a cheap
+artifact to answer a question that specification alone cannot. What Boehm added was the framing: each iteration is a
+cycle of risk reduction, and the order of work is set by what is most risky, not by a fixed phase sequence.
 
 == The four activities of each cycle
 
-A spiral project proceeds as a series of cycles, each one passing through four activities. Boehm
-drew them in the four quadrants of a polar diagram, with the radial axis representing cumulative
-cost and the angular axis representing progress through the cycle.
+A spiral project proceeds as a series of cycles, each one passing through four activities. Boehm drew them in the four
+quadrants of a polar diagram, with the radial axis representing cumulative cost and the angular axis representing
+progress through the cycle.
 
-* *Determine objectives.* Set the goals of this cycle, the alternatives for achieving them, and the
-  constraints – schedule, cost, interfaces, technology – that bound the choice.
-* *Identify and resolve risks.* For each alternative, surface the risks that could make it fail, and
-  resolve them by analysis, simulation, or xref:prototyping.adoc[*prototyping*]. This is the
-  activity that distinguishes the spiral model from a plain iterative loop. The cycle does not
-  proceed until the dominant risks are retired.
-* *Develop and verify.* Build the next-level product implied by the surviving alternative. The work
-  may take any form – a model, a prototype, or a production increment – depending on what the cycle
-  was for.
-* *Plan the next cycle.* Review what was learned, and plan the objectives, constraints, and risks
-  for the following turn.
+* *Determine objectives.* Set the goals of this cycle, the alternatives for achieving them, and the constraints –
+  schedule, cost, interfaces, technology – that bound the choice.
+* *Identify and resolve risks.* For each alternative, surface the risks that could make it fail, and resolve them by
+  analysis, simulation, or xref:prototyping.adoc[*prototyping*]. This is the activity that distinguishes the spiral model
+  from a plain iterative loop. The cycle does not proceed until the dominant risks are retired.
+* *Develop and verify.* Build the next-level product implied by the surviving alternative. The work may take any form – a
+  model, a prototype, or a production increment – depending on what the cycle was for.
+* *Plan the next cycle.* Review what was learned, and plan the objectives, constraints, and risks for the following turn.
 
-The same four activities repeat at increasing fidelity. Early cycles resolve large risks cheaply, by
-building throwaway models. Later cycles build production code, because by then the risks that would
-have forced rework have already been addressed.
+The same four activities repeat at increasing fidelity. Early cycles resolve large risks cheaply, by building throwaway
+models. Later cycles build production code, because by then the risks that would have forced rework have already been
+addressed.
 
 == Risk as the organizing principle
 
-The spiral model is often described as a compromise between waterfall and prototyping. The more
-useful reading is that it is a risk-driven process. The choice of what to do next is set by what is
-most risky, and the value of a cycle is measured by how much risk it retires for how little cost. A
-team that builds a prototype to test an unfamiliar integration is doing spiral development. A team
-that prototypes because the schedule says "build a prototype this week" is not.
+The spiral model is often described as a compromise between waterfall and prototyping. The more useful reading is that
+it is a risk-driven process. The choice of what to do next is set by what is most risky, and the value of a cycle is
+measured by how much risk it retires for how little cost. A team that builds a prototype to test an unfamiliar
+integration is doing spiral development. A team that prototypes because the schedule says "build a prototype this week"
+is not.
 
-Boehm's argument was empirical. The cost of fixing a flaw rises the later it is found. The risks
-that matter most – a misunderstood requirement, an unproven technology, an interface that cannot be
-made to work – are exactly the ones that plan-driven methods defer until they are expensive. The
-spiral model brings them forward, when a prototype or an analysis can settle them at a fraction of
-the later cost.
+Boehm's argument was empirical. The cost of fixing a flaw rises the later it is found. The risks that matter most – a
+misunderstood requirement, an unproven technology, an interface that cannot be made to work – are exactly the ones that
+plan-driven methods defer until they are expensive. The spiral model brings them forward, when a prototype or an
+analysis can settle them at a fraction of the later cost.
 
 == Strengths and weaknesses
 
-The model's strength is its honesty about uncertainty. It does not pretend that requirements are
-knowable in advance, and it does not commit to a design until the risks that would invalidate it
-have been examined. It scales to large projects because each cycle can be decomposed into
-sub-spirals owned by different teams, and it accommodates xref:prototyping.adoc[*prototyping*],
-formal verification, or any other technique as the risks demand.
+The model's strength is its honesty about uncertainty. It does not pretend that requirements are knowable in advance,
+and it does not commit to a design until the risks that would invalidate it have been examined. It scales to large
+projects because each cycle can be decomposed into sub-spirals owned by different teams, and it accommodates
+xref:prototyping.adoc[*prototyping*], formal verification, or any other technique as the risks demand.
 
 The weaknesses are the mirror of those strengths.
 
-* The model depends on risk-assessment expertise. A team that cannot identify its real risks will
-  iterate without reducing them, and the spiral collapses into *ad hoc* coding.
-* The risk-driven framing is easy to misread as a license to code-and-fix. Boehm was explicit that
-  each cycle must include the objectives, constraints, and review activities, not only the build. In
-  practice that discipline is often dropped.
-* The model offers no fixed schedule. Without a strong project plan, the number and depth of cycles
-  are hard to predict, which makes contractual and budgetary commitment difficult.
-* Documentation and review overhead grow with the number of cycles, which can make the model feel
-  heavier than the simpler iterative loops it inspired.
+* The model depends on risk-assessment expertise. A team that cannot identify its real risks will iterate without reducing
+  them, and the spiral collapses into *ad hoc* coding.
+* The risk-driven framing is easy to misread as a license to code-and-fix. Boehm was explicit that each cycle must include
+  the objectives, constraints, and review activities, not only the build. In practice that discipline is often dropped.
+* The model offers no fixed schedule. Without a strong project plan, the number and depth of cycles are hard to predict,
+  which makes contractual and budgetary commitment difficult.
+* Documentation and review overhead grow with the number of cycles, which can make the model feel heavier than the simpler
+  iterative loops it inspired.
 
 == Legacy
 
-The spiral model was the first formal xref:iterative-and-incremental-development.adoc[*iterative*]
-process to take risk as its organizing principle, and it shaped the methods that followed. James
-Martin drew on it when he formalized xref:rad.adoc[*rapid application development (RAD)*] in 1991.
-Grady Booch, Ivar Jacobson, and James Rumbaugh built the
+The spiral model was the first formal xref:iterative-and-incremental-development.adoc[*iterative*] process to take risk
+as its organizing principle, and it shaped the methods that followed. James Martin drew on it when he formalized
+xref:rad.adoc[*rapid application development (RAD)*] in 1991. Grady Booch, Ivar Jacobson, and James Rumbaugh built the
 xref:unified-process.adoc[*Unified Process*] and its best-known instance, the
-xref:rational-unified-process.adoc[*Rational Unified Process (RUP)*], on the same iterative,
-risk-driven foundation, with phases (inception, elaboration, construction, transition) that map onto
-successive turns of the spiral. The xref:agile.adoc[*agile*] methods of the late 1990s inherited the
-spiral's insistence on short cycles and working software, though they dropped the explicit
-risk-quadrant discipline in favour of lighter feedback loops.
+xref:rational-unified-process.adoc[*Rational Unified Process (RUP)*], on the same iterative, risk-driven foundation,
+with phases (inception, elaboration, construction, transition) that map onto successive turns of the spiral. The
+xref:agile.adoc[*agile*] methods of the late 1990s inherited the spiral's insistence on short cycles and working
+software, though they dropped the explicit risk-quadrant discipline in favour of lighter feedback loops.
 
-Boehm himself extended the model in the 1990s into the WinWin spiral, which adds a stakeholder
-negotiation step so that each cycle begins from agreement on win conditions rather than from a
-single decision-maker's objectives. That line of work led toward the incremental commitment spiral
-model, which retains the risk-driven cycle while making the commitment between phases explicit.
+Boehm himself extended the model in the 1990s into the WinWin spiral, which adds a stakeholder negotiation step so that
+each cycle begins from agreement on win conditions rather than from a single decision-maker's objectives. That line of
+work led toward the incremental commitment spiral model, which retains the risk-driven cycle while making the commitment
+between phases explicit.
 
 == See also
 
@@ -102,8 +92,6 @@ model, which retains the risk-driven cycle while making the commitment between p
 
 == References
 
-* Boehm, Barry W. (1988). _A Spiral Model of Software Development and Enhancement_. IEEE Computer,
-  21(5), pp. 61–72.
-* Boehm, Barry W.; Bose, Portia (1994).
-  _A Collaborative Spiral Software Process Model Based on Theory W_. Proceedings of the 16th
-  International Conference on Software Engineering.
+* Boehm, Barry W. (1988). _A Spiral Model of Software Development and Enhancement_. IEEE Computer, 21(5), pp. 61–72.
+* Boehm, Barry W.; Bose, Portia (1994). _A Collaborative Spiral Software Process Model Based on Theory W_. Proceedings of
+  the 16th International Conference on Software Engineering.

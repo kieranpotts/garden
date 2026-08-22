@@ -1,34 +1,29 @@
 = Stateful design
 
-A *stateful* design or system retains xref:state.adoc[*state*] across interactions – it carries
-information forward from one step to the next, so each invocation can build on what came before
-rather than starting fresh. It is the counterpart to xref:stateless.adoc[*stateless design*].
+A *stateful* design or system retains xref:state.adoc[*state*] across interactions – it carries information forward from
+one step to the next, so each invocation can build on what came before rather than starting fresh. It is the counterpart
+to xref:stateless.adoc[*stateless design*].
 
-In xref:agent.adoc[*agent*] and xref:large-language-model.adoc[*LLM*] systems, where state lives
-varies by layer:
+In xref:agent.adoc[*agent*] and xref:large-language-model.adoc[*LLM*] systems, where state lives varies by layer:
 
-* *The model is never stateful.* Its parameters are frozen after training, and it sees only what is
-  placed in each request. Nothing you do at inference changes it.
-* *A session is stateful across turns.* The xref:agent-harness.adoc[*harness*] appends every message
-  and tool result to the xref:context-engineering.adoc[*context*], so the conversation accumulates
-  as it runs.
-* *A harness can be stateful across sessions.* xref:agent-memory.adoc[*Memory*] files, `AGENTS.md`,
-  and xref:agent-handoff.adoc[*handoff*] artifacts are written down in one session and reloaded
-  later.
+* *The model is never stateful.* Its parameters are frozen after training, and it sees only what is placed in each
+  request. Nothing you do at inference changes it.
+* *A session is stateful across turns.* The xref:agent-harness.adoc[*harness*] appends every message and tool result to
+  the xref:context-engineering.adoc[*context*], so the conversation accumulates as it runs.
+* *A harness can be stateful across sessions.* xref:agent-memory.adoc[*Memory*] files, `AGENTS.md`, and
+  xref:agent-handoff.adoc[*handoff*] artifacts are written down in one session and reloaded later.
 * *The environment is always stateful.* Files persist whether or not any session is running.
 
-Each layer's statefulness is built by re-reading something stored a layer below – the session
-re-sends its transcript, the harness re-reads its memory files, the harness re-reads the
-environment's files.
+Each layer's statefulness is built by re-reading something stored a layer below – the session re-sends its transcript,
+the harness re-reads its memory files, the harness re-reads the environment's files.
 
-State isn't always wanted. Everything carried forward influences what comes next, so a wrong
-assumption made early is carried forward too. Clearing is the deliberate act of throwing session
-state away – starting a fresh session, or dropping a stale memory file – so the agent can reason
-without the weight of accumulated context.
+State isn't always wanted. Everything carried forward influences what comes next, so a wrong assumption made early is
+carried forward too. Clearing is the deliberate act of throwing session state away – starting a fresh session, or
+dropping a stale memory file – so the agent can reason without the weight of accumulated context.
 
-As a general software-engineering principle, stateful designs trade continuity and efficiency (no
-need to re-derive or re-load what was already computed) against the cost and risk of accumulated
-state: stale assumptions, harder reasoning, and consistency burdens across the parts that hold it.
+As a general software-engineering principle, stateful designs trade continuity and efficiency (no need to re-derive or
+re-load what was already computed) against the cost and risk of accumulated state: stale assumptions, harder reasoning,
+and consistency burdens across the parts that hold it.
 
 == See also
 

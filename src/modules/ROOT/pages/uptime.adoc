@@ -1,47 +1,41 @@
 = Uptime
 
-Uptime is the total time a system has been continuously operational and able to serve its intended
-purpose over a given period. It is the complement of xref:downtime.adoc[*downtime*], and the two
-together account for the whole of a system's operating time. The longer the uptime relative to
-downtime, the higher the system's xref:availability.adoc[*availability*], which is conventionally
-expressed as the ratio uptime / (uptime + downtime) over the measurement window.
+Uptime is the total time a system has been continuously operational and able to serve its intended purpose over a given
+period. It is the complement of xref:downtime.adoc[*downtime*], and the two together account for the whole of a system's
+operating time. The longer the uptime relative to downtime, the higher the system's
+xref:availability.adoc[*availability*], which is conventionally expressed as the ratio uptime / (uptime + downtime) over
+the measurement window.
 
-Uptime is expressed in two ways. As an absolute duration, it describes how long a system has been
-running since its last restart or last outage, eg. "the server has been up for 47 days". As a
-percentage of a measurement period, it is the share of that period the system was operational, eg.
-99.9% over a month. The percentage form is the one that feeds into
-xref:service-level-agreement.adoc[*service level agreements*] and internal service level objectives,
-where a provider commits to keeping uptime above a stated threshold and faces remedies when it does
-not.
+Uptime is expressed in two ways. As an absolute duration, it describes how long a system has been running since its last
+restart or last outage, eg. "the server has been up for 47 days". As a percentage of a measurement period, it is the
+share of that period the system was operational, eg. 99.9% over a month. The percentage form is the one that feeds into
+xref:service-level-agreement.adoc[*service level agreements*] and internal service level objectives, where a provider
+commits to keeping uptime above a stated threshold and faces remedies when it does not.
 
-The percentage form is conventionally quoted in "nines": 99% is two nines, 99.9% is three nines,
-99.99% is four nines, and 99.999% is five nines. Each additional nine shrinks the allowable downtime
-by roughly an order of magnitude, and the cost of achieving it rises steeply. See
-xref:availability.adoc[*availability*] for the table of nines and the corresponding downtime
-budgets.
+The percentage form is conventionally quoted in "nines": 99% is two nines, 99.9% is three nines, 99.99% is four nines,
+and 99.999% is five nines. Each additional nine shrinks the allowable downtime by roughly an order of magnitude, and the
+cost of achieving it rises steeply. See xref:availability.adoc[*availability*] for the table of nines and the
+corresponding downtime budgets.
 
 == Uptime is not reliability
 
-Uptime measures whether the system's process is running and reachable, not whether it is serving
-correctly. A service can be "up" in the narrow sense – its process is alive and its port is open –
-while returning errors, serving stale data, or responding so slowly that it is effectively unusable.
-This is why xref:system-health-check.adoc[*health checks*] probe representative request paths
-rather than just opening a TCP connection, and why container orchestrators split "is it alive?" from
-"is it ready to serve?" into separate probes. Uptime is a necessary input to reliability, but the
-two are not the same thing.
+Uptime measures whether the system's process is running and reachable, not whether it is serving correctly. A service
+can be "up" in the narrow sense – its process is alive and its port is open – while returning errors, serving stale
+data, or responding so slowly that it is effectively unusable. This is why
+xref:system-health-check.adoc[*health checks*] probe representative request paths rather than just opening a TCP
+connection, and why container orchestrators split "is it alive?" from "is it ready to serve?" into separate probes.
+Uptime is a necessary input to reliability, but the two are not the same thing.
 
 == What affects uptime
 
-Uptime is reduced by anything that interrupts continuous operation. The common causes are hardware
-faults, software crashes, network outages, dependency failures, and the planned interruptions needed
-for maintenance, upgrades, and deployments. Each has a corresponding mitigation.
-xref:redundancy.adoc[*Redundancy*] and xref:failover.adoc[*failover*] keep a service running through
-a component failure by routing around it. Deployment strategies such as
-xref:rolling-deployment.adoc[*rolling deployments*] and
-xref:canary-deployment.adoc[*canary deployments*] avoid taking the system offline to ship a new
-version. xref:monitoring.adoc[*Monitoring*] and health checks detect failures fast enough for
-recovery to kick in before an outage lengthens. Uptime is therefore not a single property to
-optimize but the aggregate result of how a system handles every class of interruption.
+Uptime is reduced by anything that interrupts continuous operation. The common causes are hardware faults, software
+crashes, network outages, dependency failures, and the planned interruptions needed for maintenance, upgrades, and
+deployments. Each has a corresponding mitigation. xref:redundancy.adoc[*Redundancy*] and xref:failover.adoc[*failover*]
+keep a service running through a component failure by routing around it. Deployment strategies such as
+xref:rolling-deployment.adoc[*rolling deployments*] and xref:canary-deployment.adoc[*canary deployments*] avoid taking
+the system offline to ship a new version. xref:monitoring.adoc[*Monitoring*] and health checks detect failures fast
+enough for recovery to kick in before an outage lengthens. Uptime is therefore not a single property to optimize but the
+aggregate result of how a system handles every class of interruption.
 
 == See also
 

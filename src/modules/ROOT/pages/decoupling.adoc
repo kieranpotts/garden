@@ -1,57 +1,49 @@
 = Decoupling
 
-Decoupling is the practice of reducing the xref:coupling.adoc[*coupling*] between modules. Where
-coupling measures how strongly one module depends on another, decoupling is the work of weakening
-those dependencies so that each module can change, be tested, and be replaced with less regard for
-the others.
+Decoupling is the practice of reducing the xref:coupling.adoc[*coupling*] between modules. Where coupling measures how
+strongly one module depends on another, decoupling is the work of weakening those dependencies so that each module can
+change, be tested, and be replaced with less regard for the others.
 
-xref:connascence.adoc[*Connascence*] gives a ranked vocabulary for the kinds of coupling that
-decoupling aims to weaken, guiding which dependencies to refactor first. The strongest,
-farthest-reaching connascences are the most valuable to attack. Weak, local ones can often be left
-alone, since some dependency between modules is unavoidable in any system that does something.
+xref:connascence.adoc[*Connascence*] gives a ranked vocabulary for the kinds of coupling that decoupling aims to weaken,
+guiding which dependencies to refactor first. The strongest, farthest-reaching connascences are the most valuable to
+attack. Weak, local ones can often be left alone, since some dependency between modules is unavoidable in any system
+that does something.
 
-Decoupling is the counterpart of high xref:cohesion.adoc[*cohesion*]. A module that groups only
-closely related responsibilities has fewer reasons to reach outside itself, so the two pull in the
-same direction. Design guidance that favors high cohesion and low coupling is really a single aim
-seen from two sides, and decoupling is the active side of it.
+Decoupling is the counterpart of high xref:cohesion.adoc[*cohesion*]. A module that groups only closely related
+responsibilities has fewer reasons to reach outside itself, so the two pull in the same direction. Design guidance that
+favors high cohesion and low coupling is really a single aim seen from two sides, and decoupling is the active side of
+it.
 
-The reason decoupling matters is that it isolates change. When modules interact through narrow,
-stable xref:interface.adoc[*interfaces*], a change inside one rarely propagates past the boundary.
-Modules can be xref:refactoring.adoc[*refactored*], tested in isolation, and reused in new contexts
-without dragging their neighbors along. At larger scales the same property lets teams work and
-deploy independently, and lets each component be sized to its own load, which is the basis of
-xref:scalability.adoc[*scalability*] through independent service scaling. It also lets a failing
-component be contained rather than cascade, which is the basis of
-xref:modular-monolith.adoc[*modular monolith*] and xref:microservices.adoc[*microservices*]
-decompositions.
+The reason decoupling matters is that it isolates change. When modules interact through narrow, stable
+xref:interface.adoc[*interfaces*], a change inside one rarely propagates past the boundary. Modules can be
+xref:refactoring.adoc[*refactored*], tested in isolation, and reused in new contexts without dragging their neighbors
+along. At larger scales the same property lets teams work and deploy independently, and lets each component be sized to
+its own load, which is the basis of xref:scalability.adoc[*scalability*] through independent service scaling. It also
+lets a failing component be contained rather than cascade, which is the basis of
+xref:modular-monolith.adoc[*modular monolith*] and xref:microservices.adoc[*microservices*] decompositions.
 
-The concrete moves are cataloged under coupling and connascence. In outline, they narrow what one
-module can know about another. Implementation detail is hidden behind
-xref:encapsulation.adoc[*encapsulation*]. Dependencies are routed through
-xref:abstraction.adoc[*abstractions*] rather than concrete implementations, via
-xref:dependency-inversion.adoc[*dependency inversion*] and
-xref:dependency-injection.adoc[*dependency injection*]. Each module is kept talking to its immediate
-collaborators, as the xref:law-of-demeter.adoc[*Law of Demeter*] advises. The broader disciplines of
-xref:separation-of-concerns.adoc[*separation of concerns*] and
-xref:modular-design.adoc[*modular design*] keep boundaries in the right place so that decoupling has
-something to act on.
+The concrete moves are cataloged under coupling and connascence. In outline, they narrow what one module can know about
+another. Implementation detail is hidden behind xref:encapsulation.adoc[*encapsulation*]. Dependencies are routed
+through xref:abstraction.adoc[*abstractions*] rather than concrete implementations, via
+xref:dependency-inversion.adoc[*dependency inversion*] and xref:dependency-injection.adoc[*dependency injection*]. Each
+module is kept talking to its immediate collaborators, as the xref:law-of-demeter.adoc[*Law of Demeter*] advises. The
+broader disciplines of xref:separation-of-concerns.adoc[*separation of concerns*] and
+xref:modular-design.adoc[*modular design*] keep boundaries in the right place so that decoupling has something to act
+on.
 
-Decoupling has a temporal form as well as a structural one. Where structural decoupling loosens the
-_what_ modules know about each other, temporal decoupling loosens the _when_. Modules interact
-through xref:asynchronous-communication.adoc[*asynchronous communication*] and event-driven patterns
-rather than blocking calls, so that producer and consumer do not have to be available at the same
-moment. This is the kind of decoupling that
+Decoupling has a temporal form as well as a structural one. Where structural decoupling loosens the _what_ modules know
+about each other, temporal decoupling loosens the _when_. Modules interact through
+xref:asynchronous-communication.adoc[*asynchronous communication*] and event-driven patterns rather than blocking calls,
+so that producer and consumer do not have to be available at the same moment. This is the kind of decoupling that
 xref:event-driven-architecture.adoc[*event-driven architecture*] pursues.
 
-Decoupling is not free, and pursued for its own sake it becomes its own problem. Every indirection
-added in the name of loose coupling is a new seam the reader must follow and a new place where
-behavior can go wrong, whether an interface, a layer, or a message bus. Abstractions built before
-the problem is understood tend to capture the wrong essentials, a cost the xref:yagni.adoc[*YAGNI*]
-discipline guards against. A decoupling that hides a dependency in name only still assumes another
-module's behavior. It produces xref:leaky-abstraction.adoc[*leaky abstractions*] that mislead
-callers into believing they are insulated when they are not. The aim is not to eliminate coupling,
-which is impossible. It is to keep coupling weak, narrow, and visible at a stable interface, the
-same lesson as the connascence locality heuristic.
+Decoupling is not free, and pursued for its own sake it becomes its own problem. Every indirection added in the name of
+loose coupling is a new seam the reader must follow and a new place where behavior can go wrong, whether an interface, a
+layer, or a message bus. Abstractions built before the problem is understood tend to capture the wrong essentials, a
+cost the xref:yagni.adoc[*YAGNI*] discipline guards against. A decoupling that hides a dependency in name only still
+assumes another module's behavior. It produces xref:leaky-abstraction.adoc[*leaky abstractions*] that mislead callers
+into believing they are insulated when they are not. The aim is not to eliminate coupling, which is impossible. It is to
+keep coupling weak, narrow, and visible at a stable interface, the same lesson as the connascence locality heuristic.
 
 == See also
 

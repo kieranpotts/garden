@@ -4,25 +4,22 @@
 :link-strom-awn:      https://matthewstrom.com/writing/beyond-10x/
 :link-ieee-spectrum:  https://spectrum.ieee.org/10x-engineer
 
-The concept of the 10x programmer originated in a
-{link-sackman-paper}[January 1968 paper], printed in the Communications of
-the ACM journal, titled "Exploratory experimental studies comparing online and offline programming
+The concept of the 10x programmer originated in a {link-sackman-paper}[January 1968 paper], printed in the
+Communications of the ACM journal, titled "Exploratory experimental studies comparing online and offline programming
 performance." The paper was subsequently cited by Fred Brooks in his 1975 book,
 xref:mythical-man-month.adoc[*_The Mythical Man-Month_*], popularizing the idea.
 
-The paper, by Sackman, Erikson, and Grant, was one of the first attempts to measure programmer
-productivity scientifically. It set out to compare *online* programming – using an interactive
-time-sharing system – with *offline* programming, where code was punched on cards and submitted as a
-batch job. Individual differences in performance were a secondary finding, not the primary question
-the study set out to answer.
+The paper, by Sackman, Erikson, and Grant, was one of the first attempts to measure programmer productivity
+scientifically. It set out to compare *online* programming – using an interactive time-sharing system – with *offline*
+programming, where code was punched on cards and submitted as a batch job. Individual differences in performance were a
+secondary finding, not the primary question the study set out to answer.
 
-Across a small sample of programmers, working on short ALGOL and FORTRAN exercises, the authors
-found "large individual differences between high and low performers," with the differences being as
-large as "an order of magnitude" – the most effective programmers were ten times more productive
-than the least effective ones.
+Across a small sample of programmers, working on short ALGOL and FORTRAN exercises, the authors found "large individual
+differences between high and low performers," with the differences being as large as "an order of magnitude" – the most
+effective programmers were ten times more productive than the least effective ones.
 
-The myth of the 10x programmer – that some people are _orders of magnitude_ more productive at
-writing code and fixing bugs – was born.
+The myth of the 10x programmer – that some people are _orders of magnitude_ more productive at writing code and fixing
+bugs – was born.
 
 [quote, Sackman et al, Communications of the ACM January 1968]
 ____
@@ -35,78 +32,69 @@ ____
 
 == What the study actually found
 
-The order-of-magnitude figure was a ratio between the single best and single worst performer on a
-given task. It was not an average gap, and not a consistent, across-the-board multiplier. The gap
-was widest on debugging time for particular problems and narrowed considerably on other measures.
-The study also found that years of experience correlated poorly with performance, and in some cases
-correlated negatively – a counter-intuitive result that already complicates the "some people are
-simply born 10x" reading.
+The order-of-magnitude figure was a ratio between the single best and single worst performer on a given task. It was not
+an average gap, and not a consistent, across-the-board multiplier. The gap was widest on debugging time for particular
+problems and narrowed considerably on other measures. The study also found that years of experience correlated poorly
+with performance, and in some cases correlated negatively – a counter-intuitive result that already complicates the
+"some people are simply born 10x" reading.
 
-There are a number of flaws in the study, and the findings have been debunked by subsequent
-research. The sample was small. The tasks were tiny, self-contained programming exercises that were
-not representative of real-world programming, where work is dominated by understanding existing
-code, navigating large codebases, and collaborating with others. The study did not account for the
-impact of teamwork and collaboration that would be present in real-world scenarios.
+There are a number of flaws in the study, and the findings have been debunked by subsequent research. The sample was
+small. The tasks were tiny, self-contained programming exercises that were not representative of real-world programming,
+where work is dominated by understanding existing code, navigating large codebases, and collaborating with others. The
+study did not account for the impact of teamwork and collaboration that would be present in real-world scenarios.
 
 == Measuring programmer productivity
 
-A deeper problem underlies the whole debate. Programmer productivity is not a single, well-defined
-quantity. It spans throughput, defect rate, code quality, maintainability, knowledge transfer, and
-the effect a person has on the productivity of the people around them. Collapsing all of that into a
-single scalar "10x" is a category error.
+A deeper problem underlies the whole debate. Programmer productivity is not a single, well-defined quantity. It spans
+throughput, defect rate, code quality, maintainability, knowledge transfer, and the effect a person has on the
+productivity of the people around them. Collapsing all of that into a single scalar "10x" is a category error.
 
-Crude proxies make the problem worse. *Lines of code* is the classic example – a metric that rewards
-verbose, repetitive code and penalizes the deletion of unnecessary code. As the widely-cited remark
-goes, measuring programming progress by lines of code is like measuring aircraft-building progress
-by weight. Any metric pressed into service as a target eventually distorts the behaviour it was
-meant to capture – a phenomenon known as xref:goodharts-law.adoc[*Goodhart's law*].
+Crude proxies make the problem worse. *Lines of code* is the classic example – a metric that rewards verbose, repetitive
+code and penalizes the deletion of unnecessary code. As the widely-cited remark goes, measuring programming progress by
+lines of code is like measuring aircraft-building progress by weight. Any metric pressed into service as a target
+eventually distorts the behaviour it was meant to capture – a phenomenon known as
+xref:goodharts-law.adoc[*Goodhart's law*].
 
-The most consequential part of Sackman's finding is that productivity can be *negative*. A poor
-contributor does not merely produce less. They produce code that others must later read, debug, and
-repair, consuming more effort than the original work delivered. The observation that "one poor
-performer can consume as much time as 5, 10, or 20 good ones" is really a claim about negative
-productivity, not about stars being ten times brighter. This is the part of the 10x story that has
-held up best.
+The most consequential part of Sackman's finding is that productivity can be *negative*. A poor contributor does not
+merely produce less. They produce code that others must later read, debug, and repair, consuming more effort than the
+original work delivered. The observation that "one poor performer can consume as much time as 5, 10, or 20 good ones" is
+really a claim about negative productivity, not about stars being ten times brighter. This is the part of the 10x story
+that has held up best.
 
 == Environment, not innate talent
 
-Later research shifted the emphasis from individual traits to working conditions. The most
-influential is the *Coding War Games* study run by Tom DeMarco and Timothy Lister in the mid-1980s
-and reported in their 1987 book, _Peopleware_. Hundreds of developers competed on the same coding
-task, and the results showed that the best and worst performers tended to cluster by organization.
-The top performers largely came from the same few companies, as did the bottom performers.
+Later research shifted the emphasis from individual traits to working conditions. The most influential is the
+*Coding War Games* study run by Tom DeMarco and Timothy Lister in the mid-1980s and reported in their 1987 book,
+_Peopleware_. Hundreds of developers competed on the same coding task, and the results showed that the best and worst
+performers tended to cluster by organization. The top performers largely came from the same few companies, as did the
+bottom performers.
 
-The differentiating factors were environmental. Top performers reported quieter, more private
-workspaces and fewer interruptions. The variation between organizations dwarfed the variation within
-them. This suggests that the conditions for focused work, not innate brilliance, explain much of the
-productivity spread. It aligns with the observation that long, uninterrupted blocks of time are
-essential for substantive programming work, the central argument of
+The differentiating factors were environmental. Top performers reported quieter, more private workspaces and fewer
+interruptions. The variation between organizations dwarfed the variation within them. This suggests that the conditions
+for focused work, not innate brilliance, explain much of the productivity spread. It aligns with the observation that
+long, uninterrupted blocks of time are essential for substantive programming work, the central argument of
 xref:makers-schedule.adoc[*maker's schedule*] thinking.
 
-Read this way, the "10x" gap is largely a measure of who is allowed to work without interruption,
-who knows the codebase and domain, who has good tooling, and who carries the least communication
-overhead. These are mostly mutable factors, rather than fixed personal attributes.
+Read this way, the "10x" gap is largely a measure of who is allowed to work without interruption, who knows the codebase
+and domain, who has good tooling, and who carries the least communication overhead. These are mostly mutable factors,
+rather than fixed personal attributes.
 
 == The rockstar myth and its costs
 
-Nevertheless, the idea of 10x engineers and "rockstars" has persisted in the pop culture of the
-software industry.
+Nevertheless, the idea of 10x engineers and "rockstars" has persisted in the pop culture of the software industry.
 
-The myth carries real costs. It frames productivity as an innate, individual property, and so
-discourages investment in the environmental and collaborative conditions that actually move the
-needle. It valorizes the solitary hero who hoards knowledge in a single head – precisely the
-condition that xref:bus-factor.adoc[*bus factor*] measures, and a low bus factor is a serious
-organizational risk. It is also corrosive to team culture, breeding tolerance for
-brilliant-but-difficult individuals whose net contribution is often lower than it appears once the
-cleanup costs they impose on colleagues are counted.
+The myth carries real costs. It frames productivity as an innate, individual property, and so discourages investment in
+the environmental and collaborative conditions that actually move the needle. It valorizes the solitary hero who hoards
+knowledge in a single head – precisely the condition that xref:bus-factor.adoc[*bus factor*] measures, and a low bus
+factor is a serious organizational risk. It is also corrosive to team culture, breeding tolerance for
+brilliant-but-difficult individuals whose net contribution is often lower than it appears once the cleanup costs they
+impose on colleagues are counted.
 
-The xref:surgical-team.adoc[*surgical team*] model, proposed by Harlan Mills and popularized by
-Brooks, was an early attempt to square the circle. It concentrates design and coding in a small
-number of highly capable individuals, but surrounds them with a support structure that multiplies
-their effectiveness rather than leaving them to work alone. The
-xref:software-craftsmanship.adoc[*software craftsmanship*] movement offers a deliberate counterpoint
-of a different kind, replacing the hero narrative with an emphasis on a community of professionals
-and the steady pursuit of mastery.
+The xref:surgical-team.adoc[*surgical team*] model, proposed by Harlan Mills and popularized by Brooks, was an early
+attempt to square the circle. It concentrates design and coding in a small number of highly capable individuals, but
+surrounds them with a support structure that multiplies their effectiveness rather than leaving them to work alone. The
+xref:software-craftsmanship.adoc[*software craftsmanship*] movement offers a deliberate counterpoint of a different
+kind, replacing the hero narrative with an emphasis on a community of professionals and the steady pursuit of mastery.
 
 == See also
 
@@ -121,8 +109,8 @@ and the steady pursuit of mastery.
 == References
 
 * Sackman, Erikson, and Grant (1968).
-  _Exploratory experimental studies comparing online and offline programming performance_.
-  Communications of the ACM. {link-sackman-paper}
+  _Exploratory experimental studies comparing online and offline programming performance_. Communications of the ACM.
+  {link-sackman-paper}
 
 * DeMarco, T. and Lister, T. (1987). _Peopleware: Productive Projects and Teams_. Dorset House.
 

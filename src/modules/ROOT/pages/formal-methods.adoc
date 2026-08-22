@@ -3,107 +3,95 @@
 :link-bowen-hinchey: https://www.routledge.com/9781584883609
 :link-huisman-arxiv: https://arxiv.org/abs/2002.07279
 
-Formal methods are mathematically rigorous techniques for the specification, development, analysis,
-and verification of software and hardware systems. They apply the languages and tools of formal
-logic – automata, type systems, program semantics, and proof – to questions that other engineering
-disciplines answer with testing and inspection. Does this system do what its specification requires,
-and can that requirement be stated precisely enough to ask?
+Formal methods are mathematically rigorous techniques for the specification, development, analysis, and verification of
+software and hardware systems. They apply the languages and tools of formal logic – automata, type systems, program
+semantics, and proof – to questions that other engineering disciplines answer with testing and inspection. Does this
+system do what its specification requires, and can that requirement be stated precisely enough to ask?
 
-The motivation is the same as in civil or aeronautical engineering. Performing appropriate
-mathematical analysis of a design contributes to its reliability and robustness before it is built,
-rather than after it fails. The cost and difficulty of formal methods mean they are used
-selectively, most often where the consequences of a defect are severe – in
-xref:high-integrity.adoc[*high-integrity*] and xref:safety-critical-system.adoc[*safety-critical*]
-systems such as avionics, medical devices, cryptographic protocols, and microprocessor designs.
+The motivation is the same as in civil or aeronautical engineering. Performing appropriate mathematical analysis of a
+design contributes to its reliability and robustness before it is built, rather than after it fails. The cost and
+difficulty of formal methods mean they are used selectively, most often where the consequences of a defect are severe –
+in xref:high-integrity.adoc[*high-integrity*] and xref:safety-critical-system.adoc[*safety-critical*] systems such as
+avionics, medical devices, cryptographic protocols, and microprocessor designs.
 
 == Specification, verification, and synthesis
 
-Formal methods can be applied at several points in development, and a project may adopt them at one
-without the others.
+Formal methods can be applied at several points in development, and a project may adopt them at one without the others.
 
-*Specification* is the act of writing a precise, usually mathematical, description of the system to
-be built. A formal specification language gives that description a syntax and a proof system so that
-it can be reasoned about mechanically. Specification alone is useful. It exposes ambiguities and
-contradictions in informal requirements before any code is written, and it gives developers a
-reference against which to judge their work. Many specification languages are narrow, specialized
-notations – in effect, a xref:domain-specific-language.adoc[*domain-specific language*] for stating
+*Specification* is the act of writing a precise, usually mathematical, description of the system to be built. A formal
+specification language gives that description a syntax and a proof system so that it can be reasoned about mechanically.
+Specification alone is useful. It exposes ambiguities and contradictions in informal requirements before any code is
+written, and it gives developers a reference against which to judge their work. Many specification languages are narrow,
+specialized notations – in effect, a xref:domain-specific-language.adoc[*domain-specific language*] for stating
 properties rather than for expressing computation.
 
-*Verification* is the use of tools to prove properties of a specification, or to prove that an
-implementation satisfies its specification. Where xref:testing.adoc[*testing*] can show the presence
-of failures, formal verification can, in principle, show their absence – at least relative to the
-specification and the assumptions encoded in the model.
+*Verification* is the use of tools to prove properties of a specification, or to prove that an implementation satisfies
+its specification. Where xref:testing.adoc[*testing*] can show the presence of failures, formal verification can, in
+principle, show their absence – at least relative to the specification and the assumptions encoded in the model.
 
-*Synthesis* goes further, generating a program automatically from a specification rather than
-proving one after the fact. It remains the least widely applied of the three.
+*Synthesis* goes further, generating a program automatically from a specification rather than proving one after the
+fact. It remains the least widely applied of the three.
 
 == Approaches to verification
 
 Automated verification techniques fall into three broad families.
 
-*Theorem proving* attempts to construct a formal proof from axioms and inference rules. Some provers
-are fully automatic. Others, called *interactive theorem provers*, are guided by a human who
-supplies the key steps and lets the machine check them. Interactive provers such as Coq, Isabelle,
-and HOL Light have been used to verify results of real mathematical interest as well as software,
-including the seL4 microkernel and the CompCert C compiler.
+*Theorem proving* attempts to construct a formal proof from axioms and inference rules. Some provers are fully
+automatic. Others, called *interactive theorem provers*, are guided by a human who supplies the key steps and lets the
+machine check them. Interactive provers such as Coq, Isabelle, and HOL Light have been used to verify results of real
+mathematical interest as well as software, including the seL4 microkernel and the CompCert C compiler.
 
-*Model checking* exhaustively explores the state space of a finite model of the system, checking
-that each reachable state satisfies the property of interest. It is well suited to concurrent and
-reactive systems – protocol designs, hardware controllers, and distributed algorithms – where the
-number of interleavings makes manual reasoning unreliable. Its principal limitation is the
-*state explosion problem*: the state space grows exponentially with the number of components, and a
-model checker can bog down in millions of uninteresting states unless given a sufficiently abstract
+*Model checking* exhaustively explores the state space of a finite model of the system, checking that each reachable
+state satisfies the property of interest. It is well suited to concurrent and reactive systems – protocol designs,
+hardware controllers, and distributed algorithms – where the number of interleavings makes manual reasoning unreliable.
+Its principal limitation is the *state explosion problem*: the state space grows exponentially with the number of
+components, and a model checker can bog down in millions of uninteresting states unless given a sufficiently abstract
 model.
 
-*Abstract interpretation* approximates a program's behavior by computing over a simpler domain than
-the concrete one, replacing exact integer values with sign or interval abstractions, for instance.
-It is *sound*, meaning it never reports a property to hold when it does not, at the cost of being
-*incomplete*. It may report "don't know" for programs that are in fact correct. Sound static
-analyzers built on abstract interpretation, such as Astrée, have been used to verify the absence of
-runtime errors in safety-critical embedded code.
+*Abstract interpretation* approximates a program's behavior by computing over a simpler domain than the concrete one,
+replacing exact integer values with sign or interval abstractions, for instance. It is *sound*, meaning it never reports
+a property to hold when it does not, at the cost of being *incomplete*. It may report "don't know" for programs that are
+in fact correct. Sound static analyzers built on abstract interpretation, such as Astrée, have been used to verify the
+absence of runtime errors in safety-critical embedded code.
 
-All three rest on xref:abstraction.adoc[*abstraction*]: choosing which details to keep and which to
-drop so that the question being asked becomes tractable. The art of formal verification is largely
-the art of finding an abstraction strong enough to prove the property and weak enough to leave the
-proof within reach.
+All three rest on xref:abstraction.adoc[*abstraction*]: choosing which details to keep and which to drop so that the
+question being asked becomes tractable. The art of formal verification is largely the art of finding an abstraction
+strong enough to prove the property and weak enough to leave the proof within reach.
 
 == Relationship to static analysis and testing
 
 Formal methods sit at the rigorous end of a spectrum that runs from informal review through
-xref:static-analysis.adoc[*static analysis*] to mechanized proof. The boundary is not sharp. A type
-checker is a small, automatic theorem prover for a restricted property. An industrial static
-analyzer may use abstract interpretation under the hood. A xref:linting.adoc[*lint tool*]'s
-heuristic checks are too weak to count as formal but sit on the same continuum.
+xref:static-analysis.adoc[*static analysis*] to mechanized proof. The boundary is not sharp. A type checker is a small,
+automatic theorem prover for a restricted property. An industrial static analyzer may use abstract interpretation under
+the hood. A xref:linting.adoc[*lint tool*]'s heuristic checks are too weak to count as formal but sit on the same
+continuum.
 
-The relationship to testing is complementary rather than antagonistic. Testing samples a system's
-behavior cheaply and at scale, while formal verification reasons about all behaviors but at high
-cost and only against a model. Property-based testing and fuzzing borrow from both traditions,
-generating large numbers of cases from a specification and sometimes unearthing the counterexamples
-that a hand-written test suite would miss. In practice, formal methods supplement testing rather
-than replace it.
+The relationship to testing is complementary rather than antagonistic. Testing samples a system's behavior cheaply and
+at scale, while formal verification reasons about all behaviors but at high cost and only against a model.
+Property-based testing and fuzzing borrow from both traditions, generating large numbers of cases from a specification
+and sometimes unearthing the counterexamples that a hand-written test suite would miss. In practice, formal methods
+supplement testing rather than replace it.
 
 == Lightweight and full formalization
 
-Full formalization – a mechanically verified proof from requirements down to implementation – is
-rare. It demands expertise, time, and tools whose own soundness must be trusted, and the
-expressiveness of specification languages struggles with the scale and messiness of real systems.
-Critics also note that some automated tools act as oracles, asserting truth without explaining it,
-and that "verifying the verifier" raises its own regress.
+Full formalization – a mechanically verified proof from requirements down to implementation – is rare. It demands
+expertise, time, and tools whose own soundness must be trusted, and the expressiveness of specification languages
+struggles with the scale and messiness of real systems. Critics also note that some automated tools act as oracles,
+asserting truth without explaining it, and that "verifying the verifier" raises its own regress.
 
-In response, the community has developed *lightweight formal methods*, which apply partial
-specification and focused reasoning where they pay off most. Alloy, the SPARK subset of Ada, and the
-use of xref:stepwise-refinement.adoc[*stepwise refinement*] with manual correctness arguments in
-xref:cleanroom.adoc[*Cleanroom*] software engineering are examples. The aim is to capture the rigor
-of formal reasoning without the cost of proving everything.
+In response, the community has developed *lightweight formal methods*, which apply partial specification and focused
+reasoning where they pay off most. Alloy, the SPARK subset of Ada, and the use of
+xref:stepwise-refinement.adoc[*stepwise refinement*] with manual correctness arguments in
+xref:cleanroom.adoc[*Cleanroom*] software engineering are examples. The aim is to capture the rigor of formal reasoning
+without the cost of proving everything.
 
 == When and where
 
-Formal methods are most likely to pay for themselves where defects are expensive, or where the
-system is small and sharp enough to model fully. They are mandated or strongly encouraged at the
-highest levels of safety standards such as DO-178C (aviation) and Common Criteria (security), and
-they have a long history in hardware verification at companies such as Intel, IBM, and AMD. Outside
-these niches, their adoption is limited by cost, the scarcity of expertise, and the difficulty of
-keeping a formal model in step with a system that changes faster than the model can.
+Formal methods are most likely to pay for themselves where defects are expensive, or where the system is small and sharp
+enough to model fully. They are mandated or strongly encouraged at the highest levels of safety standards such as
+DO-178C (aviation) and Common Criteria (security), and they have a long history in hardware verification at companies
+such as Intel, IBM, and AMD. Outside these niches, their adoption is limited by cost, the scarcity of expertise, and the
+difficulty of keeping a formal model in step with a system that changes faster than the model can.
 
 == See also
 
@@ -121,9 +109,8 @@ keeping a formal model in step with a system that changes faster than the model 
 
 == References
 
-* Bowen, J. P. and Hinchey, M. G. (2006). {link-bowen-hinchey}[_Formal Methods_].
-  In Tucker, A. B. (ed.), _Computer Science Handbook_, 2nd ed., ch. 106. Chapman & Hall/CRC.
-* Huisman, M., Gurov, D., and Malkis, A. (2020).
-  {link-huisman-arxiv}[_Formal Methods: From Academia to Industrial Practice – A Travel Guide_].
-  arXiv:2002.07279.
+* Bowen, J. P. and Hinchey, M. G. (2006). {link-bowen-hinchey}[_Formal Methods_]. In Tucker, A. B. (ed.),
+  _Computer Science Handbook_, 2nd ed., ch. 106. Chapman & Hall/CRC.
+* Huisman, M., Gurov, D., and Malkis, A. (2020). {link-huisman-arxiv}[_Formal Methods: From Academia to Industrial
+  Practice – A Travel Guide_]. arXiv:2002.07279.
 * Monin, J. F. and Hinchey, M. G. (2003). _Understanding Formal Methods_. Springer.

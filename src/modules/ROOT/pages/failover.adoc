@@ -1,37 +1,32 @@
 = Failover
 
-A failover is the process of automatically or manually switching to a redundant or standby system,
-component, or network upon the failure or abnormal termination of the previously active system,
-component, or network. It is a core mechanism of xref:fault-tolerance.adoc[*fault tolerance*] and a
-standard tactic in xref:disaster-recovery.adoc[*disaster recovery*] planning.
+A failover is the process of automatically or manually switching to a redundant or standby system, component, or network
+upon the failure or abnormal termination of the previously active system, component, or network. It is a core mechanism
+of xref:fault-tolerance.adoc[*fault tolerance*] and a standard tactic in
+xref:disaster-recovery.adoc[*disaster recovery*] planning.
 
 Failover improves the xref:availability.adoc[*availability*] of a system. It helps to remove
-xref:single-point-of-failure.adoc[*single points of failure*] and keep a service operational even
-when some of its components fail. To fail over at all, a system needs
-xref:redundancy.adoc[*redundancy*]. Standby instances are held in reserve so that traffic can be
-redirected without provisioning new capacity mid-incident.
+xref:single-point-of-failure.adoc[*single points of failure*] and keep a service operational even when some of its
+components fail. To fail over at all, a system needs xref:redundancy.adoc[*redundancy*]. Standby instances are held in
+reserve so that traffic can be redirected without provisioning new capacity mid-incident.
 
-Failover is the defining mechanic of an active-passive topology, where standby instances wait idle
-until the active one fails. In an xref:active-active.adoc[*active-active*] topology, by contrast,
-every instance serves live traffic and a failed node's load is simply redistributed, so no failover
-step is required.
+Failover is the defining mechanic of an active-passive topology, where standby instances wait idle until the active one
+fails. In an xref:active-active.adoc[*active-active*] topology, by contrast, every instance serves live traffic and a
+failed node's load is simply redistributed, so no failover step is required.
 
-A failover has two phases: detecting that the active instance has failed, and promoting a standby to
-take its place. Detection relies on health signals such as xref:heartbeat.adoc[*heartbeats*] and
+A failover has two phases: detecting that the active instance has failed, and promoting a standby to take its place.
+Detection relies on health signals such as xref:heartbeat.adoc[*heartbeats*] and
 xref:system-health-check.adoc[*health checks*]. Promotion may be automatic, driven by a
-xref:load-balancer.adoc[*load balancer*] or cluster manager, or manual, requiring an operator to
-intervene. The faster and more reliably both phases run, the shorter the resulting
-xref:downtime.adoc[*downtime*].
+xref:load-balancer.adoc[*load balancer*] or cluster manager, or manual, requiring an operator to intervene. The faster
+and more reliably both phases run, the shorter the resulting xref:downtime.adoc[*downtime*].
 
-Failover is not instant. Depending on the detection and promotion mechanism, recovery can take
-anywhere from milliseconds to minutes, during which the service is partly or wholly unavailable. A
-standby that has fallen behind on xref:replication.adoc[*replication*] may also lose or reject
-recent writes when promoted, so the failover speed a system can honestly claim is bounded by how
-current its standby state is. Because a standby usually runs the same software as the primary,
-failover alone offers no protection against failures caused by a software bug. A
-xref:stand-in.adoc[*stand-in*] running a different implementation can. This is why
-xref:fail-fast.adoc[*failing fast*] matters. A component that fails visibly gives the failover
-mechanism something to detect and route around.
+Failover is not instant. Depending on the detection and promotion mechanism, recovery can take anywhere from
+milliseconds to minutes, during which the service is partly or wholly unavailable. A standby that has fallen behind on
+xref:replication.adoc[*replication*] may also lose or reject recent writes when promoted, so the failover speed a system
+can honestly claim is bounded by how current its standby state is. Because a standby usually runs the same software as
+the primary, failover alone offers no protection against failures caused by a software bug. A
+xref:stand-in.adoc[*stand-in*] running a different implementation can. This is why xref:fail-fast.adoc[*failing fast*]
+matters. A component that fails visibly gives the failover mechanism something to detect and route around.
 
 == See also
 

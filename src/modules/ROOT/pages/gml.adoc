@@ -1,15 +1,14 @@
 = Graph modelling language (GML)
 
-*Graph Modelling Language (GML)* is a hierarchical, ASCII-based file format for serializing graphs —
-the structure of nodes and edges that make up a graph — together with arbitrary application data
-attached to them. It was introduced by Michael Himsolt in the graph drawing community as a portable,
-human-readable interchange format, and is sometimes referred to as the Graph Meta Language.
+*Graph Modelling Language (GML)* is a hierarchical, ASCII-based file format for serializing graphs — the structure of
+nodes and edges that make up a graph — together with arbitrary application data attached to them. It was introduced by
+Michael Himsolt in the graph drawing community as a portable, human-readable interchange format, and is sometimes
+referred to as the Graph Meta Language.
 
-A GML file is a flat list of key-value pairs. Values are either scalars (integers, floating-point
-numbers, strings) or bracketed lists that group further key-value pairs. That nesting is what makes
-the format hierarchical. A `graph` list holds `node` and `edge` lists, and each of those holds its
-own attributes. There is no schema and no fixed attribute vocabulary, so any tool can attach its own
-keys to a node or edge without breaking readers that ignore unknown keys.
+A GML file is a flat list of key-value pairs. Values are either scalars (integers, floating-point numbers, strings) or
+bracketed lists that group further key-value pairs. That nesting is what makes the format hierarchical. A `graph` list
+holds `node` and `edge` lists, and each of those holds its own attributes. There is no schema and no fixed attribute
+vocabulary, so any tool can attach its own keys to a node or edge without breaking readers that ignore unknown keys.
 
 A minimal directed graph with three nodes and a cycle between them looks like this.
 
@@ -46,25 +45,24 @@ graph [
 ]
 ----
 
-The `directed` key declares whether the graph's edges are directed, and individual edges follow that
-default. Nodes carry a distinct `id`, and edges name their endpoints through `source` and `target`
-keys that refer to those ids. Weights, labels, coordinates, colors, and any other application data
-live alongside the standard keys as ordinary key-value pairs.
+The `directed` key declares whether the graph's edges are directed, and individual edges follow that default. Nodes
+carry a distinct `id`, and edges name their endpoints through `source` and `target` keys that refer to those ids.
+Weights, labels, coordinates, colors, and any other application data live alongside the standard keys as ordinary
+key-value pairs.
 
-GML's strength is that it is plain text and trivial to generate and parse, which makes it a
-convenient format for hand-editing and for scripts that emit graph data. Its weakness is the flip
-side of the missing schema. Because nothing constrains the attribute vocabulary, two tools exporting
-GML may attach incompatible meanings to the same key, and a reader has no way to tell. For richer,
-schema-validated interchange, xref:graphml.adoc[*GraphML*] trades readability for fidelity.
+GML's strength is that it is plain text and trivial to generate and parse, which makes it a convenient format for
+hand-editing and for scripts that emit graph data. Its weakness is the flip side of the missing schema. Because nothing
+constrains the attribute vocabulary, two tools exporting GML may attach incompatible meanings to the same key, and a
+reader has no way to tell. For richer, schema-validated interchange, xref:graphml.adoc[*GraphML*] trades readability for
+fidelity.
 
-The name invites confusion with GraphML, but the two are distinct formats with different syntax and
-lineage. GML is text-based and bracket-nested, while GraphML is XML-based. For an even sparser
-human-authored notation, see xref:tgf.adoc[*Trivial Graph Format (TGF)*].
+The name invites confusion with GraphML, but the two are distinct formats with different syntax and lineage. GML is
+text-based and bracket-nested, while GraphML is XML-based. For an even sparser human-authored notation, see
+xref:tgf.adoc[*Trivial Graph Format (TGF)*].
 
-GML is widely supported across the graph tooling ecosystem. Analysis and visualization tools
-including Gephi, Cytoscape, yEd, NetworkX, igraph, and graph-tool can import and export it, and many
-xref:graph-database.adoc[*graph databases*] accept GML as an interchange format for moving graphs
-in and out of a store.
+GML is widely supported across the graph tooling ecosystem. Analysis and visualization tools including Gephi, Cytoscape,
+yEd, NetworkX, igraph, and graph-tool can import and export it, and many xref:graph-database.adoc[*graph databases*]
+accept GML as an interchange format for moving graphs in and out of a store.
 
 == See also
 

@@ -1,57 +1,49 @@
 = Accessibility testing
 
-Accessibility testing is a software quality assurance discipline that verifies a system can be used
-by people with the widest possible range of abilities. It checks that interfaces work with assistive
-technologies and conform to published accessibility standards, so that people with visual, motor,
-cognitive, or auditory impairments are not excluded from using the software.
+Accessibility testing is a software quality assurance discipline that verifies a system can be used by people with the
+widest possible range of abilities. It checks that interfaces work with assistive technologies and conform to published
+accessibility standards, so that people with visual, motor, cognitive, or auditory impairments are not excluded from
+using the software.
 
-Unlike xref:usability-testing.adoc[*usability testing*], which examines how easily any user can
-accomplish a task, accessibility testing focuses specifically on barriers that affect users with
-disabilities. The two overlap – an inaccessible interface is unusable for the people it excludes –
-but accessibility testing is judged against defined standards rather than subjective ease of use.
+Unlike xref:usability-testing.adoc[*usability testing*], which examines how easily any user can accomplish a task,
+accessibility testing focuses specifically on barriers that affect users with disabilities. The two overlap – an
+inaccessible interface is unusable for the people it excludes – but accessibility testing is judged against defined
+standards rather than subjective ease of use.
 
 == Standards and guidelines
 
-Accessibility testing is typically measured against formal standards rather than ad hoc judgment.
-The most widely cited is the *Web Content Accessibility Guidelines (WCAG)*, published by the W3C.
-WCAG defines success criteria at three conformance levels – A, AA, and AAA – organized around four
-principles: content must be perceivable, operable, understandable, and robust. Other frameworks
-include Section 508 in the United States and the European Accessibility Act in the EU, many of which
-reference or align with WCAG.
+Accessibility testing is typically measured against formal standards rather than ad hoc judgment. The most widely cited
+is the *Web Content Accessibility Guidelines (WCAG)*, published by the W3C. WCAG defines success criteria at three
+conformance levels – A, AA, and AAA – organized around four principles: content must be perceivable, operable,
+understandable, and robust. Other frameworks include Section 508 in the United States and the European Accessibility Act
+in the EU, many of which reference or align with WCAG.
 
-Because conformance to these standards is often a legal or contractual
-xref:compliance.adoc[*compliance*] requirement, accessibility testing frequently overlaps with
-xref:compliance-testing.adoc[*compliance testing*].
+Because conformance to these standards is often a legal or contractual xref:compliance.adoc[*compliance*] requirement,
+accessibility testing frequently overlaps with xref:compliance-testing.adoc[*compliance testing*].
 
 == Methods
 
-Accessibility testing combines automated and manual techniques, because no single approach catches
-every defect.
+Accessibility testing combines automated and manual techniques, because no single approach catches every defect.
 
-Automated tools scan for mechanical violations – missing alternative text, insufficient color
-contrast, duplicate or missing heading levels – and can run on every commit as part of
-xref:automated-testing.adoc[*automated testing*]. They catch a large share of defects quickly but
-miss issues that require human judgment, such as whether alternative text meaningfully describes an
-image.
+Automated tools scan for mechanical violations – missing alternative text, insufficient color contrast, duplicate or
+missing heading levels – and can run on every commit as part of xref:automated-testing.adoc[*automated testing*]. They
+catch a large share of defects quickly but miss issues that require human judgment, such as whether alternative text
+meaningfully describes an image.
 
-Manual review fills that gap. Testers navigate the interface with a keyboard alone, inspect the page
-with screen readers such as NVDA or VoiceOver, and verify that focus order and live regions behave
-as expected. Testing with real users who rely on assistive technology is the most reliable way to
-surface barriers that neither automated scans nor expert review uncover.
+Manual review fills that gap. Testers navigate the interface with a keyboard alone, inspect the page with screen readers
+such as NVDA or VoiceOver, and verify that focus order and live regions behave as expected. Testing with real users who
+rely on assistive technology is the most reliable way to surface barriers that neither automated scans nor expert review
+uncover.
 
 [NOTE]
-====
-Automated tools typically detect only a minority of WCAG success criteria
-definitively. Passing an automated scan is not the same as passing an
-accessibility audit.
-====
+==== Automated tools typically detect only a minority of WCAG success criteria definitively. Passing an automated scan
+is not the same as passing an accessibility audit. ====
 
 == Relationship to non-functional requirements
 
-Accessibility is one of the xref:non-functional-requirements.adoc[*non-functional requirements*] a
-system may be expected to meet. Like other quality attributes, it is easiest to achieve when
-considered early in design and expensive to retrofit, because inaccessible patterns are often woven
-through markup, component libraries, and visual design.
+Accessibility is one of the xref:non-functional-requirements.adoc[*non-functional requirements*] a system may be
+expected to meet. Like other quality attributes, it is easiest to achieve when considered early in design and expensive
+to retrofit, because inaccessible patterns are often woven through markup, component libraries, and visual design.
 
 == See also
 

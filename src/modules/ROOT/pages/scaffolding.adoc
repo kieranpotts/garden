@@ -1,19 +1,19 @@
 = Scaffolding
 
-In software development, scaffolding refers to temporary code and data built to support development,
-debugging, and testing, but not intended to be part of the finished product.
+In software development, scaffolding refers to temporary code and data built to support development, debugging, and
+testing, but not intended to be part of the finished product.
 
-The metaphor is drawn from construction, where scaffolding provides the temporary structure that
-enables workers to build a permanent one. Software scaffolding serves the same role. Stubs, mock
-data, xref:test-harness.adoc[*test harnesses*], and throwaway driver programs that allow components
-to be developed and exercised in isolation before the surrounding system exists. Once the real
-components are in place, the scaffolding is removed.
+The metaphor is drawn from construction, where scaffolding provides the temporary structure that enables workers to
+build a permanent one. Software scaffolding serves the same role. Stubs, mock data,
+xref:test-harness.adoc[*test harnesses*], and throwaway driver programs that allow components to be developed and
+exercised in isolation before the surrounding system exists. Once the real components are in place, the scaffolding is
+removed.
 
 == Scaffolding in testing
 
-The testing sense of scaffolding is the older of the two. When a component is developed before the
-collaborators it depends on, or before the system that will host it, scaffolding stands in for the
-missing pieces so the component can be compiled, invoked, and observed.
+The testing sense of scaffolding is the older of the two. When a component is developed before the collaborators it
+depends on, or before the system that will host it, scaffolding stands in for the missing pieces so the component can be
+compiled, invoked, and observed.
 
 The common forms of test scaffolding correspond to the direction of the missing collaborator.
 
@@ -22,67 +22,59 @@ The common forms of test scaffolding correspond to the direction of the missing 
 * *Mocks* and *fakes* stand in for a real collaborator with scripted or simplified behavior.
 * *Fixtures* prepare the input data and initial state the unit expects.
 
-The xref:test-harness.adoc[*test harness*] is the umbrella term for the rig that orchestrates all of
-this, handling invocation, capture, and reporting.
+The xref:test-harness.adoc[*test harness*] is the umbrella term for the rig that orchestrates all of this, handling
+invocation, capture, and reporting.
 
-Scaffolding carries a cost that scales with the integration strategy chosen. Top-down and bottom-up
-approaches build and maintain a lot of scaffolding but localize failures well. Big-bang integration
-minimizes scaffolding but localizes failures poorly, so a defect anywhere in the system can surface
-as a failure anywhere else. See xref:integration-testing.adoc[*integration testing*] for the
-trade-offs in detail.
+Scaffolding carries a cost that scales with the integration strategy chosen. Top-down and bottom-up approaches build and
+maintain a lot of scaffolding but localize failures well. Big-bang integration minimizes scaffolding but localizes
+failures poorly, so a defect anywhere in the system can surface as a failure anywhere else. See
+xref:integration-testing.adoc[*integration testing*] for the trade-offs in detail.
 
-The same idea underpins xref:unit-testing.adoc[*unit testing*]. The unit is exercised in isolation,
-with its collaborators replaced by scaffolding, so that a failure points unambiguously at the unit
-under test rather than at a downstream dependency.
+The same idea underpins xref:unit-testing.adoc[*unit testing*]. The unit is exercised in isolation, with its
+collaborators replaced by scaffolding, so that a failure points unambiguously at the unit under test rather than at a
+downstream dependency.
 
 == Scaffolding as code generation
 
-The term is also widely used to describe *code generation* – the automated production of boilerplate
-project structure, files, and configuration from a template or command-line tool. Many frameworks
-provide scaffolding commands that generate a working skeleton for a new feature or resource. Ruby on
-Rails popularized this approach with its `scaffold` generator, which produces a model, views,
-controller, and database migration for a resource from a single command. Similar tooling is now
-common across the ecosystem, from Angular's `ng generate` and `create-react-app` to Spring
+The term is also widely used to describe *code generation* – the automated production of boilerplate project structure,
+files, and configuration from a template or command-line tool. Many frameworks provide scaffolding commands that
+generate a working skeleton for a new feature or resource. Ruby on Rails popularized this approach with its `scaffold`
+generator, which produces a model, views, controller, and database migration for a resource from a single command.
+Similar tooling is now common across the ecosystem, from Angular's `ng generate` and `create-react-app` to Spring
 Initializr, .NET's `dotnet new`, and Yeoman scaffolds.
 
-In this sense scaffolding is not throwaway code but a productivity mechanism for accelerating the
-start of new work by eliminating repetitive manual setup. The output is meant to be kept and edited,
-not deleted.
+In this sense scaffolding is not throwaway code but a productivity mechanism for accelerating the start of new work by
+eliminating repetitive manual setup. The output is meant to be kept and edited, not deleted.
 
-The two senses share the underlying idea – scaffolding supplies structure that the developer would
-otherwise have to build by hand – but they differ in lifespan. Testing scaffolding is removed;
-generated scaffolding stays.
+The two senses share the underlying idea – scaffolding supplies structure that the developer would otherwise have to
+build by hand – but they differ in lifespan. Testing scaffolding is removed; generated scaffolding stays.
 
 == Trade-offs and pitfalls
 
-Generated scaffolding is opinionated. It encodes the framework's recommended structure, naming, and
-defaults, which is exactly what makes it fast. It also means the developer inherits decisions they
-may not have made consciously. A generated scaffold may include files, dependencies, or
-configuration the project does not need, or omit structure it does.
+Generated scaffolding is opinionated. It encodes the framework's recommended structure, naming, and defaults, which is
+exactly what makes it fast. It also means the developer inherits decisions they may not have made consciously. A
+generated scaffold may include files, dependencies, or configuration the project does not need, or omit structure it
+does.
 
-Because a scaffold is produced in one command, it is easy to end up owning code that no one on the
-team fully understands. The cure is to read the generated output before committing it, treat the
-scaffold as a starting point rather than a finished artifact, and prune anything that does not serve
-the actual feature.
+Because a scaffold is produced in one command, it is easy to end up owning code that no one on the team fully
+understands. The cure is to read the generated output before committing it, treat the scaffold as a starting point
+rather than a finished artifact, and prune anything that does not serve the actual feature.
 
-Scaffolding is distinct from a xref:prototyping.adoc[*prototype*], which is built to answer a design
-question and is usually discarded once the question is answered, and from a
-xref:walking-skeleton.adoc[*walking skeleton*], which is production-grade code kept and grown.
-Scaffolding in the testing sense is removed. A prototype is thrown away. A walking skeleton is
-permanent.
+Scaffolding is distinct from a xref:prototyping.adoc[*prototype*], which is built to answer a design question and is
+usually discarded once the question is answered, and from a xref:walking-skeleton.adoc[*walking skeleton*], which is
+production-grade code kept and grown. Scaffolding in the testing sense is removed. A prototype is thrown away. A walking
+skeleton is permanent.
 
 == AI-generated scaffolding
 
-xref:ai-coding-assistant.adoc[*AI coding assistants*] and xref:agent.adoc[*coding agents*] have
-lowered the cost of producing boilerplate to the point where much of what scaffolding tools once
-generated can now be produced on demand from a natural-language description. The productivity
-mechanism is the same – eliminating repetitive manual setup – but the output is adapted to the
-specific project rather than drawn from a fixed template.
+xref:ai-coding-assistant.adoc[*AI coding assistants*] and xref:agent.adoc[*coding agents*] have lowered the cost of
+producing boilerplate to the point where much of what scaffolding tools once generated can now be produced on demand
+from a natural-language description. The productivity mechanism is the same – eliminating repetitive manual setup – but
+the output is adapted to the specific project rather than drawn from a fixed template.
 
-The pitfall is the same too, and sharper. Generated code that no one reads or understands is still a
-liability, and AI-generated scaffolding is easier to produce in volume than template scaffolding
-ever was. The discipline of reading and pruning the output matters more, not less, when the scaffold
-arrives in seconds.
+The pitfall is the same too, and sharper. Generated code that no one reads or understands is still a liability, and
+AI-generated scaffolding is easier to produce in volume than template scaffolding ever was. The discipline of reading
+and pruning the output matters more, not less, when the scaffold arrives in seconds.
 
 == See also
 

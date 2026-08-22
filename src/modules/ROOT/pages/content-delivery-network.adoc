@@ -5,118 +5,107 @@
 // TODO: https://www.cloudflare.com/en-gb/learning/cdn/what-is-a-cdn/
 // TODO: https://blog.algomaster.io/p/27c62e07-f25b-40ac-a397-101cc54f1f0a
 
-A content delivery network (CDN) is a type of xref:caching.adoc[*cache*] that stores copies of
-digital files in multiple geographic locations. The aim is to reduce xref:latency.adoc[*latency*],
-improve xref:performance.adoc[*performance*], and increase xref:availability.adoc[*availability*] by
-serving files from the nearest servers to the end user.
+A content delivery network (CDN) is a type of xref:caching.adoc[*cache*] that stores copies of digital files in multiple
+geographic locations. The aim is to reduce xref:latency.adoc[*latency*], improve xref:performance.adoc[*performance*],
+and increase xref:availability.adoc[*availability*] by serving files from the nearest servers to the end user.
 
-CDNs are implemented as geographically-distributed networks of servers. They are widely used to
-deliver static web content such as HTML pages, JavaScript bundles, stylesheets, images, and video.
-When a user requests such content from a website, a CDN will redirect the request to the nearest
-server in its network, reducing latency (download times) for a better user experience.
+CDNs are implemented as geographically-distributed networks of servers. They are widely used to deliver static web
+content such as HTML pages, JavaScript bundles, stylesheets, images, and video. When a user requests such content from a
+website, a CDN will redirect the request to the nearest server in its network, reducing latency (download times) for a
+better user experience.
 
 There are two types of CDNs: *pull-based* and *push-based*. Pull-based CDNs pull objects out of
-xref:object-storage.adoc[*object storage*] only when those objects are requested and the existing
-cache, if any, is stale. Push-based CDNs are pre-populated with objects from the origin server — an
-instance of xref:push-architecture.adoc[*push architecture*].
+xref:object-storage.adoc[*object storage*] only when those objects are requested and the existing cache, if any, is
+stale. Push-based CDNs are pre-populated with objects from the origin server — an instance of
+xref:push-architecture.adoc[*push architecture*].
 
 == Edge and origin
 
-The servers that make up a CDN are called *edge servers*, and the sites that house them are
-*edge locations* or *points of presence (PoPs)*. The server that holds the authoritative copy of the
-content is the *origin server*. A CDN sits between the user and the origin. On a cache hit it serves
-the response directly, and on a miss it fetches from the origin, stores the result, and returns it.
-In this sense every edge server is a xref:reverse-proxy.adoc[*reverse proxy*] distributed across
-many locations.
+The servers that make up a CDN are called *edge servers*, and the sites that house them are *edge locations* or
+*points of presence (PoPs)*. The server that holds the authoritative copy of the content is the *origin server*. A CDN
+sits between the user and the origin. On a cache hit it serves the response directly, and on a miss it fetches from the
+origin, stores the result, and returns it. In this sense every edge server is a xref:reverse-proxy.adoc[*reverse proxy*]
+distributed across many locations.
 
 == Request routing
 
-A CDN has to direct each user request to a suitable edge server. The two dominant mechanisms are
-DNS-based routing and xref:border-gateway-protocol.adoc[*Border Gateway Protocol (BGP)*]-based
-anycast.
+A CDN has to direct each user request to a suitable edge server. The two dominant mechanisms are DNS-based routing and
+xref:border-gateway-protocol.adoc[*Border Gateway Protocol (BGP)*]-based anycast.
 
-In DNS-based routing, the CDN operates the authoritative nameserver for the customer's domain. When
-a user resolves the hostname, that nameserver looks at the source IP of the recursive resolver,
-estimates the user's location, and returns the IP of a nearby edge location. xref:dns.adoc[*DNS*]
-routing is coarse. It steers by the resolver's location, not the user's. The TTL of the record
-controls how quickly traffic can be moved.
+In DNS-based routing, the CDN operates the authoritative nameserver for the customer's domain. When a user resolves the
+hostname, that nameserver looks at the source IP of the recursive resolver, estimates the user's location, and returns
+the IP of a nearby edge location. xref:dns.adoc[*DNS*] routing is coarse. It steers by the resolver's location, not the
+user's. The TTL of the record controls how quickly traffic can be moved.
 
-In anycast routing, the CDN announces the same IP address prefix from every edge location. BGP
-delivers each request to the nearest announcement by its routing metrics, typically the
-topologically closest edge. Anycast gives sub-second failover. If a PoP fails, its BGP advertisement
-is withdrawn and traffic shifts to the next-best location automatically.
+In anycast routing, the CDN announces the same IP address prefix from every edge location. BGP delivers each request to
+the nearest announcement by its routing metrics, typically the topologically closest edge. Anycast gives sub-second
+failover. If a PoP fails, its BGP advertisement is withdrawn and traffic shifts to the next-best location automatically.
 
-CDNs also perform xref:load-balancing.adoc[*load balancing*] within each PoP, distributing requests
-across the edge servers it houses.
+CDNs also perform xref:load-balancing.adoc[*load balancing*] within each PoP, distributing requests across the edge
+servers it houses.
 
 == What gets cached, and for how long
 
-A CDN caches only what it is told to cache. The origin signals cacheability through
-xref:http.adoc[*HTTP*] response headers, principally `Cache-Control` and `Expires`.
-`Cache-Control: max-age=3600` declares a response fresh for one hour. `public` allows shared caches
-such as a CDN to store it, while `private` restricts caching to the end user's browser. `s-maxage`
-sets a separate TTL for shared caches, longer than the browser TTL.
+A CDN caches only what it is told to cache. The origin signals cacheability through xref:http.adoc[*HTTP*] response
+headers, principally `Cache-Control` and `Expires`. `Cache-Control: max-age=3600` declares a response fresh for one
+hour. `public` allows shared caches such as a CDN to store it, while `private` restricts caching to the end user's
+browser. `s-maxage` sets a separate TTL for shared caches, longer than the browser TTL.
 
-When a cached object reaches its TTL it becomes stale. The next request triggers a revalidation. The
-edge sends a conditional request to the origin (`If-None-Match` or `If-Modified-Since`), and the
-origin replies `304 Not Modified` if the content is unchanged, refreshing the TTL without
-re-transferring the body. The `stale-while-revalidate` directive lets the edge serve stale content
-while it refreshes in the background, hiding revalidation latency from the user.
+When a cached object reaches its TTL it becomes stale. The next request triggers a revalidation. The edge sends a
+conditional request to the origin (`If-None-Match` or `If-Modified-Since`), and the origin replies `304 Not Modified` if
+the content is unchanged, refreshing the TTL without re-transferring the body. The `stale-while-revalidate` directive
+lets the edge serve stale content while it refreshes in the background, hiding revalidation latency from the user.
 
-For content that must update immediately, CDNs provide a *purge* API. Purging evicts a URL, a
-cache-tag group, or the entire zone from the edge, forcing the next request to fetch fresh content
-from the origin.
+For content that must update immediately, CDNs provide a *purge* API. Purging evicts a URL, a cache-tag group, or the
+entire zone from the edge, forcing the next request to fetch fresh content from the origin.
 
 == Beyond static caching
 
 Modern CDNs do more than cache files. Common edge capabilities include:
 
-* *TLS termination.* The edge presents the TLS certificate and terminates the HTTPS connection,
-  forwarding traffic to the origin over a shorter, faster path. This centralizes certificate
-  management and offloads cryptography from origin servers.
+* *TLS termination.* The edge presents the TLS certificate and terminates the HTTPS connection, forwarding traffic to the
+  origin over a shorter, faster path. This centralizes certificate management and offloads cryptography from origin
+  servers.
 
-* *Compression and minification.* The edge compresses responses with Gzip or Brotli and can minify
-  JavaScript and CSS, reducing transfer size.
+* *Compression and minification.* The edge compresses responses with Gzip or Brotli and can minify JavaScript and CSS,
+  reducing transfer size.
 
-* *Image optimization.* On-the-fly reformatting, eg. serving WebP or AVIF to compatible browsers,
-  and resizing. A single source image is delivered in the most efficient encoding for each client.
+* *Image optimization.* On-the-fly reformatting, eg. serving WebP or AVIF to compatible browsers, and resizing. A single
+  source image is delivered in the most efficient encoding for each client.
 
-* *Dynamic content acceleration.* Techniques such as TCP connection reuse, TLS session resumption,
-  and route optimization between the edge and origin shave round trips off requests that cannot be
-  cached at all, such as authenticated API calls or personalized pages.
+* *Dynamic content acceleration.* Techniques such as TCP connection reuse, TLS session resumption, and route optimization
+  between the edge and origin shave round trips off requests that cannot be cached at all, such as authenticated API calls
+  or personalized pages.
 
-* *Origin shield.* A secondary cache tier that sits between the edge and the origin. All edge
-  locations fetch misses from the shield rather than the origin, so the origin sees only one request
-  per object and is protected from cache stampedes when many edges miss at once.
+* *Origin shield.* A secondary cache tier that sits between the edge and the origin. All edge locations fetch misses from
+  the shield rather than the origin, so the origin sees only one request per object and is protected from cache stampedes
+  when many edges miss at once.
 
 == Security at the edge
 
-Because a CDN sits in the path of every request, it is a natural place to apply security controls.
-CDNs absorb and filter volumetric *distributed denial-of-service (DDoS)* attacks at the edge, where
-the attack capacity is, before traffic reaches the origin. Many CDNs host a
-*web application firewall (WAF)*, apply bot management, and inject
-xref:security-header.adoc[*security headers*] into responses. TLS termination at the edge also
-enforces HTTPS and modern cipher suites consistently.
+Because a CDN sits in the path of every request, it is a natural place to apply security controls. CDNs absorb and
+filter volumetric *distributed denial-of-service (DDoS)* attacks at the edge, where the attack capacity is, before
+traffic reaches the origin. Many CDNs host a *web application firewall (WAF)*, apply bot management, and inject
+xref:security-header.adoc[*security headers*] into responses. TLS termination at the edge also enforces HTTPS and modern
+cipher suites consistently.
 
 == Limitations
 
-A CDN cannot cache content that is unique per user or per request, such as personalized pages,
-real-time data, or the result of authenticated `POST` requests. Those still hit the origin. Caching
-the wrong thing, eg. a response that includes another user's session data, leaks data between users,
-so cacheability must be configured deliberately rather than optimistically.
+A CDN cannot cache content that is unique per user or per request, such as personalized pages, real-time data, or the
+result of authenticated `POST` requests. Those still hit the origin. Caching the wrong thing, eg. a response that
+includes another user's session data, leaks data between users, so cacheability must be configured deliberately rather
+than optimistically.
 
-Egress and request costs are usage-based, so a misconfigured cache (low TTLs, caching large
-uncacheable responses, or failing to use an origin shield) can make a CDN more expensive than the
-origin it was meant to protect. And while a CDN improves availability against origin failures and
-traffic spikes, it is itself a dependency. An outage at the CDN takes the site down even if the
-origin is healthy.
+Egress and request costs are usage-based, so a misconfigured cache (low TTLs, caching large uncacheable responses, or
+failing to use an origin shield) can make a CDN more expensive than the origin it was meant to protect. And while a CDN
+improves availability against origin failures and traffic spikes, it is itself a dependency. An outage at the CDN takes
+the site down even if the origin is healthy.
 
 == Notable providers
 
-Widely used CDNs include Cloudflare, Akamai, Amazon CloudFront, Fastly, and Google Cloud CDN.
-Cloudflare and Fastly also expose an edge compute platform (Workers and Compute@Edge) that runs
-application code at the edge, blurring the line between a CDN and a
-xref:serverless-computing.adoc[*serverless*] runtime.
+Widely used CDNs include Cloudflare, Akamai, Amazon CloudFront, Fastly, and Google Cloud CDN. Cloudflare and Fastly also
+expose an edge compute platform (Workers and Compute@Edge) that runs application code at the edge, blurring the line
+between a CDN and a xref:serverless-computing.adoc[*serverless*] runtime.
 
 == See also
 
@@ -134,6 +123,4 @@ xref:serverless-computing.adoc[*serverless*] runtime.
 
 == References
 
-* Cloudflare (n.d.).
-  {link-cloudflare-cdn}[What is a content delivery network (CDN)?].
-  Cloudflare.
+* Cloudflare (n.d.). {link-cloudflare-cdn}[What is a content delivery network (CDN)?]. Cloudflare.

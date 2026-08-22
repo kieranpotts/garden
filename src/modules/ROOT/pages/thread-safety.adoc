@@ -1,97 +1,85 @@
 = Thread safety
 
-*Thread safety* is the property of a class, method, or data structure that guarantees it behaves
-correctly when accessed concurrently by multiple threads. A thread-safe component upholds its
-specified semantics — its invariants, its return values, its effects on shared state — no matter how
-the runtime interleaves the calls those threads make. A component that is not thread-safe may work
-flawlessly in a single-threaded test and still corrupt data or return wrong answers once execution
-overlaps.
+*Thread safety* is the property of a class, method, or data structure that guarantees it behaves correctly when accessed
+concurrently by multiple threads. A thread-safe component upholds its specified semantics — its invariants, its return
+values, its effects on shared state — no matter how the runtime interleaves the calls those threads make. A component
+that is not thread-safe may work flawlessly in a single-threaded test and still corrupt data or return wrong answers
+once execution overlaps.
 
 Thread safety is a concern only where there is *shared mutable state*. It is a property of
-xref:concurrency.adoc[*concurrent*] and xref:parallelism.adoc [*parallel*] programs, and it is the
-goal that xref:synchronization.adoc [*synchronization*] exists to achieve. Where there is no
-sharing, or where the shared state never changes, the problem largely disappears.
+xref:concurrency.adoc[*concurrent*] and xref:parallelism.adoc [*parallel*] programs, and it is the goal that
+xref:synchronization.adoc [*synchronization*] exists to achieve. Where there is no sharing, or where the shared state
+never changes, the problem largely disappears.
 
 == The hazards thread safety guards against
 
-When several threads read and write the same state without coordination, four classes of fault
-appear. Thread safety is the discipline of preventing all of them.
+When several threads read and write the same state without coordination, four classes of fault appear. Thread safety is
+the discipline of preventing all of them.
 
-* *Race condition.* The outcome depends on the timing of interleaved access to shared state. A
-  counter increment such as `x = x + 1` is not atomic on most architectures. Two threads can both
-  read the old value, both add one, and both write the result back, so two increments produce a
-  single update. The bug is that the read-modify-write sequence is interruptible.
-* *Data race.* A specific form of race in which one thread writes a location while another reads or
-  writes it without a happens-before relationship between them. Languages with memory models (Java,
-  C++, Rust) define data races as undefined behaviour, so the fault is not merely a wrong value but
-  that the compiler and CPU are free to do anything at all.
-* *Visibility failure.* A thread writes a value that another thread never observes, because the
-  write sits in a cache or a register and the hardware is under no obligation to publish it. Without
-  a memory barrier, a flag set by one thread can stay `false` forever in another's view of memory.
-* *Atomicity violation.* An operation that the programmer assumed was a single step turns out to be
-  several. Anything larger than a single word read or store — a compound check-then-act, a 64-bit
-  write on a 32-bit machine, a lazy initialization — can be torn apart by a context switch
-  mid-flight.
+* *Race condition.* The outcome depends on the timing of interleaved access to shared state. A counter increment such as
+  `x = x + 1` is not atomic on most architectures. Two threads can both read the old value, both add one, and both write
+  the result back, so two increments produce a single update. The bug is that the read-modify-write sequence is
+  interruptible.
+* *Data race.* A specific form of race in which one thread writes a location while another reads or writes it without a
+  happens-before relationship between them. Languages with memory models (Java, C++, Rust) define data races as undefined
+  behaviour, so the fault is not merely a wrong value but that the compiler and CPU are free to do anything at all.
+* *Visibility failure.* A thread writes a value that another thread never observes, because the write sits in a cache or a
+  register and the hardware is under no obligation to publish it. Without a memory barrier, a flag set by one thread can
+  stay `false` forever in another's view of memory.
+* *Atomicity violation.* An operation that the programmer assumed was a single step turns out to be several. Anything
+  larger than a single word read or store — a compound check-then-act, a 64-bit write on a 32-bit machine, a lazy
+  initialization — can be torn apart by a context switch mid-flight.
 
 == Mechanisms
 
-There is no single primitive called "thread safety". It is achieved by choosing one of several
-mechanisms, each with its own cost, and applying it consistently to every path that touches the
-shared state.
+There is no single primitive called "thread safety". It is achieved by choosing one of several mechanisms, each with its
+own cost, and applying it consistently to every path that touches the shared state.
 
-* *Mutual exclusion.* The classic remedy. A xref:locking.adoc[*lock*] or mutex serializes access to
-  a critical section, so only one thread is inside it at a time and the read-modify-write sequence
-  runs uninterrupted. Simple to reason about, but every lock is a serialization point and the source
-  of xref:deadlock.adoc[*deadlock*], priority inversion, and contention.
-* *Atomic operations.* Hardware-supported instructions such as compare-and-swap make a
-  read-modify-write indivisible at the CPU level, with no lock to acquire. See
-  xref:atomic-operation.adoc[*Atomic operation*]. They suit small, hot critical sections — counters,
-  flags, sequence numbers — where a lock would cost more than the work it protects.
-* *Immutability.* An object that never changes after construction is thread-safe by construction.
-  Every thread that reads it sees the same value, forever, with no coordination needed. Functional
-  languages lean on this heavily, and even in mutable designs, making state read-only where possible
-  removes whole classes of race at the source.
-* *Thread-local storage.* Each thread gets its own private copy of a variable, so there is no
-  sharing to coordinate. This sidesteps the problem entirely, at the cost of losing a shared view
-  and complicating aggregation of per-thread results.
-* *Message passing.* Instead of threads sharing mutable state, they communicate by sending immutable
-  messages through channels or queues. The state lives in one thread at a time, passed along with
-  the message. Go's motto — "do not communicate by sharing memory; instead, share memory by
-  communicating" — captures the trade-off.
+* *Mutual exclusion.* The classic remedy. A xref:locking.adoc[*lock*] or mutex serializes access to a critical section, so
+  only one thread is inside it at a time and the read-modify-write sequence runs uninterrupted. Simple to reason about,
+  but every lock is a serialization point and the source of xref:deadlock.adoc[*deadlock*], priority inversion, and
+  contention.
+* *Atomic operations.* Hardware-supported instructions such as compare-and-swap make a read-modify-write indivisible at
+  the CPU level, with no lock to acquire. See xref:atomic-operation.adoc[*Atomic operation*]. They suit small, hot
+  critical sections — counters, flags, sequence numbers — where a lock would cost more than the work it protects.
+* *Immutability.* An object that never changes after construction is thread-safe by construction. Every thread that reads
+  it sees the same value, forever, with no coordination needed. Functional languages lean on this heavily, and even in
+  mutable designs, making state read-only where possible removes whole classes of race at the source.
+* *Thread-local storage.* Each thread gets its own private copy of a variable, so there is no sharing to coordinate. This
+  sidesteps the problem entirely, at the cost of losing a shared view and complicating aggregation of per-thread results.
+* *Message passing.* Instead of threads sharing mutable state, they communicate by sending immutable messages through
+  channels or queues. The state lives in one thread at a time, passed along with the message. Go's motto — "do not
+  communicate by sharing memory; instead, share memory by communicating" — captures the trade-off.
 
 == Trade-offs
 
-Every mechanism trades something for safety, and the choice is a matter of where the cost is
-cheapest to bear.
+Every mechanism trades something for safety, and the choice is a matter of where the cost is cheapest to bear.
 
-* *Performance.* Locks add acquire and release overhead and serialize work that could otherwise run
-  in parallel. Atomic operations avoid the lock but busy-wait under contention, burning cycles.
-  Immutability pays in allocation and garbage-collection pressure. There is no free safety.
+* *Performance.* Locks add acquire and release overhead and serialize work that could otherwise run in parallel. Atomic
+  operations avoid the lock but busy-wait under contention, burning cycles. Immutability pays in allocation and
+  garbage-collection pressure. There is no free safety.
 * *Contention.* A hot lock that every thread wants becomes a bottleneck that erases the
-  xref:parallelism.adoc[*parallelism*] the program was built to exploit. Sharding the locked
-  resource, narrowing the critical section, or switching to finer-grained atomics are the usual
-  responses.
-* *Deadlock and liveness hazards.* Mutual exclusion introduces the entire family of failures covered
-  in xref:deadlock.adoc[*Deadlock*] — deadlock, starvation, livelock, and priority inversion.
-  Lock-free designs sidestep these but trade them for the *ABA problem* and the cost of retry loops.
-* *Lock-free versus wait-free.* A *lock-free* algorithm guarantees system-wide progress — some
-  thread always makes a step — but any individual thread may retry indefinitely. A *wait-free*
-  algorithm guarantees per-thread progress, which is stronger and harder to achieve. Both avoid
-  blocking, but neither avoids the cost of contention; they move it from waiting to retrying.
+  xref:parallelism.adoc[*parallelism*] the program was built to exploit. Sharding the locked resource, narrowing the
+  critical section, or switching to finer-grained atomics are the usual responses.
+* *Deadlock and liveness hazards.* Mutual exclusion introduces the entire family of failures covered in
+  xref:deadlock.adoc[*Deadlock*] — deadlock, starvation, livelock, and priority inversion. Lock-free designs sidestep
+  these but trade them for the *ABA problem* and the cost of retry loops.
+* *Lock-free versus wait-free.* A *lock-free* algorithm guarantees system-wide progress — some thread always makes a step
+  — but any individual thread may retry indefinitely. A *wait-free* algorithm guarantees per-thread progress, which is
+  stronger and harder to achieve. Both avoid blocking, but neither avoids the cost of contention; they move it from
+  waiting to retrying.
 
 == When it matters
 
-Thread safety matters wherever multiple threads genuinely share mutable state — in server runtimes
-handling concurrent requests, in GUIs that update the interface from background workers, in caches
-and shared registries, and in any library that callers will use from more than one thread. It does
-not matter where state is private to a thread, where the data is immutable, or where the program is
-single-threaded by design and documented as such.
+Thread safety matters wherever multiple threads genuinely share mutable state — in server runtimes handling concurrent
+requests, in GUIs that update the interface from background workers, in caches and shared registries, and in any library
+that callers will use from more than one thread. It does not matter where state is private to a thread, where the data
+is immutable, or where the program is single-threaded by design and documented as such.
 
-The cost of thread safety is real and should not be paid speculatively. Adding locks "just in case"
-to code that is never called concurrently adds overhead and, worse, introduces deadlock surface that
-would not otherwise exist. The disciplined approach is to identify the boundaries where state is
-shared, make those boundaries thread-safe deliberately, and keep the interior of each thread's work
-private.
+The cost of thread safety is real and should not be paid speculatively. Adding locks "just in case" to code that is
+never called concurrently adds overhead and, worse, introduces deadlock surface that would not otherwise exist. The
+disciplined approach is to identify the boundaries where state is shared, make those boundaries thread-safe
+deliberately, and keep the interior of each thread's work private.
 
 == See also
 

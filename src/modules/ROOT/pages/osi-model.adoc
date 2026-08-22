@@ -1,23 +1,20 @@
 = OSI model
 
-The *Open Systems Interconnection (OSI) model* is a conceptual framework developed by the
-International Organization for Standardization (ISO) that describes how data communication between
-networked systems should be structured. It divides the communication process into seven distinct
-layers, each with a specific responsibility. The model is used to reason about
-xref:network-protocol.adoc[*network protocols*], diagnose problems, and design systems — even
-though real-world networking does not follow it exactly.
+The *Open Systems Interconnection (OSI) model* is a conceptual framework developed by the International Organization for
+Standardization (ISO) that describes how data communication between networked systems should be structured. It divides
+the communication process into seven distinct layers, each with a specific responsibility. The model is used to reason
+about xref:network-protocol.adoc[*network protocols*], diagnose problems, and design systems — even though real-world
+networking does not follow it exactly.
 
-The OSI model exists to promote interoperability: by standardising what each layer does and how
-adjacent layers communicate, different vendors' hardware and software can work together over a
-shared network.
+The OSI model exists to promote interoperability: by standardising what each layer does and how adjacent layers
+communicate, different vendors' hardware and software can work together over a shared network.
 
 == Encapsulation
 
-As data travels down the stack from Layer 7 to Layer 1 on the sending side, each layer wraps the
-data with its own header (and sometimes a trailer). This is called *encapsulation*. On the receiving
-side, each layer strips its header as data travels back up the stack — a process called
-*decapsulation*. This means each layer only needs to understand the headers added by its peer layer
-on the other machine; it treats everything below as opaque payload.
+As data travels down the stack from Layer 7 to Layer 1 on the sending side, each layer wraps the data with its own
+header (and sometimes a trailer). This is called *encapsulation*. On the receiving side, each layer strips its header as
+data travels back up the stack — a process called *decapsulation*. This means each layer only needs to understand the
+headers added by its peer layer on the other machine; it treats everything below as opaque payload.
 
 == The seven layers
 
@@ -61,20 +58,19 @@ on the other machine; it treats everything below as opaque payload.
 | Ethernet cable, fiber optic, USB, Bluetooth radio
 |===
 
-Layers 4 (transport) and 7 (application) are the most relevant for software developers. Layer 4
-determines whether data is delivered reliably (TCP) or with minimal overhead (UDP), and is the layer
-at which xref:load-balancer.adoc[*Layer 4 load balancers*] operate. Layer 7 is where application
-protocols live and where xref:load-balancer.adoc[*Layer 7 load balancers*],
-xref:reverse-proxy.adoc[*reverse proxies*], and xref:api-gateway.adoc[*API gateways*] make routing
-decisions based on request content.
+Layers 4 (transport) and 7 (application) are the most relevant for software developers. Layer 4 determines whether data
+is delivered reliably (TCP) or with minimal overhead (UDP), and is the layer at which
+xref:load-balancer.adoc[*Layer 4 load balancers*] operate. Layer 7 is where application protocols live and where
+xref:load-balancer.adoc[*Layer 7 load balancers*], xref:reverse-proxy.adoc[*reverse proxies*], and
+xref:api-gateway.adoc[*API gateways*] make routing decisions based on request content.
 
-Layer 6 is where TLS encryption and decryption formally belongs in the model, though in practice TLS
-is implemented as part of the application stack rather than a standalone layer.
+Layer 6 is where TLS encryption and decryption formally belongs in the model, though in practice TLS is implemented as
+part of the application stack rather than a standalone layer.
 
 == The TCP/IP model
 
-The OSI model is a theoretical reference. The protocol suite that actually underpins the internet is
-the *TCP/IP model* (also called the Internet model), which collapses the seven OSI layers into four:
+The OSI model is a theoretical reference. The protocol suite that actually underpins the internet is the *TCP/IP model*
+(also called the Internet model), which collapses the seven OSI layers into four:
 
 [cols="^1,3,3", options="header"]
 |===
@@ -97,9 +93,9 @@ the *TCP/IP model* (also called the Internet model), which collapses the seven O
 | Ethernet, Wi-Fi
 |===
 
-The OSI model is taught because of its analytical clarity — seven discrete concerns make it easier
-to isolate problems ("is this a Layer 3 routing issue or a Layer 4 connection issue?"). The TCP/IP
-model reflects how networking is actually implemented.
+The OSI model is taught because of its analytical clarity — seven discrete concerns make it easier to isolate problems
+("is this a Layer 3 routing issue or a Layer 4 connection issue?"). The TCP/IP model reflects how networking is actually
+implemented.
 
 == See also
 

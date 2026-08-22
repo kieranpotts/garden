@@ -1,72 +1,65 @@
 = Fail-fast
 
-In systems design, a fail-fast system is one that immediately reports at its interface any condition
-that is likely to indicate a failure, and that stops normal operation rather than attempting to
-continue a possibly flawed process. The responsibility of a fail-fast module is to detect errors and
-surface them, then let the next-highest level of the system decide how to handle them.
+In systems design, a fail-fast system is one that immediately reports at its interface any condition that is likely to
+indicate a failure, and that stops normal operation rather than attempting to continue a possibly flawed process. The
+responsibility of a fail-fast module is to detect errors and surface them, then let the next-highest level of the system
+decide how to handle them.
 
-Fail-fast designs typically check the system's state at several points in an operation, so that
-failures are detected close to where and when they originate. This is the opposite philosophy to a
-xref:fault-tolerance.adoc[*fault-tolerant*] system, which keeps running in the presence of failures
-by relying on redundancy and recovery. The two are not mutually exclusive. Paradoxically, fail-fast
-components make fault-tolerant systems more resilient: a component that fails fast and visibly is
-easier for a xref:failover.adoc[*failover*] mechanism to detect and route around, whereas a
-component that limps on in a bad state can corrupt work and mask the failure from the surrounding
-system.
+Fail-fast designs typically check the system's state at several points in an operation, so that failures are detected
+close to where and when they originate. This is the opposite philosophy to a xref:fault-tolerance.adoc[*fault-tolerant*]
+system, which keeps running in the presence of failures by relying on redundancy and recovery. The two are not mutually
+exclusive. Paradoxically, fail-fast components make fault-tolerant systems more resilient: a component that fails fast
+and visibly is easier for a xref:failover.adoc[*failover*] mechanism to detect and route around, whereas a component
+that limps on in a bad state can corrupt work and mask the failure from the surrounding system.
 
 == Why fail fast
 
-The motivation is diagnostic and protective. A failure that is reported immediately, with as much
-context as possible, is far easier to root-cause than one that surfaces later as a seemingly
-unrelated symptom. Without fail-fast checks, a system can be "doomed" to fail because some
-precondition – a missing file, a bad configuration value, an unreachable dependency – was wrong from
-the start but only evaluated lazily, long after startup. By the time the error appears, the trail
-has gone cold.
+The motivation is diagnostic and protective. A failure that is reported immediately, with as much context as possible,
+is far easier to root-cause than one that surfaces later as a seemingly unrelated symptom. Without fail-fast checks, a
+system can be "doomed" to fail because some precondition – a missing file, a bad configuration value, an unreachable
+dependency – was wrong from the start but only evaluated lazily, long after startup. By the time the error appears, the
+trail has gone cold.
 
-Fail-fast also reduces the chance of performing irreversible or costly operations on bad state. A
-request that is validated up front, before any side-effectful work begins, can be rejected cheaply.
-The same request validated only after it has written to a database or charged a card is much harder
-to unwind. A fail-fast system that halts as well as reports is therefore less likely to carry out an
-erroneous but irreversible action.
+Fail-fast also reduces the chance of performing irreversible or costly operations on bad state. A request that is
+validated up front, before any side-effectful work begins, can be rejected cheaply. The same request validated only
+after it has written to a database or charged a card is much harder to unwind. A fail-fast system that halts as well as
+reports is therefore less likely to carry out an erroneous but irreversible action.
 
 == In code
 
-Developers often describe code as fail-fast when it tries to fail as early as possible, ideally at
-the point a variable or object is initialized.
+Developers often describe code as fail-fast when it tries to fail as early as possible, ideally at the point a variable
+or object is initialized.
 
-* An object that validates its invariants in its constructor, throwing immediately on bad input
-  rather than allowing a partially-initialized instance to escape, can then be made immutable for
-  the rest of its lifetime.
-* A function that checks its preconditions before doing any work fails before it has had a chance to
-  corrupt state or waste computation.
-* A client-server system that validates xref:input-validation.adoc[*input*] as soon as a request
-  arrives, before dispatching it to internal components, returns an error to the caller at the
-  boundary rather than propagating bad data through the system.
-* A fail-fast iterator raises an error if the collection it is iterating is modified during
-  iteration, rather than yielding undefined results.
+* An object that validates its invariants in its constructor, throwing immediately on bad input rather than allowing a
+  partially-initialized instance to escape, can then be made immutable for the rest of its lifetime.
+* A function that checks its preconditions before doing any work fails before it has had a chance to corrupt state or
+  waste computation.
+* A client-server system that validates xref:input-validation.adoc[*input*] as soon as a request arrives, before
+  dispatching it to internal components, returns an error to the caller at the boundary rather than propagating bad data
+  through the system.
+* A fail-fast iterator raises an error if the collection it is iterating is modified during iteration, rather than
+  yielding undefined results.
 
-Fail-fast code tends to lower the internal *entropy* of a codebase and to reduce debugging effort,
-because invariants are enforced at the edges rather than hoped for in the middle.
+Fail-fast code tends to lower the internal *entropy* of a codebase and to reduce debugging effort, because invariants
+are enforced at the edges rather than hoped for in the middle.
 
 == Tension with the robustness principle
 
-Fail-fast sits in direct tension with the xref:robustness-principle.adoc[*robustness principle*]
-(Postel's law), which counsels being liberal in what you accept. The two are not contradictions so
-much as a trade-off to be struck at different boundaries. Inside a single process or a
-tightly-coupled component, where a programming bug is the most likely cause of a bad input, failing
-fast is usually the right call. A violated precondition is a defect you want to hear about
-immediately. At a system boundary – a public network API, a file format parser, a protocol
-implementation – being forgiving of malformed but recoverable input is often more valuable, because
-the sender may be a different team, a different organization, or an older version of yourself, and
-rejecting it outright would break xref:backwards-compatibility.adoc[*backwards compatibility*].
+Fail-fast sits in direct tension with the xref:robustness-principle.adoc[*robustness principle*] (Postel's law), which
+counsels being liberal in what you accept. The two are not contradictions so much as a trade-off to be struck at
+different boundaries. Inside a single process or a tightly-coupled component, where a programming bug is the most likely
+cause of a bad input, failing fast is usually the right call. A violated precondition is a defect you want to hear about
+immediately. At a system boundary – a public network API, a file format parser, a protocol implementation – being
+forgiving of malformed but recoverable input is often more valuable, because the sender may be a different team, a
+different organization, or an older version of yourself, and rejecting it outright would break
+xref:backwards-compatibility.adoc[*backwards compatibility*].
 
 == Relation to crash-only
 
-The xref:crash-only.adoc[*crash-only*] philosophy takes the fail-fast instinct to its architectural
-conclusion. If a component's recovery path is robust enough to handle a crash at any moment, then a
-clean shutdown is just a slow crash, and the component is free to halt immediately on the first sign
-of trouble. Fail-fast is about surfacing errors early. Crash-only is about making "halt and restart"
-the normal, cheap response to that surfacing.
+The xref:crash-only.adoc[*crash-only*] philosophy takes the fail-fast instinct to its architectural conclusion. If a
+component's recovery path is robust enough to handle a crash at any moment, then a clean shutdown is just a slow crash,
+and the component is free to halt immediately on the first sign of trouble. Fail-fast is about surfacing errors early.
+Crash-only is about making "halt and restart" the normal, cheap response to that surfacing.
 
 == See also
 

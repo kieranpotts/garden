@@ -1,79 +1,70 @@
 = Behavioral testing
 
-Behavioral testing is a software testing methodology that evaluates a system purely in terms of its
-observable outputs in response to given inputs, without any regard for the internal mechanics or
-code structure that produced those outputs. The tester's sole concern is whether the system behaves
-correctly from an external perspective – that is, whether it does what it is supposed to do under a
-given set of conditions.
+Behavioral testing is a software testing methodology that evaluates a system purely in terms of its observable outputs
+in response to given inputs, without any regard for the internal mechanics or code structure that produced those
+outputs. The tester's sole concern is whether the system behaves correctly from an external perspective – that is,
+whether it does what it is supposed to do under a given set of conditions.
 
-In this respect, behavioral testing is closely aligned with, and is often treated as synonymous
-with, xref:black-box-testing.adoc[*black-box testing*]. Both approaches treat the system-under-test
-as an opaque unit, and both assess correctness entirely on the basis of input-output behavior rather
-than internal implementation.
+In this respect, behavioral testing is closely aligned with, and is often treated as synonymous with,
+xref:black-box-testing.adoc[*black-box testing*]. Both approaches treat the system-under-test as an opaque unit, and
+both assess correctness entirely on the basis of input-output behavior rather than internal implementation.
 
-The distinction between the two terms is largely one of emphasis and context. Black-box testing is
-typically described in terms of what the tester cannot see – the internal code and logic are hidden
-from view – whereas behavioral testing is framed more positively around what the tester is
-interested in: the behavior of the system as experienced by a user or consuming application.
+The distinction between the two terms is largely one of emphasis and context. Black-box testing is typically described
+in terms of what the tester cannot see – the internal code and logic are hidden from view – whereas behavioral testing
+is framed more positively around what the tester is interested in: the behavior of the system as experienced by a user
+or consuming application.
 
 Behavioral testing has also gained particular prominence in the context of
-xref:behavior-driven-development.adoc[*behavior-driven development (BDD)*], a software development
-practice in which expected system behaviors are defined collaboratively in plain, human-readable
-language – often using frameworks such as Cucumber – before being translated into automated tests.
-In this context, behavioral testing serves not only as a verification tool but as a shared language
-between developers, testers, and business stakeholders.
+xref:behavior-driven-development.adoc[*behavior-driven development (BDD)*], a software development practice in which
+expected system behaviors are defined collaboratively in plain, human-readable language – often using frameworks such as
+Cucumber – before being translated into automated tests. In this context, behavioral testing serves not only as a
+verification tool but as a shared language between developers, testers, and business stakeholders.
 
 == Scope and levels
 
-Behavioral testing is not tied to a particular level of xref:testing.adoc[*testing*]. It can be
-applied at the xref:unit-testing.adoc[*unit*] level, where a single component's observable output is
-checked against its contract, at the xref:integration-testing.adoc[*integration*] level, where the
-combined behavior of several components is exercised, or at the
-xref:acceptance-testing.adoc[*acceptance*] level, where the whole system's behavior is validated
-against stakeholder expectations. What makes a test behavioral is its orientation toward observable
-input-output behavior, not the size of the unit under test.
+Behavioral testing is not tied to a particular level of xref:testing.adoc[*testing*]. It can be applied at the
+xref:unit-testing.adoc[*unit*] level, where a single component's observable output is checked against its contract, at
+the xref:integration-testing.adoc[*integration*] level, where the combined behavior of several components is exercised,
+or at the xref:acceptance-testing.adoc[*acceptance*] level, where the whole system's behavior is validated against
+stakeholder expectations. What makes a test behavioral is its orientation toward observable input-output behavior, not
+the size of the unit under test.
 
-This orientation distinguishes behavioral tests from tests that couple to internal state or
-implementation structure. A test that reaches into a private field to assert a value is _not_
-behavioral, even if it sits in a unit test suite. A test that drives the component through its
-public interface and asserts only on what it returns or emits _is_ behavioral, however small the
-component. Behavioral tests therefore tend to survive refactoring better than implementation-coupled
-ones, because they assert on what the system does rather than how it does it.
+This orientation distinguishes behavioral tests from tests that couple to internal state or implementation structure. A
+test that reaches into a private field to assert a value is _not_ behavioral, even if it sits in a unit test suite. A
+test that drives the component through its public interface and asserts only on what it returns or emits _is_
+behavioral, however small the component. Behavioral tests therefore tend to survive refactoring better than
+implementation-coupled ones, because they assert on what the system does rather than how it does it.
 
 == Relation to functional and acceptance testing
 
-Behavioral testing overlaps with two other categories that are also concerned with external behavior
-rather than internals.
+Behavioral testing overlaps with two other categories that are also concerned with external behavior rather than
+internals.
 
-xref:functional-testing.adoc[*Functional testing*] validates that each function of the system
-conforms to its specified behavior, typically by checking outputs against the functional
-requirements. The terms "behavioral" and "functional" are frequently used interchangeably. The
-nuance is that "functional" frames the work around the requirements catalog, while "behavioral"
-frames it around the input-output behavior the tester is interested in. Functional testing is
-sometimes contrasted with non-functional testing, which addresses qualities such as performance,
-reliability, and security that are not captured by a list of functions.
+xref:functional-testing.adoc[*Functional testing*] validates that each function of the system conforms to its specified
+behavior, typically by checking outputs against the functional requirements. The terms "behavioral" and "functional" are
+frequently used interchangeably. The nuance is that "functional" frames the work around the requirements catalog, while
+"behavioral" frames it around the input-output behavior the tester is interested in. Functional testing is sometimes
+contrasted with non-functional testing, which addresses qualities such as performance, reliability, and security that
+are not captured by a list of functions.
 
-Acceptance testing, in turn, is the most prominent behavioral check at the whole-system level. It
-exists to confirm that the system behaves as the customer expects, and its cases are drawn from
-xref:acceptance-criteria.adoc[*acceptance criteria*] and user-facing scenarios rather than from
-implementation details. BDD-style behavioral specifications are one common way of expressing those
-acceptance cases, which is why behavioral testing, acceptance testing, and BDD are so often
-discussed together.
+Acceptance testing, in turn, is the most prominent behavioral check at the whole-system level. It exists to confirm that
+the system behaves as the customer expects, and its cases are drawn from
+xref:acceptance-criteria.adoc[*acceptance criteria*] and user-facing scenarios rather than from implementation details.
+BDD-style behavioral specifications are one common way of expressing those acceptance cases, which is why behavioral
+testing, acceptance testing, and BDD are so often discussed together.
 
 == Benefits and trade-offs
 
-Behavioral testing's principal strength follows from its indifference to implementation. Because
-behavioral tests drive the system through its public interfaces and assert only on observable
-outcomes, they remain valid when the internals are restructured, optimized, or replaced. They double
-as xref:regression-testing.adoc[*regression*] guards. Once a behavior is captured, subsequent
-changes that break it are flagged automatically.
+Behavioral testing's principal strength follows from its indifference to implementation. Because behavioral tests drive
+the system through its public interfaces and assert only on observable outcomes, they remain valid when the internals
+are restructured, optimized, or replaced. They double as xref:regression-testing.adoc[*regression*] guards. Once a
+behavior is captured, subsequent changes that break it are flagged automatically.
 
-The matching weakness is the same one that limits all black-box approaches. With no view of the
-internal logic, the tester cannot tell which execution paths have been exercised, and it is easy to
-write many tests that re-exercise the same paths while leaving branches untested. Behavioral testing
-is also silent about non-functional qualities. A system can pass every behavioral check and still
-fail under load, leak secrets, or behave incorrectly in ways the specification did not anticipate.
-For these reasons behavioral testing is usually complemented by
+The matching weakness is the same one that limits all black-box approaches. With no view of the internal logic, the
+tester cannot tell which execution paths have been exercised, and it is easy to write many tests that re-exercise the
+same paths while leaving branches untested. Behavioral testing is also silent about non-functional qualities. A system
+can pass every behavioral check and still fail under load, leak secrets, or behave incorrectly in ways the specification
+did not anticipate. For these reasons behavioral testing is usually complemented by
 xref:white-box-testing.adoc[*white-box testing*], non-functional testing, and
 xref:exploratory-testing.adoc[*exploratory testing*].
 

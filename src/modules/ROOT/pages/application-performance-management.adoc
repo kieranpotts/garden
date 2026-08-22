@@ -1,62 +1,58 @@
 = Application performance management (APM)
 
 *Application performance management (APM)* is the practice of monitoring and managing the
-xref:performance.adoc[*performance*] and availability of software applications. It is a specialized
-branch of xref:monitoring.adoc[*monitoring*] that focuses on the application layer, tracking how an
-application behaves in production rather than the infrastructure it runs on. Where
-xref:performance-testing.adoc[*performance testing*] probes these qualities under simulated load
-before release, APM watches them under real traffic once the system is live.
+xref:performance.adoc[*performance*] and availability of software applications. It is a specialized branch of
+xref:monitoring.adoc[*monitoring*] that focuses on the application layer, tracking how an application behaves in
+production rather than the infrastructure it runs on. Where xref:performance-testing.adoc[*performance testing*] probes
+these qualities under simulated load before release, APM watches them under real traffic once the system is live.
 
-APM collects xref:telemetry.adoc[*telemetry*] from running applications to answer questions such as
-how fast the application responds to users, where time is spent within a request, and which
-dependencies are failing or slow. Typical signals include response times
-(xref:latency.adoc[*latency*]), error rates, xref:throughput.adoc[*throughput*], queue depths,
-per-process resource utilization, and the health of downstream dependencies such as databases,
-caches, and external APIs.
+APM collects xref:telemetry.adoc[*telemetry*] from running applications to answer questions such as how fast the
+application responds to users, where time is spent within a request, and which dependencies are failing or slow. Typical
+signals include response times (xref:latency.adoc[*latency*]), error rates, xref:throughput.adoc[*throughput*], queue
+depths, per-process resource utilization, and the health of downstream dependencies such as databases, caches, and
+external APIs.
 
-The "management" half of the name is deliberate. APM is not only about collecting data but about
-acting on it. It covers detecting regressions, diagnosing their cause, and feeding back into
-remediation and capacity planning. An APM suite therefore tends to combine several capabilities.
+The "management" half of the name is deliberate. APM is not only about collecting data but about acting on it. It covers
+detecting regressions, diagnosing their cause, and feeding back into remediation and capacity planning. An APM suite
+therefore tends to combine several capabilities.
 
-* *Real-user monitoring (RUM)* captures performance as experienced by end users in the browser or
-  mobile client.
-* *Synthetic monitoring* runs scripted requests against the application on a schedule to detect
-  outages before real users hit them.
-* xref:tracing.adoc[*Distributed tracing*] follows a request across service boundaries to localize
-  where time is lost or where a failure originates.
-* xref:profiling.adoc[*Profiling*] samples the application at runtime to attribute CPU and memory
-  consumption to specific code paths.
-* *Error tracking* aggregates exceptions and stack traces, often deduplicated and grouped so that a
-  burst of identical errors is treated as one incident.
+* *Real-user monitoring (RUM)* captures performance as experienced by end users in the browser or mobile client.
+* *Synthetic monitoring* runs scripted requests against the application on a schedule to detect outages before real users
+  hit them.
+* xref:tracing.adoc[*Distributed tracing*] follows a request across service boundaries to localize where time is lost or
+  where a failure originates.
+* xref:profiling.adoc[*Profiling*] samples the application at runtime to attribute CPU and memory consumption to specific
+  code paths.
+* *Error tracking* aggregates exceptions and stack traces, often deduplicated and grouped so that a burst of identical
+  errors is treated as one incident.
 
 == APM and observability
 
-APM predates the modern observability framing, and the two overlap heavily. Both collect the three
-pillars of xref:observability.adoc[*observability*]: xref:logging.adoc[*logs*],
-xref:metrics.adoc[*metrics*], and traces. Most contemporary APM products have expanded into full
-observability platforms. The distinction is one of emphasis. APM centers on the application and on
-the questions teams already know to ask about it. Is it fast, is it up, which transaction is slow.
-Observability broadens the lens to exploratory analysis of a system's internal state, including
+APM predates the modern observability framing, and the two overlap heavily. Both collect the three pillars of
+xref:observability.adoc[*observability*]: xref:logging.adoc[*logs*], xref:metrics.adoc[*metrics*], and traces. Most
+contemporary APM products have expanded into full observability platforms. The distinction is one of emphasis. APM
+centers on the application and on the questions teams already know to ask about it. Is it fast, is it up, which
+transaction is slow. Observability broadens the lens to exploratory analysis of a system's internal state, including
 questions the team did not think to ask in advance.
 
-In xref:distributed-system.adoc[*distributed software*], the two converge. Tracing a request as it
-hops between microservices is the centerpiece of APM in such systems, and it is also the most
-important pillar of observability for distributed architectures. The request IDs and spans that an
-APM agent propagates are what make end-to-end behavior legible across service boundaries.
+In xref:distributed-system.adoc[*distributed software*], the two converge. Tracing a request as it hops between
+microservices is the centerpiece of APM in such systems, and it is also the most important pillar of observability for
+distributed architectures. The request IDs and spans that an APM agent propagates are what make end-to-end behavior
+legible across service boundaries.
 
 == Trade-offs
 
-Instrumentation is not free. An APM agent that captures every transaction, spans every database
-call, and ships every trace adds CPU and memory overhead to the instrumented process, plus network
-and storage cost in the backend. Two consequences follow.
+Instrumentation is not free. An APM agent that captures every transaction, spans every database call, and ships every
+trace adds CPU and memory overhead to the instrumented process, plus network and storage cost in the backend. Two
+consequences follow.
 
-First, most APM tools sample. Rather than record every request, they capture a subset and trade
-completeness for overhead. The subset may be uniform, or biased toward slow or erroneous requests.
-Sampling policies must be tuned to the system's traffic and to the value of the data retained.
+First, most APM tools sample. Rather than record every request, they capture a subset and trade completeness for
+overhead. The subset may be uniform, or biased toward slow or erroneous requests. Sampling policies must be tuned to the
+system's traffic and to the value of the data retained.
 
-Second, APM data is telemetry with a cost, and the broader trade-off between depth of visibility and
-the cost of collecting it applies. A common pattern is to keep high-cardinality traces and detailed
-profiles for a sample of requests, while relying on cheaper metrics for system-wide baselines.
+Second, APM data is telemetry with a cost, and the broader trade-off between depth of visibility and the cost of
+collecting it applies. A common pattern is to keep high-cardinality traces and detailed profiles for a sample of
+requests, while relying on cheaper metrics for system-wide baselines.
 
 == See also
 
@@ -68,5 +64,6 @@ profiles for a sample of requests, while relying on cheaper metrics for system-w
 * xref:performance.adoc[*Performance*]
 * xref:telemetry.adoc[*Telemetry*]
 * xref:throughput.adoc[*Throughput (aka. bandwidth)*]
-* xref:tracing.adoc[*Tracing*]* xref:software-delivery-and-operations.adoc[*Software delivery and operations*]
+* xref:tracing.adoc[*Tracing*]
+* xref:software-delivery-and-operations.adoc[*Software delivery and operations*]
 * xref:visibility.adoc[*Visibility*]

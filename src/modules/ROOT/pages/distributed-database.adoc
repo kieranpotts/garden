@@ -1,94 +1,88 @@
 = Distributed database
 
-A distributed database is a xref:database.adoc[*database*] whose data is spread across multiple
-nodes that cooperate over a network and present themselves to applications as a single logical
-database. Each node runs a database process that owns part of the data, and the nodes coordinate by
-passing messages so that clients can read and write without needing to know where each record lives.
+A distributed database is a xref:database.adoc[*database*] whose data is spread across multiple nodes that cooperate
+over a network and present themselves to applications as a single logical database. Each node runs a database process
+that owns part of the data, and the nodes coordinate by passing messages so that clients can read and write without
+needing to know where each record lives.
 
-A distributed database is one form of xref:distributed-system.adoc[*distributed software*]. The
-defining difference from a single-node database is that data and processing are partitioned across
-independent machines that fail independently and share no global clock. Those properties are the
-source of both the benefits and the hazards described below.
+A distributed database is one form of xref:distributed-system.adoc[*distributed software*]. The defining difference from
+a single-node database is that data and processing are partitioned across independent machines that fail independently
+and share no global clock. Those properties are the source of both the benefits and the hazards described below.
 
 == Why distribute data
 
 The motivations mirror those for distributing any distributed system.
 
-* xref:scalability.adoc[*Scalability*]. A single machine eventually hits limits on storage, memory,
-  and request throughput. Spreading data across nodes lets capacity grow by adding machines, which
-  is xref:horizontal-scaling.adoc[*horizontal scaling*]. A distributed database can keep scaling
-  long after a single node would be saturated.
+* xref:scalability.adoc[*Scalability*]. A single machine eventually hits limits on storage, memory, and request
+  throughput. Spreading data across nodes lets capacity grow by adding machines, which is
+  xref:horizontal-scaling.adoc[*horizontal scaling*]. A distributed database can keep scaling long after a single node
+  would be saturated.
 
-* *Fault tolerance.* Holding multiple copies of data means the failure of one node does not lose
-  data or stop the service. This raises xref:fault-tolerance.adoc[*fault tolerance*] and
-  xref:availability.adoc[*availability*], often across
+* *Fault tolerance.* Holding multiple copies of data means the failure of one node does not lose data or stop the service.
+  This raises xref:fault-tolerance.adoc[*fault tolerance*] and xref:availability.adoc[*availability*], often across
   xref:availability-zone.adoc[*availability zones*] or regions.
 
-* *Locality.* Placing data near the users who access it reduces xref:latency.adoc[*latency*] for
-  geographically distributed workloads.
+* *Locality.* Placing data near the users who access it reduces xref:latency.adoc[*latency*] for geographically
+  distributed workloads.
 
-These benefits are not free. Every coordination step between nodes adds a network hop, and the
-system design must tolerate partial failure, network partitions, and replica divergence.
+These benefits are not free. Every coordination step between nodes adds a network hop, and the system design must
+tolerate partial failure, network partitions, and replica divergence.
 
 == Partitioning and replication
 
 Data is spread across nodes through two complementary techniques.
 
-xref:sharding.adoc[*Sharding*] splits the dataset into disjoint partitions, each owned by one node
-or a small group of nodes. Rows, documents, or keys are assigned to a shard by a partitioning
-scheme, often xref:consistent-hashing.adoc[*consistent hashing*], so that adding or removing nodes
-moves only a small amount of data.
+xref:sharding.adoc[*Sharding*] splits the dataset into disjoint partitions, each owned by one node or a small group of
+nodes. Rows, documents, or keys are assigned to a shard by a partitioning scheme, often
+xref:consistent-hashing.adoc[*consistent hashing*], so that adding or removing nodes moves only a small amount of data.
 
-xref:replication.adoc[*Replication*] keeps copies of the same data on more than one node, so that a
-read can be served from any copy and a failed node's data is not lost. A sharded, replicated cluster
-is the typical shape of a distributed database. Each shard is replicated to a few nodes for
-xref:durability.adoc[*durability*], and the cluster as a whole scales by adding more shards.
+xref:replication.adoc[*Replication*] keeps copies of the same data on more than one node, so that a read can be served
+from any copy and a failed node's data is not lost. A sharded, replicated cluster is the typical shape of a distributed
+database. Each shard is replicated to a few nodes for xref:durability.adoc[*durability*], and the cluster as a whole
+scales by adding more shards.
 
-The two techniques together deliver the scalability and fault tolerance benefits above. They are
-also the source of the consistency challenges below.
+The two techniques together deliver the scalability and fault tolerance benefits above. They are also the source of the
+consistency challenges below.
 
 == Consistency and transactions
 
-Once data is replicated and partitioned, the cluster has to keep copies in step and present a
-coherent view to clients. The central trade-off is captured by the
-xref:cap-theorem.adoc[*CAP theorem*]. Under a network partition, the system must choose between
-consistency and availability. The xref:pacelc-theorem.adoc[*PACELC theorem*] extends the model to
+Once data is replicated and partitioned, the cluster has to keep copies in step and present a coherent view to clients.
+The central trade-off is captured by the xref:cap-theorem.adoc[*CAP theorem*]. Under a network partition, the system
+must choose between consistency and availability. The xref:pacelc-theorem.adoc[*PACELC theorem*] extends the model to
 cover latency when the system is running normally, not only during partitions.
 
-Distributed databases therefore expose a range of xref:consistency.adoc[*consistency*] models. At
-one end, strong consistency makes every read reflect the most recent successful write, usually by
-coordinating writes through xref:consensus-algorithm.adoc[*consensus algorithms*] such as Raft or
-Paxos. At the other end, xref:eventual-consistency.adoc[*eventual consistency*] allows replicas to
-diverge temporarily and converge later, trading correctness guarantees for lower latency and higher
-availability. Most systems let operators tune the trade-off per workload.
+Distributed databases therefore expose a range of xref:consistency.adoc[*consistency*] models. At one end, strong
+consistency makes every read reflect the most recent successful write, usually by coordinating writes through
+xref:consensus-algorithm.adoc[*consensus algorithms*] such as Raft or Paxos. At the other end,
+xref:eventual-consistency.adoc[*eventual consistency*] allows replicas to diverge temporarily and converge later,
+trading correctness guarantees for lower latency and higher availability. Most systems let operators tune the trade-off
+per workload.
 
-Transactions that span multiple nodes need extra machinery to preserve
-xref:acid-principles.adoc[*atomicity*] and isolation.
-xref:distributed-transaction.adoc[*Distributed transactions*] coordinate writes across nodes,
-typically with xref:phased-commit.adoc[*phased commits*] such as two-phase commit. Because phased
-commits block and add latency, xref:saga.adoc[*sagas*] offer an alternative that breaks a
-transaction into a sequence of local operations with compensating actions. Coordinating concurrent
-access to shared data may also require xref:distributed-locking.adoc[*distributed locking*].
+Transactions that span multiple nodes need extra machinery to preserve xref:acid-principles.adoc[*atomicity*] and
+isolation. xref:distributed-transaction.adoc[*Distributed transactions*] coordinate writes across nodes, typically with
+xref:phased-commit.adoc[*phased commits*] such as two-phase commit. Because phased commits block and add latency,
+xref:saga.adoc[*sagas*] offer an alternative that breaks a transaction into a sequence of local operations with
+compensating actions. Coordinating concurrent access to shared data may also require
+xref:distributed-locking.adoc[*distributed locking*].
 
 == Relation to other database families
 
 Distributed deployment is an orthogonal axis to the data model. A distributed database can be
-xref:relational-database.adoc[*relational*] or xref:nosql-database.adoc[*NoSQL*]. Most NoSQL
-systems were designed from the start to run as distributed databases, trading strong transactional
-guarantees for horizontal scale. A newer generation of distributed relational systems, sometimes
-called *NewSQL*, preserves ACID transactions while still sharding and replicating across nodes.
+xref:relational-database.adoc[*relational*] or xref:nosql-database.adoc[*NoSQL*]. Most NoSQL systems were designed from
+the start to run as distributed databases, trading strong transactional guarantees for horizontal scale. A newer
+generation of distributed relational systems, sometimes called *NewSQL*, preserves ACID transactions while still
+sharding and replicating across nodes.
 
 A distributed database is distinct from other forms of distributed storage.
-xref:distributed-file-system.adoc[*Distributed file systems*] store files as unstructured blobs,
-whereas a database imposes a data model and query language.
-xref:distributed-caching.adoc[*Distributed caching*] layers a cache in front of a source of truth
-rather than being the source of truth itself.
+xref:distributed-file-system.adoc[*Distributed file systems*] store files as unstructured blobs, whereas a database
+imposes a data model and query language. xref:distributed-caching.adoc[*Distributed caching*] layers a cache in front of
+a source of truth rather than being the source of truth itself.
 
 == Implementations
 
-Well-known distributed databases include Cassandra, MongoDB, DynamoDB, CockroachDB, and Google
-Spanner. The first three favor availability and eventual consistency. The latter two aim for SQL
-semantics with strong consistency across regions.
+Well-known distributed databases include Cassandra, MongoDB, DynamoDB, CockroachDB, and Google Spanner. The first three
+favor availability and eventual consistency. The latter two aim for SQL semantics with strong consistency across
+regions.
 
 == See also
 

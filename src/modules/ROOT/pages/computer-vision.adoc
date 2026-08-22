@@ -5,90 +5,84 @@
 :link-clip-paper:     https://arxiv.org/abs/2103.00020
 :link-szeliski-book:  https://szeliski.org/Book
 
-Computer vision is the xref:artificial-intelligence.adoc[*AI*] subfield that gives computers the
-ability to derive meaning from visual input – images, video, and the physical world seen through
-cameras. Where xref:natural-language-processing.adoc[*natural language processing*] teaches machines
-to read text, computer vision teaches them to see.
+Computer vision is the xref:artificial-intelligence.adoc[*AI*] subfield that gives computers the ability to derive
+meaning from visual input – images, video, and the physical world seen through cameras. Where
+xref:natural-language-processing.adoc[*natural language processing*] teaches machines to read text, computer vision
+teaches them to see.
 
-The dominant approach is supervised xref:machine-learning.adoc[*machine learning*] on large sets of
-labelled images. Given enough images labelled "bicycle", an image-recognition model works out for
-itself what a bicycle looks like and how it differs from a car or a boat. It learns the visual
-features that distinguish one category from another, rather than being told what to look for
-explicitly. These features are learned hierarchically: early layers detect edges and colour blobs,
-deeper layers compose them into textures, parts, and eventually whole objects, with no hand-crafted
+The dominant approach is supervised xref:machine-learning.adoc[*machine learning*] on large sets of labelled images.
+Given enough images labelled "bicycle", an image-recognition model works out for itself what a bicycle looks like and
+how it differs from a car or a boat. It learns the visual features that distinguish one category from another, rather
+than being told what to look for explicitly. These features are learned hierarchically: early layers detect edges and
+colour blobs, deeper layers compose them into textures, parts, and eventually whole objects, with no hand-crafted
 feature engineering required.
 
 == How vision models learn
 
-For most of the field's history, the workhorse architecture has been the
-*convolutional neural network (CNN)*. A convolutional layer slides small filter windows across an
-image, building translation-invariant feature maps that recognize a pattern wherever it appears.
-CNNs trace back to Yann LeCun's LeNet in the 1990s, but they only became dominant after *AlexNet*
-won the ImageNet competition in 2012 by a wide margin, using a deep CNN trained on a GPU. That
-result is widely regarded as the moment deep learning took over the field. ImageNet itself – a
-dataset of over a million labelled images across a thousand categories, assembled by Fei-Fei Li's
-group from 2009 – supplied the data scale that made deep CNNs viable.
+For most of the field's history, the workhorse architecture has been the *convolutional neural network (CNN)*. A
+convolutional layer slides small filter windows across an image, building translation-invariant feature maps that
+recognize a pattern wherever it appears. CNNs trace back to Yann LeCun's LeNet in the 1990s, but they only became
+dominant after *AlexNet* won the ImageNet competition in 2012 by a wide margin, using a deep CNN trained on a GPU. That
+result is widely regarded as the moment deep learning took over the field. ImageNet itself – a dataset of over a million
+labelled images across a thousand categories, assembled by Fei-Fei Li's group from 2009 – supplied the data scale that
+made deep CNNs viable.
 
-Since 2020 the xref:transformer.adoc[*transformer architecture*] has crossed over from natural
-language into vision. A *vision transformer (ViT)* splits an image into fixed-size patches, embeds
-each patch as a token, and lets self-attention find relationships between them, the same mechanism
-that powers xref:large-language-model.adoc[*large language models*]. Vision transformers overtake
-CNNs at sufficient scale and now back many state-of-the-art classification, detection, and
-segmentation systems, though CNNs remain competitive and cheaper to train at smaller budgets.
+Since 2020 the xref:transformer.adoc[*transformer architecture*] has crossed over from natural language into vision. A
+*vision transformer (ViT)* splits an image into fixed-size patches, embeds each patch as a token, and lets
+self-attention find relationships between them, the same mechanism that powers
+xref:large-language-model.adoc[*large language models*]. Vision transformers overtake CNNs at sufficient scale and now
+back many state-of-the-art classification, detection, and segmentation systems, though CNNs remain competitive and
+cheaper to train at smaller budgets.
 
 == Learning beyond labels
 
-Supervised learning on labelled images is powerful but expensive. Labelling is slow, and labels
-capture only what the annotator thought to mark. Much of the recent progress in vision comes from
-*self-supervised* methods that learn rich visual representations from unlabelled images and then
-transfer them to downstream tasks. *Contrastive* objectives such as SimCLR and DINO pull apart
-different images while pushing together augmented views of the same one, teaching the model
-invariant features without any labels.
+Supervised learning on labelled images is powerful but expensive. Labelling is slow, and labels capture only what the
+annotator thought to mark. Much of the recent progress in vision comes from *self-supervised* methods that learn rich
+visual representations from unlabelled images and then transfer them to downstream tasks. *Contrastive* objectives such
+as SimCLR and DINO pull apart different images while pushing together augmented views of the same one, teaching the
+model invariant features without any labels.
 
-CLIP and its successors go further by learning a shared embedding space between images and
-natural-language captions scraped from the web. The resulting model can classify images into
-arbitrary categories from text prompts alone – *zero-shot* classification – without a single
-labelled example of the target class. The same representations underpin modern
-xref:multimodal-ai.adoc[*multimodal*] systems that describe images, answer questions about them, and
-ground language in the visual world.
+CLIP and its successors go further by learning a shared embedding space between images and natural-language captions
+scraped from the web. The resulting model can classify images into arbitrary categories from text prompts alone –
+*zero-shot* classification – without a single labelled example of the target class. The same representations underpin
+modern xref:multimodal-ai.adoc[*multimodal*] systems that describe images, answer questions about them, and ground
+language in the visual world.
 
-On the generative side, *diffusion models* learn to reverse a noising process and now dominate image
-synthesis, the basis of text-to-image systems. The mechanics of generation are covered under
-xref:generative-ai.adoc[*generative AI*]; from a vision perspective, the key point is that the same
-learned visual representations feed both recognition and generation.
+On the generative side, *diffusion models* learn to reverse a noising process and now dominate image synthesis, the
+basis of text-to-image systems. The mechanics of generation are covered under xref:generative-ai.adoc[*generative AI*];
+from a vision perspective, the key point is that the same learned visual representations feed both recognition and
+generation.
 
 Computer vision powers a broad range of applications:
 
 * *Image classification.* Assigning a single label to an image.
-* *Object detection.* Locating and naming multiple objects within a scene, the task addressed by
-  real-time single-pass detectors such as xref:you-only-look-once.adoc[*You Only Look Once (YOLO)*].
-* *Semantic and instance segmentation.* Labelling each pixel with the class it belongs to, and
-  distinguishing individual object instances – the task addressed by Meta's Segment Anything (SAM),
-  a foundation model that segments any object from a prompt.
-* *Facial recognition.* Finding the subtle relationships between facial features that make a
-  particular face distinct from all others.
-* *Depth and pose estimation.* Recovering three-dimensional geometry, or the configuration of bodies
-  and hands, from a single image.
-* *Photo organization.* Phones that automatically group photos into folders like "at the beach" use
-  vision models to cluster images by visual content.
-* *Medical imaging.* Identifying tumours and other anomalies in scans at a volume and consistency
-  that a human consultant cannot match.
+* *Object detection.* Locating and naming multiple objects within a scene, the task addressed by real-time single-pass
+  detectors such as xref:you-only-look-once.adoc[*You Only Look Once (YOLO)*].
+* *Semantic and instance segmentation.* Labelling each pixel with the class it belongs to, and distinguishing individual
+  object instances – the task addressed by Meta's Segment Anything (SAM), a foundation model that segments any object from
+  a prompt.
+* *Facial recognition.* Finding the subtle relationships between facial features that make a particular face distinct from
+  all others.
+* *Depth and pose estimation.* Recovering three-dimensional geometry, or the configuration of bodies and hands, from a
+  single image.
+* *Photo organization.* Phones that automatically group photos into folders like "at the beach" use vision models to
+  cluster images by visual content.
+* *Medical imaging.* Identifying tumours and other anomalies in scans at a volume and consistency that a human consultant
+  cannot match.
 
-A persistent risk is that biases in the training data produce biased classifiers. A model trained
-only on red cars and white vans may learn to classify by colour rather than shape, misclassifying a
-blue car as something else entirely – a manifestation of xref:ai-bias.adoc[*AI bias*] that carries
-real consequences when the classifier is making medical or driving decisions.
+A persistent risk is that biases in the training data produce biased classifiers. A model trained only on red cars and
+white vans may learn to classify by colour rather than shape, misclassifying a blue car as something else entirely – a
+manifestation of xref:ai-bias.adoc[*AI bias*] that carries real consequences when the classifier is making medical or
+driving decisions.
 
-Vision models are also brittle in ways humans are not. Tiny, imperceptible perturbations to an image
-– *adversarial examples* – can flip a classifier's output with high confidence, a vulnerability that
-matters when models sit in safety-critical loops. They also struggle with distribution shift: a
-model that performs well on clean web photos may degrade on blurred, low-light, or unusual
-viewpoints, a gap that benchmarks can hide.
+Vision models are also brittle in ways humans are not. Tiny, imperceptible perturbations to an image –
+*adversarial examples* – can flip a classifier's output with high confidence, a vulnerability that matters when models
+sit in safety-critical loops. They also struggle with distribution shift: a model that performs well on clean web photos
+may degrade on blurred, low-light, or unusual viewpoints, a gap that benchmarks can hide.
 
-Self-driving cars are the most prominent applied case. Cameras, radar, and range-sensing lasers feed
-a vision model that identifies moving objects, reads road signs, and makes driving decisions in real
-time. The same perception stack underpins robotics, surveillance, and accessibility tools that
-describe the world to blind users.
+Self-driving cars are the most prominent applied case. Cameras, radar, and range-sensing lasers feed a vision model that
+identifies moving objects, reads road signs, and makes driving decisions in real time. The same perception stack
+underpins robotics, surveillance, and accessibility tools that describe the world to blind users.
 
 ''''
 
@@ -103,17 +97,13 @@ describe the world to blind users.
 
 == References
 
-* Krizhevsky, Sutskever & Hinton (2012).
-  {link-alexnet-paper}[_ImageNet Classification with Deep Convolutional Neural Networks_].
-  NeurIPS.
+* Krizhevsky, Sutskever & Hinton (2012). {link-alexnet-paper}[_ImageNet Classification with Deep Convolutional Neural
+  Networks_]. NeurIPS.
 
-* Dosovitskiy et al. (2020).
-  {link-vit-paper}[_An Image Is Worth 16x16 Words: Transformers for Image Recognition at Scale_].
-  arXiv:2010.11929.
+* Dosovitskiy et al. (2020). {link-vit-paper}[_An Image Is Worth 16x16 Words: Transformers for Image Recognition at
+  Scale_]. arXiv:2010.11929.
 
-* Radford et al. (2021).
-  {link-clip-paper}[_Learning Transferable Visual Models From Natural Language Supervision_].
+* Radford et al. (2021). {link-clip-paper}[_Learning Transferable Visual Models From Natural Language Supervision_].
   arXiv:2103.00020.
 
-* Szeliski (2022). {link-szeliski-book}[_Computer Vision: Algorithms and Applications_].
-  Springer.
+* Szeliski (2022). {link-szeliski-book}[_Computer Vision: Algorithms and Applications_]. Springer.

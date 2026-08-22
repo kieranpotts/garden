@@ -1,55 +1,47 @@
 = Knowledge graph
 
-A knowledge graph is a *knowledge base* that represents information as a graph of *entities* and the
-*relationships* between them, layered with a schema that gives the data machine-readable meaning. A
-node represents a thing, such as a person, place, concept, or document. An edge represents how two
-things relate, such as `born_in`, `authored`, or `subclass_of`. Because the relationships are
-first-class records rather than implicit joins, a knowledge graph captures how things connect as
-directly as it captures the things themselves.
+A knowledge graph is a *knowledge base* that represents information as a graph of *entities* and the *relationships*
+between them, layered with a schema that gives the data machine-readable meaning. A node represents a thing, such as a
+person, place, concept, or document. An edge represents how two things relate, such as `born_in`, `authored`, or
+`subclass_of`. Because the relationships are first-class records rather than implicit joins, a knowledge graph captures
+how things connect as directly as it captures the things themselves.
 
-The graph is *semantic* in the sense that its edge types and node types are drawn from a shared
-vocabulary, an xref:ontology.adoc[*ontology*], so any consumer that understands the vocabulary
-understands the data. This is what separates a knowledge graph from a plain graph of nodes and
-edges. The schema lets a reader, or a reasoner, infer new facts from existing ones, eg. that a thing
-of type `Novel` is also a `Work`, or that `spouse_of` is symmetric.
+The graph is *semantic* in the sense that its edge types and node types are drawn from a shared vocabulary, an
+xref:ontology.adoc[*ontology*], so any consumer that understands the vocabulary understands the data. This is what
+separates a knowledge graph from a plain graph of nodes and edges. The schema lets a reader, or a reasoner, infer new
+facts from existing ones, eg. that a thing of type `Novel` is also a `Work`, or that `spouse_of` is symmetric.
 
 == The RDF model
 
-Knowledge graphs are most often built on the W3C *Resource Description Framework (RDF)*, in which
-every fact is a triple: a subject, a predicate, and an object. The subject and predicate are IRIs,
-globally identifiable, and the object is either another IRI, a node, or a literal value. A knowledge
-graph is then the union of its triples, a labeled directed graph. Layers above RDF, namely RDF
-Schema and the *Web Ontology Language (OWL)*, add class hierarchies, property domains and ranges,
-and inference rules, so the graph can be reasoned over rather than only looked up.
+Knowledge graphs are most often built on the W3C *Resource Description Framework (RDF)*, in which every fact is a
+triple: a subject, a predicate, and an object. The subject and predicate are IRIs, globally identifiable, and the object
+is either another IRI, a node, or a literal value. A knowledge graph is then the union of its triples, a labeled
+directed graph. Layers above RDF, namely RDF Schema and the *Web Ontology Language (OWL)*, add class hierarchies,
+property domains and ranges, and inference rules, so the graph can be reasoned over rather than only looked up.
 
-Triples are queried with *SPARQL*, a query language that matches graph patterns against the store.
-They are serialized for interchange in formats such as Turtle and RDF/XML, or as
-xref:json-ld.adoc[*JSON-LD*] for the web. Graphs and their data are exchanged between tools using
-xref:graphml.adoc[*GraphML*].
+Triples are queried with *SPARQL*, a query language that matches graph patterns against the store. They are serialized
+for interchange in formats such as Turtle and RDF/XML, or as xref:json-ld.adoc[*JSON-LD*] for the web. Graphs and their
+data are exchanged between tools using xref:graphml.adoc[*GraphML*].
 
 == Knowledge graph vs graph database
 
-The terms are often conflated but name different things. A
-xref:graph-database.adoc[*graph database*] is a storage technology, a database that keeps nodes and
-edges as first-class records. A knowledge graph is the data and the model: the entities, the
-relationships, and the schema that describes them. A knowledge graph is frequently stored and
-queried in a graph database, typically an RDF triple store, but it could equally live in a
-property-graph store or be exported as a set of files. The graph database is the engine. The
-knowledge graph is what it holds.
+The terms are often conflated but name different things. A xref:graph-database.adoc[*graph database*] is a storage
+technology, a database that keeps nodes and edges as first-class records. A knowledge graph is the data and the model:
+the entities, the relationships, and the schema that describes them. A knowledge graph is frequently stored and queried
+in a graph database, typically an RDF triple store, but it could equally live in a property-graph store or be exported
+as a set of files. The graph database is the engine. The knowledge graph is what it holds.
 
 == Examples and uses
 
-The best-known instance is Google's Knowledge Graph, which grounds entities mentioned in a search
-query against a shared graph and underpins the knowledge panels shown alongside results. Open
-knowledge graphs such as Wikidata and DBpedia publish entities and relations from Wikipedia as RDF,
-and academic projects such as YAGO link text and structured sources. Enterprises build internal
-knowledge graphs to unify data scattered across silos.
+The best-known instance is Google's Knowledge Graph, which grounds entities mentioned in a search query against a shared
+graph and underpins the knowledge panels shown alongside results. Open knowledge graphs such as Wikidata and DBpedia
+publish entities and relations from Wikipedia as RDF, and academic projects such as YAGO link text and structured
+sources. Enterprises build internal knowledge graphs to unify data scattered across silos.
 
 Common uses rely on the graph's connected, typed structure.
 
 * *Search enrichment* surfaces entities and related facts alongside query results.
-* *Question answering* resolves a question to entities and traverses the graph to assemble an
-  answer.
+* *Question answering* resolves a question to entities and traverses the graph to assemble an answer.
 * *Recommendation* walks similarity and co-occurrence edges to suggest related items.
 * *Data integration* reconciles entities from independent sources against a shared schema.
 * *Entity disambiguation* uses typed context to tell one *Jane Austen* from another.
@@ -63,5 +55,4 @@ Common uses rely on the graph's connected, typed structure.
 
 == References
 
-* Hogan, Aidan et al. (2021). _Knowledge Graphs_. ACM Computing Surveys 54(4).
-  https://arxiv.org/abs/2003.02320
+* Hogan, Aidan et al. (2021). _Knowledge Graphs_. ACM Computing Surveys 54(4). https://arxiv.org/abs/2003.02320

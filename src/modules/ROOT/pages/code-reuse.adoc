@@ -1,46 +1,39 @@
 = Code reuse
 
-Code reuse is the practice of using existing code, rather than writing new code from scratch, when
-implementing a feature. The reused asset might be a function or class within the same project, a
-shared library consumed across many projects, or a xref:design-pattern.adoc[*design pattern*] that
-captures a proven solution to a recurring problem. The unifying goal is to solve a problem once and
-apply the solution wherever the same problem appears.
+Code reuse is the practice of using existing code, rather than writing new code from scratch, when implementing a
+feature. The reused asset might be a function or class within the same project, a shared library consumed across many
+projects, or a xref:design-pattern.adoc[*design pattern*] that captures a proven solution to a recurring problem. The
+unifying goal is to solve a problem once and apply the solution wherever the same problem appears.
 
-Reuse is one of the oldest ambitions in software engineering. The promise is compelling: less
-duplicated effort, faster delivery, and fewer defects, because the reused code has already been
-exercised and debugged. A team that can draw on a well-maintained library avoids re-solving problems
-its predecessors settled.
+Reuse is one of the oldest ambitions in software engineering. The promise is compelling: less duplicated effort, faster
+delivery, and fewer defects, because the reused code has already been exercised and debugged. A team that can draw on a
+well-maintained library avoids re-solving problems its predecessors settled.
 
-The mechanisms for reuse span several levels. At the smallest scale, a function extracts a repeated
-computation so it can be called from many places. At the level of types,
-xref:inheritance.adoc[*inheritance*] and xref:composition.adoc[*composition*] let a class take on
-the behavior of another without re-implementing it. At the largest scale, libraries, frameworks, and
-whole platforms are packaged for consumption by any project that depends on them.
-xref:modular-design.adoc[*Modular design*] is what makes any of this practical, since a module with
-a clear interface and a single responsibility can be lifted out of one context and dropped into
-another.
+The mechanisms for reuse span several levels. At the smallest scale, a function extracts a repeated computation so it
+can be called from many places. At the level of types, xref:inheritance.adoc[*inheritance*] and
+xref:composition.adoc[*composition*] let a class take on the behavior of another without re-implementing it. At the
+largest scale, libraries, frameworks, and whole platforms are packaged for consumption by any project that depends on
+them. xref:modular-design.adoc[*Modular design*] is what makes any of this practical, since a module with a clear
+interface and a single responsibility can be lifted out of one context and dropped into another.
 
-Reuse is closely related to xref:dry.adoc[*DRY*], which holds that each piece of knowledge should
-have a single authoritative representation. DRY is the principle that motivates eliminating
-duplication, while code reuse is the broader practice that duplication is one symptom of. The two
-are often pursued together, but they are not the same concern. DRY targets the duplication of
-knowledge. Code reuse targets the act of using existing code again, regardless of whether that code
-is the single source of truth for some knowledge.
+Reuse is closely related to xref:dry.adoc[*DRY*], which holds that each piece of knowledge should have a single
+authoritative representation. DRY is the principle that motivates eliminating duplication, while code reuse is the
+broader practice that duplication is one symptom of. The two are often pursued together, but they are not the same
+concern. DRY targets the duplication of knowledge. Code reuse targets the act of using existing code again, regardless
+of whether that code is the single source of truth for some knowledge.
 
-Reuse is not always beneficial. Every reused artifact introduces xref:coupling.adoc[*coupling*]
-between the consumer and its source. A module reused across many projects drags along the
-assumptions embedded in its design, and a change to that module ripples through every consumer.
-Reusing code built for a different context can force a fit where none naturally exists, producing
-xref:leaky-abstraction.adoc[*leaky abstractions*] that let the original context's details show
-through. A module that is highly xref:cohesion.adoc[*cohesive*] and low in coupling is far more
-amenable to reuse than one whose concerns are tangled together.
+Reuse is not always beneficial. Every reused artifact introduces xref:coupling.adoc[*coupling*] between the consumer and
+its source. A module reused across many projects drags along the assumptions embedded in its design, and a change to
+that module ripples through every consumer. Reusing code built for a different context can force a fit where none
+naturally exists, producing xref:leaky-abstraction.adoc[*leaky abstractions*] that let the original context's details
+show through. A module that is highly xref:cohesion.adoc[*cohesive*] and low in coupling is far more amenable to reuse
+than one whose concerns are tangled together.
 
-The cultural counterpart to healthy reuse is xref:not-invented-here.adoc[*not invented here*], the
-reluctance to adopt code built elsewhere. Reuse is most productive when teams can reach for a
-dependable asset without re-implementing it, and least productive when that instinct curdles into
-refusing good work simply because it came from outside. The xref:abstraction.adoc[*abstraction*]
-behind the reused code is what lets a consumer adopt it without understanding its internals, which
-is also what keeps the cost of reuse manageable.
+The cultural counterpart to healthy reuse is xref:not-invented-here.adoc[*not invented here*], the reluctance to adopt
+code built elsewhere. Reuse is most productive when teams can reach for a dependable asset without re-implementing it,
+and least productive when that instinct curdles into refusing good work simply because it came from outside. The
+xref:abstraction.adoc[*abstraction*] behind the reused code is what lets a consumer adopt it without understanding its
+internals, which is also what keeps the cost of reuse manageable.
 
 == See also
 

@@ -2,75 +2,65 @@
 
 image::load-balancing.svg[]
 
-Load balancing is the practice of distributing incoming work – network traffic, requests, or
-computation – across multiple resources so that no single resource is overwhelmed. It is a
-foundational technique in xref:distributed-system.adoc[*distributed software*], used to raise
-xref:throughput.adoc[*throughput*], cut xref:latency.adoc[*latency*], and keep a service available
-when individual nodes fail.
+Load balancing is the practice of distributing incoming work – network traffic, requests, or computation – across
+multiple resources so that no single resource is overwhelmed. It is a foundational technique in
+xref:distributed-system.adoc[*distributed software*], used to raise xref:throughput.adoc[*throughput*], cut
+xref:latency.adoc[*latency*], and keep a service available when individual nodes fail.
 
-The resources being balanced are most often servers in a
-xref:horizontal-scaling.adoc[*horizontally scaled*] fleet, but the same idea applies to databases,
-caches, message consumers, or any pool of interchangeable workers. The unit being distributed is
-typically a request, a connection, or a shard of data.
+The resources being balanced are most often servers in a xref:horizontal-scaling.adoc[*horizontally scaled*] fleet, but
+the same idea applies to databases, caches, message consumers, or any pool of interchangeable workers. The unit being
+distributed is typically a request, a connection, or a shard of data.
 
-Load balancing is most often implemented by a dedicated xref:load-balancer.adoc[*load balancer*] – a
-device or software process that sits between clients and backends and decides where each request
-should go. The detailed algorithms a load balancer uses (round robin, least connections, IP hash,
-and others) are covered on that page. But load balancing is the broader technique, and it need not
-rely on a dedicated balancer at all. Other mechanisms include the following.
+Load balancing is most often implemented by a dedicated xref:load-balancer.adoc[*load balancer*] – a device or software
+process that sits between clients and backends and decides where each request should go. The detailed algorithms a load
+balancer uses (round robin, least connections, IP hash, and others) are covered on that page. But load balancing is the
+broader technique, and it need not rely on a dedicated balancer at all. Other mechanisms include the following.
 
-* *DNS-based load balancing*, where a name server returns different IP addresses for the same
-  hostname on each query, spreading clients across regions or data centers.
+* *DNS-based load balancing*, where a name server returns different IP addresses for the same hostname on each query,
+  spreading clients across regions or data centers.
 
-* *Client-side load balancing*, where each client picks a backend itself from a registry of
-  instances, the model used by many xref:service-mesh.adoc[*service mesh*] and gRPC setups.
+* *Client-side load balancing*, where each client picks a backend itself from a registry of instances, the model used by
+  many xref:service-mesh.adoc[*service mesh*] and gRPC setups.
 
-* *Data-partitioning strategies*, where the data itself is split so that each request is naturally
-  routed to the node that owns it. xref:sharding.adoc[*Sharding*] and
-  xref:consistent-hashing.adoc[*consistent hashing*] turn routing into a property of the data model
-  rather than a separate routing tier.
+* *Data-partitioning strategies*, where the data itself is split so that each request is naturally routed to the node that
+  owns it. xref:sharding.adoc[*Sharding*] and xref:consistent-hashing.adoc[*consistent hashing*] turn routing into a
+  property of the data model rather than a separate routing tier.
 
-* *Message queues*, where producers drop work onto a queue and a pool of consumers pulls items at
-  its own pace, balancing load implicitly.
+* *Message queues*, where producers drop work onto a queue and a pool of consumers pulls items at its own pace, balancing
+  load implicitly.
 
-Whatever the mechanism, load balancing is what makes an xref:active-active.adoc[*active-active*]
-deployment work: every live instance serves traffic, and capacity grows with the number of replicas
-rather than resting on a single primary.
+Whatever the mechanism, load balancing is what makes an xref:active-active.adoc[*active-active*] deployment work: every
+live instance serves traffic, and capacity grows with the number of replicas rather than resting on a single primary.
 
 == Why it matters
 
-Load balancing delivers three distinct benefits, and it is worth keeping them separate because they
-pull in different design directions.
+Load balancing delivers three distinct benefits, and it is worth keeping them separate because they pull in different
+design directions.
 
-* *Capacity.* Spreading work across N nodes raises the ceiling on
-  xref:scalability.adoc[*scalability*] roughly N-fold, letting a fleet handle more traffic than any
-  one server could.
+* *Capacity.* Spreading work across N nodes raises the ceiling on xref:scalability.adoc[*scalability*] roughly N-fold,
+  letting a fleet handle more traffic than any one server could.
 
-* *Availability.* When a backend fails, the balancer stops sending it traffic and reroutes to the
-  survivors, giving the appearance of uninterrupted xref:availability.adoc[*availability*]. This
-  automatic rerouting is also what underpins xref:failover.adoc[*failover*] in a horizontally scaled
-  fleet.
+* *Availability.* When a backend fails, the balancer stops sending it traffic and reroutes to the survivors, giving the
+  appearance of uninterrupted xref:availability.adoc[*availability*]. This automatic rerouting is also what underpins
+  xref:failover.adoc[*failover*] in a horizontally scaled fleet.
 
-* *Latency.* By avoiding any single hot server, load balancing keeps queueing delay low and tail
-  latency bounded.
+* *Latency.* By avoiding any single hot server, load balancing keeps queueing delay low and tail latency bounded.
 
 == State and the stateless ideal
 
-Load balancing is simplest when backends are xref:stateless.adoc[*stateless*], since any instance
-can handle any request and the balancer is free to send traffic wherever capacity is cheapest.
-Stateful backends – a session held in local memory, a long-lived connection – force the balancer
-into sticky routing, pinning a client to one server, or push the state out to a shared store. Both
-cost something: sticky routing can leave a busy client's pinned server saturated while others idle,
-and externalizing state adds a dependency and its own latency. The mechanics of session persistence
-are covered on the load balancer page.
+Load balancing is simplest when backends are xref:stateless.adoc[*stateless*], since any instance can handle any request
+and the balancer is free to send traffic wherever capacity is cheapest. Stateful backends – a session held in local
+memory, a long-lived connection – force the balancer into sticky routing, pinning a client to one server, or push the
+state out to a shared store. Both cost something: sticky routing can leave a busy client's pinned server saturated while
+others idle, and externalizing state adds a dependency and its own latency. The mechanics of session persistence are
+covered on the load balancer page.
 
 == The balancer as a single point of failure
 
-A dedicated load balancer is itself a potential
-xref:single-point-of-failure.adoc[*single point of failure*]: if it goes down, every backend behind
-it becomes unreachable at once. Production deployments therefore run balancers in redundant pairs or
-clusters, often spread across xref:availability-zone.adoc[*availability zones*], so that the loss of
-one balancer is absorbed by another.
+A dedicated load balancer is itself a potential xref:single-point-of-failure.adoc[*single point of failure*]: if it goes
+down, every backend behind it becomes unreachable at once. Production deployments therefore run balancers in redundant
+pairs or clusters, often spread across xref:availability-zone.adoc[*availability zones*], so that the loss of one
+balancer is absorbed by another.
 
 == See also
 

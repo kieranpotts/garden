@@ -1,38 +1,33 @@
 = Structured query language (SQL)
 
-*Structured Query Language (SQL)* is a
-xref:domain-specific-language.adoc[*domain-specific language*] for defining and manipulating data in
-xref:relational-database.adoc[*relational databases*]. It was developed at IBM in the early 1970s
-by Donald Chamberlin and Raymond Boyce as a practical notation for the relational model E. F. Codd
-had set out in 1970, and was originally called SEQUEL – the name was shortened to SQL after a
-trademark conflict. Unlike a general-purpose programming language, SQL is *declarative*. A statement
-describes the result the caller wants, and the database's
-xref:database-query-optimization.adoc[*query optimizer*] decides how to produce it. That property
-places SQL among the higher rungs of the xref:rule-of-least-power.adoc[*rule of least power*]:
-expressive enough for a wide range of queries, weak enough that the data it operates on stays
-inspectable and open to transformation.
+*Structured Query Language (SQL)* is a xref:domain-specific-language.adoc[*domain-specific language*] for defining and
+manipulating data in xref:relational-database.adoc[*relational databases*]. It was developed at IBM in the early 1970s
+by Donald Chamberlin and Raymond Boyce as a practical notation for the relational model E. F. Codd had set out in 1970,
+and was originally called SEQUEL – the name was shortened to SQL after a trademark conflict. Unlike a general-purpose
+programming language, SQL is *declarative*. A statement describes the result the caller wants, and the database's
+xref:database-query-optimization.adoc[*query optimizer*] decides how to produce it. That property places SQL among the
+higher rungs of the xref:rule-of-least-power.adoc[*rule of least power*]: expressive enough for a wide range of queries,
+weak enough that the data it operates on stays inspectable and open to transformation.
 
-SQL's surface is conventionally divided into several sub-languages, each concerned with a different
-aspect of database use.
+SQL's surface is conventionally divided into several sub-languages, each concerned with a different aspect of database
+use.
 
-* *Data definition language (DDL)* defines the structure of the database – its tables, columns,
-  types, and constraints such as xref:foreign-key.adoc[*foreign keys*] and primary keys. The DDL
-  statements are `CREATE`, `ALTER`, and `DROP`. This is the output of
-  xref:data-modeling.adoc[*data modeling*], expressed in SQL syntax.
-* *Data manipulation language (DML)* inserts, updates, and deletes rows. The `INSERT`, `UPDATE`, and
-  `DELETE` statements belong here.
-* *Data query language (DQL)* is often pulled out of DML in practice, because the `SELECT` statement
-  – querying data – is by far the most common use of SQL and carries its own evaluation model.
-* *Data control language (DCL)* governs access. The `GRANT` and `REVOKE` statements adjust
-  permissions on database objects.
-* *Transaction control language (TCL)* manages xref:transaction.adoc[*transactions*] – `BEGIN`,
-  `COMMIT`, `ROLLBACK` – the unit that gives a relational database its
-  xref:acid-principles.adoc[*ACID*] guarantees.
+* *Data definition language (DDL)* defines the structure of the database – its tables, columns, types, and constraints
+  such as xref:foreign-key.adoc[*foreign keys*] and primary keys. The DDL statements are `CREATE`, `ALTER`, and `DROP`.
+  This is the output of xref:data-modeling.adoc[*data modeling*], expressed in SQL syntax.
+* *Data manipulation language (DML)* inserts, updates, and deletes rows. The `INSERT`, `UPDATE`, and `DELETE` statements
+  belong here.
+* *Data query language (DQL)* is often pulled out of DML in practice, because the `SELECT` statement – querying data – is
+  by far the most common use of SQL and carries its own evaluation model.
+* *Data control language (DCL)* governs access. The `GRANT` and `REVOKE` statements adjust permissions on database
+  objects.
+* *Transaction control language (TCL)* manages xref:transaction.adoc[*transactions*] – `BEGIN`, `COMMIT`, `ROLLBACK` – the
+  unit that gives a relational database its xref:acid-principles.adoc[*ACID*] guarantees.
 
 == A query's structure
 
-A `SELECT` statement is composed of clauses evaluated in a logical order that differs from the order
-in which they are written.
+A `SELECT` statement is composed of clauses evaluated in a logical order that differs from the order in which they are
+written.
 
 [source,sql]
 ----
@@ -40,49 +35,45 @@ SELECT name, count(*)           -- projection FROM orders                     --
 ORDER BY name;                  -- sort
 ----
 
-The engine evaluates `FROM` and `JOIN`s first, then `WHERE`, then `GROUP BY`, `HAVING`, the `SELECT`
-projection, and finally `ORDER BY`. Writing SQL with that logical order in mind is what makes window
-functions, correlated subqueries, and alias scoping predictable. The query optimizer may reorder the
-work freely as long as the result matches – the declarative contract is on the result, not the plan.
+The engine evaluates `FROM` and `JOIN`s first, then `WHERE`, then `GROUP BY`, `HAVING`, the `SELECT` projection, and
+finally `ORDER BY`. Writing SQL with that logical order in mind is what makes window functions, correlated subqueries,
+and alias scoping predictable. The query optimizer may reorder the work freely as long as the result matches – the
+declarative contract is on the result, not the plan.
 
 == Standardization and dialects
 
-SQL has been an ANSI and ISO standard since 1986. Successive revisions have added the features
-practitioners now take for granted. SQL-92 normalized join syntax. SQL:1999 introduced triggers,
-recursive queries, and window functions. SQL:2003 added JSON and XML types. Later revisions brought
-regular expressions, polymorphic table functions, and property graph queries.
+SQL has been an ANSI and ISO standard since 1986. Successive revisions have added the features practitioners now take
+for granted. SQL-92 normalized join syntax. SQL:1999 introduced triggers, recursive queries, and window functions.
+SQL:2003 added JSON and XML types. Later revisions brought regular expressions, polymorphic table functions, and
+property graph queries.
 
-No implementation follows the standard completely, and every implementation extends it. The result
-is a family of dialects that share a common core but diverge in syntax, type system, and feature
-set.
+No implementation follows the standard completely, and every implementation extends it. The result is a family of
+dialects that share a common core but diverge in syntax, type system, and feature set.
 
 * PostgreSQL favors standards conformance and a rich type system.
 * MySQL and its forks prioritize speed and operational simplicity.
-* SQLite is an embedded engine with a deliberately small dialect, missing features such as stored
-  procedures in some builds.
-* Oracle Database and Microsoft SQL Server are commercial engines with large, vendor-specific
-  surfaces built around the standard core.
+* SQLite is an embedded engine with a deliberately small dialect, missing features such as stored procedures in some
+  builds.
+* Oracle Database and Microsoft SQL Server are commercial engines with large, vendor-specific surfaces built around the
+  standard core.
 
-Because of these differences, SQL written against one engine rarely ports to another unchanged. Code
-that treats SQL as portable is one of the recurring sources of migration pain.
+Because of these differences, SQL written against one engine rarely ports to another unchanged. Code that treats SQL as
+portable is one of the recurring sources of migration pain.
 
 == SQL in application development
 
-Most applications do not send SQL to the database by hand. They go through an
-*object-relational mapper (ORM)* or a thin query builder, which generates SQL from code-level
-constructs and maps rows back to objects. The abstraction removes boilerplate but obscures the
-queries that actually run, which is the root cause of the N+1 problem and other performance
+Most applications do not send SQL to the database by hand. They go through an *object-relational mapper (ORM)* or a thin
+query builder, which generates SQL from code-level constructs and maps rows back to objects. The abstraction removes
+boilerplate but obscures the queries that actually run, which is the root cause of the N+1 problem and other performance
 surprises described under xref:database-query-optimization.adoc[*query optimization*].
 
-SQL that is assembled from user input is vulnerable to xref:sql-injection.adoc[*SQL injection*], the
-canonical attack against database-backed applications. Parameterized queries and prepared
-statements, which separate code from data, are the standard defense. Hand-rolled string
-concatenation of SQL remains a persistent source of vulnerabilities.
+SQL that is assembled from user input is vulnerable to xref:sql-injection.adoc[*SQL injection*], the canonical attack
+against database-backed applications. Parameterized queries and prepared statements, which separate code from data, are
+the standard defense. Hand-rolled string concatenation of SQL remains a persistent source of vulnerabilities.
 
-SQL's dominance is challenged by xref:nosql-database.adoc[*NoSQL databases*], which trade the
-relational model and SQL's query power for schema flexibility and horizontal scale. The complement
-is sometimes literal. Many NoSQL systems now expose SQL-like or SQL-over-their-data query layers,
-the "Not Only SQL" reading of the NoSQL label.
+SQL's dominance is challenged by xref:nosql-database.adoc[*NoSQL databases*], which trade the relational model and SQL's
+query power for schema flexibility and horizontal scale. The complement is sometimes literal. Many NoSQL systems now
+expose SQL-like or SQL-over-their-data query layers, the "Not Only SQL" reading of the NoSQL label.
 
 == See also
 
@@ -102,7 +93,7 @@ the "Not Only SQL" reading of the NoSQL label.
 
 * Chamberlin, D. D. and Boyce, R. F. (1974). "SEQUEL: A structured English query language".
   _Proc. ACM SIGFIDET Workshop on Data Description, Access and Control_, 249–264.
-* Codd, E. F. (1970). "A relational model of data for large shared data banks".
-  _Communications of the ACM_, 13(6), 377–387.
-* ISO/IEC 9075 (1987–). _Information technology – Database languages – SQL_. International
-  Organization for Standardization.
+* Codd, E. F. (1970). "A relational model of data for large shared data banks". _Communications of the ACM_, 13(6),
+  377–387.
+* ISO/IEC 9075 (1987–). _Information technology – Database languages – SQL_. International Organization for
+  Standardization.

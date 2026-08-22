@@ -3,73 +3,64 @@
 :link-github-blog-sdd: https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/
 :link-spec-kit:        https://github.com/github/spec-kit
 
-*Spec-driven development (SDD)* is a practice for directing xref:agent.adoc[*AI coding agents*] in
-which a specification – what to build, why, and under what constraints – is written and agreed
-before an agent generates any implementation code. The specification, not a prompt, becomes the
-durable source of truth that drives planning, implementation, and verification.
+*Spec-driven development (SDD)* is a practice for directing xref:agent.adoc[*AI coding agents*] in which a specification
+– what to build, why, and under what constraints – is written and agreed before an agent generates any implementation
+code. The specification, not a prompt, becomes the durable source of truth that drives planning, implementation, and
+verification.
 
-The practice is a reaction to xref:vibe-coding.adoc[*vibe coding*], where intent lives only in
-ephemeral chat prompts and is lost once the conversation ends. Spec-driven development instead
-front-loads intent into a persistent artifact that can be reviewed, versioned, and reused, which
-places it toward the disciplined end of the xref:agentic-engineering.adoc[*agentic engineering*]
-spectrum.
+The practice is a reaction to xref:vibe-coding.adoc[*vibe coding*], where intent lives only in ephemeral chat prompts
+and is lost once the conversation ends. Spec-driven development instead front-loads intent into a persistent artifact
+that can be reviewed, versioned, and reused, which places it toward the disciplined end of the
+xref:agentic-engineering.adoc[*agentic engineering*] spectrum.
 
 == The workflow
 
-Toolkits that implement spec-driven development, such as GitHub's open-source Spec Kit, structure
-the work as a pipeline of artifacts.
+Toolkits that implement spec-driven development, such as GitHub's open-source Spec Kit, structure the work as a pipeline
+of artifacts.
 
-* *Specify.* Capture the "what" and "why" of a feature in plain language – user-facing behavior,
-  constraints, and success criteria – deliberately before any discussion of implementation.
-* *Plan.* Translate the specification into a technical approach: architecture, stack choices, and
-  integration points.
-* *Tasks.* Break the plan into small, independently testable units of work that an agent can
-  implement and a human can review in isolation.
-* *Implement.* The agent generates code against each task, constrained by the specification and plan
-  rather than by an open-ended prompt.
+* *Specify.* Capture the "what" and "why" of a feature in plain language – user-facing behavior, constraints, and success
+  criteria – deliberately before any discussion of implementation.
+* *Plan.* Translate the specification into a technical approach: architecture, stack choices, and integration points.
+* *Tasks.* Break the plan into small, independently testable units of work that an agent can implement and a human can
+  review in isolation.
+* *Implement.* The agent generates code against each task, constrained by the specification and plan rather than by an
+  open-ended prompt.
 
-Because the specification captures the stable "what," it can be revised independently of the plan
-and tasks, which absorb the more volatile "how." This keeps rework localized when requirements
-change.
+Because the specification captures the stable "what," it can be revised independently of the plan and tasks, which
+absorb the more volatile "how." This keeps rework localized when requirements change.
 
 == Criticism
 
-If a specification is implemented as one large batch – written up-front in full, then handed to an
-agent to generate the entire feature before a human reviews any of it – spec-driven development
-collapses into a xref:waterfall-model.adoc[*waterfall*] process, with a specification document
-standing in for the traditional requirements phase. The risk is the same one that motivates the
-xref:agile.adoc[*agile*] critique of xref:big-design-up-front.adoc[*big design up-front*]: the
-working software that would surface a wrong assumption, an ambiguous requirement, or a design flaw
-does not exist until the end of the batch, so errors compound silently across the whole
-implementation before anyone catches them.
+If a specification is implemented as one large batch – written up-front in full, then handed to an agent to generate the
+entire feature before a human reviews any of it – spec-driven development collapses into a
+xref:waterfall-model.adoc[*waterfall*] process, with a specification document standing in for the traditional
+requirements phase. The risk is the same one that motivates the xref:agile.adoc[*agile*] critique of
+xref:big-design-up-front.adoc[*big design up-front*]: the working software that would surface a wrong assumption, an
+ambiguous requirement, or a design flaw does not exist until the end of the batch, so errors compound silently across
+the whole implementation before anyone catches them.
 
-The practice avoids this failure mode only if the plan and tasks stage breaks the specification into
-small units that are each implemented and verified before the next begins, in the spirit of
-xref:iterative-and-incremental-development.adoc[*iterative and incremental development*]. A
-specification is not a substitute for this discipline. It constrains what an agent builds, but says
-nothing about how large a step is taken between one verified state and the next. Toolkits that
-emphasize the specification and plan stages while leaving task granularity to the user's discretion
-carry this risk implicitly, and teams that treat the specification as a one-shot blueprint
-reintroduce the same late, expensive feedback loop that iterative development was designed to
-eliminate.
+The practice avoids this failure mode only if the plan and tasks stage breaks the specification into small units that
+are each implemented and verified before the next begins, in the spirit of
+xref:iterative-and-incremental-development.adoc[*iterative and incremental development*]. A specification is not a
+substitute for this discipline. It constrains what an agent builds, but says nothing about how large a step is taken
+between one verified state and the next. Toolkits that emphasize the specification and plan stages while leaving task
+granularity to the user's discretion carry this risk implicitly, and teams that treat the specification as a one-shot
+blueprint reintroduce the same late, expensive feedback loop that iterative development was designed to eliminate.
 
 == Relationship to prior practice
 
-Spec-driven development applies an old idea from software engineering to a new context. Writing
-requirements before implementation is the substance of
-xref:requirements-engineering.adoc[*requirements engineering*], and
+Spec-driven development applies an old idea from software engineering to a new context. Writing requirements before
+implementation is the substance of xref:requirements-engineering.adoc[*requirements engineering*], and
 xref:specification-by-example.adoc[*specification by example*] and
-xref:behavior-driven-development.adoc[*behavior-driven development*] established the pattern of
-using a concrete specification as both the requirement and the executable check. What is new is the
-audience: the specification is written to direct an AI agent's generation of code, not primarily to
-align human stakeholders, though it can serve both purposes.
+xref:behavior-driven-development.adoc[*behavior-driven development*] established the pattern of using a concrete
+specification as both the requirement and the executable check. What is new is the audience: the specification is
+written to direct an AI agent's generation of code, not primarily to align human stakeholders, though it can serve both
+purposes.
 
-Reviewing a specification and a small set of tasks is also cheaper than reviewing the large,
-unstructured code diffs that vibe coding tends to produce, echoing the
-xref:shift-left.adoc[*shift-left*] rationale behind
-xref:test-driven-development.adoc[*test-driven development*]: catching a misunderstanding in the
-specification is far cheaper than catching it after the agent has written thousands of lines of
-code.
+Reviewing a specification and a small set of tasks is also cheaper than reviewing the large, unstructured code diffs
+that vibe coding tends to produce, echoing the xref:shift-left.adoc[*shift-left*] rationale behind
+xref:test-driven-development.adoc[*test-driven development*]: catching a misunderstanding in the specification is far
+cheaper than catching it after the agent has written thousands of lines of code.
 
 == See also
 
@@ -88,6 +79,5 @@ code.
 
 == References
 
-* {link-github-blog-sdd}[Spec-driven development with AI: Get started with a new open source toolkit],
-  GitHub Blog (2025).
+* {link-github-blog-sdd}[Spec-driven development with AI: Get started with a new open source toolkit], GitHub Blog (2025).
 * {link-spec-kit}[GitHub Spec Kit], GitHub.

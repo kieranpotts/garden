@@ -14,103 +14,88 @@
 :link-warp-oz:             https://www.warp.dev/oz
 :link-warp-oz-video:       https://www.youtube.com/watch?v=RWT3sh68PWE
 
-Agent orchestration platforms sit above individual xref:agent.adoc[*agent*] frameworks. Rather than
-providing tools to build a single agent, they coordinate _teams_ of agents working together toward
-shared goals — managing scheduling, delegation, budgets, and xref:governance.adoc[*governance*]
-across a whole system of autonomous workers.
+Agent orchestration platforms sit above individual xref:agent.adoc[*agent*] frameworks. Rather than providing tools to
+build a single agent, they coordinate _teams_ of agents working together toward shared goals — managing scheduling,
+delegation, budgets, and xref:governance.adoc[*governance*] across a whole system of autonomous workers.
 
-xref:loop-engineering.adoc[*Loop engineering*] is a narrower subset of this space. It is agent
-orchestration for recurring, unattended execution, rather than general-purpose coordination of many
-agents.
+xref:loop-engineering.adoc[*Loop engineering*] is a narrower subset of this space. It is agent orchestration for
+recurring, unattended execution, rather than general-purpose coordination of many agents.
 
-Orchestration is also distinct from two neighboring concerns. Agent _development frameworks_ (such
-as LlamaIndex or Semantic Kernel) provide the building blocks to write a single agent.
-xref:agent-harness.adoc[*Harness engineering*] provides the runtime controls around one agent.
-Orchestration is the coordination layer above both: how multiple agents divide work, communicate,
-and converge on a result.
+Orchestration is also distinct from two neighboring concerns. Agent _development frameworks_ (such as LlamaIndex or
+Semantic Kernel) provide the building blocks to write a single agent. xref:agent-harness.adoc[*Harness engineering*]
+provides the runtime controls around one agent. Orchestration is the coordination layer above both: how multiple agents
+divide work, communicate, and converge on a result.
 
-The line between a development framework and an orchestration platform is not always sharp — several
-tools below do both.
+The line between a development framework and an orchestration platform is not always sharp — several tools below do
+both.
 
 == LangChain and LangGraph
 
 LangChain is an open-source framework for building applications powered by
-xref:large-language-model.adoc[*large language models (LLMs)*]. Created by Harrison Chase in October
-2022, it became one of the most widely adopted frameworks for LLM application development and now
-backs a venture-funded company of the same name (Series A led by Sequoia Capital in April 2023).
+xref:large-language-model.adoc[*large language models (LLMs)*]. Created by Harrison Chase in October 2022, it became one
+of the most widely adopted frameworks for LLM application development and now backs a venture-funded company of the same
+name (Series A led by Sequoia Capital in April 2023).
 
-LangChain's core idea is *composition*: it provides building blocks — prompts, models, retrievers,
-memory, and tools — chained together into pipelines for use cases such as
-xref:large-language-model.adoc[*retrieval-augmented generation (RAG)*], chatbots, document analysis,
-and structured extraction. It is written in Python, with a parallel JavaScript/TypeScript
-implementation (LangChain.js).
+LangChain's core idea is *composition*: it provides building blocks — prompts, models, retrievers, memory, and tools —
+chained together into pipelines for use cases such as
+xref:large-language-model.adoc[*retrieval-augmented generation (RAG)*], chatbots, document analysis, and structured
+extraction. It is written in Python, with a parallel JavaScript/TypeScript implementation (LangChain.js).
 
-The orchestration-focused part of the ecosystem is *LangGraph* — a library for modeling stateful,
-multi-step, multi-agent workflows as graphs of nodes, with cycles, persistence, and
-human-in-the-loop checkpoints, plus a managed *LangGraph Platform* for deployment. The wider family
-also includes the *LangChain Expression Language (LCEL)*, a declarative syntax for defining chains;
-*LangSmith*, a closed-source observability and evaluation platform (2024); and *LangServe*, for
-deploying chains as production APIs.
+The orchestration-focused part of the ecosystem is *LangGraph* — a library for modeling stateful, multi-step,
+multi-agent workflows as graphs of nodes, with cycles, persistence, and human-in-the-loop checkpoints, plus a managed
+*LangGraph Platform* for deployment. The wider family also includes the *LangChain Expression Language (LCEL)*, a
+declarative syntax for defining chains; *LangSmith*, a closed-source observability and evaluation platform (2024); and
+*LangServe*, for deploying chains as production APIs.
 
-LangChain is sometimes criticized for over-abstraction — its layers can obscure what is underneath a
-relatively simple sequence of model calls — and some teams prefer to call model APIs directly for
-production systems. It remains a popular starting point and a useful tool for rapid prototyping.
-({link-langchain-repo}[Repo].)
+LangChain is sometimes criticized for over-abstraction — its layers can obscure what is underneath a relatively simple
+sequence of model calls — and some teams prefer to call model APIs directly for production systems. It remains a popular
+starting point and a useful tool for rapid prototyping. ({link-langchain-repo}[Repo].)
 
 == Other orchestration platforms
 
-* {link-claude-cowork}[Claude Cowork]: Anthropic's agentic AI for knowledge work. It
-  runs on the desktop, connecting to local files and applications to complete multi-step tasks end
-  to end. Built on the Claude Code stack, it dynamically writes orchestration scripts that run tens
-  to hundreds of parallel subagents in a single session, checking its own work. Aimed at
-  researchers, analysts, and operations, legal, and finance teams, with enterprise plugin
-  marketplaces.
+* {link-claude-cowork}[Claude Cowork]: Anthropic's agentic AI for knowledge work. It runs on the desktop, connecting to
+  local files and applications to complete multi-step tasks end to end. Built on the Claude Code stack, it dynamically
+  writes orchestration scripts that run tens to hundreds of parallel subagents in a single session, checking its own work.
+  Aimed at researchers, analysts, and operations, legal, and finance teams, with enterprise plugin marketplaces.
 
-* {link-ace-zero-alignment}[Ace]: A research prototype from the GitHub Next team
-  (forthcoming, not yet a production tool). A _multiplayer_ development workspace blending
-  communication, coding, and cloud compute: Slack-like shared sessions backed by isolated microVMs
-  on separate git branches, where several people can prompt agents simultaneously, edit code in real
-  time, run terminals, preview, and open PRs together. Its premise is that as agentic coding gets
-  cheap, the bottleneck shifts to team _alignment_ — agreeing on what to build before agents
-  execute. (Described in Maggie Appleton's essay _Zero Alignment_.)
+* {link-ace-zero-alignment}[Ace]: A research prototype from the GitHub Next team (forthcoming, not yet a production tool).
+  A _multiplayer_ development workspace blending communication, coding, and cloud compute: Slack-like shared sessions
+  backed by isolated microVMs on separate git branches, where several people can prompt agents simultaneously, edit code
+  in real time, run terminals, preview, and open PRs together. Its premise is that as agentic coding gets cheap, the
+  bottleneck shifts to team _alignment_ — agreeing on what to build before agents execute. (Described in Maggie Appleton's
+  essay _Zero Alignment_.)
 
-* {link-ag2}[AG2]: Open-source framework for building multi-agent systems through
-  structured conversations between agents. The community-driven successor to Microsoft's AutoGen, it
-  supports conversational agents, group chats, and human-in-the-loop workflows.
+* {link-ag2}[AG2]: Open-source framework for building multi-agent systems through structured conversations between agents.
+  The community-driven successor to Microsoft's AutoGen, it supports conversational agents, group chats, and
+  human-in-the-loop workflows.
 
-* {link-crewai}[CrewAI]: Open-source Python framework for orchestrating role-playing
-  autonomous agents. Agents are organized into "crews" with defined roles, goals, and tools,
-  collaborating on tasks through sequential or hierarchical processes.
+* {link-crewai}[CrewAI]: Open-source Python framework for orchestrating role-playing autonomous agents. Agents are
+  organized into "crews" with defined roles, goals, and tools, collaborating on tasks through sequential or hierarchical
+  processes.
 
-* {link-mastra}[Mastra]: JS/TS-first framework for building and orchestrating agents, with
-  workflows, agent memory, RAG, and evals built in.
+* {link-mastra}[Mastra]: JS/TS-first framework for building and orchestrating agents, with workflows, agent memory, RAG,
+  and evals built in.
 
-* {link-metagpt}[MetaGPT]: Multi-agent framework that assigns role-based agents
-  (product manager, architect, engineer, QA) to collaborate like a simulated software company,
-  turning a single requirement into designs, code, and tests.
+* {link-metagpt}[MetaGPT]: Multi-agent framework that assigns role-based agents (product manager, architect, engineer, QA)
+  to collaborate like a simulated software company, turning a single requirement into designs, code, and tests.
 
-* {link-superagi}[SuperAGI]: Open-source, developer-first framework and platform for building,
-  deploying, and managing autonomous agents, with a GUI, a tool ecosystem, and support for running
-  multiple agents concurrently.
+* {link-superagi}[SuperAGI]: Open-source, developer-first framework and platform for building, deploying, and managing
+  autonomous agents, with a GUI, a tool ecosystem, and support for running multiple agents concurrently.
 
-* {link-multica}[Multica]: Open-source, self-hosted platform for managing a mixed human +
-  AI-agent workforce. Assign tasks to coding agents (Claude, Copilot, Gemini, and others), track
-  progress in real time over WebSocket streaming, and build a shared library of reusable skills that
-  any teammate — human or agent — can apply.
+* {link-multica}[Multica]: Open-source, self-hosted platform for managing a mixed human + AI-agent workforce. Assign tasks
+  to coding agents (Claude, Copilot, Gemini, and others), track progress in real time over WebSocket streaming, and build
+  a shared library of reusable skills that any teammate — human or agent — can apply.
 
-* {link-openai-symphony}[OpenAI Symphony]: Open-source orchestration framework
-  (reference implementation in Elixir, plus a spec) that monitors a work queue such as Linear,
-  spawns an autonomous agent per task, and returns each completed task as a validated deliverable
-  with proof of work (CI status, PR feedback). Shifts the model from supervising individual agents
-  to managing work; designed for codebases built on xref:agent-harness.adoc[*harness-engineering*]
-  principles.
+* {link-openai-symphony}[OpenAI Symphony]: Open-source orchestration framework (reference implementation in Elixir, plus a
+  spec) that monitors a work queue such as Linear, spawns an autonomous agent per task, and returns each completed task as
+  a validated deliverable with proof of work (CI status, PR feedback). Shifts the model from supervising individual agents
+  to managing work; designed for codebases built on xref:agent-harness.adoc[*harness-engineering*] principles.
 
-* {link-paperclip}[Paperclip]: Open-source, self-hosted platform for running
-  organizations of AI agents, with org charts, heartbeat-based scheduling, per-agent cost budgets,
-  and full audit logging.
+* {link-paperclip}[Paperclip]: Open-source, self-hosted platform for running organizations of AI agents, with org charts,
+  heartbeat-based scheduling, per-agent cost budgets, and full audit logging.
 
-* {link-warp-oz}[Warp Oz]: Built into the Warp agentic terminal, Oz orchestrates and tracks
-  fleets of agents to automate work. {link-warp-oz-video}[Intro video.]
+* {link-warp-oz}[Warp Oz]: Built into the Warp agentic terminal, Oz orchestrates and tracks fleets of agents to automate
+  work. {link-warp-oz-video}[Intro video.]
 
 ''''
 

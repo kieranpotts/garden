@@ -1,83 +1,74 @@
 = Firewall
 
-A firewall is a network security control that monitors and filters traffic flowing between two
-networks, allowing or blocking packets according to a configured rule set. Its purpose is to
-establish a controlled boundary between a trusted network, such as a corporate LAN, and an untrusted
-one, such as the public internet, so that only traffic matching an explicit policy can pass.
+A firewall is a network security control that monitors and filters traffic flowing between two networks, allowing or
+blocking packets according to a configured rule set. Its purpose is to establish a controlled boundary between a trusted
+network, such as a corporate LAN, and an untrusted one, such as the public internet, so that only traffic matching an
+explicit policy can pass.
 
 Firewalls are a foundational element of xref:security.adoc[*security*] and a classic mechanism for
-xref:isolation.adoc[*isolation*], segmenting networks the way a bulkhead segments a ship. They are
-most useful as one layer in a defense-in-depth strategy, not as a standalone defence.
+xref:isolation.adoc[*isolation*], segmenting networks the way a bulkhead segments a ship. They are most useful as one
+layer in a defense-in-depth strategy, not as a standalone defence.
 
 == Where firewalls operate
 
-Traditional firewalls are *packet filters* that operate at Layer 3 and Layer 4 of the
-xref:osi-model.adoc[*OSI model*]. Each packet is matched against rules that combine an
-xref:internet-protocol.adoc[*IP*] address range (often written in xref:cidr.adoc[*CIDR*] notation),
-a transport protocol such as xref:tcp.adoc[*TCP*] or xref:udp.adoc[*UDP*], and a port number — or,
-for xref:icmp.adoc[*ICMP*], a message type. A rule that permits `10.0.0.0/8` to reach `443/tcp` is a
-typical example. Stateless filters evaluate each packet in isolation. *Stateful* firewalls track the
-progress of connections and allow return traffic for an established flow without an explicit rule,
-which is the default behaviour of most modern devices.
+Traditional firewalls are *packet filters* that operate at Layer 3 and Layer 4 of the xref:osi-model.adoc[*OSI model*].
+Each packet is matched against rules that combine an xref:internet-protocol.adoc[*IP*] address range (often written in
+xref:cidr.adoc[*CIDR*] notation), a transport protocol such as xref:tcp.adoc[*TCP*] or xref:udp.adoc[*UDP*], and a port
+number — or, for xref:icmp.adoc[*ICMP*], a message type. A rule that permits `10.0.0.0/8` to reach `443/tcp` is a
+typical example. Stateless filters evaluate each packet in isolation. *Stateful* firewalls track the progress of
+connections and allow return traffic for an established flow without an explicit rule, which is the default behaviour of
+most modern devices.
 
-Newer *next-generation firewalls (NGFWs)* and *web application firewalls (WAFs)* extend filtering up
-to Layer 7, inspecting HTTP headers, request paths, and payloads to block application-layer attacks.
-A WAF is typically deployed as a xref:reverse-proxy.adoc[*reverse proxy*] or
-xref:edge-proxy.adoc[*edge proxy*] in front of web applications, sometimes alongside an
-xref:api-gateway.adoc[*API gateway*] that enforces its own allow-lists.
+Newer *next-generation firewalls (NGFWs)* and *web application firewalls (WAFs)* extend filtering up to Layer 7,
+inspecting HTTP headers, request paths, and payloads to block application-layer attacks. A WAF is typically deployed as
+a xref:reverse-proxy.adoc[*reverse proxy*] or xref:edge-proxy.adoc[*edge proxy*] in front of web applications, sometimes
+alongside an xref:api-gateway.adoc[*API gateway*] that enforces its own allow-lists.
 
 == Rule models
 
-A firewall policy is expressed as an ordered list of rules, each ending in an *allow* or *deny*
-action. Two contrasting defaults define the overall posture.
+A firewall policy is expressed as an ordered list of rules, each ending in an *allow* or *deny* action. Two contrasting
+defaults define the overall posture.
 
-* *Allow-list (default-deny).* Everything not explicitly permitted is blocked. This is the safer
-  default for internet-facing boundaries, because a new service that forgets to open a port is
-  merely unreachable rather than exposed.
+* *Allow-list (default-deny).* Everything not explicitly permitted is blocked. This is the safer default for
+  internet-facing boundaries, because a new service that forgets to open a port is merely unreachable rather than exposed.
 
-* *Deny-list (default-allow).* Everything not explicitly forbidden is allowed. Easier to operate at
-  first, but it leaks as the network grows. Every new service is reachable until someone remembers
-  to block it.
+* *Deny-list (default-allow).* Everything not explicitly forbidden is allowed. Easier to operate at first, but it leaks as
+  the network grows. Every new service is reachable until someone remembers to block it.
 
-Rules are evaluated in order and the first match wins, so the position of a rule matters as much as
-its content. A broad allow placed above a narrow deny silences the deny entirely, a common
-misconfiguration.
+Rules are evaluated in order and the first match wins, so the position of a rule matters as much as its content. A broad
+allow placed above a narrow deny silences the deny entirely, a common misconfiguration.
 
 == Deployment shapes
 
 Firewalls appear at several points in a topology.
 
-* *Network firewalls.* Sit at a network boundary, between a LAN and the internet or between tiers of
-  a data center, and police aggregate traffic. Hardware appliances were once the norm. In
-  xref:cloud-networking.adoc[*cloud networking*] the same function is delivered as virtual
-  appliances or as security groups and network ACLs attached to individual interfaces.
+* *Network firewalls.* Sit at a network boundary, between a LAN and the internet or between tiers of a data center, and
+  police aggregate traffic. Hardware appliances were once the norm. In xref:cloud-networking.adoc[*cloud networking*] the
+  same function is delivered as virtual appliances or as security groups and network ACLs attached to individual
+  interfaces.
 
-* *Host-based firewalls.* Run on the host itself, such as `iptables` or Windows Defender Firewall,
-  filtering traffic to and from a single machine. They defend against lateral movement inside a
-  perimeter that a network firewall cannot see.
+* *Host-based firewalls.* Run on the host itself, such as `iptables` or Windows Defender Firewall, filtering traffic to
+  and from a single machine. They defend against lateral movement inside a perimeter that a network firewall cannot see.
 
-* *Perimeter firewalls* guard the edge of a private network, while *internal firewalls* segment it,
-  restricting what one zone can do to another in line with the principle of
-  xref:secure-by-design.adoc[*secure by design*].
+* *Perimeter firewalls* guard the edge of a private network, while *internal firewalls* segment it, restricting what one
+  zone can do to another in line with the principle of xref:secure-by-design.adoc[*secure by design*].
 
 == What firewalls do not stop
 
-A firewall only enforces policy on the traffic it can see and understand, which leaves several blind
-spots.
+A firewall only enforces policy on the traffic it can see and understand, which leaves several blind spots.
 
-* Traffic over an allowed port is not necessarily benign. A firewall that permits `443/tcp` cannot
-  tell whether the payload is a legitimate HTTPS request or an attacker tunnelling
-  command-and-control traffic through it.
+* Traffic over an allowed port is not necessarily benign. A firewall that permits `443/tcp` cannot tell whether the
+  payload is a legitimate HTTPS request or an attacker tunnelling command-and-control traffic through it.
 
-* Encrypted traffic is opaque to a traditional firewall unless it terminates TLS, which pushes it
-  toward WAF or proxy territory.
+* Encrypted traffic is opaque to a traditional firewall unless it terminates TLS, which pushes it toward WAF or proxy
+  territory.
 
-* A request that originates from inside the trusted network bypasses a perimeter firewall. This is
-  precisely how xref:ssrf.adoc[*server-side request forgery (SSRF)*] attacks reach internal services
-  that were assumed to be unreachable.
+* A request that originates from inside the trusted network bypasses a perimeter firewall. This is precisely how
+  xref:ssrf.adoc[*server-side request forgery (SSRF)*] attacks reach internal services that were assumed to be
+  unreachable.
 
-* Firewalls do not authenticate users or authorise actions. That is the job of
-  xref:authentication.adoc[*authentication*] and xref:authorization.adoc[*authorization*] controls.
+* Firewalls do not authenticate users or authorise actions. That is the job of xref:authentication.adoc[*authentication*]
+  and xref:authorization.adoc[*authorization*] controls.
 
 For these reasons a firewall is a complement to, not a replacement for, application-level controls.
 

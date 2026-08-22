@@ -1,100 +1,91 @@
 = Service discovery (aka. dynamic routing)
 
-Service discovery is a mechanism that allows services in
-xref:distributed-system.adoc[*distributed software*] to find and communicate with each other
-dynamically. It hides the complex details of where services are located, so they can interact
-without knowing each other's exact network spots.
+Service discovery is a mechanism that allows services in xref:distributed-system.adoc[*distributed software*] to find
+and communicate with each other dynamically. It hides the complex details of where services are located, so they can
+interact without knowing each other's exact network spots.
 
-A service consumer needs the provider instance's network location, its IP address and port, to
-invoke it. In a traditional application these locations are relatively static and can be read from a
-configuration file. In a cloud-based xref:microservices.adoc[*microservice*] system they change
-constantly. Instances are added and removed by autoscaling, replaced after failures, and moved
-around by upgrades. Hard-coding locations or maintaining them by hand breaks down, so the lookup has
-to be dynamic.
+A service consumer needs the provider instance's network location, its IP address and port, to invoke it. In a
+traditional application these locations are relatively static and can be read from a configuration file. In a
+cloud-based xref:microservices.adoc[*microservice*] system they change constantly. Instances are added and removed by
+autoscaling, replaced after failures, and moved around by upgrades. Hard-coding locations or maintaining them by hand
+breaks down, so the lookup has to be dynamic.
 
-Service discovery is therefore particularly beneficial in large-scale microservice systems, in which
-services are added and removed frequently. All that a team needs to do to make its service
-discoverable is to register it in the service registry. This supports the independent development
-and deployment of services, a key design principle of the microservice architecture.
+Service discovery is therefore particularly beneficial in large-scale microservice systems, in which services are added
+and removed frequently. All that a team needs to do to make its service discoverable is to register it in the service
+registry. This supports the independent development and deployment of services, a key design principle of the
+microservice architecture.
 
 == The service registry
 
-A *service registry* maintains a record of all services available in a network, typically acting as
-the xref:single-source-of-truth.adoc[*source of truth*] for service locations. When a service is
-added or removed, the registry is updated accordingly.
+A *service registry* maintains a record of all services available in a network, typically acting as the
+xref:single-source-of-truth.adoc[*source of truth*] for service locations. When a service is added or removed, the
+registry is updated accordingly.
 
-The registry is the database at the heart of service discovery. It exposes a write API that
-instances use to register on startup and deregister on shutdown, and a read API that consumers use
-to look up available instances. To stay current, a registered instance periodically refreshes its
-entry with a xref:heartbeat.adoc[*heartbeat*]. If the heartbeat stops, the registry marks the
-instance dead and evicts it. Discovery thereby tracks liveness, not just existence.
+The registry is the database at the heart of service discovery. It exposes a write API that instances use to register on
+startup and deregister on shutdown, and a read API that consumers use to look up available instances. To stay current, a
+registered instance periodically refreshes its entry with a xref:heartbeat.adoc[*heartbeat*]. If the heartbeat stops,
+the registry marks the instance dead and evicts it. Discovery thereby tracks liveness, not just existence.
 
 Because every consumer depends on it, the registry is a potential
-xref:single-point-of-failure.adoc[*single point of failure*]. Production registries therefore run as
-a replicated cluster, using a xref:consensus-algorithm.adoc[*consensus*] protocol such as Raft or
-Zab to keep the replicas consistent. This choice pins the registry's position on the
-xref:cap-theorem.adoc[*CAP*] trade-off. Registries such as etcd, Consul, and Apache ZooKeeper favour
-consistency (CP), while Netflix Eureka favours availability (AP) and tolerates a stale registry
-rather than refusing reads.
+xref:single-point-of-failure.adoc[*single point of failure*]. Production registries therefore run as a replicated
+cluster, using a xref:consensus-algorithm.adoc[*consensus*] protocol such as Raft or Zab to keep the replicas
+consistent. This choice pins the registry's position on the xref:cap-theorem.adoc[*CAP*] trade-off. Registries such as
+etcd, Consul, and Apache ZooKeeper favour consistency (CP), while Netflix Eureka favours availability (AP) and tolerates
+a stale registry rather than refusing reads.
 
 == Discovery patterns
 
 Once the registry is populated, there are two main patterns for performing the lookup.
 
-* *Client-side discovery.* The consumer queries the registry itself, selects an instance, and
-  invokes it directly. This cuts a network hop and lets the client apply
-  xref:load-balancing.adoc[*load balancing*] policy itself, but couples every client to the registry
-  and forces each language and framework to implement its own discovery logic.
+* *Client-side discovery.* The consumer queries the registry itself, selects an instance, and invokes it directly. This
+  cuts a network hop and lets the client apply xref:load-balancing.adoc[*load balancing*] policy itself, but couples every
+  client to the registry and forces each language and framework to implement its own discovery logic.
 
-* *Server-side discovery.* The consumer routes requests through a
-  xref:load-balancer.adoc[*load balancer*] that queries the registry on the consumer's behalf and
-  forwards each request to an available instance. The client stays ignorant of discovery details, at
-  the cost of an extra hop and another infrastructure component to keep highly available.
+* *Server-side discovery.* The consumer routes requests through a xref:load-balancer.adoc[*load balancer*] that queries
+  the registry on the consumer's behalf and forwards each request to an available instance. The client stays ignorant of
+  discovery details, at the cost of an extra hop and another infrastructure component to keep highly available.
 
 == Registration patterns
 
 There are also two patterns for getting instances into the registry.
 
-* *Self-registration.* Each service instance registers and deregisters itself, and sends its own
-  heartbeats. It is simple, but couples every service to the registry's API.
+* *Self-registration.* Each service instance registers and deregisters itself, and sends its own heartbeats. It is simple,
+  but couples every service to the registry's API.
 
-* *Third-party registration.* A separate *service registrar* watches the deployment environment and
-  registers or deregisters instances on their behalf, decoupling services from the registry.
-  xref:container-orchestration.adoc[*Container orchestration*] platforms bake this in, registering
-  new instances automatically as they start them.
+* *Third-party registration.* A separate *service registrar* watches the deployment environment and registers or
+  deregisters instances on their behalf, decoupling services from the registry.
+  xref:container-orchestration.adoc[*Container orchestration*] platforms bake this in, registering new instances
+  automatically as they start them.
 
 == Implementation approaches
 
 Service discovery can be implemented in several ways, with different trade-offs.
 
-* *Dedicated registry.* A standalone registry such as etcd, Consul, Apache ZooKeeper, or Netflix
-  Eureka is the most common approach in microservice systems.
+* *Dedicated registry.* A standalone registry such as etcd, Consul, Apache ZooKeeper, or Netflix Eureka is the most common
+  approach in microservice systems.
 
-* *DNS-based discovery.* xref:dns.adoc[*DNS*] resolves service names to IP addresses and needs no
-  separate registry. It is universally supported and caches well, but records are slow to update and
-  multi-level caching makes entries go stale. It suits relatively stable sets of instances more than
-  rapidly churning ones.
+* *DNS-based discovery.* xref:dns.adoc[*DNS*] resolves service names to IP addresses and needs no separate registry. It is
+  universally supported and caches well, but records are slow to update and multi-level caching makes entries go stale. It
+  suits relatively stable sets of instances more than rapidly churning ones.
 
-* *Built-in discovery.* Container orchestration platforms such as xref:kubernetes.adoc[*Kubernetes*]
-  provide discovery as a built-in capability. A Kubernetes *Service* exposes a stable virtual IP and
-  DNS name that fronts a dynamically changing set of pods, while a per-node proxy routes traffic to
-  a healthy backing instance, providing server-side discovery as part of the platform.
+* *Built-in discovery.* Container orchestration platforms such as xref:kubernetes.adoc[*Kubernetes*] provide discovery as
+  a built-in capability. A Kubernetes *Service* exposes a stable virtual IP and DNS name that fronts a dynamically
+  changing set of pods, while a per-node proxy routes traffic to a healthy backing instance, providing server-side
+  discovery as part of the platform.
 
-A xref:service-mesh.adoc[*service mesh*] layers on top of the orchestrator's built-in discovery,
-typically via a sidecar proxy on each host that handles discovery, load balancing, and retries
-uniformly across all services.
+A xref:service-mesh.adoc[*service mesh*] layers on top of the orchestrator's built-in discovery, typically via a sidecar
+proxy on each host that handles discovery, load balancing, and retries uniformly across all services.
 
 == Decentralized discovery
 
-A decentralized alternative is to propagate membership changes through a
-xref:gossip-protocol.adoc[*gossip protocol*]. Each node maintains a partial view of the cluster and
-refreshes it through random peer-to-peer exchanges, so new members and departures spread without a
-central registry. The trade-off is xref:eventual-consistency.adoc[*eventual consistency*]. A joining
-service is not discovered instantaneously, only after a few gossip rounds.
+A decentralized alternative is to propagate membership changes through a xref:gossip-protocol.adoc[*gossip protocol*].
+Each node maintains a partial view of the cluster and refreshes it through random peer-to-peer exchanges, so new members
+and departures spread without a central registry. The trade-off is
+xref:eventual-consistency.adoc[*eventual consistency*]. A joining service is not discovered instantaneously, only after
+a few gossip rounds.
 
-This decentralized style of discovery is the norm in
-xref:peer-to-peer-architecture.adoc[*peer-to-peer (P2P) networks*], where there is no registry at
-all and peers must find one another through peer-to-peer exchanges alone.
+This decentralized style of discovery is the norm in xref:peer-to-peer-architecture.adoc[*peer-to-peer (P2P) networks*],
+where there is no registry at all and peers must find one another through peer-to-peer exchanges alone.
 
 == See also
 

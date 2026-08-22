@@ -1,87 +1,76 @@
 = Debugger
 
-A debugger is a tool for inspecting and controlling the execution of another program so that its
-behavior can be examined and faults localized. Whereas xref:testing.adoc[*testing*] tries to expose
-defects before they reach a user, a debugger is the instrument used once a defect has already
-surfaced and the question is *why*.
+A debugger is a tool for inspecting and controlling the execution of another program so that its behavior can be
+examined and faults localized. Whereas xref:testing.adoc[*testing*] tries to expose defects before they reach a user, a
+debugger is the instrument used once a defect has already surfaced and the question is *why*.
 
-A source-level debugger maps the running program back onto the source code the developer wrote. To
-do this it relies on *debug symbols*, metadata emitted by the compiler or interpreter that relates
-machine instructions to source lines, names to memory locations, and types to values. Without
-symbols the same mechanics still work, but the developer is left reading raw addresses and
-disassembly — work that shades into xref:reverse-engineering.adoc[*reverse engineering*] when the
-goal is to recover design from a built artifact rather than fix a known fault.
+A source-level debugger maps the running program back onto the source code the developer wrote. To do this it relies on
+*debug symbols*, metadata emitted by the compiler or interpreter that relates machine instructions to source lines,
+names to memory locations, and types to values. Without symbols the same mechanics still work, but the developer is left
+reading raw addresses and disassembly — work that shades into xref:reverse-engineering.adoc[*reverse engineering*] when
+the goal is to recover design from a built artifact rather than fix a known fault.
 
 == Core capabilities
 
 Most interactive debuggers expose a common set of operations.
 
-* *Breakpoints* suspend execution at a chosen source line, function entry, or memory address.
-  *Conditional breakpoints* fire only when an attached expression evaluates to true, which is
-  essential for loops that run many thousands of times before the failing iteration.
+* *Breakpoints* suspend execution at a chosen source line, function entry, or memory address. *Conditional breakpoints*
+  fire only when an attached expression evaluates to true, which is essential for loops that run many thousands of times
+  before the failing iteration.
 
-* *Stepping* advances execution one unit at a time. *Step into* follows a function call, *step over*
-  runs the call to completion, and *step out* runs until the current function returns.
+* *Stepping* advances execution one unit at a time. *Step into* follows a function call, *step over* runs the call to
+  completion, and *step out* runs until the current function returns.
 
-* *State inspection* exposes the values of variables, registers, and memory at the point where
-  execution is paused. *Watch expressions* re-evaluate an expression after each step, so a developer
-  can follow a value as it evolves.
+* *State inspection* exposes the values of variables, registers, and memory at the point where execution is paused.
+  *Watch expressions* re-evaluate an expression after each step, so a developer can follow a value as it evolves.
 
-* *Call stack inspection* shows the chain of active function invocations that led to the current
-  point, and most debuggers let the developer select an older frame to inspect that caller's local
-  state.
+* *Call stack inspection* shows the chain of active function invocations that led to the current point, and most debuggers
+  let the developer select an older frame to inspect that caller's local state.
 
-* *Evaluation* runs arbitrary expressions in the context of the paused frame, letting the developer
-  probe hypotheses without editing and rerunning the program.
+* *Evaluation* runs arbitrary expressions in the context of the paused frame, letting the developer probe hypotheses
+  without editing and rerunning the program.
 
 == How debuggers work
 
-A debugger controls a target program through the execution environment rather than by rewriting the
-program's logic. On a native platform it uses the operating system's *process-control* facilities to
-attach to a process, intercept signals, and read or write its memory. On Unix-like systems these are
-the `ptrace` system call and related interfaces. *Software breakpoints* are implemented by swapping
-the instruction at the target address for a special trap instruction that hands control back to the
-debugger. *Hardware breakpoints* use processor debug registers instead, which avoids modifying
-memory and is necessary when debugging code in read-only memory.
+A debugger controls a target program through the execution environment rather than by rewriting the program's logic. On
+a native platform it uses the operating system's *process-control* facilities to attach to a process, intercept signals,
+and read or write its memory. On Unix-like systems these are the `ptrace` system call and related interfaces.
+*Software breakpoints* are implemented by swapping the instruction at the target address for a special trap instruction
+that hands control back to the debugger. *Hardware breakpoints* use processor debug registers instead, which avoids
+modifying memory and is necessary when debugging code in read-only memory.
 
-Managed runtimes such as the JVM and the V8 JavaScript engine expose their own debugging protocols,
-eg. JDWP and the Chrome DevTools Protocol. These operate at the level of the runtime's internal
-representation rather than machine code, but the user-facing primitives – breakpoints, stepping,
-inspection – are the same.
+Managed runtimes such as the JVM and the V8 JavaScript engine expose their own debugging protocols, eg. JDWP and the
+Chrome DevTools Protocol. These operate at the level of the runtime's internal representation rather than machine code,
+but the user-facing primitives – breakpoints, stepping, inspection – are the same.
 
 == Interactive and post-mortem debugging
 
-The familiar workflow is *interactive debugging*: the developer launches the program under the
-debugger, or attaches to a running process, and drives execution step by step.
-*Post-mortem debugging* works the other way around. When a process crashes, the operating system can
-write a *core dump*, a snapshot of the process's memory and register state at the moment of failure.
-The debugger then loads that snapshot, letting the developer inspect the call stack and variables as
-they were at the crash, even though the process is no longer running. Post-mortem debugging is
-especially valuable for failures that cannot be reproduced on demand, including those captured from
-production.
+The familiar workflow is *interactive debugging*: the developer launches the program under the debugger, or attaches to
+a running process, and drives execution step by step. *Post-mortem debugging* works the other way around. When a process
+crashes, the operating system can write a *core dump*, a snapshot of the process's memory and register state at the
+moment of failure. The debugger then loads that snapshot, letting the developer inspect the call stack and variables as
+they were at the crash, even though the process is no longer running. Post-mortem debugging is especially valuable for
+failures that cannot be reproduced on demand, including those captured from production.
 
 == Limitations and pitfalls
 
-A debugger changes the very program it observes. Pausing execution alters timing, which can mask or
-introduce *Heisenbugs* – defects that disappear or move when instrumentation is applied. Concurrency
-bugs are particularly prone to this, because stepping through one thread suspends the others and
-destroys the interleaving that triggered the fault.
+A debugger changes the very program it observes. Pausing execution alters timing, which can mask or introduce
+*Heisenbugs* – defects that disappear or move when instrumentation is applied. Concurrency bugs are particularly prone
+to this, because stepping through one thread suspends the others and destroys the interleaving that triggered the fault.
 
-Because a debugger examines one specific execution, it can confirm *that* a bug occurs but cannot
-prove *why* in general. A failing run is evidence, not an explanation. For that reason a debugger is
-most powerful when paired with other tools. xref:logging.adoc[*Logging*] records what happened
-across many runs. xref:tracing.adoc[*Tracing*] extends that view across service boundaries in a
-xref:distributed-system.adoc[*distributed system*], where attaching a single-process debugger is no
-longer feasible. xref:profiling.adoc[*Profiling*] answers "where is the time going?" rather than
-"why is this wrong?". And xref:static-analysis.adoc[*static analysis*] finds whole classes of defect
-without executing the program at all.
+Because a debugger examines one specific execution, it can confirm *that* a bug occurs but cannot prove *why* in
+general. A failing run is evidence, not an explanation. For that reason a debugger is most powerful when paired with
+other tools. xref:logging.adoc[*Logging*] records what happened across many runs. xref:tracing.adoc[*Tracing*] extends
+that view across service boundaries in a xref:distributed-system.adoc[*distributed system*], where attaching a
+single-process debugger is no longer feasible. xref:profiling.adoc[*Profiling*] answers "where is the time going?"
+rather than "why is this wrong?". And xref:static-analysis.adoc[*static analysis*] finds whole classes of defect without
+executing the program at all.
 
-For the human side of the work, techniques like xref:rubber-ducking.adoc[*rubber ducking*] attack
-the problem from the opposite direction, reasoning about the code rather than running it.
+For the human side of the work, techniques like xref:rubber-ducking.adoc[*rubber ducking*] attack the problem from the
+opposite direction, reasoning about the code rather than running it.
 
-Debuggers are most often encountered bundled inside an
-xref:integrated-development-environment.adoc[*IDE*], and indeed the quality of its integrated
-debugger is one of the main reasons developers choose a particular IDE.
+Debuggers are most often encountered bundled inside an xref:integrated-development-environment.adoc[*IDE*], and indeed
+the quality of its integrated debugger is one of the main reasons developers choose a particular IDE.
 
 == See also
 

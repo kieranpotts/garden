@@ -1,79 +1,69 @@
 = Batch processing
 
-Batch processing is a data processing model in which data is collected into bounded groups, called
-*batches*, and each batch is processed as a single unit rather than record by record as it arrives.
-A batch run is finite: it has a defined beginning and end, and its results become available only
-once the entire batch has been processed. This contrasts with
-xref:stream-processing-system.adoc[*stream processing*], where data is handled continuously as it
-flows in, and with interactive or transactional processing, where each request is served as it is
-received.
+Batch processing is a data processing model in which data is collected into bounded groups, called *batches*, and each
+batch is processed as a single unit rather than record by record as it arrives. A batch run is finite: it has a defined
+beginning and end, and its results become available only once the entire batch has been processed. This contrasts with
+xref:stream-processing-system.adoc[*stream processing*], where data is handled continuously as it flows in, and with
+interactive or transactional processing, where each request is served as it is received.
 
-Batch processing is one of the oldest computing models. Early mainframes accepted work as
-*batch jobs* — decks of punched cards submitted to an operator and run in sequence — long before
-interactive xref:time-share-computing.adoc[*time-sharing*] existed. The same idea persists in modern
-form: a scheduled job wakes up, drains a queue or a dataset, transforms it, and writes the result
-somewhere for later use.
+Batch processing is one of the oldest computing models. Early mainframes accepted work as *batch jobs* — decks of
+punched cards submitted to an operator and run in sequence — long before interactive
+xref:time-share-computing.adoc[*time-sharing*] existed. The same idea persists in modern form: a scheduled job wakes up,
+drains a queue or a dataset, transforms it, and writes the result somewhere for later use.
 
 == Characteristics
 
 A batch workload has several distinguishing properties.
 
-* *Bounded input.* The batch is a fixed, finite collection of records known before processing
-  starts. Data that arrives during the run is held for the next batch, not folded into the current
-  one.
+* *Bounded input.* The batch is a fixed, finite collection of records known before processing starts. Data that arrives
+  during the run is held for the next batch, not folded into the current one.
 
-* *High throughput, high latency.* Because the system can amortize per-record overhead across the
-  whole batch, xref:throughput.adoc[*throughput*] tends to be high. The trade-off is
-  xref:latency.adoc[*latency*]: results are not available until the batch completes, which may be
-  hours after the data was collected.
+* *High throughput, high latency.* Because the system can amortize per-record overhead across the whole batch,
+  xref:throughput.adoc[*throughput*] tends to be high. The trade-off is xref:latency.adoc[*latency*]: results are not
+  available until the batch completes, which may be hours after the data was collected.
 
-* *Scheduled or triggered.* Batch jobs typically run on a schedule (nightly, hourly, at month-end)
-  or are triggered by an external event such as a file landing in a bucket or an upstream dependency
-  finishing. They are not driven by the arrival of individual records.
+* *Scheduled or triggered.* Batch jobs typically run on a schedule (nightly, hourly, at month-end) or are triggered by an
+  external event such as a file landing in a bucket or an upstream dependency finishing. They are not driven by the
+  arrival of individual records.
 
-* *Idempotent and restartable.* A well-designed batch job can be re-run without side effects. This
-  matters because failures are common when processing large volumes, and the job must be retried
-  from a checkpoint or from scratch.
+* *Idempotent and restartable.* A well-designed batch job can be re-run without side effects. This matters because
+  failures are common when processing large volumes, and the job must be retried from a checkpoint or from scratch.
 
 == When to use batch processing
 
-Batch processing suits workloads where the volume of data is large, the processing is uniform across
-records, and the result does not need to be available immediately. Common use cases include:
+Batch processing suits workloads where the volume of data is large, the processing is uniform across records, and the
+result does not need to be available immediately. Common use cases include:
 
-* *ETL and data warehousing.* Extracting, transforming, and loading data from operational systems
-  into analytics databases is conventionally a batch operation run on a fixed cadence.
+* *ETL and data warehousing.* Extracting, transforming, and loading data from operational systems into analytics databases
+  is conventionally a batch operation run on a fixed cadence.
 
-* *Reporting and aggregation.* Daily, weekly, or monthly summaries of business activity are natural
-  batch jobs.
+* *Reporting and aggregation.* Daily, weekly, or monthly summaries of business activity are natural batch jobs.
 
-* *Backups and reconciliation.* Comparing two datasets, regenerating derived state, or producing
-  snapshots are typically run in batches.
+* *Backups and reconciliation.* Comparing two datasets, regenerating derived state, or producing snapshots are typically
+  run in batches.
 
-* *Model training and index rebuilds.* Training a machine learning model over a historical dataset,
-  or rebuilding a search index, are batch workloads by nature.
+* *Model training and index rebuilds.* Training a machine learning model over a historical dataset, or rebuilding a search
+  index, are batch workloads by nature.
 
-Batch processing is less suitable when a response is needed within milliseconds or seconds of an
-event arriving. Fraud detection, live dashboards, and real-time alerting call for stream processing
-instead.
+Batch processing is less suitable when a response is needed within milliseconds or seconds of an event arriving. Fraud
+detection, live dashboards, and real-time alerting call for stream processing instead.
 
 == Batch and parallelism
 
-A batch is not inherently sequential. Large batches are usually split into partitions that are
-processed in xref:parallelism.adoc[*parallel*] across many workers, then combined.
-xref:map-reduce.adoc[*MapReduce*] and the wider *xref:big-data.adoc[big data*] ecosystem of
-frameworks such as Apache Hadoop and Apache Spark are built around this pattern: split the input,
-process each shard independently, then shuffle and reduce the partial results. The
-xref:bulk-synchronous-parallel.adoc[*bulk synchronous parallel*] model formalizes the same idea as a
-sequence of supersteps separated by global synchronization barriers.
+A batch is not inherently sequential. Large batches are usually split into partitions that are processed in
+xref:parallelism.adoc[*parallel*] across many workers, then combined. xref:map-reduce.adoc[*MapReduce*] and the wider
+*xref:big-data.adoc[big data*] ecosystem of frameworks such as Apache Hadoop and Apache Spark are built around this
+pattern: split the input, process each shard independently, then shuffle and reduce the partial results. The
+xref:bulk-synchronous-parallel.adoc[*bulk synchronous parallel*] model formalizes the same idea as a sequence of
+supersteps separated by global synchronization barriers.
 
 == Micro-batching
 
-A *micro-batch* is a compromise between batch and stream processing. Instead of waiting for a large
-window or a schedule, the system collects records for a short, fixed interval — seconds rather than
-hours — and processes each small batch in turn. Apache Spark Structured Streaming popularized this
-style. It trades some latency for simpler failure handling and higher throughput than a pure
-streaming pipeline, and it is one expression of the *natural batching* idea discussed under
-xref:mechanical-sympathy.adoc[*mechanical sympathy*].
+A *micro-batch* is a compromise between batch and stream processing. Instead of waiting for a large window or a
+schedule, the system collects records for a short, fixed interval — seconds rather than hours — and processes each small
+batch in turn. Apache Spark Structured Streaming popularized this style. It trades some latency for simpler failure
+handling and higher throughput than a pure streaming pipeline, and it is one expression of the *natural batching* idea
+discussed under xref:mechanical-sympathy.adoc[*mechanical sympathy*].
 
 == See also
 

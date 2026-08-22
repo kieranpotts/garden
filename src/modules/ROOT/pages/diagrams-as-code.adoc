@@ -46,142 +46,116 @@
 :link-websequencediagrams:   https://www.websequencediagrams.com/
 :link-yuml:                  https://yuml.me/
 
-Diagrams-as-code solutions are becoming increasingly popular as xref:modeling.adoc[*modeling*]
-solutions. Tools such as {link-structurizr-dsl}[Structurizr DSL] offer a middle ground
-between lightweight diagramming and heavyweight modeling solutions. Some of the DSLs are close to
-modeling languages, and the plain-text syntax can be version controlled and maintained alongside the
-source code it describes. By comparison, xref:diagramming.adoc[*diagramming tools*] tend to use
+Diagrams-as-code solutions are becoming increasingly popular as xref:modeling.adoc[*modeling*] solutions. Tools such as
+{link-structurizr-dsl}[Structurizr DSL] offer a middle ground between lightweight diagramming and heavyweight modeling
+solutions. Some of the DSLs are close to modeling languages, and the plain-text syntax can be version controlled and
+maintained alongside the source code it describes. By comparison, xref:diagramming.adoc[*diagramming tools*] tend to use
 binary formats (such as images) or heavyweight plain-text formats that are difficult to diff.
 
 == Diagrams-as-code tools
 
-Below is a not-exhaustive list of diagrams-as-code solutions. Most
-xref:modeling.adoc[*modeling tools*] also generate visual representations of models that are defined
-in a structured data format. The distinction between modeling and diagrams-as-code is not always
-clear-cut, and some tools could be listed in both categories, such as
-{link-bpmn-js}[bpmn-js] and {link-structurizr}[Structurizr]. The
-distinguishing characteristic of modeling tools is that they depend on a formal modeling notation
-that describes the semantics of a system, whereas the syntax used by diagrams-as-code tools is less
-formal and more focused on the visual characteristics of the rendered image.
+Below is a not-exhaustive list of diagrams-as-code solutions. Most xref:modeling.adoc[*modeling tools*] also generate
+visual representations of models that are defined in a structured data format. The distinction between modeling and
+diagrams-as-code is not always clear-cut, and some tools could be listed in both categories, such as
+{link-bpmn-js}[bpmn-js] and {link-structurizr}[Structurizr]. The distinguishing characteristic of modeling tools is that
+they depend on a formal modeling notation that describes the semantics of a system, whereas the syntax used by
+diagrams-as-code tools is less formal and more focused on the visual characteristics of the rendered image.
 
-{link-kroki}[Kroki] is a noteworthy tool as it encapsulates most of the other text-to-diagram
-tools listed here, and abstracts them all behind a unified HTTP API. It is available as a free web
-service, and also as a Docker image for self-hosting. Integrations are available for Markdown and
-AsciiDoc, allowing for automatic rendering of diagrams that are embedded in these document types.
+{link-kroki}[Kroki] is a noteworthy tool as it encapsulates most of the other text-to-diagram tools listed here, and
+abstracts them all behind a unified HTTP API. It is available as a free web service, and also as a Docker image for
+self-hosting. Integrations are available for Markdown and AsciiDoc, allowing for automatic rendering of diagrams that
+are embedded in these document types.
 
-* {link-bpmn-js}[bpmn-js]: JavaScript library for rendering BPMN 2.0 diagrams.
-  BPMN (Business Process Model and Notation) specifies its own XML DSL, which this library parses
-  and renders.
+* {link-bpmn-js}[bpmn-js]: JavaScript library for rendering BPMN 2.0 diagrams. BPMN (Business Process Model and Notation)
+  specifies its own XML DSL, which this library parses and renders.
 
-* {link-blockdiag}[blockdiag]: Python tool for rendering diagrams as images from plain text
-  files. Supports simple block diagrams (flowcharts), sequence diagrams, activity diagrams, and
-  logical network diagrams.
+* {link-blockdiag}[blockdiag]: Python tool for rendering diagrams as images from plain text files. Supports simple block
+  diagrams (flowcharts), sequence diagrams, activity diagrams, and logical network diagrams.
 
-* {link-bytefield}[Bytefield]: LaTeX package for creating illustrations of
-  network protocol specifications, or anything else that uses fields of data.
+* {link-bytefield}[Bytefield]: LaTeX package for creating illustrations of network protocol specifications, or anything
+  else that uses fields of data.
 
 * {link-c4sharp}[C4#]: .Net library for building C4 diagrams from code.
 
-* {link-c4interflow}[C4 InterFlow]: Inspired by the C4 Model, this
-  project allows for generation of architecture and business process diagrams from code.
+* {link-c4interflow}[C4 InterFlow]: Inspired by the C4 Model, this project allows for generation of architecture and
+  business process diagrams from code.
 
 * {link-chartmage}[Chart Mage]: Web tool to generate sequence diagrams and flowcharts.
 
-* {link-cue4puml4c4}[CUE4Puml4C4]: A CUE-based tool for generating PlantUML
-  code for C4 diagrams. The C4 model is described using the {link-cuelang}[CUE]
-  *[schema language]*, which is translated to a PUML representation, which is finally rendered using
-  the PlantUML server.
+* {link-cue4puml4c4}[CUE4Puml4C4]: A CUE-based tool for generating PlantUML code for C4 diagrams. The C4 model is
+  described using the {link-cuelang}[CUE] *[schema language]*, which is translated to a PUML representation, which is
+  finally rendered using the PlantUML server.
 
-* {link-d2lang}[D2Lang]: Open-source "declarative diagramming" language, used by
-  {link-terrastruct}[Terrastruct].
+* {link-d2lang}[D2Lang]: Open-source "declarative diagramming" language, used by {link-terrastruct}[Terrastruct].
 
-* {link-databasediagram}[Database Diagram]: Online tool for generating entity-relationship
-  diagrams from text.
+* {link-databasediagram}[Database Diagram]: Online tool for generating entity-relationship diagrams from text.
 
-* {link-dbml}[Database Markup Language (DBML)]: See
-  xref:data-modeling.adoc[*data modeling*].
+* {link-dbml}[Database Markup Language (DBML)]: See xref:data-modeling.adoc[*data modeling*].
 
-* {link-diagram-codes}[Diagram.codes]: Online diagramming tool that supports a simple
-  text-to-diagram syntax.
+* {link-diagram-codes}[Diagram.codes]: Online diagramming tool that supports a simple text-to-diagram syntax.
 
-* {link-diagrams-mingrammer}[Diagrams-as-Code]: Draw cloud architecture diagrams using Python
-  code. Also supports the {link-mingrammer-c4}[C4 model].
+* {link-diagrams-mingrammer}[Diagrams-as-Code]: Draw cloud architecture diagrams using Python code. Also supports the
+  {link-mingrammer-c4}[C4 model].
 
-* {link-ditaa}[Ditaa]: Command line utility written in Java that converts ASCII
-  art diagrams into images.
+* {link-ditaa}[Ditaa]: Command line utility written in Java that converts ASCII art diagrams into images.
 
-* {link-erd}[erd]: CLI utility for generating entity-relationship diagrams
-  from a plain-text description. Requires GraphViz.
+* {link-erd}[erd]: CLI utility for generating entity-relationship diagrams from a plain-text description. Requires
+  GraphViz.
 
-* {link-flowchart-fun}[flowchart.fun]: Online flowchart generator, uses an intuitive
-  indentation-based syntax.
+* {link-flowchart-fun}[flowchart.fun]: Online flowchart generator, uses an intuitive indentation-based syntax.
 
 * {link-graphviz}[Graphviz]: Open-source text-to-diagram generation tool.
 
 * {link-ilograph}[Ilograph]: Interactive diagramming tool using YAML.
 
-* {link-markdeep}[Markdeep]: Markdown-like
-  xref:lightweight-text-markup-language.adoc[*lightweight text markup language*] that natively
-  supports embedded diagrams, calendars, and equations – all written as ASCII art.
+* {link-markdeep}[Markdeep]: Markdown-like xref:lightweight-text-markup-language.adoc[*lightweight text markup language*]
+  that natively supports embedded diagrams, calendars, and equations – all written as ASCII art.
 
-* {link-mermaid}[Mermaid]: JavaScript-based diagramming and charting tool. Supports a
-  text-to-diagram syntax inspired by Markdown.
+* {link-mermaid}[Mermaid]: JavaScript-based diagramming and charting tool. Supports a text-to-diagram syntax inspired by
+  Markdown.
 
 * {link-model-go}[Model]: Define C4 models in Go code.
 
-* {link-nomnoml}[nomnoml]: Creates basic, but good-looking, UML diagrams from a
-  lightweight text notation. Open-source JavaScript library, and also available as a free-to-access
-  web app.
+* {link-nomnoml}[nomnoml]: Creates basic, but good-looking, UML diagrams from a lightweight text notation. Open-source
+  JavaScript library, and also available as a free-to-access web app.
 
-* {link-pikchr}[Pikchr]: Pikchr (pronounced "picture") is a simple markup language for
-  defining diagrams in technical documentation. It is specifically designed to be embedded in fenced
-  code blocks in Markdown or similar lightweight plain text markup languages. The syntax is inspired
-  by {link-pic-wiki}[PIC], which was an early domain-specific
-  language for describing line diagrams, originally for use in typesetting.
+* {link-pikchr}[Pikchr]: Pikchr (pronounced "picture") is a simple markup language for defining diagrams in technical
+  documentation. It is specifically designed to be embedded in fenced code blocks in Markdown or similar lightweight plain
+  text markup languages. The syntax is inspired by {link-pic-wiki}[PIC], which was an early domain-specific language for
+  describing line diagrams, originally for use in typesetting.
 
-* {link-plantuml}[PlantUML]: Popular text-to-diagram language and tool that supports a wide
-  range of diagram types – not only UML. The C4 model is supported through
-  {link-c4-plantuml}[this extension].
-  {link-c4-builder}[C4 Builder] is a Node.js CLI for building C4 diagrams
-  using the C4-PlantUML extension.
+* {link-plantuml}[PlantUML]: Popular text-to-diagram language and tool that supports a wide range of diagram types – not
+  only UML. The C4 model is supported through {link-c4-plantuml}[this extension]. {link-c4-builder}[C4 Builder] is a
+  Node.js CLI for building C4 diagrams using the C4-PlantUML extension.
 
-* {link-pumla}[pumla ("PlantUML Manager")]: Attempts to extend PlantUML
-  with the ability to reuse components and compose design from components, making it a bit closer to
-  a proper modeling solution.
+* {link-pumla}[pumla ("PlantUML Manager")]: Attempts to extend PlantUML with the ability to reuse components and compose
+  design from components, making it a bit closer to a proper modeling solution.
 
 * {link-quickdatabasediagrams}[Quick Database Diagrams]: Does what it says on the tin.
 
-* {link-rdbmodel}[RDB Model]: Lightweight web GUI for creating C4-inspired system
-  designs.
+* {link-rdbmodel}[RDB Model]: Lightweight web GUI for creating C4-inspired system designs.
 
-* {link-structurizr}[Structurizr]: Developed by {link-simonbrown}[Simon Brown], who also
-  created the xref:c4-model.adoc[*C4 model*], Structurizr is an online diagrams-as-code tool that
-  generates C4 models from a plain-text language, the
-  {link-structurizr-dsl}[Structurizr DSL].
+* {link-structurizr}[Structurizr]: Developed by {link-simonbrown}[Simon Brown], who also created the
+  xref:c4-model.adoc[*C4 model*], Structurizr is an online diagrams-as-code tool that generates C4 models from a
+  plain-text language, the {link-structurizr-dsl}[Structurizr DSL].
 
-** {link-pystructurizr}[PyStructurizr] is a Python DSL inspired by
-Structurizr.
+** {link-pystructurizr}[PyStructurizr] is a Python DSL inspired by Structurizr.
 
-* {link-svgbob}[SVGbob]: Converts ASCII art shapes into smooth SVG
-  vector art.
+* {link-svgbob}[SVGbob]: Converts ASCII art shapes into smooth SVG vector art.
 
 * {link-swimlanes}[Swimlanes.io]: Free online tool for generating sequence diagrams.
 
-* {link-typograms}[Typograms]: JavaScript library that will transform
-  ASCII art embedded in `<script type="text/typogram">` tags in a web page, into "typographic
-  diagrams".
+* {link-typograms}[Typograms]: JavaScript library that will transform ASCII art embedded in
+  `<script type="text/typogram">` tags in a web page, into "typographic diagrams".
 
-* {link-umple}[Umple]: Modeling language and tool. It can be used to create
-  UML class and state diagrams from textual representations, and it adds UML abstractions such as
-  Associations, Attributes and State Machines to object-oriented programming languages such as Java,
-  C++, PHP and Ruby – and is thus somewhat closer to a proper modeling tool than your typical
-  text-to-diagram tool. Runs on a JVM. An {link-umple-online}[online editor] is available.
+* {link-umple}[Umple]: Modeling language and tool. It can be used to create UML class and state diagrams from textual
+  representations, and it adds UML abstractions such as Associations, Attributes and State Machines to object-oriented
+  programming languages such as Java, C++, PHP and Ruby – and is thus somewhat closer to a proper modeling tool than your
+  typical text-to-diagram tool. Runs on a JVM. An {link-umple-online}[online editor] is available.
 
-* {link-wavedrom}[Wavedrop]: Cross-platform desktop editor to render timing diagrams from a
-  simple textual description.
+* {link-wavedrom}[Wavedrop]: Cross-platform desktop editor to render timing diagrams from a simple textual description.
 
-* {link-websequencediagrams}[Web Sequence Diagrams]: Online tool for generating sequence
-  diagrams from text.
+* {link-websequencediagrams}[Web Sequence Diagrams]: Online tool for generating sequence diagrams from text.
 
 * {link-yuml}[yuml]: Online tool for generating UML diagrams from text.
 

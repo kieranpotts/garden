@@ -1,77 +1,67 @@
 = Input validation
 
-Input validation is the practice of checking data entering a system against an explicit set of
-expectations before that data is processed, stored, or passed onward. It is a primary
-xref:security.adoc[*security*] control and a foundational habit of
-xref:secure-by-design.adoc[*secure by design*] systems. Its purpose is twofold. It protects the
-system from malformed or hostile data that could trigger bugs, crashes, or injection attacks, and it
-gives the caller early, precise feedback when a request is wrong, rather than letting the error
-propagate and surface as a confusing symptom deep inside the system.
+Input validation is the practice of checking data entering a system against an explicit set of expectations before that
+data is processed, stored, or passed onward. It is a primary xref:security.adoc[*security*] control and a foundational
+habit of xref:secure-by-design.adoc[*secure by design*] systems. Its purpose is twofold. It protects the system from
+malformed or hostile data that could trigger bugs, crashes, or injection attacks, and it gives the caller early, precise
+feedback when a request is wrong, rather than letting the error propagate and surface as a confusing symptom deep inside
+the system.
 
 == Where to validate
 
-Validation is most valuable at *trust boundaries*, the points where data crosses from an untrusted
-source into a component that trusts its input. Public API endpoints, file parsers, message
-consumers, and command-line interfaces are all trust boundaries. Inside a single process or a
-tightly coupled component, a bad input usually signals a programming defect and is better handled by
-xref:fail-fast.adoc[*fail-fast*] assertions. At a boundary, the sender may be a different team, a
-different organization, or an older version of yourself, and the data must be treated as untrusted
+Validation is most valuable at *trust boundaries*, the points where data crosses from an untrusted source into a
+component that trusts its input. Public API endpoints, file parsers, message consumers, and command-line interfaces are
+all trust boundaries. Inside a single process or a tightly coupled component, a bad input usually signals a programming
+defect and is better handled by xref:fail-fast.adoc[*fail-fast*] assertions. At a boundary, the sender may be a
+different team, a different organization, or an older version of yourself, and the data must be treated as untrusted
 until it has been checked.
 
-Validating at the boundary, before any side-effectful work begins, is also what makes the rest of
-the system cheaper to run. A request rejected at the edge never reaches the database, the downstream
-service, or the billing call. The same request rejected only after it has written state is far
-harder to unwind.
+Validating at the boundary, before any side-effectful work begins, is also what makes the rest of the system cheaper to
+run. A request rejected at the edge never reaches the database, the downstream service, or the billing call. The same
+request rejected only after it has written state is far harder to unwind.
 
 == Syntax versus semantics
 
 A useful distinction separates two layers of checking.
 
-* *Syntactic validation* asks whether the data is well-formed for its type. A field claimed to be an
-  integer is an integer. A date parses as a date. A string fits the expected length and character
-  set.
-* *Semantic validation* asks whether the well-formed value is meaningful in context. The integer is
-  in the permitted range. The date is not in the past. The referenced record actually exists.
+* *Syntactic validation* asks whether the data is well-formed for its type. A field claimed to be an integer is an
+  integer. A date parses as a date. A string fits the expected length and character set.
+* *Semantic validation* asks whether the well-formed value is meaningful in context. The integer is in the permitted
+  range. The date is not in the past. The referenced record actually exists.
 
-Both layers are needed. Syntactic checks are cheap and mechanical, and many can be delegated to a
-schema language such as xref:json-schema.adoc[*JSON Schema*]. Semantic checks usually require
-business knowledge and a round-trip to authoritative state, which is why they tend to live in the
-application or domain layer rather than at the edge.
+Both layers are needed. Syntactic checks are cheap and mechanical, and many can be delegated to a schema language such
+as xref:json-schema.adoc[*JSON Schema*]. Semantic checks usually require business knowledge and a round-trip to
+authoritative state, which is why they tend to live in the application or domain layer rather than at the edge.
 
 == Allowlisting over denylisting
 
-A persistent lesson of xref:owasp.adoc[*OWASP*] guidance is that validation should prefer
-*allowlisting* over *denylisting*. An allowlist defines the shapes that are known to be safe and
-rejects everything else. A denylist attempts to enumerate the shapes that are dangerous and lets
-everything else through. Allowlists fail closed. Denylists fail open, and attackers are inventive at
-finding shapes the denylist author never imagined.
+A persistent lesson of xref:owasp.adoc[*OWASP*] guidance is that validation should prefer *allowlisting* over
+*denylisting*. An allowlist defines the shapes that are known to be safe and rejects everything else. A denylist
+attempts to enumerate the shapes that are dangerous and lets everything else through. Allowlists fail closed. Denylists
+fail open, and attackers are inventive at finding shapes the denylist author never imagined.
 
-The same reasoning applies to output. xref:cross-site-scripting.adoc[*Cross- site scripting (XSS)*]
-and xref:sql-injection.adoc[*SQL injection*] are both injection failures, and both are routinely
-traced to denylist-based input filtering that an attacker evaded through encoding, mutation, or a
-parser quirk. Validation rejects malformed data early, but it is a secondary measure for injection.
-The control that actually closes the gap is contextual output encoding for the sink the data is
-entering. Validation reduces the volume of hostile input that ever reaches that sink.
+The same reasoning applies to output. xref:cross-site-scripting.adoc[*Cross- site scripting (XSS)*] and
+xref:sql-injection.adoc[*SQL injection*] are both injection failures, and both are routinely traced to denylist-based
+input filtering that an attacker evaded through encoding, mutation, or a parser quirk. Validation rejects malformed data
+early, but it is a secondary measure for injection. The control that actually closes the gap is contextual output
+encoding for the sink the data is entering. Validation reduces the volume of hostile input that ever reaches that sink.
 
 == Validation versus sanitization
 
-Validation and *sanitization* are often conflated but do different things. Validation decides
-whether input is acceptable and rejects it if not. Sanitization rewrites input to make it
-acceptable, for example stripping disallowed characters or normalizing Unicode. Sanitization is
-riskier because it silently mutates the caller's data and can itself introduce bugs or bypasses.
-Where the data can be rejected outright, validating is preferable. Where the data must be accepted
-and cleaned, sanitization should happen explicitly, in one place, and the result should be
-re-validated.
+Validation and *sanitization* are often conflated but do different things. Validation decides whether input is
+acceptable and rejects it if not. Sanitization rewrites input to make it acceptable, for example stripping disallowed
+characters or normalizing Unicode. Sanitization is riskier because it silently mutates the caller's data and can itself
+introduce bugs or bypasses. Where the data can be rejected outright, validating is preferable. Where the data must be
+accepted and cleaned, sanitization should happen explicitly, in one place, and the result should be re-validated.
 
 == Tension with the robustness principle
 
-Strict input validation sits in direct tension with the
-xref:robustness-principle.adoc[*robustness principle*] (Postel's law), which counsels being liberal
-in what you accept. The two are not contradictions so much as a trade-off struck at different
-boundaries. At a public network API, accepting mildly non-conformant but recoverable input preserves
-interoperability and xref:backwards-compatibility.adoc[*backwards compatibility*]. At a security
-boundary facing hostile input, strictness is the safer default. The discipline is to be liberal
-about cosmetic variation and strict about anything that affects safety or meaning.
+Strict input validation sits in direct tension with the xref:robustness-principle.adoc[*robustness principle*] (Postel's
+law), which counsels being liberal in what you accept. The two are not contradictions so much as a trade-off struck at
+different boundaries. At a public network API, accepting mildly non-conformant but recoverable input preserves
+interoperability and xref:backwards-compatibility.adoc[*backwards compatibility*]. At a security boundary facing hostile
+input, strictness is the safer default. The discipline is to be liberal about cosmetic variation and strict about
+anything that affects safety or meaning.
 
 == See also
 

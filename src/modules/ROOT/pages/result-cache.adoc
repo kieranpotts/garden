@@ -2,67 +2,58 @@
 
 :link-horicky: https://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html
 
-A *result cache* is a xref:caching.adoc[*caching*] pattern in which the output of an operation is
-stored, keyed by the operation's inputs, so that subsequent identical requests are served from the
-cache instead of being recomputed. It is the general, service-level form of caching. The operation
-can be a function call, a service request, a database query, or an entire request-response flow, and
-the cache can live in-process, on a dedicated cache server, or in a
+A *result cache* is a xref:caching.adoc[*caching*] pattern in which the output of an operation is stored, keyed by the
+operation's inputs, so that subsequent identical requests are served from the cache instead of being recomputed. It is
+the general, service-level form of caching. The operation can be a function call, a service request, a database query,
+or an entire request-response flow, and the cache can live in-process, on a dedicated cache server, or in a
 xref:distributed-caching.adoc[*distributed cache*].
 
-The pattern pays off whenever the same inputs recur and the computation is expensive relative to a
-cache lookup. That is typical of read-heavy workloads with skewed
-xref:access-pattern.adoc[*access patterns*], where a small number of inputs account for most of the
-traffic. Serving those from the cache lowers xref:latency.adoc[*latency*] on the hot path and
+The pattern pays off whenever the same inputs recur and the computation is expensive relative to a cache lookup. That is
+typical of read-heavy workloads with skewed xref:access-pattern.adoc[*access patterns*], where a small number of inputs
+account for most of the traffic. Serving those from the cache lowers xref:latency.adoc[*latency*] on the hot path and
 offloads the backing service, raising xref:throughput.adoc[*throughput*] and overall
-xref:scalability.adoc[*scalability*]. It is one of the canonical
-xref:design-pattern.adoc[*design patterns*] for scalable systems, alongside load balancing and
-scatter-and-gather, for decoupling a service's read capacity from its compute capacity.
+xref:scalability.adoc[*scalability*]. It is one of the canonical xref:design-pattern.adoc[*design patterns*] for
+scalable systems, alongside load balancing and scatter-and-gather, for decoupling a service's read capacity from its
+compute capacity.
 
 == Relationship to other caches
 
-A result cache is the umbrella term. Several other entries in this garden describe specialised forms
-of it.
+A result cache is the umbrella term. Several other entries in this garden describe specialised forms of it.
 
-* xref:memoization.adoc[*Memoization*] is the in-process, function-level case. The cache lives
-  inside the program, keyed by the function's arguments, and the function must be deterministic for
-  the cache to be correct.
+* xref:memoization.adoc[*Memoization*] is the in-process, function-level case. The cache lives inside the program, keyed
+  by the function's arguments, and the function must be deterministic for the cache to be correct.
 
-* A xref:materialized-view.adoc[*materialized view*] is the database-internal case, in which the
-  query engine itself stores the precomputed result of a query as a physical table and manages its
-  refresh.
+* A xref:materialized-view.adoc[*materialized view*] is the database-internal case, in which the query engine itself
+  stores the precomputed result of a query as a physical table and manages its refresh.
 
-* The xref:key-value-cache.adoc[*KV cache*] of a transformer model is a specialized result cache for
-  the attention computation, holding the key and value vectors already computed for earlier tokens.
+* The xref:key-value-cache.adoc[*KV cache*] of a transformer model is a specialized result cache for the attention
+  computation, holding the key and value vectors already computed for earlier tokens.
 
-What distinguishes a result cache as a pattern in its own right is that it is usually deployed as a
-separate tier in front of a service, rather than woven into a function or a database engine.
+What distinguishes a result cache as a pattern in its own right is that it is usually deployed as a separate tier in
+front of a service, rather than woven into a function or a database engine.
 
 == Cache keys and correctness
 
-The cache key must capture everything the result depends on. For a pure function that is just its
-arguments. For a service request it typically includes the request parameters and any state that
-affects the response, such as the user's locale or the version of the data being read. A key that
-omits a relevant input returns a correct-looking but wrong result. The cache lies confidently. This
-is the same correctness constraint that makes xref:memoization.adoc[memoization] safe only for
-deterministic functions, but at service level it is harder to see, because the dependencies are
-spread across configuration, feature flags, and backing data.
+The cache key must capture everything the result depends on. For a pure function that is just its arguments. For a
+service request it typically includes the request parameters and any state that affects the response, such as the user's
+locale or the version of the data being read. A key that omits a relevant input returns a correct-looking but wrong
+result. The cache lies confidently. This is the same correctness constraint that makes
+xref:memoization.adoc[memoization] safe only for deterministic functions, but at service level it is harder to see,
+because the dependencies are spread across configuration, feature flags, and backing data.
 
-When the underlying data changes, cached results become stale. The same invalidation strategies that
-apply to caching generally apply here: write-through, write-around, cache-aside, and time-to-live. A
-result cache often relies on time-to-live because it sits in front of a service whose writes it
-cannot observe directly, accepting a bounded staleness window in exchange for operational
-simplicity.
+When the underlying data changes, cached results become stale. The same invalidation strategies that apply to caching
+generally apply here: write-through, write-around, cache-aside, and time-to-live. A result cache often relies on
+time-to-live because it sits in front of a service whose writes it cannot observe directly, accepting a bounded
+staleness window in exchange for operational simplicity.
 
 == Result cache versus idempotency-key caching
 
-A result cache is easily confused with the idempotency-key pattern described in
-xref:idempotent.adoc[*idempotent*]. Both store the result of a request and return the stored value
-on a repeat. The difference is in what they key on and what they are for. A result cache keys on the
-request's semantic inputs and exists for xref:performance.adoc[*performance*]. Identical inputs
-should not pay twice. An idempotency key is client-supplied and scoped to a single logical request,
-and it exists for correctness. A retried request must not have a second effect. A result cache hit
-may serve a different client than the one that populated the cache. An idempotency-key hit serves
-only the client that originated the key.
+A result cache is easily confused with the idempotency-key pattern described in xref:idempotent.adoc[*idempotent*]. Both
+store the result of a request and return the stored value on a repeat. The difference is in what they key on and what
+they are for. A result cache keys on the request's semantic inputs and exists for xref:performance.adoc[*performance*].
+Identical inputs should not pay twice. An idempotency key is client-supplied and scoped to a single logical request, and
+it exists for correctness. A retried request must not have a second effect. A result cache hit may serve a different
+client than the one that populated the cache. An idempotency-key hit serves only the client that originated the key.
 
 == See also
 
@@ -78,6 +69,4 @@ only the client that originated the key.
 
 == References
 
-* Ricky Ho (2010).
-  {link-horicky}[_Scalable System Design Patterns_].
-  I Do Not Know.
+* Ricky Ho (2010). {link-horicky}[_Scalable System Design Patterns_]. I Do Not Know.

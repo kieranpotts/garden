@@ -1,81 +1,76 @@
 = Profiling
 
-Profiling is a form of *dynamic program analysis* that measures how a program uses resources while
-it runs. A *profiler* instruments or samples the target program and attributes the cost – CPU time,
-memory allocation, I/O, lock contention, cache misses – to the specific functions, lines, or
-instructions that incur it. Where a xref:debugger.adoc[*debugger*] answers *why is this wrong?*, a
-profiler answers *where is the time going?*.
+Profiling is a form of *dynamic program analysis* that measures how a program uses resources while it runs. A *profiler*
+instruments or samples the target program and attributes the cost – CPU time, memory allocation, I/O, lock contention,
+cache misses – to the specific functions, lines, or instructions that incur it. Where a xref:debugger.adoc[*debugger*]
+answers *why is this wrong?*, a profiler answers *where is the time going?*.
 
-Profiling is the empirical foundation of optimization work. Optimizing without a profile is
-guesswork, and the guess is usually wrong: hot paths are rarely where intuition places them. This is
-the core of the argument against xref:premature-optimization.adoc[*premature optimization*] –
-establish the critical paths with measurement, then optimize them, and measure again. A profiler is
-what makes that discipline possible.
+Profiling is the empirical foundation of optimization work. Optimizing without a profile is guesswork, and the guess is
+usually wrong: hot paths are rarely where intuition places them. This is the core of the argument against
+xref:premature-optimization.adoc[*premature optimization*] – establish the critical paths with measurement, then
+optimize them, and measure again. A profiler is what makes that discipline possible.
 
 == What a profiler measures
 
 A profiler attributes one or more resource costs to the program's call stack over time.
 
-* *CPU profiling* records where the program spends wall-clock or on-CPU time. The result is a
-  breakdown of cost by function, often presented as a *call tree* or a *flame graph*.
+* *CPU profiling* records where the program spends wall-clock or on-CPU time. The result is a breakdown of cost by
+  function, often presented as a *call tree* or a *flame graph*.
 
-* *Allocation profiling* tracks where memory is allocated, which matters especially in languages
-  with a garbage collector. Allocation pressure drives GC pauses, so reducing allocations often
-  reduces xref:latency.adoc[*latency*] more than micro-optimizing CPU.
+* *Allocation profiling* tracks where memory is allocated, which matters especially in languages with a garbage collector.
+  Allocation pressure drives GC pauses, so reducing allocations often reduces xref:latency.adoc[*latency*] more than
+  micro-optimizing CPU.
 
-* *I/O profiling* attributes time spent waiting on files, sockets, or database calls, exposing idle
-  time that a CPU profile hides.
+* *I/O profiling* attributes time spent waiting on files, sockets, or database calls, exposing idle time that a CPU
+  profile hides.
 
-* *Contention profiling* records time blocked on xref:locking.adoc[*locks*] or other synchronization
-  primitives, which is the dominant cost in many xref:concurrency.adoc[*concurrent*] systems.
+* *Contention profiling* records time blocked on xref:locking.adoc[*locks*] or other synchronization primitives, which is
+  the dominant cost in many xref:concurrency.adoc[*concurrent*] systems.
 
 == Sampling and instrumentation
 
 Profilers fall into two broad families, with different trade-offs.
 
-*Sampling profilers* periodically interrupt the program – typically via a timer or signal – and
-record the call stack at that instant. The statistical distribution of sampled stacks approximates
-where time is spent, with overhead low enough to run in production. The cost is resolution: short,
-hot functions may be undercounted, and very rare events may be missed entirely.
+*Sampling profilers* periodically interrupt the program – typically via a timer or signal – and record the call stack at
+that instant. The statistical distribution of sampled stacks approximates where time is spent, with overhead low enough
+to run in production. The cost is resolution: short, hot functions may be undercounted, and very rare events may be
+missed entirely.
 
-*Instrumenting profilers* insert measurement code into the program, either at the source level or by
-rewriting bytecode or machine code at load time. They count every call and time every function
-exactly, at the cost of much higher overhead – often enough to distort the behavior being measured.
-The *observer effect* is the central pitfall of profiling: a heavy profiler slows the program,
-changes scheduling, and can mask the very costs the developer set out to find, a profiler's analogue
-of the *Heisenbug*.
+*Instrumenting profilers* insert measurement code into the program, either at the source level or by rewriting bytecode
+or machine code at load time. They count every call and time every function exactly, at the cost of much higher overhead
+– often enough to distort the behavior being measured. The *observer effect* is the central pitfall of profiling: a
+heavy profiler slows the program, changes scheduling, and can mask the very costs the developer set out to find, a
+profiler's analogue of the *Heisenbug*.
 
 == Profiling and optimization
 
-A typical optimization cycle runs: profile, identify the dominant cost, optimize that path, and
-re-profile to confirm the gain. The discipline is to attack the cost that dominates the profile, not
-the cost that is easiest to fix. A tenfold improvement on a function that accounts for 1% of total
-time moves the overall number by 0.1%, while a 20% improvement on the dominant 50% moves it by 10%.
+A typical optimization cycle runs: profile, identify the dominant cost, optimize that path, and re-profile to confirm
+the gain. The discipline is to attack the cost that dominates the profile, not the cost that is easiest to fix. A
+tenfold improvement on a function that accounts for 1% of total time moves the overall number by 0.1%, while a 20%
+improvement on the dominant 50% moves it by 10%.
 
-This is why profiling and xref:performance-testing.adoc[*performance testing*] are paired. The
-profile attributes cost to code in a single run; the performance test confirms that a change moves
-the end-to-end number that matters under realistic load. Optimizing from a profile without
-re-measuring in a test risks improving a micro-benchmark while regressing the workload the user
-actually experiences.
+This is why profiling and xref:performance-testing.adoc[*performance testing*] are paired. The profile attributes cost
+to code in a single run; the performance test confirms that a change moves the end-to-end number that matters under
+realistic load. Optimizing from a profile without re-measuring in a test risks improving a micro-benchmark while
+regressing the workload the user actually experiences.
 
 == Profiling in production
 
-Profiling was traditionally a development-time activity, run against a benchmark in a controlled
-environment. Continuous profiling extends it to production, sampling live processes at low rates and
-aggregating the results so that teams can see where real workloads actually spend time. It is one of
-the capabilities grouped under
+Profiling was traditionally a development-time activity, run against a benchmark in a controlled environment. Continuous
+profiling extends it to production, sampling live processes at low rates and aggregating the results so that teams can
+see where real workloads actually spend time. It is one of the capabilities grouped under
 xref:application-performance-management.adoc[*application performance management*], alongside
-xref:tracing.adoc[*distributed tracing*] and xref:metrics.adoc[*metrics*], and it is part of the
-broader practice of xref:observability.adoc[*observability*].
+xref:tracing.adoc[*distributed tracing*] and xref:metrics.adoc[*metrics*], and it is part of the broader practice of
+xref:observability.adoc[*observability*].
 
-Production profiles are necessarily sampling-based, both to keep overhead bounded and because
-instrumenting every request at full fidelity would reproduce the cost problems of any other
-high-cardinality xref:telemetry.adoc[*telemetry*]. The same depth-versus-cost trade-off applies.
+Production profiles are necessarily sampling-based, both to keep overhead bounded and because instrumenting every
+request at full fidelity would reproduce the cost problems of any other high-cardinality
+xref:telemetry.adoc[*telemetry*]. The same depth-versus-cost trade-off applies.
 
-Profiling is a *dynamic* technique: it observes a program in execution.
-xref:static-analysis.adoc[*Static analysis*] reasons about the same code at rest, and the two are
-complementary. A profiler can show that a function is hot; static analysis can show that it is also
-broken, eg. leaking a resource on an error path the profile never happened to exercise.
+Profiling is a *dynamic* technique: it observes a program in execution. xref:static-analysis.adoc[*Static analysis*]
+reasons about the same code at rest, and the two are complementary. A profiler can show that a function is hot; static
+analysis can show that it is also broken, eg. leaking a resource on an error path the profile never happened to
+exercise.
 
 == See also
 

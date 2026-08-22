@@ -1,43 +1,39 @@
 = High-performance computing (HPC)
 
-*High-performance computing (HPC)* is the practice of aggregating computing power to solve problems
-that are too large, too fast, or too precise for a single machine. The workloads are
-compute-intensive: numerical simulation, molecular dynamics, weather and climate modeling,
-computational fluid dynamics, genomics, and, increasingly, training large machine learning models.
-The goal is usually to minimize the time to solution of one large job, not to serve many independent
-requests.
+*High-performance computing (HPC)* is the practice of aggregating computing power to solve problems that are too large,
+too fast, or too precise for a single machine. The workloads are compute-intensive: numerical simulation, molecular
+dynamics, weather and climate modeling, computational fluid dynamics, genomics, and, increasingly, training large
+machine learning models. The goal is usually to minimize the time to solution of one large job, not to serve many
+independent requests.
 
 An HPC system is built from many compute nodes linked by a high-speed interconnect into a single
-xref:distributed-system.adoc[*distributed system*] that cooperates on one problem. The
-xref:hardware.adoc[*hardware*] is specialized for this purpose: many-core CPUs, hardware
-accelerators such as GPUs and TPUs, large pools of fast memory, and parallel file systems. The nodes
-are held together by low-latency fabrics such as InfiniBand, because the time to move data between
-nodes often dominates the time to compute on it.
+xref:distributed-system.adoc[*distributed system*] that cooperates on one problem. The xref:hardware.adoc[*hardware*] is
+specialized for this purpose: many-core CPUs, hardware accelerators such as GPUs and TPUs, large pools of fast memory,
+and parallel file systems. The nodes are held together by low-latency fabrics such as InfiniBand, because the time to
+move data between nodes often dominates the time to compute on it.
 
 Performance is the defining metric and is measured in
-xref:floating-point-arithmetic.adoc[*floating-point operations per second (FLOPS)*]. The TOP500
-project ranks the world's fastest systems by their performance on the LINPACK benchmark, and the
-leading machines now reach exaflops. Reaching that scale is a xref:parallelism.adoc[*parallelism*]
-problem first and foremost. A job must be divided across millions of cores and kept balanced, and
-the speedup is bounded by the serial fraction of the work, a limit known as Amdahl's law.
+xref:floating-point-arithmetic.adoc[*floating-point operations per second (FLOPS)*]. The TOP500 project ranks the
+world's fastest systems by their performance on the LINPACK benchmark, and the leading machines now reach exaflops.
+Reaching that scale is a xref:parallelism.adoc[*parallelism*] problem first and foremost. A job must be divided across
+millions of cores and kept balanced, and the speedup is bounded by the serial fraction of the work, a limit known as
+Amdahl's law.
 
-The software stack reflects this. Programs are written against *Message Passing Interface (MPI)* and
-OpenMP, the standard message-passing and shared-memory parallel programming models, and increasingly
-against accelerator models such as CUDA. A batch scheduler such as Slurm allocates nodes to jobs,
-and tuned numerical libraries (BLAS, LAPACK, FFTW) underpin most scientific codes. Several
-xref:bulk-synchronous-parallel.adoc[*bulk synchronous parallel*] frameworks grew directly out of HPC
-and scientific computing.
+The software stack reflects this. Programs are written against *Message Passing Interface (MPI)* and OpenMP, the
+standard message-passing and shared-memory parallel programming models, and increasingly against accelerator models such
+as CUDA. A batch scheduler such as Slurm allocates nodes to jobs, and tuned numerical libraries (BLAS, LAPACK, FFTW)
+underpin most scientific codes. Several xref:bulk-synchronous-parallel.adoc[*bulk synchronous parallel*] frameworks grew
+directly out of HPC and scientific computing.
 
 Because every cycle and every byte of bandwidth is contested at this scale,
-xref:mechanical-sympathy.adoc[*mechanical sympathy*] matters more in HPC than in most fields. Data
-layout, cache reuse, and avoiding communication are not micro-optimizations but the core of the
-design. The gap between a machine's peak and sustained performance is often an order of magnitude,
-and closing it is where most of the engineering effort goes.
+xref:mechanical-sympathy.adoc[*mechanical sympathy*] matters more in HPC than in most fields. Data layout, cache reuse,
+and avoiding communication are not micro-optimizations but the core of the design. The gap between a machine's peak and
+sustained performance is often an order of magnitude, and closing it is where most of the engineering effort goes.
 
-HPC is distinct from high-throughput computing, which maximizes the number of independent jobs
-completed over time rather than the speed of any single one. The two share infrastructure but
-optimize for different things. HPC chases the xref:latency.adoc[*latency*] of one large computation,
-while high-throughput computing chases the xref:throughput.adoc[*throughput*] of many small ones.
+HPC is distinct from high-throughput computing, which maximizes the number of independent jobs completed over time
+rather than the speed of any single one. The two share infrastructure but optimize for different things. HPC chases the
+xref:latency.adoc[*latency*] of one large computation, while high-throughput computing chases the
+xref:throughput.adoc[*throughput*] of many small ones.
 
 == See also
 
@@ -49,7 +45,5 @@ while high-throughput computing chases the xref:throughput.adoc[*throughput*] of
 
 == References
 
-* Hager, G. and Wellein, G. (2010).
-  _Introduction to High Performance Computing for Scientists and Engineers_. CRC Press.
-* Meuer, H.; Strohmaier, E.; Dongarra, J.; Simon, H. (1993–). _TOP500 Supercomputer Sites_.
-  https://www.top500.org
+* Hager, G. and Wellein, G. (2010). _Introduction to High Performance Computing for Scientists and Engineers_. CRC Press.
+* Meuer, H.; Strohmaier, E.; Dongarra, J.; Simon, H. (1993–). _TOP500 Supercomputer Sites_. https://www.top500.org

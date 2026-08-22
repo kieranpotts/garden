@@ -2,70 +2,63 @@
 
 :link-wikipedia-state: https://en.wikipedia.org/wiki/State_(computer_science)
 
-In computing, *state* is the information a program or system holds at a given moment, that
-influences what it does next. It is the memory of past events and inputs that the present step can
-draw on — a counter's current value, a session's shopping cart, a database row, the contents of a
-file. Two invocations of the same code can produce different results when the state they read has
-changed between them.
+In computing, *state* is the information a program or system holds at a given moment, that influences what it does next.
+It is the memory of past events and inputs that the present step can draw on — a counter's current value, a session's
+shopping cart, a database row, the contents of a file. Two invocations of the same code can produce different results
+when the state they read has changed between them.
 
-State is what lets a system build on what came before. Without it, every request stands alone: a
-server that remembers nothing between calls cannot keep a user logged in, accumulate an order, or
-know that an item is out of stock. The cost of carrying state is that it has to be stored, kept
-consistent, and protected from concurrent changes, and that any assumption recorded in it can be
-wrong.
+State is what lets a system build on what came before. Without it, every request stands alone: a server that remembers
+nothing between calls cannot keep a user logged in, accumulate an order, or know that an item is out of stock. The cost
+of carrying state is that it has to be stored, kept consistent, and protected from concurrent changes, and that any
+assumption recorded in it can be wrong.
 
 == Where state lives
 
-State surfaces at every layer of a system, and the choice of where to keep it is a design decision
-with its own trade-offs.
+State surfaces at every layer of a system, and the choice of where to keep it is a design decision with its own
+trade-offs.
 
-* *In memory.* Variables, objects, and process state live in RAM and vanish when the process exits.
-  This is the fastest but most fragile form of state.
-* *On disk.* Files and xref:database.adoc[*databases*] persist state across process restarts and
-  crashes, and are the canonical durable store for structured state.
-* *In logs.* An xref:event-sourcing.adoc[*event log*] records state changes as an append-only
-  sequence, so current state is derived by replaying events rather than stored directly.
-* *In derived copies.* xref:caching.adoc[*Caches*],
-  xref:materialized-view.adoc[*materialized views*], and xref:memoization.adoc[*memoized*] results
-  hold redundant state kept in step with a source for performance. These are deliberate violations
-  of xref:single-source-of-truth.adoc[*single source of truth*], accepted because the read-side
+* *In memory.* Variables, objects, and process state live in RAM and vanish when the process exits. This is the fastest
+  but most fragile form of state.
+* *On disk.* Files and xref:database.adoc[*databases*] persist state across process restarts and crashes, and are the
+  canonical durable store for structured state.
+* *In logs.* An xref:event-sourcing.adoc[*event log*] records state changes as an append-only sequence, so current state
+  is derived by replaying events rather than stored directly.
+* *In derived copies.* xref:caching.adoc[*Caches*], xref:materialized-view.adoc[*materialized views*], and
+  xref:memoization.adoc[*memoized*] results hold redundant state kept in step with a source for performance. These are
+  deliberate violations of xref:single-source-of-truth.adoc[*single source of truth*], accepted because the read-side
   benefit outweighs the cost of refresh.
 
 == Stateful versus stateless design
 
-The central design question around state is how much of it a component carries between interactions.
-A xref:stateful.adoc[*stateful*] component retains state across calls, so each invocation can build
-on the last; a xref:stateless.adoc[*stateless*] component holds nothing and treats every call as
-independent. The two are counterparts, not opposites: most real systems are stateful somewhere and
-stateless elsewhere, and the art is placing state at the layer where its cost is lowest.
+The central design question around state is how much of it a component carries between interactions. A
+xref:stateful.adoc[*stateful*] component retains state across calls, so each invocation can build on the last; a
+xref:stateless.adoc[*stateless*] component holds nothing and treats every call as independent. The two are counterparts,
+not opposites: most real systems are stateful somewhere and stateless elsewhere, and the art is placing state at the
+layer where its cost is lowest.
 
 image::stateful-vs-stateless-design.png[]
 
-Statelessness buys xref:scalability.adoc[*scalability*] and fault tolerance — any instance can
-handle any request — at the cost of re-supplying context on every call. Statefulness buys continuity
-and efficiency — no need to re-derive what was already computed — at the cost of keeping the carried
-state consistent and correct. The same trade appears in xref:agent.adoc[*agent*] and
-xref:large-language-model.adoc[*LLM*] systems, where the model is permanently stateless and the
-xref:agent-harness.adoc[*harness*] manufactures continuity by re-sending the transcript on every
-turn.
+Statelessness buys xref:scalability.adoc[*scalability*] and fault tolerance — any instance can handle any request — at
+the cost of re-supplying context on every call. Statefulness buys continuity and efficiency — no need to re-derive what
+was already computed — at the cost of keeping the carried state consistent and correct. The same trade appears in
+xref:agent.adoc[*agent*] and xref:large-language-model.adoc[*LLM*] systems, where the model is permanently stateless and
+the xref:agent-harness.adoc[*harness*] manufactures continuity by re-sending the transcript on every turn.
 
 == Managing state
 
 Once a system carries state, a family of concerns follows.
 
-* *Concurrency.* When several callers can read and write the same state,
-  xref:concurrency.adoc[*concurrency*], xref:synchronization.adoc[*synchronization*], and
-  xref:thread-safety.adoc[*thread safety*] govern who sees what, and xref:locking.adoc[*locking*]
-  and xref:atomic-operation.adoc[*atomic operations*] keep updates from corrupting it.
-* *Consistency.* Across replicas or caches, state has to converge.
-  xref:consistency.adoc[*Consistency*] models — from strong to
-  xref:eventual-consistency.adoc[*eventual*] — define what guarantees a reader gets, and the
+* *Concurrency.* When several callers can read and write the same state, xref:concurrency.adoc[*concurrency*],
+  xref:synchronization.adoc[*synchronization*], and xref:thread-safety.adoc[*thread safety*] govern who sees what, and
+  xref:locking.adoc[*locking*] and xref:atomic-operation.adoc[*atomic operations*] keep updates from corrupting it.
+* *Consistency.* Across replicas or caches, state has to converge. xref:consistency.adoc[*Consistency*] models — from
+  strong to xref:eventual-consistency.adoc[*eventual*] — define what guarantees a reader gets, and the
   xref:cap-theorem.adoc[*CAP theorem*] bounds what is possible in a distributed system.
-* *Transactions.* xref:transaction.adoc[*Transactions*] group state changes so they either all take
-  effect or none do, expressed as the xref:acid-principles.adoc[*ACID*] properties.
-* *Staleness.* Anything carried forward can go stale. Clearing state — dropping a session,
-  invalidating a cache, deleting a memory file — is the deliberate act of throwing it away so the
-  system can reason without the weight of accumulated context.
+* *Transactions.* xref:transaction.adoc[*Transactions*] group state changes so they either all take effect or none do,
+  expressed as the xref:acid-principles.adoc[*ACID*] properties.
+* *Staleness.* Anything carried forward can go stale. Clearing state — dropping a session, invalidating a cache, deleting
+  a memory file — is the deliberate act of throwing it away so the system can reason without the weight of accumulated
+  context.
 
 == See also
 
@@ -81,5 +74,4 @@ Once a system carries state, a family of concerns follows.
 
 == References
 
-* Wikipedia contributors (n.d.).
-  {link-wikipedia-state}[_State (computer science)_]. Wikipedia.
+* Wikipedia contributors (n.d.). {link-wikipedia-state}[_State (computer science)_]. Wikipedia.

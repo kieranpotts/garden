@@ -1,108 +1,95 @@
 = DevOps
 
-*DevOps* is a cultural and professional movement that integrates software development (*dev*) with
-IT operations (*ops*) to shorten the time between committing a change and seeing it run reliably in
-production, while preserving quality. The term is a portmanteau of "development" and "operations",
-coined at the first DevOps Days conference in Ghent in 2009, organized by Belgian practitioner
-Patrick Debois.
+*DevOps* is a cultural and professional movement that integrates software development (*dev*) with IT operations (*ops*)
+to shorten the time between committing a change and seeing it run reliably in production, while preserving quality. The
+term is a portmanteau of "development" and "operations", coined at the first DevOps Days conference in Ghent in 2009,
+organized by Belgian practitioner Patrick Debois.
 
-DevOps is not a method, framework, or job title. It is best understood as a combination of culture,
-practices, and tooling. Researchers Len Bass, Ingo Weber, and Liming Zhu defined it as "a set of
-practices intended to reduce the time between committing a change to a system and the change being
-placed into normal production, while ensuring high quality." Although there is no canonical
-definition, the movement is generally characterized by three principles: shared ownership, workflow
-automation, and rapid feedback.
+DevOps is not a method, framework, or job title. It is best understood as a combination of culture, practices, and
+tooling. Researchers Len Bass, Ingo Weber, and Liming Zhu defined it as "a set of practices intended to reduce the time
+between committing a change to a system and the change being placed into normal production, while ensuring high
+quality." Although there is no canonical definition, the movement is generally characterized by three principles: shared
+ownership, workflow automation, and rapid feedback.
 
 == Origins
 
-Proposals to bridge development and operations surfaced intermittently from the late 1980s, but the
-name and the community coalesced in 2009 at DevOps Days. The annual *State of DevOps* report, first
-published by Puppet in 2012, became the movement's flagship research output. From 2016 onward it
-carried the DORA metrics, which empirically linked specific delivery practices to organizational
-performance and came to define what "good DevOps" looks like.
+Proposals to bridge development and operations surfaced intermittently from the late 1980s, but the name and the
+community coalesced in 2009 at DevOps Days. The annual *State of DevOps* report, first published by Puppet in 2012,
+became the movement's flagship research output. From 2016 onward it carried the DORA metrics, which empirically linked
+specific delivery practices to organizational performance and came to define what "good DevOps" looks like.
 
 == Relationship to Agile
 
-DevOps grew out of the engineering practices of xref:agile.adoc[*agile software development*]. Teams
-practicing xref:extreme-programming.adoc[*Extreme Programming*] already automated builds and tests
-and integrated continuously, but as xref:scrum.adoc[*Scrum*] became the dominant agile framework it
-omitted those engineering practices, and the work of automating operations and infrastructure
-splintered off into what became DevOps. DevOps can be read as agile extended past the deployment
-boundary, into release, operations, and feedback.
+DevOps grew out of the engineering practices of xref:agile.adoc[*agile software development*]. Teams practicing
+xref:extreme-programming.adoc[*Extreme Programming*] already automated builds and tests and integrated continuously, but
+as xref:scrum.adoc[*Scrum*] became the dominant agile framework it omitted those engineering practices, and the work of
+automating operations and infrastructure splintered off into what became DevOps. DevOps can be read as agile extended
+past the deployment boundary, into release, operations, and feedback.
 
-DevOps also borrows from xref:lean-software-development.adoc[*lean software development*] and the
-Toyota Production System, particularly the emphasis on small batches, flow, andon-style fast
-feedback, and continuous improvement (*kaizen*).
+DevOps also borrows from xref:lean-software-development.adoc[*lean software development*] and the Toyota Production
+System, particularly the emphasis on small batches, flow, andon-style fast feedback, and continuous improvement
+(*kaizen*).
 
 == Core practices
 
-DevOps is realized through a cluster of practices, most of which have their own entries in this
-garden.
+DevOps is realized through a cluster of practices, most of which have their own entries in this garden.
 
-* xref:ci-cd.adoc[*CI/CD*] pipelines automate the build, test, and release path from commit to
-  production, and are the single most visible DevOps practice.
+* xref:ci-cd.adoc[*CI/CD*] pipelines automate the build, test, and release path from commit to production, and are the
+  single most visible DevOps practice.
 * xref:infrastructure-as-code.adoc[*Infrastructure as code*] and
-  xref:configuration-management.adoc[*configuration management*] make environments reproducible and
-  version-controlled rather than hand-provisioned.
-* xref:containerization.adoc[*Containerization*] and
-  xref:container-orchestration.adoc[*container orchestration*] package applications with their
-  dependencies and schedule them consistently across environments.
-* xref:feature-flag.adoc[*Feature flags*] decouple deployment from release, allowing changes to
-  ship dark and be turned on progressively.
-* xref:deployment-strategy.adoc[*Deployment strategies*] such as
-  xref:blue-green-deployment.adoc[*blue-green*] and xref:canary-deployment.adoc[*canary*]
-  deployments reduce the blast radius of bad changes.
-* xref:observability.adoc[*Observability*], xref:monitoring.adoc[*monitoring*],
-  xref:telemetry.adoc[*telemetry*], xref:logging.adoc[*logging*], and xref:tracing.adoc[*tracing*]
-  close the feedback loop from running systems.
-* xref:on-call.adoc[*On-call*] rotations and xref:runbook.adoc[*runbooks*] make operational
-  responsibility explicit and survivable.
+  xref:configuration-management.adoc[*configuration management*] make environments reproducible and version-controlled
+  rather than hand-provisioned.
+* xref:containerization.adoc[*Containerization*] and xref:container-orchestration.adoc[*container orchestration*] package
+  applications with their dependencies and schedule them consistently across environments.
+* xref:feature-flag.adoc[*Feature flags*] decouple deployment from release, allowing changes to ship dark and be turned on
+  progressively.
+* xref:deployment-strategy.adoc[*Deployment strategies*] such as xref:blue-green-deployment.adoc[*blue-green*] and
+  xref:canary-deployment.adoc[*canary*] deployments reduce the blast radius of bad changes.
+* xref:observability.adoc[*Observability*], xref:monitoring.adoc[*monitoring*], xref:telemetry.adoc[*telemetry*],
+  xref:logging.adoc[*logging*], and xref:tracing.adoc[*tracing*] close the feedback loop from running systems.
+* xref:on-call.adoc[*On-call*] rotations and xref:runbook.adoc[*runbooks*] make operational responsibility explicit and
+  survivable.
 
 == Culture: shared ownership
 
-The cultural core of DevOps is shared ownership – the people who build a service also run it. Werner
-Vogels popularized this as "you build it, you run it." It contrasts with the older handover model in
-which a development team throws a release over the wall to a separate operations team that did not
-build it and cannot easily change it.
+The cultural core of DevOps is shared ownership – the people who build a service also run it. Werner Vogels popularized
+this as "you build it, you run it." It contrasts with the older handover model in which a development team throws a
+release over the wall to a separate operations team that did not build it and cannot easily change it.
 
-Shared ownership is supported by xref:cross-functional-team.adoc[*cross-functional teams*] that
-span the dev/ops divide, and by the xref:12-factor-app.adoc[*12-factor app*] methodology, which
-prescribes properties – disposable processes, externalized configuration, treat logs as event
-streams – that make applications operable by the teams that build them.
+Shared ownership is supported by xref:cross-functional-team.adoc[*cross-functional teams*] that span the dev/ops divide,
+and by the xref:12-factor-app.adoc[*12-factor app*] methodology, which prescribes properties – disposable processes,
+externalized configuration, treat logs as event streams – that make applications operable by the teams that build them.
 
 [IMPORTANT]
--- Adopting DevOps tooling without the cultural shift is a common failure mode. Standing up a CI/CD
-pipeline while keeping a separate operations team that owns production is
-xref:cargo-culting.adoc[*cargo-culting*]: the practices are present but the underlying ownership
-model is not, and the promised flow and feedback do not appear. Equally, creating a "DevOps team" as
-a new silo between development and operations reproduces the very handover problem DevOps set out to
-dissolve. --
+-- Adopting DevOps tooling without the cultural shift is a common failure mode. Standing up a CI/CD pipeline while keeping
+   a separate operations team that owns production is xref:cargo-culting.adoc[*cargo-culting*]: the practices are present
+   but the underlying ownership model is not, and the promised flow and feedback do not appear. Equally, creating a "DevOps
+   team" as a new silo between development and operations reproduces the very handover problem DevOps set out to dissolve.
+   --
 
 == Measurement: DORA metrics
 
-DevOps Research and Assessment (DORA) developed a set of xref:metrics.adoc[*metrics*] that have
-become the de facto standard for measuring delivery performance. The original "four keys" are
-deployment frequency, lead time for changes, change failure rate, and mean time to recover (later
-renamed "failed deployment recovery time"). A fifth, reliability, was added to capture operational
-performance against user expectations.
+DevOps Research and Assessment (DORA) developed a set of xref:metrics.adoc[*metrics*] that have become the de facto
+standard for measuring delivery performance. The original "four keys" are deployment frequency, lead time for changes,
+change failure rate, and mean time to recover (later renamed "failed deployment recovery time"). A fifth, reliability,
+was added to capture operational performance against user expectations.
 
-These metrics are the empirical backbone of
-xref:value-stream-management.adoc[*value stream management*], which seeks to measure and optimize
-the end-to-end flow of work from idea to production.
+These metrics are the empirical backbone of xref:value-stream-management.adoc[*value stream management*], which seeks to
+measure and optimize the end-to-end flow of work from idea to production.
 
 == Related approaches
 
-* xref:site-reliability-engineering.adoc[*Site reliability engineering (SRE)*] predates DevOps –
-  Google's practice began in 2003 – and is widely regarded as a concrete implementation of the
-  DevOps philosophy, with an explicit error-budget contract between development and operations.
-* xref:platform-engineering.adoc[*Platform engineering*] is a more recent specialization, in which a
-  dedicated team builds self-service internal infrastructure so that product teams consume a
-  platform rather than each building their own DevOps toolchain.
-* *DevSecOps* integrates security into the same pipeline, moving security checks earlier in the
-  lifecycle (xref:shift-left.adoc[*shift left*]), via xref:static-analysis.adoc[*static analysis*],
-  dependency scanning, and xref:penetration-testing.adoc[*penetration testing*].
-* *GitOps* applies DevOps practices to deployment configuration itself, using a Git repository as
-  the source of truth for desired system state.
+* xref:site-reliability-engineering.adoc[*Site reliability engineering (SRE)*] predates DevOps – Google's practice began
+  in 2003 – and is widely regarded as a concrete implementation of the DevOps philosophy, with an explicit error-budget
+  contract between development and operations.
+* xref:platform-engineering.adoc[*Platform engineering*] is a more recent specialization, in which a dedicated team builds
+  self-service internal infrastructure so that product teams consume a platform rather than each building their own DevOps
+  toolchain.
+* *DevSecOps* integrates security into the same pipeline, moving security checks earlier in the lifecycle
+  (xref:shift-left.adoc[*shift left*]), via xref:static-analysis.adoc[*static analysis*], dependency scanning, and
+  xref:penetration-testing.adoc[*penetration testing*].
+* *GitOps* applies DevOps practices to deployment configuration itself, using a Git repository as the source of truth for
+  desired system state.
 
 == See also
 

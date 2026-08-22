@@ -1,83 +1,69 @@
 = Penetration testing
 
-Penetration testing – commonly shortened to *pentesting* – is a form of
-xref:security-testing.adoc[*security testing*] in which skilled practitioners simulate real-world
-attacks against a system in order to uncover vulnerabilities that could be exploited by an
-adversary. Where vulnerability scanning automates the discovery of known weaknesses, penetration
-testing goes further: it chains those weaknesses together, attempts actual exploitation, and
-assesses the practical impact of a compromise, much as a determined attacker would.
+Penetration testing – commonly shortened to *pentesting* – is a form of xref:security-testing.adoc[*security testing*]
+in which skilled practitioners simulate real-world attacks against a system in order to uncover vulnerabilities that
+could be exploited by an adversary. Where vulnerability scanning automates the discovery of known weaknesses,
+penetration testing goes further: it chains those weaknesses together, attempts actual exploitation, and assesses the
+practical impact of a compromise, much as a determined attacker would.
 
-The exercise is conducted by *ethical hackers* – sometimes called *white hats* – who operate under a
-formal scope and rules of engagement agreed with the system's owner. Their authorization is what
-distinguishes penetration testing from criminal intrusion. Every action is consented, recorded, and
-bounded by contract.
+The exercise is conducted by *ethical hackers* – sometimes called *white hats* – who operate under a formal scope and
+rules of engagement agreed with the system's owner. Their authorization is what distinguishes penetration testing from
+criminal intrusion. Every action is consented, recorded, and bounded by contract.
 
 == Variants by knowledge
 
-A penetration test is classified by how much information the testers are given about the target in
-advance.
+A penetration test is classified by how much information the testers are given about the target in advance.
 
-* *Black-box.* The testers receive no inside information and approach the system as an external
-  attacker would. See xref:black-box-testing.adoc[*black-box testing*].
-* *White-box.* The testers are given full knowledge of the target, up to and including source code
-  and administrative credentials, to simulate a malicious insider. See
-  xref:white-box-testing.adoc[*white-box testing*].
-* *Gray-box.* A middle ground in which partial information – architecture diagrams, credentials for
-  some accounts – is shared to focus the engagement. See
-  xref:gray-box-testing.adoc[*gray-box testing*].
+* *Black-box.* The testers receive no inside information and approach the system as an external attacker would. See
+  xref:black-box-testing.adoc[*black-box testing*].
+* *White-box.* The testers are given full knowledge of the target, up to and including source code and administrative
+  credentials, to simulate a malicious insider. See xref:white-box-testing.adoc[*white-box testing*].
+* *Gray-box.* A middle ground in which partial information – architecture diagrams, credentials for some accounts – is
+  shared to focus the engagement. See xref:gray-box-testing.adoc[*gray-box testing*].
 
 == Phases
 
-A typical engagement unfolds in overlapping phases, often summarized as recon, scan, exploit, and
-report.
+A typical engagement unfolds in overlapping phases, often summarized as recon, scan, exploit, and report.
 
-* *Reconnaissance.* Gathering publicly available information about the target – domain names,
-  network ranges, employee data – to map the attack surface.
-* *Scanning and enumeration.* Probing for live hosts, open ports, running services, and software
-  versions, and cataloging the findings against
-  xref:vulnerability-database.adoc[*vulnerability databases*].
-* *Exploitation.* Attempting to leverage identified weaknesses to gain a foothold, escalate
-  privileges, or move laterally through the environment, frequently chaining findings into
-  multi-step attack paths.
-* *Post-exploitation.* Assessing what an attacker could achieve once inside: data exfiltration,
-  persistence, pivoting to adjacent systems.
-* *Reporting.* Documenting the findings, their severity, and concrete remediation guidance for the
-  system's owners.
+* *Reconnaissance.* Gathering publicly available information about the target – domain names, network ranges, employee
+  data – to map the attack surface.
+* *Scanning and enumeration.* Probing for live hosts, open ports, running services, and software versions, and cataloging
+  the findings against xref:vulnerability-database.adoc[*vulnerability databases*].
+* *Exploitation.* Attempting to leverage identified weaknesses to gain a foothold, escalate privileges, or move laterally
+  through the environment, frequently chaining findings into multi-step attack paths.
+* *Post-exploitation.* Assessing what an attacker could achieve once inside: data exfiltration, persistence, pivoting to
+  adjacent systems.
+* *Reporting.* Documenting the findings, their severity, and concrete remediation guidance for the system's owners.
 
 == Scope and adjacent practices
 
-Penetration testing is one instrument within a broader xref:security.adoc[*security*] programme. It
-complements, but does not replace, proactive activities such as threat modelling,
-xref:static-analysis.adoc[*static analysis*], and xref:secure-by-design.adoc[*secure by design*].
-Where a pentest reports on a system as built, these practices aim to keep weaknesses out of it in
-the first place.
+Penetration testing is one instrument within a broader xref:security.adoc[*security*] programme. It complements, but
+does not replace, proactive activities such as threat modelling, xref:static-analysis.adoc[*static analysis*], and
+xref:secure-by-design.adoc[*secure by design*]. Where a pentest reports on a system as built, these practices aim to
+keep weaknesses out of it in the first place.
 
 Several adjacent practices are sometimes confused with penetration testing.
 
-* *Vulnerability scanning* automates the identification of known weaknesses but does not attempt to
-  exploit them.
-* *Red teaming* is a broader, goal-oriented exercise that simulates an adversary's full campaign –
-  including social engineering and physical intrusion – and is judged on whether a specific
-  objective was reached rather than on the count of vulnerabilities found.
-* *Bug bounties* open the same kind of probing to independent external researchers, who are rewarded
-  for responsibly disclosing issues. Unlike a pentest, a bug bounty programme is continuous and
-  unbounded in who may participate.
+* *Vulnerability scanning* automates the identification of known weaknesses but does not attempt to exploit them.
+* *Red teaming* is a broader, goal-oriented exercise that simulates an adversary's full campaign – including social
+  engineering and physical intrusion – and is judged on whether a specific objective was reached rather than on the count
+  of vulnerabilities found.
+* *Bug bounties* open the same kind of probing to independent external researchers, who are rewarded for responsibly
+  disclosing issues. Unlike a pentest, a bug bounty programme is continuous and unbounded in who may participate.
 
-Industry catalogs such as the xref:owasp.adoc[*OWASP*] Top 10 and the OWASP Testing Guide are
-routinely used to scope and structure engagements, and provide checklists for the common web
-application attack vectors – xref:sql-injection.adoc[*SQL injection*],
-xref:cross-site-scripting.adoc[*cross-site scripting*], xref:ssrf.adoc[*SSRF*], and
-xref:spoofing.adoc[*spoofing*] – that a tester is expected to probe.
+Industry catalogs such as the xref:owasp.adoc[*OWASP*] Top 10 and the OWASP Testing Guide are routinely used to scope
+and structure engagements, and provide checklists for the common web application attack vectors –
+xref:sql-injection.adoc[*SQL injection*], xref:cross-site-scripting.adoc[*cross-site scripting*],
+xref:ssrf.adoc[*SSRF*], and xref:spoofing.adoc[*spoofing*] – that a tester is expected to probe.
 
 == When it is performed
 
-Penetration testing has traditionally been a late-stage, pre-release activity, performed against a
-system that is already built. The xref:shift-left.adoc[*shift left*] movement has pushed aspects of
-it earlier: integrating xref:automated-testing.adoc[*automated testing*] for common vulnerabilities
-into CI pipelines, and running recurring, lighter-touch pentests alongside development rather than
-as a single gate. Even so, a full manual engagement remains a periodic, depth-oriented exercise. It
-is most often triggered before a major release, after a significant architecture change, or to
-satisfy compliance and procurement requirements.
+Penetration testing has traditionally been a late-stage, pre-release activity, performed against a system that is
+already built. The xref:shift-left.adoc[*shift left*] movement has pushed aspects of it earlier: integrating
+xref:automated-testing.adoc[*automated testing*] for common vulnerabilities into CI pipelines, and running recurring,
+lighter-touch pentests alongside development rather than as a single gate. Even so, a full manual engagement remains a
+periodic, depth-oriented exercise. It is most often triggered before a major release, after a significant architecture
+change, or to satisfy compliance and procurement requirements.
 
 == See also
 
@@ -96,5 +82,4 @@ satisfy compliance and procurement requirements.
 == References
 
 * OWASP Foundation. _OWASP Testing Guide_. https://owasp.org/www-project-web-security-testing-guide/
-* PTES Technical Committee (2014). _Penetration Testing Execution Standard_.
-  http://www.pentest-standard.org/
+* PTES Technical Committee (2014). _Penetration Testing Execution Standard_. http://www.pentest-standard.org/

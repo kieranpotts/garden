@@ -1,85 +1,75 @@
 = Privacy
 
-Privacy is the xref:quality-attribute.adoc[*quality attribute*] that concerns the appropriate
-handling of personal data: what information about individuals a system collects, how it is used,
-with whom it is shared, how long it is kept, and what control the subject has over each of those
-decisions. As a xref:non-functional-requirements.adoc[*non-functional requirement*], privacy shapes
-architecture rather than features. It constrains not what a system does but the conditions under
-which it is allowed to do it.
+Privacy is the xref:quality-attribute.adoc[*quality attribute*] that concerns the appropriate handling of personal data:
+what information about individuals a system collects, how it is used, with whom it is shared, how long it is kept, and
+what control the subject has over each of those decisions. As a
+xref:non-functional-requirements.adoc[*non-functional requirement*], privacy shapes architecture rather than features.
+It constrains not what a system does but the conditions under which it is allowed to do it.
 
-Privacy is often conflated with xref:security.adoc[*security*], but the two are distinct. Security
-protects data from unauthorized access; privacy governs what is appropriate even for parties who are
-authorized to see it. A system can be secure against external attackers and still violate privacy by
-collecting more data than it needs, retaining it longer than necessary, or repurposing it without
-the subject's consent. xref:encryption.adoc[*Encryption*] and xref:cryptography.adoc[*cryptography*]
-keep data confidential in transit and at rest, but they say nothing about whether the data ought to
-have been collected in the first place.
+Privacy is often conflated with xref:security.adoc[*security*], but the two are distinct. Security protects data from
+unauthorized access; privacy governs what is appropriate even for parties who are authorized to see it. A system can be
+secure against external attackers and still violate privacy by collecting more data than it needs, retaining it longer
+than necessary, or repurposing it without the subject's consent. xref:encryption.adoc[*Encryption*] and
+xref:cryptography.adoc[*cryptography*] keep data confidential in transit and at rest, but they say nothing about whether
+the data ought to have been collected in the first place.
 
 == Privacy by design
 
-Privacy by design (PbD) is the doctrine that privacy must be built into systems from the outset, on
-the same footing as xref:secure-by-design.adoc[*secure by design*] treats security. It originated as
-a set of seven principles formulated by Ann Cavoukian, then Information and Privacy Commissioner of
-Ontario, in the 1990s, and was later codified in Article 25 of the EU General Data Protection
-Regulation (GDPR), which requires data protection "by design and by default".
+Privacy by design (PbD) is the doctrine that privacy must be built into systems from the outset, on the same footing as
+xref:secure-by-design.adoc[*secure by design*] treats security. It originated as a set of seven principles formulated by
+Ann Cavoukian, then Information and Privacy Commissioner of Ontario, in the 1990s, and was later codified in Article 25
+of the EU General Data Protection Regulation (GDPR), which requires data protection "by design and by default".
 
-The principles are procedural rather than prescriptive. They call for privacy to be treated as a
-default setting, to be embedded into the design rather than added on, to be addressed across the
-full lifecycle of the data, and to be balanced with other legitimate interests in a way that is
-transparent to the subject. The throughline is the same as secure by design: retro-fitting privacy
-after deployment is both more expensive and less effective than designing for it from the start.
+The principles are procedural rather than prescriptive. They call for privacy to be treated as a default setting, to be
+embedded into the design rather than added on, to be addressed across the full lifecycle of the data, and to be balanced
+with other legitimate interests in a way that is transparent to the subject. The throughline is the same as secure by
+design: retro-fitting privacy after deployment is both more expensive and less effective than designing for it from the
+start.
 
 == Core obligations
 
 The substantive obligations of modern privacy regimes cluster around a small set of recurring ideas.
 
-* *Data minimization.* Collect only the data needed for a stated purpose, and no more. Minimization
-  shrinks the blast radius of any breach and is the single most effective privacy control, because
-  data never collected cannot leak.
+* *Data minimization.* Collect only the data needed for a stated purpose, and no more. Minimization shrinks the blast
+  radius of any breach and is the single most effective privacy control, because data never collected cannot leak.
 
-* *Purpose limitation.* Use personal data only for the purpose for which it was collected, and only
-  with a legal basis such as consent or contract.
+* *Purpose limitation.* Use personal data only for the purpose for which it was collected, and only with a legal basis
+  such as consent or contract.
 
-* *Storage limitation.* Hold personal data only as long as necessary, then delete or anonymize it.
-  This is the privacy-side counterpart to xref:data-retention.adoc[*data retention*], and the two
-  are often in tension: regulatory and audit obligations may demand longer retention than privacy
-  would prefer.
+* *Storage limitation.* Hold personal data only as long as necessary, then delete or anonymize it. This is the
+  privacy-side counterpart to xref:data-retention.adoc[*data retention*], and the two are often in tension: regulatory and
+  audit obligations may demand longer retention than privacy would prefer.
 
-* *Subject rights.* Individuals have rights to access, correct, port, and erase their data, and to
-  object to certain processing. The right to erasure ("right to be forgotten") is the most
-  operationally demanding, because true deletion must reach backups, replicas, and downstream
-  copies.
+* *Subject rights.* Individuals have rights to access, correct, port, and erase their data, and to object to certain
+  processing. The right to erasure ("right to be forgotten") is the most operationally demanding, because true deletion
+  must reach backups, replicas, and downstream copies.
 
-* *Anonymization and pseudonymization.* Where the identity of the subject is not needed, strip or
-  replace identifying fields. True anonymization removes the data from the scope of privacy law;
-  pseudonymization merely reduces re-identification risk and leaves the data regulated.
+* *Anonymization and pseudonymization.* Where the identity of the subject is not needed, strip or replace identifying
+  fields. True anonymization removes the data from the scope of privacy law; pseudonymization merely reduces
+  re-identification risk and leaves the data regulated.
 
 == Where privacy leaks in practice
 
-Most privacy failures are not cryptographic breaches. They are design choices that leak personal
-data through ordinary, authorized channels.
+Most privacy failures are not cryptographic breaches. They are design choices that leak personal data through ordinary,
+authorized channels.
 
-* *Logs and telemetry.* Request bodies, headers, and identifiers routinely carry personally
-  identifiable information, and naive xref:logging.adoc[*logging*] pipelines ship it to long-lived
-  aggregators where it lingers long after the request that produced it. The same applies to
-  application-level xref:observability.adoc[*observability*] and xref:telemetry.adoc[*telemetry*].
+* *Logs and telemetry.* Request bodies, headers, and identifiers routinely carry personally identifiable information, and
+  naive xref:logging.adoc[*logging*] pipelines ship it to long-lived aggregators where it lingers long after the request
+  that produced it. The same applies to application-level xref:observability.adoc[*observability*] and
+  xref:telemetry.adoc[*telemetry*].
 
-* *Multi-tenant systems.* A bug in tenant scoping turns a single-tenant inconvenience into a
-  cross-tenant data leak. See xref:multi-tenant.adoc[*multi-tenant*] for the isolation models that
-  mitigate this.
+* *Multi-tenant systems.* A bug in tenant scoping turns a single-tenant inconvenience into a cross-tenant data leak. See
+  xref:multi-tenant.adoc[*multi-tenant*] for the isolation models that mitigate this.
 
-* *AI and machine learning.* Training data collected for one purpose is often repurposed to train
-  models, and the models themselves may memorize and later reproduce identifiable fragments. See
-  xref:ai-regulation.adoc[*AI regulation*].
+* *AI and machine learning.* Training data collected for one purpose is often repurposed to train models, and the models
+  themselves may memorize and later reproduce identifiable fragments. See xref:ai-regulation.adoc[*AI regulation*].
 
-* *Local-first and edge architectures.* Keeping data on the user's device and reducing what the
-  server sees is a structural privacy win. See
-  xref:local-first-software.adoc[*local-first software*].
+* *Local-first and edge architectures.* Keeping data on the user's device and reducing what the server sees is a
+  structural privacy win. See xref:local-first-software.adoc[*local-first software*].
 
-Privacy obligations are typically enforced through xref:compliance.adoc[*compliance*] regimes such
-as the EU GDPR, the California Consumer Privacy Act (CCPA), and sector-specific laws including HIPAA
-for healthcare data. These translate the abstract obligations above into specific, auditable, and
-financially consequential requirements.
+Privacy obligations are typically enforced through xref:compliance.adoc[*compliance*] regimes such as the EU GDPR, the
+California Consumer Privacy Act (CCPA), and sector-specific laws including HIPAA for healthcare data. These translate
+the abstract obligations above into specific, auditable, and financially consequential requirements.
 
 == See also
 
@@ -100,10 +90,8 @@ financially consequential requirements.
 
 == References
 
-* Cavoukian, Ann (2009). _Privacy by Design: The 7 Foundational Principles_. Information and Privacy
-  Commissioner of Ontario.
-  https://www.ipc.on.ca/wp-content/uploads/resources/7foundationalprinciples.pdf
+* Cavoukian, Ann (2009). _Privacy by Design: The 7 Foundational Principles_. Information and Privacy Commissioner of
+  Ontario. https://www.ipc.on.ca/wp-content/uploads/resources/7foundationalprinciples.pdf
 
 * European Parliament and Council of the European Union (2016).
-  _Regulation (EU) 2016/679 (General Data Protection Regulation)_. Article 25: Data protection by
-  design and by default.
+  _Regulation (EU) 2016/679 (General Data Protection Regulation)_. Article 25: Data protection by design and by default.

@@ -1,153 +1,134 @@
 = Agent2Agent
 
-The Agent2Agent (A2A) protocol is an open standard, announced by Google in April 2025, that defines
-how independent AI agents communicate and coordinate with one another across different systems,
-vendors, and frameworks.
+The Agent2Agent (A2A) protocol is an open standard, announced by Google in April 2025, that defines how independent AI
+agents communicate and coordinate with one another across different systems, vendors, and frameworks.
 
-As organizations build more xref:agent.adoc[*agentic*] systems, they increasingly need agents built
-by different teams — and on different platforms — to work together. Without a common protocol, every
-agent-to-agent integration is bespoke.
+As organizations build more xref:agent.adoc[*agentic*] systems, they increasingly need agents built by different teams —
+and on different platforms — to work together. Without a common protocol, every agent-to-agent integration is bespoke.
 
-A2A addresses this fragmentation by giving agents a standard way to discover each other, exchange
-messages, and delegate tasks, without sharing internal state or relying on proprietary integrations.
+A2A addresses this fragmentation by giving agents a standard way to discover each other, exchange messages, and delegate
+tasks, without sharing internal state or relying on proprietary integrations.
 
-A2A is complementary to the xref:model-context-protocol.adoc[*Model Context Protocol (MCP)*], not a
-competitor to it. The two solve different problems. MCP connects an agent to its tools and data
-sources, while A2A connects agents to other agents. An xref:agent-harness.adoc[*agent harness*] may
-combine both — MCP to give each agent its capabilities, and A2A to let those agents collaborate.
+A2A is complementary to the xref:model-context-protocol.adoc[*Model Context Protocol (MCP)*], not a competitor to it.
+The two solve different problems. MCP connects an agent to its tools and data sources, while A2A connects agents to
+other agents. An xref:agent-harness.adoc[*agent harness*] may combine both — MCP to give each agent its capabilities,
+and A2A to let those agents collaborate.
 
 == Core concepts
 
-A2A is a xref:client-server-architecture.adoc[*client-server*] protocol. An *A2A client* is the
-application or agent that initiates a request on behalf of a user or another system. An
-*A2A server*, sometimes called a remote agent, exposes an A2A-compliant endpoint that processes
-requests and returns results.
+A2A is a xref:client-server-architecture.adoc[*client-server*] protocol. An *A2A client* is the application or agent
+that initiates a request on behalf of a user or another system. An *A2A server*, sometimes called a remote agent,
+exposes an A2A-compliant endpoint that processes requests and returns results.
 
-Every A2A server publishes an *Agent Card*, a JSON metadata document describing its identity,
-capabilities, skills, service endpoint, and authentication requirements. By convention the card is
-served at `/.well-known/agent-card.json`, so a client can xref:service-discovery.adoc[*discover*] a
-remote agent from its domain alone. The card may be signed with a JSON Web Signature so clients can
-verify its authenticity and integrity.
+Every A2A server publishes an *Agent Card*, a JSON metadata document describing its identity, capabilities, skills,
+service endpoint, and authentication requirements. By convention the card is served at `/.well-known/agent-card.json`,
+so a client can xref:service-discovery.adoc[*discover*] a remote agent from its domain alone. The card may be signed
+with a JSON Web Signature so clients can verify its authenticity and integrity.
 
-The unit of work is a *Task*, identified by a server-generated ID and progressed through a defined
-lifecycle: `submitted`, `working`, `completed`, `failed`, `canceled`, `rejected`, or
-`input-required` (paused awaiting input or authorization). Tasks are stateful and long-running by
-design.
+The unit of work is a *Task*, identified by a server-generated ID and progressed through a defined lifecycle:
+`submitted`, `working`, `completed`, `failed`, `canceled`, `rejected`, or `input-required` (paused awaiting input or
+authorization). Tasks are stateful and long-running by design.
 
-Communication flows through *Messages*, each carrying one or more *Parts*. A part is the smallest
-unit of content and may be text, a file (by reference or inline bytes), or structured data. This
-makes A2A *modality agnostic*. The same protocol carries plain text, images, and machine-readable
-JSON. Structured-data parts carry a JSON schema so the receiver knows the shape of the payload,
-making machine-to-machine exchange self-describing. Task outputs are returned as *Artifacts*,
-composed of parts, keeping the distinction between conversation (messages) and results (artifacts)
+Communication flows through *Messages*, each carrying one or more *Parts*. A part is the smallest unit of content and
+may be text, a file (by reference or inline bytes), or structured data. This makes A2A *modality agnostic*. The same
+protocol carries plain text, images, and machine-readable JSON. Structured-data parts carry a JSON schema so the
+receiver knows the shape of the payload, making machine-to-machine exchange self-describing. Task outputs are returned
+as *Artifacts*, composed of parts, keeping the distinction between conversation (messages) and results (artifacts)
 explicit.
 
-Because tasks can run for minutes or hours, A2A offers three update mechanisms. A client can poll a
-task with `GetTask`, subscribe to a live stream of status and artifact events, or register a
-xref:webhook.adoc[*webhook*] to receive push notifications when the task changes state. The choice
-is driven by the client's connectivity and latency needs.
+Because tasks can run for minutes or hours, A2A offers three update mechanisms. A client can poll a task with `GetTask`,
+subscribe to a live stream of status and artifact events, or register a xref:webhook.adoc[*webhook*] to receive push
+notifications when the task changes state. The choice is driven by the client's connectivity and latency needs.
 
-Alongside stateful Tasks, A2A defines lighter agent-level messaging — `message/send` and
-`message/stream` — for exchanges that do not need task state, such as a quick question to a remote
-agent with no long-running work to track.
+Alongside stateful Tasks, A2A defines lighter agent-level messaging — `message/send` and `message/stream` — for
+exchanges that do not need task state, such as a quick question to a remote agent with no long-running work to track.
 
 == Design principles
 
-A2A is deliberately *opaque*. Agents collaborate on the basis of declared capabilities and exchanged
-messages, without exposing their internal thoughts, plans, memory, or tool implementations. A remote
-agent is a black box; the protocol concerns itself only with what is requested and what is returned.
+A2A is deliberately *opaque*. Agents collaborate on the basis of declared capabilities and exchanged messages, without
+exposing their internal thoughts, plans, memory, or tool implementations. A remote agent is a black box; the protocol
+concerns itself only with what is requested and what is returned.
 
-It is *async first*. Operations return immediately with a task reference rather than blocking until
-completion, and human-in-the-loop pauses are first-class. A task can wait on additional input or
-authorization mid-flight.
+It is *async first*. Operations return immediately with a task reference rather than blocking until completion, and
+human-in-the-loop pauses are first-class. A task can wait on additional input or authorization mid-flight.
 
-It reuses existing web standards rather than inventing new ones. A2A builds on HTTP, JSON-RPC 2.0,
-and xref:server-sent-events.adoc[*Server-Sent Events*], and aligns its security model with familiar
-enterprise practices such as OAuth 2.0, OpenID Connect, and mutual TLS. The goal is interoperability
-with the tooling and infrastructure organizations already run.
+It reuses existing web standards rather than inventing new ones. A2A builds on HTTP, JSON-RPC 2.0, and
+xref:server-sent-events.adoc[*Server-Sent Events*], and aligns its security model with familiar enterprise practices
+such as OAuth 2.0, OpenID Connect, and mutual TLS. The goal is interoperability with the tooling and infrastructure
+organizations already run.
 
 == A worked example
 
-A travel-booking agent (the client) needs a hotel recommendation from a specialist agent run by
-another vendor. The flow shows the protocol's parts working together.
+A travel-booking agent (the client) needs a hotel recommendation from a specialist agent run by another vendor. The flow
+shows the protocol's parts working together.
 
-. *Discovery.* The client fetches
-`https://hotels.example/.well-known/agent-card.json`. The Agent Card names the hotel agent, lists
-its capabilities, points to its service endpoint, and declares that it accepts OAuth 2.0 bearer
-tokens.
-. *Authentication.* The client obtains an access token from the hotel agent's
-authorization server and presents it as a bearer token on subsequent calls.
-. *Task submission.* The client sends a `tasks/send` request (JSON-RPC 2.0 over
-HTTPS) carrying a Message with a TextPart: "Find a pet-friendly hotel in Lisbon for 12-14 November,
-under EUR 200/night." The server returns a Task with a server-generated ID and state `working`.
-. *Updates.* The client subscribes with `tasks/sendSubscribe` and receives a
-stream of status and artifact events over Server-Sent Events as the hotel agent searches. It could
-instead poll `tasks/get`, or it registered a webhook up front to receive push notifications.
-. *Input required.* The hotel agent finds nothing under the budget and asks for
-guidance, moving the Task to `input-required`. The client sends a follow-up Message raising the
-ceiling to EUR 250.
-. *Completion.* The hotel agent returns an Artifact — a structured
-recommendation — and the Task moves to `completed`.
+. *Discovery.* The client fetches `https://hotels.example/.well-known/agent-card.json`. The Agent Card names the hotel
+  agent, lists its capabilities, points to its service endpoint, and declares that it accepts OAuth 2.0 bearer tokens.
+. *Authentication.* The client obtains an access token from the hotel agent's authorization server and presents it as a
+  bearer token on subsequent calls.
+. *Task submission.* The client sends a `tasks/send` request (JSON-RPC 2.0 over HTTPS) carrying a Message with a TextPart:
+  "Find a pet-friendly hotel in Lisbon for 12-14 November, under EUR 200/night." The server returns a Task with a
+  server-generated ID and state `working`.
+. *Updates.* The client subscribes with `tasks/sendSubscribe` and receives a stream of status and artifact events over
+  Server-Sent Events as the hotel agent searches. It could instead poll `tasks/get`, or it registered a webhook up front
+  to receive push notifications.
+. *Input required.* The hotel agent finds nothing under the budget and asks for guidance, moving the Task to
+  `input-required`. The client sends a follow-up Message raising the ceiling to EUR 250.
+. *Completion.* The hotel agent returns an Artifact — a structured recommendation — and the Task moves to `completed`.
 
-The client never sees the hotel agent's prompts, tools, or search logic. It discovers by convention,
-delegates opaquely, and steps through an async, human-in-the-loop pause — the three A2A virtues in
-one flow.
+The client never sees the hotel agent's prompts, tools, or search logic. It discovers by convention, delegates opaquely,
+and steps through an async, human-in-the-loop pause — the three A2A virtues in one flow.
 
 == Protocol bindings
 
-The data model is defined in xref:protocol-buffers.adoc[*Protocol Buffers*] and mapped to three
-standard bindings: JSON-RPC 2.0 over HTTP, xref:grpc.adoc[*gRPC*] over HTTP/2, and a REST-style
-HTTP+JSON binding. An agent may expose several bindings at once, listed in preference order on its
-Agent Card, and all are required to behave equivalently. Custom bindings are permitted as long as
-they preserve the canonical data model and operations.
+The data model is defined in xref:protocol-buffers.adoc[*Protocol Buffers*] and mapped to three standard bindings:
+JSON-RPC 2.0 over HTTP, xref:grpc.adoc[*gRPC*] over HTTP/2, and a REST-style HTTP+JSON binding. An agent may expose
+several bindings at once, listed in preference order on its Agent Card, and all are required to behave equivalently.
+Custom bindings are permitted as long as they preserve the canonical data model and operations.
 
-Streaming uses Server-Sent Events over the HTTP-based bindings and server streaming RPCs over gRPC.
-JSON payloads use the `application/a2a+json` media type.
+Streaming uses Server-Sent Events over the HTTP-based bindings and server streaming RPCs over gRPC. JSON payloads use
+the `application/a2a+json` media type.
 
 == Security
 
-A2A treats agents as ordinary enterprise applications and pushes identity to the transport and
-protocol layers rather than into its own semantics. An Agent Card declares its supported security
-schemes, such as API keys, HTTP bearer tokens, OAuth 2.0, OpenID Connect, or mutual TLS, and clients
-present credentials over standard headers or metadata.
+A2A treats agents as ordinary enterprise applications and pushes identity to the transport and protocol layers rather
+than into its own semantics. An Agent Card declares its supported security schemes, such as API keys, HTTP bearer
+tokens, OAuth 2.0, OpenID Connect, or mutual TLS, and clients present credentials over standard headers or metadata.
 
-A task may pause in an `auth-required` state when an agent needs authorization it does not hold,
-delegating the request back to the client or a human approver. Push notification webhooks are
-themselves authenticated, and agents are expected to validate webhook URLs to prevent
-xref:ssrf.adoc[*server-side request forgery*].
+A task may pause in an `auth-required` state when an agent needs authorization it does not hold, delegating the request
+back to the client or a human approver. Push notification webhooks are themselves authenticated, and agents are expected
+to validate webhook URLs to prevent xref:ssrf.adoc[*server-side request forgery*].
 
 == Trade-offs and limits
 
-The opacity that makes A2A composable also makes agent networks harder to debug. A client sees
-requests and results, not the remote agent's reasoning, tool calls, or failures inside its harness.
-When something goes wrong, the operator of the client has limited visibility into why. Tracing and
-observability depend on what the remote agent chooses to surface in its status updates and
-artifacts. This is the same trade-off as any microservice boundary, sharpened by the fact that the
-remote agent's behaviour is non-deterministic.
+The opacity that makes A2A composable also makes agent networks harder to debug. A client sees requests and results, not
+the remote agent's reasoning, tool calls, or failures inside its harness. When something goes wrong, the operator of the
+client has limited visibility into why. Tracing and observability depend on what the remote agent chooses to surface in
+its status updates and artifacts. This is the same trade-off as any microservice boundary, sharpened by the fact that
+the remote agent's behaviour is non-deterministic.
 
-A2A is a poor fit for tightly coupled agents that share a runtime. Where two agents run in the same
-process or framework, direct function calls or shared memory are simpler and faster than serializing
-messages over HTTP. A2A earns its overhead when the agents are run by different teams, on different
-platforms, or across trust boundaries — exactly the fragmentation it was designed for.
+A2A is a poor fit for tightly coupled agents that share a runtime. Where two agents run in the same process or
+framework, direct function calls or shared memory are simpler and faster than serializing messages over HTTP. A2A earns
+its overhead when the agents are run by different teams, on different platforms, or across trust boundaries — exactly
+the fragmentation it was designed for.
 
-The async-first model pushes complexity onto the client. Stateful, long-running tasks demand
-lifecycle management: polling or streaming, handling `input-required` pauses, cancellations, and
-partial artifacts. For a quick synchronous lookup that machinery is overkill, which is why the
-protocol also offers the lighter agent-level messaging operations.
+The async-first model pushes complexity onto the client. Stateful, long-running tasks demand lifecycle management:
+polling or streaming, handling `input-required` pauses, cancellations, and partial artifacts. For a quick synchronous
+lookup that machinery is overkill, which is why the protocol also offers the lighter agent-level messaging operations.
 
-A2A is young, and interoperability in practice depends on every implementation conforming to the
-same specification version and on Agent Cards describing capabilities faithfully. A remote agent
-that advertises a skill it cannot perform defeats the discovery model the protocol relies on.
+A2A is young, and interoperability in practice depends on every implementation conforming to the same specification
+version and on Agent Cards describing capabilities faithfully. A remote agent that advertises a skill it cannot perform
+defeats the discovery model the protocol relies on.
 
 == Governance
 
-In June 2025, Google transferred A2A to the Linux Foundation for vendor-neutral governance. This
-mirrors the path taken by MCP, which was likewise moved to a Linux Foundation fund — part of a
-broader industry effort to reduce fragmentation and vendor lock-in across AI agent ecosystems. IBM
-subsequently folded its parallel standards, the *Agent Communication Protocol (ACP)*, into A2A.
+In June 2025, Google transferred A2A to the Linux Foundation for vendor-neutral governance. This mirrors the path taken
+by MCP, which was likewise moved to a Linux Foundation fund — part of a broader industry effort to reduce fragmentation
+and vendor lock-in across AI agent ecosystems. IBM subsequently folded its parallel standards, the
+*Agent Communication Protocol (ACP)*, into A2A.
 
-Under the Linux Foundation's stewardship the specification reached its 1.0 release, with SDKs
-maintained for several languages and generated from a single normative Protocol Buffer definition.
+Under the Linux Foundation's stewardship the specification reached its 1.0 release, with SDKs maintained for several
+languages and generated from a single normative Protocol Buffer definition.
 
 ''''
 
@@ -157,4 +138,5 @@ maintained for several languages and generated from a single normative Protocol 
 * xref:agent-harness.adoc[*Agent harness*]
 * xref:agent-orchestration.adoc[*Agent orchestration*]
 * xref:large-language-model.adoc[*Large language model (LLM)*]
-* xref:model-context-protocol.adoc[*Model Context Protocol*]* xref:artificial-intelligence.adoc[*Artificial intelligence (AI)*]
+* xref:model-context-protocol.adoc[*Model Context Protocol*]
+* xref:artificial-intelligence.adoc[*Artificial intelligence (AI)*]

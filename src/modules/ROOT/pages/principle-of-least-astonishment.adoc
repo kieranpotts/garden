@@ -2,60 +2,56 @@
 
 :link-wikipedia: https://en.wikipedia.org/wiki/Principle_of_least_astonishment
 
-The *principle of least astonishment* (also called the *principle of least surprise*) is a design
-heuristic. A system should behave in the way that least astonishes the people who encounter it.
-"Astonishment" names the small jolt a user, caller, or reader feels when the system does something
-other than what they expected. The principle asks the designer to make the expected behaviour and
-the actual behaviour coincide.
+The *principle of least astonishment* (also called the *principle of least surprise*) is a design heuristic. A system
+should behave in the way that least astonishes the people who encounter it. "Astonishment" names the small jolt a user,
+caller, or reader feels when the system does something other than what they expected. The principle asks the designer to
+make the expected behaviour and the actual behaviour coincide.
 
-The audience depends on the layer being designed. At a user interface, the audience is the person
-clicking through it. At an API, the audience is the caller writing code against it. At source code,
-the audience is the maintainer reading it. The same rule applies at each layer. The name, the shape,
-and the context set up an expectation, and the implementation should meet it.
+The audience depends on the layer being designed. At a user interface, the audience is the person clicking through it.
+At an API, the audience is the caller writing code against it. At source code, the audience is the maintainer reading
+it. The same rule applies at each layer. The name, the shape, and the context set up an expectation, and the
+implementation should meet it.
 
-Surprise is the symptom of a mismatch between a mental model and the system's behaviour. A surprised
-user stops to reconcile what they saw with what they thought they asked for. A surprised caller
-writes a bug, because the code they wrote against the expected behaviour breaks against the actual
-one. A surprised maintainer misreads the code, because the names in front of them no longer describe
-what the code does. In each case the cost is paid in attention the design failed to save.
+Surprise is the symptom of a mismatch between a mental model and the system's behaviour. A surprised user stops to
+reconcile what they saw with what they thought they asked for. A surprised caller writes a bug, because the code they
+wrote against the expected behaviour breaks against the actual one. A surprised maintainer misreads the code, because
+the names in front of them no longer describe what the code does. In each case the cost is paid in attention the design
+failed to save.
 
 == Where it applies
 
-The principle shows up wherever a contract is implied but not enforced. A function called `isReady`
-should report readiness and do nothing else. A method named `getUsers` should return users and not,
-as a side effect, write to the database. An operator that means "add" in one type should not
-silently concatenate or mutate in another. A flag that means "verbose" should not also change what
-the program does. The clearer the name and the narrower the behaviour, the less room there is for
-the caller to be wrong about it.
+The principle shows up wherever a contract is implied but not enforced. A function called `isReady` should report
+readiness and do nothing else. A method named `getUsers` should return users and not, as a side effect, write to the
+database. An operator that means "add" in one type should not silently concatenate or mutate in another. A flag that
+means "verbose" should not also change what the program does. The clearer the name and the narrower the behaviour, the
+less room there is for the caller to be wrong about it.
 
-Languages with high xref:conceptual-integrity.adoc[*conceptual integrity*] make the principle easier
-to keep. A single set of design ideas runs through every part of the system, so the reader only has
-to learn it once. Shared xref:code-conventions.adoc[*code conventions*] do the same at a smaller
-scale. A uniform shape lets a reader trust what a name means without re-reading every file. Both
-reduce surprise by making the expected case the default case.
+Languages with high xref:conceptual-integrity.adoc[*conceptual integrity*] make the principle easier to keep. A single
+set of design ideas runs through every part of the system, so the reader only has to learn it once. Shared
+xref:code-conventions.adoc[*code conventions*] do the same at a smaller scale. A uniform shape lets a reader trust what
+a name means without re-reading every file. Both reduce surprise by making the expected case the default case.
 
 == Tensions
 
 The principle trades off against heuristics that reach for more than the literal input.
-xref:do-what-i-mean.adoc[*Do what I mean (DWIM)*] designs infer intent and act on the inference.
-When the guess is right, the user is saved a step. When it is wrong, the system does something other
-than what was asked, and the user may not notice. Least astonishment pulls toward the literal and
-predictable, while DWIM pulls toward the helpful and guessed.
+xref:do-what-i-mean.adoc[*Do what I mean (DWIM)*] designs infer intent and act on the inference. When the guess is
+right, the user is saved a step. When it is wrong, the system does something other than what was asked, and the user may
+not notice. Least astonishment pulls toward the literal and predictable, while DWIM pulls toward the helpful and
+guessed.
 
-The xref:robustness-principle.adoc[*robustness principle*] is a cousin at the boundary between
-components. Being liberal in what you accept lets a system interoperate with producers that evolved
-independently, but the same tolerance can mask real errors and surface them somewhere less expected.
-Strictness inside a component and tolerance at its edges keep the two heuristics in balance.
+The xref:robustness-principle.adoc[*robustness principle*] is a cousin at the boundary between components. Being liberal
+in what you accept lets a system interoperate with producers that evolved independently, but the same tolerance can mask
+real errors and surface them somewhere less expected. Strictness inside a component and tolerance at its edges keep the
+two heuristics in balance.
 
-Change over time brings its own pressure. A behaviour that was once unsurprising can become
-surprising as callers move to a newer model, and keeping the old behaviour for the sake of
-xref:backwards-compatibility.adoc[*backwards compatibility*] can itself astonish the new caller.
-Versioning and deprecation let the old and new contracts coexist, so each audience meets the
-contract it was written against.
+Change over time brings its own pressure. A behaviour that was once unsurprising can become surprising as callers move
+to a newer model, and keeping the old behaviour for the sake of
+xref:backwards-compatibility.adoc[*backwards compatibility*] can itself astonish the new caller. Versioning and
+deprecation let the old and new contracts coexist, so each audience meets the contract it was written against.
 
-A xref:leaky-abstraction.adoc[*leaky abstraction*] is one way the principle fails. The abstraction
-promises to hide the layer beneath, and the moment that layer shows through, the consumer is left to
-reconcile behaviour the contract never described. The leak is the surprise.
+A xref:leaky-abstraction.adoc[*leaky abstraction*] is one way the principle fails. The abstraction promises to hide the
+layer beneath, and the moment that layer shows through, the consumer is left to reconcile behaviour the contract never
+described. The leak is the surprise.
 
 == See also
 
@@ -71,5 +67,4 @@ reconcile behaviour the contract never described. The leak is the surprise.
 
 == References
 
-* Wikipedia.
-  {link-wikipedia}[_Principle of least astonishment_].
+* Wikipedia. {link-wikipedia}[_Principle of least astonishment_].

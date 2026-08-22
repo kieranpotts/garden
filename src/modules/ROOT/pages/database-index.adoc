@@ -5,63 +5,57 @@
 
 image::database-indexes.svg[]
 
-A database index is an auxiliary data structure that lets a database engine find rows without
-scanning the whole table. It holds the indexed column values in sorted order, each paired with a
-pointer back to the row it came from. The analogy is a book's index. Instead of flipping through
-every page to find a term, you look the term up in a sorted list and jump straight to the cited
-page.
+A database index is an auxiliary data structure that lets a database engine find rows without scanning the whole table.
+It holds the indexed column values in sorted order, each paired with a pointer back to the row it came from. The analogy
+is a book's index. Instead of flipping through every page to find a term, you look the term up in a sorted list and jump
+straight to the cited page.
 
-Without an index, the database must perform a *full table scan*, reading and testing every row
-against the query condition. On a large table that is prohibitively slow. With an index, the engine
-follows the pointers in the index to fetch only the matching rows. What would be an O(n) scan
-becomes an O(log n) lookup, an improvement xref:big-o-notation.adoc[*big O notation*] captures
-precisely.
+Without an index, the database must perform a *full table scan*, reading and testing every row against the query
+condition. On a large table that is prohibitively slow. With an index, the engine follows the pointers in the index to
+fetch only the matching rows. What would be an O(n) scan becomes an O(log n) lookup, an improvement
+xref:big-o-notation.adoc[*big O notation*] captures precisely.
 
-Indexes are built on standard xref:data-structure.adoc[*data structures*]. The default in most
-relational engines is a *B-tree* or its variant the *B+ tree*, which stays balanced as rows are
-inserted and deleted, keeps values sorted for range queries, and packs each node to match a disk
-block so few disk reads are needed. *Hash indexes* use a hash function to map keys to buckets,
-giving O(1) equality lookups but no support for ranges or ordering. *Bitmap indexes* use one bit per
-row per distinct value, and suit low-cardinality columns in analytical workloads.
+Indexes are built on standard xref:data-structure.adoc[*data structures*]. The default in most relational engines is a
+*B-tree* or its variant the *B+ tree*, which stays balanced as rows are inserted and deleted, keeps values sorted for
+range queries, and packs each node to match a disk block so few disk reads are needed. *Hash indexes* use a hash
+function to map keys to buckets, giving O(1) equality lookups but no support for ranges or ordering. *Bitmap indexes*
+use one bit per row per distinct value, and suit low-cardinality columns in analytical workloads.
 
 == Trade-offs
 
-Indexes speed up reads but slow down writes. Every insert, update, or delete must update the index
-as well as the table, so each extra index adds work to the write path. Indexes also consume disk
-space, sometimes more than the table itself. The right balance depends on the system's
-xref:access-pattern.adoc[*access patterns*]. Indexes pay off most for read-heavy workloads, while
-write-heavy systems may be better served by fewer indexes.
+Indexes speed up reads but slow down writes. Every insert, update, or delete must update the index as well as the table,
+so each extra index adds work to the write path. Indexes also consume disk space, sometimes more than the table itself.
+The right balance depends on the system's xref:access-pattern.adoc[*access patterns*]. Indexes pay off most for
+read-heavy workloads, while write-heavy systems may be better served by fewer indexes.
 
-Indexes also get harder in a xref:sharding.adoc[*sharded*] database. An index on the shard key stays
-local to each shard, but a secondary index on any other column either has to be partitioned per
-shard, forcing every lookup to fan out across the cluster, or maintained as a separate global
-structure, which adds a second distribution dimension on top of the data itself.
+Indexes also get harder in a xref:sharding.adoc[*sharded*] database. An index on the shard key stays local to each
+shard, but a secondary index on any other column either has to be partitioned per shard, forcing every lookup to fan out
+across the cluster, or maintained as a separate global structure, which adds a second distribution dimension on top of
+the data itself.
 
 == Choosing what to index
 
 An index is only useful if a query can use it. A few rules of thumb:
 
 * Index columns that appear frequently in `WHERE`, `JOIN`, and `ORDER BY` clauses.
-* Prefer high-cardinality columns. An index on a unique `customer_id` is far more selective than one
-  on a `gender` column with three values.
-* Match the index to the query exactly. Wrapping an indexed column in a function, eg.
-  `WHERE UPPER(last_name) = 'SMITH'`, prevents an index on `last_name` from being used. A
-  function-based index on `UPPER(last_name)` is needed instead.
-* In a composite index, order columns from most to least selective. The index serves queries that
-  filter on its leading column or columns, but not those that skip it.
+* Prefer high-cardinality columns. An index on a unique `customer_id` is far more selective than one on a `gender` column
+  with three values.
+* Match the index to the query exactly. Wrapping an indexed column in a function, eg. `WHERE UPPER(last_name) = 'SMITH'`,
+  prevents an index on `last_name` from being used. A function-based index on `UPPER(last_name)` is needed instead.
+* In a composite index, order columns from most to least selective. The index serves queries that filter on its leading
+  column or columns, but not those that skip it.
 
 == Common types of indexes
 
-* *Primary key index.* Created automatically for the primary key, enforcing uniqueness and giving
-  fast lookups by that key.
-* *Clustered index.* Determines the physical storage order of the table's rows. Only one clustered
-  index can exist per table, so the table and the index are effectively the same structure.
-* *Secondary index.* Any index on a non-primary-key column, eg. an index on `email` to speed up
-  login lookups.
-* *Composite index.* An index on multiple columns, useful for queries that filter on those columns
-  together, eg. finding a user by first and last name.
-* *Covering index.* An index that includes every column a query needs, so the engine can answer the
-  query from the index alone without touching the table.
+* *Primary key index.* Created automatically for the primary key, enforcing uniqueness and giving fast lookups by that
+  key.
+* *Clustered index.* Determines the physical storage order of the table's rows. Only one clustered index can exist per
+  table, so the table and the index are effectively the same structure.
+* *Secondary index.* Any index on a non-primary-key column, eg. an index on `email` to speed up login lookups.
+* *Composite index.* An index on multiple columns, useful for queries that filter on those columns together, eg. finding a
+  user by first and last name.
+* *Covering index.* An index that includes every column a query needs, so the engine can answer the query from the index
+  alone without touching the table.
 
 == See also
 
@@ -81,7 +75,7 @@ An index is only useful if a query can use it. A few rules of thumb:
 
 * Ashish Pratap Singh (2024).
   link:{link-algomaster-indexes}[_Database indexes: a detailed guide_].
-  AlgoMaster.
+AlgoMaster.
 * Progress Software (2024).
   link:{link-progress-indexes}[_How to implement and use database indexes_].
-  Progress DataDirect.
+Progress DataDirect.

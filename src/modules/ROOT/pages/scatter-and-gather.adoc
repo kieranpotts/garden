@@ -3,71 +3,62 @@
 :link-horicky: https://horicky.blogspot.com/2010/10/scalable-system-design-patterns.html
 
 Scatter and gather is a xref:communication-pattern.adoc[*communication pattern*] for
-xref:distributed-system.adoc[*distributed software*] in which a coordinator splits a request into
-independent sub-requests, dispatches them in parallel to a set of workers, and then merges the
-workers' responses into a single reply. It is one of the canonical
-xref:design-pattern.adoc[*design patterns*] for scalable systems, alongside
-xref:load-balancing.adoc[*load balancing*] and xref:result-cache.adoc[*result caching*], for
-decoupling a service's read capacity from the capacity of any single node.
+xref:distributed-system.adoc[*distributed software*] in which a coordinator splits a request into independent
+sub-requests, dispatches them in parallel to a set of workers, and then merges the workers' responses into a single
+reply. It is one of the canonical xref:design-pattern.adoc[*design patterns*] for scalable systems, alongside
+xref:load-balancing.adoc[*load balancing*] and xref:result-cache.adoc[*result caching*], for decoupling a service's read
+capacity from the capacity of any single node.
 
-The pattern has two phases. In the *scatter* phase, the coordinator issues N sub-requests in
-parallel – typically one per shard, partition, or downstream service. In the *gather* phase, it
-waits for the sub-responses and combines them, by concatenation, aggregation, ranking, or some other
-merge function, before returning the result to the caller. The workers do not communicate with one
-another; all coordination flows through the coordinator, which is what makes scatter and gather a
-mediated, xref:parallelism.adoc[*parallel*] pattern rather than a peer-to-peer one.
+The pattern has two phases. In the *scatter* phase, the coordinator issues N sub-requests in parallel – typically one
+per shard, partition, or downstream service. In the *gather* phase, it waits for the sub-responses and combines them, by
+concatenation, aggregation, ranking, or some other merge function, before returning the result to the caller. The
+workers do not communicate with one another; all coordination flows through the coordinator, which is what makes scatter
+and gather a mediated, xref:parallelism.adoc[*parallel*] pattern rather than a peer-to-peer one.
 
 == Where it appears
 
 The shape recurs throughout distributed systems.
 
-* *Sharded reads.* A query against a xref:sharding.adoc[*sharded*]
-  xref:distributed-database.adoc[*distributed database*] is fanned out to every shard that might
-  hold matching rows, and the partial result sets are merged at the coordinator. This is the
-  fanout-on-read strategy described under xref:fanout.adoc[*fanout*].
+* *Sharded reads.* A query against a xref:sharding.adoc[*sharded*] xref:distributed-database.adoc[*distributed database*]
+  is fanned out to every shard that might hold matching rows, and the partial result sets are merged at the coordinator.
+  This is the fanout-on-read strategy described under xref:fanout.adoc[*fanout*].
 
-* *Search.* A search engine forwards a query to the nodes that own each partition of the index, then
-  ranks the union of the partial hits.
+* *Search.* A search engine forwards a query to the nodes that own each partition of the index, then ranks the union of
+  the partial hits.
 
-* *MapReduce.* xref:map-reduce.adoc[*MapReduce*] is a restricted, specialized form of scatter and
-  gather: the map step scatters work across workers, and the reduce step gathers and combines their
-  output. The same ancestry runs through
-  xref:bulk-synchronous-parallel.adoc[*bulk synchronous parallel*] models, which frame the scatter
-  and gather as a superstep bounded by a synchronization barrier.
+* *MapReduce.* xref:map-reduce.adoc[*MapReduce*] is a restricted, specialized form of scatter and gather: the map step
+  scatters work across workers, and the reduce step gathers and combines their output. The same ancestry runs through
+  xref:bulk-synchronous-parallel.adoc[*bulk synchronous parallel*] models, which frame the scatter and gather as a
+  superstep bounded by a synchronization barrier.
 
-* *Service composition.* An API request that assembles a view from several downstream services – a
-  product page that fetches price, stock, and reviews in parallel – is a scatter-and-gather read at
-  the service tier.
+* *Service composition.* An API request that assembles a view from several downstream services – a product page that
+  fetches price, stock, and reviews in parallel – is a scatter-and-gather read at the service tier.
 
 == Trade-offs
 
-Scatter and gather moves work off the coordinator and onto parallel workers, so a query's latency
-becomes roughly that of the slowest worker rather than the sum of all of them. The cost is
-coordination. The coordinator must hold state for every outstanding sub-request, merge results that
-may arrive out of order, and decide what to do when workers fail or time out.
+Scatter and gather moves work off the coordinator and onto parallel workers, so a query's latency becomes roughly that
+of the slowest worker rather than the sum of all of them. The cost is coordination. The coordinator must hold state for
+every outstanding sub-request, merge results that may arrive out of order, and decide what to do when workers fail or
+time out.
 
-*Tail xref:latency.adoc[latency]* is the dominant risk. Because the gather phase cannot complete
-until every sub-response is in, a single slow worker stalls the whole request, and the effect
-compounds as the fan-out width grows. Common mitigations are
-xref:load-balancing.adoc[*load balancing*] to keep workers evenly utilized, a
-xref:result-cache.adoc[*result cache*] to skip the scatter entirely for repeated inputs, and hedged
-or deadline-based dispatch that re-issues a sub-request, or abandons it, past a threshold.
+*Tail xref:latency.adoc[latency]* is the dominant risk. Because the gather phase cannot complete until every
+sub-response is in, a single slow worker stalls the whole request, and the effect compounds as the fan-out width grows.
+Common mitigations are xref:load-balancing.adoc[*load balancing*] to keep workers evenly utilized, a
+xref:result-cache.adoc[*result cache*] to skip the scatter entirely for repeated inputs, and hedged or deadline-based
+dispatch that re-issues a sub-request, or abandons it, past a threshold.
 
-*Partial failure* is the other. If a worker does not respond, the coordinator must choose between
-failing the whole request, returning a partial result, or degrading gracefully. The right answer
-depends on the query: a search that omits one partition is misleading, while a dashboard that drops
-one widget may be acceptable. *Timeouts*, retries, and xref:circuit-breaker.adoc[*circuit breakers*]
-on the sub-request path bound the blast radius of an unresponsive worker.
+*Partial failure* is the other. If a worker does not respond, the coordinator must choose between failing the whole
+request, returning a partial result, or degrading gracefully. The right answer depends on the query: a search that omits
+one partition is misleading, while a dashboard that drops one widget may be acceptable. *Timeouts*, retries, and
+xref:circuit-breaker.adoc[*circuit breakers*] on the sub-request path bound the blast radius of an unresponsive worker.
 
 == Relationship to other patterns
 
-Scatter and gather is the read-side analogue of the
-xref:execution-orchestrator.adoc[*execution orchestrator*], which applies the same mediated,
-parallel-dispatch shape to multi-step workflows. Where an orchestrator sequences tasks that may
-depend on one another, scatter and gather assumes the sub-requests are independent and the only
-coordination is the final merge. The pattern also sits at the lazy end of the
-xref:fanout.adoc[*fanout*] trade-off: rather than precomputing derived representations on write, it
-gathers them on read.
+Scatter and gather is the read-side analogue of the xref:execution-orchestrator.adoc[*execution orchestrator*], which
+applies the same mediated, parallel-dispatch shape to multi-step workflows. Where an orchestrator sequences tasks that
+may depend on one another, scatter and gather assumes the sub-requests are independent and the only coordination is the
+final merge. The pattern also sits at the lazy end of the xref:fanout.adoc[*fanout*] trade-off: rather than precomputing
+derived representations on write, it gathers them on read.
 
 == See also
 
@@ -84,6 +75,4 @@ gathers them on read.
 
 == References
 
-* Ricky Ho (2010).
-  {link-horicky}[_Scalable System Design Patterns_].
-  I Do Not Know.
+* Ricky Ho (2010). {link-horicky}[_Scalable System Design Patterns_]. I Do Not Know.

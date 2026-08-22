@@ -1,76 +1,67 @@
 = Interface segregation principle
 
-The interface segregation principle (ISP) states that clients should not be forced to depend on
-methods they do not use. It is the I in xref:solid.adoc[*SOLID*], a family of
-xref:design-principle.adoc[*design principles*] for
-xref:object-oriented-programming.adoc[*object-oriented programming*], and it was introduced by
-Robert C. Martin. The remedy it prescribes is to split fat xref:interface.adoc[*interfaces*] into
-several smaller, client-specific ones, so that each consumer depends only on the operations it
-actually calls.
+The interface segregation principle (ISP) states that clients should not be forced to depend on methods they do not use.
+It is the I in xref:solid.adoc[*SOLID*], a family of xref:design-principle.adoc[*design principles*] for
+xref:object-oriented-programming.adoc[*object-oriented programming*], and it was introduced by Robert C. Martin. The
+remedy it prescribes is to split fat xref:interface.adoc[*interfaces*] into several smaller, client-specific ones, so
+that each consumer depends only on the operations it actually calls.
 
-A fat interface bundles together methods that serve unrelated clients. Any class implementing that
-interface must provide every method, even the ones its particular role does not need, which often
-means stubbing them out or raising "not supported" errors. That bloats implementations and couples
-every consumer to the full surface area of the interface, even the parts it never touches. The
-result is accidental xref:coupling.adoc[*coupling*]. A change to a method that one client uses
-forces a recompile or redeploy of every other client, simply because they share the same interface
-type.
+A fat interface bundles together methods that serve unrelated clients. Any class implementing that interface must
+provide every method, even the ones its particular role does not need, which often means stubbing them out or raising
+"not supported" errors. That bloats implementations and couples every consumer to the full surface area of the
+interface, even the parts it never touches. The result is accidental xref:coupling.adoc[*coupling*]. A change to a
+method that one client uses forces a recompile or redeploy of every other client, simply because they share the same
+interface type.
 
-The principle is stated from the client's perspective – an interface should be shaped by the code
-that calls it, not by the code that implements it. Splitting by role produces interfaces that are
-cohesive in the xref:cohesion.adoc[*cohesion*] sense, since each one groups only the operations a
-single client cares about. This dovetails with the
-xref:single-responsibility-principle.adoc[*single responsibility principle*], which asks that a
-module answer to one actor. A client-specific interface does exactly that, with the actor being the
-client rather than the implementer.
+The principle is stated from the client's perspective – an interface should be shaped by the code that calls it, not by
+the code that implements it. Splitting by role produces interfaces that are cohesive in the
+xref:cohesion.adoc[*cohesion*] sense, since each one groups only the operations a single client cares about. This
+dovetails with the xref:single-responsibility-principle.adoc[*single responsibility principle*], which asks that a
+module answer to one actor. A client-specific interface does exactly that, with the actor being the client rather than
+the implementer.
 
 Segregated interfaces also smooth the path for the other SOLID letters. They make the
-xref:open-closed-principle.adoc[*open-closed principle*] easier to satisfy, because a new client can
-get its own narrow interface rather than forcing changes to a shared one, and they support
-xref:dependency-inversion.adoc[*dependency inversion*], which asks clients to depend on abstractions
-– but only on the abstractions they actually need. They also protect the
-xref:liskov-substitution-principle.adoc[*Liskov substitution principle*]. A fat interface pressures
-every implementer into providing methods it cannot truly honor, which it can only do by stubbing
-them or throwing, and an implementer that throws for inputs the interface accepts is no longer a
-safe substitute for the type it declares.
+xref:open-closed-principle.adoc[*open-closed principle*] easier to satisfy, because a new client can get its own narrow
+interface rather than forcing changes to a shared one, and they support
+xref:dependency-inversion.adoc[*dependency inversion*], which asks clients to depend on abstractions – but only on the
+abstractions they actually need. They also protect the
+xref:liskov-substitution-principle.adoc[*Liskov substitution principle*]. A fat interface pressures every implementer
+into providing methods it cannot truly honor, which it can only do by stubbing them or throwing, and an implementer that
+throws for inputs the interface accepts is no longer a safe substitute for the type it declares.
 
 == A worked example
 
-The canonical illustration is a `Worker` interface with `work()` and `eat()` methods. A `Robot` that
-implements `Worker` is forced to provide `eat()`, which it can only stub or raise on, just to
-satisfy the type. Splitting `Worker` into a `Workable` interface for human and robot workers and an
-`Eatable` interface for the humans who also take lunch removes the burden. Each client, the
-scheduler that calls `work()` and the cafeteria that calls `eat()`, now depends only on the
+The canonical illustration is a `Worker` interface with `work()` and `eat()` methods. A `Robot` that implements `Worker`
+is forced to provide `eat()`, which it can only stub or raise on, just to satisfy the type. Splitting `Worker` into a
+`Workable` interface for human and robot workers and an `Eatable` interface for the humans who also take lunch removes
+the burden. Each client, the scheduler that calls `work()` and the cafeteria that calls `eat()`, now depends only on the
 operations it actually uses.
 
 == Role and header interfaces
 
-Martin distinguishes two ways of drawing an interface. A *header interface* takes the public methods
-of a single class and exposes them verbatim, one interface per implementing type, mirroring its
-surface. Because it is shaped by the implementer rather than by any caller, a header interface tends
-to accumulate every method any client has ever needed and so drifts toward fatness. A
-*role interface*, by contrast, is extracted from the operations a particular client or role
-requires. It is narrow by construction, and the interface segregation principle is, in effect, the
-practice of preferring role interfaces over header interfaces.
+Martin distinguishes two ways of drawing an interface. A *header interface* takes the public methods of a single class
+and exposes them verbatim, one interface per implementing type, mirroring its surface. Because it is shaped by the
+implementer rather than by any caller, a header interface tends to accumulate every method any client has ever needed
+and so drifts toward fatness. A *role interface*, by contrast, is extracted from the operations a particular client or
+role requires. It is narrow by construction, and the interface segregation principle is, in effect, the practice of
+preferring role interfaces over header interfaces.
 
 == Trade-offs
 
-Segregation is a matter of granularity, and the wrong granularity cuts in both directions. Splitting
-per method, one interface per operation, yields interface explosion: clients depend on a swarm of
-single-method types and the design gains indirection without insight. The useful unit is the
-*client* or *role*, not the individual method. Two clients that call the same cluster of operations
-should share one interface; a client that calls a distinct subset should get its own.
+Segregation is a matter of granularity, and the wrong granularity cuts in both directions. Splitting per method, one
+interface per operation, yields interface explosion: clients depend on a swarm of single-method types and the design
+gains indirection without insight. The useful unit is the *client* or *role*, not the individual method. Two clients
+that call the same cluster of operations should share one interface; a client that calls a distinct subset should get
+its own.
 
-Some languages soften the cost of a fat interface without addressing the design problem. Java
-`default` methods, C# extension methods, and traits or mixins in Scala and Rust let an interface
-supply a fallback implementation, so an implementer is no longer forced to stub methods it does not
-need. But the underlying coupling remains. The client still depends on a type that names operations
-it never calls, and a change to those operations still ripples to it.
+Some languages soften the cost of a fat interface without addressing the design problem. Java `default` methods, C#
+extension methods, and traits or mixins in Scala and Rust let an interface supply a fallback implementation, so an
+implementer is no longer forced to stub methods it does not need. But the underlying coupling remains. The client still
+depends on a type that names operations it never calls, and a change to those operations still ripples to it.
 
-The tells of a violation are concrete. Implementers with methods that throw "not supported" or
-return no-ops, clients that depend on a large interface but call only a small subset of it, and
-clients that cast a reference down to a narrower type are all signs that an interface has been drawn
-for the implementer rather than for its callers.
+The tells of a violation are concrete. Implementers with methods that throw "not supported" or return no-ops, clients
+that depend on a large interface but call only a small subset of it, and clients that cast a reference down to a
+narrower type are all signs that an interface has been drawn for the implementer rather than for its callers.
 
 == See also
 
@@ -87,5 +78,4 @@ for the implementer rather than for its callers.
 == References
 
 * Martin, Robert C. (1996). _The Interface Segregation Principle_. C++ Report.
-* Martin, Robert C. (2002). _Agile Software Development, Principles, Patterns, and Practices_.
-  Pearson.
+* Martin, Robert C. (2002). _Agile Software Development, Principles, Patterns, and Practices_. Pearson.

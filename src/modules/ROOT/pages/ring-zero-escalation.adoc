@@ -1,63 +1,59 @@
 = Ring zero escalation
 
-Ring zero escalation is a xref:security.adoc[*security*] attack in which an attacker gains execution
-at the highest privilege level of a computer system, known as *ring 0* or *kernel mode*. Ring 0 is
-the protection ring at which the operating system kernel runs, with unrestricted access to memory
-and hardware.
+Ring zero escalation is a xref:security.adoc[*security*] attack in which an attacker gains execution at the highest
+privilege level of a computer system, known as *ring 0* or *kernel mode*. Ring 0 is the protection ring at which the
+operating system kernel runs, with unrestricted access to memory and hardware.
 
-Most modern operating systems use a layered privilege model derived from the protection rings
-introduced by the Multics project and later adopted by x86
-xref:processor-architecture.adoc[*processor architectures*]. User code runs in a less privileged
-ring (typically ring 3), and transitions to ring 0 are mediated by the kernel through well-defined
-entry points such as system calls. Ring zero escalation is any technique that bypasses those entry
-points to run attacker-controlled code at ring 0.
+Most modern operating systems use a layered privilege model derived from the protection rings introduced by the Multics
+project and later adopted by x86 xref:processor-architecture.adoc[*processor architectures*]. User code runs in a less
+privileged ring (typically ring 3), and transitions to ring 0 are mediated by the kernel through well-defined entry
+points such as system calls. Ring zero escalation is any technique that bypasses those entry points to run
+attacker-controlled code at ring 0.
 
-Once running in ring 0, an attacker can disable security controls, read or modify arbitrary memory,
-install a rootkit that survives reboots, and address hardware directly. The compromise is total. The
-kernel is the trust root of the operating system, so anything running beneath it cannot be relied on
-to detect or remove the attacker.
+Once running in ring 0, an attacker can disable security controls, read or modify arbitrary memory, install a rootkit
+that survives reboots, and address hardware directly. The compromise is total. The kernel is the trust root of the
+operating system, so anything running beneath it cannot be relied on to detect or remove the attacker.
 
 == Attack vectors
 
-Ring zero escalation usually begins with a bug or a design weakness that lets unprivileged code
-influence the kernel. Common vectors include:
+Ring zero escalation usually begins with a bug or a design weakness that lets unprivileged code influence the kernel.
+Common vectors include:
 
-* *Kernel bugs.* Memory-corruption vulnerabilities in the kernel itself – buffer overflows,
-  use-after-free bugs, integer overflows – can be exploited to hijack kernel execution.
-* *Vulnerable drivers.* Third-party kernel drivers are a frequent source of weaknesses, because they
-  run in ring 0 but are often held to lower engineering standards than the core kernel.
-  Driver-signing requirements reduce but do not eliminate this exposure.
-* *Misused kernel interfaces.* Some legitimate kernel facilities expose capabilities that, combined
-  with a second bug, yield arbitrary kernel code execution.
-* *Hardware-assisted attacks.* Direct memory access (DMA) peripherals and malicious devices can read
-  or write system memory unless an IOMMU constrains them.
+* *Kernel bugs.* Memory-corruption vulnerabilities in the kernel itself – buffer overflows, use-after-free bugs, integer
+  overflows – can be exploited to hijack kernel execution.
+* *Vulnerable drivers.* Third-party kernel drivers are a frequent source of weaknesses, because they run in ring 0 but are
+  often held to lower engineering standards than the core kernel. Driver-signing requirements reduce but do not eliminate
+  this exposure.
+* *Misused kernel interfaces.* Some legitimate kernel facilities expose capabilities that, combined with a second bug,
+  yield arbitrary kernel code execution.
+* *Hardware-assisted attacks.* Direct memory access (DMA) peripherals and malicious devices can read or write system
+  memory unless an IOMMU constrains them.
 
 == Virtualization and isolation
 
 Ring zero escalation is also relevant to xref:virtual-machine.adoc[*virtual machines*] and
-xref:container.adoc[*containers*]. Containers on a shared host all rely on the same host kernel, so
-an attacker who escalates to ring 0 inside one container can reach every other container and the
-host itself. A xref:hypervisor.adoc[*hypervisor*] adds a stronger boundary. The escape stops at the
-guest kernel and does not directly cross into other VMs, though a further hypervisor escape (a
-*virtual machine escape*) would be needed to break out entirely.
+xref:container.adoc[*containers*]. Containers on a shared host all rely on the same host kernel, so an attacker who
+escalates to ring 0 inside one container can reach every other container and the host itself. A
+xref:hypervisor.adoc[*hypervisor*] adds a stronger boundary. The escape stops at the guest kernel and does not directly
+cross into other VMs, though a further hypervisor escape (a *virtual machine escape*) would be needed to break out
+entirely.
 
-Sandboxing is the general principle of designing boundaries so that breaching one
-xref:sandbox.adoc[*sandbox*] does not grant the attacker the host's full trust root. Where the
-sandbox is a process container sharing a kernel, ring zero escalation is precisely the breach that
-defeats it.
+Sandboxing is the general principle of designing boundaries so that breaching one xref:sandbox.adoc[*sandbox*] does not
+grant the attacker the host's full trust root. Where the sandbox is a process container sharing a kernel, ring zero
+escalation is precisely the breach that defeats it.
 
 == Mitigations
 
 No single control eliminates ring zero escalation. Defenses are layered:
 
-* *Kernel hardening.* Features such as kernel address space layout randomization (KASLR), stack
-  canaries, and control-flow integrity make exploits harder to write and less reliable.
-* *Reduced attack surface.* Loading fewer drivers, disabling unneeded kernel modules, and using a
-  minimal kernel shrink the set of bugs an attacker can reach.
-* *Hardware isolation.* An IOMMU prevents rogue devices from accessing arbitrary memory, and CPU
-  virtualization extensions confine guest kernels to a non-root mode of the processor.
-* *Least privilege.* Running services as unprivileged users, and isolating drivers into user-space
-  processes where possible, limits what a single bug can compromise.
+* *Kernel hardening.* Features such as kernel address space layout randomization (KASLR), stack canaries, and control-flow
+  integrity make exploits harder to write and less reliable.
+* *Reduced attack surface.* Loading fewer drivers, disabling unneeded kernel modules, and using a minimal kernel shrink
+  the set of bugs an attacker can reach.
+* *Hardware isolation.* An IOMMU prevents rogue devices from accessing arbitrary memory, and CPU virtualization extensions
+  confine guest kernels to a non-root mode of the processor.
+* *Least privilege.* Running services as unprivileged users, and isolating drivers into user-space processes where
+  possible, limits what a single bug can compromise.
 
 == See also
 

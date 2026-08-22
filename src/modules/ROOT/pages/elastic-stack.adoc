@@ -1,59 +1,54 @@
 = Elastic stack
 
-The Elastic stack, formerly known as the ELK stack, is a family of open-source software products
-from Elastic for ingesting, storing, searching, and visualizing large volumes of machine-generated
-data. The workload is principally xref:logging.adoc[*logs*] and metrics, but the same platform
-serves any document corpus that benefits from full-text search.
+The Elastic stack, formerly known as the ELK stack, is a family of open-source software products from Elastic for
+ingesting, storing, searching, and visualizing large volumes of machine-generated data. The workload is principally
+xref:logging.adoc[*logs*] and metrics, but the same platform serves any document corpus that benefits from full-text
+search.
 
 The stack is most commonly deployed for log analytics, xref:observability.adoc[*observability*], and
-xref:document-search.adoc[*document search*]. Use cases include visualizing application and
-infrastructure monitoring data, troubleshooting production issues, security analytics (SIEM), and
-powering full-text search on product catalogs or content libraries.
+xref:document-search.adoc[*document search*]. Use cases include visualizing application and infrastructure monitoring
+data, troubleshooting production issues, security analytics (SIEM), and powering full-text search on product catalogs or
+content libraries.
 
 == Components
 
-The ELK acronym names the three original products. The rebrand to "Elastic stack" accompanied the
-addition of Beats, a family of lightweight shippers, so the modern stack has four pillars.
+The ELK acronym names the three original products. The rebrand to "Elastic stack" accompanied the addition of Beats, a
+family of lightweight shippers, so the modern stack has four pillars.
 
-* *Elasticsearch.* The core of the stack. A distributed, RESTful search and analytics engine built
-  on Apache Lucene, it stores JSON documents in xref:database-index.adoc[*inverted indexes*] and
-  exposes query, aggregation, and full-text search APIs. It is also widely deployed as a standalone
-  document search engine and as a near-real-time store for time-ordered data, which overlaps in use
-  with xref:time-series-database.adoc[*time series databases*].
+* *Elasticsearch.* The core of the stack. A distributed, RESTful search and analytics engine built on Apache Lucene, it
+  stores JSON documents in xref:database-index.adoc[*inverted indexes*] and exposes query, aggregation, and full-text
+  search APIs. It is also widely deployed as a standalone document search engine and as a near-real-time store for
+  time-ordered data, which overlaps in use with xref:time-series-database.adoc[*time series databases*].
 
-* *Logstash.* A server-side data ingestion pipeline that collects, parses, enriches, and ships data
-  to Elasticsearch. Logstash performs the xref:etl.adoc[*extract, transform, load*] role of the
-  stack, with a plugin ecosystem covering a wide range of input sources, filters, and output sinks,
-  including xref:stream-processing-system.adoc[*stream processing*] platforms such as
-  xref:kafka.adoc[*Kafka*].
+* *Logstash.* A server-side data ingestion pipeline that collects, parses, enriches, and ships data to Elasticsearch.
+  Logstash performs the xref:etl.adoc[*extract, transform, load*] role of the stack, with a plugin ecosystem covering a
+  wide range of input sources, filters, and output sinks, including
+  xref:stream-processing-system.adoc[*stream processing*] platforms such as xref:kafka.adoc[*Kafka*].
 
-* *Kibana.* The visualization layer. Kibana is a web UI for querying Elasticsearch, building
-  dashboards, and exploring data through charts, maps, and time-series views. It is also the
-  operational console for the stack, covering cluster health, index management, and security
-  configuration.
+* *Kibana.* The visualization layer. Kibana is a web UI for querying Elasticsearch, building dashboards, and exploring
+  data through charts, maps, and time-series views. It is also the operational console for the stack, covering cluster
+  health, index management, and security configuration.
 
-* *Beats.* Lightweight agents, installed on edge hosts, that ship operational data directly to
-  Elasticsearch or via Logstash. Examples include Filebeat for logs, Metricbeat for system and
-  service metrics, Packetbeat for network traffic, and Heartbeat for uptime probing.
+* *Beats.* Lightweight agents, installed on edge hosts, that ship operational data directly to Elasticsearch or via
+  Logstash. Examples include Filebeat for logs, Metricbeat for system and service metrics, Packetbeat for network traffic,
+  and Heartbeat for uptime probing.
 
 == Architecture and ecosystem
 
-A typical deployment runs Elasticsearch as a clustered, horizontally scalable data store, with
-Logstash and Beats feeding it and Kibana as the front end. The components are decoupled and
-communicate over HTTP, so each can be scaled and operated independently. Elasticsearch clusters are
-usually the operational focal point, given their role as the shared data tier.
+A typical deployment runs Elasticsearch as a clustered, horizontally scalable data store, with Logstash and Beats
+feeding it and Kibana as the front end. The components are decoupled and communicate over HTTP, so each can be scaled
+and operated independently. Elasticsearch clusters are usually the operational focal point, given their role as the
+shared data tier.
 
-Elastic, the vendor, also offers supplementary products under the Elastic License, including Elastic
-Security (SIEM), Elastic Observability, and managed cloud offerings. The observability suite unifies
-xref:application-performance-management.adoc[*application performance management*], logging, and
-metrics, and competes with dedicated observability platforms such as those listed under
-xref:observability.adoc[*observability*].
+Elastic, the vendor, also offers supplementary products under the Elastic License, including Elastic Security (SIEM),
+Elastic Observability, and managed cloud offerings. The observability suite unifies
+xref:application-performance-management.adoc[*application performance management*], logging, and metrics, and competes
+with dedicated observability platforms such as those listed under xref:observability.adoc[*observability*].
 
-A license change in 2021 moved new releases of Elasticsearch and Kibana from Apache 2.0 to the
-non-OSI-approved Elastic License. That prompted the launch of the Apache-licensed OpenSearch fork,
-now maintained by the OpenSearch Software Foundation. OpenSearch retains API and protocol
-compatibility with much of the Elastic stack, so tooling and client libraries generally work across
-both.
+A license change in 2021 moved new releases of Elasticsearch and Kibana from Apache 2.0 to the non-OSI-approved Elastic
+License. That prompted the launch of the Apache-licensed OpenSearch fork, now maintained by the OpenSearch Software
+Foundation. OpenSearch retains API and protocol compatibility with much of the Elastic stack, so tooling and client
+libraries generally work across both.
 
 == See also
 

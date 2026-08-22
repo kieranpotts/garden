@@ -3,57 +3,49 @@
 :link-attention-paper: https://research.google/pubs/attention-is-all-you-need/
 
 The transformer is the deep learning architecture that underpins modern
-xref:large-language-model.adoc[*large language models (LLMs)*]. It was introduced by researchers at
-Google in the 2017 paper
-{link-attention-paper}["Attention Is All You Need"]. Almost every
-major AI model today – including OpenAI's GPT, Anthropic's Claude, and Google's Gemini – is built on
-the transformer architecture.
+xref:large-language-model.adoc[*large language models (LLMs)*]. It was introduced by researchers at Google in the 2017
+paper {link-attention-paper}["Attention Is All You Need"]. Almost every major AI model today – including OpenAI's GPT,
+Anthropic's Claude, and Google's Gemini – is built on the transformer architecture.
 
 The transformer architecture was originally developed for
-xref:natural-language-processing.adoc[*natural language processing*], but it has since been applied
-to images, speech, video, protein folding, robotics, and game-playing. The key generalization is
-that any domain whose data can be tokenized – broken into a discrete sequence of units – can be
-processed by a transformer.
+xref:natural-language-processing.adoc[*natural language processing*], but it has since been applied to images, speech,
+video, protein folding, robotics, and game-playing. The key generalization is that any domain whose data can be
+tokenized – broken into a discrete sequence of units – can be processed by a transformer.
 
 == The problem it solved
 
-Getting a computer to understand human language had perplexed computer scientists for decades. The
-difficulty is that the same words can be combined in countless ways, and their meaning shifts with
-context. That makes language resistant to the formulaic, purely statistical approaches that earlier
-natural language processing relied on – an effective, near-human solution could not be reached by
-counting word frequencies and co-occurrences alone.
+Getting a computer to understand human language had perplexed computer scientists for decades. The difficulty is that
+the same words can be combined in countless ways, and their meaning shifts with context. That makes language resistant
+to the formulaic, purely statistical approaches that earlier natural language processing relied on – an effective,
+near-human solution could not be reached by counting word frequencies and co-occurrences alone.
 
-The transformer's *attention mechanism* addresses this directly. It lets the model _weigh_ the
-importance of different words or phrases within a block of text, concentrating on the parts most
-relevant to the meaning at hand. The effect is far more context-aware and coherent output, and text
-that reads as far closer to how humans actually speak and write than any earlier text-generation
-technology achieved.
+The transformer's *attention mechanism* addresses this directly. It lets the model _weigh_ the importance of different
+words or phrases within a block of text, concentrating on the parts most relevant to the meaning at hand. The effect is
+far more context-aware and coherent output, and text that reads as far closer to how humans actually speak and write
+than any earlier text-generation technology achieved.
 
 == Self-attention
 
-Before transformers, the dominant approach to sequence modeling was recurrent neural networks
-(RNNs), which read text one token at a time from left to right. The main bottlenecks in these
-networks were that they struggled to capture long-range dependencies, and their sequential nature
-made training slow and hard to scale.
+Before transformers, the dominant approach to sequence modeling was recurrent neural networks (RNNs), which read text
+one token at a time from left to right. The main bottlenecks in these networks were that they struggled to capture
+long-range dependencies, and their sequential nature made training slow and hard to scale.
 
-Transformers solved both problems. By processing all tokens in parallel, training became far faster
-and models could be scaled up by simply adding more compute. The trade-off is that the cost of
-attention grows quadratically with the length of the context.
+Transformers solved both problems. By processing all tokens in parallel, training became far faster and models could be
+scaled up by simply adding more compute. The trade-off is that the cost of attention grows quadratically with the length
+of the context.
 
-The core innovation of the transformer is *self-attention*. For each token in a sequence, the model
-weighs how relevant every other token is. This lets it capture relationships between any two tokens
-regardless of how far apart they are in the sequence.
+The core innovation of the transformer is *self-attention*. For each token in a sequence, the model weighs how relevant
+every other token is. This lets it capture relationships between any two tokens regardless of how far apart they are in
+the sequence.
 
-Because the attention mechanism has no inherent sense of order – it treats the input as a set, not a
-sequence – position information must be injected explicitly. The original transformer added a
-*positional encoding* to each token's embedding before it entered the network. Modern models more
-commonly use *rotary position embedding*, which encodes position directly into the attention score
-computation.
+Because the attention mechanism has no inherent sense of order – it treats the input as a set, not a sequence – position
+information must be injected explicitly. The original transformer added a *positional encoding* to each token's
+embedding before it entered the network. Modern models more commonly use *rotary position embedding*, which encodes
+position directly into the attention score computation.
 
-Transformers are pre-trained by *self-supervised learning* – typically next-token prediction
-(predicting the next token in a sequence). This requires no labeled data and scales directly with
-the size of the training corpus. After pre-training, models are typically fine-tuned on
-task-specific datasets.
+Transformers are pre-trained by *self-supervised learning* – typically next-token prediction (predicting the next token
+in a sequence). This requires no labeled data and scales directly with the size of the training corpus. After
+pre-training, models are typically fine-tuned on task-specific datasets.
 
 ''''
 

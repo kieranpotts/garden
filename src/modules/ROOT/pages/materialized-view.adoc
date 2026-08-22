@@ -3,79 +3,71 @@
 :link-aws-materialized-view: https://aws.amazon.com/what-is/materialized-view/
 :link-postgresql-docs:       https://www.postgresql.org/docs/current/rules-materializedviews.html
 
-A materialized view is a database object that stores the precomputed result of a query as a physical
-table, so that subsequent reads can be served from the stored result instead of re-running the query
-against the xref:relational-database.adoc[*relational database*] base tables. It is a form of
-xref:caching.adoc[*caching*] applied to query results, and a structured form of
-xref:denormalization.adoc[*denormalization*] in which the database engine itself manages the
-redundant copy.
+A materialized view is a database object that stores the precomputed result of a query as a physical table, so that
+subsequent reads can be served from the stored result instead of re-running the query against the
+xref:relational-database.adoc[*relational database*] base tables. It is a form of xref:caching.adoc[*caching*] applied
+to query results, and a structured form of xref:denormalization.adoc[*denormalization*] in which the database engine
+itself manages the redundant copy.
 
-The query behind a materialized view typically involves joins, aggregations, or both. That is the
-kind of work that is expensive to repeat on every read. Storing the result turns each read into a
-lookup against a single, often-indexed table, which is the goal of
-xref:database-query-optimization.adoc[*query optimization*] for read-heavy workloads.
+The query behind a materialized view typically involves joins, aggregations, or both. That is the kind of work that is
+expensive to repeat on every read. Storing the result turns each read into a lookup against a single, often-indexed
+table, which is the goal of xref:database-query-optimization.adoc[*query optimization*] for read-heavy workloads.
 
 == Materialized views versus views
 
-A regular *view* is a named query. It stores no data of its own. Each time it is read, the database
-re-runs the underlying query against the base tables, so the result is always current but always
-pays the full compute cost.
+A regular *view* is a named query. It stores no data of its own. Each time it is read, the database re-runs the
+underlying query against the base tables, so the result is always current but always pays the full compute cost.
 
-A materialized view stores the result. Reads are cheap, but the stored data is a snapshot that
-drifts behind the base tables until the view is refreshed. The choice between them is a trade of
-freshness for read xref:performance.adoc[*performance*], and it depends on how stale the application
-can tolerate.
+A materialized view stores the result. Reads are cheap, but the stored data is a snapshot that drifts behind the base
+tables until the view is refreshed. The choice between them is a trade of freshness for read
+xref:performance.adoc[*performance*], and it depends on how stale the application can tolerate.
 
 == Refresh strategies
 
-Because the stored result is a snapshot, it must be refreshed to reflect changes in the base tables.
-The refresh strategy is the main operational lever over a materialized view.
+Because the stored result is a snapshot, it must be refreshed to reflect changes in the base tables. The refresh
+strategy is the main operational lever over a materialized view.
 
-* *Full refresh.* The view is recomputed from scratch and overwritten. Simple and correct, but
-  expensive for large views and disruptive if it locks the table during rebuild.
-* *Incremental refresh.* Only the rows affected by changes since the last refresh are recomputed and
-  applied. Far cheaper than a full refresh on large, slowly-changing views, but the engine must be
-  able to compute the delta, which limits the trick to views whose definitions allow it.
-* *On-demand refresh.* The view is refreshed when an operator or application triggers it, eg. on a
-  schedule or after a batch load. This gives precise control over when staleness is resolved, at the
-  cost of careful scheduling.
+* *Full refresh.* The view is recomputed from scratch and overwritten. Simple and correct, but expensive for large views
+  and disruptive if it locks the table during rebuild.
+* *Incremental refresh.* Only the rows affected by changes since the last refresh are recomputed and applied. Far cheaper
+  than a full refresh on large, slowly-changing views, but the engine must be able to compute the delta, which limits the
+  trick to views whose definitions allow it.
+* *On-demand refresh.* The view is refreshed when an operator or application triggers it, eg. on a schedule or after a
+  batch load. This gives precise control over when staleness is resolved, at the cost of careful scheduling.
 * *Continuous refresh.* The view is updated as the base tables change, driven by
-  xref:change-data-capture.adoc[*change data capture*] or a streaming pipeline. This minimizes
-  staleness but adds the operational cost of the pipeline.
+  xref:change-data-capture.adoc[*change data capture*] or a streaming pipeline. This minimizes staleness but adds the
+  operational cost of the pipeline.
 
-Between refreshes the view is a stale copy. Readers that need the latest value must go to the base
-tables instead. The staleness window is a form of
-xref:eventual-consistency.adoc[*eventual consistency*] applied within a single database.
+Between refreshes the view is a stale copy. Readers that need the latest value must go to the base tables instead. The
+staleness window is a form of xref:eventual-consistency.adoc[*eventual consistency*] applied within a single database.
 
 == Where they fit
 
-Materialized views suit workloads where reads dominate, the hot queries are known and stable, and a
-degree of staleness is acceptable.
+Materialized views suit workloads where reads dominate, the hot queries are known and stable, and a degree of staleness
+is acceptable.
 
-* *Analytics and reporting.* xref:analytical-database.adoc[*Analytical databases*] use materialized
-  views to precompute the aggregates and joins that dashboards and reports run repeatedly. Amazon
-  Redshift, for example, can create and refresh them automatically.
-* *CQRS read models.* In a xref:cqrs.adoc[*CQRS*] architecture the read side is a projection of the
-  write side, and a materialized view is a natural shape for that projection when the write model is
-  a conventional database.
-* *Event sourcing projections.* Paired with xref:event-sourcing.adoc[*event sourcing*], materialized
-  views hold the projected state derived from the event log, so reads do not have to replay the log.
-* *Remote and distributed reads.* A materialized view can cache the result of a query against a
-  remote or slow source, so local reads avoid repeated network round trips.
+* *Analytics and reporting.* xref:analytical-database.adoc[*Analytical databases*] use materialized views to precompute
+  the aggregates and joins that dashboards and reports run repeatedly. Amazon Redshift, for example, can create and
+  refresh them automatically.
+* *CQRS read models.* In a xref:cqrs.adoc[*CQRS*] architecture the read side is a projection of the write side, and a
+  materialized view is a natural shape for that projection when the write model is a conventional database.
+* *Event sourcing projections.* Paired with xref:event-sourcing.adoc[*event sourcing*], materialized views hold the
+  projected state derived from the event log, so reads do not have to replay the log.
+* *Remote and distributed reads.* A materialized view can cache the result of a query against a remote or slow source, so
+  local reads avoid repeated network round trips.
 
 == Trade-offs
 
 Materialized views duplicate data, so they share the costs of any
-xref:single-source-of-truth.adoc[*single source of truth*] violation. The redundant copy consumes
-storage, and the refresh path consumes CPU and I/O on the base tables. The more frequently a view is
-refreshed, the more it costs the write side. The less frequently, the staler the reads. Picking the
-refresh policy is the central decision, and it is a trade-off rather than a solved problem.
+xref:single-source-of-truth.adoc[*single source of truth*] violation. The redundant copy consumes storage, and the
+refresh path consumes CPU and I/O on the base tables. The more frequently a view is refreshed, the more it costs the
+write side. The less frequently, the staler the reads. Picking the refresh policy is the central decision, and it is a
+trade-off rather than a solved problem.
 
-Not every engine supports them in the same way. PostgreSQL requires an explicit
-`REFRESH MATERIALIZED VIEW`. Oracle can refresh automatically or on demand. SQL Server exposes them
-as *indexed views*, materialized by creating a unique clustered index on a regular view. MySQL has
-no native materialized view type, so the pattern there is implemented by hand as tables populated by
-triggers or scheduled jobs.
+Not every engine supports them in the same way. PostgreSQL requires an explicit `REFRESH MATERIALIZED VIEW`. Oracle can
+refresh automatically or on demand. SQL Server exposes them as *indexed views*, materialized by creating a unique
+clustered index on a regular view. MySQL has no native materialized view type, so the pattern there is implemented by
+hand as tables populated by triggers or scheduled jobs.
 
 == See also
 
@@ -99,4 +91,4 @@ triggers or scheduled jobs.
   link:{link-aws-materialized-view}[_What is a Materialized View?_]. AWS.
 * PostgreSQL Global Development Group (n.d.).
   link:{link-postgresql-docs}[_Materialized Views_].
-  PostgreSQL Documentation.
+PostgreSQL Documentation.

@@ -7,171 +7,155 @@
 * {link-kafka-website}[Kafka]: Official website.
 * {link-warpstream}[WarpStream]: Kafka-as-a-service.
 
-Kafka is a distributed streaming platform, developed at LinkedIn around 2010 and open-sourced in
-2011, for building real-time data pipelines and streaming applications. It is horizontally scalable,
-fault-tolerant, and extremely fast. The project is named after the Czech novelist Franz Kafka, a nod
-to the system's reliance on append-only logs. LinkedIn, where Kafka originated, still runs one of
-the largest deployments in the world, processing on the order of
+Kafka is a distributed streaming platform, developed at LinkedIn around 2010 and open-sourced in 2011, for building
+real-time data pipelines and streaming applications. It is horizontally scalable, fault-tolerant, and extremely fast.
+The project is named after the Czech novelist Franz Kafka, a nod to the system's reliance on append-only logs. LinkedIn,
+where Kafka originated, still runs one of the largest deployments in the world, processing on the order of
 {link-linkedin-scale}[seven trillion events per day].
 
 Kafka is the canonical example of an xref:event-stream.adoc[*event stream*] and a
-xref:stream-processing-system.adoc[*stream processing system*]. Its core abstraction is the
-distributed, partitioned, replicated commit log. Producers append records to the log, and consumers
-read from it at their own pace, each tracking its own position. The log is retained for a
-configurable period rather than deleted on read, which is what makes replay and fan-out possible.
+xref:stream-processing-system.adoc[*stream processing system*]. Its core abstraction is the distributed, partitioned,
+replicated commit log. Producers append records to the log, and consumers read from it at their own pace, each tracking
+its own position. The log is retained for a configurable period rather than deleted on read, which is what makes replay
+and fan-out possible.
 
 == Topics, partitions, and brokers
 
-A Kafka cluster is a set of servers called *brokers*. Messages are organized into *topics*, and each
-topic is sharded into one or more *partitions*, a form of xref:sharding.adoc[*sharding*]. A
-partition is an ordered, append-only sequence of records stored on disk as a series of *segment*
-files, and a record's position within its partition is its xref:event-stream.adoc[*offset*].
+A Kafka cluster is a set of servers called *brokers*. Messages are organized into *topics*, and each topic is sharded
+into one or more *partitions*, a form of xref:sharding.adoc[*sharding*]. A partition is an ordered, append-only sequence
+of records stored on disk as a series of *segment* files, and a record's position within its partition is its
+xref:event-stream.adoc[*offset*].
 
-A partition is the unit of parallelism. Throughput scales by adding partitions and the brokers that
-host them, so a topic's capacity is roughly the sum of its partitions spread across the cluster,
-supporting xref:horizontal-scaling.adoc[*horizontal scaling*]. Ordering is guaranteed only within a
-partition, so the producer chooses the partition for each record. Routing by message key hashes the
-key so that all records with the same key land in the same partition and stay in order. Routing by
-round-robin spreads records evenly when ordering does not matter.
+A partition is the unit of parallelism. Throughput scales by adding partitions and the brokers that host them, so a
+topic's capacity is roughly the sum of its partitions spread across the cluster, supporting
+xref:horizontal-scaling.adoc[*horizontal scaling*]. Ordering is guaranteed only within a partition, so the producer
+chooses the partition for each record. Routing by message key hashes the key so that all records with the same key land
+in the same partition and stay in order. Routing by round-robin spreads records evenly when ordering does not matter.
 
-In Kafka, all message routing is handled by the producer. A Kafka setup can consist of multiple
-queues, organized into multiple topics and partitions. The producer is solely responsible for
-determining which queue its data should be added to. This has the advantage of the Kafka cluster
-itself not having to do a lot of work, which is part of Kafka's design that allows it to handle such
-high xref:throughput.adoc[*throughput*].
+In Kafka, all message routing is handled by the producer. A Kafka setup can consist of multiple queues, organized into
+multiple topics and partitions. The producer is solely responsible for determining which queue its data should be added
+to. This has the advantage of the Kafka cluster itself not having to do a lot of work, which is part of Kafka's design
+that allows it to handle such high xref:throughput.adoc[*throughput*].
 
 image::kafka-message-routing.png[]
 
-On the producer side, we're able to send messages to one or many queues, based on properties of each
-message. If we have a situation where we don't want to fan out, and instead we want to have multiple
-partitions and multiple consumers that each get one message, we can do that as well on the producer
-side, by having the producer hash the message to determine which partition it goes into. This also
-enables us to scale our Kafka cluster better, because there's no single point where all messages
-have to go through to be routed.
+On the producer side, we're able to send messages to one or many queues, based on properties of each message. If we have
+a situation where we don't want to fan out, and instead we want to have multiple partitions and multiple consumers that
+each get one message, we can do that as well on the producer side, by having the producer hash the message to determine
+which partition it goes into. This also enables us to scale our Kafka cluster better, because there's no single point
+where all messages have to go through to be routed.
 
-One of the trade-offs of this design is that, once a message has been produced, we don't have
-control over where it actually goes.
+One of the trade-offs of this design is that, once a message has been produced, we don't have control over where it
+actually goes.
 
-Cluster metadata, such as which brokers exist, which topics and partitions they host, and their
-leader assignments, used to be held in a separate ZooKeeper ensemble. Kafka has since replaced that
-with *KRaft*, an internal metadata quorum that runs a
-xref:consensus-algorithm.adoc[*consensus algorithm*] among the brokers themselves. KRaft reached
-production readiness in the 3.3 release, and ZooKeeper support was removed entirely in Kafka 4.0,
-collapsing the cluster into a single system to deploy and operate.
+Cluster metadata, such as which brokers exist, which topics and partitions they host, and their leader assignments, used
+to be held in a separate ZooKeeper ensemble. Kafka has since replaced that with *KRaft*, an internal metadata quorum
+that runs a xref:consensus-algorithm.adoc[*consensus algorithm*] among the brokers themselves. KRaft reached production
+readiness in the 3.3 release, and ZooKeeper support was removed entirely in Kafka 4.0, collapsing the cluster into a
+single system to deploy and operate.
 
 == The log as storage
 
-Kafka's speed comes from treating storage as a commit log. Each partition is an append-only sequence
-of records written to disk in order, and brokers serve records to consumers by reading back from
-that log. Because writes and reads are sequential, the system behaves more like a tape than a
-random-access store, and sequential disk I/O on modern hardware can keep up with the network.
+Kafka's speed comes from treating storage as a commit log. Each partition is an append-only sequence of records written
+to disk in order, and brokers serve records to consumers by reading back from that log. Because writes and reads are
+sequential, the system behaves more like a tape than a random-access store, and sequential disk I/O on modern hardware
+can keep up with the network.
 
-Brokers lean on the operating system's page cache rather than maintaining an application-level
-cache, so cached data is shared with consumers reading the same segments. Records are transferred to
-consumers with zero-copy I/O, using `sendfile` to move bytes from disk to socket without passing
-through user space. Producers batch records and compress them before sending, using Snappy, LZ4,
-Zstandard, or GZIP, trading a little CPU for much less network traffic. These choices, more than any
-single clever algorithm, are what let a small Kafka cluster handle millions of records per second.
+Brokers lean on the operating system's page cache rather than maintaining an application-level cache, so cached data is
+shared with consumers reading the same segments. Records are transferred to consumers with zero-copy I/O, using
+`sendfile` to move bytes from disk to socket without passing through user space. Producers batch records and compress
+them before sending, using Snappy, LZ4, Zstandard, or GZIP, trading a little CPU for much less network traffic. These
+choices, more than any single clever algorithm, are what let a small Kafka cluster handle millions of records per
+second.
 
 == Replication and durability
 
-Each partition has a configurable xref:replication.adoc[*replication factor*], and its replicas are
-spread across brokers, typically across xref:availability-zone.adoc[*availability zones*]. One
-replica is the *leader*, and it serves all reads and writes for that partition. The others are
-*followers* that replicate the leader's log. Followers that have fully caught up form the
-*in-sync replica* (ISR) set.
+Each partition has a configurable xref:replication.adoc[*replication factor*], and its replicas are spread across
+brokers, typically across xref:availability-zone.adoc[*availability zones*]. One replica is the *leader*, and it serves
+all reads and writes for that partition. The others are *followers* that replicate the leader's log. Followers that have
+fully caught up form the *in-sync replica* (ISR) set.
 
-Producers choose an `acks` setting to trade latency against durability. `acks=0` fires and forgets.
-`acks=1` waits for the leader only. `acks=all` waits for the entire ISR, which guards against a
-leader failing before its data has been copied. Pairing `acks=all` with a `min.insync.replicas`
-setting lets a topic refuse writes when too few replicas are healthy, preferring a failed write over
-a lossy one. Allowing an out-of-sync follower to become leader, known as *unclean leader election*,
-keeps a partition available after a total ISR loss, at the cost of acknowledged data being
-overwritten. Disabling it favors xref:durability.adoc[*durability*] over
-xref:availability.adoc[*availability*].
+Producers choose an `acks` setting to trade latency against durability. `acks=0` fires and forgets. `acks=1` waits for
+the leader only. `acks=all` waits for the entire ISR, which guards against a leader failing before its data has been
+copied. Pairing `acks=all` with a `min.insync.replicas` setting lets a topic refuse writes when too few replicas are
+healthy, preferring a failed write over a lossy one. Allowing an out-of-sync follower to become leader, known as
+*unclean leader election*, keeps a partition available after a total ISR loss, at the cost of acknowledged data being
+overwritten. Disabling it favors xref:durability.adoc[*durability*] over xref:availability.adoc[*availability*].
 
 == Producers and delivery semantics
 
-Kafka's delivery guarantees are layered on top of the log. With no special configuration a producer
-offers at-least-once delivery, because a retry after a network failure may produce a duplicate.
-Enabling the *idempotent producer* assigns each producer an epoch and per-partition sequence
-numbers, so retries collapse and a single logical produce appears in the log exactly once. This is
-an xref:idempotent.adoc[*idempotent*] operation built into the broker, and it is why
+Kafka's delivery guarantees are layered on top of the log. With no special configuration a producer offers at-least-once
+delivery, because a retry after a network failure may produce a duplicate. Enabling the *idempotent producer* assigns
+each producer an epoch and per-partition sequence numbers, so retries collapse and a single logical produce appears in
+the log exactly once. This is an xref:idempotent.adoc[*idempotent*] operation built into the broker, and it is why
 xref:retry.adoc[*retries*] are safe by default in modern Kafka clients.
 
-For work that spans multiple partitions, or a consume-process-produce loop, Kafka offers
-exactly-once semantics through transactions. A producer can begin a transaction, write to several
-partitions, and commit atomically, with consumers configured to read only committed records. This is
-a broker-side xref:distributed-transaction.adoc[*distributed transaction*] mechanism, lighter weight
-than a database two-phase commit but covering only the Kafka log.
+For work that spans multiple partitions, or a consume-process-produce loop, Kafka offers exactly-once semantics through
+transactions. A producer can begin a transaction, write to several partitions, and commit atomically, with consumers
+configured to read only committed records. This is a broker-side
+xref:distributed-transaction.adoc[*distributed transaction*] mechanism, lighter weight than a database two-phase commit
+but covering only the Kafka log.
 
 == Consumer groups and rebalancing
 
-Consumers coordinate through *consumer groups*. A group reads a topic in parallel, with each
-partition assigned to exactly one member, so the group's parallelism is bounded by the partition
-count. Each consumer keeps its own offset. Consumers in different groups read the same topic
-independently, which is how Kafka combines
+Consumers coordinate through *consumer groups*. A group reads a topic in parallel, with each partition assigned to
+exactly one member, so the group's parallelism is bounded by the partition count. Each consumer keeps its own offset.
+Consumers in different groups read the same topic independently, which is how Kafka combines
 xref:publish-subscribe-pattern.adoc[*publish-subscribe (pubsub)*] fan-out with parallel scaling.
 
-If something goes wrong and a consumer fails to process a message, we need some way to be able to
-retry and send the message to a different consumer.
+If something goes wrong and a consumer fails to process a message, we need some way to be able to retry and send the
+message to a different consumer.
 
-How this is done varies between xref:message-queue.adoc[*message queues*] and stream processing
-systems like Kafka.
+How this is done varies between xref:message-queue.adoc[*message queues*] and stream processing systems like Kafka.
 
-In the Kafka model, there is no concept of acknowledgments, instead we have offsets. Kafka logs an
-offset of how many messages each consumer has received so far. Whenever a consumer needs new data,
-it fetches data from the queue from that offset. Thus, the consumer gets all new data from the last
-position it read from.
+In the Kafka model, there is no concept of acknowledgments, instead we have offsets. Kafka logs an offset of how many
+messages each consumer has received so far. Whenever a consumer needs new data, it fetches data from the queue from that
+offset. Thus, the consumer gets all new data from the last position it read from.
 
-Once the consumer is done processing that batch of data, the consumer then commits its offsets back
-to the queue, effectively telling Kafka that it is done processing that data.
+Once the consumer is done processing that batch of data, the consumer then commits its offsets back to the queue,
+effectively telling Kafka that it is done processing that data.
 
-But if a consumer disconnects before it commits it offsets, Kafka will be able to automatically
-resend the same data to another consumer.
+But if a consumer disconnects before it commits it offsets, Kafka will be able to automatically resend the same data to
+another consumer.
 
-The offset model used by Kafka is good for processing batches of data, ie. large quantities of small
-events. By comparison, the system of acknowledgements used by RabbitMQ is better when there are a
-smaller number of long-running tasks.
+The offset model used by Kafka is good for processing batches of data, ie. large quantities of small events. By
+comparison, the system of acknowledgements used by RabbitMQ is better when there are a smaller number of long-running
+tasks.
 
 Kafka's system of offsets can also handle messages being dropped, to some extent.
 
-Committed offsets are stored in an internal `__consumer_offsets` topic, so a consumer's position
-survives broker and consumer restarts. When the membership of a group changes, such as a consumer
-joining, leaving, or crashing, the group *rebalances*, reassigning partitions. Rebalancing pauses
-consumption for the affected partitions, so large groups use *cooperative*, incremental rebalancing
-to avoid stopping the whole group at once.
+Committed offsets are stored in an internal `__consumer_offsets` topic, so a consumer's position survives broker and
+consumer restarts. When the membership of a group changes, such as a consumer joining, leaving, or crashing, the group
+*rebalances*, reassigning partitions. Rebalancing pauses consumption for the affected partitions, so large groups use
+*cooperative*, incremental rebalancing to avoid stopping the whole group at once.
 
-Kafka has no built-in xref:dead-letter-queue.adoc[*dead letter queue*]. The usual convention is to
-write failed records to a separate dead-letter topic, which serves the same purpose of quarantining
-unprocessable messages for later inspection and replay.
+Kafka has no built-in xref:dead-letter-queue.adoc[*dead letter queue*]. The usual convention is to write failed records
+to a separate dead-letter topic, which serves the same purpose of quarantining unprocessable messages for later
+inspection and replay.
 
 == Retention and compaction
 
-Kafka does not delete records when a consumer reads them. A topic retains records until a time-based
-or size-based limit is reached, after which the oldest segments are discarded. Retention decouples
-producers from consumers. A slow or new consumer can catch up from the retained history rather than
-missing data that has already been read.
+Kafka does not delete records when a consumer reads them. A topic retains records until a time-based or size-based limit
+is reached, after which the oldest segments are discarded. Retention decouples producers from consumers. A slow or new
+consumer can catch up from the retained history rather than missing data that has already been read.
 
-For topics that carry keyed records, Kafka supports *log compaction*. Instead of deleting by age,
-the broker keeps only the latest record for each key, retaining the tail of the log in full and
-compacting the head. This turns a topic into a durable store of the latest value per key, useful for
-configuration, lookup tables, and snapshots alongside xref:event-sourcing.adoc[*event sourcing*].
+For topics that carry keyed records, Kafka supports *log compaction*. Instead of deleting by age, the broker keeps only
+the latest record for each key, retaining the tail of the log in full and compacting the head. This turns a topic into a
+durable store of the latest value per key, useful for configuration, lookup tables, and snapshots alongside
+xref:event-sourcing.adoc[*event sourcing*].
 
 == Ecosystem and use cases
 
-Around the core broker sits a small ecosystem. Kafka Connect is a framework of source and sink
-connectors that stream data in and out of Kafka without custom code. It is the usual vehicle for
-xref:change-data-capture.adoc[*change data capture (CDC)*], with Debezium connectors tailing
-database transaction logs into topics. Kafka Streams is a library for stateful stream processing,
-covering joins, aggregations, and windowing, running inside client applications. Heavier processing
-is often offloaded to Apache Flink.
+Around the core broker sits a small ecosystem. Kafka Connect is a framework of source and sink connectors that stream
+data in and out of Kafka without custom code. It is the usual vehicle for
+xref:change-data-capture.adoc[*change data capture (CDC)*], with Debezium connectors tailing database transaction logs
+into topics. Kafka Streams is a library for stateful stream processing, covering joins, aggregations, and windowing,
+running inside client applications. Heavier processing is often offloaded to Apache Flink.
 
 Kafka underpins xref:big-data.adoc[*big data*] pipelines for log aggregation, real-time analytics,
-xref:observability.adoc[*observability*] telemetry, and microservice
-xref:event-driven-architecture.adoc[*event-driven*] backbones. It is also the transport of choice
-for many event sourcing implementations, since its retained, ordered, replayable log matches the
-pattern's needs. Managed and compatible offerings include Confluent Cloud, Amazon MSK, and
+xref:observability.adoc[*observability*] telemetry, and microservice xref:event-driven-architecture.adoc[*event-driven*]
+backbones. It is also the transport of choice for many event sourcing implementations, since its retained, ordered,
+replayable log matches the pattern's needs. Managed and compatible offerings include Confluent Cloud, Amazon MSK, and
 WarpStream. Redpanda is a drop-in Kafka-compatible broker written in C++.
 
 == See also

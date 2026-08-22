@@ -1,46 +1,40 @@
 = Fitness function
 
-A fitness function is an objective integrity check on some aspect of a software system's
-architecture. The term is borrowed from genetic algorithms, where a fitness function scores each
-candidate solution against a desired outcome. Neal Ford, Rebecca Parsons, and Patrick Kua applied it
-to software architecture in _Building Evolutionary Architectures_, where it is the mechanism that
-makes xref:evolvability.adoc[*evolvability*] an executable quality attribute rather than an
-aspiration. A goal to keep a system maintainable becomes a fitness function only once it is encoded
-as an automated check that fails when the goal is violated.
+A fitness function is an objective integrity check on some aspect of a software system's architecture. The term is
+borrowed from genetic algorithms, where a fitness function scores each candidate solution against a desired outcome.
+Neal Ford, Rebecca Parsons, and Patrick Kua applied it to software architecture in
+_Building Evolutionary Architectures_, where it is the mechanism that makes xref:evolvability.adoc[*evolvability*] an
+executable quality attribute rather than an aspiration. A goal to keep a system maintainable becomes a fitness function
+only once it is encoded as an automated check that fails when the goal is violated.
 
-Concretely, a fitness function takes a
-xref:non-functional-requirements.adoc[*non-functional requirement*] – a target latency, a layering
-rule, a security control – and turns it into an automated check that runs repeatedly as the system
-changes. An xref:automated-testing.adoc[*automated test*] that asserts the 99th-percentile read
-latency stays below 500ms is a fitness function. A unit test that asserts a calculation returns the
-right number is not, unless it is also asserting an architectural constraint. The distinction is
-intent. Functional tests verify behaviour; fitness functions verify ongoing conformance to the
-system's xref:quality-attribute.adoc[*quality attributes*] and architectural intent.
+Concretely, a fitness function takes a xref:non-functional-requirements.adoc[*non-functional requirement*] – a target
+latency, a layering rule, a security control – and turns it into an automated check that runs repeatedly as the system
+changes. An xref:automated-testing.adoc[*automated test*] that asserts the 99th-percentile read latency stays below
+500ms is a fitness function. A unit test that asserts a calculation returns the right number is not, unless it is also
+asserting an architectural constraint. The distinction is intent. Functional tests verify behaviour; fitness functions
+verify ongoing conformance to the system's xref:quality-attribute.adoc[*quality attributes*] and architectural intent.
 
 == Forms
 
-Fitness functions vary along two axes. By scope, an *atomic* fitness function exercises a single
-dimension, such as a latency check or a dependency-cycle check. A *holistic* fitness function
-exercises several concerns together, such as an end-to-end transaction that only passes if latency,
-correctness, and ordering all hold. By cadence, a *triggered* fitness function runs on a discrete
-event, typically in a xref:ci-cd.adoc[*CI/CD*] pipeline on every commit. A *scheduled* one runs
-periodically, such as a quarterly xref:load-testing.adoc[*load test*] or security scan. A
-*continuous* one runs constantly against live traffic, such as a latency
-xref:monitoring.adoc[*monitoring*] check that pages on breach.
+Fitness functions vary along two axes. By scope, an *atomic* fitness function exercises a single dimension, such as a
+latency check or a dependency-cycle check. A *holistic* fitness function exercises several concerns together, such as an
+end-to-end transaction that only passes if latency, correctness, and ordering all hold. By cadence, a *triggered*
+fitness function runs on a discrete event, typically in a xref:ci-cd.adoc[*CI/CD*] pipeline on every commit. A
+*scheduled* one runs periodically, such as a quarterly xref:load-testing.adoc[*load test*] or security scan. A
+*continuous* one runs constantly against live traffic, such as a latency xref:monitoring.adoc[*monitoring*] check that
+pages on breach.
 
-Common examples include layering and dependency rules enforced with tools like ArchUnit or NDepend,
-latency and throughput assertions built into a deployment pipeline, security scans, and conformance
-checks against published standards.
+Common examples include layering and dependency rules enforced with tools like ArchUnit or NDepend, latency and
+throughput assertions built into a deployment pipeline, security scans, and conformance checks against published
+standards.
 
 == Pitfalls
 
-Because a fitness function encodes a metric, it is subject to
-xref:goodharts-law.adoc[*Goodhart's law*]. Once a measure becomes a target, teams optimize for the
-measure rather than the underlying quality it stood for. They may narrow tests to the exact latency
-path the check exercises, or exclude slow endpoints from a coverage gate. Fitness functions are
-therefore not set-and-forget. They should be reviewed as the system's
-xref:software-architecture.adoc[*architecture*] and priorities evolve, and retired or rewritten when
-the quality they protect is no longer the one that matters.
+Because a fitness function encodes a metric, it is subject to xref:goodharts-law.adoc[*Goodhart's law*]. Once a measure
+becomes a target, teams optimize for the measure rather than the underlying quality it stood for. They may narrow tests
+to the exact latency path the check exercises, or exclude slow endpoints from a coverage gate. Fitness functions are
+therefore not set-and-forget. They should be reviewed as the system's xref:software-architecture.adoc[*architecture*]
+and priorities evolve, and retired or rewritten when the quality they protect is no longer the one that matters.
 
 == See also
 

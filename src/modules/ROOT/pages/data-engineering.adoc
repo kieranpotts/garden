@@ -1,31 +1,28 @@
 = Data engineering
 
-*Data engineering* is the discipline of moving, transforming, and organizing data at a scale where a
-single database and a single query no longer suffice. Where xref:database.adoc[*databases*] covers
-the engines that store and query data, this page covers the pipelines and platforms built around
-those engines to move data between systems, reshape it for analysis, and make it searchable and
-connected at volume.
+*Data engineering* is the discipline of moving, transforming, and organizing data at a scale where a single database and
+a single query no longer suffice. Where xref:database.adoc[*databases*] covers the engines that store and query data,
+this page covers the pipelines and platforms built around those engines to move data between systems, reshape it for
+analysis, and make it searchable and connected at volume.
 
 == Moving and reshaping data
 
-Big data describes datasets too large, fast-moving, or unstructured for traditional processing
-tools to handle efficiently. Batch processing handles that volume by collecting data over a period
-and processing it all at once, trading immediacy for throughput. Extract, transform, load (ETL) is
-the classic pattern for moving data between systems: pulling it from a source, reshaping it into the
-form the destination expects, and loading it in. Kafka is one of the most widely used platforms for
-this kind of data movement, acting as a durable, ordered log that many producers and consumers can
-read from and write to independently, decoupling the systems that generate data from the systems
-that consume it.
+Big data describes datasets too large, fast-moving, or unstructured for traditional processing tools to handle
+efficiently. Batch processing handles that volume by collecting data over a period and processing it all at once,
+trading immediacy for throughput. Extract, transform, load (ETL) is the classic pattern for moving data between systems:
+pulling it from a source, reshaping it into the form the destination expects, and loading it in. Kafka is one of the
+most widely used platforms for this kind of data movement, acting as a durable, ordered log that many producers and
+consumers can read from and write to independently, decoupling the systems that generate data from the systems that
+consume it.
 
 == Making data findable and connected
 
-Once data has been collected, two further concerns determine how useful it is: whether it can be
-found, and whether its relationships to other data are captured. Document search indexes
-unstructured or semi-structured text so that it can be queried by relevance rather than by exact
-match. A knowledge graph goes a step further, representing entities and the relationships between
-them explicitly, layered with a schema that gives the data machine-readable meaning, so that
-questions about how things relate to each other can be answered directly rather than reconstructed
-from separate records.
+Once data has been collected, two further concerns determine how useful it is: whether it can be found, and whether its
+relationships to other data are captured. Document search indexes unstructured or semi-structured text so that it can be
+queried by relevance rather than by exact match. A knowledge graph goes a step further, representing entities and the
+relationships between them explicitly, layered with a schema that gives the data machine-readable meaning, so that
+questions about how things relate to each other can be answered directly rather than reconstructed from separate
+records.
 
 == See also
 

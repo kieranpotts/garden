@@ -2,19 +2,17 @@
 
 :link-wikipedia: https://en.wikipedia.org/wiki/Cross-cutting_concern
 
-A cross-cutting concern is an aspect of a system's design that affects multiple components, layers,
-or services, rather than being localized to one part of the codebase.
-xref:non-functional-requirements.adoc[*Non-functional requirements*] are the classic example.
-Performance, security, availability, and the like are
-xref:quality-attribute.adoc[*quality attributes*] that cut across the whole system, so satisfying
-one typically means touching many parts at once.
+A cross-cutting concern is an aspect of a system's design that affects multiple components, layers, or services, rather
+than being localized to one part of the codebase. xref:non-functional-requirements.adoc[*Non-functional requirements*]
+are the classic example. Performance, security, availability, and the like are
+xref:quality-attribute.adoc[*quality attributes*] that cut across the whole system, so satisfying one typically means
+touching many parts at once.
 
-The term comes from *aspect-oriented programming (AOP)*, which coined it for concerns that resist
-clean modularization. A *concern* is any interest a system must address, such as a feature, a
-policy, or a quality. Most concerns can be assigned to a single module. A cross-cutting concern
-cannot. Written inline, its implementation scatters duplicated logic across many unrelated modules
-and tangles those modules with code that is not part of their primary responsibility. These two
-failure modes are known as *code scattering* and *code tangling*.
+The term comes from *aspect-oriented programming (AOP)*, which coined it for concerns that resist clean modularization.
+A *concern* is any interest a system must address, such as a feature, a policy, or a quality. Most concerns can be
+assigned to a single module. A cross-cutting concern cannot. Written inline, its implementation scatters duplicated
+logic across many unrelated modules and tangles those modules with code that is not part of their primary
+responsibility. These two failure modes are known as *code scattering* and *code tangling*.
 
 == Typical examples
 
@@ -22,8 +20,8 @@ The following concerns commonly cut across a system.
 
 * xref:logging.adoc[*Logging*] and xref:observability.adoc[*observability*], including metrics and
   xref:tracing.adoc[*tracing*].
-* xref:security.adoc[*Security*], covering xref:authentication.adoc[*authentication*],
-  authorization, and encryption in transit.
+* xref:security.adoc[*Security*], covering xref:authentication.adoc[*authentication*], authorization, and encryption in
+  transit.
 * xref:caching.adoc[*Caching*] and xref:performance.adoc[*performance*].
 * Transaction management and error handling.
 * xref:input-validation.adoc[*Input validation*] and xref:compliance.adoc[*compliance*] checks.
@@ -32,25 +30,20 @@ Handled naively, each of these ends up duplicated in every layer or service that
 
 == Handling cross-cutting concerns
 
-Because cross-cutting concerns resist ordinary modularization, several techniques collect each one
-into a single place.
+Because cross-cutting concerns resist ordinary modularization, several techniques collect each one into a single place.
 
-* *Aspect-oriented programming* weaves the concern, called an *aspect*, into the code at compile
-  time or runtime. The logic is written once and applied automatically at the *join points* where it
-  is needed.
-* *Middleware* and *interceptor* pipelines, as used by web frameworks and xref:grpc.adoc[*gRPC*],
-  run each request through a chain of handlers that apply logging, auth, and rate limiting before
-  the business logic.
-* xref:api-gateway.adoc[*API gateways*] and xref:service-mesh.adoc[*service meshes*] centralize
-  cross-cutting concerns across a xref:distributed-system.adoc[*distributed system*]. Auth, routing,
-  retries, and observability are enforced at the infrastructure layer rather than reimplemented in
-  every service.
-* xref:dependency-injection.adoc[*Dependency injection*] and the *decorator* pattern wrap many
-  components with a single concern without modifying them.
+* *Aspect-oriented programming* weaves the concern, called an *aspect*, into the code at compile time or runtime. The
+  logic is written once and applied automatically at the *join points* where it is needed.
+* *Middleware* and *interceptor* pipelines, as used by web frameworks and xref:grpc.adoc[*gRPC*], run each request through
+  a chain of handlers that apply logging, auth, and rate limiting before the business logic.
+* xref:api-gateway.adoc[*API gateways*] and xref:service-mesh.adoc[*service meshes*] centralize cross-cutting concerns
+  across a xref:distributed-system.adoc[*distributed system*]. Auth, routing, retries, and observability are enforced at
+  the infrastructure layer rather than reimplemented in every service.
+* xref:dependency-injection.adoc[*Dependency injection*] and the *decorator* pattern wrap many components with a single
+  concern without modifying them.
 
-The unifying idea is xref:separation-of-concerns.adoc[*separation of concerns*]. Each module stays
-focused on its primary responsibility, and the concerns that would otherwise be scattered across
-them are factored out.
+The unifying idea is xref:separation-of-concerns.adoc[*separation of concerns*]. Each module stays focused on its
+primary responsibility, and the concerns that would otherwise be scattered across them are factored out.
 
 == See also
 

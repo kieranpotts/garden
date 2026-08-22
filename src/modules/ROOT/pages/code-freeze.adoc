@@ -1,35 +1,30 @@
 = Code freeze
 
-A code freeze is a release management practice in which no new functional changes may be merged into
-a release branch for a defined period before a planned release. The branch is closed to everything
-but defect fixes, so that xref:regression-testing.adoc[*regression testing*] and final verification
-can run against a stable codebase rather than a moving target.
+A code freeze is a release management practice in which no new functional changes may be merged into a release branch
+for a defined period before a planned release. The branch is closed to everything but defect fixes, so that
+xref:regression-testing.adoc[*regression testing*] and final verification can run against a stable codebase rather than
+a moving target.
 
-The freeze gives testers and release engineers a fixed base to work from. While new features are
-still landing, every merge risks introducing the very defects the freeze is meant to catch, and
-forces test runs to restart from scratch. Closing the branch to non-essential changes lets a full
-xref:deployment-pipeline.adoc[*delivery pipeline*] complete against a single snapshot of the code,
-with confidence that what was tested is what will ship.
+The freeze gives testers and release engineers a fixed base to work from. While new features are still landing, every
+merge risks introducing the very defects the freeze is meant to catch, and forces test runs to restart from scratch.
+Closing the branch to non-essential changes lets a full xref:deployment-pipeline.adoc[*delivery pipeline*] complete
+against a single snapshot of the code, with confidence that what was tested is what will ship.
 
 Code freezes are most strongly associated with traditional, sequential release processes and
-xref:big-bang.adoc[*big bang*] releases, where a large batch of changes is prepared and then cut
-over in one step. The longer and larger the release, the longer the freeze tends to run, and the
-more pressure builds up behind it. When the freeze lifts, a backlog of queued work floods back in,
-often triggering another long freeze for the next release.
+xref:big-bang.adoc[*big bang*] releases, where a large batch of changes is prepared and then cut over in one step. The
+longer and larger the release, the longer the freeze tends to run, and the more pressure builds up behind it. When the
+freeze lifts, a backlog of queued work floods back in, often triggering another long freeze for the next release.
 
-Modern delivery practices aim to make code freezes unnecessary.
-xref:continuous-delivery.adoc[*Continuous delivery*] keeps the mainline in a releasable state at all
-times, so there is no distinct stabilization period to freeze for.
-xref:trunk-based-development.adoc[*Trunk-based development*] reinforces this by keeping
-work-in-progress short and the trunk always green. Where the risk of unfinished features reaching
-users is the reason for a freeze, xref:feature-flag.adoc[*feature flags*] offer a finer-grained
-alternative. Code can deploy while the feature stays hidden behind a toggle, decoupling release from
-deployment.
+Modern delivery practices aim to make code freezes unnecessary. xref:continuous-delivery.adoc[*Continuous delivery*]
+keeps the mainline in a releasable state at all times, so there is no distinct stabilization period to freeze for.
+xref:trunk-based-development.adoc[*Trunk-based development*] reinforces this by keeping work-in-progress short and the
+trunk always green. Where the risk of unfinished features reaching users is the reason for a freeze,
+xref:feature-flag.adoc[*feature flags*] offer a finer-grained alternative. Code can deploy while the feature stays
+hidden behind a toggle, decoupling release from deployment.
 
-The chief pitfall of a code freeze is the exception. Under release pressure, teams grant "urgent"
-merges that bypass the freeze, each one reintroducing the instability the freeze was meant to
-exclude. A freeze honored only in the breach provides little of its intended benefit, while still
-imposing its cost.
+The chief pitfall of a code freeze is the exception. Under release pressure, teams grant "urgent" merges that bypass the
+freeze, each one reintroducing the instability the freeze was meant to exclude. A freeze honored only in the breach
+provides little of its intended benefit, while still imposing its cost.
 
 == See also
 

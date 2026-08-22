@@ -1,16 +1,14 @@
 = Iterative and incremental development
 
-Iterative and incremental development is a software development approach in which a product is built
-over a series of short cycles rather than in a single pass. Each cycle produces a working – if
-incomplete – version of the system, and the next cycle refines or extends it. The approach pairs two
-complementary ideas that are often conflated.
+Iterative and incremental development is a software development approach in which a product is built over a series of
+short cycles rather than in a single pass. Each cycle produces a working – if incomplete – version of the system, and
+the next cycle refines or extends it. The approach pairs two complementary ideas that are often conflated.
 
-*Iteration* is the repetition of a development cycle to improve something that already exists. The
-team builds a version, learns from it, and rebuilds the same part better. *Increment* is the
-addition of new capability on top of what already works. The two are orthogonal: a team can iterate
-without adding features, by refining one piece, or add increments without iterating, by extending
-without revisiting. Iterative and incremental development does both. It grows the system by adding
-pieces while repeatedly revising the pieces already in place.
+*Iteration* is the repetition of a development cycle to improve something that already exists. The team builds a
+version, learns from it, and rebuilds the same part better. *Increment* is the addition of new capability on top of what
+already works. The two are orthogonal: a team can iterate without adding features, by refining one piece, or add
+increments without iterating, by extending without revisiting. Iterative and incremental development does both. It grows
+the system by adding pieces while repeatedly revising the pieces already in place.
 
 [quote, Richard P Gabriel, _Patterns of Software_ (1996)]
 ____
@@ -19,70 +17,59 @@ is embellished, modified, reduced, enlarged, and improved through a process of
 repair rather than of replacement.
 ____
 
-Gabriel's *piecemeal growth* is the same instinct that underpins
-xref:worse-is-better.adoc[*"worse is better"*]. A simple implementation that works and can be
-revised tends to outlast a complete design that cannot.
+Gabriel's *piecemeal growth* is the same instinct that underpins xref:worse-is-better.adoc[*"worse is better"*]. A
+simple implementation that works and can be revised tends to outlast a complete design that cannot.
 
 == Contrast with single-pass approaches
 
-Iterative and incremental development stands against the plan-driven, single-pass approaches it grew
-out of. The xref:waterfall-model.adoc[*waterfall model*] and
-xref:big-design-up-front.adoc[*big design up-front*] attempt to specify, design, and build a system
-in one linear sequence. The same contrast appears in deployment and migration, where
-xref:big-bang.adoc[*big bang*] cutovers are set against phased, incremental transitions, and in
-AI-assisted coding, where xref:spec-driven-development.adoc[*spec-driven development*] risks the
-same single-pass failure mode if a specification is implemented in one batch rather than broken into
-small, independently verified steps. The argument against single-pass working is empirical.
-Requirements are hard to get right in advance, and the later a flaw is found the more it costs to
-fix. Short cycles with working software at the end of each one surface flaws early, when they are
+Iterative and incremental development stands against the plan-driven, single-pass approaches it grew out of. The
+xref:waterfall-model.adoc[*waterfall model*] and xref:big-design-up-front.adoc[*big design up-front*] attempt to
+specify, design, and build a system in one linear sequence. The same contrast appears in deployment and migration, where
+xref:big-bang.adoc[*big bang*] cutovers are set against phased, incremental transitions, and in AI-assisted coding,
+where xref:spec-driven-development.adoc[*spec-driven development*] risks the same single-pass failure mode if a
+specification is implemented in one batch rather than broken into small, independently verified steps. The argument
+against single-pass working is empirical. Requirements are hard to get right in advance, and the later a flaw is found
+the more it costs to fix. Short cycles with working software at the end of each one surface flaws early, when they are
 cheap.
 
 == A longer history than agile
 
-Iterative and incremental development is now associated with xref:agile.adoc[*agile*] software
-development, but the practice predates the agile movement by decades. Craig Larman and Victor
-Basili, in their 2003 survey _Iterative and Incremental Development: A Brief History_, trace the
-approach back to the 1950s and 1960s. IBM's STRETCH computer, the SAGE air-defense system, and
-NASA's Project Mercury and Atlas programs all used iterative, time-boxed development. Winston
-Royce's 1970 paper, often cited as the origin of waterfall, in fact proposed an iterative model with
-feedback loops between phases and an explicit recommendation to do a "first pass" through the whole
-process before refining it. Barry Boehm formalized the idea as the
-xref:spiral-model.adoc[*spiral model*] in 1988, framing each iteration around risk reduction. In the
-1990s, Grady Booch, Ivar Jacobson, and James Rumbaugh consolidated their object-oriented design
-processes into the xref:unified-process.adoc[*Unified Process*], whose best-known implementation is
-the xref:rational-unified-process.adoc[*Rational Unified Process (RUP)*]. In 1991 James Martin
-formalized xref:rad.adoc[*rapid application development (RAD)*], a prototype-led method for business
-systems that sat firmly in the same iterative tradition. Agile methods – Scrum, Extreme Programming,
-and the rest – are the most recent and most visible expression of the same tradition, codified
-around shared values rather than a single process.
+Iterative and incremental development is now associated with xref:agile.adoc[*agile*] software development, but the
+practice predates the agile movement by decades. Craig Larman and Victor Basili, in their 2003 survey
+_Iterative and Incremental Development: A Brief History_, trace the approach back to the 1950s and 1960s. IBM's STRETCH
+computer, the SAGE air-defense system, and NASA's Project Mercury and Atlas programs all used iterative, time-boxed
+development. Winston Royce's 1970 paper, often cited as the origin of waterfall, in fact proposed an iterative model
+with feedback loops between phases and an explicit recommendation to do a "first pass" through the whole process before
+refining it. Barry Boehm formalized the idea as the xref:spiral-model.adoc[*spiral model*] in 1988, framing each
+iteration around risk reduction. In the 1990s, Grady Booch, Ivar Jacobson, and James Rumbaugh consolidated their
+object-oriented design processes into the xref:unified-process.adoc[*Unified Process*], whose best-known implementation
+is the xref:rational-unified-process.adoc[*Rational Unified Process (RUP)*]. In 1991 James Martin formalized
+xref:rad.adoc[*rapid application development (RAD)*], a prototype-led method for business systems that sat firmly in the
+same iterative tradition. Agile methods – Scrum, Extreme Programming, and the rest – are the most recent and most
+visible expression of the same tradition, codified around shared values rather than a single process.
 
 == Practices that make it work
 
-Iterative cycles are only as good as the technical practices that keep the growing codebase healthy.
-Each iteration that revises existing code is an act of xref:refactoring.adoc[*refactoring*]. Each
-iteration that adds a working build depends on
-xref:continuous-integration.adoc[*continuous integration*] to keep the pieces coherent and
+Iterative cycles are only as good as the technical practices that keep the growing codebase healthy. Each iteration that
+revises existing code is an act of xref:refactoring.adoc[*refactoring*]. Each iteration that adds a working build
+depends on xref:continuous-integration.adoc[*continuous integration*] to keep the pieces coherent and
 xref:continuous-delivery.adoc[*continuous delivery*] to keep them releasable. A
-xref:walking-skeleton.adoc[*walking skeleton*] is a common way to start. A thin end-to-end slice is
-built first, and the full functionality is fleshed out around it, incrementally.
-xref:galls-law.adoc[*Gall's law*] states the same point at the level of systems. A complex system
-that works is invariably found to have evolved from a simple system that worked.
+xref:walking-skeleton.adoc[*walking skeleton*] is a common way to start. A thin end-to-end slice is built first, and the
+full functionality is fleshed out around it, incrementally. xref:galls-law.adoc[*Gall's law*] states the same point at
+the level of systems. A complex system that works is invariably found to have evolved from a simple system that worked.
 
-Iteration is distinct from xref:prototyping.adoc[*prototyping*]. A prototype is a disposable
-artifact for answering a design question. Iterative and incremental development builds the product
-itself, in small, permanent steps.
+Iteration is distinct from xref:prototyping.adoc[*prototyping*]. A prototype is a disposable artifact for answering a
+design question. Iterative and incremental development builds the product itself, in small, permanent steps.
 
 == Pitfalls
 
-Iteration without architectural guidance can turn into unbounded rework. Without a sense of where
-the system is heading, each cycle adds a patch on the last, and the codebase drifts toward a
-xref:big-ball-of-mud.adoc[*big ball of mud*]. Uncontrolled increments invite
-xref:scope-creep.adoc[*scope creep*], and revisions made under time pressure accumulate
-xref:technical-debt.adoc[*technical debt*] that erodes the very adaptability the approach was meant
-to preserve. The mitigation is not more up-front design but better feedback. An architectural spine
-established early, such as a walking skeleton or the xref:evolvability.adoc[*evolvability*] guarded
-by fitness functions, continuous integration to catch drift as it happens, and a willingness to
-refactor every cycle rather than only when something breaks.
+Iteration without architectural guidance can turn into unbounded rework. Without a sense of where the system is heading,
+each cycle adds a patch on the last, and the codebase drifts toward a xref:big-ball-of-mud.adoc[*big ball of mud*].
+Uncontrolled increments invite xref:scope-creep.adoc[*scope creep*], and revisions made under time pressure accumulate
+xref:technical-debt.adoc[*technical debt*] that erodes the very adaptability the approach was meant to preserve. The
+mitigation is not more up-front design but better feedback. An architectural spine established early, such as a walking
+skeleton or the xref:evolvability.adoc[*evolvability*] guarded by fitness functions, continuous integration to catch
+drift as it happens, and a willingness to refactor every cycle rather than only when something breaks.
 
 == See also
 
@@ -110,10 +97,8 @@ refactor every cycle rather than only when something breaks.
 
 == References
 
-- Larman, Craig; Basili, Victor R. (2003). _Iterative and Incremental Development: A Brief History_.
-  IEEE Computer, 36(6), pp. 47–56.
-- Royce, Winston W. (1970). _Managing the Development of Large Software Systems_. Proceedings of
-  WESTCON.
-- Boehm, Barry W. (1988). _A Spiral Model of Software Development and Enhancement_. IEEE Computer,
-  21(5), pp. 61–72.
+- Larman, Craig; Basili, Victor R. (2003). _Iterative and Incremental Development: A Brief History_. IEEE Computer, 36(6),
+  pp. 47–56.
+- Royce, Winston W. (1970). _Managing the Development of Large Software Systems_. Proceedings of WESTCON.
+- Boehm, Barry W. (1988). _A Spiral Model of Software Development and Enhancement_. IEEE Computer, 21(5), pp. 61–72.
 - Gabriel, Richard P. (1996). _Patterns of Software_. Oxford University Press.

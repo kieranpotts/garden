@@ -2,102 +2,91 @@
 
 :link-fowler-sbe: https://martinfowler.com/bliki/SpecificationByExample.html
 
-*Specification by example (SBE)* is a collaborative approach to defining software requirements and
-business-facing functional tests by capturing realistic examples of expected behavior, rather than
-abstract statements. It originated in the xref:agile.adoc[*agile software development*] community
-and is most closely associated with
-xref:behavior-driven-development.adoc[*behavior-driven development (BDD)*], which formalizes its
-principles into a specific process and tooling.
+*Specification by example (SBE)* is a collaborative approach to defining software requirements and business-facing
+functional tests by capturing realistic examples of expected behavior, rather than abstract statements. It originated in
+the xref:agile.adoc[*agile software development*] community and is most closely associated with
+xref:behavior-driven-development.adoc[*behavior-driven development (BDD)*], which formalizes its principles into a
+specific process and tooling.
 
-The approach goes by several names in the literature, including *example-driven development*,
-*executable requirements*, *acceptance test-driven development (ATDD)*,
-*test-driven requirements (TDR)*, and *agile acceptance testing*. The common thread is the use of
-concrete, illustrative examples as the shared currency between business stakeholders, developers,
-and testers.
+The approach goes by several names in the literature, including *example-driven development*, *executable requirements*,
+*acceptance test-driven development (ATDD)*, *test-driven requirements (TDR)*, and *agile acceptance testing*. The
+common thread is the use of concrete, illustrative examples as the shared currency between business stakeholders,
+developers, and testers.
 
 == Examples as a single source of truth
 
-The central idea of specification by example is that a small set of realistic examples can serve as
-a single source of truth about a required change. When business analysts maintain their own
-documents, developers their own documentation, and testers their own functional tests, the team must
-constantly coordinate and synchronize those separate versions of the truth. In a short
-xref:iterative-and-incremental-development.adoc[*iterative*] cycle this coordination may be needed
+The central idea of specification by example is that a small set of realistic examples can serve as a single source of
+truth about a required change. When business analysts maintain their own documents, developers their own documentation,
+and testers their own functional tests, the team must constantly coordinate and synchronize those separate versions of
+the truth. In a short xref:iterative-and-incremental-development.adoc[*iterative*] cycle this coordination may be needed
 every week or two.
 
-Specification by example collapses these artifacts into one. Different roles collaborate to produce
-a set of examples that captures everyone's understanding of the required behavior. The same examples
-then serve as the specification, as business-facing functional tests, and – once the change is
-delivered – as a record of how the system actually behaves. Because the examples are automated and
-exercised frequently, they stay aligned with the code in a way that traditional printed
-documentation does not. A complete set of such specifications is sometimes called
-*living documentation*.
+Specification by example collapses these artifacts into one. Different roles collaborate to produce a set of examples
+that captures everyone's understanding of the required behavior. The same examples then serve as the specification, as
+business-facing functional tests, and – once the change is delivered – as a record of how the system actually behaves.
+Because the examples are automated and exercised frequently, they stay aligned with the code in a way that traditional
+printed documentation does not. A complete set of such specifications is sometimes called *living documentation*.
 
 == Key practices
 
-Teams that apply specification by example successfully tend to share a common set of process
-patterns.
+Teams that apply specification by example successfully tend to share a common set of process patterns.
 
-* *Deriving scope from goals.* Grounding each piece of work in a business objective, so examples are
-  chosen for the value they deliver rather than for completeness.
-* *Specifying collaboratively.* Convening business, development, and testing perspectives – in
-  *three amigos*-style workshops or smaller reviews – to produce the examples together.
-* *Illustrating requirements using examples.* Replacing abstract criteria with concrete instances of
-  inputs and expected outcomes.
-* *Refining specifications.* Distilling the examples into a minimal, unambiguous set that is
-  sufficient to specify the behavior.
-* *Automating tests based on the examples.* Connecting each example to the system under test through
-  an automation layer, so the specification can be validated mechanically.
-* *Validating frequently.* Running the automated examples as part of the build, so a change that
-  violates the specification is caught immediately.
-* *Evolving living documentation.* Treating the resulting set of examples as the system's ongoing
-  business documentation, not as a throwaway artifact.
+* *Deriving scope from goals.* Grounding each piece of work in a business objective, so examples are chosen for the value
+  they deliver rather than for completeness.
+* *Specifying collaboratively.* Convening business, development, and testing perspectives – in *three amigos*-style
+  workshops or smaller reviews – to produce the examples together.
+* *Illustrating requirements using examples.* Replacing abstract criteria with concrete instances of inputs and expected
+  outcomes.
+* *Refining specifications.* Distilling the examples into a minimal, unambiguous set that is sufficient to specify the
+  behavior.
+* *Automating tests based on the examples.* Connecting each example to the system under test through an automation layer,
+  so the specification can be validated mechanically.
+* *Validating frequently.* Running the automated examples as part of the build, so a change that violates the
+  specification is caught immediately.
+* *Evolving living documentation.* Treating the resulting set of examples as the system's ongoing business documentation,
+  not as a throwaway artifact.
 
 == Example mapping
 
-*Example mapping* is a lightweight technique for structuring the conversation that produces the
-examples. A story is broken down into _rules_, each rule is illustrated with one or more concrete
-_examples_, and open questions are captured explicitly for follow-up. It is widely used in the BDD
-community to steer a short specification workshop toward a usable set of
-xref:acceptance-criteria.adoc[*acceptance criteria*].
+*Example mapping* is a lightweight technique for structuring the conversation that produces the examples. A story is
+broken down into _rules_, each rule is illustrated with one or more concrete _examples_, and open questions are captured
+explicitly for follow-up. It is widely used in the BDD community to steer a short specification workshop toward a usable
+set of xref:acceptance-criteria.adoc[*acceptance criteria*].
 
 == Relationship to BDD and ATDD
 
-Specification by example is the broader idea; BDD and acceptance test-driven development are two of
-its better-known formalizations.
+Specification by example is the broader idea; BDD and acceptance test-driven development are two of its better-known
+formalizations.
 
 Behavior-driven development adds a semi-formal language for expressing the examples – typically the
 xref:gherkin.adoc[*Gherkin*] Given-When-Then template – and a strong emphasis on a shared
-xref:ubiquitous-language.adoc[*ubiquitous language*] drawn from
-xref:domain-driven-design.adoc[*domain-driven design*].
+xref:ubiquitous-language.adoc[*ubiquitous language*] drawn from xref:domain-driven-design.adoc[*domain-driven design*].
 
-xref:test-driven-development.adoc[*Acceptance test-driven development (ATDD)*] scales the test-first
-discipline of test-driven development up to the feature level, using acceptance tests written in
-business terms to drive the implementation of whole xref:user-story.adoc[*user stories*]. The terms
-SBE, BDD, and ATDD are often used interchangeably, though practitioners draw nuanced distinctions
-between them.
+xref:test-driven-development.adoc[*Acceptance test-driven development (ATDD)*] scales the test-first discipline of
+test-driven development up to the feature level, using acceptance tests written in business terms to drive the
+implementation of whole xref:user-story.adoc[*user stories*]. The terms SBE, BDD, and ATDD are often used
+interchangeably, though practitioners draw nuanced distinctions between them.
 
 == Applicability
 
-Specification by example pays off where the cost of miscommunication is high: problem domains with
-significant organizational and domain complexity, where stakeholders from different backgrounds must
-converge on a shared understanding. It has been documented in domains including investment banking,
-insurance, airline reservation, online gaming, and price comparison.
+Specification by example pays off where the cost of miscommunication is high: problem domains with significant
+organizational and domain complexity, where stakeholders from different backgrounds must converge on a shared
+understanding. It has been documented in domains including investment banking, insurance, airline reservation, online
+gaming, and price comparison.
 
-It does not help with purely technical problems, or where the central difficulty is not
-understanding or communicating knowledge. Tests derived from shared examples sit in the
-business-facing quadrant of the agile testing quadrants – they confirm that the right product is
-being built. They complement, but do not replace, technology-facing tests such as unit and component
-tests that evaluate whether the product is built the right way.
+It does not help with purely technical problems, or where the central difficulty is not understanding or communicating
+knowledge. Tests derived from shared examples sit in the business-facing quadrant of the agile testing quadrants – they
+confirm that the right product is being built. They complement, but do not replace, technology-facing tests such as unit
+and component tests that evaluate whether the product is built the right way.
 
 == History
 
-The earliest documented use of realistic examples as a combined specification and automated test is
-Ward Cunningham's WyCash+ project, described in his 1996 paper
-_A Pattern Language of Competitive Development_. The name "Specification by Example" was coined by
-Martin Fowler in 2004. The approach draws on the _Customer Test_ practice of
-xref:extreme-programming.adoc[*Extreme Programming (XP)*], on the ubiquitous language concept from
-domain-driven design, and on the black-box-tests-as-requirements idea described by Gerald Weinberg
-and Donald Gause in their 1989 book _Exploring Requirements: Quality Before Design_.
+The earliest documented use of realistic examples as a combined specification and automated test is Ward Cunningham's
+WyCash+ project, described in his 1996 paper _A Pattern Language of Competitive Development_. The name "Specification by
+Example" was coined by Martin Fowler in 2004. The approach draws on the _Customer Test_ practice of
+xref:extreme-programming.adoc[*Extreme Programming (XP)*], on the ubiquitous language concept from domain-driven design,
+and on the black-box-tests-as-requirements idea described by Gerald Weinberg and Donald Gause in their 1989 book
+_Exploring Requirements: Quality Before Design_.
 
 == See also
 
@@ -116,7 +105,5 @@ and Donald Gause in their 1989 book _Exploring Requirements: Quality Before Desi
 
 == References
 
-* Gojko Adzic (2011). _Specification by Example: How Successful Teams Deliver the Right Software_.
-  Manning.
-* Martin Fowler (2004).
-  {link-fowler-sbe}[Specification by example].
+* Gojko Adzic (2011). _Specification by Example: How Successful Teams Deliver the Right Software_. Manning.
+* Martin Fowler (2004). {link-fowler-sbe}[Specification by example].

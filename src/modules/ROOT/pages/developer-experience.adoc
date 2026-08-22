@@ -1,32 +1,29 @@
 = Developer experience (DX)
 
-*Developer experience (DX)* is how easy a codebase and its toolchain make it for humans to do good
-work – fast feedback, clear error messages, documentation that answers the question you actually
-have, and setup that works on the first try.
+*Developer experience (DX)* is how easy a codebase and its toolchain make it for humans to do good work – fast feedback,
+clear error messages, documentation that answers the question you actually have, and setup that works on the first try.
 
 *Agent experience (AX)* is the agent-facing counterpart: how well the environment is set up for an
-xref:agent.adoc[*agent*] to do good work in a codebase. When the same agent performs well in one
-repo and badly in another – same model, same xref:agent-harness.adoc[*harness*] – the difference is
-usually AX.
+xref:agent.adoc[*agent*] to do good work in a codebase. When the same agent performs well in one repo and badly in
+another – same model, same xref:agent-harness.adoc[*harness*] – the difference is usually AX.
 
 Good AX has three dimensions:
 
-* *Automated checks.* Fast, deterministic types, tests, and lints the agent can self-correct from
-  without a human in the loop. See xref:automated-testing.adoc[*automated testing*].
-* *Architecture.* Predictable structure, behaviour behind small interfaces, and names that say what
-  things do.
+* *Automated checks.* Fast, deterministic types, tests, and lints the agent can self-correct from without a human in the
+  loop. See xref:automated-testing.adoc[*automated testing*].
+* *Architecture.* Predictable structure, behaviour behind small interfaces, and names that say what things do.
 * *Free context.* xref:agent-memory.adoc[*AGENTS.md*], skills, and tools kept lean so the
   xref:large-language-model.adoc[*model*]'s context window stays in the smart zone.
 
-The key DX/AX difference is state. Humans are stateful and learn the codebase once, so poor DX is
-survivable – they route around slow CI, missing docs, and confusing structure. Agents are
-xref:stateless.adoc[*stateless*] and re-learn the codebase from scratch every session, so anything
-they figured out yesterday is gone unless it is written into the environment.
+The key DX/AX difference is state. Humans are stateful and learn the codebase once, so poor DX is survivable – they
+route around slow CI, missing docs, and confusing structure. Agents are xref:stateless.adoc[*stateless*] and re-learn
+the codebase from scratch every session, so anything they figured out yesterday is gone unless it is written into the
+environment.
 
-DX investment often improves AX for free: strict types, fast tests, and predictable structure help
-both. But the two diverge. A beautiful onboarding doc helps a human for a week and an agent not at
-all unless it is reachable from `AGENTS.md`. Agents do not benefit from IDE tooltips or pretty
-dashboards – they need failures as text in a tool result. Do not treat AX as a synonym for DX.
+DX investment often improves AX for free: strict types, fast tests, and predictable structure help both. But the two
+diverge. A beautiful onboarding doc helps a human for a week and an agent not at all unless it is reachable from
+`AGENTS.md`. Agents do not benefit from IDE tooltips or pretty dashboards – they need failures as text in a tool result.
+Do not treat AX as a synonym for DX.
 
 == See also
 

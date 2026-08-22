@@ -1,120 +1,104 @@
 = Agent handoff
 
-An *agent handoff* is the transfer of context from one xref:agent.adoc[*agent*] session to another.
-The sending session ends. The receiving session starts with a fresh, empty context window. Because
-the underlying xref:large-language-model.adoc[*large language model*] is
-xref:stateless.adoc[*stateless*], nothing from the old session is visible to the new one — no
-conversation history, no tool results, no scratchpad. Whatever must survive the boundary has to be
-carried across explicitly.
+An *agent handoff* is the transfer of context from one xref:agent.adoc[*agent*] session to another. The sending session
+ends. The receiving session starts with a fresh, empty context window. Because the underlying
+xref:large-language-model.adoc[*large language model*] is xref:stateless.adoc[*stateless*], nothing from the old session
+is visible to the new one — no conversation history, no tool results, no scratchpad. Whatever must survive the boundary
+has to be carried across explicitly.
 
-The carry mechanism varies. The simplest is a written *handoff artifact* — a document left in the
-environment for the next session to read. A more compact path is an in-memory summary produced by
-xref:large-language-model.adoc[*compaction*], distilled from the old session's history and seeded
-into the new one. Either way the receiving session starts from zero.
+The carry mechanism varies. The simplest is a written *handoff artifact* — a document left in the environment for the
+next session to read. A more compact path is an in-memory summary produced by
+xref:large-language-model.adoc[*compaction*], distilled from the old session's history and seeded into the new one.
+Either way the receiving session starts from zero.
 
-A handoff is distinct from *clearing*. Clearing ends the current session and starts fresh with
-nothing carried across. A handoff carries. Both leave the old session behind; only a handoff sends
-anything on ahead.
+A handoff is distinct from *clearing*. Clearing ends the current session and starts fresh with nothing carried across. A
+handoff carries. Both leave the old session behind; only a handoff sends anything on ahead.
 
 == Handoff
 
-The defining constraint of a handoff is that there is no return path. The receiving session cannot
-ask the sending session a question, and the sending session is gone by the time the receiver reads
-its output. Everything carried must therefore stand on its own — self-contained, written for a
-reader with zero context.
+The defining constraint of a handoff is that there is no return path. The receiving session cannot ask the sending
+session a question, and the sending session is gone by the time the receiver reads its output. Everything carried must
+therefore stand on its own — self-contained, written for a reader with zero context.
 
 Reasons to hand off rather than continue in the same session:
 
-* *Switching roles.* A planner session drafts a spec, then hands off to an implementer session that
-  works from it.
-* *Kicking off an xref:away-from-keyboard.adoc[*AFK*] run.* You hand the goal to a session that runs
-  unattended while you step away.
-* *Fanning out to parallel sessions.* Independent pieces of work are handed to several sessions at
-  once.
-* *Freeing context window room.* When a session's context is polluted or full, handing the durable
-  facts to a fresh session lets work continue without the accumulated noise.
+* *Switching roles.* A planner session drafts a spec, then hands off to an implementer session that works from it.
+* *Kicking off an xref:away-from-keyboard.adoc[*AFK*] run.* You hand the goal to a session that runs unattended while you
+  step away.
+* *Fanning out to parallel sessions.* Independent pieces of work are handed to several sessions at once.
+* *Freeing context window room.* When a session's context is polluted or full, handing the durable facts to a fresh
+  session lets work continue without the accumulated noise.
 
-The visible failure of a bad handoff is *relitigation*. The new session, lacking the record of what
-was already decided, re-opens settled questions — re-debating an approach, re-litigating a
-constraint, re-trying a path already ruled out. Relitigation is the symptom of missing or lossy
-carry.
+The visible failure of a bad handoff is *relitigation*. The new session, lacking the record of what was already decided,
+re-opens settled questions — re-debating an approach, re-litigating a constraint, re-trying a path already ruled out.
+Relitigation is the symptom of missing or lossy carry.
 
 == Clearing
 
-*Clearing* is the act of ending the current session and starting fresh with an empty context window.
-It is the cure for polluted context. Sessions accumulate failed attempts, wrong turns, and stale
-tool results, and that bad history drags on new work — the model spends attention re-reading its own
-discarded dead ends. Clearing removes the noise.
+*Clearing* is the act of ending the current session and starting fresh with an empty context window. It is the cure for
+polluted context. Sessions accumulate failed attempts, wrong turns, and stale tool results, and that bad history drags
+on new work — the model spends attention re-reading its own discarded dead ends. Clearing removes the noise.
 
-Clearing does not erase the transcript. Most xref:agent-harness.adoc[*harnesses*] keep history on
-disk. What is gone is the agent's working state — the live context window the model was reasoning
-over. A new session starts from nothing.
+Clearing does not erase the transcript. Most xref:agent-harness.adoc[*harnesses*] keep history on disk. What is gone is
+the agent's working state — the live context window the model was reasoning over. A new session starts from nothing.
 
-Clearing is a blunter tool than xref:large-language-model.adoc[*compaction*]. Compaction summarizes
-the old context into a fresh one, carrying the essence forward. Clearing carries nothing, including
-the junk. Use compaction when the history still has value worth distilling; use clearing when the
-history is mostly noise.
+Clearing is a blunter tool than xref:large-language-model.adoc[*compaction*]. Compaction summarizes the old context into
+a fresh one, carrying the essence forward. Clearing carries nothing, including the junk. Use compaction when the history
+still has value worth distilling; use clearing when the history is mostly noise.
 
 == Handoff artifacts
 
-A *handoff artifact* is a document used as the carry mechanism — written to the environment by one
-session, read by another. Specs, tickets, and plan documents are all handoff artifacts. The artifact
-exists because the model is xref:stateless.adoc[*stateless*]: nothing in a session survives clearing
-it, but the environment persists. To hand off, you externalize what matters into a file.
+A *handoff artifact* is a document used as the carry mechanism — written to the environment by one session, read by
+another. Specs, tickets, and plan documents are all handoff artifacts. The artifact exists because the model is
+xref:stateless.adoc[*stateless*]: nothing in a session survives clearing it, but the environment persists. To hand off,
+you externalize what matters into a file.
 
-A handoff artifact is a *secondary source* — an account of the work, not the work itself. It is
-small enough to brief a fresh session, but it can mislead. It records what the writing session
-believed, and whatever the writer left out or got wrong is invisible to a reader with only the
-artifact. Where a claim matters to the next session, the reader should verify it against the
-*primary source* — the code, the tests, the actual error — rather than trust the account.
+A handoff artifact is a *secondary source* — an account of the work, not the work itself. It is small enough to brief a
+fresh session, but it can mislead. It records what the writing session believed, and whatever the writer left out or got
+wrong is invisible to a reader with only the artifact. Where a claim matters to the next session, the reader should
+verify it against the *primary source* — the code, the tests, the actual error — rather than trust the account.
 
-A good artifact is written for a reader with zero context: concrete file paths, what was decided and
-why, what is done, and what is left.
+A good artifact is written for a reader with zero context: concrete file paths, what was decided and why, what is done,
+and what is left.
 
 == Primary and secondary sources
 
-A *primary source* is a source of truth in its original form — the code, the conversation
-transcript, the raw log, the actual API response. It is not an account; it is the thing. Loading one
-into the context window is expensive: a full file, every token billed as input, all of it competing
-for the model's attention. But it is complete. Reach for a primary source when precision matters —
-the exact signature, the actual error, the line that throws.
+A *primary source* is a source of truth in its original form — the code, the conversation transcript, the raw log, the
+actual API response. It is not an account; it is the thing. Loading one into the context window is expensive: a full
+file, every token billed as input, all of it competing for the model's attention. But it is complete. Reach for a
+primary source when precision matters — the exact signature, the actual error, the line that throws.
 
-A *secondary source* is an account of a primary source, one step removed — docs describing code, a
-summary describing a transcript, a report describing search results. It is cheaper to load and lossy
-by construction: someone decided what mattered, and whatever they dropped is invisible to a reader
-working only from the summary. Secondary sources also drift — the primary source changes and the
-account does not follow.
+A *secondary source* is an account of a primary source, one step removed — docs describing code, a summary describing a
+transcript, a report describing search results. It is cheaper to load and lossy by construction: someone decided what
+mattered, and whatever they dropped is invisible to a reader working only from the summary. Secondary sources also drift
+— the primary source changes and the account does not follow.
 
-Much of xref:context-engineering.adoc[*context engineering*] is the manufacture of secondary
-sources: compaction summaries, subagent reports, handoff artifacts, memory notes. Each trades
-fidelity for headroom. A well-made secondary source carries a *context pointer* back to its
-original, so the reader can follow it rather than work from the loss.
+Much of xref:context-engineering.adoc[*context engineering*] is the manufacture of secondary sources: compaction
+summaries, subagent reports, handoff artifacts, memory notes. Each trades fidelity for headroom. A well-made secondary
+source carries a *context pointer* back to its original, so the reader can follow it rather than work from the loss.
 
 == Spec
 
-A *spec* is a handoff artifact describing a multi-session piece of work — what is being built, not
-how each session does its share. A spec mutates as work progresses. It exists because sessions are
-disposable and big work is not: anything that spans more than one context window needs a home
-outside context, whether that is a file, a GitHub issue, or a tracker entry.
+A *spec* is a handoff artifact describing a multi-session piece of work — what is being built, not how each session does
+its share. A spec mutates as work progresses. It exists because sessions are disposable and big work is not: anything
+that spans more than one context window needs a home outside context, whether that is a file, a GitHub issue, or a
+tracker entry.
 
-The style matters less than the role. A
-xref:product-requirements-document.adoc[*product requirements document (PRD)*] leans user-facing —
-features, behaviour, acceptance criteria. A design doc or RFC leans technical — the chosen approach,
-the alternatives, the trade-offs. A plain `plan.md` with a checklist does the same job. Whatever the
-form, a spec is the durable statement of intent read at the start of every session.
+The style matters less than the role. A xref:product-requirements-document.adoc[*product requirements document (PRD)*]
+leans user-facing — features, behaviour, acceptance criteria. A design doc or RFC leans technical — the chosen approach,
+the alternatives, the trade-offs. A plain `plan.md` with a checklist does the same job. Whatever the form, a spec is the
+durable statement of intent read at the start of every session.
 
 == Ticket
 
-A *ticket* is a handoff artifact scoping one session of work. It can stand alone or hang off a spec.
-Its defining constraint is size: one session, completable before the session drifts out of the
-*smart zone*. The test is empirical. If sessions working your tickets degrade before they finish,
-the tickets are too big — split them. If each session spends most of its context on setup, the
-tickets are too small — merge them.
+A *ticket* is a handoff artifact scoping one session of work. It can stand alone or hang off a spec. Its defining
+constraint is size: one session, completable before the session drifts out of the *smart zone*. The test is empirical.
+If sessions working your tickets degrade before they finish, the tickets are too big — split them. If each session
+spends most of its context on setup, the tickets are too small — merge them.
 
-A good ticket is written for a reader with no other context: the goal, the acceptance criteria, and
-context pointers to the relevant files and decisions. Laid out as a dependency graph, tickets unlock
-parallelism — independent leaf tickets can run in parallel sessions. See
-xref:agent-orchestration.adoc[*agent orchestration*].
+A good ticket is written for a reader with no other context: the goal, the acceptance criteria, and context pointers to
+the relevant files and decisions. Laid out as a dependency graph, tickets unlock parallelism — independent leaf tickets
+can run in parallel sessions. See xref:agent-orchestration.adoc[*agent orchestration*].
 
 ''''
 
@@ -127,4 +111,5 @@ xref:agent-orchestration.adoc[*agent orchestration*].
 * xref:context-engineering.adoc[*Context engineering*]
 * xref:large-language-model.adoc[*Large language model (LLM)*]
 * xref:loop-engineering.adoc[*Loop engineering*]
-* xref:stateless.adoc[*Stateless design*]* xref:artificial-intelligence.adoc[*Artificial intelligence (AI)*]
+* xref:stateless.adoc[*Stateless design*]
+* xref:artificial-intelligence.adoc[*Artificial intelligence (AI)*]

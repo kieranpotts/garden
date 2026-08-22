@@ -1,56 +1,50 @@
 = Distributed system mechanism
 
-A *distributed system* is made of independent components that communicate over a network rather than
-sharing memory, and that independence is the source of most of its difficulty. Components can fail
-separately, messages can arrive late, out of order, or not at all, and clocks on different machines
-never agree exactly. This page collects the mechanisms distributed systems use to cope with those
-realities: how components communicate, how they coordinate despite failure, and how they scale work
-across many machines. It complements xref:software-architecture.adoc[*software architecture*], which
-covers the higher-level structural patterns these mechanisms are assembled into.
+A *distributed system* is made of independent components that communicate over a network rather than sharing memory, and
+that independence is the source of most of its difficulty. Components can fail separately, messages can arrive late, out
+of order, or not at all, and clocks on different machines never agree exactly. This page collects the mechanisms
+distributed systems use to cope with those realities: how components communicate, how they coordinate despite failure,
+and how they scale work across many machines. It complements xref:software-architecture.adoc[*software architecture*],
+which covers the higher-level structural patterns these mechanisms are assembled into.
 
 == Communication
 
-Components can talk to each other synchronously, where the caller waits for a response, or
-asynchronously, where it doesn't. Asynchronous communication decouples the pace of the sender from
-the pace of the receiver, which is what makes message queues and message brokers useful: a producer
-can keep writing even if a consumer is temporarily slow or offline. Push architecture and pull
-architecture describe the two directions data can flow between them, and a gossip protocol is a way
-for nodes to spread that information across a cluster without any single coordinator. When delivery
-fails permanently, a dead letter queue holds the message aside for inspection instead of losing it or
-retrying forever.
+Components can talk to each other synchronously, where the caller waits for a response, or asynchronously, where it
+doesn't. Asynchronous communication decouples the pace of the sender from the pace of the receiver, which is what makes
+message queues and message brokers useful: a producer can keep writing even if a consumer is temporarily slow or
+offline. Push architecture and pull architecture describe the two directions data can flow between them, and a gossip
+protocol is a way for nodes to spread that information across a cluster without any single coordinator. When delivery
+fails permanently, a dead letter queue holds the message aside for inspection instead of losing it or retrying forever.
 
 == Coordination and consistency
 
-Multiple machines making decisions about shared state need a way to agree, even when some of them
-have failed or can't be reached. Consensus algorithms solve this by having nodes vote on a single
-outcome, which is what underpins distributed locking and phased commit protocols such as two-phase
-and three-phase commit. Eventual consistency takes a different approach: instead of insisting nodes
-agree immediately, it accepts that they may diverge briefly and guarantees they converge once
-messages stop arriving. A heartbeat is the simplest coordination primitive of all, a periodic signal
-that tells the rest of the cluster a node is still alive, so that its failure can be detected and
+Multiple machines making decisions about shared state need a way to agree, even when some of them have failed or can't
+be reached. Consensus algorithms solve this by having nodes vote on a single outcome, which is what underpins
+distributed locking and phased commit protocols such as two-phase and three-phase commit. Eventual consistency takes a
+different approach: instead of insisting nodes agree immediately, it accepts that they may diverge briefly and
+guarantees they converge once messages stop arriving. A heartbeat is the simplest coordination primitive of all, a
+periodic signal that tells the rest of the cluster a node is still alive, so that its failure can be detected and
 handled.
 
 == Scale and partitioning
 
-Spreading data and work across many machines needs a rule for deciding which machine owns what.
-Sharding partitions data by some key so that no single machine has to hold all of it, and consistent
-hashing is the specific technique that lets that partitioning survive machines being added or removed
-without reshuffling everything. Replication keeps copies of the same data on multiple machines, which
-protects against the single point of failure a lone copy represents, at the cost of needing to keep
-those copies consistent with each other. A task queue and stream processing systems spread the
+Spreading data and work across many machines needs a rule for deciding which machine owns what. Sharding partitions data
+by some key so that no single machine has to hold all of it, and consistent hashing is the specific technique that lets
+that partitioning survive machines being added or removed without reshuffling everything. Replication keeps copies of
+the same data on multiple machines, which protects against the single point of failure a lone copy represents, at the
+cost of needing to keep those copies consistent with each other. A task queue and stream processing systems spread the
 processing of work in a similar way, decoupling how fast work arrives from how fast it's consumed.
 
 == Correctness under concurrency
 
-Machines and threads reading and writing shared state at the same time need coordination to avoid
-corrupting it. Locking and synchronization primitives serialize access to a resource so that only one
-caller modifies it at a time, and thread safety describes code that behaves correctly regardless of
-how many callers do so concurrently. A checksum verifies that data hasn't been silently corrupted in
-transit or storage, and an atomic operation is one that completes as an indivisible unit, with no
-partial or interleaved outcome visible to anyone else. Deadlock is the classic failure mode this
-machinery has to avoid: two or more parties each waiting on a resource the other holds, with neither
-able to proceed. A fail-fast system detects an inconsistency and stops immediately rather than
-continuing to operate on data it can no longer trust.
+Machines and threads reading and writing shared state at the same time need coordination to avoid corrupting it. Locking
+and synchronization primitives serialize access to a resource so that only one caller modifies it at a time, and thread
+safety describes code that behaves correctly regardless of how many callers do so concurrently. A checksum verifies that
+data hasn't been silently corrupted in transit or storage, and an atomic operation is one that completes as an
+indivisible unit, with no partial or interleaved outcome visible to anyone else. Deadlock is the classic failure mode
+this machinery has to avoid: two or more parties each waiting on a resource the other holds, with neither able to
+proceed. A fail-fast system detects an inconsistency and stops immediately rather than continuing to operate on data it
+can no longer trust.
 
 == See also
 

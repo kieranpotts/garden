@@ -4,44 +4,38 @@
 // TODO: https://blog.algomaster.io/p/what-is-database-sharding
 // TODO: https://aws.amazon.com/what-is/database-sharding/#:~:text=Database%20sharding%20splits%20a%20single,original%20database%27s%20schema%20or%20design
 
-Database sharding is a xref:horizontal-scaling.adoc[*horizontal scaling*] technique in
-*[database management]* that involves *partitioning* (splitting) one large database into multiple
-smaller databases, called *shards*. The shards are then distributed across multiple *[nodes]*, each
-responsible for handling a specific subset of the overall data.
+Database sharding is a xref:horizontal-scaling.adoc[*horizontal scaling*] technique in *[database management]* that
+involves *partitioning* (splitting) one large database into multiple smaller databases, called *shards*. The shards are
+then distributed across multiple *[nodes]*, each responsible for handling a specific subset of the overall data.
 
-By distributing data across multiple nodes, sharding xref:load-balancing.adoc[*balances load*]
-across multiple nodes, reducing xref:load.adoc[*load*] and xref:fault-tolerance.adoc[*risk*] on any
-single node. This improves system xref:performance.adoc[*performance*],
-xref:availability.adoc[*availability*], and xref:scalability.adoc[*scalability*].
+By distributing data across multiple nodes, sharding xref:load-balancing.adoc[*balances load*] across multiple nodes,
+reducing xref:load.adoc[*load*] and xref:fault-tolerance.adoc[*risk*] on any single node. This improves system
+xref:performance.adoc[*performance*], xref:availability.adoc[*availability*], and xref:scalability.adoc[*scalability*].
 
-Trade-offs include increased xref:complexity.adoc[*complexity*] in the system design, new challenges
-for joining data across shards, complications for xref:acid-principles.adoc[*ACID transactions*]
-that span shards, and the potential for *hot spots*, uneven concentrations of traffic caused by
-skewed xref:access-pattern.adoc[*access patterns*], that can be solved only through tricky
-*data rebalancing*.
+Trade-offs include increased xref:complexity.adoc[*complexity*] in the system design, new challenges for joining data
+across shards, complications for xref:acid-principles.adoc[*ACID transactions*] that span shards, and the potential for
+*hot spots*, uneven concentrations of traffic caused by skewed xref:access-pattern.adoc[*access patterns*], that can be
+solved only through tricky *data rebalancing*.
 
-Database sharding is commonly used in situations where a single database can no longer be
-sufficiently xref:vertical-scaling.adoc[scaled vertically]. Sharding is one of the two main methods
-for scaling databases. The other is xref:replication.adoc[replication]. Sharding is also a
-foundational technique for xref:distributed-database.adoc[*distributed databases*], where it
-spreads the dataset across the nodes of a cluster. It is the primary scaling mechanism for most
-xref:nosql-database.adoc[*NoSQL databases*], which are designed from the outset to distribute data
-across a cluster rather than scale a single node upward.
+Database sharding is commonly used in situations where a single database can no longer be sufficiently
+xref:vertical-scaling.adoc[scaled vertically]. Sharding is one of the two main methods for scaling databases. The other
+is xref:replication.adoc[replication]. Sharding is also a foundational technique for
+xref:distributed-database.adoc[*distributed databases*], where it spreads the dataset across the nodes of a cluster. It
+is the primary scaling mechanism for most xref:nosql-database.adoc[*NoSQL databases*], which are designed from the
+outset to distribute data across a cluster rather than scale a single node upward.
 
 == The shard key
 
-The placement of every record is decided by a *shard key*, a column or set of columns whose value
-determines which shard owns the record. The choice of shard key is the single most consequential
-decision in a sharded system. It controls how evenly data distributes, whether queries can be
-answered from a single shard or must fan out across the cluster, and how prone the system is to hot
-spots.
+The placement of every record is decided by a *shard key*, a column or set of columns whose value determines which shard
+owns the record. The choice of shard key is the single most consequential decision in a sharded system. It controls how
+evenly data distributes, whether queries can be answered from a single shard or must fan out across the cluster, and how
+prone the system is to hot spots.
 
-A good shard key aligns with the workload's access patterns and has high cardinality, so that hash
-or range partitioning spreads rows evenly across shards. A poor one concentrates writes on a single
-shard and recreates the bottleneck sharding was meant to relieve. Low-cardinality columns such as a
-region with a handful of values, or monotonically increasing timestamps, are common offenders.
-Composite keys, combining a high-cardinality column with a hash component, are a frequent way to
-balance even distribution with query locality.
+A good shard key aligns with the workload's access patterns and has high cardinality, so that hash or range partitioning
+spreads rows evenly across shards. A poor one concentrates writes on a single shard and recreates the bottleneck
+sharding was meant to relieve. Low-cardinality columns such as a region with a handful of values, or monotonically
+increasing timestamps, are common offenders. Composite keys, combining a high-cardinality column with a hash component,
+are a frequent way to balance even distribution with query locality.
 
 == Database partitioning methods
 
@@ -49,69 +43,60 @@ There are three main partitioning methods:
 
 * *Horizontal sharding*, which partitions rows of a table across multiple databases.
 
-* *Vertical sharding*, which partitions columns of a table across multiple databases. Columns that
-  are closely related and frequently accessed together tend to be stored in the same shard, so
-  reducing the need for cross-shard joins, and helping to categorize shards by the features they
-  represent.
+* *Vertical sharding*, which partitions columns of a table across multiple databases. Columns that are closely related and
+  frequently accessed together tend to be stored in the same shard, so reducing the need for cross-shard joins, and
+  helping to categorize shards by the features they represent.
 
-* *Directory-based partitioning*, which uses a lookup service or lookup table to determine where
-  data is stored, so abstracting the partitioning scheme.
+* *Directory-based partitioning*, which uses a lookup service or lookup table to determine where data is stored, so
+  abstracting the partitioning scheme.
 
 == Partitioning techniques
 
 Partitioning can be done on various criteria:
 
-* *Hash partitioning*, which applies a hash function to a key or attribute to determine which
-  partition the data is stored in. xref:consistent-hashing.adoc[*consistent hashing*] is a common
-  implementation technique.
+* *Hash partitioning*, which applies a hash function to a key or attribute to determine which partition the data is stored
+  in. xref:consistent-hashing.adoc[*consistent hashing*] is a common implementation technique.
 
-* *Range partitioning*, which assigns contiguous ranges of key values to each partition. It suits
-  range queries, which can be served by the shard owning the relevant range. It is vulnerable to hot
-  spots when traffic clusters at one end of the key space, eg. timestamps that push all new writes
-  onto the newest shard.
+* *Range partitioning*, which assigns contiguous ranges of key values to each partition. It suits range queries, which can
+  be served by the shard owning the relevant range. It is vulnerable to hot spots when traffic clusters at one end of the
+  key space, eg. timestamps that push all new writes onto the newest shard.
 
-* *List partitioning*, in which each partition is assigned a list of values, storing data based on
-  which list its key belongs to.
+* *List partitioning*, in which each partition is assigned a list of values, storing data based on which list its key
+  belongs to.
 
-* *Round robin partitioning*, in which data is distributed evenly across partitions in a circular
-  order.
+* *Round robin partitioning*, in which data is distributed evenly across partitions in a circular order.
 
 * *Composite partitioning* combines two or more partitioning methods.
 
 == Cross-shard operations
 
-Sharding buys scale by keeping each query local to one shard. The cost is paid by any operation that
-cannot stay local.
+Sharding buys scale by keeping each query local to one shard. The cost is paid by any operation that cannot stay local.
 
-*Joins* are the first casualty. A query that joins two tables sharded on different keys must fan out
-to every shard, gather partial results, and combine them in a
-xref:scatter-and-gather.adoc[*scatter-and-gather*] pattern that scales poorly as the cluster grows.
-Many sharded systems avoid the problem by xref:denormalization.adoc[*denormalizing*] the schema so
-that the data a query needs lives on a single shard, copying joined columns into the sharded table
-at write time.
+*Joins* are the first casualty. A query that joins two tables sharded on different keys must fan out to every shard,
+gather partial results, and combine them in a xref:scatter-and-gather.adoc[*scatter-and-gather*] pattern that scales
+poorly as the cluster grows. Many sharded systems avoid the problem by xref:denormalization.adoc[*denormalizing*] the
+schema so that the data a query needs lives on a single shard, copying joined columns into the sharded table at write
+time.
 
-*Secondary indexes* are the next. An index on a column other than the shard key cannot be served
-locally, because the indexed rows are spread across every shard. The usual answers are to partition
-the index per shard and fan out a query to all of them, or to maintain a separate, globally
-distributed xref:database-index.adoc[*index*]. The second option adds a whole new distribution
-dimension to the system.
+*Secondary indexes* are the next. An index on a column other than the shard key cannot be served locally, because the
+indexed rows are spread across every shard. The usual answers are to partition the index per shard and fan out a query
+to all of them, or to maintain a separate, globally distributed xref:database-index.adoc[*index*]. The second option
+adds a whole new distribution dimension to the system.
 
-*Transactions* that span shards lose the simple ACID guarantees of a single-node database. A write
-that touches two shards becomes a xref:distributed-transaction.adoc[*distributed transaction*], with
-the latency and failure modes that implies. Some systems instead relax to
-xref:eventual-consistency.adoc[*eventual consistency*] or adopt a xref:saga.adoc[*saga*], breaking
-the write into a sequence of local steps each compensated on failure. ACID across shards is
-possible, as NewSQL systems such as Google Spanner demonstrate. The guarantee is expensive, though,
-and constrains how the data can be partitioned.
+*Transactions* that span shards lose the simple ACID guarantees of a single-node database. A write that touches two
+shards becomes a xref:distributed-transaction.adoc[*distributed transaction*], with the latency and failure modes that
+implies. Some systems instead relax to xref:eventual-consistency.adoc[*eventual consistency*] or adopt a
+xref:saga.adoc[*saga*], breaking the write into a sequence of local steps each compensated on failure. ACID across
+shards is possible, as NewSQL systems such as Google Spanner demonstrate. The guarantee is expensive, though, and
+constrains how the data can be partitioned.
 
 == Rebalancing
 
-As data grows or access patterns shift, shards become uneven and must be rebalanced. Moving data
-between live shards is expensive. It locks the rows being moved, doubles their storage temporarily,
-and risks inconsistency if a node fails mid-move. Systems therefore try to minimize it. Consistent
-hashing is the standard answer, placing shards on a ring so that adding or removing one moves only
-the keys in the adjacent range rather than rehashing the whole dataset. Even so, resharding a large
-cluster is an operation planned in small, verifiable steps, often with double-write windows where
+As data grows or access patterns shift, shards become uneven and must be rebalanced. Moving data between live shards is
+expensive. It locks the rows being moved, doubles their storage temporarily, and risks inconsistency if a node fails
+mid-move. Systems therefore try to minimize it. Consistent hashing is the standard answer, placing shards on a ring so
+that adding or removing one moves only the keys in the adjacent range rather than rehashing the whole dataset. Even so,
+resharding a large cluster is an operation planned in small, verifiable steps, often with double-write windows where
 both old and new shards accept traffic until the migration settles.
 
 == See also

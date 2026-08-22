@@ -1,16 +1,14 @@
 = GraphML
 
-*GraphML* is an XML-based file format for serializing graphs — the structure of nodes and edges that
-make up a graph — together with any data attached to them. It emerged from the graph drawing
-community as a common interchange format, so that tools for layout, analysis, and visualization
-could exchange graph structures without each inventing a private notation. The format is defined by
-an XML schema and described in the _Handbook of Graph Drawing and Visualization_.
+*GraphML* is an XML-based file format for serializing graphs — the structure of nodes and edges that make up a graph —
+together with any data attached to them. It emerged from the graph drawing community as a common interchange format, so
+that tools for layout, analysis, and visualization could exchange graph structures without each inventing a private
+notation. The format is defined by an XML schema and described in the _Handbook of Graph Drawing and Visualization_.
 
-A GraphML document is an XML file whose root `graphml` element contains one or more `graph`
-elements. Each `graph` holds an unordered sequence of `node` and `edge` elements. Every `node`
-carries a distinct `id`, and every `edge` names its endpoints through `source` and `target`
-attributes that refer to those ids. The `edgedefault` attribute on the `graph` element declares
-whether edges are directed, undirected, or mixed, and individual edges can override the default. A
+A GraphML document is an XML file whose root `graphml` element contains one or more `graph` elements. Each `graph` holds
+an unordered sequence of `node` and `edge` elements. Every `node` carries a distinct `id`, and every `edge` names its
+endpoints through `source` and `target` attributes that refer to those ids. The `edgedefault` attribute on the `graph`
+element declares whether edges are directed, undirected, or mixed, and individual edges can override the default. A
 minimal undirected graph with two nodes and one edge looks like this.
 
 [source,xml]
@@ -28,29 +26,25 @@ minimal undirected graph with two nodes and one edge looks like this.
 </graphml>
 ----
 
-Beyond the bare skeleton, GraphML was designed to cover the full range of graph structures that turn
-up in practice. A graph can be nested, with a `graph` element appearing inside a `node` to model
-hierarchy. Nodes can expose `port` elements that edges attach to instead of the node itself, and
-hyperedges, which connect more than two endpoints, have their own element. Application-specific data
-such as weights, labels, coordinates, or colors is attached to nodes, edges, ports, or the graph as
-a whole through `key` declarations paired with `data` elements. That pairing is what makes GraphML
-extensible without changes to the schema.
+Beyond the bare skeleton, GraphML was designed to cover the full range of graph structures that turn up in practice. A
+graph can be nested, with a `graph` element appearing inside a `node` to model hierarchy. Nodes can expose `port`
+elements that edges attach to instead of the node itself, and hyperedges, which connect more than two endpoints, have
+their own element. Application-specific data such as weights, labels, coordinates, or colors is attached to nodes,
+edges, ports, or the graph as a whole through `key` declarations paired with `data` elements. That pairing is what makes
+GraphML extensible without changes to the schema.
 
-This expressiveness is the main reason GraphML is favored as an interchange format rather than a
-hand-edited one. It is verbose, like any XML format, and the schema's machinery for nesting, ports,
-and typed data adds ceremony that a plain text format avoids. For human-authored graphs, simpler
-notations such as xref:tgf.adoc[*Trivial Graph Format (TGF)*] or
-xref:gml.adoc[*Graph Modelling Language (GML)*] are easier to write. GraphML's strength is fidelity.
-A tool that exports a GraphML file can capture directed and undirected edges, nested subgraphs,
-hyperedges, and arbitrary attribute data in a single document, and a conforming reader can
-reconstruct them. The name also invites confusion with GML, but the two are distinct formats with
-different syntax and lineage.
+This expressiveness is the main reason GraphML is favored as an interchange format rather than a hand-edited one. It is
+verbose, like any XML format, and the schema's machinery for nesting, ports, and typed data adds ceremony that a plain
+text format avoids. For human-authored graphs, simpler notations such as xref:tgf.adoc[*Trivial Graph Format (TGF)*] or
+xref:gml.adoc[*Graph Modelling Language (GML)*] are easier to write. GraphML's strength is fidelity. A tool that exports
+a GraphML file can capture directed and undirected edges, nested subgraphs, hyperedges, and arbitrary attribute data in
+a single document, and a conforming reader can reconstruct them. The name also invites confusion with GML, but the two
+are distinct formats with different syntax and lineage.
 
-GraphML is widely supported across the graph tooling ecosystem. Editors such as yEd use it as their
-native format, and analysis and visualization tools including Gephi, Cytoscape, and NetworkX can
-import and export it. Many xref:graph-database.adoc[*graph databases*] offer GraphML import and
-export for moving graphs in and out of a store, and it is a common serialization for exchanging
-xref:knowledge-graph.adoc[*knowledge graph*] data between tools.
+GraphML is widely supported across the graph tooling ecosystem. Editors such as yEd use it as their native format, and
+analysis and visualization tools including Gephi, Cytoscape, and NetworkX can import and export it. Many
+xref:graph-database.adoc[*graph databases*] offer GraphML import and export for moving graphs in and out of a store, and
+it is a common serialization for exchanging xref:knowledge-graph.adoc[*knowledge graph*] data between tools.
 
 == See also
 
@@ -64,6 +58,5 @@ xref:knowledge-graph.adoc[*knowledge graph*] data between tools.
 
 == References
 
-* Brandes, Ulrik; Eiglsperger, Markus; Lerner, Jürgen; Pich, Christian (2013).
-  _Graph Markup Language (GraphML)_. In Tamassia, Roberto (ed.),
-  _Handbook of Graph Drawing and Visualization_. CRC Press. pp. 517–541.
+* Brandes, Ulrik; Eiglsperger, Markus; Lerner, Jürgen; Pich, Christian (2013). _Graph Markup Language (GraphML)_. In
+  Tamassia, Roberto (ed.), _Handbook of Graph Drawing and Visualization_. CRC Press. pp. 517–541.

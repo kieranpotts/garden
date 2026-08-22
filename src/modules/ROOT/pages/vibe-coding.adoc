@@ -4,16 +4,15 @@
 :link-arstechnica-vibe: https://arstechnica.com/ai/2025/03/is-vibe-coding-with-ai-gnarly-or-reckless-maybe-some-of-both/
 
 Vibe coding, or vibing, is a *[low-code programming]* *[methodology]* that uses
-xref:artificial-intelligence.adoc[*artificial intelligence (AI)*] tools to generate code based on
-natural language *[requirements specifications]*.
+xref:artificial-intelligence.adoc[*artificial intelligence (AI)*] tools to generate code based on natural language
+*[requirements specifications]*.
 
-Vibe coding is one end of a spectrum whose other end is
-xref:agentic-engineering.adoc[*agentic engineering*]. The differentiator is how much structure,
-verification, and human judgment surrounds the AI's output. Without both tests and evals, the
-practice is always vibe coding, however sophisticated the prompts.
+Vibe coding is one end of a spectrum whose other end is xref:agentic-engineering.adoc[*agentic engineering*]. The
+differentiator is how much structure, verification, and human judgment surrounds the AI's output. Without both tests and
+evals, the practice is always vibe coding, however sophisticated the prompts.
 
-The term was introduced by Andrej Karpathy – a co-founder of OpenAI and former AI leader at Tesla –
-in a post on social media platform X in February 2025:
+The term was introduced by Andrej Karpathy – a co-founder of OpenAI and former AI leader at Tesla – in a post on social
+media platform X in February 2025:
 
 [quote, Andrej Karpathy, {link-karpathy-post}]
 ____
@@ -32,78 +31,68 @@ building a project or webapp, but it's not really coding - I just see stuff, say
 stuff, run stuff, and copy paste stuff, and it mostly works.
 ____
 
-The term quickly gained traction in the tech community, with many developers and AI enthusiasts
-sharing their own experiences and interpretations of vibe coding. A March 2025 article on
-{link-arstechnica-vibe}[Ars Technica]
-described vibe coding as being "all about surrendering to the flow", as opposed to "being about
-control and precision".
+The term quickly gained traction in the tech community, with many developers and AI enthusiasts sharing their own
+experiences and interpretations of vibe coding. A March 2025 article on {link-arstechnica-vibe}[Ars Technica] described
+vibe coding as being "all about surrendering to the flow", as opposed to "being about control and precision".
 
-The concept has been compared to xref:pair-programming.adoc[*pair programming*], where a human
-programmer collaborates with an AI assistant to create software. Certainly, vibe coding shifts the
-role of the computer programmer from writing code to defining and iteratively refining requirements,
-and then testing the output of the AI-generated code – the "driver" role in the pair programming
-methodology.
+The concept has been compared to xref:pair-programming.adoc[*pair programming*], where a human programmer collaborates
+with an AI assistant to create software. Certainly, vibe coding shifts the role of the computer programmer from writing
+code to defining and iteratively refining requirements, and then testing the output of the AI-generated code – the
+"driver" role in the pair programming methodology.
 
-Tools that may be used for vibe coding include Cursor, Replit, GitHub Copilot, Anthropic Claude,
-Google Gemini, and Sonnet. These tools use
-xref:large-language-model.adoc[*large language models (LLMs)*] to generate code based on natural
-language prompts. For example, a user might ask the AI to "create a web app that allows users to
-track their fitness goals" and the AI would generate the necessary code to create that application.
+Tools that may be used for vibe coding include Cursor, Replit, GitHub Copilot, Anthropic Claude, Google Gemini, and
+Sonnet. These tools use xref:large-language-model.adoc[*large language models (LLMs)*] to generate code based on natural
+language prompts. For example, a user might ask the AI to "create a web app that allows users to track their fitness
+goals" and the AI would generate the necessary code to create that application.
 
-Vibe coding is a form of *[low-code/no-code programming]* that makes software development more
-accessible to non-programmers, allowing them to create applications without deep knowledge of any
-particular programming language, application framework, or runtime environment.
+Vibe coding is a form of *[low-code/no-code programming]* that makes software development more accessible to
+non-programmers, allowing them to create applications without deep knowledge of any particular programming language,
+application framework, or runtime environment.
 
-Vibe coding is particularly well-suited to *[rapid prototyping]* and development of
-*[proof-of-concept]* software. Vibe coding lacks the precision and *[correctness]* of traditional
-programming methods, raising questions about the quality of the generated code. Therefore, vibe
-coding is unsuitable for the programming of business-critical production software.
+Vibe coding is particularly well-suited to *[rapid prototyping]* and development of *[proof-of-concept]* software. Vibe
+coding lacks the precision and *[correctness]* of traditional programming methods, raising questions about the quality
+of the generated code. Therefore, vibe coding is unsuitable for the programming of business-critical production
+software.
 
-Vibe coding names the review stance, not the resulting code's quality. The stance is accepting the
-agent's code without human review — the diff treated as opaque; what matters is whether the program
-behaves. Don't use "vibe coding" as a synonym for "low-quality AI coding." It trades inspection for
-speed. Reading diffs is usually the slowest step, so dropping it removes the main bottleneck. For
-code whose failures are cheap — xref:prototyping.adoc[*prototypes*], one-off scripts, internal tools
-— that's a reasonable trade. The risk scales with the code's lifespan and stakes.
+Vibe coding names the review stance, not the resulting code's quality. The stance is accepting the agent's code without
+human review — the diff treated as opaque; what matters is whether the program behaves. Don't use "vibe coding" as a
+synonym for "low-quality AI coding." It trades inspection for speed. Reading diffs is usually the slowest step, so
+dropping it removes the main bottleneck. For code whose failures are cheap — xref:prototyping.adoc[*prototypes*],
+one-off scripts, internal tools — that's a reasonable trade. The risk scales with the code's lifespan and stakes.
 
-The cost arrives later. Vibe-coded changes accumulate into a codebase nobody has read, and behaviour
-was the only thing checked, so anything behaviour doesn't surface — a secret written to logs, a
-missing edge case, quietly wrong data handling — ships unseen. The first time someone debugs the
-system is the first time anyone reads the code. With human review gone, whatever automated
-verification still runs (tests, types, xref:agent-handoff.adoc[*automated review*]) is the only
-gate. This is the opposite end of the spectrum from the
-xref:software-craftsmanship.adoc[*software craftsmanship*] stance, which treats the code itself as
-the artifact to be honed and read.
+The cost arrives later. Vibe-coded changes accumulate into a codebase nobody has read, and behaviour was the only thing
+checked, so anything behaviour doesn't surface — a secret written to logs, a missing edge case, quietly wrong data
+handling — ships unseen. The first time someone debugs the system is the first time anyone reads the code. With human
+review gone, whatever automated verification still runs (tests, types, xref:agent-handoff.adoc[*automated review*]) is
+the only gate. This is the opposite end of the spectrum from the
+xref:software-craftsmanship.adoc[*software craftsmanship*] stance, which treats the code itself as the artifact to be
+honed and read.
 
 == The 80% problem
 
-AI xref:agent.adoc[*agents*] rapidly generate roughly 80% of the code for a feature, but the
-remaining 20% — edge cases, error handling, integration points, and subtle correctness — demands
-deep contextual knowledge that current xref:large-language-model.adoc[*models*] often lack. The
-nature of AI errors has shifted from syntax mistakes to conceptual failures: wrong assumptions about
-business logic, failure to seek clarification on ambiguous requirements, missing edge cases, and
-architectural decisions that create subtle long-term maintenance burdens. These are harder to detect
-precisely because the code "looks right" and may pass basic tests. See
-xref:agentic-engineering.adoc[*agentic engineering*] and
-xref:automated-testing.adoc[*automated testing*].
+AI xref:agent.adoc[*agents*] rapidly generate roughly 80% of the code for a feature, but the remaining 20% — edge cases,
+error handling, integration points, and subtle correctness — demands deep contextual knowledge that current
+xref:large-language-model.adoc[*models*] often lack. The nature of AI errors has shifted from syntax mistakes to
+conceptual failures: wrong assumptions about business logic, failure to seek clarification on ambiguous requirements,
+missing edge cases, and architectural decisions that create subtle long-term maintenance burdens. These are harder to
+detect precisely because the code "looks right" and may pass basic tests. See
+xref:agentic-engineering.adoc[*agentic engineering*] and xref:automated-testing.adoc[*automated testing*].
 
 == Hidden debt
 
 Vibe coding's near-zero entry cost hides a compounding operational burden:
 
 * *Token burn rate*: dumping unstructured files into context and looping on unverified mistakes.
-* *Maintenance tax*: bugs surface months later and engineers must reverse-engineer unstructured
-  AI-generated spaghetti.
-* *Security remediation*: rapid code generation produces rapid vulnerability generation, each flaw
-  exponentially cheaper to catch in design than in production.
+* *Maintenance tax*: bugs surface months later and engineers must reverse-engineer unstructured AI-generated spaghetti.
+* *Security remediation*: rapid code generation produces rapid vulnerability generation, each flaw exponentially cheaper
+  to catch in design than in production.
 
 See xref:large-language-model.adoc[*large language model*] for the token economy, and
 xref:agentic-engineering.adoc[*agentic engineering*] for the disciplined alternative.
 
-See also xref:prompt-engineering.adoc[*prompt engineering*],
-xref:agentic-engineering.adoc[*agentic engineering*], and
-xref:spec-driven-development.adoc[*spec-driven development*], a reaction to vibe coding that
-front-loads intent into a persistent specification.
+See also xref:prompt-engineering.adoc[*prompt engineering*], xref:agentic-engineering.adoc[*agentic engineering*], and
+xref:spec-driven-development.adoc[*spec-driven development*], a reaction to vibe coding that front-loads intent into a
+persistent specification.
 
 == See also
 

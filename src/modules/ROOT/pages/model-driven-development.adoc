@@ -1,61 +1,54 @@
 = Model-driven development
 
-Model-driven development (MDD) is a software development methodology in which formal models of a
-system are the primary artifacts, and source code and other implementation artifacts are derived
-from them, often through automated transformations. Models are not auxiliary documentation. They are
-the source of truth from which the system is constructed, and they are maintained with the same care
-that hand-written code would otherwise receive.
+Model-driven development (MDD) is a software development methodology in which formal models of a system are the primary
+artifacts, and source code and other implementation artifacts are derived from them, often through automated
+transformations. Models are not auxiliary documentation. They are the source of truth from which the system is
+constructed, and they are maintained with the same care that hand-written code would otherwise receive.
 
 MDD is the broader methodology that the Object Management Group's
-xref:model-driven-architecture.adoc[*model-driven architecture*] standard formalizes for
-object-oriented systems modeled in the xref:uml.adoc[*Unified Modeling Language*]. MDA is the
-best-known instance of MDD, but the two are not synonymous. MDD denotes the whole family of
-methodologies that put models first, including approaches that predate MDA and approaches that use
-modeling languages other than UML. The term *model-driven engineering* is sometimes used
-interchangeably with MDD, and more broadly to encompass modeling of systems beyond software,
-including hardware and embedded systems.
+xref:model-driven-architecture.adoc[*model-driven architecture*] standard formalizes for object-oriented systems modeled
+in the xref:uml.adoc[*Unified Modeling Language*]. MDA is the best-known instance of MDD, but the two are not
+synonymous. MDD denotes the whole family of methodologies that put models first, including approaches that predate MDA
+and approaches that use modeling languages other than UML. The term *model-driven engineering* is sometimes used
+interchangeably with MDD, and more broadly to encompass modeling of systems beyond software, including hardware and
+embedded systems.
 
 == Models as engineering artifacts
 
-The central idea is that a xref:modeling.adoc[*model*] captures a system's structure and behavior at
-a level of abstraction above the programming language, framework, or platform that will eventually
-run it. A model transformation maps the elements of one model to elements of another, typically
-moving from a more abstract model to a more concrete one, and finally to source code. When
-transformations are reliable and repeatable, the abstract model becomes the durable artifact and the
-generated code becomes a build product, much as
-xref:infrastructure-as-code.adoc[*infrastructure-as-code*] treats hand-edited templates as source
-and provisioned infrastructure as an output.
+The central idea is that a xref:modeling.adoc[*model*] captures a system's structure and behavior at a level of
+abstraction above the programming language, framework, or platform that will eventually run it. A model transformation
+maps the elements of one model to elements of another, typically moving from a more abstract model to a more concrete
+one, and finally to source code. When transformations are reliable and repeatable, the abstract model becomes the
+durable artifact and the generated code becomes a build product, much as
+xref:infrastructure-as-code.adoc[*infrastructure-as-code*] treats hand-edited templates as source and provisioned
+infrastructure as an output.
 
-The promise is portability and longevity. A platform-independent model can be projected onto more
-than one target platform, and the model survives the obsolescence of any one framework or runtime it
-was projected onto.
+The promise is portability and longevity. A platform-independent model can be projected onto more than one target
+platform, and the model survives the obsolescence of any one framework or runtime it was projected onto.
 
 == Origins
 
-MDD descends from the xref:case.adoc[*computer-aided software engineering*] movement of the 1980s
-and 1990s, which sought to industrialize software development through graphical modeling tools, code
-generators, and shared repositories. As the object-oriented methods of the early 1990s consolidated
-into the Unified Modeling Language, the OMG extended the CASE thread into a model-driven methodology
-standardized across vendors.
+MDD descends from the xref:case.adoc[*computer-aided software engineering*] movement of the 1980s and 1990s, which
+sought to industrialize software development through graphical modeling tools, code generators, and shared repositories.
+As the object-oriented methods of the early 1990s consolidated into the Unified Modeling Language, the OMG extended the
+CASE thread into a model-driven methodology standardized across vendors.
 
 == Relationship to formal methods
 
-MDD shares with xref:formal-methods.adoc[*formal methods*] the premise that a precise, abstract
-description of a system is worth maintaining in its own right. The two differ in what they do with
-the description. Formal methods use mathematical specifications to verify properties of a system,
-while MDD uses models to generate implementations. A model in MDD is a construction artifact; a
-specification in formal methods is an object of proof.
+MDD shares with xref:formal-methods.adoc[*formal methods*] the premise that a precise, abstract description of a system
+is worth maintaining in its own right. The two differ in what they do with the description. Formal methods use
+mathematical specifications to verify properties of a system, while MDD uses models to generate implementations. A model
+in MDD is a construction artifact; a specification in formal methods is an object of proof.
 
 == Critique
 
-MDD methodologies lean toward xref:big-design-up-front.adoc[*big design up-front*], because the
-model must be authored before code can be generated from it. The xref:agile.adoc[*agile*] movement's
-preference for working code over comprehensive models eroded MDD's standing for the same reasons it
-eroded CASE. In practice, transformations between abstraction layers proved hard to write and harder
-to maintain, and the assumption that a platform-independent model could be projected onto a platform
-without losing fidelity did not hold. What survived is the narrower idea that models are first-class
-engineering artifacts, evident in modern xref:diagrams-as-code.adoc[*diagrams-as-code*] approaches
-that keep models in plain text under version control.
+MDD methodologies lean toward xref:big-design-up-front.adoc[*big design up-front*], because the model must be authored
+before code can be generated from it. The xref:agile.adoc[*agile*] movement's preference for working code over
+comprehensive models eroded MDD's standing for the same reasons it eroded CASE. In practice, transformations between
+abstraction layers proved hard to write and harder to maintain, and the assumption that a platform-independent model
+could be projected onto a platform without losing fidelity did not hold. What survived is the narrower idea that models
+are first-class engineering artifacts, evident in modern xref:diagrams-as-code.adoc[*diagrams-as-code*] approaches that
+keep models in plain text under version control.
 
 == See also
 
@@ -71,8 +64,8 @@ that keep models in plain text under version control.
 
 == References
 
-* Brambilla, Marco; Cabot, Jordi; Wimmer, Manuel (2012).
-  _Model-Driven Software Engineering in Practice_. Morgan & Claypool.
+* Brambilla, Marco; Cabot, Jordi; Wimmer, Manuel (2012). _Model-Driven Software Engineering in Practice_. Morgan &
+  Claypool.
 * Schmidt, Douglas C. (2006). "Model-Driven Engineering". _Computer_, 39(2), 25–31.
-* Stahl, Thomas; Völter, Markus (2006).
-  _Model-Driven Software Development: Technology, Engineering, Management_. John Wiley & Sons.
+* Stahl, Thomas; Völter, Markus (2006). _Model-Driven Software Development: Technology, Engineering, Management_. John
+  Wiley & Sons.

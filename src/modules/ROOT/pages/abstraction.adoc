@@ -1,66 +1,56 @@
 = Abstraction
 
-Abstraction is a foundational concept in software design. It is the practice of distilling a system
-down to its essentials, stripping away incidental detail so that what remains can be reasoned about,
-named, and reused independently of how it is implemented.
+Abstraction is a foundational concept in software design. It is the practice of distilling a system down to its
+essentials, stripping away incidental detail so that what remains can be reasoned about, named, and reused independently
+of how it is implemented.
 
-An abstraction draws a line between the *what* and the *how*. On one side is the public surface –
-the xref:interface.adoc[*interface*] and contract that callers depend on. On the other side is the
-implementation, which is free to change as long as the contract still holds. A caller of a
-xref:relational-database.adoc[*relational database*] needs to know SQL and the schema, not how the
-storage engine pages data to disk.
+An abstraction draws a line between the *what* and the *how*. On one side is the public surface – the
+xref:interface.adoc[*interface*] and contract that callers depend on. On the other side is the implementation, which is
+free to change as long as the contract still holds. A caller of a xref:relational-database.adoc[*relational database*]
+needs to know SQL and the schema, not how the storage engine pages data to disk.
 
-The line an abstraction draws is related to, but distinct from,
-xref:encapsulation.adoc[*encapsulation*]. Abstraction is about choosing which details to expose.
-Encapsulation is about enforcing the boundary so that the hidden details stay hidden. The two work
-together. An abstraction defines the contract, and encapsulation protects it. The companion idea is
-*information hiding*, David Parnas's term for the discipline of hiding design decisions that are
-likely to change behind a stable interface.
+The line an abstraction draws is related to, but distinct from, xref:encapsulation.adoc[*encapsulation*]. Abstraction is
+about choosing which details to expose. Encapsulation is about enforcing the boundary so that the hidden details stay
+hidden. The two work together. An abstraction defines the contract, and encapsulation protects it. The companion idea is
+*information hiding*, David Parnas's term for the discipline of hiding design decisions that are likely to change behind
+a stable interface.
 
-The primary purpose of abstraction is to manage xref:complexity.adoc[*complexity*]. By hiding detail
-behind a stable interface, an abstraction lets a system be understood and changed in pieces rather
-than all at once. Each piece presents a small surface to the rest of the system, so the load on any
-one reader stays bounded. This is also what makes xref:modular-design.adoc[*modular design*]
-practical. When modules depend on abstractions rather than on each other's internals, any one of
-them can be replaced without disturbing its neighbors. The same principle underlies
-xref:separation-of-concerns.adoc[*separation of concerns*] and the reduction of
-xref:coupling.adoc[*coupling*] between modules, which is the practice of
-xref:decoupling.adoc[*decoupling*].
+The primary purpose of abstraction is to manage xref:complexity.adoc[*complexity*]. By hiding detail behind a stable
+interface, an abstraction lets a system be understood and changed in pieces rather than all at once. Each piece presents
+a small surface to the rest of the system, so the load on any one reader stays bounded. This is also what makes
+xref:modular-design.adoc[*modular design*] practical. When modules depend on abstractions rather than on each other's
+internals, any one of them can be replaced without disturbing its neighbors. The same principle underlies
+xref:separation-of-concerns.adoc[*separation of concerns*] and the reduction of xref:coupling.adoc[*coupling*] between
+modules, which is the practice of xref:decoupling.adoc[*decoupling*].
 
-Abstractions are not confined to a single level of code. A
-xref:layered-architecture.adoc[*layered architecture*] is built from stacked abstractions, each
-layer presenting a simpler model to the one above.
-xref:object-oriented-programming.adoc[*object-oriented programming*] languages offer classes as a
-built-in mechanism for abstraction. A class hides its implementation details and exposes only the
-operations callers need. The same idea underlies
-xref:dependency-inversion.adoc[*dependency inversion*], which directs both high-level and low-level
-modules to depend on abstractions rather than on concrete implementations.
+Abstractions are not confined to a single level of code. A xref:layered-architecture.adoc[*layered architecture*] is
+built from stacked abstractions, each layer presenting a simpler model to the one above.
+xref:object-oriented-programming.adoc[*object-oriented programming*] languages offer classes as a built-in mechanism for
+abstraction. A class hides its implementation details and exposes only the operations callers need. The same idea
+underlies xref:dependency-inversion.adoc[*dependency inversion*], which directs both high-level and low-level modules to
+depend on abstractions rather than on concrete implementations.
 
-The strength of an abstraction lies in choosing the right details to keep and the right ones to
-drop. A good abstraction captures what is essential to the problem and discards what is merely
-incidental. It sits at a level that is useful to its callers, not so detailed that it leaks the
-implementation and not so coarse that it hides what callers need to know. Finding that level is a
-design judgment, and an abstraction that serves one caller well can serve another poorly.
-xref:conceptual-integrity.adoc[*Conceptual integrity*] is what keeps a system's abstractions
-consistent with one another, so that each one feels like part of the same language.
+The strength of an abstraction lies in choosing the right details to keep and the right ones to drop. A good abstraction
+captures what is essential to the problem and discards what is merely incidental. It sits at a level that is useful to
+its callers, not so detailed that it leaks the implementation and not so coarse that it hides what callers need to know.
+Finding that level is a design judgment, and an abstraction that serves one caller well can serve another poorly.
+xref:conceptual-integrity.adoc[*Conceptual integrity*] is what keeps a system's abstractions consistent with one
+another, so that each one feels like part of the same language.
 
-Abstraction is not free. Every layer of indirection pushes the running code one step further from
-the machine, adding overhead and making behavior harder to trace when something goes wrong. The same
-hiding that lets a system be reasoned about in pieces also hides the cost of the operations behind
-the interface. Stacking abstractions without regard to their cost is how systems acquire layers that
-no one fully understands. The remedy is not to abandon abstraction but to keep each layer as thin as
-serves its purpose, and to drop a layer when it stops earning its keep.
+Abstraction is not free. Every layer of indirection pushes the running code one step further from the machine, adding
+overhead and making behavior harder to trace when something goes wrong. The same hiding that lets a system be reasoned
+about in pieces also hides the cost of the operations behind the interface. Stacking abstractions without regard to
+their cost is how systems acquire layers that no one fully understands. The remedy is not to abandon abstraction but to
+keep each layer as thin as serves its purpose, and to drop a layer when it stops earning its keep.
 
-There is also a cost in abstracting too early. An abstraction built before the problem is understood
-tends to capture the wrong essentials, locking incidental detail into a contract that callers come
-to depend on. xref:yagni.adoc[*YAGNI*] is the discipline of deferring an abstraction until there is
-a real second case to generalize from. Abstractions are often discovered by factoring them out of
-working code, not designed ahead of time.
+There is also a cost in abstracting too early. An abstraction built before the problem is understood tends to capture
+the wrong essentials, locking incidental detail into a contract that callers come to depend on. xref:yagni.adoc[*YAGNI*]
+is the discipline of deferring an abstraction until there is a real second case to generalize from. Abstractions are
+often discovered by factoring them out of working code, not designed ahead of time.
 
-No abstraction is perfect. Every simplification discards some detail, and there are times when the
-discarded detail forces its way back to the surface. These
-xref:leaky-abstraction.adoc[*leaky abstractions*] are why consumers of an abstraction usually need
-some grasp of what lies beneath it, however much the interface promises to hide.
+No abstraction is perfect. Every simplification discards some detail, and there are times when the discarded detail
+forces its way back to the surface. These xref:leaky-abstraction.adoc[*leaky abstractions*] are why consumers of an
+abstraction usually need some grasp of what lies beneath it, however much the interface promises to hide.
 
 == See also
 
@@ -72,4 +62,5 @@ some grasp of what lies beneath it, however much the interface promises to hide.
 * xref:leaky-abstraction.adoc[*Leaky abstractions*]
 * xref:modular-design.adoc[*Modular design*]
 * xref:separation-of-concerns.adoc[*Separation of concerns*]
-* xref:sicp.adoc[*Structure and Interpretation of Computer Programs*]* xref:software-architecture.adoc[*Software architecture*]
+* xref:sicp.adoc[*Structure and Interpretation of Computer Programs*]
+* xref:software-architecture.adoc[*Software architecture*]

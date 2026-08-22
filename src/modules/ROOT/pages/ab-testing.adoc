@@ -1,74 +1,64 @@
 = A/B testing
 
-A/B testing is a controlled experiment in which two variants of a unit of functionality are compared
-to determine which one performs better against a predefined xref:metrics.adoc[*metric*].
+A/B testing is a controlled experiment in which two variants of a unit of functionality are compared to determine which
+one performs better against a predefined xref:metrics.adoc[*metric*].
 
-The two variants are conventionally labeled A (the *control*, the existing version) and B (the
-*variant* or *treatment*, the new version). Users are randomly assigned to one variant or the other,
-and their behavior is recorded as the experiment runs. At the end of the experiment the measured
-outcomes are compared, and the variant that performs best against the target metric is declared the
-winner.
+The two variants are conventionally labeled A (the *control*, the existing version) and B (the *variant* or *treatment*,
+the new version). Users are randomly assigned to one variant or the other, and their behavior is recorded as the
+experiment runs. At the end of the experiment the measured outcomes are compared, and the variant that performs best
+against the target metric is declared the winner.
 
-A/B testing is typically used to evaluate graphical user interfaces (GUIs) and user experience (UX)
-design, such as a web interface. In that setting it complements
-xref:usability-testing.adoc[*usability testing*]. Where usability testing is qualitative and
-observational, A/B testing is quantitative and statistical. The same strategy can also be used to
-evaluate the relative merits of different implementations of all sorts of software features,
-including algorithms and xref:machine-learning.adoc[*machine learning*] models.
+A/B testing is typically used to evaluate graphical user interfaces (GUIs) and user experience (UX) design, such as a
+web interface. In that setting it complements xref:usability-testing.adoc[*usability testing*]. Where usability testing
+is qualitative and observational, A/B testing is quantitative and statistical. The same strategy can also be used to
+evaluate the relative merits of different implementations of all sorts of software features, including algorithms and
+xref:machine-learning.adoc[*machine learning*] models.
 
-A/B testing is distinct from a xref:canary-deployment.adoc[*canary deployment*], although both split
-traffic between two versions. A canary deployment is a release strategy whose goal is to limit the
-blast radius of a new version by exposing it to a small fraction of users first. A/B testing is an
-experiment whose goal is to compare outcomes between variants, and the two variants may run for the
-full duration at equal traffic shares. The two techniques are often combined, with a canary rollout
-providing the traffic split that an A/B test then measures.
+A/B testing is distinct from a xref:canary-deployment.adoc[*canary deployment*], although both split traffic between two
+versions. A canary deployment is a release strategy whose goal is to limit the blast radius of a new version by exposing
+it to a small fraction of users first. A/B testing is an experiment whose goal is to compare outcomes between variants,
+and the two variants may run for the full duration at equal traffic shares. The two techniques are often combined, with
+a canary rollout providing the traffic split that an A/B test then measures.
 
-The implementation of A/B testing strategies may be supported by
-xref:feature-flag.adoc[*feature flag*] systems, which can route users to variants and toggle
-variants on or off without a new deployment.
+The implementation of A/B testing strategies may be supported by xref:feature-flag.adoc[*feature flag*] systems, which
+can route users to variants and toggle variants on or off without a new deployment.
 
 == Statistical considerations
 
-A valid A/B test depends on random assignment and a large enough sample to distinguish a real
-difference from chance variation. Before running the test, the experimenter fixes three quantities.
-The *significance level* is the false-positive rate they will accept. The *statistical power* is the
-probability of detecting a real effect of a given size. The *minimum detectable effect* is the
-smallest difference that would be worth acting on. Together these determine the sample size the test
-must reach. Calculating the required sample up front, rather than stopping when the result looks
-significant, is what makes the experiment valid.
+A valid A/B test depends on random assignment and a large enough sample to distinguish a real difference from chance
+variation. Before running the test, the experimenter fixes three quantities. The *significance level* is the
+false-positive rate they will accept. The *statistical power* is the probability of detecting a real effect of a given
+size. The *minimum detectable effect* is the smallest difference that would be worth acting on. Together these determine
+the sample size the test must reach. Calculating the required sample up front, rather than stopping when the result
+looks significant, is what makes the experiment valid.
 
-The result is typically assessed with a *hypothesis test* that yields a *p-value* or a confidence
-interval, and a difference is only acted on when it reaches the predetermined threshold of
-*statistical significance*. Statistical significance is not the same as practical significance,
-however. With a large enough sample, even a negligible difference becomes statistically significant,
-so the effect size must be large enough to justify the change.
+The result is typically assessed with a *hypothesis test* that yields a *p-value* or a confidence interval, and a
+difference is only acted on when it reaches the predetermined threshold of *statistical significance*. Statistical
+significance is not the same as practical significance, however. With a large enough sample, even a negligible
+difference becomes statistically significant, so the effect size must be large enough to justify the change.
 
-Several pitfalls can invalidate an experiment. *Peeking* at the results before the planned sample
-size is reached inflates the false-positive rate. *Novelty effects* can make a new variant perform
-better (or worse) for a short period that does not reflect long-term behavior. *Selection bias*
-arises when the assignment is not truly random, eg. when users on mobile devices are systematically
-routed to one variant. *Simpson's paradox* can even reverse the apparent direction of the result
-when subgroups are unevenly represented between variants.
+Several pitfalls can invalidate an experiment. *Peeking* at the results before the planned sample size is reached
+inflates the false-positive rate. *Novelty effects* can make a new variant perform better (or worse) for a short period
+that does not reflect long-term behavior. *Selection bias* arises when the assignment is not truly random, eg. when
+users on mobile devices are systematically routed to one variant. *Simpson's paradox* can even reverse the apparent
+direction of the result when subgroups are unevenly represented between variants.
 
-xref:metcalfes-law.adoc[*Network effects*] are a subtler threat. In products where users influence
-one another – social networks, marketplaces, ride-sharing – a user assigned to variant B may change
-the experience of users assigned to variant A, because the two populations interact. This violates
-the assumption that the variants are independent and can quietly corrupt the result. The usual
-remedy is to split by isolated clusters, eg. geographic regions or friend groups, rather than by
-individual user.
+xref:metcalfes-law.adoc[*Network effects*] are a subtler threat. In products where users influence one another – social
+networks, marketplaces, ride-sharing – a user assigned to variant B may change the experience of users assigned to
+variant A, because the two populations interact. This violates the assumption that the variants are independent and can
+quietly corrupt the result. The usual remedy is to split by isolated clusters, eg. geographic regions or friend groups,
+rather than by individual user.
 
-Finally, the choice of target metric matters as much as the statistics.
-xref:goodharts-law.adoc[*Goodhart's law*] warns that a metric optimized as a target tends to be
-gamed. A variant that lifts a narrow proxy metric can regress the outcome it was meant to stand in
-for, so the metric under test should be one the business genuinely wants to improve.
+Finally, the choice of target metric matters as much as the statistics. xref:goodharts-law.adoc[*Goodhart's law*] warns
+that a metric optimized as a target tends to be gamed. A variant that lifts a narrow proxy metric can regress the
+outcome it was meant to stand in for, so the metric under test should be one the business genuinely wants to improve.
 
 == Generalizations
 
-A/B testing generalizes to more than two variants. *A/B/n testing* compares several variants against
-a control simultaneously, useful when there are multiple ideas to screen. *Multivariate testing*
-goes further, varying several factors at once and measuring their interactions, at the cost of a
-much larger sample needed to disentangle the combinations. Both rest on the same randomization and
-hypothesis-testing foundation as the two-variant case.
+A/B testing generalizes to more than two variants. *A/B/n testing* compares several variants against a control
+simultaneously, useful when there are multiple ideas to screen. *Multivariate testing* goes further, varying several
+factors at once and measuring their interactions, at the cost of a much larger sample needed to disentangle the
+combinations. Both rest on the same randomization and hypothesis-testing foundation as the two-variant case.
 
 == See also
 
@@ -77,5 +67,6 @@ hypothesis-testing foundation as the two-variant case.
 * xref:goodharts-law.adoc[*Goodhart's law*]
 * xref:machine-learning.adoc[*Machine learning*]
 * xref:metrics.adoc[*Metrics*]
-* xref:persona.adoc[*Persona*]* xref:testing.adoc[*Testing*]
+* xref:persona.adoc[*Persona*]
+* xref:testing.adoc[*Testing*]
 * xref:usability-testing.adoc[*Usability testing*]

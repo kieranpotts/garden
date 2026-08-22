@@ -1,62 +1,53 @@
 = Manual testing
 
-Manual testing is the practice of exercising a system under test by hand, with a human following a
-procedure, observing the outcomes, and judging whether they are correct. The tester supplies the
-inputs, interprets the results, and records the verdict, rather than delegating any of those steps
-to software.
+Manual testing is the practice of exercising a system under test by hand, with a human following a procedure, observing
+the outcomes, and judging whether they are correct. The tester supplies the inputs, interprets the results, and records
+the verdict, rather than delegating any of those steps to software.
 
-Its counterpart is xref:automated-testing.adoc[*automated testing*], where the inputs, execution,
-and pass-or-fail verdict are encoded as code that can be re-run unchanged. The two are complementary
-rather than mutually exclusive. Automated tests excel at repeating the same checks cheaply and
-frequently, while manual testing remains better suited to assessing qualities that are hard to
-assert mechanically: usability, aesthetics, accessibility, and behavior the specification never
-anticipated.
+Its counterpart is xref:automated-testing.adoc[*automated testing*], where the inputs, execution, and pass-or-fail
+verdict are encoded as code that can be re-run unchanged. The two are complementary rather than mutually exclusive.
+Automated tests excel at repeating the same checks cheaply and frequently, while manual testing remains better suited to
+assessing qualities that are hard to assert mechanically: usability, aesthetics, accessibility, and behavior the
+specification never anticipated.
 
 == Where manual testing fits
 
 Manual testing covers several distinct activities that share a reliance on human judgment.
 
-* *Scripted manual testing.* A tester works through a written test case – inputs, steps, and
-  expected results, in the form IEEE 829 calls a xref:tps-report.adoc[*TPS report*] – and records a
-  pass or fail. This is the closest manual analogue of an automated test, and the most
-  straightforward to automate once the procedure is stable.
-* xref:exploratory-testing.adoc[*Exploratory testing.*] The tester designs and executes tests in
-  real time, guided by curiosity and an evolving mental model of the system, rather than by a
-  pre-written script. It is particularly effective at surfacing edge cases and unexpected behaviors
-  no one thought to write a case for.
-* xref:usability-testing.adoc[*Usability testing.*] Real or representative users attempt realistic
-  tasks while a tester observes, exposing friction that scripted or automated checks cannot detect.
+* *Scripted manual testing.* A tester works through a written test case – inputs, steps, and expected results, in the form
+  IEEE 829 calls a xref:tps-report.adoc[*TPS report*] – and records a pass or fail. This is the closest manual analogue of
+  an automated test, and the most straightforward to automate once the procedure is stable.
+* xref:exploratory-testing.adoc[*Exploratory testing.*] The tester designs and executes tests in real time, guided by
+  curiosity and an evolving mental model of the system, rather than by a pre-written script. It is particularly effective
+  at surfacing edge cases and unexpected behaviors no one thought to write a case for.
+* xref:usability-testing.adoc[*Usability testing.*] Real or representative users attempt realistic tasks while a tester
+  observes, exposing friction that scripted or automated checks cannot detect.
 * Acceptance-phase checks. xref:acceptance-testing.adoc[*Acceptance testing*] – including
-  xref:alpha-testing.adoc[*alpha testing*] and xref:beta-testing.adoc[*beta testing*] – is largely
-  manual, since its purpose is to judge fitness for purpose from a user's perspective rather than to
-  assert mechanical correctness.
+  xref:alpha-testing.adoc[*alpha testing*] and xref:beta-testing.adoc[*beta testing*] – is largely manual, since its
+  purpose is to judge fitness for purpose from a user's perspective rather than to assert mechanical correctness.
 
 == Trade-offs
 
-Manual testing is slow, expensive, and hard to repeat consistently. A tester working through a
-procedure by hand can execute only a fraction of the cases an automated suite runs in the same time,
-and a growing body of checks becomes prohibitive to re-run after every change. This is why
-xref:regression-testing.adoc[*regression testing*] is one of the practices that benefits most from
-automation: a suite that must be re-run constantly is a poor fit for human execution.
+Manual testing is slow, expensive, and hard to repeat consistently. A tester working through a procedure by hand can
+execute only a fraction of the cases an automated suite runs in the same time, and a growing body of checks becomes
+prohibitive to re-run after every change. This is why xref:regression-testing.adoc[*regression testing*] is one of the
+practices that benefits most from automation: a suite that must be re-run constantly is a poor fit for human execution.
 
-Human judgment is also variable. Two testers following the same procedure may reach different
-verdicts, and the same tester may interpret an ambiguous result differently on different days. The
-xref:first-principles-of-testing.adoc[*FIRST principles of testing*] capture the qualities that
-automated tests are valued for – fast, isolated, repeatable, self-validating, and timely – and
-manual testing scores poorly on most of them.
+Human judgment is also variable. Two testers following the same procedure may reach different verdicts, and the same
+tester may interpret an ambiguous result differently on different days. The
+xref:first-principles-of-testing.adoc[*FIRST principles of testing*] capture the qualities that automated tests are
+valued for – fast, isolated, repeatable, self-validating, and timely – and manual testing scores poorly on most of them.
 
-What manual testing gains in exchange is reach. A human tester can notice that a layout looks wrong,
-that an animation feels janky, or that a workflow is confusing in a way no assertion was written to
-catch. Automated tests can only verify what they have been explicitly told to check; manual testing
-extends coverage into the subjective and the unspecified.
+What manual testing gains in exchange is reach. A human tester can notice that a layout looks wrong, that an animation
+feels janky, or that a workflow is confusing in a way no assertion was written to catch. Automated tests can only verify
+what they have been explicitly told to check; manual testing extends coverage into the subjective and the unspecified.
 
 == In practice
 
-Most mature teams treat manual testing as a deliberate complement to
-xref:test-harness.adoc[*automated suites*] rather than a substitute for them. Repetitive,
-well-specified checks are automated so that human attention is freed for the work where it adds most
-value: exploratory sessions, usability assessment, and one-off verification of changes that are not
-yet stable enough to warrant a permanent automated test.
+Most mature teams treat manual testing as a deliberate complement to xref:test-harness.adoc[*automated suites*] rather
+than a substitute for them. Repetitive, well-specified checks are automated so that human attention is freed for the
+work where it adds most value: exploratory sessions, usability assessment, and one-off verification of changes that are
+not yet stable enough to warrant a permanent automated test.
 
 == See also
 

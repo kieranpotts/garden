@@ -1,33 +1,29 @@
 = Sandbox
 
-A *sandbox* is an isolated environment a program or xref:agent.adoc[*agent*] runs inside – a
-container, virtual machine, ephemeral filesystem, or restricted-permission shell – that limits the
-blast radius of its actions. Even if it runs destructive commands or fetches something malicious,
-the damage is contained inside the boundary.
+A *sandbox* is an isolated environment a program or xref:agent.adoc[*agent*] runs inside – a container, virtual machine,
+ephemeral filesystem, or restricted-permission shell – that limits the blast radius of its actions. Even if it runs
+destructive commands or fetches something malicious, the damage is contained inside the boundary.
 
-The idea is general. Browsers sandbox web pages so a rogue script cannot reach the host OS.
-Operating systems confine processes with restricted permissions. xref:container.adoc[*Containers*]
-and xref:virtual-machine.adoc[*VMs*] give an application a fresh filesystem and kernel surface to
-run against. Security and isolation testing use sandboxes to observe malicious behaviour safely.
+The idea is general. Browsers sandbox web pages so a rogue script cannot reach the host OS. Operating systems confine
+processes with restricted permissions. xref:container.adoc[*Containers*] and xref:virtual-machine.adoc[*VMs*] give an
+application a fresh filesystem and kernel surface to run against. Security and isolation testing use sandboxes to
+observe malicious behaviour safely.
 
-For agents, the sandbox is the safety substrate that makes unattended
-xref:away-from-keyboard.adoc[*AFK*] runs practical. The sandbox and the permission mode solve the
-same problem from opposite ends: permissions ask before an action runs, while a sandbox limits what
-the action can reach if it does run. Permissions need you in the loop. A sandbox spends
-infrastructure instead of attention.
+For agents, the sandbox is the safety substrate that makes unattended xref:away-from-keyboard.adoc[*AFK*] runs
+practical. The sandbox and the permission mode solve the same problem from opposite ends: permissions ask before an
+action runs, while a sandbox limits what the action can reach if it does run. Permissions need you in the loop. A
+sandbox spends infrastructure instead of attention.
 
 Isolation comes in grades:
 
-* *Restricted shell.* OS-level confinement – contains writes outside the project and limits network
-  access.
-* *Container.* A fresh filesystem with no credentials mounted, discarded after the run – contains
-  anything the xref:agent-harness.adoc[*agent*] does to its own machine.
+* *Restricted shell.* OS-level confinement – contains writes outside the project and limits network access.
+* *Container.* A fresh filesystem with no credentials mounted, discarded after the run – contains anything the
+  xref:agent-harness.adoc[*agent*] does to its own machine.
 * *VM or cloud instance.* A separate machine – contains everything, including
   xref:ring-zero-escalation.adoc[*ring zero escalation*] from a container.
 
-What no sandbox contains is actions that leave it legitimately. An agent with your git credentials
-can push. One with network access can call production APIs. Decide what crosses the boundary before
-deciding how thick to make it.
+What no sandbox contains is actions that leave it legitimately. An agent with your git credentials can push. One with
+network access can call production APIs. Decide what crosses the boundary before deciding how thick to make it.
 
 == See also
 

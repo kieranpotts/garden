@@ -1,42 +1,37 @@
 = Association
 
-Association is a relationship between two software components in which one component uses, depends
-on, or otherwise has knowledge of the other. It is the most general of the relationships between
-classes in xref:object-oriented-programming.adoc[*object-oriented programming*], and the one from
-which the more specific xref:composition.adoc[*composition*] and *aggregation* relationships are
-derived.
+Association is a relationship between two software components in which one component uses, depends on, or otherwise has
+knowledge of the other. It is the most general of the relationships between classes in
+xref:object-oriented-programming.adoc[*object-oriented programming*], and the one from which the more specific
+xref:composition.adoc[*composition*] and *aggregation* relationships are derived.
 
-An association is typically realized as one object holding a reference to another, either to a
-concrete class or through an xref:interface.adoc[*interface*]. The holder can invoke the
-collaborator's operations, and the collaborator may in turn hold a reference back, forming a
-bidirectional association. Directionality and multiplicity — one-to-one, one-to-many, many-to-many —
-are part of what distinguishes one association from another.
+An association is typically realized as one object holding a reference to another, either to a concrete class or through
+an xref:interface.adoc[*interface*]. The holder can invoke the collaborator's operations, and the collaborator may in
+turn hold a reference back, forming a bidirectional association. Directionality and multiplicity — one-to-one,
+one-to-many, many-to-many — are part of what distinguishes one association from another.
 
 == In UML
 
-The xref:uml.adoc[*Unified Modeling Language*] formalizes association as a solid line drawn between
-two classes in a class diagram. The line may carry multiplicities at each end (eg. `1`, `0..1`,
-`*`), role names describing each end's part, and an open arrowhead indicating navigability. A line
-with no arrowheads denotes a bidirectional association.
+The xref:uml.adoc[*Unified Modeling Language*] formalizes association as a solid line drawn between two classes in a
+class diagram. The line may carry multiplicities at each end (eg. `1`, `0..1`, `*`), role names describing each end's
+part, and an open arrowhead indicating navigability. A line with no arrowheads denotes a bidirectional association.
 
 Two refined forms sit under association.
 
-* *Aggregation.* A "has a" relationship in which the part can exist independently of the whole. It
-  is drawn with a hollow diamond at the whole end.
+* *Aggregation.* A "has a" relationship in which the part can exist independently of the whole. It is drawn with a hollow
+  diamond at the whole end.
 
-* *Composition.* A stronger "owns a" relationship in which the part's lifetime is bound to the
-  whole. When the whole is destroyed, so are its parts. It is drawn with a filled diamond at the
-  whole end.
+* *Composition.* A stronger "owns a" relationship in which the part's lifetime is bound to the whole. When the whole is
+  destroyed, so are its parts. It is drawn with a filled diamond at the whole end.
 
 == Association versus inheritance
 
-Where xref:inheritance.adoc[*inheritance*] expresses an "is a" relationship between classes,
-association expresses a "uses a" or "has a" relationship. The two are often contrasted. Inheritance
-ties a subclass to its parent's implementation at compile time, while an association lets a class
-reach a collaborator through a reference that can be swapped — at runtime when the reference is held
-behind an interface. This is why composition, the strongest form of association, is the recommended
-alternative to inheritance for code reuse. It keeps xref:coupling.adoc[*coupling*] lower and
-behaviors replaceable.
+Where xref:inheritance.adoc[*inheritance*] expresses an "is a" relationship between classes, association expresses a
+"uses a" or "has a" relationship. The two are often contrasted. Inheritance ties a subclass to its parent's
+implementation at compile time, while an association lets a class reach a collaborator through a reference that can be
+swapped — at runtime when the reference is held behind an interface. This is why composition, the strongest form of
+association, is the recommended alternative to inheritance for code reuse. It keeps xref:coupling.adoc[*coupling*] lower
+and behaviors replaceable.
 
 == See also
 

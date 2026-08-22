@@ -3,65 +3,59 @@
 :link-fowler-micro-frontends: https://martinfowler.com/articles/micro-frontends.html
 :link-wikipedia:              https://en.wikipedia.org/wiki/Micro_frontend
 
-A micro front-end is an xref:architectural-pattern.adoc[*architectural pattern*] for web development
-in which a single user interface is composed from multiple, independently developed front-end
-applications. Each micro front-end is owned, built, and deployed by a separate team, and the pieces
-are assembled in the browser to form one coherent page.
+A micro front-end is an xref:architectural-pattern.adoc[*architectural pattern*] for web development in which a single
+user interface is composed from multiple, independently developed front-end applications. Each micro front-end is owned,
+built, and deployed by a separate team, and the pieces are assembled in the browser to form one coherent page.
 
-The pattern is the front-end analogue of xref:microservices.adoc[*microservices*]. Where
-microservices decompose a back-end into independently deployable units, micro front-ends decompose
-the front-end. The two are often paired, so that a vertical slice from database through service to
-UI is owned end-to-end by one team. That arrangement is also the premise of the
-xref:self-contained-system.adoc[*self-contained system*] pattern.
+The pattern is the front-end analogue of xref:microservices.adoc[*microservices*]. Where microservices decompose a
+back-end into independently deployable units, micro front-ends decompose the front-end. The two are often paired, so
+that a vertical slice from database through service to UI is owned end-to-end by one team. That arrangement is also the
+premise of the xref:self-contained-system.adoc[*self-contained system*] pattern.
 
-It provides a solution to xref:decomposition.adoc[*decomposition*] and routing for large, complex
-web UIs. A sprawling xref:monolith.adoc[*monolithic*] front-end, built as a single
-*single-page application*, becomes hard to evolve when many teams contribute to it. Micro front-ends
-let each team ship its slice on its own schedule.
+It provides a solution to xref:decomposition.adoc[*decomposition*] and routing for large, complex web UIs. A sprawling
+xref:monolith.adoc[*monolithic*] front-end, built as a single *single-page application*, becomes hard to evolve when
+many teams contribute to it. Micro front-ends let each team ship its slice on its own schedule.
 
 == Motivation
 
-The driving force is organizational as much as technical. A large front-end developed by many teams
-tends to accumulate xref:coupling.adoc[*coupling*]: shared build pipelines, shared state, shared
-component libraries, and merge conflicts on common routes. xref:conways-law.adoc[*Conway's law*]
-predicts that the front-end's structure will mirror the team structure, and a single shared codebase
-forces teams into a single communication structure. Micro front-ends align the technical
-decomposition with team boundaries, so each team can operate autonomously while aiming for high
+The driving force is organizational as much as technical. A large front-end developed by many teams tends to accumulate
+xref:coupling.adoc[*coupling*]: shared build pipelines, shared state, shared component libraries, and merge conflicts on
+common routes. xref:conways-law.adoc[*Conway's law*] predicts that the front-end's structure will mirror the team
+structure, and a single shared codebase forces teams into a single communication structure. Micro front-ends align the
+technical decomposition with team boundaries, so each team can operate autonomously while aiming for high
 xref:cohesion.adoc[*cohesion*] within its own fragment and low coupling between fragments.
 
 == Composition techniques
 
 Micro front-end implementations differ mainly in how the pieces are assembled.
 
-* *Build-time composition.* Components are published as packages and imported into a single shell
-  application that is built as one bundle. This is simple but reintroduces build-time coupling,
-  because every consumer rebuilds when a component changes.
-* *Run-time composition via routing.* A shell application owns top-level routing and mounts a
-  different micro front-end for each route. Each fragment is delivered as an independent script
-  bundle.
-* *Iframes.* Each micro front-end runs in its own iframe. This gives the strongest isolation but the
-  weakest integration, because sharing state, styling, and navigation between frames is awkward.
-* *Web Components.* Each micro front-end is exposed as a custom element that the shell drops into
-  the page, giving framework-agnostic encapsulation at the DOM level.
-* *Module federation.* A build-time-aware run-time technique, introduced by Webpack, in which
-  separately built bundles expose and consume modules from one another at run time.
+* *Build-time composition.* Components are published as packages and imported into a single shell application that is
+  built as one bundle. This is simple but reintroduces build-time coupling, because every consumer rebuilds when a
+  component changes.
+* *Run-time composition via routing.* A shell application owns top-level routing and mounts a different micro front-end
+  for each route. Each fragment is delivered as an independent script bundle.
+* *Iframes.* Each micro front-end runs in its own iframe. This gives the strongest isolation but the weakest integration,
+  because sharing state, styling, and navigation between frames is awkward.
+* *Web Components.* Each micro front-end is exposed as a custom element that the shell drops into the page, giving
+  framework-agnostic encapsulation at the DOM level.
+* *Module federation.* A build-time-aware run-time technique, introduced by Webpack, in which separately built bundles
+  expose and consume modules from one another at run time.
 
 == Trade-offs
 
-Micro front-ends trade integration simplicity for team autonomy. The browser becomes the integration
-point, and integration in the browser is expensive: multiple JavaScript runtimes, duplicated
-dependencies, a larger total payload, and xref:latency.adoc[*latency*] from fetching many fragments.
-xref:performance.adoc[*Performance*] is the most common objection to the pattern.
+Micro front-ends trade integration simplicity for team autonomy. The browser becomes the integration point, and
+integration in the browser is expensive: multiple JavaScript runtimes, duplicated dependencies, a larger total payload,
+and xref:latency.adoc[*latency*] from fetching many fragments. xref:performance.adoc[*Performance*] is the most common
+objection to the pattern.
 
-Cross-cutting concerns — authentication, navigation, shared styling, accessibility, and a consistent
-user experience — no longer come for free from a single shared codebase. They must be coordinated
-across teams, typically through a thin shell and shared conventions rather than shared code. Done
-poorly, the result is a *distributed monolith* of front-ends: independently deployable fragments
-that are coupled in practice and inconsistent in appearance.
+Cross-cutting concerns — authentication, navigation, shared styling, accessibility, and a consistent user experience —
+no longer come for free from a single shared codebase. They must be coordinated across teams, typically through a thin
+shell and shared conventions rather than shared code. Done poorly, the result is a *distributed monolith* of front-ends:
+independently deployable fragments that are coupled in practice and inconsistent in appearance.
 
 The pattern is usually introduced incrementally to an existing front-end, often via the
-xref:strangler-fig-pattern.adoc[*strangler fig pattern*], by routing new functionality to micro
-front-ends while the legacy application is gradually retired.
+xref:strangler-fig-pattern.adoc[*strangler fig pattern*], by routing new functionality to micro front-ends while the
+legacy application is gradually retired.
 
 == See also
 
@@ -77,6 +71,5 @@ front-ends while the legacy application is gradually retired.
 
 == References
 
-* Jackson, Cam (2019). {link-fowler-micro-frontends}[_Micro Frontends_].
-  martinfowler.com.
+* Jackson, Cam (2019). {link-fowler-micro-frontends}[_Micro Frontends_]. martinfowler.com.
 * _Micro frontend_. {link-wikipedia}[Wikipedia].

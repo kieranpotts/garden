@@ -1,51 +1,44 @@
 = Model Context Protocol
 
-The Model Context Protocol (MCP) is an open standard, introduced by Anthropic in late 2024, that
-defines how AI models communicate with external tools and data sources.
+The Model Context Protocol (MCP) is an open standard, introduced by Anthropic in late 2024, that defines how AI models
+communicate with external tools and data sources.
 
-Before MCP, developers had to write custom integration code for each tool or data source they wanted
-to connect to a model. MCP solves this by providing a single, standardized protocol. Any tool that
-implements the MCP server specification can be connected to any MCP-compatible model client, without
-bespoke integration work.
+Before MCP, developers had to write custom integration code for each tool or data source they wanted to connect to a
+model. MCP solves this by providing a single, standardized protocol. Any tool that implements the MCP server
+specification can be connected to any MCP-compatible model client, without bespoke integration work.
 
-MCP enables AI models to interact with external systems – reading from and writing to calendars,
-CRMs, databases, code repositories, communication tools such as Slack, and more. The model can also
-use these integrations to take actions: scheduling meetings, committing code, querying databases,
-sending messages.
+MCP enables AI models to interact with external systems – reading from and writing to calendars, CRMs, databases, code
+repositories, communication tools such as Slack, and more. The model can also use these integrations to take actions:
+scheduling meetings, committing code, querying databases, sending messages.
 
-MCP is a client-server protocol. An *MCP server* exposes three kinds of primitive: *tools*
-(functions the model can call), *resources* (data the model can read), and *prompts* (reusable
-templates). An *MCP client* (typically the AI application or agent) connects to one or more MCP
-servers and uses their capabilities to fulfill tasks. A single agent can connect to many MCP servers
-simultaneously, giving it access to a large and composable set of capabilities.
+MCP is a client-server protocol. An *MCP server* exposes three kinds of primitive: *tools* (functions the model can
+call), *resources* (data the model can read), and *prompts* (reusable templates). An *MCP client* (typically the AI
+application or agent) connects to one or more MCP servers and uses their capabilities to fulfill tasks. A single agent
+can connect to many MCP servers simultaneously, giving it access to a large and composable set of capabilities.
 
-MCP is particularly relevant for xref:agent.adoc[*agentic*] use cases, where a model needs to plan
-and execute multi-step tasks using a variety of tools.
+MCP is particularly relevant for xref:agent.adoc[*agentic*] use cases, where a model needs to plan and execute
+multi-step tasks using a variety of tools.
 
-MCP borrows from the *Language Server Protocol (LSP)* – the same standard that lets code editors
-talk to language tooling – and exchanges messages over JSON-RPC 2.0.
+MCP borrows from the *Language Server Protocol (LSP)* – the same standard that lets code editors talk to language
+tooling – and exchanges messages over JSON-RPC 2.0.
 
-Because MCP servers can feed untrusted content and tool definitions into a model, the protocol also
-introduces security risks. Vulnerabilities include prompt injection, tool poisoning (malicious
-instructions hidden in tool descriptions), data exfiltration through combined tools, and lookalike
-tools that shadow trusted ones.
+Because MCP servers can feed untrusted content and tool definitions into a model, the protocol also introduces security
+risks. Vulnerabilities include prompt injection, tool poisoning (malicious instructions hidden in tool descriptions),
+data exfiltration through combined tools, and lookalike tools that shadow trusted ones.
 
-MCP solves an integration problem: write the integration once as a server, and any MCP-compatible
-harness can use it. But the cost is paid in context. Every tool a server advertises arrives as a
-definition (name, description, parameter schema), and the model can only call tools it knows about.
-The naive approach loads every definition up front. Install a few generous servers and a session
-starts with thousands of tokens of tool schemas before you've typed anything, spending attention
-budget on tools the task will never use.
+MCP solves an integration problem: write the integration once as a server, and any MCP-compatible harness can use it.
+But the cost is paid in context. Every tool a server advertises arrives as a definition (name, description, parameter
+schema), and the model can only call tools it knows about. The naive approach loads every definition up front. Install a
+few generous servers and a session starts with thousands of tokens of tool schemas before you've typed anything,
+spending attention budget on tools the task will never use.
 
-Many harnesses mitigate this with *tool search*. Instead of full definitions, the context holds a
-context pointer to available tools. The agent searches by name or purpose and loads a definition
-only when it needs it. This is the same xref:agent-memory.adoc[*progressive disclosure*] idea that
-keeps skills and `AGENTS.md` lean. If your harness doesn't do this, enable only the servers a
-project actually needs.
+Many harnesses mitigate this with *tool search*. Instead of full definitions, the context holds a context pointer to
+available tools. The agent searches by name or purpose and loads a definition only when it needs it. This is the same
+xref:agent-memory.adoc[*progressive disclosure*] idea that keeps skills and `AGENTS.md` lean. If your harness doesn't do
+this, enable only the servers a project actually needs.
 
-MCP has been widely adopted across the industry. See also
-xref:agent2agent.adoc[*A2A (Agent2Agent)*], a separate protocol that addresses a separate concern —
-communication between agents, rather than between agents and tools or data.
+MCP has been widely adopted across the industry. See also xref:agent2agent.adoc[*A2A (Agent2Agent)*], a separate
+protocol that addresses a separate concern — communication between agents, rather than between agents and tools or data.
 
 ''''
 

@@ -1,37 +1,34 @@
 = Request-response communication pattern
 
-In request-response communication, a client sends a request directly to a server, and the server
-sends a response back to the client. Each exchange is a single xref:rtt.adoc[*round trip*]: one
-request in, one response out. The client initiates every exchange, so request-response is a
-xref:pull-architecture.adoc[*pull architecture*] — the server only speaks when spoken to.
+In request-response communication, a client sends a request directly to a server, and the server sends a response back
+to the client. Each exchange is a single xref:rtt.adoc[*round trip*]: one request in, one response out. The client
+initiates every exchange, so request-response is a xref:pull-architecture.adoc[*pull architecture*] — the server only
+speaks when spoken to.
 
-Request-response is the canonical xref:synchronous-communication.adoc[*synchronous communication*]
-pattern. The client issues a request and then waits for the response before proceeding, which
-couples the two sides in time: the client cannot make progress until the server has replied. This
-temporal coupling is the defining cost of synchronous request-response, and the reason
-xref:asynchronous-communication.adoc[*asynchronous*] alternatives are preferred for work that does
-not need an immediate answer.
+Request-response is the canonical xref:synchronous-communication.adoc[*synchronous communication*] pattern. The client
+issues a request and then waits for the response before proceeding, which couples the two sides in time: the client
+cannot make progress until the server has replied. This temporal coupling is the defining cost of synchronous
+request-response, and the reason xref:asynchronous-communication.adoc[*asynchronous*] alternatives are preferred for
+work that does not need an immediate answer.
 
-The pattern's strength is simplicity. Each request is self-contained, so a server need not remember
-anything about previous requests to handle the next one. This makes request-response a natural fit
-for xref:stateless.adoc[*stateless*] designs and for horizontal scaling behind a load balancer. It
-is also easy to reason about. The client either gets a response or an error, and the exchange is
-over.
+The pattern's strength is simplicity. Each request is self-contained, so a server need not remember anything about
+previous requests to handle the next one. This makes request-response a natural fit for xref:stateless.adoc[*stateless*]
+designs and for horizontal scaling behind a load balancer. It is also easy to reason about. The client either gets a
+response or an error, and the exchange is over.
 
-The matching weakness is that the server cannot initiate an exchange. Anything that requires the
-server to push data to the client — live updates, notifications, streaming — has to be built on top
-of request-response with techniques like xref:long-polling.adoc[*long polling*], or replaced with a
-xref:push-architecture.adoc[*push*] mechanism such as Server-Sent Events, WebSockets, or
-xref:webhook.adoc[*webhooks*].
+The matching weakness is that the server cannot initiate an exchange. Anything that requires the server to push data to
+the client — live updates, notifications, streaming — has to be built on top of request-response with techniques like
+xref:long-polling.adoc[*long polling*], or replaced with a xref:push-architecture.adoc[*push*] mechanism such as
+Server-Sent Events, WebSockets, or xref:webhook.adoc[*webhooks*].
 
-There is also an asynchronous request-response variant, in which the client issues a request but
-does not block waiting for the reply. The server responds later, through a callback or a reply
-queue. The exchange is still one request and one response, but the two sides are decoupled in time.
-See xref:communication-pattern.adoc[*communication pattern*] for the broader taxonomy.
+There is also an asynchronous request-response variant, in which the client issues a request but does not block waiting
+for the reply. The server responds later, through a callback or a reply queue. The exchange is still one request and one
+response, but the two sides are decoupled in time. See xref:communication-pattern.adoc[*communication pattern*] for the
+broader taxonomy.
 
 Implementations include xref:rest.adoc[*REST*] APIs over xref:http.adoc[*HTTP*],
-xref:remote-procedure-call.adoc[*RPC*]-style protocols such as xref:grpc.adoc[*gRPC*],
-xref:graphql.adoc[*GraphQL*] (which runs over a single request-response HTTP round trip), and SOAP.
+xref:remote-procedure-call.adoc[*RPC*]-style protocols such as xref:grpc.adoc[*gRPC*], xref:graphql.adoc[*GraphQL*]
+(which runs over a single request-response HTTP round trip), and SOAP.
 
 == See also
 

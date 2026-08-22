@@ -1,55 +1,49 @@
 = Software delivery and operations
 
-*Software delivery and operations* is the discipline of getting code from a developer's machine into
-production, and keeping it running once it's there. It spans the xref:deployment-pipeline.adoc[*deployment
-pipeline*] that builds, tests, and ships a change; the infrastructure a system runs on, whether
-physical, virtualized, or xref:cloud-computing.adoc[*cloud*]; and the operational practices —
-monitoring, alerting, on-call — that keep a running system healthy after the deployment completes.
-xref:devops.adoc[*DevOps*] and xref:site-reliability-engineering.adoc[*site reliability engineering*]
-are the best-known organizing philosophies for this work, but the underlying practices predate both
-names and continue to evolve independently of them.
+*Software delivery and operations* is the discipline of getting code from a developer's machine into production, and
+keeping it running once it's there. It spans the xref:deployment-pipeline.adoc[*deployment pipeline*] that builds,
+tests, and ships a change; the infrastructure a system runs on, whether physical, virtualized, or
+xref:cloud-computing.adoc[*cloud*]; and the operational practices — monitoring, alerting, on-call — that keep a running
+system healthy after the deployment completes. xref:devops.adoc[*DevOps*] and
+xref:site-reliability-engineering.adoc[*site reliability engineering*] are the best-known organizing philosophies for
+this work, but the underlying practices predate both names and continue to evolve independently of them.
 
 == From commit to production
 
-A change earns its way into production through a sequence of increasingly strict gates. Continuous
-integration merges and tests each change frequently, catching integration problems while they are
-still small. Continuous delivery keeps the codebase in a state that could be released at any time,
-and continuous deployment goes further, releasing every change that passes its checks automatically.
-Collectively these practices are often shortened to xref:ci-cd.adoc[*CI/CD*], and they are
-implemented as a xref:deployment-pipeline.adoc[*deployment pipeline*], a series of automated stages a
-change must pass through before it reaches users.
+A change earns its way into production through a sequence of increasingly strict gates. Continuous integration merges
+and tests each change frequently, catching integration problems while they are still small. Continuous delivery keeps
+the codebase in a state that could be released at any time, and continuous deployment goes further, releasing every
+change that passes its checks automatically. Collectively these practices are often shortened to
+xref:ci-cd.adoc[*CI/CD*], and they are implemented as a xref:deployment-pipeline.adoc[*deployment pipeline*], a series
+of automated stages a change must pass through before it reaches users.
 
-How a new version reaches production, once built, is a separate question from how it got built. A
-release can replace the previous version outright, or it can be introduced gradually. Blue-green
-deployment keeps two complete environments and switches traffic between them. Canary deployment
-routes a small fraction of traffic to the new version before committing fully. Rolling deployments
-replace instances of the old version with the new one a few at a time. Each strategy trades
-complexity for a reduction in blast radius if the new version turns out to be broken, and a rollback
-is the fallback every strategy needs when that happens.
+How a new version reaches production, once built, is a separate question from how it got built. A release can replace
+the previous version outright, or it can be introduced gradually. Blue-green deployment keeps two complete environments
+and switches traffic between them. Canary deployment routes a small fraction of traffic to the new version before
+committing fully. Rolling deployments replace instances of the old version with the new one a few at a time. Each
+strategy trades complexity for a reduction in blast radius if the new version turns out to be broken, and a rollback is
+the fallback every strategy needs when that happens.
 
 == Infrastructure as a target
 
-Modern delivery treats infrastructure itself as something to be built and versioned, not
-hand-configured. Infrastructure as code describes servers, networks, and services in files that can
-be reviewed, tested, and reapplied, rather than as the accumulated result of manual changes. This
-made containerization practical at scale: packaging an application with its dependencies into a
-portable container, and using a container orchestrator such as Kubernetes to schedule, scale, and
-heal fleets of those containers automatically. Serverless computing and
-xref:function-as-a-service.adoc[*function-as-a-service*] push the abstraction further, removing the
-server as a concept the developer manages at all. Cloud service providers offer all of these as
-managed products, so most teams assemble their infrastructure from existing building blocks rather
-than operating physical hardware themselves.
+Modern delivery treats infrastructure itself as something to be built and versioned, not hand-configured. Infrastructure
+as code describes servers, networks, and services in files that can be reviewed, tested, and reapplied, rather than as
+the accumulated result of manual changes. This made containerization practical at scale: packaging an application with
+its dependencies into a portable container, and using a container orchestrator such as Kubernetes to schedule, scale,
+and heal fleets of those containers automatically. Serverless computing and
+xref:function-as-a-service.adoc[*function-as-a-service*] push the abstraction further, removing the server as a concept
+the developer manages at all. Cloud service providers offer all of these as managed products, so most teams assemble
+their infrastructure from existing building blocks rather than operating physical hardware themselves.
 
 == Keeping it running
 
 Once a system is live, xref:monitoring.adoc[*monitoring*], xref:logging.adoc[*logging*], and
-xref:telemetry.adoc[*telemetry*] are what make its internal behavior visible from the outside.
-Alerting turns that visibility into action, paging an on-call engineer when a metric crosses a
-threshold that indicates real user impact. A runbook captures the steps to diagnose and resolve a
-known failure mode, so that response doesn't depend on one person's memory. Site reliability
-engineering treats this whole area as a software problem in its own right: applying engineering
-rigor, automation, and measurable service level agreements to the work of operating a system, rather
-than treating operations as a purely manual, reactive discipline.
+xref:telemetry.adoc[*telemetry*] are what make its internal behavior visible from the outside. Alerting turns that
+visibility into action, paging an on-call engineer when a metric crosses a threshold that indicates real user impact. A
+runbook captures the steps to diagnose and resolve a known failure mode, so that response doesn't depend on one person's
+memory. Site reliability engineering treats this whole area as a software problem in its own right: applying engineering
+rigor, automation, and measurable service level agreements to the work of operating a system, rather than treating
+operations as a purely manual, reactive discipline.
 
 == See also
 

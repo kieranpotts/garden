@@ -1,83 +1,73 @@
 = Encryption
 
-Encryption is the process of transforming readable *plaintext* into an unreadable form called
-*ciphertext*, so that only someone holding the right key can recover the original. The reverse
-operation is *decryption*. It is one technique within xref:cryptography.adoc[*cryptography*],
-focused on the goal of confidentiality, keeping data secret from anyone other than its intended
-recipients.
+Encryption is the process of transforming readable *plaintext* into an unreadable form called *ciphertext*, so that only
+someone holding the right key can recover the original. The reverse operation is *decryption*. It is one technique
+within xref:cryptography.adoc[*cryptography*], focused on the goal of confidentiality, keeping data secret from anyone
+other than its intended recipients.
 
-Encryption is reversible. With the correct key, ciphertext is restored to plaintext exactly. This is
-what distinguishes it from xref:hashing.adoc[*hashing*], which is a one-way function with no key and
-no reversal. It is also distinct from encoding, such as Base64, which transforms data for transport
-but hides nothing from anyone who knows the scheme.
+Encryption is reversible. With the correct key, ciphertext is restored to plaintext exactly. This is what distinguishes
+it from xref:hashing.adoc[*hashing*], which is a one-way function with no key and no reversal. It is also distinct from
+encoding, such as Base64, which transforms data for transport but hides nothing from anyone who knows the scheme.
 
 == Symmetric and asymmetric
 
 Encryption schemes fall into two families.
 
-* *Symmetric encryption.* A single secret key both encrypts and decrypts. It is fast and well suited
-  to bulk data, but the parties must already share the key. Modern examples include AES and
-  ChaCha20.
-* *Asymmetric (public-key) encryption.* Each party holds a key pair. A private key is kept secret
-  and a public key is shared openly. What one key encrypts, the other decrypts. This removes the
-  need to share a secret in advance and underpins digital signatures and certificate-based
-  xref:authentication.adoc[*authentication*]. RSA and elliptic-curve schemes are common examples.
+* *Symmetric encryption.* A single secret key both encrypts and decrypts. It is fast and well suited to bulk data, but the
+  parties must already share the key. Modern examples include AES and ChaCha20.
+* *Asymmetric (public-key) encryption.* Each party holds a key pair. A private key is kept secret and a public key is
+  shared openly. What one key encrypts, the other decrypts. This removes the need to share a secret in advance and
+  underpins digital signatures and certificate-based xref:authentication.adoc[*authentication*]. RSA and elliptic-curve
+  schemes are common examples.
 
-Most real systems combine the two. xref:envelope-encryption.adoc[*Envelope encryption*], for
-example, uses a symmetric data key for the payload and an asymmetric key-encryption key to protect
-the data key. It gains the speed of symmetric encryption and the key-handling convenience of
-public-key cryptography.
+Most real systems combine the two. xref:envelope-encryption.adoc[*Envelope encryption*], for example, uses a symmetric
+data key for the payload and an asymmetric key-encryption key to protect the data key. It gains the speed of symmetric
+encryption and the key-handling convenience of public-key cryptography.
 
 == Authenticated encryption
 
-Confidentiality alone is rarely enough. An attacker who cannot read a message may still tamper with
-its ciphertext, and naive decryption can produce plausible but wrong plaintext without any warning.
-*Authenticated encryption* combines encryption with an integrity check, so that modified ciphertext
-is rejected before it is ever returned. AES-GCM and ChaCha20-Poly1305 are widely used authenticated
-modes.
+Confidentiality alone is rarely enough. An attacker who cannot read a message may still tamper with its ciphertext, and
+naive decryption can produce plausible but wrong plaintext without any warning. *Authenticated encryption* combines
+encryption with an integrity check, so that modified ciphertext is rejected before it is ever returned. AES-GCM and
+ChaCha20-Poly1305 are widely used authenticated modes.
 
-This is the same integrity concern that xref:hashing.adoc[*cryptographic hash functions*] and
-message authentication codes address in other contexts. Encryption without authentication is a
-common design flaw, not a defensible shortcut.
+This is the same integrity concern that xref:hashing.adoc[*cryptographic hash functions*] and message authentication
+codes address in other contexts. Encryption without authentication is a common design flaw, not a defensible shortcut.
 
 == Modes of operation
 
-A block cipher such as AES encrypts fixed-size blocks. To encrypt data longer than one block, a
-*mode of operation* chains the blocks together. The choice of mode matters as much as the choice of
-cipher.
+A block cipher such as AES encrypts fixed-size blocks. To encrypt data longer than one block, a *mode of operation*
+chains the blocks together. The choice of mode matters as much as the choice of cipher.
 
-*ECB* (Electronic Codebook) encrypts each block independently. It is insecure for almost any real
-data, because identical plaintext blocks produce identical ciphertext blocks and leak structural
-patterns. *CBC* (Cipher Block Chaining) hides those patterns by mixing each block with the previous
-ciphertext block. *CTR* (Counter) turns a block cipher into a stream cipher by encrypting a counter,
-and is parallelizable. Authenticated modes such as *GCM* build on CTR and add the integrity check
-described above.
+*ECB* (Electronic Codebook) encrypts each block independently. It is insecure for almost any real data, because
+identical plaintext blocks produce identical ciphertext blocks and leak structural patterns. *CBC* (Cipher Block
+Chaining) hides those patterns by mixing each block with the previous ciphertext block. *CTR* (Counter) turns a block
+cipher into a stream cipher by encrypting a counter, and is parallelizable. Authenticated modes such as *GCM* build on
+CTR and add the integrity check described above.
 
 == Key management
 
-The strength of an encryption system is bounded by how well its keys are handled. Keys must be
-generated with enough randomness, distributed only over trusted channels, stored so that only
-authorized code can read them, and rotated before they are overused or believed compromised. Losing
-a key makes the data it protects unrecoverable. Leaking a key makes the protection meaningless.
+The strength of an encryption system is bounded by how well its keys are handled. Keys must be generated with enough
+randomness, distributed only over trusted channels, stored so that only authorized code can read them, and rotated
+before they are overused or believed compromised. Losing a key makes the data it protects unrecoverable. Leaking a key
+makes the protection meaningless.
 
-This is why schemes such as xref:envelope-encryption.adoc[*envelope encryption*] delegate the hard
-part to a dedicated key management service. Protecting against
-xref:replay-attack.adoc[*replay attacks*] usually adds a xref:nonce.adoc[*nonce*] to each message,
-so that intercepted traffic cannot be retransmitted to good effect.
+This is why schemes such as xref:envelope-encryption.adoc[*envelope encryption*] delegate the hard part to a dedicated
+key management service. Protecting against xref:replay-attack.adoc[*replay attacks*] usually adds a
+xref:nonce.adoc[*nonce*] to each message, so that intercepted traffic cannot be retransmitted to good effect.
 
 == Common pitfalls
 
 Encryption is easy to use badly and hard to use well.
 
-* *Rolling your own cryptography.* Standard libraries and protocols such as TLS are the product of
-  decades of attack and review. Application code that re-implements them is almost always weaker,
-  even when it appears to work.
-* *Confusing encryption with authentication.* Confidentiality does not imply integrity. Always
-  prefer an authenticated mode unless there is a specific, reviewed reason not to.
-* *Reusing keys or nonces.* A symmetric key or nonce reused across messages can leak relationships
-  between plaintexts and break the security of otherwise sound schemes.
-* *Trusting the algorithm over the key.* A strong cipher with a weak or exposed key protects
-  nothing. Key management is usually where systems fail.
+* *Rolling your own cryptography.* Standard libraries and protocols such as TLS are the product of decades of attack and
+  review. Application code that re-implements them is almost always weaker, even when it appears to work.
+* *Confusing encryption with authentication.* Confidentiality does not imply integrity. Always prefer an authenticated
+  mode unless there is a specific, reviewed reason not to.
+* *Reusing keys or nonces.* A symmetric key or nonce reused across messages can leak relationships between plaintexts and
+  break the security of otherwise sound schemes.
+* *Trusting the algorithm over the key.* A strong cipher with a weak or exposed key protects nothing. Key management is
+  usually where systems fail.
 
 == See also
 

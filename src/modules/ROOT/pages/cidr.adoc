@@ -1,46 +1,45 @@
 = CIDR (Classless Inter-Domain Routing)
 
 *Classless Inter-Domain Routing (CIDR)* is the method used to allocate and route
-xref:internet-protocol-address.adoc[*IP addresses*] on the internet and in private networks.
-Introduced in 1993 through RFC 1519, and later revised by RFC 4632, CIDR replaced the rigid
-*classful addressing* scheme that divided the IPv4 address space into fixed-size blocks. By letting
-prefix lengths fall on any bit boundary, CIDR made address allocation far more efficient and enabled
-the route aggregation that keeps the global routing table manageable.
+xref:internet-protocol-address.adoc[*IP addresses*] on the internet and in private networks. Introduced in 1993 through
+RFC 1519, and later revised by RFC 4632, CIDR replaced the rigid *classful addressing* scheme that divided the IPv4
+address space into fixed-size blocks. By letting prefix lengths fall on any bit boundary, CIDR made address allocation
+far more efficient and enabled the route aggregation that keeps the global routing table manageable.
 
 == Notation
 
-A CIDR block is written as an address followed by a slash and a prefix length, eg. `192.168.1.0/24`.
-The prefix length counts the leading bits that identify the network. The remaining bits identify
-individual hosts within it. A `/24` leaves 8 bits for hosts, yielding 256 addresses (254 usable once
-the network and broadcast addresses are reserved). Prefix lengths range from `/0`, which covers the
-entire address space, to `/32` for IPv4 or `/128` for IPv6, each of which identifies a single host.
+A CIDR block is written as an address followed by a slash and a prefix length, eg. `192.168.1.0/24`. The prefix length
+counts the leading bits that identify the network. The remaining bits identify individual hosts within it. A `/24`
+leaves 8 bits for hosts, yielding 256 addresses (254 usable once the network and broadcast addresses are reserved).
+Prefix lengths range from `/0`, which covers the entire address space, to `/32` for IPv4 or `/128` for IPv6, each of
+which identifies a single host.
 
 == What CIDR replaced
 
-Under the classful system that preceded CIDR, an organization needing 500 addresses had to take a
-Class B block of 65,536 addresses, wasting over 65,000 of them, or stitch together two Class C
-blocks of 256 each, which added two separate entries to every routing table. CIDR lets a registrar
-hand that organization a single `/23` block of 512 addresses, sized to the actual need.
+Under the classful system that preceded CIDR, an organization needing 500 addresses had to take a Class B block of
+65,536 addresses, wasting over 65,000 of them, or stitch together two Class C blocks of 256 each, which added two
+separate entries to every routing table. CIDR lets a registrar hand that organization a single `/23` block of 512
+addresses, sized to the actual need.
 
 == Route aggregation
 
-CIDR's most consequential property is *route aggregation*, also called *supernetting*. Because
-prefixes can start on any bit boundary, a router can announce one short prefix that covers many
-longer, more specific prefixes beneath it. An internet service provider assigned `203.0.113.0/24`
-can split it into `/25` subnets for individual customers, yet advertise only the single `/24` to the
-rest of the internet. Many specific routes collapse into one less specific announcement.
+CIDR's most consequential property is *route aggregation*, also called *supernetting*. Because prefixes can start on any
+bit boundary, a router can announce one short prefix that covers many longer, more specific prefixes beneath it. An
+internet service provider assigned `203.0.113.0/24` can split it into `/25` subnets for individual customers, yet
+advertise only the single `/24` to the rest of the internet. Many specific routes collapse into one less specific
+announcement.
 
 Without this, the global routing table would have grown past what routers could hold.
-xref:border-gateway-protocol.adoc[*BGP*] advertises CIDR prefixes, and the aggregation they enable
-is what allowed the internet to keep growing past the limits of the classful system.
+xref:border-gateway-protocol.adoc[*BGP*] advertises CIDR prefixes, and the aggregation they enable is what allowed the
+internet to keep growing past the limits of the classful system.
 
 == Subnetting
 
-The flip side of aggregation is *subnetting*: splitting a prefix into smaller prefixes to segment a
-network. A `/24` can be divided into two `/25`s, four `/26`s, and so on, each a self-contained
-subnet. This is how organizations partition a single address block across teams, floors, or security
-zones without requesting more addresses. CIDR's variable-length subnet masking (VLSM) lets each
-subnet be sized to its actual need, rather than forcing every subnet to the same fixed mask.
+The flip side of aggregation is *subnetting*: splitting a prefix into smaller prefixes to segment a network. A `/24` can
+be divided into two `/25`s, four `/26`s, and so on, each a self-contained subnet. This is how organizations partition a
+single address block across teams, floors, or security zones without requesting more addresses. CIDR's variable-length
+subnet masking (VLSM) lets each subnet be sized to its actual need, rather than forcing every subnet to the same fixed
+mask.
 
 == See also
 
@@ -52,9 +51,7 @@ subnet be sized to its actual need, rather than forcing every subnet to the same
 == References
 
 * Fuller, V., Li, T., Yu, J., and Varadhan, K. (1993).
-  _Classless Inter-Domain Routing (CIDR): an Address Assignment and Aggregation Strategy_. RFC 1519,
-  IETF.
+  _Classless Inter-Domain Routing (CIDR): an Address Assignment and Aggregation Strategy_. RFC 1519, IETF.
 * Fuller, V. and Li, T. (2006).
-  _Classless Inter-Domain Routing (CIDR): The Internet Address Assignment and Aggregation Plan_. RFC
-  4632, IETF.
+  _Classless Inter-Domain Routing (CIDR): The Internet Address Assignment and Aggregation Plan_. RFC 4632, IETF.
 * Amazon Web Services (n.d.). _What is CIDR?_. AWS.

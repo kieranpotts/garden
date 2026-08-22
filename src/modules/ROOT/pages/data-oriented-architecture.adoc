@@ -4,124 +4,110 @@
 :link-2017-paper: https://dl.acm.org/doi/10.1145/3151759.3151770
 :link-eyas-blog: https://blog.eyas.sh/2020/03/data-oriented-architecture/
 
-This architectural style was first described by Rajive Joshi in a {link-2007-whitepaper}[2007
-whitepaper] from infrastructure software company Real-Time Innovations (RTI), which cast the pattern
-as a "blackboard" for service-oriented architectures. It was later formalized {link-2017-paper}[in a
-2017 paper] by Christian Vorhemus and Erich Schikuta at the University of Vienna, presented at the
-iiWAS conference. The longest treatment in circulation is Eyas Sharaiha's {link-eyas-blog}[2020
-write-up], drawn from his experience building trading systems on the pattern.
+This architectural style was first described by Rajive Joshi in a {link-2007-whitepaper}[2007 whitepaper] from
+infrastructure software company Real-Time Innovations (RTI), which cast the pattern as a "blackboard" for
+service-oriented architectures. It was later formalized {link-2017-paper}[in a 2017 paper] by Christian Vorhemus and
+Erich Schikuta at the University of Vienna, presented at the iiWAS conference. The longest treatment in circulation is
+Eyas Sharaiha's {link-eyas-blog}[2020 write-up], drawn from his experience building trading systems on the pattern.
 
-A *data-oriented architecture* (DOA) is a system that uses a monolithic data store as its main
-source of state, but in which multiple loosely-coupled stateless services act upon that central
-store. It is therefore a hybrid of xref:monolith.adoc[*monolithic*] and
-xref:service-oriented-architecture.adoc[*service-oriented*] (and especially
-xref:microservices.adoc[*microservice*]) designs. Like a monolith, it keeps state in one place. Like
-microservices, it decomposes processing into small, independently deployable components.
+A *data-oriented architecture* (DOA) is a system that uses a monolithic data store as its main source of state, but in
+which multiple loosely-coupled stateless services act upon that central store. It is therefore a hybrid of
+xref:monolith.adoc[*monolithic*] and xref:service-oriented-architecture.adoc[*service-oriented*] (and especially
+xref:microservices.adoc[*microservice*]) designs. Like a monolith, it keeps state in one place. Like microservices, it
+decomposes processing into small, independently deployable components.
 
-DOA is a direct descendant of the xref:blackboard.adoc[*blackboard pattern*], in which independent
-specialists cooperate through a shared data structure rather than by calling each other directly.
-DOA applies the same idea to a distributed system: the central data store is the blackboard, and the
-stateless services are the knowledge sources.
+DOA is a direct descendant of the xref:blackboard.adoc[*blackboard pattern*], in which independent specialists cooperate
+through a shared data structure rather than by calling each other directly. DOA applies the same idea to a distributed
+system: the central data store is the blackboard, and the stateless services are the knowledge sources.
 
 == Characteristics
 
 DOA departs from conventional microservices in two ways.
 
-* _Components are always stateless._ Rather than federating a data store per service, DOA mandates
-  describing the state layer in terms of a single, centrally-managed global schema. Every service
-  reads from and writes to that shared store, and holds no state of its own between interactions.
-  Each service is xref:stateless.adoc[*stateless*] in the same sense as a stage in a dataflow
-  pipeline.
+* _Components are always stateless._ Rather than federating a data store per service, DOA mandates describing the state
+  layer in terms of a single, centrally-managed global schema. Every service reads from and writes to that shared store,
+  and holds no state of its own between interactions. Each service is xref:stateless.adoc[*stateless*] in the same sense
+  as a stage in a dataflow pipeline.
 
-* _Component-to-component interaction is minimized_, in favor of interaction through the data layer.
-  Services do not call one another directly to pass data. One service writes a result to the store;
-  another reads it. The data store is the only integration point.
+* _Component-to-component interaction is minimized_, in favor of interaction through the data layer. Services do not call
+  one another directly to pass data. One service writes a result to the store; another reads it. The data store is the
+  only integration point.
 
 == Producers and consumers
 
-The primary way to organize a DOA system is to model components as *producers* and *consumers* of
-data. A producer writes canonical data into the store; a consumer reads or subscribes to it. A
-service that takes incoming market requests and publishes them as `RFQ` records is a producer. A
-service that joins those records with pricing data and writes out quotes is both a consumer and a
-producer. The shape resembles a xref:stream-processing-system.adoc[*stream processing*] or
-xref:map-reduce.adoc[*MapReduce*] pipeline, and the read/write division echoes
-xref:cqrs.adoc[*CQRS*] applied across whole services rather than within a single model.
+The primary way to organize a DOA system is to model components as *producers* and *consumers* of data. A producer
+writes canonical data into the store; a consumer reads or subscribes to it. A service that takes incoming market
+requests and publishes them as `RFQ` records is a producer. A service that joins those records with pricing data and
+writes out quotes is both a consumer and a producer. The shape resembles a
+xref:stream-processing-system.adoc[*stream processing*] or xref:map-reduce.adoc[*MapReduce*] pipeline, and the
+read/write division echoes xref:cqrs.adoc[*CQRS*] applied across whole services rather than within a single model.
 
-Because the intermediate data is visible and queryable, each stage must correspond to a genuine
-business-logic concept, not a serialized RPC payload. A naive implementation that persists a request
-verbatim to its own table decouples nothing. The discipline pays off in observability: the behavior
-of the system is externally observable, traceable, and auditable, since every intermediate result is
-a record in the store.
+Because the intermediate data is visible and queryable, each stage must correspond to a genuine business-logic concept,
+not a serialized RPC payload. A naive implementation that persists a request verbatim to its own table decouples
+nothing. The discipline pays off in observability: the behavior of the system is externally observable, traceable, and
+auditable, since every intermediate result is a record in the store.
 
-When a component needs to trigger behavior in another, the first design move is to reframe the call
-as an *event* and its *effect*. Instead of component X requesting an action from component Y, X
-produces an event to the data store and Y responds by consuming it. This pattern of
-*data-based events* pushes looseness further than
-xref:event-driven-architecture.adoc[*event-driven architecture*] typically goes: producers need not
-know who consumes their events, and consumers need not know where events originate, only their
-business-logic meaning. A limited number of genuine component-to-component RPCs may still be needed
-when the intent is to trigger a behavior in a _specific_ component rather than to announce a fact to
-whoever cares. The aim is to make these the exception.
+When a component needs to trigger behavior in another, the first design move is to reframe the call as an *event* and
+its *effect*. Instead of component X requesting an action from component Y, X produces an event to the data store and Y
+responds by consuming it. This pattern of *data-based events* pushes looseness further than
+xref:event-driven-architecture.adoc[*event-driven architecture*] typically goes: producers need not know who consumes
+their events, and consumers need not know where events originate, only their business-logic meaning. A limited number of
+genuine component-to-component RPCs may still be needed when the intent is to trigger a behavior in a _specific_
+component rather than to announce a fact to whoever cares. The aim is to make these the exception.
 
 == Integration cost
 
-The strongest practical argument for DOA appears in high-integration problem spaces. In a
-microservice topology where N components each need data from N others, the integration surface grows
-as O(N²). In DOA the same N components each integrate only with the shared schema, so the cost grows
-as O(N).
+The strongest practical argument for DOA appears in high-integration problem spaces. In a microservice topology where N
+components each need data from N others, the integration surface grows as O(N²). In DOA the same N components each
+integrate only with the shared schema, so the cost grows as O(N).
 
-The benefit is greatest when several providers populate the same general data type. A trading system
-connected to many marketplaces can have each marketplace adaptor publish requests into one `RFQ`
-table, and downstream systems query that table without knowing or caring which marketplace a request
-came from. Adding a new marketplace is one new adaptor, not N edits to N consumers.
+The benefit is greatest when several providers populate the same general data type. A trading system connected to many
+marketplaces can have each marketplace adaptor publish requests into one `RFQ` table, and downstream systems query that
+table without knowing or caring which marketplace a request came from. Adding a new marketplace is one new adaptor, not
+N edits to N consumers.
 
-The cost moves into the schema. A new integration should feel native to the system, and the global
-schema must be extended without shims or special cases. This is itself a hard exercise, but when the
-number of integrations is large enough the difficulty amortizes.
+The cost moves into the schema. A new integration should feel native to the system, and the global schema must be
+extended without shims or special cases. This is itself a hard exercise, but when the number of integrations is large
+enough the difficulty amortizes.
 
 == Environments and isolation
 
-Defining a self-contained environment for testing or prototyping is hard in a microservice
-ecosystem. Every service must agree with every other on which address to call, and a single
-misconfigured endpoint can leak traffic into another environment. In DOA the environment is defined
-entirely by which data store a component connects to. Since components hold no state of their own,
-data is isolated by construction, and the risk of one environment leaking into another is much
-reduced.
+Defining a self-contained environment for testing or prototyping is hard in a microservice ecosystem. Every service must
+agree with every other on which address to call, and a single misconfigured endpoint can leak traffic into another
+environment. In DOA the environment is defined entirely by which data store a component connects to. Since components
+hold no state of their own, data is isolated by construction, and the risk of one environment leaking into another is
+much reduced.
 
 == Trade-offs
 
-* _Consistency._ Keeping all state in one store makes it easier to maintain
-  xref:consistency.adoc[*consistency*] across the system, and minimizes component-to-component
-  interaction, which can reduce overall latency.
+* _Consistency._ Keeping all state in one store makes it easier to maintain xref:consistency.adoc[*consistency*] across
+  the system, and minimizes component-to-component interaction, which can reduce overall latency.
 
 * _Central store as a bottleneck and single point of failure._ The data store is a
-  xref:single-point-of-failure.adoc[*single point of failure*] and a serialization point.
-  xref:sharding.adoc[*Sharding*] and xref:replication.adoc[*replication*] can mitigate this, but
-  both are harder to implement against a single monolithic store than against per-service stores,
-  and they reintroduce exactly the consistency problems the central store was meant to avoid.
+  xref:single-point-of-failure.adoc[*single point of failure*] and a serialization point. xref:sharding.adoc[*Sharding*]
+  and xref:replication.adoc[*replication*] can mitigate this, but both are harder to implement against a single monolithic
+  store than against per-service stores, and they reintroduce exactly the consistency problems the central store was meant
+  to avoid.
 
-* _Schema is the integration contract._ Because inter-component APIs are encoded in the data, one
-  shared global schema must be designed, owned, and governed. Schema evolution is the dominant
-  long-term cost: removing a column from a table consumed by many loosely-coupled services is very
-  hard. The Broadway Technology maxim _data is forever_ echoes Protocol Buffers' warning that
-  _required is forever_.
+* _Schema is the integration contract._ Because inter-component APIs are encoded in the data, one shared global schema
+  must be designed, owned, and governed. Schema evolution is the dominant long-term cost: removing a column from a table
+  consumed by many loosely-coupled services is very hard. The Broadway Technology maxim _data is forever_ echoes Protocol
+  Buffers' warning that _required is forever_.
 
-* _Write ownership._ With many stateless services writing to the same store, multiple writers
-  modifying the same record can conflict. Systems tend to partition write ownership of each record
-  carefully, so that only one component owns writes to a given key.
+* _Write ownership._ With many stateless services writing to the same store, multiple writers modifying the same record
+  can conflict. Systems tend to partition write ownership of each record carefully, so that only one component owns writes
+  to a given key.
 
-* _Reframing RPCs as events._ Not every inter-component interaction decomposes cleanly into
-  producers and consumers. Forcing a naturally synchronous request into a data-based event can
-  obscure intent and add latency.
+* _Reframing RPCs as events._ Not every inter-component interaction decomposes cleanly into producers and consumers.
+  Forcing a naturally synchronous request into a data-based event can obscure intent and add latency.
 
 == Relation to data mesh
 
-DOA sits at the opposite end of the spectrum from xref:data-mesh.adoc[*data mesh*]. Where a data
-mesh deliberately decentralizes data ownership across domain teams, each serving their own data
-products, DOA centralizes state in a single global schema. Both aim to escape the central-bottleneck
-warehouse, but by opposite routes: DOA keeps one store and makes services stateless, while a data
-mesh keeps services autonomous and distributes the data. The trade-offs mirror each other. DOA's
-schema-governance burden is the centralized counterpart of the data mesh's federated-governance
+DOA sits at the opposite end of the spectrum from xref:data-mesh.adoc[*data mesh*]. Where a data mesh deliberately
+decentralizes data ownership across domain teams, each serving their own data products, DOA centralizes state in a
+single global schema. Both aim to escape the central-bottleneck warehouse, but by opposite routes: DOA keeps one store
+and makes services stateless, while a data mesh keeps services autonomous and distributes the data. The trade-offs
+mirror each other. DOA's schema-governance burden is the centralized counterpart of the data mesh's federated-governance
 burden.
 
 == See also
@@ -145,9 +131,7 @@ burden.
 
 == References
 
-- Joshi, Rajive (2007).
-  {link-2007-whitepaper}[_Data-Oriented Architecture (DOA): A "Blackboard" for Service-Oriented Architectures_].
-  Real-Time Innovations.
-- Vorhemus, Christian, and Schikuta, Erich (2017). {link-2017-paper}[_Data-Oriented Architecture_].
-  iiWAS '17.
+- Joshi, Rajive (2007). {link-2007-whitepaper}[_Data-Oriented Architecture (DOA): A "Blackboard" for Service-Oriented
+  Architectures_]. Real-Time Innovations.
+- Vorhemus, Christian, and Schikuta, Erich (2017). {link-2017-paper}[_Data-Oriented Architecture_]. iiWAS '17.
 - Sharaiha, Eyas (2020). {link-eyas-blog}[_Data-Oriented Architecture_]. Eyas's Blog.

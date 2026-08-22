@@ -1,98 +1,85 @@
 = Normalization
 
-Normalization is the process of organizing a xref:relational-database.adoc[*relational database*]
-schema so that each fact is stored in exactly one place. It decomposes wide, redundant tables into
-smaller ones connected by xref:foreign-key.adoc[*foreign keys*], eliminating the duplicated data
-that lets a single update leave the database in a contradictory state. The result is a schema where
-every non-key column depends on the primary key, the whole primary key, and nothing but the primary
-key.
+Normalization is the process of organizing a xref:relational-database.adoc[*relational database*] schema so that each
+fact is stored in exactly one place. It decomposes wide, redundant tables into smaller ones connected by
+xref:foreign-key.adoc[*foreign keys*], eliminating the duplicated data that lets a single update leave the database in a
+contradictory state. The result is a schema where every non-key column depends on the primary key, the whole primary
+key, and nothing but the primary key.
 
-The technique was introduced by E. F. Codd in 1970, alongside the relational model itself, as a
-formal answer to the data-integrity problems of the hierarchical and network stores that preceded
-it. It is applied during xref:data-modeling.adoc[*data modeling*], at the conceptual-to-logical
-step, before a schema is committed to a physical database.
+The technique was introduced by E. F. Codd in 1970, alongside the relational model itself, as a formal answer to the
+data-integrity problems of the hierarchical and network stores that preceded it. It is applied during
+xref:data-modeling.adoc[*data modeling*], at the conceptual-to-logical step, before a schema is committed to a physical
+database.
 
 == Why normalize
 
 Redundancy is the root of three classic *anomalies* that plague unnormalized schemas.
 
-* *Insertion anomaly.* A fact cannot be recorded until some unrelated fact is present. A table that
-  stores customers alongside their orders cannot hold a customer who has not yet placed an order
-  without inventing a dummy order.
-* *Update anomaly.* A fact stored in two rows must be updated in both. Updating one and not the
-  other leaves the database disagreeing with itself.
-* *Deletion anomaly.* Deleting one fact inadvertently removes another. Deleting a customer's only
-  order also deletes the customer, because the two were stored in the same row.
+* *Insertion anomaly.* A fact cannot be recorded until some unrelated fact is present. A table that stores customers
+  alongside their orders cannot hold a customer who has not yet placed an order without inventing a dummy order.
+* *Update anomaly.* A fact stored in two rows must be updated in both. Updating one and not the other leaves the database
+  disagreeing with itself.
+* *Deletion anomaly.* Deleting one fact inadvertently removes another. Deleting a customer's only order also deletes the
+  customer, because the two were stored in the same row.
 
-Normalization removes these anomalies by giving each fact its own table, so that inserts, updates,
-and deletes touch exactly the rows they concern. The discipline upholds
-xref:referential-integrity.adoc[*referential integrity*] and the broader
-xref:data-integrity.adoc[*data integrity*] that xref:acid-principles.adoc[*ACID*] transactions rely
-on, and it is the relational expression of
-xref:single-source-of-truth.adoc[*single source of truth*].
+Normalization removes these anomalies by giving each fact its own table, so that inserts, updates, and deletes touch
+exactly the rows they concern. The discipline upholds xref:referential-integrity.adoc[*referential integrity*] and the
+broader xref:data-integrity.adoc[*data integrity*] that xref:acid-principles.adoc[*ACID*] transactions rely on, and it
+is the relational expression of xref:single-source-of-truth.adoc[*single source of truth*].
 
 == Normal forms
 
-Normalization is described as a sequence of *normal forms*, each a stricter condition on the schema
-than the one before. Each form removes a particular kind of dependency, and a schema is said to be
-"in" a form when every table satisfies it.
+Normalization is described as a sequence of *normal forms*, each a stricter condition on the schema than the one before.
+Each form removes a particular kind of dependency, and a schema is said to be "in" a form when every table satisfies it.
 
-* *First normal form (1NF).* Every column holds a single atomic value, and every row is distinct. No
-  repeating groups, no arrays, no comma-separated lists stuffed into one field.
-* *Second normal form (2NF).* The table is in 1NF and every non-key column depends on the whole
-  primary key, not just part of it. This matters only for composite keys, where a column that
-  depends on one key component belongs in its own table.
-* *Third normal form (3NF).* The table is in 2NF and no non-key column depends on another non-key
-  column. A `zip_code` that determines a `city` should live in a separate table, not be repeated on
-  every customer.
-* *Boyce-Codd normal form (BCNF).* A stricter 3NF that closes a loophole for tables where a
-  candidate key overlaps the columns it depends on. In practice BCNF is the target most designers
-  aim for, since 3NF still permits a few obscure anomalies.
+* *First normal form (1NF).* Every column holds a single atomic value, and every row is distinct. No repeating groups, no
+  arrays, no comma-separated lists stuffed into one field.
+* *Second normal form (2NF).* The table is in 1NF and every non-key column depends on the whole primary key, not just part
+  of it. This matters only for composite keys, where a column that depends on one key component belongs in its own table.
+* *Third normal form (3NF).* The table is in 2NF and no non-key column depends on another non-key column. A `zip_code`
+  that determines a `city` should live in a separate table, not be repeated on every customer.
+* *Boyce-Codd normal form (BCNF).* A stricter 3NF that closes a loophole for tables where a candidate key overlaps the
+  columns it depends on. In practice BCNF is the target most designers aim for, since 3NF still permits a few obscure
+  anomalies.
 
-Beyond BCNF sit 4NF, 5NF, and 6NF, which address multi-valued and join dependencies, and the
-domain-key normal form (DKNF), which Codd considered the theoretical ideal. These higher forms
-rarely appear in application schemas, because the dependencies they forbid are unusual and the
-splits they require make queries more complex without proportionate benefit.
+Beyond BCNF sit 4NF, 5NF, and 6NF, which address multi-valued and join dependencies, and the domain-key normal form
+(DKNF), which Codd considered the theoretical ideal. These higher forms rarely appear in application schemas, because
+the dependencies they forbid are unusual and the splits they require make queries more complex without proportionate
+benefit.
 
 [NOTE]
-====
-The informal summary "every non-key attribute must depend on the key, the
-whole key, and nothing but the key, so help me Codd" is a mnemonic for 2NF,
-3NF, and BCNF, not a definition of normalization as a whole.
-====
+==== The informal summary "every non-key attribute must depend on the key, the whole key, and nothing but the key, so
+help me Codd" is a mnemonic for 2NF, 3NF, and BCNF, not a definition of normalization as a whole. ====
 
 == Trade-offs
 
-Normalization is not free, and the cost is paid on every read. Splitting a wide table into several
-narrow ones means a query that needs the original columns back must join them together again. The
-more normalized the schema, the more joins a typical query pays, and joins are the dominant cost in
-many read workloads.
+Normalization is not free, and the cost is paid on every read. Splitting a wide table into several narrow ones means a
+query that needs the original columns back must join them together again. The more normalized the schema, the more joins
+a typical query pays, and joins are the dominant cost in many read workloads.
 
-This is the tension that xref:denormalization.adoc[*denormalization*] resolves. The mature practice
-is not to choose between the two but to normalize first, then denormalize deliberately where
-xref:access-pattern.adoc[*access patterns*] justify it. Normalization removes accidental
-redundancy; denormalization adds back chosen redundancy. Skipping the first step and "denormalizing"
-a schema that was never normalized is usually just leaving mess in place.
+This is the tension that xref:denormalization.adoc[*denormalization*] resolves. The mature practice is not to choose
+between the two but to normalize first, then denormalize deliberately where xref:access-pattern.adoc[*access patterns*]
+justify it. Normalization removes accidental redundancy; denormalization adds back chosen redundancy. Skipping the first
+step and "denormalizing" a schema that was never normalized is usually just leaving mess in place.
 
 Normalization also tends to increase the number of tables and
-xref:entity-relationship-diagram.adoc[*entity-relationship diagrams*] needed to describe the schema,
-which can make the model harder to grasp at a glance even as it becomes easier to change. The trade
-is conceptual complexity for integrity and evolvability.
+xref:entity-relationship-diagram.adoc[*entity-relationship diagrams*] needed to describe the schema, which can make the
+model harder to grasp at a glance even as it becomes easier to change. The trade is conceptual complexity for integrity
+and evolvability.
 
 == When to normalize, and when not
 
-Normalize by default for operational workloads where writes matter and correctness is
-non-negotiable. Operational systems, xref:transactional-database.adoc[*transactional databases*],
-and any store of record should be normalized unless a measured read path says otherwise.
+Normalize by default for operational workloads where writes matter and correctness is non-negotiable. Operational
+systems, xref:transactional-database.adoc[*transactional databases*], and any store of record should be normalized
+unless a measured read path says otherwise.
 
-Normalize less aggressively, or not at all, for analytical workloads. The star and snowflake schemas
-of xref:analytical-database.adoc[*analytical databases*] are deliberately denormalized because
-their queries aggregate across dimensions and would be crippled by the joins a fully normalized
-schema imposes.
+Normalize less aggressively, or not at all, for analytical workloads. The star and snowflake schemas of
+xref:analytical-database.adoc[*analytical databases*] are deliberately denormalized because their queries aggregate
+across dimensions and would be crippled by the joins a fully normalized schema imposes.
 
-xref:nosql-database.adoc[*NoSQL stores*] generally abandon normalization at the storage level,
-embedding related data in a single document or wide row to serve reads in one trip. The integrity
-guarantees normalization provides then become the application's responsibility.
+xref:nosql-database.adoc[*NoSQL stores*] generally abandon normalization at the storage level, embedding related data in
+a single document or wide row to serve reads in one trip. The integrity guarantees normalization provides then become
+the application's responsibility.
 
 image::normalized-vs-denormalized-data.png[]
 
@@ -116,11 +103,9 @@ image::normalized-vs-denormalized-data.png[]
 
 == References
 
-* Codd, E. F. (1970). "A relational model of data for large shared data banks".
-  _Communications of the ACM_, 13(6), 377–387.
-* Codd, E. F. (1974). "Recent investigations into relational data base systems".
-  _IBM Research Report_, RJ1385.
-* Connolly, T. and Begg, C. (2014).
-  _Database Systems: A Practical Approach to Design, Implementation, and Management_. 6th ed.
-  Pearson.
+* Codd, E. F. (1970). "A relational model of data for large shared data banks". _Communications of the ACM_, 13(6),
+  377–387.
+* Codd, E. F. (1974). "Recent investigations into relational data base systems". _IBM Research Report_, RJ1385.
+* Connolly, T. and Begg, C. (2014). _Database Systems: A Practical Approach to Design, Implementation, and Management_.
+  6th ed. Pearson.
 * Date, C. J. (2003). _An Introduction to Database Systems_. 8th ed. Addison-Wesley.

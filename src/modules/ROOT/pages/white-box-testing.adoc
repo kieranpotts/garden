@@ -1,96 +1,84 @@
 = White-box testing
 
-White-box testing – also known as clear-box, glass-box, transparent-box, or structural testing – is
-a software testing method that exercises the internal structures and workings of an application, in
-contrast to xref:black-box-testing.adoc[*black-box testing*], which treats the system as an opaque
-unit and judges it only on input and output. The tester takes an internal perspective of the system,
-choosing inputs to exercise specific paths through the code and determining the expected outputs.
-The activity is analogous to in-circuit testing of nodes on a circuit board.
+White-box testing – also known as clear-box, glass-box, transparent-box, or structural testing – is a software testing
+method that exercises the internal structures and workings of an application, in contrast to
+xref:black-box-testing.adoc[*black-box testing*], which treats the system as an opaque unit and judges it only on input
+and output. The tester takes an internal perspective of the system, choosing inputs to exercise specific paths through
+the code and determining the expected outputs. The activity is analogous to in-circuit testing of nodes on a circuit
+board.
 
-Because the tester must read and reason about the source code directly, a working knowledge of the
-implementation is a prerequisite. White-box testing uses structural techniques to examine the code,
-with the core advantage of knowing exactly which lines and branches are being executed and what the
-correct output should be at each point.
+Because the tester must read and reason about the source code directly, a working knowledge of the implementation is a
+prerequisite. White-box testing uses structural techniques to examine the code, with the core advantage of knowing
+exactly which lines and branches are being executed and what the correct output should be at each point.
 
 Where the tester has only partial knowledge of the internals, the approach is termed
-xref:gray-box-testing.adoc[*gray-box testing*], a middle ground between white-box and black-box
-testing.
+xref:gray-box-testing.adoc[*gray-box testing*], a middle ground between white-box and black-box testing.
 
 == Coverage criteria
 
-White-box test cases are designed around code coverage criteria, each measuring a different degree
-to which the source code is exercised when the test suite runs:
+White-box test cases are designed around code coverage criteria, each measuring a different degree to which the source
+code is exercised when the test suite runs:
 
 * *Statement coverage*: Executing every statement at least once.
-* *Branch coverage*: Taking each control-flow branch (true and false) at least
-once.
-* *Decision coverage*: Ensuring every decision point has evaluated to both
-outcomes.
-* *Condition coverage*: Exercising each atomic boolean condition in both truth
-values.
-* *Modified condition/decision coverage (MC/DC)*: Requiring each condition to
-independently affect the outcome of its decision, a criterion mandated for safety-critical avionics
-software under DO-178C.
-* *Path coverage*: Exercising every possible execution path through the code at
-least once, the most thorough and generally impractical criterion.
+* *Branch coverage*: Taking each control-flow branch (true and false) at least once.
+* *Decision coverage*: Ensuring every decision point has evaluated to both outcomes.
+* *Condition coverage*: Exercising each atomic boolean condition in both truth values.
+* *Modified condition/decision coverage (MC/DC)*: Requiring each condition to independently affect the outcome of its
+  decision, a criterion mandated for safety-critical avionics software under DO-178C.
+* *Path coverage*: Exercising every possible execution path through the code at least once, the most thorough and
+  generally impractical criterion.
 * *Control-flow testing*: Deriving tests from the program's control-flow graph.
-* *Data-flow testing*: Tracking the definition and use of variables along paths
-to expose anomalies such as use before definition.
-* *Prime path testing*: Covering all prime paths (paths that do not appear as
-subpaths of longer paths) in the control-flow graph.
+* *Data-flow testing*: Tracking the definition and use of variables along paths to expose anomalies such as use before
+  definition.
+* *Prime path testing*: Covering all prime paths (paths that do not appear as subpaths of longer paths) in the
+  control-flow graph.
 
-These criteria differ from the requirements-based coverage used in black-box testing, which measures
-the percentage of specified requirements exercised by the test suite rather than the percentage of
-code executed.
+These criteria differ from the requirements-based coverage used in black-box testing, which measures the percentage of
+specified requirements exercised by the test suite rather than the percentage of code executed.
 
 == Levels
 
 White-box testing can be applied at every level of xref:testing.adoc[*testing*]. At
-xref:unit-testing.adoc[*unit testing*] it verifies that individual components behave as intended
-before integration, catching defects early and reducing their downstream impact. At
-xref:integration-testing.adoc[*integration testing*] it checks the interactions between interfaces
-whose internals are known to the programmer. Today it is also used at the
-xref:system-testing.adoc[*system testing*] level, exercising paths between subsystems, whereas it
-was traditionally associated mainly with the unit level. The same white-box test cases are typically
-reused during xref:regression-testing.adoc[*regression testing*] as code changes.
+xref:unit-testing.adoc[*unit testing*] it verifies that individual components behave as intended before integration,
+catching defects early and reducing their downstream impact. At xref:integration-testing.adoc[*integration testing*] it
+checks the interactions between interfaces whose internals are known to the programmer. Today it is also used at the
+xref:system-testing.adoc[*system testing*] level, exercising paths between subsystems, whereas it was traditionally
+associated mainly with the unit level. The same white-box test cases are typically reused during
+xref:regression-testing.adoc[*regression testing*] as code changes.
 
 == Trade-offs
 
-White-box testing's main strength – visibility into the code – is also its main cost. Tests written
-against a specific implementation are tightly coupled to it: when the code is
-xref:refactoring.adoc[*refactored*], the tests tend to fail even when the behavior they describe has
-not changed, and must be updated to match. There is also a risk that the code is rewritten in a way
-that invalidates the assumptions baked into the tests, producing either unnecessary failures or,
-worse, false positives that mask real errors. Because the tests focus on the software as it exists,
-functionality that was never implemented may not be discovered – a gap that black-box testing,
-driven by specifications rather than code, is better placed to find.
+White-box testing's main strength – visibility into the code – is also its main cost. Tests written against a specific
+implementation are tightly coupled to it: when the code is xref:refactoring.adoc[*refactored*], the tests tend to fail
+even when the behavior they describe has not changed, and must be updated to match. There is also a risk that the code
+is rewritten in a way that invalidates the assumptions baked into the tests, producing either unnecessary failures or,
+worse, false positives that mask real errors. Because the tests focus on the software as it exists, functionality that
+was never implemented may not be discovered – a gap that black-box testing, driven by specifications rather than code,
+is better placed to find.
 
-White-box testing also adds complexity to the test effort. It requires at least one team member with
-a deep understanding of the program, and exhaustively testing every condition is rarely realistic.
-On the upside, that same code-level visibility makes bottlenecks and side effects easy to spot,
-gives developers introspection into their own logic, and is straightforward to
-xref:automated-testing.adoc[*automate*].
+White-box testing also adds complexity to the test effort. It requires at least one team member with a deep
+understanding of the program, and exhaustively testing every condition is rarely realistic. On the upside, that same
+code-level visibility makes bottlenecks and side effects easy to spot, gives developers introspection into their own
+logic, and is straightforward to xref:automated-testing.adoc[*automate*].
 
 == In penetration testing
 
-In xref:penetration-testing.adoc[*penetration testing*], white-box testing denotes an engagement in
-which the attacker, a white hat, is given full knowledge of the target system, often including
-administrative credentials and source code, to simulate a malicious insider. When the source code
-itself is the target of the review, the work is more precisely a source code security audit, closely
-related to xref:static-analysis.adoc[*static analysis*] and
+In xref:penetration-testing.adoc[*penetration testing*], white-box testing denotes an engagement in which the attacker,
+a white hat, is given full knowledge of the target system, often including administrative credentials and source code,
+to simulate a malicious insider. When the source code itself is the target of the review, the work is more precisely a
+source code security audit, closely related to xref:static-analysis.adoc[*static analysis*] and
 xref:security-testing.adoc[*security testing*].
 
 == A modern view
 
-A more modern view holds that the dichotomy between white-box and black-box testing has blurred and
-is becoming less relevant. Tests are now drawn from many documents at varying levels of abstraction
-– source code, requirements, input space descriptions, or design models – and the real question is
-what level of abstraction an abstract test structure (an input space, a graph, logical predicates)
-is derived from, rather than whether the source is visible. On this view, the "white-box /
-black-box" label matters less than which structure the tests are built on.
+A more modern view holds that the dichotomy between white-box and black-box testing has blurred and is becoming less
+relevant. Tests are now drawn from many documents at varying levels of abstraction – source code, requirements, input
+space descriptions, or design models – and the real question is what level of abstraction an abstract test structure (an
+input space, a graph, logical predicates) is derived from, rather than whether the source is visible. On this view, the
+"white-box / black-box" label matters less than which structure the tests are built on.
 
-See also: xref:behavioral-testing.adoc[*behavioral testing*],
-xref:functional-testing.adoc[*functional testing*], xref:mutation-testing.adoc[*mutation testing*].
+See also: xref:behavioral-testing.adoc[*behavioral testing*], xref:functional-testing.adoc[*functional testing*],
+xref:mutation-testing.adoc[*mutation testing*].
 
 == See also
 

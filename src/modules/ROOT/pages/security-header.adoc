@@ -1,81 +1,72 @@
 = Security header
 
-*Security headers* are HTTP response headers that instruct the user agent – typically a web browser
-– to apply security controls when it renders or interacts with a response. They are a declarative,
-defense-in-depth layer of xref:security.adoc[*security*]: the server cannot dictate what the browser
-does once content is delivered, but it can constrain the capabilities the page is allowed to
-exercise. Security headers do not fix vulnerabilities. They limit the blast radius of an injection,
-downgrade, or cross-origin attack that slips past the application's own controls.
+*Security headers* are HTTP response headers that instruct the user agent – typically a web browser – to apply security
+controls when it renders or interacts with a response. They are a declarative, defense-in-depth layer of
+xref:security.adoc[*security*]: the server cannot dictate what the browser does once content is delivered, but it can
+constrain the capabilities the page is allowed to exercise. Security headers do not fix vulnerabilities. They limit the
+blast radius of an injection, downgrade, or cross-origin attack that slips past the application's own controls.
 
-Security headers ride on ordinary xref:http.adoc[*HTTP*] responses, so they inherit HTTP's trust
-model. Browsers only honor them on the origin they were delivered from, and several – notably
-`Strict-Transport-Security` – are ignored unless the response arrives over HTTPS. They are a
-complement to, not a replacement for, xref:secure-by-design.adoc[*secure by design*] practices such
-as contextual output encoding and xref:input-validation.adoc[*input validation*].
+Security headers ride on ordinary xref:http.adoc[*HTTP*] responses, so they inherit HTTP's trust model. Browsers only
+honor them on the origin they were delivered from, and several – notably `Strict-Transport-Security` – are ignored
+unless the response arrives over HTTPS. They are a complement to, not a replacement for,
+xref:secure-by-design.adoc[*secure by design*] practices such as contextual output encoding and
+xref:input-validation.adoc[*input validation*].
 
 == Common headers
 
-The headers below are the ones most production sites set. They are catalogued and kept current by
-the xref:owasp.adoc[*OWASP*] Secure Headers Project.
+The headers below are the ones most production sites set. They are catalogued and kept current by the
+xref:owasp.adoc[*OWASP*] Secure Headers Project.
 
-* *`Content-Security-Policy` (CSP).* Restricts the origins from which a page may load scripts,
-  styles, frames, images, and other resources, and can forbid inline script entirely. CSP is the
-  most powerful of the set because it constrains execution rather than merely annotating intent. It
-  is a primary mitigation for xref:cross-site-scripting.adoc[*cross-site scripting (XSS)*]: even if
-  an injection succeeds, the browser refuses to run disallowed scripts.
+* *`Content-Security-Policy` (CSP).* Restricts the origins from which a page may load scripts, styles, frames, images, and
+  other resources, and can forbid inline script entirely. CSP is the most powerful of the set because it constrains
+  execution rather than merely annotating intent. It is a primary mitigation for
+  xref:cross-site-scripting.adoc[*cross-site scripting (XSS)*]: even if an injection succeeds, the browser refuses to run
+  disallowed scripts.
 
-* *`Strict-Transport-Security` (HSTS).* Forces the browser to load the origin over HTTPS for a
-  declared period, refusing silent downgrades to plaintext HTTP. This defeats SSL-stripping attacks
-  on the first visit after the header is cached. The `preload` directive lets an origin be embedded
-  in browser HSTS lists, closing the gap on the very first visit.
+* *`Strict-Transport-Security` (HSTS).* Forces the browser to load the origin over HTTPS for a declared period, refusing
+  silent downgrades to plaintext HTTP. This defeats SSL-stripping attacks on the first visit after the header is cached.
+  The `preload` directive lets an origin be embedded in browser HSTS lists, closing the gap on the very first visit.
 
-* *`X-Frame-Options` / `Content-Security-Policy: frame-ancestors`.* Controls whether the page may be
-  embedded in an `iframe`, mitigating clickjacking. `frame-ancestors` supersedes the older
-  `X-Frame-Options` and is the preferred mechanism on modern browsers.
+* *`X-Frame-Options` / `Content-Security-Policy: frame-ancestors`.* Controls whether the page may be embedded in an
+  `iframe`, mitigating clickjacking. `frame-ancestors` supersedes the older `X-Frame-Options` and is the preferred
+  mechanism on modern browsers.
 
-* *`X-Content-Type-Options: nosniff`.* Stops the browser from sniffing a response's MIME type when
-  the declared `Content-Type` is wrong or absent, preventing a text resource from being interpreted
-  as executable.
+* *`X-Content-Type-Options: nosniff`.* Stops the browser from sniffing a response's MIME type when the declared
+  `Content-Type` is wrong or absent, preventing a text resource from being interpreted as executable.
 
-* *`Referrer-Policy`.* Governs how much of the `Referer` header the browser sends on outgoing
-  requests, limiting leakage of URLs – which may carry session fragments or query parameters – to
-  third parties.
+* *`Referrer-Policy`.* Governs how much of the `Referer` header the browser sends on outgoing requests, limiting leakage
+  of URLs – which may carry session fragments or query parameters – to third parties.
 
-* *`Permissions-Policy`.* Allows the page to disable browser features such as the camera,
-  microphone, geolocation, and USB access, so that even a successful injection cannot activate them.
+* *`Permissions-Policy`.* Allows the page to disable browser features such as the camera, microphone, geolocation, and USB
+  access, so that even a successful injection cannot activate them.
 
-* *Cross-origin isolation headers.* `Cross-Origin-Opener-Policy`, `Cross-Origin-Embedder-Policy`,
-  and `Cross-Origin-Resource-Policy` restrict how a document interacts with cross-origin windows and
-  resources. They are used to create isolated browsing contexts that unlock high-resolution timers
-  and mitigate Spectre-class side-channel attacks.
+* *Cross-origin isolation headers.* `Cross-Origin-Opener-Policy`, `Cross-Origin-Embedder-Policy`, and
+  `Cross-Origin-Resource-Policy` restrict how a document interacts with cross-origin windows and resources. They are used
+  to create isolated browsing contexts that unlock high-resolution timers and mitigate Spectre-class side-channel attacks.
 
-The legacy `X-XSS-Protection` header is deprecated. Its browser-based auditor was itself a source of
-vulnerabilities and has been removed from modern browsers; a CSP is the correct control.
+The legacy `X-XSS-Protection` header is deprecated. Its browser-based auditor was itself a source of vulnerabilities and
+has been removed from modern browsers; a CSP is the correct control.
 
 == Where they are set
 
-Security headers can be added anywhere the response is produced – in application code, in a
-framework middleware, or at the network edge. In practice they are usually enforced centrally rather
-than per route. A xref:reverse-proxy.adoc[*reverse proxy*] or xref:edge-proxy.adoc[*edge proxy*] can
-stamp a consistent header policy onto every response, and a
-xref:content-delivery-network.adoc[*content delivery network (CDN)*] can do the same at the edge,
-often through a single configuration panel. Centralizing the policy keeps it uniform across many
-services and origin servers, and avoids the drift that comes from each application setting its own
-subset.
+Security headers can be added anywhere the response is produced – in application code, in a framework middleware, or at
+the network edge. In practice they are usually enforced centrally rather than per route. A
+xref:reverse-proxy.adoc[*reverse proxy*] or xref:edge-proxy.adoc[*edge proxy*] can stamp a consistent header policy onto
+every response, and a xref:content-delivery-network.adoc[*content delivery network (CDN)*] can do the same at the edge,
+often through a single configuration panel. Centralizing the policy keeps it uniform across many services and origin
+servers, and avoids the drift that comes from each application setting its own subset.
 
 == Caveats
 
-Security headers are a safety net, not the primary defense. CSP in particular is frequently
-mis-applied. An overly permissive policy that allows `unsafe-inline` or wide wildcard origins offers
-little real protection, while an overly strict one breaks the site and tempts operators to weaken
-it. Rolling out CSP is best done in `Content-Security-Policy-Report-Only` mode first, collecting
-violation reports from real traffic before enforcing.
+Security headers are a safety net, not the primary defense. CSP in particular is frequently mis-applied. An overly
+permissive policy that allows `unsafe-inline` or wide wildcard origins offers little real protection, while an overly
+strict one breaks the site and tempts operators to weaken it. Rolling out CSP is best done in
+`Content-Security-Policy-Report-Only` mode first, collecting violation reports from real traffic before enforcing.
 
-Headers are also visible to the client. They are not a place to put secrets, and they do not protect
-against server-side flaws such as xref:sql-injection.adoc[*SQL injection*] or
-xref:ssrf.adoc[*SSRF*], which never reach the browser at all. Finally, HTTPS is a prerequisite for
-most of these headers to be honored – xref:encryption.adoc[*encryption*] in transit is the
-foundation they sit on, not an alternative to it.
+Headers are also visible to the client. They are not a place to put secrets, and they do not protect against server-side
+flaws such as xref:sql-injection.adoc[*SQL injection*] or xref:ssrf.adoc[*SSRF*], which never reach the browser at all.
+Finally, HTTPS is a prerequisite for most of these headers to be honored – xref:encryption.adoc[*encryption*] in transit
+is the foundation they sit on, not an alternative to it.
 
 == See also
 

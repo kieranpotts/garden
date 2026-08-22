@@ -1,17 +1,16 @@
 = Agentic engineering
 
-*Agentic engineering* is the disciplined end of the AI-coding spectrum, where AI acts as a powerful
-implementation engine inside carefully designed systems of constraints, tests, and feedback loops,
-with humans retaining oversight over architecture, correctness, and quality. Andrej Karpathy
-introduced the term in early 2026 to name the disciplined counterpart to
-xref:vibe-coding.adoc[*vibe coding*], after his original "vibe coding" framing was applied so
-broadly it lost meaning.
+*Agentic engineering* is the disciplined end of the AI-coding spectrum, where AI acts as a powerful implementation
+engine inside carefully designed systems of constraints, tests, and feedback loops, with humans retaining oversight over
+architecture, correctness, and quality. Andrej Karpathy introduced the term in early 2026 to name the disciplined
+counterpart to xref:vibe-coding.adoc[*vibe coding*], after his original "vibe coding" framing was applied so broadly it
+lost meaning.
 
 == The spectrum
 
-AI-assisted coding runs from xref:vibe-coding.adoc[*vibe coding*] through structured AI-assisted
-coding to agentic engineering. The key differentiator is not whether you use AI but how much
-structure, verification, and human judgment surrounds the output.
+AI-assisted coding runs from xref:vibe-coding.adoc[*vibe coding*] through structured AI-assisted coding to agentic
+engineering. The key differentiator is not whether you use AI but how much structure, verification, and human judgment
+surrounds the output.
 
 [options="header"]
 |===
@@ -50,43 +49,40 @@ structure, verification, and human judgment surrounds the output.
 
 == Tests and evals as the dividing line
 
-The single biggest differentiator is how outputs get verified. Tests verify the deterministic parts
-— a function given this input produces that output. Evals verify the non-deterministic parts: did
-the xref:agent.adoc[*agent*] take the right trajectory of steps, choose the right tools, produce a
-response that meets the quality bar? Evals are checked by labelled datasets, scoring rubrics, and LM
-judges. Without both, the practice is always xref:vibe-coding.adoc[*vibe coding*], however
-sophisticated the prompts. See xref:automated-testing.adoc[*automated testing*].
+The single biggest differentiator is how outputs get verified. Tests verify the deterministic parts — a function given
+this input produces that output. Evals verify the non-deterministic parts: did the xref:agent.adoc[*agent*] take the
+right trajectory of steps, choose the right tools, produce a response that meets the quality bar? Evals are checked by
+labelled datasets, scoring rubrics, and LM judges. Without both, the practice is always
+xref:vibe-coding.adoc[*vibe coding*], however sophisticated the prompts. See
+xref:automated-testing.adoc[*automated testing*].
 
 == The developer as factory manager
 
-In agentic engineering the developer's primary output is not code but the system that produces code
-— specifications and context, agents that translate specs into implementation, tests and quality
-gates, feedback loops that route failures back for correction, and guardrails that constrain agents
-to safe behaviour. Writing the specification before any code is generated is the substance of
-xref:spec-driven-development.adoc[*spec-driven development*]. A factory manager designs the assembly
-line and ensures quality control rather than assembling every widget by hand. Success comes from
-giving xref:agent.adoc[*agents*] success criteria rather than step-by-step instructions. See
+In agentic engineering the developer's primary output is not code but the system that produces code — specifications and
+context, agents that translate specs into implementation, tests and quality gates, feedback loops that route failures
+back for correction, and guardrails that constrain agents to safe behaviour. Writing the specification before any code
+is generated is the substance of xref:spec-driven-development.adoc[*spec-driven development*]. A factory manager designs
+the assembly line and ensures quality control rather than assembling every widget by hand. Success comes from giving
+xref:agent.adoc[*agents*] success criteria rather than step-by-step instructions. See
 xref:agent-harness.adoc[*agent harness*] and xref:loop-engineering.adoc[*loop engineering*].
 
 == The economics
 
-Agentic engineering is high CapEx — an upfront investment in API schemas, deterministic test suites,
-and structured context — but low OpEx. The AI operates within a governed factory, so its output is
-structurally sound, pre-tested, and aligned with standards, and the marginal cost of shipping and
-maintaining a feature drops dramatically. This inverts *xref:vibe-coding.adoc[vibe coding]'s*
-low-CapEx/high-OpEx profile.
+Agentic engineering is high CapEx — an upfront investment in API schemas, deterministic test suites, and structured
+context — but low OpEx. The AI operates within a governed factory, so its output is structurally sound, pre-tested, and
+aligned with standards, and the marginal cost of shipping and maintaining a feature drops dramatically. This inverts
+*xref:vibe-coding.adoc[vibe coding]'s* low-CapEx/high-OpEx profile.
 
-Context engineering is a financial lever in the token economy: a dense, high-signal payload — a
-precise AGENTS.md and architectural guardrails — raises first-pass success and avoids the costly
-trial-and-error loops of vibe coding. See xref:context-engineering.adoc[*context engineering*] and
-xref:large-language-model.adoc[*large language model*].
+Context engineering is a financial lever in the token economy: a dense, high-signal payload — a precise AGENTS.md and
+architectural guardrails — raises first-pass success and avoids the costly trial-and-error loops of vibe coding. See
+xref:context-engineering.adoc[*context engineering*] and xref:large-language-model.adoc[*large language model*].
 
 == Context engineering as the bridge
 
 The shift from xref:prompt-engineering.adoc[*prompt engineering*] to
-xref:context-engineering.adoc[*context engineering*] is the bridge between
-xref:vibe-coding.adoc[*vibe coding*] and agentic engineering. Models need the same context a skilled
-human developer would need, not cleverly worded instructions.
+xref:context-engineering.adoc[*context engineering*] is the bridge between xref:vibe-coding.adoc[*vibe coding*] and
+agentic engineering. Models need the same context a skilled human developer would need, not cleverly worded
+instructions.
 
 ''''
 
@@ -104,5 +100,5 @@ human developer would need, not cleverly worded instructions.
 
 == References
 
-* _The New SDLC With Vibe Coding_, Addy Osmani, Shubham Saboo & Sokratis Kartakis (2026): From
-  ad-hoc prompting to agentic engineering; introduces the spectrum and the factory model.
+* _The New SDLC With Vibe Coding_, Addy Osmani, Shubham Saboo & Sokratis Kartakis (2026): From ad-hoc prompting to agentic
+  engineering; introduces the spectrum and the factory model.

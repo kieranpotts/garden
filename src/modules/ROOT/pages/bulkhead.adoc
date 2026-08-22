@@ -1,88 +1,77 @@
 = Bulkhead
 
-The bulkhead xref:design-pattern.adoc[*design pattern*] is an architectural pattern used to improve
-the xref:fault-tolerance.adoc[*fault tolerance*] of
-xref:distributed-system.adoc[*distributed software*].
+The bulkhead xref:design-pattern.adoc[*design pattern*] is an architectural pattern used to improve the
+xref:fault-tolerance.adoc[*fault tolerance*] of xref:distributed-system.adoc[*distributed software*].
 
-The pattern is inspired by the construction of ships, in which the hulls are divided into watertight
-compartments called bulkheads, to prevent the entire ship from sinking if one compartment is
-breached.
+The pattern is inspired by the construction of ships, in which the hulls are divided into watertight compartments called
+bulkheads, to prevent the entire ship from sinking if one compartment is breached.
 
-In software, the bulkhead pattern involves isolating components of an application into separate
-"bulkheads" to limit the impact of failures. If a component of one bulkhead fails, it will not
-impact the running of components in other bulkheads.
+In software, the bulkhead pattern involves isolating components of an application into separate "bulkheads" to limit the
+impact of failures. If a component of one bulkhead fails, it will not impact the running of components in other
+bulkheads.
 
-By isolating failures, the bulkhead pattern helps prevent cascading failures, containing the blast
-radius of any one failure to the bulkhead it originated in. It is one of the principal mechanisms
-for realizing the broader design principle of xref:isolation.adoc[*isolation*], and a recurring
-technique in xref:resilience.adoc[*resilience*] engineering.
+By isolating failures, the bulkhead pattern helps prevent cascading failures, containing the blast radius of any one
+failure to the bulkhead it originated in. It is one of the principal mechanisms for realizing the broader design
+principle of xref:isolation.adoc[*isolation*], and a recurring technique in xref:resilience.adoc[*resilience*]
+engineering.
 
 == How bulkheads isolate failures
 
-A bulkhead works by partitioning a finite, shareable resource so that each consumer draws from its
-own allocation rather than from a common pool. Without this partitioning, a single slow or failing
-consumer can exhaust the shared resource and starve every other consumer that depends on it. With
-bulkheads, one consumer's exhaustion is capped at its own allocation, leaving the others free to
-keep serving.
+A bulkhead works by partitioning a finite, shareable resource so that each consumer draws from its own allocation rather
+than from a common pool. Without this partitioning, a single slow or failing consumer can exhaust the shared resource
+and starve every other consumer that depends on it. With bulkheads, one consumer's exhaustion is capped at its own
+allocation, leaving the others free to keep serving.
 
-The pattern is most commonly applied to resources that are implicitly shared across a process or
-host:
+The pattern is most commonly applied to resources that are implicitly shared across a process or host:
 
-* *Thread pools.* Each downstream dependency is called through a dedicated thread pool, sized for
-  that dependency's expected load. A slow dependency that saturates its pool blocks only its own
-  callers, leaving the threads serving other dependencies untouched.
+* *Thread pools.* Each downstream dependency is called through a dedicated thread pool, sized for that dependency's
+  expected load. A slow dependency that saturates its pool blocks only its own callers, leaving the threads serving other
+  dependencies untouched.
 
-* *Connection pools.* A service holds a separate pool of database or HTTP connections per upstream
-  dependency, so a connection leak against one dependency cannot consume the connections needed to
-  reach another.
+* *Connection pools.* A service holds a separate pool of database or HTTP connections per upstream dependency, so a
+  connection leak against one dependency cannot consume the connections needed to reach another.
 
-* *Compute and memory.* Containers, with their own CPU and memory limits, prevent one workload from
-  starving its neighbors on a shared host. The same idea extends to separate processes, virtual
-  machines, or xref:availability-zone.adoc[*availability zones*] when the failure mode being
-  contained is a whole node or data center rather than a single call.
+* *Compute and memory.* Containers, with their own CPU and memory limits, prevent one workload from starving its neighbors
+  on a shared host. The same idea extends to separate processes, virtual machines, or
+  xref:availability-zone.adoc[*availability zones*] when the failure mode being contained is a whole node or data center
+  rather than a single call.
 
-* *Service or cell boundaries.* At the coarsest scale, an entire service or
-  xref:microservices.adoc[*microservice*] acts as a bulkhead for the capabilities it owns, since a
-  failure inside one service cannot directly affect the memory, threads, or connections of another.
-  xref:cell-based-architecture.adoc[*Cell-based architecture*] takes this idea to its limit,
-  partitioning the whole stack – compute, data, and storage – into independent, redundant cells.
+* *Service or cell boundaries.* At the coarsest scale, an entire service or xref:microservices.adoc[*microservice*] acts
+  as a bulkhead for the capabilities it owns, since a failure inside one service cannot directly affect the memory,
+  threads, or connections of another. xref:cell-based-architecture.adoc[*Cell-based architecture*] takes this idea to its
+  limit, partitioning the whole stack – compute, data, and storage – into independent, redundant cells.
 
 == Bulkheads and circuit breakers
 
-Bulkheads are often paired with xref:circuit-breaker.adoc[*circuit breakers*], and the two are
-frequently confused, but they address different concerns. A bulkhead partitions resources so that
-load from one consumer cannot consume another's share; it operates continuously, regardless of
-whether anything is failing. A circuit breaker watches the error rate of calls to a single
-dependency and, when that rate exceeds a threshold, trips to stop further calls until the dependency
+Bulkheads are often paired with xref:circuit-breaker.adoc[*circuit breakers*], and the two are frequently confused, but
+they address different concerns. A bulkhead partitions resources so that load from one consumer cannot consume another's
+share; it operates continuously, regardless of whether anything is failing. A circuit breaker watches the error rate of
+calls to a single dependency and, when that rate exceeds a threshold, trips to stop further calls until the dependency
 recovers.
 
-The two are complementary. The bulkhead keeps a failing dependency from exhausting shared resources,
-while the circuit breaker stops the system from continuing to call a dependency that is already
-known to be failing. A common deployment wraps each outbound dependency call in both a dedicated
-thread pool (the bulkhead) and a circuit breaker that trips when that pool rejects too many
-requests. Netflix's Hystrix library, which popularized the bulkhead pattern for microservice
+The two are complementary. The bulkhead keeps a failing dependency from exhausting shared resources, while the circuit
+breaker stops the system from continuing to call a dependency that is already known to be failing. A common deployment
+wraps each outbound dependency call in both a dedicated thread pool (the bulkhead) and a circuit breaker that trips when
+that pool rejects too many requests. Netflix's Hystrix library, which popularized the bulkhead pattern for microservice
 architectures, combined the two in exactly this way.
 
 == Trade-offs
 
-Bulkheads trade resource efficiency for resilience. Partitioning a fixed resource pool across
-consumers means each partition must be sized for its consumer's peak demand, even if that peak is
-rare. The total capacity required is the sum of the peaks, which is greater than a shared-pool
-alternative that relies on the assumption that not all consumers peak at once. The system pays for
-resilience with idle capacity.
+Bulkheads trade resource efficiency for resilience. Partitioning a fixed resource pool across consumers means each
+partition must be sized for its consumer's peak demand, even if that peak is rare. The total capacity required is the
+sum of the peaks, which is greater than a shared-pool alternative that relies on the assumption that not all consumers
+peak at once. The system pays for resilience with idle capacity.
 
-Sizing the bulkheads is the central design problem. Partitions that are too small throttle
-legitimate traffic and create artificial contention. Partitions that are too large fail to isolate,
-because a failing consumer can still exhaust most of the resource. Effective sizing depends on
-observed load profiles and is typically refined through xref:load-testing.adoc[*load testing*] and
-xref:observability.adoc[*observability*] of per-pool metrics such as queue depth, active threads,
-and rejection rates.
+Sizing the bulkheads is the central design problem. Partitions that are too small throttle legitimate traffic and create
+artificial contention. Partitions that are too large fail to isolate, because a failing consumer can still exhaust most
+of the resource. Effective sizing depends on observed load profiles and is typically refined through
+xref:load-testing.adoc[*load testing*] and xref:observability.adoc[*observability*] of per-pool metrics such as queue
+depth, active threads, and rejection rates.
 
-Bulkheads also add operational complexity. More partitions means more pools to configure, monitor,
-and tune, and more places for a misconfiguration to cause a self-inflicted outage. In practice the
-cost is justified for dependencies whose failure modes are independent and whose load is hard to
-predict, and less so for trusted, well-characterized dependencies whose capacity can be shared
-safely.
+Bulkheads also add operational complexity. More partitions means more pools to configure, monitor, and tune, and more
+places for a misconfiguration to cause a self-inflicted outage. In practice the cost is justified for dependencies whose
+failure modes are independent and whose load is hard to predict, and less so for trusted, well-characterized
+dependencies whose capacity can be shared safely.
 
 == See also
 

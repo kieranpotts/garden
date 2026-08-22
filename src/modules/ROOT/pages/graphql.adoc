@@ -1,28 +1,25 @@
 = GraphQL
 
-GraphQL is a query language for APIs and a runtime for executing those queries, developed internally
-at Facebook in 2012 and open-sourced in 2015. It was designed to address the over-fetching and
-under-fetching problems common in xref:rest.adoc[*REST*] APIs, where response shapes are fixed by
-the server.
+GraphQL is a query language for APIs and a runtime for executing those queries, developed internally at Facebook in 2012
+and open-sourced in 2015. It was designed to address the over-fetching and under-fetching problems common in
+xref:rest.adoc[*REST*] APIs, where response shapes are fixed by the server.
 
-With GraphQL, clients declare exactly what data they need in each request. The server returns
-precisely that data – no more, no less – in a single response.
+With GraphQL, clients declare exactly what data they need in each request. The server returns precisely that data – no
+more, no less – in a single response.
 
-Field selection addresses over-fetching of _shape_, but a list field could still return an unbounded
-number of items. GraphQL handles this with the _connections_ specification popularised by Relay,
-which standardises xref:pagination.adoc[*pagination*] of list fields through `edges`, `pageInfo`,
-and `first`/`after` arguments.
+Field selection addresses over-fetching of _shape_, but a list field could still return an unbounded number of items.
+GraphQL handles this with the _connections_ specification popularised by Relay, which standardises
+xref:pagination.adoc[*pagination*] of list fields through `edges`, `pageInfo`, and `first`/`after` arguments.
 
 == Schema and type system
 
-Every GraphQL API is defined by a _schema_ written in the Schema Definition Language (SDL). The
-schema is the contract between client and server: it defines all available types, their fields, and
-the operations clients may perform.
+Every GraphQL API is defined by a _schema_ written in the Schema Definition Language (SDL). The schema is the contract
+between client and server: it defines all available types, their fields, and the operations clients may perform.
 
 === Scalar types
 
-Scalar types represent leaf values – they have no sub-fields. Built-in scalars are `Int`, `Float`,
-`String`, `Boolean`, and `ID`. Custom scalars (e.g. `DateTime`, `URL`) can be defined.
+Scalar types represent leaf values – they have no sub-fields. Built-in scalars are `Int`, `Float`, `String`, `Boolean`,
+and `ID`. Custom scalars (e.g. `DateTime`, `URL`) can be defined.
 
 === Object types
 
@@ -65,8 +62,8 @@ Three root types define the entry points into the API:
 
 == Queries
 
-A GraphQL query mirrors the shape of the data it requests. The client names the fields it wants at
-every level of nesting:
+A GraphQL query mirrors the shape of the data it requests. The client names the fields it wants at every level of
+nesting:
 
 ----
 query {
@@ -94,14 +91,12 @@ The response matches the shape of the query exactly:
 }
 ----
 
-Fields not requested are not returned. This eliminates over-fetching. Because related data can be
-fetched in one query (e.g. a book and its author), multiple round trips are also avoided,
-eliminating under-fetching.
+Fields not requested are not returned. This eliminates over-fetching. Because related data can be fetched in one query
+(e.g. a book and its author), multiple round trips are also avoided, eliminating under-fetching.
 
 === Variables and arguments
 
-Queries accept arguments to filter or parameterise results. Variables keep query strings static and
-values separate:
+Queries accept arguments to filter or parameterise results. Variables keep query strings static and values separate:
 
 ----
 query GetBook($id: ID!) {
@@ -132,8 +127,8 @@ query {
 
 == Mutations
 
-Mutations modify server-side data. Like queries, they return exactly the fields requested – useful
-for immediately retrieving the updated state after a write:
+Mutations modify server-side data. Like queries, they return exactly the fields requested – useful for immediately
+retrieving the updated state after a write:
 
 ----
 mutation CreateBook($input: CreateBookInput!) {
@@ -146,8 +141,8 @@ mutation CreateBook($input: CreateBookInput!) {
 
 == Subscriptions
 
-Subscriptions establish a persistent connection (typically over WebSocket) through which the server
-pushes updates to clients when specified events occur:
+Subscriptions establish a persistent connection (typically over WebSocket) through which the server pushes updates to
+clients when specified events occur:
 
 ----
 subscription {
@@ -161,24 +156,21 @@ subscription {
 
 == Resolvers
 
-The schema defines _what_ data is available. Resolvers define _how_ it is fetched. Each field in the
-schema can have a resolver function that fetches or computes the field's value – from a database,
-another service, or anywhere else.
+The schema defines _what_ data is available. Resolvers define _how_ it is fetched. Each field in the schema can have a
+resolver function that fetches or computes the field's value – from a database, another service, or anywhere else.
 
-The GraphQL execution engine calls resolvers for each requested field, assembling the response. A
-DataLoader pattern is commonly used to batch multiple resolver calls into a single database query,
-avoiding the N+1 query problem.
+The GraphQL execution engine calls resolvers for each requested field, assembling the response. A DataLoader pattern is
+commonly used to batch multiple resolver calls into a single database query, avoiding the N+1 query problem.
 
 == Single endpoint
 
-Unlike REST, which exposes many endpoints (one per resource or action), a GraphQL API typically has
-a single endpoint (e.g. `/graphql`). The query itself determines what is returned. This simplifies
-versioning: new fields and types can be added to the schema without breaking existing clients.
+Unlike REST, which exposes many endpoints (one per resource or action), a GraphQL API typically has a single endpoint
+(e.g. `/graphql`). The query itself determines what is returned. This simplifies versioning: new fields and types can be
+added to the schema without breaking existing clients.
 
 == Introspection
 
-GraphQL schemas are self-describing. Clients can query the schema itself to discover all available
-types and operations:
+GraphQL schemas are self-describing. Clients can query the schema itself to discover all available types and operations:
 
 ----
 query {
@@ -191,8 +183,7 @@ query {
 }
 ----
 
-Introspection powers tooling such as GraphiQL (an in-browser IDE) and automatic documentation
-generators.
+Introspection powers tooling such as GraphiQL (an in-browser IDE) and automatic documentation generators.
 
 == Comparison with REST
 
@@ -247,15 +238,14 @@ generators.
 
 == Disadvantages
 
-* *Complexity*: Schema design, resolver implementation (including N+1 mitigation), and query depth
-  management add overhead.
-* *HTTP caching*: REST benefits from URL-based HTTP caching. GraphQL typically uses `POST` requests
-  to a single endpoint, making standard HTTP caching harder to apply.
-* *Query cost and rate limiting*: Deeply nested or highly complex queries can be expensive to
-  execute. Rate limiting based on request count is insufficient. Query complexity analysis or depth
-  limiting is needed.
-* *Not always the right fit*: For simple CRUD APIs with well-defined, stable response shapes, REST
-  is simpler to implement and operate.
+* *Complexity*: Schema design, resolver implementation (including N+1 mitigation), and query depth management add
+  overhead.
+* *HTTP caching*: REST benefits from URL-based HTTP caching. GraphQL typically uses `POST` requests to a single endpoint,
+  making standard HTTP caching harder to apply.
+* *Query cost and rate limiting*: Deeply nested or highly complex queries can be expensive to execute. Rate limiting based
+  on request count is insufficient. Query complexity analysis or depth limiting is needed.
+* *Not always the right fit*: For simple CRUD APIs with well-defined, stable response shapes, REST is simpler to implement
+  and operate.
 
 == When to use GraphQL
 
@@ -266,16 +256,15 @@ GraphQL is a good fit when:
 * The data graph is complex with many interrelated types that clients need to traverse.
 * Rapid frontend iteration is more important than the cost of schema and resolver maintenance.
 
-xref:rest.adoc[*REST*] remains preferable for simple CRUD APIs, public APIs where HTTP caching is
-important, or teams without GraphQL experience. xref:grpc.adoc[*gRPC*] is preferable for
-high-performance internal service-to-service communication.
+xref:rest.adoc[*REST*] remains preferable for simple CRUD APIs, public APIs where HTTP caching is important, or teams
+without GraphQL experience. xref:grpc.adoc[*gRPC*] is preferable for high-performance internal service-to-service
+communication.
 
 == See also
 
-* xref:rest.adoc[*Representational State Transfer (REST)*]: The architectural style GraphQL was
-  designed to complement and, in some cases, replace.
-* xref:grpc.adoc[*gRPC*]: A high-performance RPC framework, an alternative for internal microservice
-  communication.
+* xref:rest.adoc[*Representational State Transfer (REST)*]: The architectural style GraphQL was designed to complement
+  and, in some cases, replace.
+* xref:grpc.adoc[*gRPC*]: A high-performance RPC framework, an alternative for internal microservice communication.
 * xref:http-api.adoc[*HTTP API*]: The broader category of APIs built on HTTP.
 * xref:http.adoc[*HyperText Transfer Protocol (HTTP)*]: The underlying transport protocol.
 * xref:network-protocol.adoc[*Network protocols*]

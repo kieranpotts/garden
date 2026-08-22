@@ -1,71 +1,62 @@
 = SOLID principles
 
 SOLID is an acronym for five xref:design-principle.adoc[*design principles*] of
-xref:object-oriented-programming.adoc[*object-oriented programming*], popularized by Robert C.
-Martin. The five principles are the
-xref:single-responsibility-principle.adoc[*single responsibility principle*], the
+xref:object-oriented-programming.adoc[*object-oriented programming*], popularized by Robert C. Martin. The five
+principles are the xref:single-responsibility-principle.adoc[*single responsibility principle*], the
 xref:open-closed-principle.adoc[*open-closed principle*], the
 xref:liskov-substitution-principle.adoc[*Liskov substitution principle*], the
 xref:interface-segregation-principle.adoc[*interface segregation principle*], and
 xref:dependency-inversion.adoc[*dependency inversion*].
 
-Martin introduced the acronym in his 2000 essay _Design Principles and Design Patterns_, gathering
-principles he had been writing about through the 1990s into a single mnemonic. Two of the five
-predate him: the Liskov substitution principle was stated by Barbara Liskov in 1987, and the
-open-closed principle by Bertrand Meyer in 1988. The other three emerged from Martin's own series of
-_C++ Report_ columns in 1996. The acronym itself is a teaching device, a way to make the five
-memorable and to present them as a coherent set rather than as isolated heuristics.
+Martin introduced the acronym in his 2000 essay _Design Principles and Design Patterns_, gathering principles he had
+been writing about through the 1990s into a single mnemonic. Two of the five predate him: the Liskov substitution
+principle was stated by Barbara Liskov in 1987, and the open-closed principle by Bertrand Meyer in 1988. The other three
+emerged from Martin's own series of _C++ Report_ columns in 1996. The acronym itself is a teaching device, a way to make
+the five memorable and to present them as a coherent set rather than as isolated heuristics.
 
 == What the principles address
 
 Martin framed the principles as remedies for the symptoms of poor design he called
-xref:software-rot.adoc[*software rot*]: rigidity, where every change forces many others; fragility,
-where a change breaks unrelated parts; immobility, where a module cannot be reused because it drags
-in too many dependencies; and viscosity, where it is easier to hack around the design than to follow
-it. The five principles are not a checklist of features to add but a set of preferences – for high
-xref:cohesion.adoc[*cohesion*], low xref:coupling.adoc[*coupling*], and dependence on
-xref:abstraction.adoc[*abstractions*] rather than concretes – that, taken together, push a codebase
+xref:software-rot.adoc[*software rot*]: rigidity, where every change forces many others; fragility, where a change
+breaks unrelated parts; immobility, where a module cannot be reused because it drags in too many dependencies; and
+viscosity, where it is easier to hack around the design than to follow it. The five principles are not a checklist of
+features to add but a set of preferences – for high xref:cohesion.adoc[*cohesion*], low xref:coupling.adoc[*coupling*],
+and dependence on xref:abstraction.adoc[*abstractions*] rather than concretes – that, taken together, push a codebase
 away from those symptoms.
 
-The principles operate at the scale of a single class or module and its immediate collaborators.
-They are not architectural rules. Styles such as
-xref:hexagonal-architecture.adoc[*hexagonal architecture*] and
-xref:clean-architecture.adoc[*clean architecture*] apply dependency inversion across a whole system,
-but that is a larger use of one SOLID letter, not a consequence of SOLID as a whole.
+The principles operate at the scale of a single class or module and its immediate collaborators. They are not
+architectural rules. Styles such as xref:hexagonal-architecture.adoc[*hexagonal architecture*] and
+xref:clean-architecture.adoc[*clean architecture*] apply dependency inversion across a whole system, but that is a
+larger use of one SOLID letter, not a consequence of SOLID as a whole.
 
 == How the letters relate
 
-The five principles are interdependent, and Martin described them as building toward one another.
-The single responsibility principle is the foundation: a module with one reason to change is easier
-to extend without modifying, which is the goal of the open-closed principle. The open-closed
-principle is in turn easiest to satisfy when subtypes are genuine behavioral substitutes (the Liskov
-substitution principle), when interfaces are narrow enough that every implementer can honor the full
-contract (the interface segregation principle), and when callers depend on abstractions owned by the
-caller rather than on concrete implementations (dependency inversion). Each letter makes the next
-more achievable.
+The five principles are interdependent, and Martin described them as building toward one another. The single
+responsibility principle is the foundation: a module with one reason to change is easier to extend without modifying,
+which is the goal of the open-closed principle. The open-closed principle is in turn easiest to satisfy when subtypes
+are genuine behavioral substitutes (the Liskov substitution principle), when interfaces are narrow enough that every
+implementer can honor the full contract (the interface segregation principle), and when callers depend on abstractions
+owned by the caller rather than on concrete implementations (dependency inversion). Each letter makes the next more
+achievable.
 
-xref:dependency-injection.adoc[*Dependency injection*] is the technique most commonly used to put
-dependency inversion into practice, and so it is the mechanism by which much of SOLID becomes
-operational in real codebases.
+xref:dependency-injection.adoc[*Dependency injection*] is the technique most commonly used to put dependency inversion
+into practice, and so it is the mechanism by which much of SOLID becomes operational in real codebases.
 
 == Relation to other heuristics
 
-SOLID overlaps with xref:grasp.adoc[*GRASP*], Craig Larman's set of responsibility-assignment
-patterns, which express similar preferences for low coupling and high cohesion but frame them as
-questions about which class should own a responsibility. SOLID is also a specific application of
-xref:separation-of-concerns.adoc[*separation of concerns*] to the class and module level. The
-xref:law-of-demeter.adoc[*Law of Demeter*] is a complementary heuristic: it constrains how an object
-talks to its collaborators, where the SOLID letters constrain the shape of the modules that
-collaborate.
+SOLID overlaps with xref:grasp.adoc[*GRASP*], Craig Larman's set of responsibility-assignment patterns, which express
+similar preferences for low coupling and high cohesion but frame them as questions about which class should own a
+responsibility. SOLID is also a specific application of xref:separation-of-concerns.adoc[*separation of concerns*] to
+the class and module level. The xref:law-of-demeter.adoc[*Law of Demeter*] is a complementary heuristic: it constrains
+how an object talks to its collaborators, where the SOLID letters constrain the shape of the modules that collaborate.
 
 == Criticism
 
-The principles are heuristics, not laws, and they are easy to over-apply. Introducing an abstraction
-for every collaboration, ahead of any second implementation, produces empty interfaces and
-speculative hierarchies that multiply without earning their keep. The result is
-xref:complexity.adoc[*complexity*] in the name of avoiding it. xref:yagni.adoc[*YAGNI*] is the usual
-counterweight: an abstraction that never sees a second implementation is generality bought on
-credit. The principles are most useful when applied where a dependency is genuinely volatile or
+The principles are heuristics, not laws, and they are easy to over-apply. Introducing an abstraction for every
+collaboration, ahead of any second implementation, produces empty interfaces and speculative hierarchies that multiply
+without earning their keep. The result is xref:complexity.adoc[*complexity*] in the name of avoiding it.
+xref:yagni.adoc[*YAGNI*] is the usual counterweight: an abstraction that never sees a second implementation is
+generality bought on credit. The principles are most useful when applied where a dependency is genuinely volatile or
 where xref:unit-testing.adoc[*unit testing*] needs a seam, not as a blanket rule over every class.
 
 == See also
@@ -90,7 +81,6 @@ where xref:unit-testing.adoc[*unit testing*] needs a seam, not as a blanket rule
 == References
 
 * Martin, Robert C. (2000). _Design Principles and Design Patterns_. objectmentor.com.
-* Martin, Robert C. (2002). _Agile Software Development, Principles, Patterns, and Practices_.
-  Pearson.
+* Martin, Robert C. (2002). _Agile Software Development, Principles, Patterns, and Practices_. Pearson.
 * Liskov, Barbara (1987). _Data Abstraction and Hierarchy in Object-Oriented Programming_. OOPSLA.
 * Meyer, Bertrand (1988). _Object-Oriented Software Construction_. Prentice Hall.

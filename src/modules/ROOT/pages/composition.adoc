@@ -1,72 +1,63 @@
 = Composition
 
-Composition is a xref:design-pattern.adoc[*design pattern*] and a
-xref:design-principle.adoc[*design principle*] of
-xref:object-oriented-programming.adoc[*object-oriented programming*]. As a mechanism, it builds
-complex objects from simpler ones. An object holds references to other objects that supply part of
-its behavior, rather than deriving that behavior from a parent class through
-xref:inheritance.adoc[*inheritance*]. The composed object "has a" collaborator, where inheritance
-expresses an "is a" relationship. Composition is the strongest form of
+Composition is a xref:design-pattern.adoc[*design pattern*] and a xref:design-principle.adoc[*design principle*] of
+xref:object-oriented-programming.adoc[*object-oriented programming*]. As a mechanism, it builds complex objects from
+simpler ones. An object holds references to other objects that supply part of its behavior, rather than deriving that
+behavior from a parent class through xref:inheritance.adoc[*inheritance*]. The composed object "has a" collaborator,
+where inheritance expresses an "is a" relationship. Composition is the strongest form of
 xref:association.adoc[*association*], the general "uses a" or "has a" relationship between classes.
 
-The mechanism is *delegation*. The composed object forwards the calls it cannot (or chooses not to)
-satisfy itself to one of its collaborators, which does the work on its behalf. The collaborator may
-be passed in, constructed privately, or swapped later. Because the relationship is mediated by
-references rather than welded into the class hierarchy, the collaborator can be replaced at runtime
-and tested in isolation. This is what keeps xref:coupling.adoc[*coupling*] low and
-xref:cohesion.adoc[*cohesion*] high: each object owns one concern and borrows the rest.
+The mechanism is *delegation*. The composed object forwards the calls it cannot (or chooses not to) satisfy itself to
+one of its collaborators, which does the work on its behalf. The collaborator may be passed in, constructed privately,
+or swapped later. Because the relationship is mediated by references rather than welded into the class hierarchy, the
+collaborator can be replaced at runtime and tested in isolation. This is what keeps xref:coupling.adoc[*coupling*] low
+and xref:cohesion.adoc[*cohesion*] high: each object owns one concern and borrows the rest.
 
-The Gang of Four's recommendation to *favor composition over inheritance* is the principle's
-best-known form. Inheritance is a powerful but rigid tool. A subclass is bound to its parent's
-implementation at compile time, cannot change its parent at runtime, and easily breaks the
+The Gang of Four's recommendation to *favor composition over inheritance* is the principle's best-known form.
+Inheritance is a powerful but rigid tool. A subclass is bound to its parent's implementation at compile time, cannot
+change its parent at runtime, and easily breaks the
 xref:liskov-substitution-principle.adoc[*Liskov substitution principle*] when used for
-xref:code-reuse.adoc[*code reuse*] rather than true subtyping. Deep class hierarchies amplify the
-cost: a change near the root ripples through every descendant, and behavior the subclass does not
-want is inherited along with the behavior it does. Composition sidesteps these problems. A class can
-swap or replace a collaborator at runtime, and each collaborator can be tested and evolved
-independently.
+xref:code-reuse.adoc[*code reuse*] rather than true subtyping. Deep class hierarchies amplify the cost: a change near
+the root ripples through every descendant, and behavior the subclass does not want is inherited along with the behavior
+it does. Composition sidesteps these problems. A class can swap or replace a collaborator at runtime, and each
+collaborator can be tested and evolved independently.
 
-Composition and inheritance are not mutually exclusive, and most mature designs use both. The stable
-advice is to keep inheritance shallow and reserved for genuine subtyping, where every subclass truly
-is a substitutable specialization of its parent, and to reach for composition whenever the goal is
-reuse without an "is a" relationship. A short inheritance chain captures the common type; the
-varying behavior is then assembled from collaborators held by reference. This mix keeps the type
-hierarchy narrow while leaving behavior open to change.
+Composition and inheritance are not mutually exclusive, and most mature designs use both. The stable advice is to keep
+inheritance shallow and reserved for genuine subtyping, where every subclass truly is a substitutable specialization of
+its parent, and to reach for composition whenever the goal is reuse without an "is a" relationship. A short inheritance
+chain captures the common type; the varying behavior is then assembled from collaborators held by reference. This mix
+keeps the type hierarchy narrow while leaving behavior open to change.
 
-Composition also plays well with xref:interface.adoc[*interfaces*] and
-xref:polymorphism.adoc[*polymorphism*]. A class delegates to a collaborator through an interface, so
-the collaborator's concrete type can vary without the consumer changing. This is the basis of many
-xref:design-pattern.adoc[*design patterns*] — strategy, decorator, and adapter all compose objects
-to vary behavior rather than bending a class hierarchy. The
-xref:adapter-pattern.adoc[*adapter pattern*], for instance, comes in an *object adapter* form that
-holds the adaptee by reference and a *class adapter* form that inherits from both sides. The object
-form is preferred precisely because it composes rather than inherits.
+Composition also plays well with xref:interface.adoc[*interfaces*] and xref:polymorphism.adoc[*polymorphism*]. A class
+delegates to a collaborator through an interface, so the collaborator's concrete type can vary without the consumer
+changing. This is the basis of many xref:design-pattern.adoc[*design patterns*] — strategy, decorator, and adapter all
+compose objects to vary behavior rather than bending a class hierarchy. The
+xref:adapter-pattern.adoc[*adapter pattern*], for instance, comes in an *object adapter* form that holds the adaptee by
+reference and a *class adapter* form that inherits from both sides. The object form is preferred precisely because it
+composes rather than inherits.
 
 Varying behavior by adding a new collaborator rather than editing the consumer is what the
-xref:open-closed-principle.adoc[*open-closed principle*] asks for, and composition is the mechanism
-that makes it possible at the object level.
+xref:open-closed-principle.adoc[*open-closed principle*] asks for, and composition is the mechanism that makes it
+possible at the object level.
 
 Holding collaborators through interfaces is also what makes composition the structural foundation of
-xref:dependency-injection.adoc[*dependency injection*]. The composed object declares the
-collaborators it needs as abstract dependencies rather than constructing them itself, and an outside
-agent supplies concrete instances. That arrangement is an application of
-xref:dependency-inversion.adoc[*dependency inversion*]: both the consumer and the collaborator
-depend on the same abstraction, so neither is bound to the other's concrete type. Composition
-supplies the "has a" relationship; injection decides who fills it and when.
+xref:dependency-injection.adoc[*dependency injection*]. The composed object declares the collaborators it needs as
+abstract dependencies rather than constructing them itself, and an outside agent supplies concrete instances. That
+arrangement is an application of xref:dependency-inversion.adoc[*dependency inversion*]: both the consumer and the
+collaborator depend on the same abstraction, so neither is bound to the other's concrete type. Composition supplies the
+"has a" relationship; injection decides who fills it and when.
 
 The same principle scales beyond individual objects. In game development, the
-xref:entity-component-system.adoc[*entity component system*] pattern treats every object in a scene
-as an entity assembled from components rather than as a member of a class hierarchy. An enemy, a
-weapon, and a projectile share no common ancestor; each is whatever its current components make it,
-and behavior changes by adding or removing components at runtime. It is composition over inheritance
-applied at architectural scale.
+xref:entity-component-system.adoc[*entity component system*] pattern treats every object in a scene as an entity
+assembled from components rather than as a member of a class hierarchy. An enemy, a weapon, and a projectile share no
+common ancestor; each is whatever its current components make it, and behavior changes by adding or removing components
+at runtime. It is composition over inheritance applied at architectural scale.
 
-The trade-off is indirection. A composed object delegates through one extra layer, which can make
-the control flow harder to follow than a direct inheritance chain. Behavior that a reader could once
-find in one class is now split across several collaborators, and tracing a single request may mean
-hopping between them. Composition is nevertheless the safer default for reuse. Inheritance is best
-reserved for genuine subtyping, where every subclass truly is a substitutable specialization of its
-parent.
+The trade-off is indirection. A composed object delegates through one extra layer, which can make the control flow
+harder to follow than a direct inheritance chain. Behavior that a reader could once find in one class is now split
+across several collaborators, and tracing a single request may mean hopping between them. Composition is nevertheless
+the safer default for reuse. Inheritance is best reserved for genuine subtyping, where every subclass truly is a
+substitutable specialization of its parent.
 
 == See also
 

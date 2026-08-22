@@ -3,9 +3,9 @@
 :link-conways-law:      https://web.archive.org/web/20190929004831/http://www.melconway.com/Home/Conways_Law.html
 :link-committees-paper: https://web.archive.org/web/20191010222311/https://www.melconway.com/Research/Committees_Paper_Final_1968.html
 
-Conway's law describes the link between the communication structure of organizations and the systems
-those organizations design for their own needs. The law is named after the computer programmer
-Melvin Conway, who {link-conways-law}[introduced the idea in 1967].
+Conway's law describes the link between the communication structure of organizations and the systems those organizations
+design for their own needs. The law is named after the computer programmer Melvin Conway, who
+{link-conways-law}[introduced the idea in 1967].
 
 [quote, Melvin E Conway, How Do Committees Invent?]
 ____
@@ -14,89 +14,81 @@ constrained to produce designs which are copies of the communication structures
 of these organizations.
 ____
 
-The law is based on the reasoning that in order for a product to function, the authors and designers
-of its component parts must communicate with each other in order to ensure compatibility between the
-components. Therefore, the technical structure of a system will reflect the social boundaries of the
-organizations that produced it, across which communication is more difficult.
+The law is based on the reasoning that in order for a product to function, the authors and designers of its component
+parts must communicate with each other in order to ensure compatibility between the components. Therefore, the technical
+structure of a system will reflect the social boundaries of the organizations that produced it, across which
+communication is more difficult.
 
-In colloquial terms, it means complex products end up "shaped like" the organizational structure
-they are designed in, or designed for. The law is applied primarily in the field of
-xref:software-architecture.adoc[*software architecture*], though Conway directed it more broadly and
-its assumptions and conclusions apply to most technical fields.
+In colloquial terms, it means complex products end up "shaped like" the organizational structure they are designed in,
+or designed for. The law is applied primarily in the field of xref:software-architecture.adoc[*software architecture*],
+though Conway directed it more broadly and its assumptions and conclusions apply to most technical fields.
 
-Strictly read, the law only asserts a correspondence. It does not claim that communication structure
-is the cause of system structure. Commentators have read the causality in both directions. Some
-argue the organization reshapes itself to fit a chosen technical design. Others hold that the
-organization's communication pattern dictates the design. Conway himself framed the idea as a
-sociological observation, and the most defensible reading is that the two structures co-evolve, each
-constraining the other.
+Strictly read, the law only asserts a correspondence. It does not claim that communication structure is the cause of
+system structure. Commentators have read the causality in both directions. Some argue the organization reshapes itself
+to fit a chosen technical design. Others hold that the organization's communication pattern dictates the design. Conway
+himself framed the idea as a sociological observation, and the most defensible reading is that the two structures
+co-evolve, each constraining the other.
 
 == Origin and reception
 
-Conway wrote up the idea as the article _How Do Committees Invent?_, which was published in the
-trade journal _Datamation_ in April 1968. The article had been rejected by a previous venue, and
-Conway has noted that the law was already implicit in his consulting work on the topic. Later that
-same year, participants at the 1968 National Symposium on Modular Programming took the observation
-seriously enough to dub it "Conway's law".
+Conway wrote up the idea as the article _How Do Committees Invent?_, which was published in the trade journal
+_Datamation_ in April 1968. The article had been rejected by a previous venue, and Conway has noted that the law was
+already implicit in his consulting work on the topic. Later that same year, participants at the 1968 National Symposium
+on Modular Programming took the observation seriously enough to dub it "Conway's law".
 
 The law reached a wider software audience through Frederick Brooks, who popularized the name in
-xref:mythical-man-month.adoc[*The Mythical Man-Month*] (1975). Brooks's own concerns were closely
-related. His law, that adding people to a late project makes it later, is driven by the same growth
-in communication overhead that Conway's law describes. Where Brooks quantified the cost of
-communication paths, Conway traced their structural consequence in the resulting design.
+xref:mythical-man-month.adoc[*The Mythical Man-Month*] (1975). Brooks's own concerns were closely related. His law, that
+adding people to a late project makes it later, is driven by the same growth in communication overhead that Conway's law
+describes. Where Brooks quantified the cost of communication paths, Conway traced their structural consequence in the
+resulting design.
 
-Several authors have restated the law in stronger form. Edward Yourdon and Larry Constantine, in
-_Structured Design_ (1979), asserted that "the structure of any system designed by an organization
-is isomorphic to the structure of the organization". James Coplien and Neil Harrison, in
-_Organizational Patterns of Agile Software Development_ (2004), turned the observation into a
-prescription: if the parts of an organization do not reflect the essential parts of the product, the
-project will be in trouble, so the organization should be made compatible with the product
-architecture.
+Several authors have restated the law in stronger form. Edward Yourdon and Larry Constantine, in _Structured Design_
+(1979), asserted that "the structure of any system designed by an organization is isomorphic to the structure of the
+organization". James Coplien and Neil Harrison, in _Organizational Patterns of Agile Software Development_ (2004),
+turned the observation into a prescription: if the parts of an organization do not reflect the essential parts of the
+product, the project will be in trouble, so the organization should be made compatible with the product architecture.
 
 == Empirical evidence
 
-Academic researchers study the phenomenon under the name *the mirroring hypothesis* – the prediction
-that a product's architecture will mirror the communication structure of the organization that
-produced it. Evidence has accumulated across several settings.
+Academic researchers study the phenomenon under the name *the mirroring hypothesis* – the prediction that a product's
+architecture will mirror the communication structure of the organization that produced it. Evidence has accumulated
+across several settings.
 
-A team from MIT and Harvard Business School tested the hypothesis directly. MacCormack, Rusnak, and
-Baldwin (2012) compared products built by loosely and tightly coupled organizations, including the
-Linux kernel, and found that the product of the loosely coupled organization was significantly more
-modular. They concluded that organizational design decisions leave a measurable mark on the
-technical structure of the artifacts those organizations produce.
+A team from MIT and Harvard Business School tested the hypothesis directly. MacCormack, Rusnak, and Baldwin (2012)
+compared products built by loosely and tightly coupled organizations, including the Linux kernel, and found that the
+product of the loosely coupled organization was significantly more modular. They concluded that organizational design
+decisions leave a measurable mark on the technical structure of the artifacts those organizations produce.
 
-Nagappan, Murphy, and Basili (2008), working with Microsoft, found that the organizational structure
-of a development team influenced the quality of the software it produced. Syeed and Hammouda (2013)
-found congruent results in the FreeBSD open-source project. The evidence is not unanimous – the
-mirroring hypothesis has documented exceptions, particularly where a single organization
-deliberately engineers against its own communication grain – but the broad pattern is well
-supported.
+Nagappan, Murphy, and Basili (2008), working with Microsoft, found that the organizational structure of a development
+team influenced the quality of the software it produced. Syeed and Hammouda (2013) found congruent results in the
+FreeBSD open-source project. The evidence is not unanimous – the mirroring hypothesis has documented exceptions,
+particularly where a single organization deliberately engineers against its own communication grain – but the broad
+pattern is well supported.
 
 == The inverse Conway maneuver
 
-If the organization shapes the architecture, the organization can be reshaped to produce a desired
-architecture. This is the *inverse Conway maneuver* – the practice of designing team and
-communication boundaries first, so that the system that emerges from those teams matches the
-intended technical design. The term was popularized in the 2010s by consultants at ThoughtWorks, and
-the idea has become a cornerstone of modern approaches to xref:microservices.adoc[*microservices*].
+If the organization shapes the architecture, the organization can be reshaped to produce a desired architecture. This is
+the *inverse Conway maneuver* – the practice of designing team and communication boundaries first, so that the system
+that emerges from those teams matches the intended technical design. The term was popularized in the 2010s by
+consultants at ThoughtWorks, and the idea has become a cornerstone of modern approaches to
+xref:microservices.adoc[*microservices*].
 
-The maneuver is the active counterweight to the law's passive observation. Rather than accept the
-architecture that an existing org chart would produce, a group reorganizes so that the boundaries
-between teams fall where the boundaries between services should fall. Amazon's "two-pizza team"
-rule, which keeps teams small enough to be fed by two pizzas, is an early and influential example.
-The _team topologies_ framework of Skelton and Pais (2019) builds directly on Conway's law,
-prescribing four team types and a small set of interaction modes to keep communication structures
-aligned with architectural intent.
+The maneuver is the active counterweight to the law's passive observation. Rather than accept the architecture that an
+existing org chart would produce, a group reorganizes so that the boundaries between teams fall where the boundaries
+between services should fall. Amazon's "two-pizza team" rule, which keeps teams small enough to be fed by two pizzas, is
+an early and influential example. The _team topologies_ framework of Skelton and Pais (2019) builds directly on Conway's
+law, prescribing four team types and a small set of interaction modes to keep communication structures aligned with
+architectural intent.
 
-The flip side is a common failure mode. A team that adopts a microservice architecture without
-changing how it is organized tends to produce a *distributed monolith* – many deployable units that
-are coupled as tightly as the teams that own them remain coupled. Conway's law predicts this
-exactly. The technical decomposition will not outrun the communication structure for long.
+The flip side is a common failure mode. A team that adopts a microservice architecture without changing how it is
+organized tends to produce a *distributed monolith* – many deployable units that are coupled as tightly as the teams
+that own them remain coupled. Conway's law predicts this exactly. The technical decomposition will not outrun the
+communication structure for long.
 
-Methods like xref:domain-driven-design.adoc[*domain-driven design*] mitigate the law's effects from
-the other direction. By aligning xref:bounded-context.adoc[*bounded contexts*] with team boundaries,
-DDD makes the organizational seams and the model seams coincide, so that the structure the
-organization would naturally produce is the structure the design calls for.
+Methods like xref:domain-driven-design.adoc[*domain-driven design*] mitigate the law's effects from the other direction.
+By aligning xref:bounded-context.adoc[*bounded contexts*] with team boundaries, DDD makes the organizational seams and
+the model seams coincide, so that the structure the organization would naturally produce is the structure the design
+calls for.
 
 == See also
 
@@ -107,27 +99,21 @@ organization would naturally produce is the structure the design calls for.
 * xref:hock-principle.adoc[*Hock principle*]: Simple purpose and principles as the organizing
 * xref:microservices.adoc[*Microservices*]
 * xref:software-architecture.adoc[*Software architecture*]
-* xref:mythical-man-month.adoc[*The Mythical Man-Month*]
-  constraint, in place of structure.
+* xref:mythical-man-month.adoc[*The Mythical Man-Month*] constraint, in place of structure.
 * xref:ways-of-working.adoc[*Ways of working*]
 * xref:software-architecture.adoc[*Software architecture*]
 * xref:laws-and-principles.adoc[*Laws and principles*]
 
 == References
 
-- Conway, Melvin E. (April 1968).
-  {link-committees-paper}[_How Do Committees Invent?_].
-  _Datamation_, 14(5), 28-31.
+- Conway, Melvin E. (April 1968). {link-committees-paper}[_How Do Committees Invent?_]. _Datamation_, 14(5), 28-31.
 - Brooks, Frederick P. (1975). _The Mythical Man-Month_. Addison-Wesley.
 - Yourdon, Edward, and Constantine, Larry L. (1979). _Structured Design_. Prentice Hall.
 - MacCormack, Alan, Rusnak, John, and Baldwin, Carliss Y. (2012).
   _Exploring the Duality between Product and Organizational Architectures: A Test of the "Mirroring" Hypothesis_.
   _Research Policy_, 41(8), 1309-1324.
 - Nagappan, Nachiappan, Murphy, Brendan, and Basili, Victor (2008).
-  _The influence of organizational structure on software quality: An empirical case study_.
-  Proceedings of ICSE '08.
-- Coplien, James O., and Harrison, Neil B. (2004).
-  _Organizational Patterns of Agile Software Development_. Prentice Hall.
-- Colfer, Lyra, and Baldwin, Carliss Y. (2016).
-  _The Mirroring Hypothesis: Theory, Evidence and Exceptions_. Harvard Business School Working Paper
-  16-124.
+  _The influence of organizational structure on software quality: An empirical case study_. Proceedings of ICSE '08.
+- Coplien, James O., and Harrison, Neil B. (2004). _Organizational Patterns of Agile Software Development_. Prentice Hall.
+- Colfer, Lyra, and Baldwin, Carliss Y. (2016). _The Mirroring Hypothesis: Theory, Evidence and Exceptions_. Harvard
+  Business School Working Paper 16-124.

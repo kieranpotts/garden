@@ -3,11 +3,10 @@
 :link-coding-agent-loop-spec: https://github.com/strongdm/attractor/blob/main/coding-agent-loop-spec.md
 :link-claude-code-agent-loop: https://code.claude.com/docs/en/agent-sdk/agent-loop
 
-The agent loop is the core pattern behind an xref:agent.adoc[*AI agent*]. It's the cycle that lets a
-model take actions in the world rather than just answer once. The cycle is:
+The agent loop is the core pattern behind an xref:agent.adoc[*AI agent*]. It's the cycle that lets a model take actions
+in the world rather than just answer once. The cycle is:
 
-* *Observe.* The model receives context — the user's goal, plus the results of anything it has done
-  so far.
+* *Observe.* The model receives context — the user's goal, plus the results of anything it has done so far.
 
 * *Reason/decide.* It figures out the next step toward the goal.
 
@@ -15,68 +14,63 @@ model take actions in the world rather than just answer once. The cycle is:
 
 * *Get results.* The tool's output is fed back into the model's context.
 
-* *Repeat.* The model looks at the new information and decides the next action, until it judges the
-  task done, or it hits a limit such as a max-steps or budget cap.
+* *Repeat.* The model looks at the new information and decides the next action, until it judges the task done, or it hits
+  a limit such as a max-steps or budget cap.
 
 A full cycle is known as a **turn**, sometimes a **round**.
 
-The key difference from a plain chatbot is that the loop lets the model iterate: try something, see
-what happened, adjust. That is what makes things like coding agents work — write code, run tests,
-see failures, fix, run again. A single request-response turn cannot do this. The loop is what turns
-a model into something that can pursue a goal rather than merely respond to one.
+The key difference from a plain chatbot is that the loop lets the model iterate: try something, see what happened,
+adjust. That is what makes things like coding agents work — write code, run tests, see failures, fix, run again. A
+single request-response turn cannot do this. The loop is what turns a model into something that can pursue a goal rather
+than merely respond to one.
 
 == The request chain
 
-The loop is a chain of xref:large-language-model.adoc[*model provider*] requests, each one
-re-sending the whole context. One turn is many requests: every tool result triggers another request,
-and every request carries everything — the system prompt, the full history, all tool results so far
-— because the xref:large-language-model.adoc[*model*] is xref:stateless.adoc[*stateless*] and sees
-only what is in the current request. This is why context grows turn over turn and why
-xref:context-engineering.adoc[*context engineering*] matters: every token in the window is paid for
-and attended to on every request in the chain.
+The loop is a chain of xref:large-language-model.adoc[*model provider*] requests, each one re-sending the whole context.
+One turn is many requests: every tool result triggers another request, and every request carries everything — the system
+prompt, the full history, all tool results so far — because the xref:large-language-model.adoc[*model*] is
+xref:stateless.adoc[*stateless*] and sees only what is in the current request. This is why context grows turn over turn
+and why xref:context-engineering.adoc[*context engineering*] matters: every token in the window is paid for and attended
+to on every request in the chain.
 
 == Tool calls and tool results
 
 A *tool call* is the model's output naming a tool and its arguments — structured text the
 xref:agent-harness.adoc[*harness*] parses and executes. It is produced by
-xref:large-language-model.adoc[*next-token prediction*], so like any model output it can be wrong: a
-malformed call, a hallucinated argument, a tool that does not exist. The harness validates and
-dispatches what it can.
+xref:large-language-model.adoc[*next-token prediction*], so like any model output it can be wrong: a malformed call, a
+hallucinated argument, a tool that does not exist. The harness validates and dispatches what it can.
 
-A *tool result* is what the harness sends back after running the tool — the agent's only view of the
-environment. A result stays in the context for the rest of the session and is re-sent with every
-subsequent request in the chain. Tool results are usually the bulk of a coding session's context:
-file contents, test output, search hits, shell stdout. See xref:agent-handoff.adoc[*agent handoff*]
-for how durable results are carried beyond a session.
+A *tool result* is what the harness sends back after running the tool — the agent's only view of the environment. A
+result stays in the context for the rest of the session and is re-sent with every subsequent request in the chain. Tool
+results are usually the bulk of a coding session's context: file contents, test output, search hits, shell stdout. See
+xref:agent-handoff.adoc[*agent handoff*] for how durable results are carried beyond a session.
 
 In practice, three concerns dominate the difficulty of running an agent loop well:
 
-* *Context management.* The loop accumulates a lot of tokens as tool results pile up turn over turn
-  — see also xref:context-engineering.adoc[*context engineering*].
+* *Context management.* The loop accumulates a lot of tokens as tool results pile up turn over turn — see also
+  xref:context-engineering.adoc[*context engineering*].
 
-* *Knowing when to stop.* Judging that the task is actually done, rather than looping past
-  completion or giving up early.
+* *Knowing when to stop.* Judging that the task is actually done, rather than looping past completion or giving up early.
 
-* *Error handling.* Recovering gracefully from failed tool calls and dead ends instead of
-  compounding them into further bad actions.
+* *Error handling.* Recovering gracefully from failed tool calls and dead ends instead of compounding them into further
+  bad actions.
 
-The infrastructure that wraps the loop — providing tools, managing the context window, enforcing
-guardrails — is the xref:agent-harness.adoc[*harness*]. In other words, agent harnesses are
-responsible for running agent loops.
+The infrastructure that wraps the loop — providing tools, managing the context window, enforcing guardrails — is the
+xref:agent-harness.adoc[*harness*]. In other words, agent harnesses are responsible for running agent loops.
 
-{link-coding-agent-loop-spec}[Coding Agent Loop Specification]
-is an attempt to provide a language-agnostic specification for building a coding agent harness.
+{link-coding-agent-loop-spec}[Coding Agent Loop Specification] is an attempt to provide a language-agnostic
+specification for building a coding agent harness.
 
-Running many such loops unattended, on a recurring cadence rather than a single session, is the
-concern of xref:loop-engineering.adoc[*loop engineering*], which is a separate topic concerned with
-the end-to-end automation of one or more agents in pursuit of a goal.
+Running many such loops unattended, on a recurring cadence rather than a single session, is the concern of
+xref:loop-engineering.adoc[*loop engineering*], which is a separate topic concerned with the end-to-end automation of
+one or more agents in pursuit of a goal.
 
 ''''
 
 == References
 
-* {link-claude-code-agent-loop}[Claude Code Docs: How the agent loop works].
-  This document explains how the agent loop works in the context of Anthropic's Agent SDK.
+* {link-claude-code-agent-loop}[Claude Code Docs: How the agent loop works]. This document explains how the agent loop
+  works in the context of Anthropic's Agent SDK.
 
 == See also
 

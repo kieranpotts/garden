@@ -3,59 +3,49 @@
 :link-dco:        https://developercertificate.org/
 :link-opensource: https://opensource.com/article/18/3/cla-vs-dco-whats-difference
 
-The *Developer Certificate of Origin (DCO)* is a short attestation a contributor makes when
-submitting a change to an open-source project. By signing off a commit, the contributor certifies
-that they created the contribution themselves, or that they have the right to submit it under the
-project's open-source license. It is an assertion of provenance, not a transfer of copyright.
+The *Developer Certificate of Origin (DCO)* is a short attestation a contributor makes when submitting a change to an
+open-source project. By signing off a commit, the contributor certifies that they created the contribution themselves,
+or that they have the right to submit it under the project's open-source license. It is an assertion of provenance, not
+a transfer of copyright.
 
-The DCO was introduced in 2004 by the Linux Foundation, in the wake of the SCO–Linux disputes, as
-part of the Linux kernel's patch submission process. Linus Torvalds proposed it as a lightweight
-alternative to a signed legal agreement. The same text has since been adopted by Git, GCC,
-cert-manager, Pi-hole, and many other projects. It is published at
-{link-dco}[developercertificate.org] and is not modified by the projects that
-adopt it.
+The DCO was introduced in 2004 by the Linux Foundation, in the wake of the SCO–Linux disputes, as part of the Linux
+kernel's patch submission process. Linus Torvalds proposed it as a lightweight alternative to a signed legal agreement.
+The same text has since been adopted by Git, GCC, cert-manager, Pi-hole, and many other projects. It is published at
+{link-dco}[developercertificate.org] and is not modified by the projects that adopt it.
 
-The certificate itself is a fixed, four-clause statement (Developer's Certificate of Origin 1.1).
-The contributor certifies one of the following: the contribution was created in whole or in part by
-them and they have the right to submit it under the license in the file; it is based on prior
-covered work that they have the right to submit under that same license; or it was provided to them
-by another person who certified one of these things and they have not modified it. A final clause
-records the contributor's understanding that the contribution is public and will be maintained
+The certificate itself is a fixed, four-clause statement (Developer's Certificate of Origin 1.1). The contributor
+certifies one of the following: the contribution was created in whole or in part by them and they have the right to
+submit it under the license in the file; it is based on prior covered work that they have the right to submit under that
+same license; or it was provided to them by another person who certified one of these things and they have not modified
+it. A final clause records the contributor's understanding that the contribution is public and will be maintained
 indefinitely.
 
-For projects using Git, the attestation is carried as a `Signed-off-by:` footer in the commit
-message, added by passing the `-s` or `--signoff` flag to `git commit`. The footer records the
-contributor's real name and email address, matching the commit's author. Because each commit is
-signed off individually, the DCO is a per-commit record rather than a one-time agreement, and it
-travels with the commit history inside the xref:version-control.adoc[*version control*] repository.
+For projects using Git, the attestation is carried as a `Signed-off-by:` footer in the commit message, added by passing
+the `-s` or `--signoff` flag to `git commit`. The footer records the contributor's real name and email address, matching
+the commit's author. Because each commit is signed off individually, the DCO is a per-commit record rather than a
+one-time agreement, and it travels with the commit history inside the xref:version-control.adoc[*version control*]
+repository.
 
-The DCO is often contrasted with a *contributor license agreement (CLA)*, which is a signed legal
-contract that typically grants the project's host a broad license to the contribution, or in some
-cases assigns copyright to a specific entity. Proponents of the DCO argue that it is a lower barrier
-to contribution, because it requires no separate signed agreement and imposes no terms beyond what
-the project's own license already requires. Critics note that the DCO offers the project's host less
-legal protection than a CLA, since it does not grant an explicit license grant beyond the
+The DCO is often contrasted with a *contributor license agreement (CLA)*, which is a signed legal contract that
+typically grants the project's host a broad license to the contribution, or in some cases assigns copyright to a
+specific entity. Proponents of the DCO argue that it is a lower barrier to contribution, because it requires no separate
+signed agreement and imposes no terms beyond what the project's own license already requires. Critics note that the DCO
+offers the project's host less legal protection than a CLA, since it does not grant an explicit license grant beyond the
 contribution itself.
 
-Enforcement is usually automated. A project's
-xref:continuous-integration.adoc[*continuous integration*] pipeline checks each incoming commit for
-a valid `Signed-off-by:` line matching the commit author, and rejects the change if the sign-off is
-missing or mismatched. GitHub's probot/dco bot and similar tools automate this check on pull
-requests.
+Enforcement is usually automated. A project's xref:continuous-integration.adoc[*continuous integration*] pipeline checks
+each incoming commit for a valid `Signed-off-by:` line matching the commit author, and rejects the change if the
+sign-off is missing or mismatched. GitHub's probot/dco bot and similar tools automate this check on pull requests.
 
 == See also
 
-* xref:version-control.adoc[*Version control*] – the system that carries DCO sign-offs as commit
-  metadata.
-* xref:continuous-integration.adoc[*Continuous integration*] – where DCO compliance is typically
-  enforced automatically.
-* xref:cathedral-and-the-bazaar.adoc[*The Cathedral and the Bazaar*] – the bazaar-style, open
-  contribution model the DCO later helped formalize.
+* xref:version-control.adoc[*Version control*] – the system that carries DCO sign-offs as commit metadata.
+* xref:continuous-integration.adoc[*Continuous integration*] – where DCO compliance is typically enforced automatically.
+* xref:cathedral-and-the-bazaar.adoc[*The Cathedral and the Bazaar*] – the bazaar-style, open contribution model the DCO
+  later helped formalize.
 * xref:ways-of-working.adoc[*Ways of working*]
 
 == References
 
 * Linux Foundation (2004). {link-dco}[_Developer Certificate of Origin_].
-* Cotton, B. (2018).
-  {link-opensource}[_CLA vs. DCO: What's the difference?_].
-  Opensource.com.
+* Cotton, B. (2018). {link-opensource}[_CLA vs. DCO: What's the difference?_]. Opensource.com.

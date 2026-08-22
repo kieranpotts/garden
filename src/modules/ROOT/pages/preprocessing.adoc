@@ -1,54 +1,50 @@
 = Preprocessing
 
 Preprocessing is a family of techniques that improve the xref:performance.adoc[*performance*] and
-xref:scalability.adoc[*scalability*] of a system by doing work ahead of time, so that reads can be
-served cheaply when they arrive. The unifying idea is to shift expensive computation off the read
-path and onto the write path, a background job, or a quiet period before the data is needed. The
-cost is paid once, at the moment the data is prepared, and the benefit is paid back on every read.
+xref:scalability.adoc[*scalability*] of a system by doing work ahead of time, so that reads can be served cheaply when
+they arrive. The unifying idea is to shift expensive computation off the read path and onto the write path, a background
+job, or a quiet period before the data is needed. The cost is paid once, at the moment the data is prepared, and the
+benefit is paid back on every read.
 
-Preprocessing is a broad umbrella, and several more specific techniques in this garden are instances
-of it. xref:denormalization.adoc[*Denormalization*] and
-xref:materialized-view.adoc[*materialized views*] precompute joins and aggregations so a read need
-not re-run them. xref:database-index.adoc[*Database indexes*] precompute search structures so a
-lookup need not scan the table. xref:caching.adoc[*Caching*], when warmed ahead of demand, is
-preprocessing too: the cache is populated before the first request rather than on a cache miss.
-Building a xref:cqrs.adoc[*CQRS*] read model is preprocessing by another name, keeping a
-query-shaped projection up to date so reads never touch the write model.
+Preprocessing is a broad umbrella, and several more specific techniques in this garden are instances of it.
+xref:denormalization.adoc[*Denormalization*] and xref:materialized-view.adoc[*materialized views*] precompute joins and
+aggregations so a read need not re-run them. xref:database-index.adoc[*Database indexes*] precompute search structures
+so a lookup need not scan the table. xref:caching.adoc[*Caching*], when warmed ahead of demand, is preprocessing too:
+the cache is populated before the first request rather than on a cache miss. Building a xref:cqrs.adoc[*CQRS*] read
+model is preprocessing by another name, keeping a query-shaped projection up to date so reads never touch the write
+model.
 
-The pipelines that feed these structures are themselves preprocessing steps. xref:etl.adoc[*ETL*]
-and xref:batch-processing.adoc[*batch processing*] run on a schedule to transform and load data into
-shape for later reads, and xref:change-data-capture.adoc[*change data capture*] keeps the prepared
-copies current as the source changes.
+The pipelines that feed these structures are themselves preprocessing steps. xref:etl.adoc[*ETL*] and
+xref:batch-processing.adoc[*batch processing*] run on a schedule to transform and load data into shape for later reads,
+and xref:change-data-capture.adoc[*change data capture*] keeps the prepared copies current as the source changes.
 
 == Why preprocess
 
-Preprocessing pays off when the read side dominates, when the work to produce a result is expensive
-relative to serving it, and when the result can tolerate some lag behind the source. It is the
-natural answer to read-heavy xref:access-pattern.adoc[*access patterns*] whose queries repeat the
-same expensive joins, aggregations, or transformations on every request. Doing that work once, ahead
-of time, turns each read into a cheap lookup.
+Preprocessing pays off when the read side dominates, when the work to produce a result is expensive relative to serving
+it, and when the result can tolerate some lag behind the source. It is the natural answer to read-heavy
+xref:access-pattern.adoc[*access patterns*] whose queries repeat the same expensive joins, aggregations, or
+transformations on every request. Doing that work once, ahead of time, turns each read into a cheap lookup.
 
-The counterpoint is xref:lazy-loading.adoc[*lazy loading*]: defer the work until the moment it is
-needed, and pay for it then. The two are mirror images. Preprocessing front-loads the cost and makes
-reads fast; lazy loading keeps the write and startup paths cheap and lets the first read absorb the
-cost. The right choice depends on the workload. A read-heavy path with a stable working set rewards
-preprocessing; a path where most prepared data is never read wastes the upfront work.
+The counterpoint is xref:lazy-loading.adoc[*lazy loading*]: defer the work until the moment it is needed, and pay for it
+then. The two are mirror images. Preprocessing front-loads the cost and makes reads fast; lazy loading keeps the write
+and startup paths cheap and lets the first read absorb the cost. The right choice depends on the workload. A read-heavy
+path with a stable working set rewards preprocessing; a path where most prepared data is never read wastes the upfront
+work.
 
 == Trade-offs
 
 Like every optimization that moves work across time, preprocessing is not free.
 
-* *Staleness.* A precomputed result is a snapshot. It drifts behind the source until it is
-  refreshed, so readers see a past state. The window is a form of
-  xref:eventual-consistency.adoc[*eventual consistency*], and its acceptable width is the central
-  design decision.
-* *Write-side cost.* The work moved off the read path does not disappear. It is paid on the write
-  path, in a background job, or in a refresh pipeline. The more current the prepared data must be,
-  the more often it must be refreshed, and the heavier the write side becomes.
+* *Staleness.* A precomputed result is a snapshot. It drifts behind the source until it is refreshed, so readers see a
+  past state. The window is a form of xref:eventual-consistency.adoc[*eventual consistency*], and its acceptable width is
+  the central design decision.
+* *Write-side cost.* The work moved off the read path does not disappear. It is paid on the write path, in a background
+  job, or in a refresh pipeline. The more current the prepared data must be, the more often it must be refreshed, and the
+  heavier the write side becomes.
 * *Storage.* Prepared copies consume extra space. The redundant data is a deliberate departure from
   xref:single-source-of-truth.adoc[*single source of truth*], traded for read speed.
-* *Complexity.* Refresh logic, scheduling, and failure handling add moving parts. A preprocessing
-  pipeline that silently stalls is a common source of stale-data incidents.
+* *Complexity.* Refresh logic, scheduling, and failure handling add moving parts. A preprocessing pipeline that silently
+  stalls is a common source of stale-data incidents.
 
 == See also
 

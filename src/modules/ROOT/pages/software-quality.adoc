@@ -1,61 +1,54 @@
 = Software quality
 
-*Software quality* is the degree to which a software system satisfies the needs of its stakeholders
-— the property the system has, or lacks, when it does what its users, operators, and maintainers
-require of it, in the way they require it. It is an *emergent* property. Quality is not the sum of
-individual features or test results but the behaviour of the whole system as its stakeholders
-experience it. Two systems with the same feature list can differ widely in quality, because one is
-slow, fragile, or hard to change and the other is not.
+*Software quality* is the degree to which a software system satisfies the needs of its stakeholders — the property the
+system has, or lacks, when it does what its users, operators, and maintainers require of it, in the way they require it.
+It is an *emergent* property. Quality is not the sum of individual features or test results but the behaviour of the
+whole system as its stakeholders experience it. Two systems with the same feature list can differ widely in quality,
+because one is slow, fragile, or hard to change and the other is not.
 
 The definition is deliberately stakeholder-relative. The same idea shows up in
 xref:software-architecture.adoc[*software architecture*] as the requirement that a system meet its
 xref:quality-attribute.adoc[*quality attributes*] — the measurable
-xref:non-functional-requirements.adoc[*non-functional requirements*] such as
-xref:performance.adoc[*performance*], xref:availability.adoc[*availability*], and
-xref:security.adoc[*security*] that describe _how well_ the system behaves rather than what it does.
-The ISO/IEC 25010 *SQuaRE* family codifies a canonical set of these characteristics — functional
-suitability, performance efficiency, compatibility, usability, reliability, security,
-maintainability, and portability — and is the vocabulary most quality programs measure against.
-Quality, in this view, is the system's measured satisfaction of the attributes its stakeholders have
-prioritised, and resolving the trade-offs between those attributes is the central work of
-architecture.
+xref:non-functional-requirements.adoc[*non-functional requirements*] such as xref:performance.adoc[*performance*],
+xref:availability.adoc[*availability*], and xref:security.adoc[*security*] that describe _how well_ the system behaves
+rather than what it does. The ISO/IEC 25010 *SQuaRE* family codifies a canonical set of these characteristics —
+functional suitability, performance efficiency, compatibility, usability, reliability, security, maintainability, and
+portability — and is the vocabulary most quality programs measure against. Quality, in this view, is the system's
+measured satisfaction of the attributes its stakeholders have prioritised, and resolving the trade-offs between those
+attributes is the central work of architecture.
 
-A second useful distinction is between *internal* and *external* quality. External quality is what a
-user perceives: correctness of features, responsiveness, availability, the absence of crashes.
-Internal quality is what a maintainer perceives: the readability of the code, the separation of
-concerns, the absence of xref:technical-debt.adoc[*technical debt*]. The two are correlated over the
-long run but can diverge in the short run. A system can deliver flawlessly today and be rotting
-underneath, with the bill coming due in later releases.
+A second useful distinction is between *internal* and *external* quality. External quality is what a user perceives:
+correctness of features, responsiveness, availability, the absence of crashes. Internal quality is what a maintainer
+perceives: the readability of the code, the separation of concerns, the absence of
+xref:technical-debt.adoc[*technical debt*]. The two are correlated over the long run but can diverge in the short run. A
+system can deliver flawlessly today and be rotting underneath, with the bill coming due in later releases.
 
 == How quality is pursued
 
-Quality is not inspected in at the end. It is the outcome of disciplines applied across the
-lifecycle, each contributing evidence that the system meets its specified attributes.
+Quality is not inspected in at the end. It is the outcome of disciplines applied across the lifecycle, each contributing
+evidence that the system meets its specified attributes.
 
-* xref:quality-assurance.adoc[*Quality assurance*] is the process-focused discipline that sets up
-  the standards, reviews, and feedback loops that prevent defects from entering the system in the
-  first place.
-* xref:software-assurance.adoc[*Software assurance*] widens that to *adversarial* intent and to the
-  *justified confidence* — backed by evidence and argument — that the software behaves as intended.
-  It comes to the fore in xref:high-integrity.adoc[*high-integrity*] and
-  xref:safety-critical-system.adoc[*safety-critical*] systems, where the cost of failure is high.
-* xref:software-craftsmanship.adoc[*Software craftsmanship*] frames quality as the product of
-  individual skill and discipline — clean code, refactoring, deliberate practice — rather than
-  process alone.
+* xref:quality-assurance.adoc[*Quality assurance*] is the process-focused discipline that sets up the standards, reviews,
+  and feedback loops that prevent defects from entering the system in the first place.
+* xref:software-assurance.adoc[*Software assurance*] widens that to *adversarial* intent and to the *justified confidence*
+  — backed by evidence and argument — that the software behaves as intended. It comes to the fore in
+  xref:high-integrity.adoc[*high-integrity*] and xref:safety-critical-system.adoc[*safety-critical*] systems, where the
+  cost of failure is high.
+* xref:software-craftsmanship.adoc[*Software craftsmanship*] frames quality as the product of individual skill and
+  discipline — clean code, refactoring, deliberate practice — rather than process alone.
 
-These are complements, not alternatives. A process without craftsmanship produces paperwork;
-craftsmanship without process produces heroics that do not survive the next author.
+These are complements, not alternatives. A process without craftsmanship produces paperwork; craftsmanship without
+process produces heroics that do not survive the next author.
 
 == How quality erodes
 
-Quality is not a state a system reaches once and keeps. Left unattended it declines, both because
-the system's environment moves on — xref:software-rot.adoc[*software rot*] — and because pressure to
-deliver leads the team to defer the work that keeps the system habitable, accumulating
-xref:technical-debt.adoc[*technical debt*]. The
-xref:laws-of-software-evolution.adoc[*laws of software evolution*] observe this from the other side:
-an E-type system that is not continually adapted becomes progressively less satisfactory. Sustaining
-quality is therefore a continuous activity, not a milestone, and the xref:metrics.adoc[*metrics*] a
-team keeps on its quality attributes are how it notices the decline soon enough to act on it.
+Quality is not a state a system reaches once and keeps. Left unattended it declines, both because the system's
+environment moves on — xref:software-rot.adoc[*software rot*] — and because pressure to deliver leads the team to defer
+the work that keeps the system habitable, accumulating xref:technical-debt.adoc[*technical debt*]. The
+xref:laws-of-software-evolution.adoc[*laws of software evolution*] observe this from the other side: an E-type system
+that is not continually adapted becomes progressively less satisfactory. Sustaining quality is therefore a continuous
+activity, not a milestone, and the xref:metrics.adoc[*metrics*] a team keeps on its quality attributes are how it
+notices the decline soon enough to act on it.
 
 == See also
 

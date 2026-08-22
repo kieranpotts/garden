@@ -1,88 +1,81 @@
 = Peer-to-peer (P2P) architecture
 
-Peer-to-peer (P2P) architecture is a decentralized model of
-xref:distributed-system.adoc[*distributed software*] in which each node, or *peer*, has equal
-responsibilities and capabilities. There is no central server. Each peer can act as both a client
-and a server, sharing resources and data directly with other peers.
+Peer-to-peer (P2P) architecture is a decentralized model of xref:distributed-system.adoc[*distributed software*] in
+which each node, or *peer*, has equal responsibilities and capabilities. There is no central server. Each peer can act
+as both a client and a server, sharing resources and data directly with other peers.
 
-This contrasts with the xref:client-server-architecture.adoc[*client-server model*], where one side
-always initiates requests and the other always answers. In a P2P network every peer is symmetric:
-any node may request a resource from, or serve a resource to, any other. The topology is flat rather
-than hierarchical.
+This contrasts with the xref:client-server-architecture.adoc[*client-server model*], where one side always initiates
+requests and the other always answers. In a P2P network every peer is symmetric: any node may request a resource from,
+or serve a resource to, any other. The topology is flat rather than hierarchical.
 
 == Structure
 
 P2P networks fall into three broad shapes.
 
-* *Unstructured.* Peers connect to one another ad hoc. A peer looking for a resource floods requests
-  to its neighbours, who forward them on. This is simple to build but wasteful of bandwidth, and
-  search results are unpredictable. Early file-sharing networks such as Gnutella worked this way.
+* *Unstructured.* Peers connect to one another ad hoc. A peer looking for a resource floods requests to its neighbours,
+  who forward them on. This is simple to build but wasteful of bandwidth, and search results are unpredictable. Early
+  file-sharing networks such as Gnutella worked this way.
 
-* *Structured.* The overlay is organized so that any peer can locate any resource in a bounded
-  number of hops, usually through a *distributed hash table (DHT)*. Chord, Kademlia, and Pastry are
-  well-known DHT designs. Lookups are deterministic and cheap, but the network must actively
-  maintain its routing tables as peers join and leave.
+* *Structured.* The overlay is organized so that any peer can locate any resource in a bounded number of hops, usually
+  through a *distributed hash table (DHT)*. Chord, Kademlia, and Pastry are well-known DHT designs. Lookups are
+  deterministic and cheap, but the network must actively maintain its routing tables as peers join and leave.
 
-* *Hybrid.* A lightweight coordinator helps peers find one another, then steps out of the data path.
-  This could be a tracker, a signalling server, or a bootstrap node. BitTorrent's tracker and
-  xref:webrtc.adoc[*WebRTC*] signalling servers both fit this pattern. The coordinator is not a
-  single point of failure for the data itself, only for initial rendezvous.
+* *Hybrid.* A lightweight coordinator helps peers find one another, then steps out of the data path. This could be a
+  tracker, a signalling server, or a bootstrap node. BitTorrent's tracker and xref:webrtc.adoc[*WebRTC*] signalling
+  servers both fit this pattern. The coordinator is not a single point of failure for the data itself, only for initial
+  rendezvous.
 
 == Peer discovery and membership
 
 Because there is no central registry, peers must find one another without help. The
-xref:service-discovery.adoc[*service discovery*] problem is harder in P2P than in a managed cluster.
-Any peer may join or leave at any time, and there is no authority to consult.
+xref:service-discovery.adoc[*service discovery*] problem is harder in P2P than in a managed cluster. Any peer may join
+or leave at any time, and there is no authority to consult.
 
-Peers typically bootstrap from a small list of known endpoints, then learn about further peers
-through exchanges with the ones they reach. xref:gossip-protocol.adoc[*Gossip protocols*] are a
-common mechanism, letting peers disseminate membership changes through random, decentralized
-exchanges rather than routing them through a central server. The price is
-xref:eventual-consistency.adoc[*eventual consistency*]: a joining peer is not known to the whole
-network instantly, only after a few gossip rounds.
+Peers typically bootstrap from a small list of known endpoints, then learn about further peers through exchanges with
+the ones they reach. xref:gossip-protocol.adoc[*Gossip protocols*] are a common mechanism, letting peers disseminate
+membership changes through random, decentralized exchanges rather than routing them through a central server. The price
+is xref:eventual-consistency.adoc[*eventual consistency*]: a joining peer is not known to the whole network instantly,
+only after a few gossip rounds.
 
 == Coordination without a central authority
 
-The flip side of removing the server is that nothing arbitrates between peers. Agreement on shared
-state has to be reached by xref:consensus-algorithm.adoc[*consensus*] among equals. This covers the
-order of transactions, the membership list, and the result of an election. It is a harder problem
-than in a client-server system, where the server simply decides.
+The flip side of removing the server is that nothing arbitrates between peers. Agreement on shared state has to be
+reached by xref:consensus-algorithm.adoc[*consensus*] among equals. This covers the order of transactions, the
+membership list, and the result of an election. It is a harder problem than in a client-server system, where the server
+simply decides.
 
-Many P2P systems sidestep the issue by avoiding shared mutable state altogether. BitTorrent has no
-global state to agree on; each peer tracks only its own downloads. Where shared state is
-unavoidable, the cost of consensus dominates the design. Blockchains are the canonical example.
+Many P2P systems sidestep the issue by avoiding shared mutable state altogether. BitTorrent has no global state to agree
+on; each peer tracks only its own downloads. Where shared state is unavoidable, the cost of consensus dominates the
+design. Blockchains are the canonical example.
 
 == Why P2P
 
-P2P networks are known for their xref:resilience.adoc[*resilience*] and
-xref:scalability.adoc[*scalability*]. There is no
-xref:single-point-of-failure.adoc[*single point of failure*]. Taking down any one peer, or many
-peers, does not stop the network. Capacity grows with the number of peers, since each new peer
-contributes bandwidth and storage rather than only consuming it. This is the opposite of a
-client-server system, where the server is the bottleneck that must be scaled.
+P2P networks are known for their xref:resilience.adoc[*resilience*] and xref:scalability.adoc[*scalability*]. There is
+no xref:single-point-of-failure.adoc[*single point of failure*]. Taking down any one peer, or many peers, does not stop
+the network. Capacity grows with the number of peers, since each new peer contributes bandwidth and storage rather than
+only consuming it. This is the opposite of a client-server system, where the server is the bottleneck that must be
+scaled.
 
-The same properties cut the other way. The lack of a central authority makes trust, identity, and
-security harder. Any peer can join, so peers must assume that some are malicious or faulty.
-Coordination is harder, churn (peers joining and leaving) is constant, and shared state can only
-converge eventually.
+The same properties cut the other way. The lack of a central authority makes trust, identity, and security harder. Any
+peer can join, so peers must assume that some are malicious or faulty. Coordination is harder, churn (peers joining and
+leaving) is constant, and shared state can only converge eventually.
 
 == Examples
 
-* *BitTorrent* distributes large files by splitting them into pieces and having peers exchange
-  pieces with one another, with a tracker or DHT only for rendezvous.
+* *BitTorrent* distributes large files by splitting them into pieces and having peers exchange pieces with one another,
+  with a tracker or DHT only for rendezvous.
 
-* *IPFS* is a content-addressed P2P filesystem that uses a Kademlia DHT for lookups and a
-  BitTorrent-inspired exchange protocol for transfer.
+* *IPFS* is a content-addressed P2P filesystem that uses a Kademlia DHT for lookups and a BitTorrent-inspired exchange
+  protocol for transfer.
 
-* *Blockchain networks* such as Bitcoin and Ethereum use P2P overlays to disseminate transactions
-  and blocks, with consensus layered on top.
+* *Blockchain networks* such as Bitcoin and Ethereum use P2P overlays to disseminate transactions and blocks, with
+  consensus layered on top.
 
-* xref:webrtc.adoc[*WebRTC*] establishes direct P2P audio, video, and data channels between
-  browsers, falling back to a relay server only when NAT traversal fails.
+* xref:webrtc.adoc[*WebRTC*] establishes direct P2P audio, video, and data channels between browsers, falling back to a
+  relay server only when NAT traversal fails.
 
-* xref:local-first-software.adoc[*Local-first*] sync engines often use P2P-style replication between
-  devices, with *conflict-free replicated data types* providing deterministic convergence without a
-  central coordinator.
+* xref:local-first-software.adoc[*Local-first*] sync engines often use P2P-style replication between devices, with
+  *conflict-free replicated data types* providing deterministic convergence without a central coordinator.
 
 == See also
 

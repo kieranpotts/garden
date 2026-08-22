@@ -8,10 +8,10 @@
 :link-jasmine:       https://jasmine.github.io/
 :link-liz-keogh-bdd: https://www.youtube.com/watch?v=_k8OHEXoe9k
 
-*Behavior-driven development (BDD)* is a software development approach devised by Dan North. It is a
-refinement of xref:test-driven-development.adoc[*test-driven development (TDD)*] that combines TDD
-techniques with ideas from xref:domain-driven-design.adoc[*domain-driven design*] to create a shared
-language and process for collaboration between developers, testers, and business stakeholders.
+*Behavior-driven development (BDD)* is a software development approach devised by Dan North. It is a refinement of
+xref:test-driven-development.adoc[*test-driven development (TDD)*] that combines TDD techniques with ideas from
+xref:domain-driven-design.adoc[*domain-driven design*] to create a shared language and process for collaboration between
+developers, testers, and business stakeholders.
 
 [quote, Dan North]
 ____
@@ -21,17 +21,17 @@ interactions with well-defined outputs, resulting in the delivery of working,
 tested software that matters.
 ____
 
-Where TDD focuses on testing the correctness of an implementation, BDD focuses on specifying the
-desired behavior of the system from the outside in – that is, from the user's or business's
-perspective. BDD shifts the conversation from "how do we test this function?" to "what should this
-feature do for the user?" As such, BDD is as much a communication strategy as a testing methodology.
+Where TDD focuses on testing the correctness of an implementation, BDD focuses on specifying the desired behavior of the
+system from the outside in – that is, from the user's or business's perspective. BDD shifts the conversation from "how
+do we test this function?" to "what should this feature do for the user?" As such, BDD is as much a communication
+strategy as a testing methodology.
 
 == Behavioral specifications
 
-BDD suggests that requirements should be expressed as concrete examples of how the system should
-behave, written in a semi-formal natural language that all team members can read and contribute to.
-This is the xref:ubiquitous-language.adoc[*ubiquitous language*] concept borrowed from domain-driven
-design – a shared vocabulary that bridges the gap between technical and non-technical contributors.
+BDD suggests that requirements should be expressed as concrete examples of how the system should behave, written in a
+semi-formal natural language that all team members can read and contribute to. This is the
+xref:ubiquitous-language.adoc[*ubiquitous language*] concept borrowed from domain-driven design – a shared vocabulary
+that bridges the gap between technical and non-technical contributors.
 
 Each feature is documented as a xref:user-story.adoc[*user story*] with the following structure.
 
@@ -74,54 +74,50 @@ Acceptance criteria:
     Then they should see an error message
 ----
 
-Scenarios should be phrased declaratively – in the language of the business domain, not in terms of
-UI interactions or technical implementation details. This keeps specifications stable as the
-implementation evolves.
+Scenarios should be phrased declaratively – in the language of the business domain, not in terms of UI interactions or
+technical implementation details. This keeps specifications stable as the implementation evolves.
 
-The Given-When-Then format is formalized as the xref:gherkin.adoc[*Gherkin*] domain-specific
-language, which is used by many BDD tooling frameworks.
+The Given-When-Then format is formalized as the xref:gherkin.adoc[*Gherkin*] domain-specific language, which is used by
+many BDD tooling frameworks.
 
 == The three amigos
 
-The "three amigos" (also called a Specification Workshop) is a BDD practice in which three
-perspectives collaborate to define the behavior of a feature before development begins.
+The "three amigos" (also called a Specification Workshop) is a BDD practice in which three perspectives collaborate to
+define the behavior of a feature before development begins.
 
 * *Business.* Defines the problem and the desired outcome. Does not prescribe a solution.
 * *Development.* Proposes how the problem might be solved.
 * *Testing.* Challenges the proposed solution, raises edge cases, and identifies missing scenarios.
 
-The goal of the session is to trigger conversation, surface ambiguity, and arrive at a set of
-concrete examples that everyone agrees captures the intended behavior. Requirements gaps and
-misunderstandings are far cheaper to resolve at this stage than after code has been written.
+The goal of the session is to trigger conversation, surface ambiguity, and arrive at a set of concrete examples that
+everyone agrees captures the intended behavior. Requirements gaps and misunderstandings are far cheaper to resolve at
+this stage than after code has been written.
 
 == Story-based vs. specification-based BDD
 
 BDD tooling broadly falls into two categories.
 
-Story-based frameworks use user stories and Gherkin-style scenarios as their input format. The
-plain-text feature files serve as living documentation as well as executable tests, and are intended
-to be readable by non-technical stakeholders. Examples include {link-cucumber}[Cucumber],
-{link-specflow}[SpecFlow] (.NET), and {link-behave}[Behave] (Python). All of
-these descend from {link-jbehave}[jBehave], the original BDD tool created by Dan North.
+Story-based frameworks use user stories and Gherkin-style scenarios as their input format. The plain-text feature files
+serve as living documentation as well as executable tests, and are intended to be readable by non-technical
+stakeholders. Examples include {link-cucumber}[Cucumber], {link-specflow}[SpecFlow] (.NET), and {link-behave}[Behave]
+(Python). All of these descend from {link-jbehave}[jBehave], the original BDD tool created by Dan North.
 
-Specification-based frameworks (sometimes called spec frameworks) use a more technical, code-level
-syntax. They are less suited for direct collaboration with business stakeholders, but serve well as
-a replacement for free-form unit testing, emphasizing expressive test naming and structured scenario
-blocks. Examples include {link-rspec}[RSpec] (Ruby) and {link-jasmine}[Jasmine]
-(JavaScript).
+Specification-based frameworks (sometimes called spec frameworks) use a more technical, code-level syntax. They are less
+suited for direct collaboration with business stakeholders, but serve well as a replacement for free-form unit testing,
+emphasizing expressive test naming and structured scenario blocks. Examples include {link-rspec}[RSpec] (Ruby) and
+{link-jasmine}[Jasmine] (JavaScript).
 
 == Benefits
 
-* Improved shared understanding of requirements between developers, testers, product owners, and
-  business stakeholders.
+* Improved shared understanding of requirements between developers, testers, product owners, and business stakeholders.
 * Acceptance criteria defined upfront reduces ambiguity before coding begins, as described in
   xref:acceptance-criteria.adoc[*acceptance criteria*].
 * Feature files serve as living documentation that stays synchronized with the codebase.
 * Tests are expressed in terms of user value rather than technical implementation details.
 * Works at multiple scales: from unit-level spec tests to full acceptance tests.
 
-BDD is considered most effective in problem domains where the cost of miscommunication is high and
-where non-technical stakeholders are closely involved in shaping requirements.
+BDD is considered most effective in problem domains where the cost of miscommunication is high and where non-technical
+stakeholders are closely involved in shaping requirements.
 
 == See also
 
@@ -132,6 +128,5 @@ where non-technical stakeholders are closely involved in shaping requirements.
 * xref:gherkin.adoc[*Gherkin*]
 * xref:specification-by-example.adoc[*Specification by example*]
 * xref:test-driven-development.adoc[*Test-driven development (TDD)*]
-* xref:ubiquitous-language.adoc[*Ubiquitous language*]
-  Keogh, Agile on the Beach (2018)
+* xref:ubiquitous-language.adoc[*Ubiquitous language*] Keogh, Agile on the Beach (2018)
 * xref:testing.adoc[*Testing*]

@@ -1,15 +1,14 @@
 = Deadlock
 
-A *deadlock* is a state in which two or more threads or processes wait indefinitely for each other
-to release resources. Every participant is blocked holding a resource that another participant
-needs, and none can make progress. The result is a standstill that resolves only when an outside
-force breaks the cycle, such as a timeout, an operator intervention, or a process being killed.
+A *deadlock* is a state in which two or more threads or processes wait indefinitely for each other to release resources.
+Every participant is blocked holding a resource that another participant needs, and none can make progress. The result
+is a standstill that resolves only when an outside force breaks the cycle, such as a timeout, an operator intervention,
+or a process being killed.
 
-Deadlock is a hazard of xref:synchronization.adoc[*synchronization*] in
-xref:concurrency.adoc[*concurrent*] and xref:parallelism.adoc[*parallel*] programs. It arises when
-threads coordinate access to shared state through xref:locking.adoc[*locks*], mutexes, or
-semaphores, and that coordination goes wrong. It is not a fault in the primitives themselves but in
-how they are used.
+Deadlock is a hazard of xref:synchronization.adoc[*synchronization*] in xref:concurrency.adoc[*concurrent*] and
+xref:parallelism.adoc[*parallel*] programs. It arises when threads coordinate access to shared state through
+xref:locking.adoc[*locks*], mutexes, or semaphores, and that coordination goes wrong. It is not a fault in the
+primitives themselves but in how they are used.
 
 == A simple example
 
@@ -26,73 +25,63 @@ unlock(A)                      unlock(B)
 unlock(B)                      unlock(A)
 ----
 
-If Thread 1 acquires `A` and, before it can take `B`, Thread 2 acquires `B`, neither can proceed.
-Thread 1 waits for `B`, which Thread 2 holds. Thread 2 waits for `A`, which Thread 1 holds. Both
-block forever.
+If Thread 1 acquires `A` and, before it can take `B`, Thread 2 acquires `B`, neither can proceed. Thread 1 waits for
+`B`, which Thread 2 holds. Thread 2 waits for `A`, which Thread 1 holds. Both block forever.
 
 == The Coffman conditions
 
-For a deadlock to occur, four conditions must hold simultaneously. They are known as the
-*Coffman conditions*, after the paper that formalised them.
+For a deadlock to occur, four conditions must hold simultaneously. They are known as the *Coffman conditions*, after the
+paper that formalised them.
 
-* *Mutual exclusion.* At least one resource is held in a non-shareable mode. Only one thread can use
-  it at a time.
-* *Hold and wait.* A thread holding at least one resource waits to acquire additional resources held
-  by others.
-* *No preemption.* Resources are released only voluntarily by the thread holding them. They cannot
-  be forcibly taken away.
-* *Circular wait.* A closed chain of threads exists, each holding a resource that the next thread in
-  the chain needs.
+* *Mutual exclusion.* At least one resource is held in a non-shareable mode. Only one thread can use it at a time.
+* *Hold and wait.* A thread holding at least one resource waits to acquire additional resources held by others.
+* *No preemption.* Resources are released only voluntarily by the thread holding them. They cannot be forcibly taken away.
+* *Circular wait.* A closed chain of threads exists, each holding a resource that the next thread in the chain needs.
 
-All four are necessary. Break any one and deadlock cannot occur. This observation is the basis of
-every prevention strategy.
+All four are necessary. Break any one and deadlock cannot occur. This observation is the basis of every prevention
+strategy.
 
 == Handling strategies
 
 There are four broad approaches to dealing with deadlock.
 
-* *Prevention.* Design the system so that at least one Coffman condition can never hold. Lock
-  ordering destroys circular wait by forcing every thread to acquire resources in the same global
-  order. Requesting all resources at once destroys hold and wait. Prevention is simple to reason
-  about but often wasteful, because it constrains how resources are used even when no deadlock is
-  imminent.
-* *Avoidance.* Allow the conditions in principle, but refuse a resource request if granting it could
-  lead to deadlock. The classic algorithm is *Dijkstra's Banker's algorithm*, which checks each
-  request against the maximum resources each thread will ever need. Avoidance needs accurate advance
-  knowledge of demand, which limits its practical use.
-* *Detection and recovery.* Let deadlocks happen, then detect them at runtime by searching for
-  cycles in the resource-allocation graph, and recover by aborting or rolling back one of the
-  threads. This suits systems where deadlocks are rare and recovery is cheap, such as
-  xref:transaction.adoc [*transactional*] databases that can roll back a victim transaction.
-* *Ignore.* Do nothing, and reboot or restart when a hang is observed. This *ostrich algorithm*
-  sounds frivolous but is the pragmatic choice in many general-purpose operating systems, where the
-  cost of prevention outweighs the frequency of deadlock.
+* *Prevention.* Design the system so that at least one Coffman condition can never hold. Lock ordering destroys circular
+  wait by forcing every thread to acquire resources in the same global order. Requesting all resources at once destroys
+  hold and wait. Prevention is simple to reason about but often wasteful, because it constrains how resources are used
+  even when no deadlock is imminent.
+* *Avoidance.* Allow the conditions in principle, but refuse a resource request if granting it could lead to deadlock. The
+  classic algorithm is *Dijkstra's Banker's algorithm*, which checks each request against the maximum resources each
+  thread will ever need. Avoidance needs accurate advance knowledge of demand, which limits its practical use.
+* *Detection and recovery.* Let deadlocks happen, then detect them at runtime by searching for cycles in the
+  resource-allocation graph, and recover by aborting or rolling back one of the threads. This suits systems where
+  deadlocks are rare and recovery is cheap, such as xref:transaction.adoc [*transactional*] databases that can roll back a
+  victim transaction.
+* *Ignore.* Do nothing, and reboot or restart when a hang is observed. This *ostrich algorithm* sounds frivolous but is
+  the pragmatic choice in many general-purpose operating systems, where the cost of prevention outweighs the frequency of
+  deadlock.
 
 == Contrast with related failures
 
-Deadlock is one of several failures that arise from poorly coordinated concurrency, and it is worth
-distinguishing from its neighbours.
+Deadlock is one of several failures that arise from poorly coordinated concurrency, and it is worth distinguishing from
+its neighbours.
 
-* *Starvation.* A thread never gets the resources it needs, not because it is in a cycle but because
-  other threads keep being favoured. Unlike deadlock, some threads make progress while one waits
-  indefinitely.
-* *Livelock.* Threads are not blocked but keep changing state in response to each other, never
-  making real progress. Two people meeting in a corridor and sidestepping the same way repeatedly is
-  the classic analogy.
+* *Starvation.* A thread never gets the resources it needs, not because it is in a cycle but because other threads keep
+  being favoured. Unlike deadlock, some threads make progress while one waits indefinitely.
+* *Livelock.* Threads are not blocked but keep changing state in response to each other, never making real progress. Two
+  people meeting in a corridor and sidestepping the same way repeatedly is the classic analogy.
 * *Race condition.* The outcome depends on the timing of interleaved access to shared state. A
   xref:thread-safety.adoc[*thread-safe*] program avoids races, typically through
-  xref:atomic-operation.adoc[*atomic operations*] or locks, but the cure is precisely what
-  introduces the risk of deadlock.
+  xref:atomic-operation.adoc[*atomic operations*] or locks, but the cure is precisely what introduces the risk of
+  deadlock.
 
 == Distributed deadlock
 
-Deadlock is not confined to a single machine. In a
-xref:distributed-system.adoc[*distributed system*], deadlocks can form across nodes when each holds
-a xref:distributed-locking.adoc[*distributed lock*] that another needs. They are harder to deal with
-than local deadlocks. Detection requires gathering a consistent snapshot of wait-for edges across
-the cluster, and recovery must contend with nodes that fail or pause mid-protocol. The same Coffman
-conditions apply, but the circular wait can span processes on different machines, and there is no
-single scheduler with a global view to break the tie.
+Deadlock is not confined to a single machine. In a xref:distributed-system.adoc[*distributed system*], deadlocks can
+form across nodes when each holds a xref:distributed-locking.adoc[*distributed lock*] that another needs. They are
+harder to deal with than local deadlocks. Detection requires gathering a consistent snapshot of wait-for edges across
+the cluster, and recovery must contend with nodes that fail or pause mid-protocol. The same Coffman conditions apply,
+but the circular wait can span processes on different machines, and there is no single scheduler with a global view to
+break the tie.
 
 == See also
 
@@ -106,7 +95,5 @@ single scheduler with a global view to break the tie.
 
 == References
 
-* Fernando, F. (2024). _Synchronization - Part 2_.
-  https://newsletter.francofernando.com/p/synchronization-part-2
-* Coffman, E.G., Elphick, M. and Shoshani, A. (1971). _System Deadlocks_. ACM Computing Surveys,
-  3(2).
+* Fernando, F. (2024). _Synchronization - Part 2_. https://newsletter.francofernando.com/p/synchronization-part-2
+* Coffman, E.G., Elphick, M. and Shoshani, A. (1971). _System Deadlocks_. ACM Computing Surveys, 3(2).

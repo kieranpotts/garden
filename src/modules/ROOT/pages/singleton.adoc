@@ -1,13 +1,12 @@
 = Singleton
 
-The singleton is a creational xref:design-pattern.adoc[*design pattern*] that restricts a class to
-a single instance and provides a global point of access to it. It is one of the 23 patterns
-catalogued by the Gang of Four, in the creational category alongside xref:factory.adoc[*Factory*].
+The singleton is a creational xref:design-pattern.adoc[*design pattern*] that restricts a class to a single instance and
+provides a global point of access to it. It is one of the 23 patterns catalogued by the Gang of Four, in the creational
+category alongside xref:factory.adoc[*Factory*].
 
-A singleton guarantees that one and only one instance of a class exists within a process, and that
-every caller reaches the same object. The canonical use is a component that coordinates a shared
-resource or a piece of system-wide state: a configuration manager, a connection pool, a cache, a
-logger, or a hardware abstraction that owns a single device handle.
+A singleton guarantees that one and only one instance of a class exists within a process, and that every caller reaches
+the same object. The canonical use is a component that coordinates a shared resource or a piece of system-wide state: a
+configuration manager, a connection pool, a cache, a logger, or a hardware abstraction that owns a single device handle.
 
 == How it is built
 
@@ -15,71 +14,63 @@ The pattern is realized with three elements together.
 
 * A *private constructor* that prevents any other class from instantiating the type directly.
 * A *static field* holding the sole instance.
-* A *static factory method*, conventionally `getInstance()`, that returns the instance, creating it
-  on the first call.
+* A *static factory method*, conventionally `getInstance()`, that returns the instance, creating it on the first call.
 
-The private constructor makes `new` impossible from outside the class. The static field stores the
-one instance once created. The factory method is the only door through which the rest of the system
-reaches it.
+The private constructor makes `new` impossible from outside the class. The static field stores the one instance once
+created. The factory method is the only door through which the rest of the system reaches it.
 
 == Initialization strategies
 
-The instance can be created eagerly, at class-loading time, or lazily, on first access. Eager
-initialization is simple and inherently thread-safe in languages where class loading is itself
-synchronized, but it pays the construction cost even when the singleton is never used.
-xref:lazy-loading.adoc[*Lazy loading*] defers the cost to first use, at the price of extra care.
+The instance can be created eagerly, at class-loading time, or lazily, on first access. Eager initialization is simple
+and inherently thread-safe in languages where class loading is itself synchronized, but it pays the construction cost
+even when the singleton is never used. xref:lazy-loading.adoc[*Lazy loading*] defers the cost to first use, at the price
+of extra care.
 
-A naive lazy implementation is not xref:thread-safety.adoc[*thread-safe*]: two threads that call
-`getInstance()` simultaneously before the instance exists can each pass the null check and each
-create a new instance, defeating the pattern. The usual remedies are to synchronize the whole
-factory method, which is correct but expensive on every call, or to apply *double-checked locking*,
-which synchronizes only the first call and guards the field with a memory barrier so that the
-published instance is visible to all threads. In Java, an enum-based singleton is preferred where it
-fits, since the language's enum semantics give a thread-safe, serialization-safe instance for free.
+A naive lazy implementation is not xref:thread-safety.adoc[*thread-safe*]: two threads that call `getInstance()`
+simultaneously before the instance exists can each pass the null check and each create a new instance, defeating the
+pattern. The usual remedies are to synchronize the whole factory method, which is correct but expensive on every call,
+or to apply *double-checked locking*, which synchronizes only the first call and guards the field with a memory barrier
+so that the published instance is visible to all threads. In Java, an enum-based singleton is preferred where it fits,
+since the language's enum semantics give a thread-safe, serialization-safe instance for free.
 
 == Trade-offs and criticism
 
 The singleton is the most criticized of the Gang of Four patterns and is often cited as an
-xref:anti-pattern.adoc[*anti-pattern*] in modern code. The reasons are not about the idea of having
-one instance, which is sometimes exactly right, but about the pattern's mechanism for enforcing it.
+xref:anti-pattern.adoc[*anti-pattern*] in modern code. The reasons are not about the idea of having one instance, which
+is sometimes exactly right, but about the pattern's mechanism for enforcing it.
 
-* *Hidden dependencies.* A class that calls `Singleton.getInstance()` declares no dependency on its
-  collaborators. The dependency is buried in the method body, invisible to the type system and to
-  readers. This makes the class harder to test in isolation and harder to reason about, the same
-  fault for which the service locator is criticized.
-* *Global state.* The instance is reachable from anywhere, so any code can read or mutate it. The
-  result is xref:coupling.adoc[*coupling*] that the source code does not show: two modules that
-  touch the singleton are connascent in identity, the strongest form in the
-  xref:connascence.adoc[*connascence*] taxonomy.
+* *Hidden dependencies.* A class that calls `Singleton.getInstance()` declares no dependency on its collaborators. The
+  dependency is buried in the method body, invisible to the type system and to readers. This makes the class harder to
+  test in isolation and harder to reason about, the same fault for which the service locator is criticized.
+* *Global state.* The instance is reachable from anywhere, so any code can read or mutate it. The result is
+  xref:coupling.adoc[*coupling*] that the source code does not show: two modules that touch the singleton are connascent
+  in identity, the strongest form in the xref:connascence.adoc[*connascence*] taxonomy.
 * *Concurrency pressure.* Shared mutable state reachable from every thread is an invitation for
-  xref:concurrency.adoc[*concurrency*] bugs. The double-checked locking dance is one symptom; the
-  broader problem is that the pattern exposes shared state the design did not have to expose.
-* *Responsibility overload.* A singleton manages its own lifecycle and performs its real work, which
-  is two jobs. This is a minor infringement of the
-  xref:single-responsibility-principle.adoc[*single responsibility principle*], and singletons tend
-  to grow into the *God Object* anti-pattern because the one-instance guarantee makes it easy to
-  keep adding responsibilities to the reachable global.
+  xref:concurrency.adoc[*concurrency*] bugs. The double-checked locking dance is one symptom; the broader problem is that
+  the pattern exposes shared state the design did not have to expose.
+* *Responsibility overload.* A singleton manages its own lifecycle and performs its real work, which is two jobs. This is
+  a minor infringement of the xref:single-responsibility-principle.adoc[*single responsibility principle*], and singletons
+  tend to grow into the *God Object* anti-pattern because the one-instance guarantee makes it easy to keep adding
+  responsibilities to the reachable global.
 
 == The dependency injection alternative
 
-The modern replacement is xref:dependency-injection.adoc[*dependency injection*]. Instead of the
-class enforcing its own singleness, an injector decides that a collaborator's lifetime is shared and
-supplies the same instance everywhere it is requested. The class declares its dependency openly, the
-test substitutes a stand-in, and the lifetime policy lives in configuration rather than in the
-class.
+The modern replacement is xref:dependency-injection.adoc[*dependency injection*]. Instead of the class enforcing its own
+singleness, an injector decides that a collaborator's lifetime is shared and supplies the same instance everywhere it is
+requested. The class declares its dependency openly, the test substitutes a stand-in, and the lifetime policy lives in
+configuration rather than in the class.
 
-In the Java ecosystem, xref:spring-framework.adoc[*Spring Framework*] beans are singletons by
-default, but the singleton-ness is a property the container manages, not a pattern the bean
-implements. This is the form the pattern usually takes in contemporary code: the singleton survives,
-but as a lifetime policy applied from outside, not as a hand-rolled `getInstance()` method.
+In the Java ecosystem, xref:spring-framework.adoc[*Spring Framework*] beans are singletons by default, but the
+singleton-ness is a property the container manages, not a pattern the bean implements. This is the form the pattern
+usually takes in contemporary code: the singleton survives, but as a lifetime policy applied from outside, not as a
+hand-rolled `getInstance()` method.
 
 == Relation to single source of truth
 
-A singleton is sometimes confused with xref:single-source-of-truth.adoc[*single source of truth*].
-The two share the word "single" and almost nothing else. A singleton is a guarantee about the number
-of object instances in a process; SSOT is a guarantee about where a piece of data is authoritative.
-A singleton that caches a value does not make that value the source of truth, and a system with a
-single source of truth needs no singleton to enforce it.
+A singleton is sometimes confused with xref:single-source-of-truth.adoc[*single source of truth*]. The two share the
+word "single" and almost nothing else. A singleton is a guarantee about the number of object instances in a process;
+SSOT is a guarantee about where a piece of data is authoritative. A singleton that caches a value does not make that
+value the source of truth, and a system with a single source of truth needs no singleton to enforce it.
 
 == See also
 
@@ -97,6 +88,5 @@ single source of truth needs no singleton to enforce it.
 
 == References
 
-* Gamma, Helm, Johnson & Vlissides (1994).
-  _Design Patterns: Elements of Reusable Object-Oriented Software_. Addison-Wesley. The creational
-  patterns chapter defines the Singleton pattern.
+* Gamma, Helm, Johnson & Vlissides (1994). _Design Patterns: Elements of Reusable Object-Oriented Software_.
+  Addison-Wesley. The creational patterns chapter defines the Singleton pattern.

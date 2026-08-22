@@ -1,76 +1,68 @@
 = Traceability
 
-Traceability is the ability to establish and follow the relationships between artifacts across a
-development lifecycle. It links a xref:requirement.adoc[*requirement*] to the design element that
-realizes it, the code that implements it, and the test case that verifies it, and traces each back
-to the stakeholder need that motivated it. The artifacts most often span requirements, design
-models, source code, and tests, and the links between them are what make a system's development
-auditable.
+Traceability is the ability to establish and follow the relationships between artifacts across a development lifecycle.
+It links a xref:requirement.adoc[*requirement*] to the design element that realizes it, the code that implements it, and
+the test case that verifies it, and traces each back to the stakeholder need that motivated it. The artifacts most often
+span requirements, design models, source code, and tests, and the links between them are what make a system's
+development auditable.
 
-A distinction is often drawn between *forward traceability* – following a requirement forward into
-the design, code, and tests that satisfy it – and *backward traceability* – tracing an artifact back
-to the requirement and stakeholder need that originated it. Both directions are needed for impact
-analysis. A change to a requirement can be followed forward to every element it touches, and a
-defect found in code can be followed back to the requirement it was meant to satisfy.
+A distinction is often drawn between *forward traceability* – following a requirement forward into the design, code, and
+tests that satisfy it – and *backward traceability* – tracing an artifact back to the requirement and stakeholder need
+that originated it. Both directions are needed for impact analysis. A change to a requirement can be followed forward to
+every element it touches, and a defect found in code can be followed back to the requirement it was meant to satisfy.
 
 == Why it matters
 
-Traceability is the evidence that a system does what it was built to do, and nothing more. It
-underpins several engineering activities.
+Traceability is the evidence that a system does what it was built to do, and nothing more. It underpins several
+engineering activities.
 
-* *Impact analysis.* When a requirement changes, traceability identifies every design element, code
-  unit, and test that the change affects.
-* *Coverage.* The links show which requirements have implementing code and verifying tests, and
-  which do not – the basis of requirements coverage.
-* *Change management.* Trace links let a team assess the cost and risk of a proposed change before
-  committing to it.
-* *Auditability.* Assessors and regulators can follow the chain from need to verified behavior,
-  rather than taking claims on trust.
+* *Impact analysis.* When a requirement changes, traceability identifies every design element, code unit, and test that
+  the change affects.
+* *Coverage.* The links show which requirements have implementing code and verifying tests, and which do not – the basis
+  of requirements coverage.
+* *Change management.* Trace links let a team assess the cost and risk of a proposed change before committing to it.
+* *Auditability.* Assessors and regulators can follow the chain from need to verified behavior, rather than taking claims
+  on trust.
 
-The value rises with the cost of failure. For xref:high-integrity.adoc[*high-integrity*] systems –
-medical devices, avionics, automotive – traceability is mandated by standards such as DO-178C, IEC
-62304, and ISO 26262, which require evidence that every requirement is implemented and verified, and
-that code traces back to a requirement or is otherwise justified. It is a core input to the
-xref:software-assurance.adoc[*software assurance*] argument that residual risk has been reduced to
-an acceptable level.
+The value rises with the cost of failure. For xref:high-integrity.adoc[*high-integrity*] systems – medical devices,
+avionics, automotive – traceability is mandated by standards such as DO-178C, IEC 62304, and ISO 26262, which require
+evidence that every requirement is implemented and verified, and that code traces back to a requirement or is otherwise
+justified. It is a core input to the xref:software-assurance.adoc[*software assurance*] argument that residual risk has
+been reduced to an acceptable level.
 
 == How it is achieved
 
-The classic tool is the *traceability matrix* – a table that lists each requirement alongside the
-design elements and tests that realize and verify it. In its simplest form each row is a requirement
-and the columns record the identifiers of the linked artifacts. A matrix is easy to produce from a
-xref:system-requirements-specification.adoc[*system requirements specification (SRS)*] but is also
-easy to let drift out of date as the system evolves.
+The classic tool is the *traceability matrix* – a table that lists each requirement alongside the design elements and
+tests that realize and verify it. In its simplest form each row is a requirement and the columns record the identifiers
+of the linked artifacts. A matrix is easy to produce from a
+xref:system-requirements-specification.adoc[*system requirements specification (SRS)*] but is also easy to let drift out
+of date as the system evolves.
 
-Heavier approaches place the links inside a requirements management tool or a system model. In
-model-based systems engineering, the xref:sysml.adoc[*Systems Modeling Language (SysML)*] codifies
-traceability through explicit satisfy, verify, refine, and derive relationships between requirements
-and the blocks that realize them, held in the model rather than in a separate document.
-xref:requirements-engineering.adoc[*Requirements engineering*] tooling then queries those
+Heavier approaches place the links inside a requirements management tool or a system model. In model-based systems
+engineering, the xref:sysml.adoc[*Systems Modeling Language (SysML)*] codifies traceability through explicit satisfy,
+verify, refine, and derive relationships between requirements and the blocks that realize them, held in the model rather
+than in a separate document. xref:requirements-engineering.adoc[*Requirements engineering*] tooling then queries those
 relationships for coverage and impact analysis.
 
-Modern application lifecycle management (ALM) tools and issue trackers take a lighter approach,
-linking commits and pull requests to the tickets they address and the
-xref:acceptance-testing.adoc[*acceptance tests*] that verify them. The links are cheap to create as
-a side effect of normal work, but they capture only part of the chain – typically ticket to code,
-not requirement to test.
+Modern application lifecycle management (ALM) tools and issue trackers take a lighter approach, linking commits and pull
+requests to the tickets they address and the xref:acceptance-testing.adoc[*acceptance tests*] that verify them. The
+links are cheap to create as a side effect of normal work, but they capture only part of the chain – typically ticket to
+code, not requirement to test.
 
 == History
 
-Traceability was a watchword of the xref:case.adoc[*computer-aided software engineering (CASE)*]
-movement of the 1980s and early 1990s. The integrated CASE suites of that era promised that every
-procedure or object could be traced back to the requirement that spawned it, held together by a
-shared repository. The "Big CASE" market has largely disappeared, but the aspiration survives in
-modern ALM tooling and in model-based approaches such as SysML.
+Traceability was a watchword of the xref:case.adoc[*computer-aided software engineering (CASE)*] movement of the 1980s
+and early 1990s. The integrated CASE suites of that era promised that every procedure or object could be traced back to
+the requirement that spawned it, held together by a shared repository. The "Big CASE" market has largely disappeared,
+but the aspiration survives in modern ALM tooling and in model-based approaches such as SysML.
 
 == Trade-offs
 
-Traceability is not free. Maintaining accurate links across a changing system is laborious, and
-links that are not exercised tend to rot. A matrix produced once and never updated quickly becomes a
-liability, giving false confidence that the system is covered. Heavyweight, tool-enforced approaches
-stay accurate longer but constrain how teams work. Lightweight, link-as-you-go approaches are
-cheaper but capture only the parts of the chain that tooling touches automatically. The right level
-of rigor depends on the cost of failure. Ordinary commercial software may settle for
+Traceability is not free. Maintaining accurate links across a changing system is laborious, and links that are not
+exercised tend to rot. A matrix produced once and never updated quickly becomes a liability, giving false confidence
+that the system is covered. Heavyweight, tool-enforced approaches stay accurate longer but constrain how teams work.
+Lightweight, link-as-you-go approaches are cheaper but capture only the parts of the chain that tooling touches
+automatically. The right level of rigor depends on the cost of failure. Ordinary commercial software may settle for
 ticket-to-commit links, while high-integrity systems require a fuller, audited chain.
 
 == See also
@@ -87,10 +79,8 @@ ticket-to-commit links, while high-integrity systems require a fuller, audited c
 
 == References
 
-* ISO/IEC/IEEE (2018).
-  _Software and systems engineering – Life cycle processes – Requirements engineering_ (ISO/IEC/IEEE
+* ISO/IEC/IEEE (2018). _Software and systems engineering – Life cycle processes – Requirements engineering_ (ISO/IEC/IEEE
   29148:2018).
 * RTCA (2011). _Software Considerations in Airborne Systems and Equipment Certification_ (DO-178C).
-* Gotel, O.C.Z. and Finkelstein, A.C.W. (1994). "An analysis of the requirements traceability
-  problem". _Proceedings of the First International Conference on Requirements Engineering_, pp.
-  94–101.
+* Gotel, O.C.Z. and Finkelstein, A.C.W. (1994). "An analysis of the requirements traceability problem".
+  _Proceedings of the First International Conference on Requirements Engineering_, pp. 94–101.

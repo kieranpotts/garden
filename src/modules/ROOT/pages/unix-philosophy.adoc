@@ -3,56 +3,50 @@
 :link-pike-notes:     https://www.lysator.liu.se/c/pikestyle.html
 :link-wikipedia-unix: https://en.wikipedia.org/wiki/Unix_philosophy
 
-The Unix philosophy is a set of cultural norms and design principles for minimalist, modular
-software development that originated with the developers of xref:unix.adoc[*Unix*] at Bell Labs in
-the 1970s. It is not a single written doctrine but a shared temperament, distilled from practice and
-codified retrospectively by the people who built the system and the commentators who studied it. The
-philosophy privileges small, composable tools, plain-text interfaces, and programs that do one thing
-well over large, monolithic applications that try to anticipate every need.
+The Unix philosophy is a set of cultural norms and design principles for minimalist, modular software development that
+originated with the developers of xref:unix.adoc[*Unix*] at Bell Labs in the 1970s. It is not a single written doctrine
+but a shared temperament, distilled from practice and codified retrospectively by the people who built the system and
+the commentators who studied it. The philosophy privileges small, composable tools, plain-text interfaces, and programs
+that do one thing well over large, monolithic applications that try to anticipate every need.
 
 == Origins
 
-The philosophy grew out of the engineering culture around Unix at Bell Labs, shaped principally by
-Ken Thompson, Dennis Ritchie, and Douglas McIlroy. Its distinctive character emerged only after an
-earlier, more ambitious design – the Multics operating system, on which Unix's creators had worked –
-had taught them the cost of doing too much at once. Unix was, in part, a deliberate retreat to
-something smaller.
+The philosophy grew out of the engineering culture around Unix at Bell Labs, shaped principally by Ken Thompson, Dennis
+Ritchie, and Douglas McIlroy. Its distinctive character emerged only after an earlier, more ambitious design – the
+Multics operating system, on which Unix's creators had worked – had taught them the cost of doing too much at once. Unix
+was, in part, a deliberate retreat to something smaller.
 
-The decisive enabler was the *pipe*, introduced in 1973. Once the kernel could connect the output of
-one program to the input of another without any intermediate file, the existing stock of small,
-single-purpose tools – `cat`, `grep`, `sort`, `wc`, and the rest – became building blocks that could
-be chained into arbitrarily complex pipelines on the command line. The pipe turned
-xref:shell.adoc[*shell*] scripts from sequences of commands into a
-xref:pipe-and-filter.adoc[*pipe-and-filter*] composition mechanism, and that composability is the
-technical foundation on which the rest of the philosophy rests.
+The decisive enabler was the *pipe*, introduced in 1973. Once the kernel could connect the output of one program to the
+input of another without any intermediate file, the existing stock of small, single-purpose tools – `cat`, `grep`,
+`sort`, `wc`, and the rest – became building blocks that could be chained into arbitrarily complex pipelines on the
+command line. The pipe turned xref:shell.adoc[*shell*] scripts from sequences of commands into a
+xref:pipe-and-filter.adoc[*pipe-and-filter*] composition mechanism, and that composability is the technical foundation
+on which the rest of the philosophy rests.
 
 == The core tenets
 
-The most-cited summary of the philosophy is Douglas McIlroy's, originally set out in a 1978 internal
-memo and later quoted in the Unix literature. He gave four precepts.
+The most-cited summary of the philosophy is Douglas McIlroy's, originally set out in a 1978 internal memo and later
+quoted in the Unix literature. He gave four precepts.
 
-* *Make each program do one thing well.* A program with one responsibility is easier to write, test,
-  and combine.
-* *Expect the output of every program to become the input to another program.* Programs should not
-  burden their output with formatting, headers, or other decoration that a downstream consumer
-  cannot strip away.
-* *Write programs to handle text streams, because text is a universal interface.* Text is the
-  lowest-common-denominator format that any tool can produce and consume without prior agreement.
-* *Design and build software to be tried early.* Ship something that works, then let real use shape
-  the next iteration – the instinct that later became
-  xref:release-early-release-often.adoc[*release early, release often*].
+* *Make each program do one thing well.* A program with one responsibility is easier to write, test, and combine.
+* *Expect the output of every program to become the input to another program.* Programs should not burden their output
+  with formatting, headers, or other decoration that a downstream consumer cannot strip away.
+* *Write programs to handle text streams, because text is a universal interface.* Text is the lowest-common-denominator
+  format that any tool can produce and consume without prior agreement.
+* *Design and build software to be tried early.* Ship something that works, then let real use shape the next iteration –
+  the instinct that later became xref:release-early-release-often.adoc[*release early, release often*].
 
-Related shorthand circulated alongside these tenets. "Small is beautiful," "use tools in preference
-to writing new code," and "make every program a filter" all express the same preference for narrow,
-reusable parts over bespoke wholes. The *everything is a file* abstraction – treating devices,
-network sockets, and inter-process pipes uniformly through the file interface – is a closely related
-idea, though it belongs to Unix's architecture as a whole rather than to the philosophy alone.
+Related shorthand circulated alongside these tenets. "Small is beautiful," "use tools in preference to writing new
+code," and "make every program a filter" all express the same preference for narrow, reusable parts over bespoke wholes.
+The *everything is a file* abstraction – treating devices, network sockets, and inter-process pipes uniformly through
+the file interface – is a closely related idea, though it belongs to Unix's architecture as a whole rather than to the
+philosophy alone.
 
 == Raymond's articulation
 
-Eric S. Raymond gave the philosophy its most systematic treatment in _The Art of Unix Programming_
-(2003), where he distilled the accumulated oral tradition into seventeen rules. Several recur
-throughout the rest of the book and capture the philosophy's distinctive instincts.
+Eric S. Raymond gave the philosophy its most systematic treatment in _The Art of Unix Programming_ (2003), where he
+distilled the accumulated oral tradition into seventeen rules. Several recur throughout the rest of the book and capture
+the philosophy's distinctive instincts.
 
 * *Rule of Modularity.* Write simple parts connected by clean interfaces.
 * *Rule of Composition.* Design programs to be connected to other programs.
@@ -65,30 +59,26 @@ throughout the rest of the book and capture the philosophy's distinctive instinc
 * *Rule of Least Surprise.* In interface design, always do the least surprising thing.
 * *Rule of Economy.* Programmer time is expensive; conserve it in preference to machine time.
 
-The remaining rules – on clarity, silence, repair, generation, optimization, diversity, and
-extensibility – extend the same family of instincts. Read together, they describe a design
-temperament rather than a checklist: distrust cleverness, prefer the visible to the opaque, and let
-small pieces combine into wholes no single piece could have produced.
+The remaining rules – on clarity, silence, repair, generation, optimization, diversity, and extensibility – extend the
+same family of instincts. Read together, they describe a design temperament rather than a checklist: distrust
+cleverness, prefer the visible to the opaque, and let small pieces combine into wholes no single piece could have
+produced.
 
 == Influence and contrast
 
-The philosophy's influence reaches well beyond Unix itself. The xref:rest.adoc[*REST*] architectural
-style, with its uniform interface and constraint that keeps intermediaries able to reason about
-messages without running code, echoes the same instinct – constrain the interface so the parts
-remain independently combinable – applied to the web. The xref:microservices.adoc[*microservices*]
-movement's emphasis on small services that do one thing and communicate over simple, standard
-contracts echoes the same lineage, as does the broader culture of single-purpose
-*command-line tools*. The preference for xref:modular-design.adoc[*modular design*] and
-xref:separation-of-concerns.adoc[*separation of concerns*] in software at large draws on the same
-well.
+The philosophy's influence reaches well beyond Unix itself. The xref:rest.adoc[*REST*] architectural style, with its
+uniform interface and constraint that keeps intermediaries able to reason about messages without running code, echoes
+the same instinct – constrain the interface so the parts remain independently combinable – applied to the web. The
+xref:microservices.adoc[*microservices*] movement's emphasis on small services that do one thing and communicate over
+simple, standard contracts echoes the same lineage, as does the broader culture of single-purpose *command-line tools*.
+The preference for xref:modular-design.adoc[*modular design*] and
+xref:separation-of-concerns.adoc[*separation of concerns*] in software at large draws on the same well.
 
-The philosophy also has a well-known counterpoint. Richard Gabriel's
-xref:worse-is-better.adoc[*"worse is better"*] essay frames Unix as the exemplar of the "New Jersey
-approach" – implementation simplicity over interface elegance, tolerance for some incompleteness in
-exchange for easier building and wider adoption – set against the "MIT approach" of correctness,
-consistency, and completeness first. Unix's success on those terms is the empirical case for the
-philosophy's pragmatism: simple, working, composable systems tend to outlive their more elegant but
-more complex rivals.
+The philosophy also has a well-known counterpoint. Richard Gabriel's xref:worse-is-better.adoc[*"worse is better"*]
+essay frames Unix as the exemplar of the "New Jersey approach" – implementation simplicity over interface elegance,
+tolerance for some incompleteness in exchange for easier building and wider adoption – set against the "MIT approach" of
+correctness, consistency, and completeness first. Unix's success on those terms is the empirical case for the
+philosophy's pragmatism: simple, working, composable systems tend to outlive their more elegant but more complex rivals.
 
 == See also
 

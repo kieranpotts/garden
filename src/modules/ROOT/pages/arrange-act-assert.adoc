@@ -1,22 +1,20 @@
 // TODO: https://wiki.c2.com/?ArrangeActAssert
 = Arrange, act, assert
 
-Arrange, act, assert is a pattern for structuring the body of a xref:unit-testing.adoc[*unit test*]
-into three phases. The *arrange* phase sets up all necessary preconditions and inputs. The *act*
-phase calls the object or method under test. The *assert* phase verifies that the expected results
-have occurred.
+Arrange, act, assert is a pattern for structuring the body of a xref:unit-testing.adoc[*unit test*] into three phases.
+The *arrange* phase sets up all necessary preconditions and inputs. The *act* phase calls the object or method under
+test. The *assert* phase verifies that the expected results have occurred.
 
-Keeping the three phases separate makes a test readable and consistent, because setup, execution,
-and verification are never tangled together. A reader can scan the test and quickly identify what is
-given, what happens, and what is expected. The structure scales from trivial checks to more involved
-xref:automated-testing.adoc[*automated tests*] where the arrange phase may involve building several
-collaborators.
+Keeping the three phases separate makes a test readable and consistent, because setup, execution, and verification are
+never tangled together. A reader can scan the test and quickly identify what is given, what happens, and what is
+expected. The structure scales from trivial checks to more involved xref:automated-testing.adoc[*automated tests*] where
+the arrange phase may involve building several collaborators.
 
-Arrange, act, assert is often paired with the Given-When-Then style, which expresses the same three
-phases in a more declarative, behavior-oriented language. It is a natural fit for
-xref:test-driven-development.adoc[*test-driven development*], where the test is written first and
-its shape helps clarify the intended behavior before the production code exists. See
-xref:testing.adoc[*testing*] for the broader context.
+Arrange, act, assert is often paired with the Given-When-Then style, which expresses the same three phases in a more
+declarative, behavior-oriented language. It is a natural fit for
+xref:test-driven-development.adoc[*test-driven development*], where the test is written first and its shape helps
+clarify the intended behavior before the production code exists. See xref:testing.adoc[*testing*] for the broader
+context.
 
 == See also
 

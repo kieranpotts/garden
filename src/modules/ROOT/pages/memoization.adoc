@@ -1,51 +1,45 @@
 = Memoization
 
-Memoization is a xref:design-pattern.adoc[*design pattern*] in which the result of a function's
-execution is cached, keyed by the function's inputs, so that subsequent calls with the same inputs
-return the cached result without recomputing it. The function body runs only on a cache miss; on a
-hit, the stored value is returned directly.
+Memoization is a xref:design-pattern.adoc[*design pattern*] in which the result of a function's execution is cached,
+keyed by the function's inputs, so that subsequent calls with the same inputs return the cached result without
+recomputing it. The function body runs only on a cache miss; on a hit, the stored value is returned directly.
 
-For memoization to be safe, the cached function must be *deterministic*. Its output must depend
-solely on its inputs, with no reliance on mutable external state, randomness, the current time, or
-other *side effects*. In other words, the function must be *referentially transparent* – any call to
-it could be replaced with its return value without changing the program's behaviour. A function that
-reads a database row, generates a random number, or depends on a global counter is not memoizable,
-because two calls with the same arguments may legitimately produce different results.
+For memoization to be safe, the cached function must be *deterministic*. Its output must depend solely on its inputs,
+with no reliance on mutable external state, randomness, the current time, or other *side effects*. In other words, the
+function must be *referentially transparent* – any call to it could be replaced with its return value without changing
+the program's behaviour. A function that reads a database row, generates a random number, or depends on a global counter
+is not memoizable, because two calls with the same arguments may legitimately produce different results.
 
 Memoization is a form of xref:caching.adoc[*caching*], but it is specifically used to optimize the
-xref:performance.adoc[*performance*] of functions that are computationally expensive or
-time-consuming. The cache is typically an in-process map, often bounded in size and governed by an
-eviction policy such as least-recently-used to keep memory usage in check.
+xref:performance.adoc[*performance*] of functions that are computationally expensive or time-consuming. The cache is
+typically an in-process map, often bounded in size and governed by an eviction policy such as least-recently-used to
+keep memory usage in check.
 
 == Dynamic programming
 
-Memoization is the basis of the top-down approach to xref:algorithm.adoc[*algorithm*] design known
-as *dynamic programming*, where overlapping subproblems are solved once and their results reused. A
-naive recursive solution to a problem such as the Fibonacci sequence recomputes the same subproblems
-many times, giving it exponential xref:big-o-notation.adoc[*time complexity*]. Memoizing each result
-against its inputs collapses the recursion into a linear number of distinct computations.
+Memoization is the basis of the top-down approach to xref:algorithm.adoc[*algorithm*] design known as
+*dynamic programming*, where overlapping subproblems are solved once and their results reused. A naive recursive
+solution to a problem such as the Fibonacci sequence recomputes the same subproblems many times, giving it exponential
+xref:big-o-notation.adoc[*time complexity*]. Memoizing each result against its inputs collapses the recursion into a
+linear number of distinct computations.
 
-The complementary approach is *tabulation*, which fills a table bottom-up rather than recursing
-top-down. Both yield the same asymptotic complexity. The choice between them is a matter of
-readability and the shape of the problem.
+The complementary approach is *tabulation*, which fills a table bottom-up rather than recursing top-down. Both yield the
+same asymptotic complexity. The choice between them is a matter of readability and the shape of the problem.
 
 == Trade-offs
 
-The principal trade-off is memory for time. Every cached result occupies space, and for a function
-with a large input domain the cache can grow unbounded unless an eviction policy is applied.
-Memoization shifts a function's complexity from time-bounded to space-bounded, and the exchange is
-only worthwhile when repeated calls with the same inputs are common and the computation is genuinely
-expensive.
+The principal trade-off is memory for time. Every cached result occupies space, and for a function with a large input
+domain the cache can grow unbounded unless an eviction policy is applied. Memoization shifts a function's complexity
+from time-bounded to space-bounded, and the exchange is only worthwhile when repeated calls with the same inputs are
+common and the computation is genuinely expensive.
 
-Memoization also introduces a hidden dependency on the cache. Cached results can become stale if the
-function's dependencies change between calls, for example when it reads from a mutable data source
-whose state the cache key does not capture. This is why memoization is most natural for
-xref:idempotent.adoc[*pure functions*], whose outputs are fixed by their inputs and therefore never
-go stale.
+Memoization also introduces a hidden dependency on the cache. Cached results can become stale if the function's
+dependencies change between calls, for example when it reads from a mutable data source whose state the cache key does
+not capture. This is why memoization is most natural for xref:idempotent.adoc[*pure functions*], whose outputs are fixed
+by their inputs and therefore never go stale.
 
-Memoization is related to xref:lazy-loading.adoc[*lazy loading*], which likewise defers work until
-it is needed. Lazy loading defers the loading of a resource, while memoization caches the result of
-a computation.
+Memoization is related to xref:lazy-loading.adoc[*lazy loading*], which likewise defers work until it is needed. Lazy
+loading defers the loading of a resource, while memoization caches the result of a computation.
 
 == See also
 

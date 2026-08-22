@@ -1,53 +1,46 @@
 = Salt
 
-A *salt* is a random value, unique per record, that is combined with an input before it is passed to
-a xref:hashing.adoc[*hash function*]. Its purpose is to ensure that two identical inputs do not
-produce the same digest. The salt is not secret. It is stored alongside the hash it modifies, in
-cleartext, and its security value comes entirely from its uniqueness, not from being hidden.
+A *salt* is a random value, unique per record, that is combined with an input before it is passed to a
+xref:hashing.adoc[*hash function*]. Its purpose is to ensure that two identical inputs do not produce the same digest.
+The salt is not secret. It is stored alongside the hash it modifies, in cleartext, and its security value comes entirely
+from its uniqueness, not from being hidden.
 
-The canonical use is password storage. When a system stores
-xref:authentication.adoc[*authentication*] credentials, it never stores the password itself. It
-stores a hash of the password, plus the salt that was mixed in. On login, the system re-reads the
-stored salt, re-computes the hash from the submitted password and that salt, and compares the result
+The canonical use is password storage. When a system stores xref:authentication.adoc[*authentication*] credentials, it
+never stores the password itself. It stores a hash of the password, plus the salt that was mixed in. On login, the
+system re-reads the stored salt, re-computes the hash from the submitted password and that salt, and compares the result
 to the stored digest. The salt is part of the verification input, not a key to be protected.
 
 == Why salting matters
 
-Without a salt, every account that picks the same password ends up with the same hash in the
-credential database. An attacker who steals the database can work on one copy of each hash and
-recover every account that shares it. They can also precompute digests for common passwords once,
-ahead of time, and look up the entire database by direct lookup. That precomputed table is a
-xref:rainbow-table.adoc[*rainbow table*], and it is the attack salting is designed to defeat.
+Without a salt, every account that picks the same password ends up with the same hash in the credential database. An
+attacker who steals the database can work on one copy of each hash and recover every account that shares it. They can
+also precompute digests for common passwords once, ahead of time, and look up the entire database by direct lookup. That
+precomputed table is a xref:rainbow-table.adoc[*rainbow table*], and it is the attack salting is designed to defeat.
 
-A unique, per-record salt changes the effective hash function for every entry. Two users with the
-password `password` and different salts produce unrelated digests, so an attacker can no longer
-share work between them. Building a rainbow table for one salt value gives the attacker exactly one
-hash. They have to start over for every record, which makes precomputation no cheaper than
-brute-forcing each hash individually.
+A unique, per-record salt changes the effective hash function for every entry. Two users with the password `password`
+and different salts produce unrelated digests, so an attacker can no longer share work between them. Building a rainbow
+table for one salt value gives the attacker exactly one hash. They have to start over for every record, which makes
+precomputation no cheaper than brute-forcing each hash individually.
 
 == Properties
 
-A salt has three properties that distinguish it from other random values used in
-xref:cryptography.adoc[*cryptography*].
+A salt has three properties that distinguish it from other random values used in xref:cryptography.adoc[*cryptography*].
 
-* *Per-record uniqueness.* A fresh salt is generated for every value being hashed. Reusing a salt
-  across records collapses back toward the unsalted case, since identical inputs once again hash
-  identically. A salt shared by every user is sometimes called a *global salt* and defeats most of
-  the benefit.
-* *No secrecy requirement.* The salt is stored in the clear next to the hash it accompanies. Its job
-  is to diversify inputs, not to act as a key. A *pepper*, by contrast, is a secret value shared
-  across all records and not stored with the hash; the two are complementary and often combined.
-* *Sufficient length.* A salt should be long enough that collisions are vanishingly unlikely across
-  the whole user base. 128 bits is a common modern minimum. Short salts make accidental reuse
-  probable, which again erodes the protection.
+* *Per-record uniqueness.* A fresh salt is generated for every value being hashed. Reusing a salt across records collapses
+  back toward the unsalted case, since identical inputs once again hash identically. A salt shared by every user is
+  sometimes called a *global salt* and defeats most of the benefit.
+* *No secrecy requirement.* The salt is stored in the clear next to the hash it accompanies. Its job is to diversify
+  inputs, not to act as a key. A *pepper*, by contrast, is a secret value shared across all records and not stored with
+  the hash; the two are complementary and often combined.
+* *Sufficient length.* A salt should be long enough that collisions are vanishingly unlikely across the whole user base.
+  128 bits is a common modern minimum. Short salts make accidental reuse probable, which again erodes the protection.
 
 == Salt versus nonce
 
-A salt is often confused with a xref:nonce.adoc[*nonce*]. Both are non-secret random values mixed
-into an input before processing, but their lifecycle is different. A salt is generated once per
-record and reused for every verification of that record. A nonce is generated once per message and
-then discarded. Reusing a salt across records is a weakness. Reusing a nonce across messages under
-the same key is a catastrophic break.
+A salt is often confused with a xref:nonce.adoc[*nonce*]. Both are non-secret random values mixed into an input before
+processing, but their lifecycle is different. A salt is generated once per record and reused for every verification of
+that record. A nonce is generated once per message and then discarded. Reusing a salt across records is a weakness.
+Reusing a nonce across messages under the same key is a catastrophic break.
 
 == See also
 

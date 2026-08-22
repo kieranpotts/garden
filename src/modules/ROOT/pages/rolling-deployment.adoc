@@ -1,55 +1,48 @@
 = Rolling deployment
 
-Rolling deployments are a strategy for updating a running server application without
-xref:downtime.adoc[*downtime*].
+Rolling deployments are a strategy for updating a running server application without xref:downtime.adoc[*downtime*].
 
-Rolling updates are achieved by having multiple instances of the application and updating the
-instances incrementally, a few at a time rather than all at once. The application remains available
-throughout the deployment process, because at any given moment some instances are still serving the
-old version while others are being replaced or restarted with the new one.
+Rolling updates are achieved by having multiple instances of the application and updating the instances incrementally, a
+few at a time rather than all at once. The application remains available throughout the deployment process, because at
+any given moment some instances are still serving the old version while others are being replaced or restarted with the
+new one.
 
-A xref:load-balancer.adoc[*load balancer*] is commonly used to orchestrate a rolling deployment. The
-load balancer drains an instance of inbound traffic, waits for in-flight requests to complete,
-replaces or restarts the instance with the new version, lets it warm up, runs a
-xref:system-health-check.adoc[*health check*] to confirm it is ready, and then returns it to the
-pool. The cycle repeats until every instance is on the new version. The same drain-and-replace flow
-is built into xref:container-orchestration.adoc[*container orchestration*] platforms such as
-xref:kubernetes.adoc[*Kubernetes*], whose `RollingUpdate` strategy exposes `maxSurge` and
-`maxUnavailable` knobs that control how many new instances may be created above the desired count
-and how many old instances may be unavailable at once during the rollout.
+A xref:load-balancer.adoc[*load balancer*] is commonly used to orchestrate a rolling deployment. The load balancer
+drains an instance of inbound traffic, waits for in-flight requests to complete, replaces or restarts the instance with
+the new version, lets it warm up, runs a xref:system-health-check.adoc[*health check*] to confirm it is ready, and then
+returns it to the pool. The cycle repeats until every instance is on the new version. The same drain-and-replace flow is
+built into xref:container-orchestration.adoc[*container orchestration*] platforms such as
+xref:kubernetes.adoc[*Kubernetes*], whose `RollingUpdate` strategy exposes `maxSurge` and `maxUnavailable` knobs that
+control how many new instances may be created above the desired count and how many old instances may be unavailable at
+once during the rollout.
 
 == Requirements
 
-A rolling deployment presupposes a few things that a xref:big-bang.adoc[*big bang deployment*] does
-not.
+A rolling deployment presupposes a few things that a xref:big-bang.adoc[*big bang deployment*] does not.
 
-* The service must run as multiple instances behind a load balancer or orchestrator. A
-  single-instance service has nothing to roll.
-* There must be enough xref:capacity.adoc[*capacity*] headroom to absorb the traffic of instances
-  that are temporarily drained. With `maxUnavailable` set above zero, the fleet runs below its
-  target size for part of the rollout.
-* Consecutive versions must be xref:backwards-compatibility.adoc[*backwards compatible*] with each
-  other, because old and new instances serve side by side and share state. A new version that cannot
-  read data written by the old one, or that breaks a request contract, will fail under rolling
-  deployment even if it passes tests in isolation.
+* The service must run as multiple instances behind a load balancer or orchestrator. A single-instance service has nothing
+  to roll.
+* There must be enough xref:capacity.adoc[*capacity*] headroom to absorb the traffic of instances that are temporarily
+  drained. With `maxUnavailable` set above zero, the fleet runs below its target size for part of the rollout.
+* Consecutive versions must be xref:backwards-compatibility.adoc[*backwards compatible*] with each other, because old and
+  new instances serve side by side and share state. A new version that cannot read data written by the old one, or that
+  breaks a request contract, will fail under rolling deployment even if it passes tests in isolation.
 
 == Trade-offs
 
 Rolling deployment trades speed for safety and resource efficiency. Compared with
-xref:blue-green-deployment.adoc[*blue-green deployment*], it needs no idle standby environment, so
-it costs less in steady state. But the rollout is slower, and because old instances are overwritten
-in place, an instant switch back to the previous version is not available. Rollback means re-running
-the rolling deployment in reverse, which takes as long as the forward rollout.
-xref:canary-deployment.adoc[*Canary deployment*] addresses this by coupling a rolling rollout with
-traffic shifting and observation, so a bad version can be stopped before it reaches the whole fleet.
+xref:blue-green-deployment.adoc[*blue-green deployment*], it needs no idle standby environment, so it costs less in
+steady state. But the rollout is slower, and because old instances are overwritten in place, an instant switch back to
+the previous version is not available. Rollback means re-running the rolling deployment in reverse, which takes as long
+as the forward rollout. xref:canary-deployment.adoc[*Canary deployment*] addresses this by coupling a rolling rollout
+with traffic shifting and observation, so a bad version can be stopped before it reaches the whole fleet.
 
-Rolling deployment allows for xref:continuous-deployment.adoc[*continuous deployment*] of lots of
-micro releases, each of which never implements any breaking changes. By releasing small changes
-often, we can mitigate many of the risks associated with shipping large changesets.
+Rolling deployment allows for xref:continuous-deployment.adoc[*continuous deployment*] of lots of micro releases, each
+of which never implements any breaking changes. By releasing small changes often, we can mitigate many of the risks
+associated with shipping large changesets.
 
-However, because each release requires multiple steps, it becomes impractical to do rolling
-deployments manually. A high degree of automation is required, using a
-xref:deployment-pipeline.adoc[*deployment pipeline*].
+However, because each release requires multiple steps, it becomes impractical to do rolling deployments manually. A high
+degree of automation is required, using a xref:deployment-pipeline.adoc[*deployment pipeline*].
 
 == See also
 

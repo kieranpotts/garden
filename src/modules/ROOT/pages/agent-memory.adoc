@@ -1,77 +1,69 @@
 = Agent memory
 
-An *agent memory* system makes an xref:agent.adoc[*agent*] xref:stateful.adoc[*stateful*] across
-sessions. It persists information into the environment during a session and reloads it into the
-context window at the start of future sessions, so that what one session learned does not die with
-it. Without such a system the model is xref:stateless.adoc[*stateless*] and every session starts
-cold.
+An *agent memory* system makes an xref:agent.adoc[*agent*] xref:stateful.adoc[*stateful*] across sessions. It persists
+information into the environment during a session and reloads it into the context window at the start of future
+sessions, so that what one session learned does not die with it. Without such a system the model is
+xref:stateless.adoc[*stateless*] and every session starts cold.
 
 == Memory system
 
-A *memory system* has two halves. The *write path* runs during a session: the agent records what it
-learned as files in the environment. The *read path* runs at session start: the
-xref:agent-harness.adoc[*harness*] loads those files, or an index of them, back into context.
+A *memory system* has two halves. The *write path* runs during a session: the agent records what it learned as files in
+the environment. The *read path* runs at session start: the xref:agent-harness.adoc[*harness*] loads those files, or an
+index of them, back into context.
 
-Many harnesses ship their own memory system — Claude Code's `/memory`, for instance. You can also
-build one yourself: a directory of notes plus an instruction in `AGENTS.md` to consult it.
+Many harnesses ship their own memory system — Claude Code's `/memory`, for instance. You can also build one yourself: a
+directory of notes plus an instruction in `AGENTS.md` to consult it.
 
-Always-loaded content carries the same trade-offs everywhere. Memories accumulate, so load a
-one-line index and leave the bodies behind *context pointers*. And memories are *secondary sources*,
-so they drift: a fact recorded in March is loaded with equal confidence in June, long after the code
-it described has moved on. A memory system needs pruning the same way `AGENTS.md` does.
+Always-loaded content carries the same trade-offs everywhere. Memories accumulate, so load a one-line index and leave
+the bodies behind *context pointers*. And memories are *secondary sources*, so they drift: a fact recorded in March is
+loaded with equal confidence in June, long after the code it described has moved on. A memory system needs pruning the
+same way `AGENTS.md` does.
 
 == AGENTS.md
 
-`AGENTS.md` is a file in the environment that the harness loads into the context window at session
-start — the project's standing brief. It is a cross-harness convention; Claude Code's variant is
-`CLAUDE.md`.
+`AGENTS.md` is a file in the environment that the harness loads into the context window at session start — the project's
+standing brief. It is a cross-harness convention; Claude Code's variant is `CLAUDE.md`.
 
-It is one way to avoid repeating yourself across sessions. Because the model is
-xref:stateless.adoc[*stateless*], a correction made in one session is gone in the next. When you
-have corrected the agent for the same thing twice, that correction is a candidate line for
-`AGENTS.md`.
+It is one way to avoid repeating yourself across sessions. Because the model is xref:stateless.adoc[*stateless*], a
+correction made in one session is gone in the next. When you have corrected the agent for the same thing twice, that
+correction is a candidate line for `AGENTS.md`.
 
-Suitable content is what the agent cannot derive from the code itself: build and test commands,
-conventions not obvious from the code, hard constraints like "never edit the generated client." Keep
-it short and declarative — a brief, not docs. The trade-off is that everything in it is always
-loaded. Instructions accumulate, most are irrelevant to a given task, and they cost tokens while
-diluting each other.
+Suitable content is what the agent cannot derive from the code itself: build and test commands, conventions not obvious
+from the code, hard constraints like "never edit the generated client." Keep it short and declarative — a brief, not
+docs. The trade-off is that everything in it is always loaded. Instructions accumulate, most are irrelevant to a given
+task, and they cost tokens while diluting each other.
 
 == Progressive disclosure
 
-*Progressive disclosure* is loading only the context an agent needs right now, with
-*context pointers* to the rest. The term is borrowed from UI design. It exists because context costs
-twice: every token loaded up front is billed as input on every turn, and it spends attention budget
-whether it is needed or not.
+*Progressive disclosure* is loading only the context an agent needs right now, with *context pointers* to the rest. The
+term is borrowed from UI design. It exists because context costs twice: every token loaded up front is billed as input
+on every turn, and it spends attention budget whether it is needed or not.
 
 Keep the always-loaded layer small — a sentence per topic and a pointer to where the detail lives.
-xref:agent-skills.adoc[*Agent skills*] are the harness pattern for this: a short description loaded
-every session, full instructions loaded only when triggered.
+xref:agent-skills.adoc[*Agent skills*] are the harness pattern for this: a short description loaded every session, full
+instructions loaded only when triggered.
 
 == Context pointer
 
-A *context pointer* is a mention in one document pointing to another, so the agent pulls the second
-into the window only when the task calls for it. It is the unit progressive disclosure is built
-from. A pointer is one line; the document behind it might be thousands of tokens, but it costs
-nothing until followed.
+A *context pointer* is a mention in one document pointing to another, so the agent pulls the second into the window only
+when the task calls for it. It is the unit progressive disclosure is built from. A pointer is one line; the document
+behind it might be thousands of tokens, but it costs nothing until followed.
 
-A pointer needs two parts: a stable path, and enough description for the agent to know when
-following it is worth it. Pointers tie a *secondary source* back to its *primary source* so the loss
-is recoverable — the reader can always follow the pointer to the original rather than work from the
-summary.
+A pointer needs two parts: a stable path, and enough description for the agent to know when following it is worth it.
+Pointers tie a *secondary source* back to its *primary source* so the loss is recoverable — the reader can always follow
+the pointer to the original rather than work from the summary.
 
 == Subagent
 
-A *subagent* is an xref:agent.adoc[*agent*] spawned by another agent via a tool call. It runs in its
-own session and context window and reports a single tool result back to its parent. It is distinct
-from a xref:agent-handoff.adoc[*handoff*]: a handoff has no return path, but a subagent's parent
-expects a result. A subagent cannot spawn further subagents, so the tree is one level deep.
+A *subagent* is an xref:agent.adoc[*agent*] spawned by another agent via a tool call. It runs in its own session and
+context window and reports a single tool result back to its parent. It is distinct from a
+xref:agent-handoff.adoc[*handoff*]: a handoff has no return path, but a subagent's parent expects a result. A subagent
+cannot spawn further subagents, so the tree is one level deep.
 
-The point is to keep noisy work out of the parent's context. Broad search or long file-reading
-produces pages of tool results that matter only long enough to find the answer. Run inside a
-subagent and the noise fills a disposable window; only the final report lands in the parent. That
-report is itself a *secondary source*. Subagents run concurrently, which is one route to
-xref:agent-orchestration.adoc[*agent orchestration*].
+The point is to keep noisy work out of the parent's context. Broad search or long file-reading produces pages of tool
+results that matter only long enough to find the answer. Run inside a subagent and the noise fills a disposable window;
+only the final report lands in the parent. That report is itself a *secondary source*. Subagents run concurrently, which
+is one route to xref:agent-orchestration.adoc[*agent orchestration*].
 
 ''''
 
@@ -82,6 +74,7 @@ xref:agent-orchestration.adoc[*agent orchestration*].
 * xref:agent-skills.adoc[*Agent skills*]
 * xref:context-engineering.adoc[*Context engineering*]
 * xref:large-language-model.adoc[*Large language model (LLM)*]
-* xref:loop-engineering.adoc[*Loop engineering*]* xref:artificial-intelligence.adoc[*Artificial intelligence (AI)*]
+* xref:loop-engineering.adoc[*Loop engineering*]
+* xref:artificial-intelligence.adoc[*Artificial intelligence (AI)*]
 * xref:stateful.adoc[*Stateful design*]
 * xref:stateless.adoc[*Stateless design*]

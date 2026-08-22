@@ -6,24 +6,21 @@
 
 // TODO: https://blog.algomaster.io/p/batch-processing-vs-stream-processing
 
-Stream processing systems are used to process continuous streams of data. They are the low-latency
-counterpart to xref:batch-processing.adoc[*batch processing*] frameworks such as
-xref:map-reduce.adoc[*MapReduce*], which handle data in bounded groups on a schedule, and they have
-many use cases, including real-time analytics, data enrichment,
-xref:observability.adoc[*observability*] and xref:monitoring.adoc[*monitoring*], and more. They are
-central to xref:big-data.adoc[*big data*] platforms, which pair them with batch processing to cover
-both real-time and scheduled workloads.
+Stream processing systems are used to process continuous streams of data. They are the low-latency counterpart to
+xref:batch-processing.adoc[*batch processing*] frameworks such as xref:map-reduce.adoc[*MapReduce*], which handle data
+in bounded groups on a schedule, and they have many use cases, including real-time analytics, data enrichment,
+xref:observability.adoc[*observability*] and xref:monitoring.adoc[*monitoring*], and more. They are central to
+xref:big-data.adoc[*big data*] platforms, which pair them with batch processing to cover both real-time and scheduled
+workloads.
 
-Stream processing systems are used in xref:event-driven-architecture.adoc[*event-driven*] systems,
-as an alternative to xref:event-bus.adoc[*event buses*] and
-xref:message-queue.adoc[*message queues*]. While event buses and message queues are used to
-decouple components in xref:distributed-system.adoc[*distributed software*], with the aim of making
-complex systems more modular and scalable, stream processing systems are optimized for the real-time
-processing and analysis of data – though they can be (and often are) used in the implementation of
-conventional events and messages as well.
+Stream processing systems are used in xref:event-driven-architecture.adoc[*event-driven*] systems, as an alternative to
+xref:event-bus.adoc[*event buses*] and xref:message-queue.adoc[*message queues*]. While event buses and message queues
+are used to decouple components in xref:distributed-system.adoc[*distributed software*], with the aim of making complex
+systems more modular and scalable, stream processing systems are optimized for the real-time processing and analysis of
+data – though they can be (and often are) used in the implementation of conventional events and messages as well.
 
-Stream processing systems are distinguished from message queues and event buses by their extremely
-high xref:throughput.adoc[*throughput*].
+Stream processing systems are distinguished from message queues and event buses by their extremely high
+xref:throughput.adoc[*throughput*].
 
 Examples of stream processing systems include:
 
@@ -31,14 +28,12 @@ Examples of stream processing systems include:
 * {link-flink}[Flink]
 * {link-azure-stream-analytics}[Azure Stream Analytics]
 
-Other common features of stream processing systems include data retention and replayability.
-Messages may be persisted until their time-to-live (TTL) expires. In the meantime, those messages
-can be resent to consumers.
+Other common features of stream processing systems include data retention and replayability. Messages may be persisted
+until their time-to-live (TTL) expires. In the meantime, those messages can be resent to consumers.
 
-Like event-driven systems, stream processing systems tend to implement fan-out patterns, which means
-multiple consumers can connect to the same queue (stream of data), each getting one copy of each
-message in the queue. This allows multiple independent components to process data in different ways,
-eg. for logs, data analysis, and real-time service updates.
+Like event-driven systems, stream processing systems tend to implement fan-out patterns, which means multiple consumers
+can connect to the same queue (stream of data), each getting one copy of each message in the queue. This allows multiple
+independent components to process data in different ways, eg. for logs, data analysis, and real-time service updates.
 
 In summary, stream processing systems can be good solutions for the following use cases:
 
@@ -46,16 +41,16 @@ In summary, stream processing systems can be good solutions for the following us
 
 * The messages require a short time to process.
 
-* You want messages to fan out to multiple decoupled consumers, because there is not a huge cost
-  associated with processing a single message.
+* You want messages to fan out to multiple decoupled consumers, because there is not a huge cost associated with
+  processing a single message.
 
 * You have multiple independent systems that need to process the same message in different ways.
 
 * You need messages to be processed really, really quickly.
 
-* Constant, rather than "bursty", data flow. xref:kafka.adoc[*Kafka*], for example, is designed to
-  handle data flowing through the system at all times. By comparison, traditional message queues
-  like RabbitMQ work better when you don't have that.
+* Constant, rather than "bursty", data flow. xref:kafka.adoc[*Kafka*], for example, is designed to handle data flowing
+  through the system at all times. By comparison, traditional message queues like RabbitMQ work better when you don't have
+  that.
 
 == See also
 
