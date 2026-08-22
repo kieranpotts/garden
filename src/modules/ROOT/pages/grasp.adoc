@@ -2,19 +2,21 @@
 
 GRASP stands for *General Responsibility Assignment Software Patterns*. It is a set of nine named patterns for
 xref:object-oriented-programming.adoc[*object-oriented design*], introduced by Craig Larman in
-_Applying UML and Patterns_ (1997). The patterns answer a single, recurring question: given an object-oriented design,
-which class or object should be responsible for a given task or piece of knowledge?
+_Applying UML and Patterns_ (1997).
+
+The patterns answer a single, recurring question. Given an object-oriented design, which class or object should be
+responsible for a given task or piece of knowledge?
 
 Responsibility assignment is the everyday act of deciding where behavior and data live. Every method, every attribute,
 every collaboration is the result of some such decision, and small poor choices accumulate into a design that is hard to
-reason about and hard to change. GRASP gives names to the heuristics experienced designers apply intuitively, so that
-the reasoning can be made explicit, taught, and debated.
+reason about and hard to change.
 
-== Patterns and principles
+GRASP gives names to the heuristics that experienced designers apply intuitively, so that the reasoning can be made
+explicit, taught, and debated.
 
-GRASP sits between xref:design-pattern.adoc[*design patterns*] and xref:design-principle.adoc[*design principles*]. Like
-the Gang of Four patterns, each GRASP pattern names a recurring solution to a recurring problem. But the GRASP patterns
-are more general and less prescriptive about structure: they describe _which kind of object_ should own a
+GRASP sits somewhere between xref:design-pattern.adoc[*design patterns*] and xref:design-principle.adoc[*design principles*].
+Like the Gang of Four patterns, each GRASP pattern names a recurring solution to a recurring problem. But the GRASP
+patterns are more general and less prescriptive about structure. They describe _which kind of object_ should own a
 responsibility, not a particular class hierarchy or collaboration shape. Like design principles, they express
 preferences – for low xref:coupling.adoc[*coupling*] and high xref:cohesion.adoc[*cohesion*] – but they are framed as
 assignable responsibilities rather than as abstract maxims.
@@ -25,39 +27,38 @@ Larman organized GRASP into nine patterns. Five describe specific assignments of
 are evaluative principles applied alongside them.
 
 * *Information expert.* Assign a responsibility to the class that has the information needed to fulfill it. This is the
-  most basic heuristic: put behavior where the data already lives, so that the design stays cohesive and collaborators
-  need not exchange data they would otherwise keep private.
+  most basic heuristic. It says to put behavior where the data already lives, so that the design stays cohesive and
+  collaborators need not exchange data they would otherwise keep private.
+
 * *Creator.* Assign responsibility for creating an object to the class that owns it, aggregates it, contains it, records
   it, or closely uses it. This localizes construction and keeps creation near the lifecycle that gives the object its
   meaning.
+
 * *Controller.* Assign responsibility for receiving and coordinating a system operation to a controller object – typically
   a use-case controller rather than a single "god" facade. The controller is the first object beyond the UI layer that
   handles an incoming request, delegating work to other objects rather than doing it itself.
-* *Low coupling.* Assign responsibilities so that coupling stays low, as an
-  xref:design-principle.adoc[*evaluative principle*] applied to the other choices. The aim is the same one described under
-  xref:coupling.adoc[*coupling*]: keep dependencies weak, narrow, and visible at a stable interface.
+
+* *Low coupling.* Assign responsibilities so that coupling stays low, as an xref:design-principle.adoc[*evaluative principle*]
+  applied to the other choices. The aim is the same one described under xref:coupling.adoc[*coupling*] — to keep
+  dependencies weak, narrow, and visible at a stable interface.
+
 * *High cohesion.* Assign responsibilities so that cohesion stays high, again as an evaluative principle. A class with
-  closely related responsibilities is easier to understand, test, and change. See xref:cohesion.adoc[*cohesion*].
+  closely related responsibilities is easier to understand, test, and change. (See xref:cohesion.adoc[*cohesion*].)
+
 * *Polymorphism.* When behavior varies by type, assign responsibility for the variation to polymorphic operations on a
-  type hierarchy, rather than conditionals that test on type. See xref:polymorphism.adoc[*polymorphism*].
+  type hierarchy, rather than conditionals that test on type. (See xref:polymorphism.adoc[*polymorphism*].)
+
 * *Pure fabrication.* Where assigning responsibility to an information expert would harm cohesion or coupling, invent a
   class that does not correspond to a domain concept – a fabrication, such as a repository or a service – purely to keep
   the design clean. It is a deliberate escape hatch from the information expert heuristic.
+
 * *Indirection.* Assign responsibility to an intermediary object so that two other components do not have to know about
   each other directly. The intermediary decouples them, at the cost of an extra hop. Many
   xref:design-pattern.adoc[*design patterns*] – adapter, facade, mediator – are specializations of indirection.
+
 * *Protected variations.* Assign responsibility so that variations and instabilities are isolated behind a stable
   interface, protecting the parts of the design that should not change. xref:encapsulation.adoc[*Encapsulation*] and
   xref:dependency-inversion.adoc[*dependency inversion*] are mechanisms for the same end.
-
-== Relation to other heuristics
-
-GRASP does not stand alone. Low coupling and high cohesion are the classical goals of structured design, restated in
-object-oriented terms. Polymorphism and protected variations overlap with the xref:solid.adoc[*SOLID*] principles –
-notably xref:dependency-inversion.adoc[*dependency inversion*] and the
-xref:open-closed-principle.adoc[*open-closed principle*]. The xref:law-of-demeter.adoc[*Law of Demeter*] is a
-complementary heuristic: it constrains _how_ an object talks to its collaborators, where GRASP constrains _which_ object
-owns the responsibility in the first place.
 
 Because the GRASP patterns are heuristics, they sometimes pull in different directions. Information expert would put a
 responsibility on the class that holds the data, but that may harm cohesion – in which case pure fabrication offers an
