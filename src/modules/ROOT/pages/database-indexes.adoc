@@ -29,7 +29,7 @@ row per distinct value, and suit low-cardinality columns in analytical workloads
 Indexes speed up reads but slow down writes. Every insert, update, or delete must update the index
 as well as the table, so each extra index adds work to the write path. Indexes also consume disk
 space, sometimes more than the table itself. The right balance depends on the system's
-xref:access-patterns.adoc[*access patterns*]. Indexes pay off most for read-heavy workloads, while
+xref:access-pattern.adoc[*access patterns*]. Indexes pay off most for read-heavy workloads, while
 write-heavy systems may be better served by fewer indexes.
 
 Indexes also get harder in a xref:sharding.adoc[*sharded*] database. An index on the shard key stays
@@ -65,7 +65,7 @@ An index is only useful if a query can use it. A few rules of thumb:
 
 == See also
 
-* xref:access-patterns.adoc[*Access patterns*]
+* xref:access-pattern.adoc[*Access patterns*]
 * xref:big-o-notation.adoc[*Big O notation*]
 * xref:bloom-filter.adoc[*Bloom filter*]
 * xref:caching.adoc[*Caching*]
