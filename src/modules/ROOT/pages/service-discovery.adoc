@@ -31,7 +31,7 @@ instance dead and evicts it. Discovery thereby tracks liveness, not just existen
 
 Because every consumer depends on it, the registry is a potential
 xref:single-point-of-failure.adoc[*single point of failure*]. Production registries therefore run as
-a replicated cluster, using a xref:consensus-algorithms.adoc[*consensus*] protocol such as Raft or
+a replicated cluster, using a xref:consensus-algorithm.adoc[*consensus*] protocol such as Raft or
 Zab to keep the replicas consistent. This choice pins the registry's position on the
 xref:cap-theorem.adoc[*CAP*] trade-off. Registries such as etcd, Consul, and Apache ZooKeeper favour
 consistency (CP), while Netflix Eureka favours availability (AP) and tolerates a stale registry
@@ -99,7 +99,7 @@ all and peers must find one another through peer-to-peer exchanges alone.
 == See also
 
 * xref:cap-theorem.adoc[*CAP theorem*]
-* xref:consensus-algorithms.adoc[*Consensus algorithms*]
+* xref:consensus-algorithm.adoc[*Consensus algorithms*]
 * xref:container-orchestration.adoc[*Container orchestration*]
 * xref:dns.adoc[*Domain name system (DNS)*]
 * xref:eventual-consistency.adoc[*Eventual consistency*]
