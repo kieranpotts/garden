@@ -14,7 +14,7 @@ method, reserving stock, updating the inventory, scheduling delivery, and sendin
 email. If any of these operations fail, the entire transaction should be rolled back to prevent
 inconsistent state.
 
-A xref:distributed-databases.adoc[*distributed database*] runs distributed transactions internally
+A xref:distributed-database.adoc[*distributed database*] runs distributed transactions internally
 whenever a write touches more than one of its nodes. In a xref:sharding.adoc[*sharded*] database,
 any write that touches more than one shard is a distributed transaction, which is why shard keys are
 usually chosen to keep common writes local to a single shard. Some databases support distributed
