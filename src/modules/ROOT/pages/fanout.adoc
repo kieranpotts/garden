@@ -15,7 +15,7 @@ sense: the trade-off between eager and lazy propagation of writes to derived sto
 
 Fanout-on-write is the *eager* strategy. At the moment a write is committed, the system updates
 every derived store that depends on the changed data. The
-xref:database-indexes.adoc[*database index*] is the familiar example. Each insert, update, or delete
+xref:database-index.adoc[*database index*] is the familiar example. Each insert, update, or delete
 rewrites every index that covers the affected row. A
 xref:materialized-view.adoc[*materialized view*] refreshed on commit, a write-through cache, and a
 xref:denormalization.adoc[*denormalized*] table updated by a trigger all follow the same shape.
@@ -73,7 +73,7 @@ from the write transaction, which trades a little freshness for a much simpler w
 * xref:change-data-capture.adoc[*Change data capture*]
 * xref:cqrs.adoc[*Command query responsibility segregation (CQRS)*]
 * xref:consistency.adoc[*Consistency*]
-* xref:database-indexes.adoc[*Database indexes*]
+* xref:database-index.adoc[*Database indexes*]
 * xref:denormalization.adoc[*Denormalization*]
 * xref:design-patterns.adoc[*Design patterns*]
 * xref:event-sourcing.adoc[*Event sourcing*]

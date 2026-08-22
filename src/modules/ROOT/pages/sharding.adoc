@@ -93,7 +93,7 @@ at write time.
 *Secondary indexes* are the next. An index on a column other than the shard key cannot be served
 locally, because the indexed rows are spread across every shard. The usual answers are to partition
 the index per shard and fan out a query to all of them, or to maintain a separate, globally
-distributed xref:database-indexes.adoc[*index*]. The second option adds a whole new distribution
+distributed xref:database-index.adoc[*index*]. The second option adds a whole new distribution
 dimension to the system.
 
 *Transactions* that span shards lose the simple ACID guarantees of a single-node database. A write
