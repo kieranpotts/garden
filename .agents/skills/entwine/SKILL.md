@@ -91,7 +91,7 @@ user with an error message.
   is too thin to link.
 
 - You MUST NOT link to a hub entry that already aggregates the target.
-  Hub entries such as `architecture-and-design.adoc` and
+  Hub entries such as `software-architecture.adoc` and
   `computer-science.adoc` aggregate many topics by design. Entwining is
   about missing sibling connections, not a redundant link back up to a hub
   that already lists the target.
