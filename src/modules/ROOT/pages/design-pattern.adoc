@@ -1,105 +1,55 @@
 = Design pattern
 
-Design patterns are general, reusable solutions to common problems in software design. They are not
-finished designs that can be translated directly into code. They are templates for how to solve a
-generalized problem in a way that can be adapted to many different situations.
+A design pattern is a general, reusable solution to a common problems in *software design*
 
-A pattern captures a proven solution to a recurring problem, together with the context in which it
-applies, the forces it resolves, and the consequences it introduces. Naming a pattern gives a team a
-shared vocabulary: saying "use an adapter here" conveys a whole design decision in two words. See
-xref:code-reuse.adoc[*code reuse*] for how patterns fit alongside other reuse strategies, and
-xref:design-principle.adoc[*design principles*] for the distinction between a reusable solution (a
-pattern) and a guiding maxim (a principle).
+Design patterns are not finished designs that can be translated directly into code. Rather they
+are templates for how to solve a generalized problem in a way that can be adapted to many different
+situations.
 
-The term was popularized by _Design Patterns: Elements of Reusable Object-Oriented Software_ (1994),
-by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides – the "Gang of Four". Their book
-catalogued 23 object-oriented patterns and sorted them into three categories by intent:
+Naming a design pattern gives a team a shared vocabulary. Saying "use an adapter here" conveys a
+whole design decision in a few words.
+
+The idea of design patterns was popularized by _Design Patterns: Elements of Reusable Object-Oriented Software_
+(1994), by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides – the "Gang of Four". Their
+book catalogued 23 object-oriented patterns and sorted them into three categories by intent.
 
 * *Creational patterns* abstract the process of object construction.
 * *Structural patterns* compose classes or objects into larger structures.
 * *Behavioral patterns* assign responsibility and shape how objects communicate.
 
-The Gang of Four categories cover object-oriented design at the class and object level. Other
-families of pattern address different scales and domains:
-xref:architectural-pattern.adoc[*architectural patterns*] operate on whole systems,
-xref:communication-pattern.adoc[*communication patterns*] describe how components exchange data, and
-Martin Fowler's enterprise application patterns address the structure of business applications.
-xref:grasp.adoc[*GRASP*] is a smaller family focused on responsibility assignment in object-oriented
-designs. The entries below collect the patterns this garden covers so far.
-
-== Creational patterns
+Creational patterns include:
 
 * xref:factory.adoc[*Factory*]
 * xref:singleton.adoc[*Singleton*]
 
-== Structural patterns
+Structural patterns include:
 
 * xref:adapter-pattern.adoc[*Adapter pattern*]
 * xref:inversion-of-control.adoc[*Inversion of control*]
 
-== Behavioral patterns
+Behavioral patterns include:
 
 * xref:observer-pattern.adoc[*Observer pattern*]
 * xref:publish-subscribe-pattern.adoc[*Publish-subscribe (pubsub) pattern*]
 * xref:strategy-pattern.adoc[*Strategy pattern*]
 
-== Architectural patterns
+The Gang of Four categories cover object-oriented design at the class and object level. Other
+families of design pattern address different scales and domains.
+xref:architectural-pattern.adoc[*Architectural patterns*] operate on whole systems,
+xref:communication-pattern.adoc[*communication patterns*] describe how components exchange data, and
+Martin Fowler's *enterprise application patterns* address the structure of business applications.
 
-* xref:client-server-architecture.adoc[*Client-server architecture*]
-* xref:data-oriented-architecture.adoc[*Data-oriented architecture*]
-* xref:domain-driven-design.adoc[*Domain-driven design*]
-* xref:event-driven-architecture.adoc[*Event-driven architecture*]
-* xref:hexagonal-architecture.adoc[*Hexagonal architecture*]
-* xref:layered-architecture.adoc[*Layered architecture*]
-* xref:message-driven-architecture.adoc[*Message-driven architecture*]
-* xref:microservices.adoc[*Microservices*]
-* xref:monolith.adoc[*Monoliths*]
-* xref:nanoservices.adoc[*Nanoservices*]
-* xref:ports-and-adapters.adoc[*Ports and adapters*]
-* xref:reactive-programming.adoc[*Reactive programming*]
-* xref:request-response.adoc[*Request-response*]
-* xref:serverless-architecture.adoc[*Serverless architecture*]
-* xref:service-oriented-architecture.adoc[*Service-oriented architecture*]
-* xref:strangler-fig-pattern.adoc[*Strangler fig pattern*]
-* xref:vertical-slice-architecture.adoc[*Vertical-slice architecture*]
-
-Architectural patterns are covered in more depth in
-xref:architectural-pattern.adoc[*architectural pattern*].
-
-Patterns are tools, not goals. Forcing a pattern onto a problem it does not fit adds indirection
-without earning the reuse it promises. A pattern earns its place only when the problem genuinely
-matches its context. See xref:anti-pattern.adoc[*anti-patterns*] for the failure modes this
-produces, and xref:yagni.adoc[*YAGNI*] for the broader caution against solving problems you do not
-yet have.
+xref:grasp.adoc[*GRASP*] is a smaller family focused on responsibility assignment in object-oriented
+designs. The entries below collect the patterns this garden covers so far.
 
 == See also
 
-* xref:anti-pattern.adoc[*Anti-pattern*]
-* xref:architectural-pattern.adoc[*Architectural pattern*]
-* xref:bulkhead.adoc[*Bulkhead*]
-* xref:circuit-breaker.adoc[*Circuit breaker*]
-* xref:code-reuse.adoc[*Code reuse*]
-* xref:cqrs.adoc[*Command Query Responsibility Segregation (CQRS)*]
-* xref:command-query-separation.adoc[*Command query separation*]
-* xref:communication-pattern.adoc[*Communication pattern*]
-* xref:composition.adoc[*Composition*]
-* xref:computer-science.adoc[*Computer science*]
-* xref:dependency-injection.adoc[*Dependency injection*]
-* xref:dependency-inversion.adoc[*Dependency inversion*]
-* xref:design-principle.adoc[*Design principles*]
-* xref:fanout.adoc[*Fanout*]
-* xref:grasp.adoc[*GRASP*]
-* xref:inheritance.adoc[*Inheritance*]
-* xref:lazy-loading.adoc[*Lazy loading*]
-* xref:memoization.adoc[*Memoization*]
-* xref:object-oriented-programming.adoc[*Object-oriented programming*]
-* xref:pagination.adoc[*Pagination*]
-* xref:polymorphism.adoc[*Polymorphism*]
-* xref:retry.adoc[*Retry*]
-* xref:saga.adoc[*Saga*]
-* xref:scatter-and-gather.adoc[*Scatter and gather*]
-* xref:software-architecture.adoc[*Software architecture*]
-* xref:system-design.adoc[*System design*]
+See also xref:code-reuse.adoc[*code reuse*] for how design patterns fit alongside other code reuse
+strategies, and xref:design-principle.adoc[*design principles*] for the distinction between a
+reusable solution (a pattern) and a guiding maxim (a principle).
+
+See also xref:anti-pattern.adoc[*anti-patterns*] and xref:yagni.adoc[*YAGNI*], which warn about
+misuse of design patterns.
 
 == References
 
