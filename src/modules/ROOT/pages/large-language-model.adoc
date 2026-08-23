@@ -2,23 +2,23 @@
 :toc: macro
 :toc-title: Contents
 
-:link-attention-paper:  https://research.google/pubs/attention-is-all-you-need/
+:link-attention-paper:   https://research.google/pubs/attention-is-all-you-need/
 :link-musk-distillation: https://www.semafor.com/article/05/01/2026/elon-musk-admits-xai-distilled-openai-models
-:link-wolfram-chatgpt:  https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/
-:link-perplexity:       https://www.perplexity.ai/
-:link-openai-evals:     https://github.com/openai/evals
-:link-cuda:             https://developer.nvidia.com/cuda-toolkit
-:link-rocm:             https://www.amd.com/en/products/software/rocm.html
-:link-opencl:           https://www.khronos.org/opencl/
-:link-llama-cpp:        https://github.com/ggml-org/llama.cpp
-:link-vllm:             https://github.com/vllm-project/vllm
-:link-openai-cookbook:  https://cookbook.openai.com/
-:link-llm-eng-handbook: https://github.com/SylphAI-Inc/LLM-engineer-handbook
-:link-ai-coding-dict:   https://github.com/mattpocock/dictionary-of-ai-coding
-:link-raschka-book:     https://www.manning.com/books/build-a-large-language-model-from-scratch
-:link-alammar-book:     https://www.llm-book.com/
-:link-iusztin-book:     https://www.packtpub.com/en-us/product/llm-engineers-handbook-9781836200079
-:link-burkov-book:      https://www.thelmbook.com/
+:link-wolfram-chatgpt:   https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/
+:link-perplexity:        https://www.perplexity.ai/
+:link-openai-evals:      https://github.com/openai/evals
+:link-cuda:              https://developer.nvidia.com/cuda-toolkit
+:link-rocm:              https://www.amd.com/en/products/software/rocm.html
+:link-opencl:            https://www.khronos.org/opencl/
+:link-llama-cpp:         https://github.com/ggml-org/llama.cpp
+:link-vllm:              https://github.com/vllm-project/vllm
+:link-openai-cookbook:   https://cookbook.openai.com/
+:link-llm-eng-handbook:  https://github.com/SylphAI-Inc/LLM-engineer-handbook
+:link-ai-coding-dict:    https://github.com/mattpocock/dictionary-of-ai-coding
+:link-raschka-book:      https://www.manning.com/books/build-a-large-language-model-from-scratch
+:link-alammar-book:      https://www.llm-book.com/
+:link-iusztin-book:      https://www.packtpub.com/en-us/product/llm-engineers-handbook-9781836200079
+:link-burkov-book:       https://www.thelmbook.com/
 
 A large language model (LLM) is a xref:machine-learning.adoc[*deep learning*] model trained on vast amounts of text.
 
@@ -686,69 +686,42 @@ xref:model-access-layer.adoc[*model access layer*].
 
 == See also
 
-* xref:machine-learning.adoc[*Machine learning*]: The broader field of which LLMs are a part.
-
-* xref:transformer.adoc[*Transformer architecture*]: The neural network architecture that underpins all modern LLMs.
-
-* xref:generative-ai.adoc[*Generative AI*]: Covers broader AI product categories including diffusion models for image
-  generation.
-
-* xref:ai-assistant.adoc[*AI assistant*]: General-purpose conversational interfaces to LLMs, such as ChatGPT, Claude, and
-  Perplexity.
-
-* xref:context-engineering.adoc[*Context engineering*]
-
 * xref:agent.adoc[*Agent*]
-
-* xref:agent-harness.adoc[*Agent harness*]: The wrapping infrastructure around a model that drives requests, parses tool
-  calls, and manages context.
-
-* xref:agent-memory.adoc[*Agent memory*]: What persists across sessions — files, handoff artifacts, and other records on
-  disk — as distinct from the context window's working state.
-
-* xref:agent-handoff.adoc[*Agent handoff*]: Clearing, compaction, and handoff as ways of managing context across session
-  boundaries.
-
-* xref:stateful.adoc[*Stateful design*] and xref:stateless.adoc[*statelessness*]: The statelessness of the model underlies
-  why every request re-sends the full context.
-
+* xref:agent-handoff.adoc[*Agent handoff*]
+* xref:agent-harness.adoc[*Agent harness*]
+* xref:agent-memory.adoc[*Agent memory*]
+* xref:agent-orchestration.adoc[*Agent orchestration*]
+* xref:ai-assistant.adoc[*AI assistant*]
 * xref:ai-coding-assistant.adoc[*AI coding assistant*]
-
-* xref:agent-orchestration.adoc[*Agent orchestration*]: Frameworks and platforms for building and coordinating agents
-  (LangChain, CrewAI, and others).
-
-* xref:model-access-layer.adoc[*Model access layer*]: Deployment patterns, gateways, and model managers for reaching or
-  running an LLM.
-
-* xref:open-weight-model.adoc[*Open-weight model*]: Models with publicly released weights, including licensing, hardware
-  requirements, and notable families.
-
 * xref:artificial-intelligence.adoc[*Artificial intelligence (AI)*]
+* xref:context-engineering.adoc[*Context engineering*]
+* xref:generative-ai.adoc[*Generative AI*]
+* xref:machine-learning.adoc[*Machine learning*]
+* xref:model-access-layer.adoc[*Model access layer*]
+* xref:open-weight-model.adoc[*Open-weight model*]
+* xref:transformer.adoc[*Transformer architecture*]
 
 == References
 
-* {link-openai-cookbook}[OpenAI Cookbook], OpenAI: Example code, recipes, and best practices for working with the OpenAI
-  APIs.
+* OpenAI.
+  {link-openai-cookbook}[_OpenAI Cookbook_]
 
-* {link-llm-eng-handbook}[LLM Engineer Handbook]: Curated collection of links and resources for AI engineers.
+* {link-llm-eng-handbook}[_LLM Engineer Handbook_]
 
-* {link-wolfram-chatgpt}[What Is ChatGPT Doing … and Why Does It Work?], Stephen Wolfram: Accessible first-principles
-  explanation of next-token prediction, embeddings, and the transformer's attention mechanism, plus the concept of
-  computational irreducibility.
+* Stephen Wolfram.
+  {link-wolfram-chatgpt}[_What Is ChatGPT Doing … and Why Does It Work?_]
 
-* {link-ai-coding-dict}[Dictionary of AI Coding], Matt Pocock: Plain-English glossary of the vocabulary of AI coding:
-  models, context windows, tokens, harnesses, tools, failure modes, handoffs, and patterns of work.
+* Matt Pocock.
+  {link-ai-coding-dict}[_Dictionary of AI Coding_]
 
-=== Books
+* Sebastian Raschka.
+  {link-raschka-book}[_Build a Large Language Model (from Scratch)_]
 
-* {link-raschka-book}[Build a Large Language Model (from Scratch)], Sebastian Raschka: Builds a transformer in raw
-  PyTorch, layer by layer.
+* Jay Alammar and Maarten Grootendorst.
+  {link-alammar-book}[_Hands-On Large Language Models_]
 
-* {link-alammar-book}[Hands-On Large Language Models], Jay Alammar & Maarten Grootendorst: Visual, practical guide to LLM
-  applications.
+* Paul Iusztin and Maxime Labonne.
+  {link-iusztin-book}[_LLM Engineer's Handbook_]
 
-* {link-iusztin-book}[LLM Engineer's Handbook], Paul Iusztin & Maxime Labonne: Production LLMOps: fine-tuning,
-  quantization, serving.
-
-* {link-burkov-book}[The Hundred-Page Language Models Book], Andriy Burkov: Concise, math-grounded path from n-grams to
-  transformers.
+* Andriy Burkov.
+  {link-burkov-book}[_The Hundred-Page Language Models Book_]

@@ -200,7 +200,34 @@ order.
 
 - `` == References ``. External citations (books, papers, articles). Follow the
   TS-26 referencing style (`<author> (<year>). _<title>_. <publication>`), one
-  bullet per entry. Hyperlink the title in hypermedia renderings.
+  `` * `` bullet per entry (not `` - ``), separated by a blank line. Hyperlink
+  the title in hypermedia renderings. Omit the year entirely, rather than
+  writing `` (n.d.) ``, when a source doesn't state one —
+  `` <author>. _<title>_. <publication> ``. Don't invent a year either.
+
+  Author names are surnames only — no initials or first names — for two or
+  more authors: `` Smith and Jones (2020) `` for two, `` Smith, Jones, and
+  Patel (2020) `` for three, `` Smith et al. (2020) `` for more than three. A
+  single author may keep an initial, eg. `` Johnson, M. (2020) ``.
+
+  Break each entry over three lines — author, title, publication — regardless
+  of the 120-character soft wrap used elsewhere. This is a deliberate exception
+  to the general line-wrap rule. For example:
++
+[source,asciidoc]
+----
+* Lieberman, Paternò, Klann, and Wulf (2006).
+  {link-lieberman}[_End User Development: An Emerging Paradigm_].
+  Springer.
+
+* {link-wikipedia}[_End-user development_].
+  Wikipedia.
+----
++
+The second line is indented two spaces to align under the bullet's text, not
+under the `*` marker. If a reference has no separate publication (eg. an
+undated web page whose title and site are the same source), the entry may
+collapse to two lines — author and title — rather than inventing a third.
 
 An entry that has neither section simply ends on its last content paragraph.
 Do not invent other closing-section names like "Further reading" or "External
