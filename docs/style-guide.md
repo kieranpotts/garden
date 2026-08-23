@@ -196,7 +196,12 @@ order.
 
 - `` == See also ``. Cross-references to other garden pages, one bullet per line,
   in the inner-bold xref form `` * xref:target.adoc[*Link text*] ``. List only
-  pages genuinely related to the entry's topic.
+  pages genuinely related to the entry's topic, and only those not already
+  linked in the body prose above. A page already cross-referenced in the body
+  text MUST NOT be repeated in `See also`. Not every entry needs this section —
+  omit it entirely if there are no genuinely relevant related pages left to
+  list once the body's own cross-references are excluded. Don't pad the list
+  just to have one, and don't keep a stale entry that's now covered in the body.
 
 - `` == References ``. External citations (books, papers, articles). Follow the
   TS-26 referencing style (`<author> (<year>). _<title>_. <publication>`), one
