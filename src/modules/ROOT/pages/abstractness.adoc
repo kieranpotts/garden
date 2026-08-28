@@ -1,0 +1,52 @@
+= Abstractness
+
+*Abstractness* is a metric for the source code of *object-oriented systems*. It quantifies how abstract a unit of
+xref:software-design.adoc[*software design*] is — typically a package, module, or component — by measuring the
+proportion of its types that are abstract.
+
+It is calculated as the number of abstract types — xref:interface.adoc[*interfaces*] plus abstract classes — divided by
+the total number of types in the unit.
+
+The result is a range between 0 and 1. A value of 1 means every type is abstract.
+
+Abstractness is one of a family of component metrics introduced by Robert C Martin to reason about the
+xref:coupling.adoc[*coupling*] and extensibility of object-oriented designs. It is part of the same design framework as
+xref:dependency-inversion.adoc[*dependency inversion*], which directs modules to depend on abstractions rather than
+concrete implementations.
+
+*Instability* is a companion metric that measure how difficult a component is to change.
+
+As per Martin's xref:stable-abstractions.adoc[*stable abstractions*] principle, a component's abstractness should be
+proportional to its stability. A component that many others depend on should be abstract enough to extend without
+modification, while a component that nothing depends on can afford to be concrete.
+
+Reading abstractness and instability metrics together, visualized on a graph, is a useful *evaluation* technique.
+Components are mapped as individual data points, with their abstractness on one axis against their instabiity on the
+other axis. Components that lie near the diagonal — where abstractness and instability sum to one — are said to be
+on the _main sequence_ and are considered well-balanced. Components that fall off the diagonal are worthy of closer
+inspection.
+
+* The _zone of pain_ covers the stable, concrete corner of the graph. Components that land in this zone are depended on
+  by many others, yet offer no abstraction, so every change ripples outward.
+
+* The _zone of uselessness_ covers the unstable, abstract corner. Components that land in this zone are highly abstract
+  yet are dependent on by nothing, so the abstractions earn no return.
+
+The metric has limits. It counts only types, not the relationships between them, so a component full of abstract types
+that are never implemented or depended on scores as fully abstract without being useful. It also says nothing about
+whether the abstractions it counts are well designed. An interface that leaks implementation detail scores the same as
+one that does not.
+
+Abstractness is therefore a structural indicator, not a verdict on design quality, and it is most informative when read
+alongside instability and the dependency structure it summarizes.
+
+== See also
+
+* xref:abstraction.adoc[*Abstraction*]
+* xref:cohesion.adoc[*Cohesion*]
+
+== References
+
+* Martin, Robert C. (2002).
+  _Agile Software Development, Principles, Patterns, and Practices_.
+  Pearson.
