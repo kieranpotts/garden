@@ -1,0 +1,31 @@
+= Combinator
+
+:link-meyer:        https://en.wikipedia.org/wiki/Object-Oriented_Software_Construction
+
+*Combinator* is a xref:design-pattern.adoc[*design pattern*] for building complex functions or objects by combining
+simpler ones.
+
+The defining property is *closure of operation*, which refers to an operation whose operands and result share a single
+type, `T`. Given operations of type `T → T`, any composition of those operations is again of type `T → T`, eg.
+`T × T → T`. Thus, simply by nesting a few simple primitives, complex behavior can be xref:composition.adoc[*composed*].
+
+Bertrand Meyer named this property in _Object-Oriented Software Construction_ (1997) as one of the tests of a
+well-factored type. Look at the operations a type offers, and prefer those whose result type matches the type itself.
+Those operations will give you the greatest flexibility to compose interesting behaviors.
+
+The pattern is most visible in *parser combinators*. A parser is a function that consumes part of an input string and
+returns a parsed value together with the remaining input. Because every combinator take a parser and returns a parser,
+primitives such as "match a character" or "match a digit" compose into `sequence`, `choice`, and `many`. And, in turn,
+those combined operations can be further composed into a grammar for an entire language. The whole grammar is expressed
+as ordinary function composition, and the type system guarantees that the combinations type-check.
+
+The same shape appears wherever a small set of primitives closes over a type. Arithmetic operators on numbers,
+`Function.compose` and `andThen` on unary functions, and the combinators of functional libraries that chain and branch
+over a common type, all follow this patterns. In each case a tiny core of primitives grows into a rich vocabulary
+through composition alone.
+
+== References
+
+* Meyer, B. (1997).
+  {link-meyer}[_Object-Oriented Software Construction_].
+  Prentice Hall.
