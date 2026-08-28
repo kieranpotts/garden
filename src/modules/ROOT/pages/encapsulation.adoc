@@ -1,30 +1,29 @@
 = Encapsulation
 
-Encapsulation is a xref:design-pattern.adoc[*design pattern*] that is supported by
-xref:object-oriented-programming.adoc[*object-oriented programming*] languages. Encapsulation bundles data and methods
-that act on that data into a single unit of code – called a class.
+*Encapsulation* has two distinct notions, and sometimes the combination thereof.
 
-Encapsulation is also known as *information hiding*, a term coined by David Parnas for the broader principle of
-shielding a module's internal decisions from its callers, and is often described as *hiding implementation details*. The
-three names point at the same idea: a module exposes an xref:interface.adoc[*interface*] and conceals everything behind
-it, so that callers depend only on what the interface promises and not on how it is built. When that boundary fails, the
-result is a xref:leaky-abstraction.adoc[*leaky abstraction*].
+* Encapsulation means restricting access to some or all sub-components of a software component.
+* Encapsulation means the bundling of data with the operations that operate on that data.
 
-The purpose of encapsulation is to protect data from outside interference and misuse, and to free the implementation to
-change without forcing every caller to change with it — the discipline that
-xref:encapsulate-what-changes.adoc[*encapsulating what changes*] turns into a design rule. The
-xref:uniform-access-principle.adoc[*uniform access principle*] applies the same idea to one specific decision: whether a
-value is stored as an attribute or computed by a method. The xref:law-of-demeter.adoc[*Law of Demeter*] is a
-complementary discipline: it stops a caller from reaching through an object to the internals of that object's
-collaborators, which would bypass the very boundary encapsulation draws. It is the foundation that makes
-xref:coupling.adoc[*loose coupling*] and xref:composition.adoc[*composition*] practical, since both rely on callers
-depending on xref:abstraction.adoc[*abstractions*] rather than on internals.
+The second definition originates from xref:object-oriented-programming.adoc[*object-oriented programming*], though
+equivalent patterns can be applied through other programming styles, too. In object-oriented programming languages,
+classes are the language-level construct that enable encapsulation of data and methods in a single unit of code.
 
-By hiding the meaning of values behind a named interface, encapsulation also weakens
-xref:connascence.adoc[*connascence*], specifically connascence of meaning, where callers would otherwise have to agree
-on the interpretation of a raw value.
+Encapsulation is a *design pattern* that realizes the *design principles* of xref:abstraction.adoc[*abstraction*]
+and xref:information-hiding.adoc[*information hiding*] by protecting data from outside interference and misuse, and
+freeing implementations to change without forcing every caller to change too.
+
+Best practice is to encapsulate the most volatile sub-components, the elements that are most likely to change in
+their implementation in the future. This principle is known as xref:encapsulate-what-changes.adoc[*encapsulating what changes*].
+This is one of the main mechanisms by which systems are protected from extensive *refactorings* when any one part of
+them changes.
+
+Encapsulation is the foundation that makes xref:coupling.adoc[*loose coupling*] and xref:composition.adoc[*composition*]
+practical.
 
 == See also
 
+* xref:connascence.adoc[*connascence*]
 * xref:decoupling.adoc[*Decoupling*]
-
+* xref:uniform-access-principle.adoc[*Uniform access principle*]
+* xref:law-of-demeter.adoc[*Law of Demeter*]

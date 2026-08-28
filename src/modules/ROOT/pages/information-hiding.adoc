@@ -1,0 +1,24 @@
+= Information hiding
+
+*Information hiding* is a *design principle* coined by David Parnas. It states that a *component* should shield its
+callers from its internal decisions. It is often described as "hiding *implementation* details".
+
+Information hiding is synonymous with xref:abstraction.adoc[*abstraction*], and xref:encapsulation.adoc[*encapsulation*]
+is the practical implementation of it — though all three terms are used interchangeably. The *design pattern* is that
+a component exposes an xref:interface.adoc[*interface*] and conceals everything behind that interface. Callers depend
+only on what the interface promises and not on the component's internal elements.
+
+With proper encapsulation, in which the internal implementation details are not merely hidden, but fully isolated, from
+the outside world, components behave like *black boxes*.
+
+The fundamental principle of information hiding is to xref:encapsulate-what-changes.adoc[*encapsulate what changes*],
+which means to hide behind an interface any potentially volatile implementation details — anything that is likely to
+change in the future. This protects other parts of a system from modification if the implementation of any single
+component is re-evaluated.
+
+Information hiding is a derivative of the approach of *incremental refinement* along the control flow. One of the
+trade-offs of information hiding is that it can make it harder to work *bottom-up*.
+
+Components are said to have xref:leaky-abstraction.adoc[*leaky abstractions*] when implementation details are exposed
+through their interface, making the implementation resistent to change because of the wider *refactoring* that would
+be required beyond the component.
