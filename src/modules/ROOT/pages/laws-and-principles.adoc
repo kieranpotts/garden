@@ -1,30 +1,42 @@
 = Laws and principles
 
-Software development has accumulated a folklore of named laws, rules, and principles. Some are informal observations,
-some are backed by data, and some are no more than adages, but they all compress hard-won lessons into a memorable
-abstraction.
+Software development has accumulated a folklore of laws, rules, principles, and philosophies. Some are informal
+observations, some are backed by data, and some are no more than adages, but they all compress hard-won lessons into a
+memorable abstraction.
 
-Some of the laws and principles describe forces that act on software regardless of process or technology.
-xref:conways-law.adoc[*Conway*] and xref:metcalfes-law.adoc[*Metcalfe's*] laws are examples. Others are heuristics for
+Some laws and principles describe forces that act on software regardless of process or technology.
+xref:conways-law.adoc[*Conway's*] and xref:metcalfes-law.adoc[*Metcalfe's*] laws are examples. Others are heuristics for
 individual or team behavior, such as the xref:boy-scout-rule.adoc[*boy scout rule*] and
 xref:bike-shedding.adoc[*bike shedding*]. A handful, like xref:goodharts-law.adoc[*Goodhart's law*], are cautionary
 tales about what happens when a measure is mistaken for the thing it measures.
 
-These laws are distinct from xref:design-principle.adoc[*design principles*], which guide the shape of program source
-code itself. The best known example is probably the xref:solid.adoc[*SOLID*] principles. The laws and principles listed
-below tend to operate at the scale of teams, projects, and organizations, rather than statements, classes, and modules.
-But a few, such as the xref:law-of-demeter.adoc[*Law of Demeter*], sit close to that boundary.
+The following laws and principles are distinct from xref:design-principle.adoc[*design principles*], which guide the
+shape of a computer program itself. The best known example is probably the five xref:solid.adoc[*SOLID*] design
+principles. The laws and principles listed below tend to operate at the scale of teams, projects, and organizations,
+rather than statements, classes, and modules. But a few, such as the xref:law-of-demeter.adoc[*Law of Demeter*], sit
+close to that boundary.
 
+== Index of laws and principles
+
+* xref:10x-programmer.adoc[*10x programmer*]
 * xref:atwoods-law.adoc[*Atwood's law*]
 * xref:bike-shedding.adoc[*Bike shedding (or the Law of Triviality)*]
 * xref:bitter-lesson.adoc[*The Bitter Lesson*]
 * xref:boy-scout-rule.adoc[*Boy scout rule*]
 * xref:brooks-law.adoc[*Brooks's law*]
+* xref:cargo-culting.adoc[*Cargo-culting*]
+* xref:commit-early-commit-often.adoc[*Commit early, commit often*]
 * xref:conways-law.adoc[*Conway's law*]
 * xref:cunninghams-law.adoc[*Cunningham's law*]
 * xref:curlys-law.adoc[*Curly's law*]
+* xref:do-the-simplest-thing.adoc[*Do the simplest thing*]
+* xref:do-what-i-mean.adoc[*Do what I mean (DWIM)*]
 * xref:doerrs-law.adoc[*Doerr's law*]
+* xref:dry.adoc[*DRY*]
+* xref:feature-creep.adoc[*Feature creep*]
+* xref:feature-factory.adoc[*Feature factory*]
 * xref:fitts-law.adoc[*Fitts's law*]
+* xref:forcing-function.adoc[*Forcing function*]
 * xref:galls-law.adoc[*Gall's law*]
 * xref:goodharts-law.adoc[*Goodhart's law*]
 * xref:greenspuns-tenth-rule.adoc[*Greenspun's tenth rule*]
@@ -42,44 +54,33 @@ But a few, such as the xref:law-of-demeter.adoc[*Law of Demeter*], sit close to 
 * xref:lindys-law.adoc[*Lindy's law*]
 * xref:linus-law.adoc[*Linus's law*]
 * xref:littles-law.adoc[*Little's law*]
+* xref:makers-schedule.adoc[*Maker's schedule*]
 * xref:metcalfes-law.adoc[*Metcalfe's law*]
 * xref:moores-law.adoc[*Moore's law*]
+* xref:mythical-man-month.adoc[*The Mythical Man-Month*]
 * xref:ninety-ninety-rule.adoc[*Ninety-ninety rule*]
 * xref:norvigs-law.adoc[*Norvig's law*]
+* xref:not-invented-here.adoc[*Not invented here!*]
+* xref:optimize-for-deletion.adoc[*Optimize for deletion*]
 * xref:pareto-principle.adoc[*Pareto principle*]
 * xref:parkinsons-law.adoc[*Parkinson's law*]
 * xref:peter-principle.adoc[*Peter principle*]
-* xref:robustness-principle.adoc[*Postel's law*]
+* xref:premature-optimization.adoc[*Premature optimization*]
+* xref:principle-of-least-astonishment.adoc[*Principle of least astonishment*]
 * xref:project-paradox.adoc[Project paradox]*
+* xref:robustness-principle.adoc[*Postel's law*]
+* xref:rule-of-least-power.adoc[*Rule of least power*]
 * xref:scaling-laws.adoc[*Scaling laws*]
 * xref:semantic-diffusion.adoc[*Semantic diffusion*]
 * xref:shirky-principle.adoc[*Shirky principle*]
-* xref:teslers-law.adoc[*Tesler's law*]
-* xref:wirths-law.adoc[*Wirth's law*]
-* xref:zawinskis-law.adoc[*Zawinski's law*]
-* xref:10x-programmer.adoc[*10x programmer*]
-* xref:cargo-culting.adoc[*Cargo-culting*]
-* xref:code-for-the-maintainer.adoc[*Code for the maintainer*]
-* xref:commit-early-commit-often.adoc[*Commit early, commit often*]
-* xref:do-the-simplest-thing.adoc[*Do the simplest thing that could possibly work*]
-* xref:do-what-i-mean.adoc[*Do what I mean (DWIM)*]
-* xref:dry.adoc[*DRY*]
-* xref:encapsulate-what-changes.adoc[*Encapsulate what changes*]
-* xref:feature-creep.adoc[*Feature creep*]
-* xref:feature-factory.adoc[*Feature factory*]
-* xref:forcing-function.adoc[*Forcing function*]
-* xref:makers-schedule.adoc[*Maker's schedule vs. manager's schedule*]
-* xref:mythical-man-month.adoc[*The Mythical Man-Month*]
-* xref:not-invented-here.adoc[*Not invented here!*]
-* xref:optimize-for-deletion.adoc[*Optimize for deletion*]
-* xref:premature-optimization.adoc[*Premature optimization*]
-* xref:principle-of-least-astonishment.adoc[*Principle of least astonishment*]
-* xref:rule-of-least-power.adoc[*Rule of least power*]
 * xref:silver-bullet.adoc[*Silver bullet*]
 * xref:software-bloat.adoc[*Software bloat*]
 * xref:software-rot.adoc[*Software rot*]
+* xref:teslers-law.adoc[*Tesler's law*]
 * xref:uniform-access-principle.adoc[*Uniform access principle*]
 * xref:walking-skeleton.adoc[*Walking skeleton*]
 * xref:wicked-problem.adoc[*Wicked problem*]
+* xref:wirths-law.adoc[*Wirth's law*]
 * xref:worse-is-better.adoc[*Worse is better*]
 * xref:yak-shaving.adoc[*Yak shaving*]
+* xref:zawinskis-law.adoc[*Zawinski's law*]

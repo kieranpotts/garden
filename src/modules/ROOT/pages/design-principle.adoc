@@ -1,45 +1,61 @@
 = Design principle
 
-Design principles are foundational guidelines that inform decision-making in
-xref:software-design.adoc[*software design*] and xref:software-architecture.adoc[*architecture*]. They codify hard-won
-lessons about what tends to work and what tends to fail, offering heuristics rather than rigid rules.
+Design principles are foundational guidelines that inform decision-making in xref:software-design.adoc[*software design*]
+and xref:software-architecture.adoc[*architecture*]. Design princiciples offer heuristics rather than rigid rules. They
+make generalizations about approaches that tend to work and those that tend to fail.
 
-A design principle expresses a preference – eg. for xref:cohesion.adoc[*cohesion*] over xref:coupling.adoc[*coupling*] –
-and helps teams reason about trade-offs when competing concerns pull in different directions.
+Well-known design principles include xref:cohesion.adoc[*high cohesion*] (which is synonymous with Fred Brooks's
+notion of xref:conceptual-integrity.adoc[*conceptual integrity*]), xref:coupling.adoc[*low coupling*],
+the xref:single-responsibility-principle.adoc[*Single-responsibility principle*], and the
+xref:separation-of-concerns.adoc[*separation of concerns*]. Not all design principles are _named_ and most can be
+reduced to three core principles of software architecture:
+
+* *Avoid rigidity.* A component is difficult to change when every change potentially affects many other components.
+
+* *Avoid fragility.* A system is fragile when changes to a component lead to unexpected results, defects, or otherwise
+  negative consequences in other, unrelated components.
+
+* *Aoid immobility.* A component is difficult to reuse because it cannot be easily disentangled from other components
+  of its parent module or system.
 
 Unlike xref:design-pattern.adoc[*design patterns*], which describe reusable solutions to specific recurring problems,
 design principles operate at a higher level of abstraction. They don't prescribe a particular structure or mechanism.
-Instead, they shape the values and priorities that guide the selection and application of patterns. For example, the
-xref:dry.adoc[*DRY*] principle argues that duplication is a source of errors and maintenance burden, but it doesn't
-specify how to factor out the duplication. The xref:kiss-principle.adoc[*KISS principle*] is more direct still. It names
-simplicity itself as a design goal and pushes back against the impulse to over-engineer. The xref:yagni.adoc[*YAGNI*]
-principle makes the same point for features specifically — do not build for a need that has not yet arrived.
+Instead, they shape the values and priorities that guide our selection and application of patterns. A design principle
+expresses a preference and helps to reason about trade-offs when concerns pull in different directions.
+
+For example, the xref:dry.adoc[*DRY*] principle argues that duplication is a source of errors and maintenance burden, but
+it doesn't specify how to factor out the duplication. The xref:kiss-principle.adoc[*KISS principle*] names simplicity
+as a design goal and pushes back against the impulse to *over-engineer*, but offers no concrete guidance to achieve this.
 
 Many design principles are interrelated and mutually reinforcing. xref:cohesion.adoc[*Cohesion*] and
-xref:coupling.adoc[*coupling*] are two sides of the same coin. Modules that group strongly related responsibilities tend
-to depend less on other modules. xref:separation-of-concerns.adoc[*Separation of concerns*] and
-xref:modular-design.adoc[*modular design*] both push toward decomposing a system into parts that can be reasoned about
-independently. xref:isolation.adoc[*Isolation*] and xref:redundancy.adoc[*redundancy*] are complementary approaches to
-xref:fault-tolerance.adoc[*fault tolerance*] – one limits the blast radius of failures, the other ensures that a failed
-component has a backup.
+xref:coupling.adoc[*coupling*], for example, are complementary principles, since modules that group strongly related
+responsibilities (high cohesion) tend to depend less on other modules (low coupling). Similarly,
+xref:isolation.adoc[*Isolation*] and xref:redundancy.adoc[*redundancy*] are complementary approaches to
+xref:fault-tolerance.adoc[*fault tolerance*]. One limits the blast radius of failures, the other ensures that a
+failed component has a backup.
 
-Some principles are associated with particular domains or methodologies. The
-xref:unix-philosophy.adoc[*Unix philosophy*] is a set of design principles for building composable command-line tools.
-xref:domain-driven-design.adoc[*Domain-driven design*] advocates principles such as aligning software structure with
-xref:bounded-context.adoc[*bounded contexts*]. The xref:solid.adoc[*SOLID*] principles, of which the
-xref:single-responsibility-principle.adoc[*single responsibility principle*] and
-xref:dependency-inversion.adoc[*dependency inversion*] are two, guide object-oriented design at the class and module
-level.
+Applied dogmatically, any principle can lead to *over-engineering* or unnecessary complexity. The xref:dry.adoc[*DRY*]
+principle, taken too extremes, famously has this effect. The xref:pareto-principle.adoc[*Pareto principle*] is a useful
+reminder that a principle need not be followed perfectly to deliver its value.
 
-Principles are most useful when they are understood in context. Applied dogmatically, any principle can lead to
-*over-engineering* or unnecessary complexity. The xref:pareto-principle.adoc[*Pareto principle*] is itself a useful
-reminder: a principle need not be followed perfectly to deliver most of its value.
+See also xref:laws-and-principles.adoc[*laws and principles*] that apply at the scale of teams, projects, and
+organizations, rather than statements, classes, and modules, such as xref:conways-law.adoc[*Conway's law*] and
+xref:parkinsons-law.adoc[*Parkinson's law*].
 
-Design principles are distinct from the broader folklore, such as xref:conways-law.adoc[*Conway's law*] and
-xref:parkinsons-law.adoc[*Parkinson's law*], which tend to describe forces acting on teams and projects rather than the
-shape of code itself.
+== Index of design principles
 
-== See also
-
-* xref:laws-and-principles.adoc[*Laws and principles*]
-
+* xref:code-for-the-maintainer.adoc[*Code for the maintainer*]
+* xref:cohesion.adoc[*Cohesion*]
+* xref:conceptual-integrity.adoc[*Conceptual integrity*]
+* xref:coupling.adoc[*Coupling*]
+* xref:dependency-inversion.adoc[*Dependency inversion*]
+* xref:domain-driven-design.adoc[*Domain-driven design*]
+* xref:encapsulate-what-changes.adoc[*Encapsulate what changes*]
+* xref:information-hiding.adoc[*Information hiding*]
+* xref:isolation.adoc[*Isolation*]
+* xref:kiss-principle.adoc[*KISS principle*]
+* xref:pareto-principle.adoc[*Pareto principle*]
+* xref:redundancy.adoc[*Redundancy*]
+* xref:single-responsibility-principle.adoc[*Single-responsibility principle*]
+* xref:solid.adoc[*SOLID*]
+* xref:unix-philosophy.adoc[*Unix philosophy*]
