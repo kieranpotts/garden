@@ -39,6 +39,10 @@ SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
 - [`docs/style-guide.md`](./docs/style-guide.md) \
   Writing and AsciiDoc formatting conventions for garden entries.
 
+- [`template/example-entry.adoc`](./template/example-entry.adoc) \
+  A complete, compliant worked example of a garden entry, with placeholder body text. Copy it as the starting point
+  for a new entry.
+
 - [`.github/workflows/`](./.github/workflows/) \
   CI checks (stale-issue flagging, label sync, commit message validation).
 

@@ -1,129 +1,84 @@
 # Style guide
 
-Conventions specific to writing and formatting garden entries (`.adoc` files under `src/modules/ROOT/pages/`).
+This style guide defines the conventions specific to writing and formatting garden entries (`.adoc` files under
+`src/modules/ROOT/pages/`).
 
-This document covers only what's specific to *this* garden — its atomic-entry format, its skills-driven maintenance
-conventions, and its site-structure requirements. General prose style is governed by
-[TS-26: Technical writing style guide](https://kieranpotts.com/standards/026), general AsciiDoc syntax by
-[TS-28: AsciiDoc](https://kieranpotts.com/standards/028), and single-topic document scope by
-[TS-25 §Scope](https://kieranpotts.com/standards/025). Those are normative for garden entries the same as this
-document is. Where this document doesn't cover something, defer to them; where it does, it's usually because the
-garden's format calls for something more specific than the general rule.
+This document covers only what's specific to the digital garden. General prose style is governed by
+[TS-26: Technical writing style guide](https://kieranpotts.com/standards/026), and general AsciiDoc syntax by
+[TS-28: AsciiDoc](https://kieranpotts.com/standards/028).
+
+[`template/example-entry.adoc`](../template/example-entry.adoc) is a complete, compliant worked example, only with
+placeholder body text standing in for a real topic. Treat it as the canonical demonstration of every mechanical rule
+of this style guide.
 
 ## File naming
 
-- File names are kebab-case with the `.adoc` extension. The file name is derived from the document title (`= H1
-  heading`) but does not necessarily match it exactly. For example, `event-sourcing.adoc` for "Event sourcing," or
+- File names MUST be kebab-case, with the `.adoc` extension.
+
+- A file name SHOULD be derived from the document title (`= H1 heading`), but MAY diverge from it where the exact
+  title makes for an awkward file name, eg `event-sourcing.adoc` for "Event sourcing," or
   `domain-driven-design.adoc` for "Domain-driven design (DDD)."
 
-- File names are singular and atomic.
+- A file name MUST be singular and atomic.
 
 ## Atomicity
 
-Keep each page focused on exactly one topic — see [TS-25 §Scope](https://kieranpotts.com/standards/025) for the
-general single-topic rule this follows, including its "does the title contain 'and'/'or'" test for a page that has
-outgrown its scope. If any paragraph covers a different (but related) concept at length, extract it to its own topic
-page and cross-reference it with `xref:`.
+- Each page MUST be focused on exactly one topic.
 
-It's fine for an entry to be short. Even a single-paragraph entry is acceptable, if that's sufficient to explain a
-concept and cross-reference it to neighbouring topics. That is a complete, atomic entry. Pages don't need to be padded
-to feel "finished."
+- A paragraph that covers a different, but related, concept at length SHOULD be extracted to its own topic page and
+  cross-referenced with `xref:`, rather than absorbed into the current one.
+
+- An entry MAY be as short as a single paragraph, provided that's sufficient to explain the concept and
+  cross-reference it to neighboring topics; a page MUST NOT be padded just to feel "finished."
 
 ## Bold text
 
-Beyond the general emphasis rules in [TS-26 §Emphasis](https://kieranpotts.com/standards/026), the garden uses bold
-for one thing of its own:
-
-- **A technical term that doesn't yet have a dedicated topic page, but could warrant one in the future**, eg
-  `*event-carried state transfer*`. This is a deliberate signal marking a candidate for a future `sow`. The `forage`
-  skill teaches agents to uncover these terms.
+- Beyond the general emphasis rules in TS-26, a technical term that doesn't yet have a dedicated topic page, but could
+  warrant one in the future, SHOULD be set in bold. This is a deliberate signal marking a candidate for a future `sow`,
+  which the `forage` skill relies on to find such terms.
 
 ## Cross-references
 
-Link to other garden pages with `xref:target.adoc[*link text*]` — bold, per
-[TS-28 §Links](https://kieranpotts.com/standards/028). In each page, do this only for the first mention of a concept
-that has its own page; subsequent references to the same concept are plain text. This is a garden-specific economy
-rule — most content isn't dense enough with cross-references for it to matter, but a garden entry often is.
+- A link to another garden page MUST use a bold `xref:`, per TS-28, and only for the first mention of a concept that has
+  its own page.
 
-Cross-reference link text MUST match the natural reading of the sentence. It follows normal sentence-case rules, so it
-starts with a capital letter only if opening a sentence. The link text does not necessarily need to match exactly the
-page's title, eg `... xref:asynchronous-communication.adoc[*asynchronously interacts*] with ...`.
+- A later mention of the same concept, within the same page, MUST be left as plain text rather than linked again.
 
-## External links
-
-Define every external link as a document attribute, immediately after the `= Title` line, one per line, aligned so
-the URLs start at a common column:
-
-```asciidoc
-= Title
-
-:link-example-source: https://example.com/some/long-path
-:link-wikipedia:      https://en.wikipedia.org/wiki/Example
-```
-
-This is the same attribute mechanism as [TS-28 §Attributes](https://kieranpotts.com/standards/028); the garden adds
-two refinements of its own:
-
-- Align the URLs to a common column, for readability of the page header as a block.
-- Order the attribute definitions in the order the links first appear in the body.
-
-Attribute names are short, kebab-case, mnemonic labels for the source (the publication, organization, or topic), not
-derived mechanically from the URL, eg `link-wikipedia`, `link-nist`, `link-rfc-2119`. Keep them unique within the
-page.
+- Cross-reference link text MUST follow the natural reading of the sentence and the normal sentence-case rules
+  (capitalized only where it opens a sentence), and need not match the target page's title exactly.
 
 ## See also and references sections
 
-An entry may end with one or both of two standard sections, in the following order.
+- An entry MAY end with a `== See also` section, a `== References` section, or both, in that order.
 
-- `== See also`. Cross-references to other garden pages, one bullet per line, in the inner-bold xref form
-  `* xref:target.adoc[*Link text*]`. List only pages genuinely related to the entry's topic, and only those not
-  already linked in the body prose above. A page already cross-referenced in the body text MUST NOT be repeated in
-  `See also`. Not every entry needs this section — omit it entirely if there are no genuinely relevant related pages
-  left to list once the body's own cross-references are excluded. Don't pad the list just to have one, and don't keep
-  a stale entry that's now covered in the body.
+- `== See also` MUST list only cross-references to other garden pages that are genuinely related to the entry's
+  topic, one bullet per line in the inner-bold xref form, but SHOULD NOT repeat a page already cross-referenced in the
+  body prose above.
 
-- `== References`. External citations (books, papers, articles), following
-  [TS-26 §Referencing](https://kieranpotts.com/standards/026) — one `*` bullet per entry, separated by a blank line.
-  Break each entry over three lines — author, title, publication — regardless of the 120-character soft wrap used
-  elsewhere. This is a deliberate garden-specific exception to the general line-wrap rule. For example:
+- `== See also` MUST be omitted entirely where no genuinely relevant related page is left to list once the body's
+  own cross-references are excluded.
 
-  ```asciidoc
-  * Lieberman, Paternò, Klann, and Wulf (2006).
-    {link-lieberman}[_End User Development: An Emerging Paradigm_].
-    Springer.
+- Each `== References` entry MUST follow TS-26's style rules for referencing.
 
-  * {link-wikipedia}[_End-user development_].
-    Wikipedia.
-  ```
+## TODOs
 
-  The second line is indented two spaces to align under the bullet's text, not under the `*` marker. If a reference
-  has no separate publication (eg an undated web page whose title and site are the same source), the entry may
-  collapse to two lines — author and title — rather than inventing a third.
-
-An entry that has neither section simply ends on its last content paragraph. Do not invent other closing-section names
-like "Further reading" or "External links."
-
-## Open questions and TODOs
-
-- A `// TODO: <url or note>` comment at the top of a file is the convention for flagging un-researched or unfinished
-  content.
-
-- TODOs are resolved by writing the content they point to, not by deleting the TODO comment!
+- Un-researched or unfinished content MUST be flagged with a `// TODO: <url or note>` comment at the top of the
+  file.
 
 ## The index
 
 - Every page MUST be listed in `index.adoc`, in its correct alphabetical section, as
   `* xref:<file>.adoc[*Page title*] <maturity emoji>`.
 
-- A page that exists but isn't listed in `index.adoc` is an orphan — undiscoverable from the site — and is a defect
-  to fix. The `tend` skill looks for these.
+- A page that exists but isn't listed in `index.adoc` MUST be treated as an orphan — undiscoverable from the site,
+  and a defect to fix. The `tend` skill looks for these.
 
 ## Maturity labels
 
-- Every entry carries one of four maturity markers, applied on its `index.adoc` listing line: 🌱 seedling, 🌿 budding,
+- Every entry MUST carry one of four maturity markers on its `index.adoc` listing line: 🌱 seedling, 🌿 budding,
   🌳 evergreen, or 🍂 decaying.
 
-- New entries are always sown as seedlings 🌱.
+- A new entry MUST be sown as a seedling 🌱.
 
-- Maturity is an editorial judgment, not a mechanical one. It's changed only with explicit confirmation from the
-  user, never inferred or auto-applied by agents.
+- Maturity MUST NOT be promoted, demoted, or otherwise changed without explicit confirmation from the user — it's
+  an editorial judgment, never inferred or auto-applied by agents.

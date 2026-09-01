@@ -1,0 +1,52 @@
+= Example entry
+
+:link-example-source: https://example.com/some/long-path
+:link-wikipedia:      https://en.wikipedia.org/wiki/Example
+
+// TODO: https://example.com/deeper-source — note here whatever this entry
+// still needs to cover, and resolve it by writing that content in, not by
+// deleting this comment.
+
+An entry opens with a plain-English definition of its one topic, in a sentence or two — this paragraph is what a
+reader lands on from a search result or a cross-reference, so it has to stand alone. The first mention of a concept
+that has its own page is a bold xref:worse-is-better.adoc[*cross-reference*], set once per page; a later mention of
+the same concept, such as worse-is-better again here, is plain text.
+
+A technical term that doesn't yet have a page of its own, but could warrant one, is marked instead as a
+*sow candidate* — bold, but not linked. The `forage` skill looks for these.
+
+A named publication is set in italics, eg _Design Patterns: Elements of Reusable Object-Oriented Software_, and a
+foreign-language aside the same way, eg _ad hoc_. A value the reader might type, or a system might output, is set in
+monospace, eg `LOG_LEVEL`.
+
+[NOTE]
+======
+An aside that's genuinely secondary to the main explanation — supplementary context, not a caveat the reader needs in
+order to understand the concept correctly. See xref:worse-is-better.adoc[*"worse is better"*] for a fuller admonition
+type breakdown.
+======
+
+== A named section
+
+Add a heading only where the entry has a genuinely distinct sub-topic to hold, eg "Trade-offs" or "Implementations." A
+short entry needs none of these, and shouldn't be padded with headings to look more complete than it is.
+
+''''
+
+== See also
+
+* xref:worse-is-better.adoc[*Worse is better*]
+
+== References
+
+* {link-wikipedia}[_Example topic_].
+  Wikipedia.
+
+* Author, A, and Author, B (2020).
+  {link-example-source}[_Title of the work_].
+  Publisher.
+
+// This file would be saved as src/modules/ROOT/pages/example-entry.adoc, and listed in both index.adoc and nav.adoc:
+//
+//   index.adoc:  * xref:example-entry.adoc[*Example entry*] 🌱
+//   nav.adoc:    ** xref:example-entry.adoc[Example entry]

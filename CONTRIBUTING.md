@@ -16,8 +16,10 @@ conventions.
 
 To add a new entry:
 
-1. Add a new `.adoc` file under `src/modules/ROOT/pages/`, named after the topic
-   in kebab-case, eg. `event-sourcing.adoc`.
+1. Copy [`template/example-entry.adoc`](./template/example-entry.adoc) to a new file under
+   `src/modules/ROOT/pages/`, named after the topic in kebab-case, eg. `event-sourcing.adoc`. The template is a
+   complete, compliant worked example of the conventions below — use it as the starting point rather than an empty
+   file.
 
 2. Keep each file atomic — focused on a single idea or concept. Cross-reference
    related topics with `xref:` rather than repeating content.
