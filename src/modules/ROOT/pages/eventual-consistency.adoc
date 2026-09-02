@@ -79,7 +79,7 @@ tolerate more failures and serve requests at lower latency. xref:active-active.a
 replication patterns, which let any node accept writes, are eventually consistent by default and rely on techniques such
 as *last-writer-wins*, *version vectors*, and *conflict-free replicated data types (CRDTs)* to reach convergence.
 
-Stronger convergence can be achieved with xref:consensus-algorithm.adoc [*consensus algorithms*] such as Raft and Paxos,
+Stronger convergence can be achieved with xref:consensus-algorithm.adoc[*consensus algorithms*] such as Raft and Paxos,
 which make replicas agree on a single ordered log. That moves the system toward strong consistency at the cost of the
 coordination overhead eventual consistency was designed to avoid.
 
@@ -94,9 +94,9 @@ levels, and anything that must not double-spend or oversell. Those workloads cal
 xref:acid-principles.adoc[*ACID principles*] and the strong consistency models offered by
 xref:transactional-database.adoc[*transactional databases*]. A common pattern is to mix the two in one system — strongly
 consistent storage for the money, eventually consistent storage for everything around it — and to design around an
-agreed xref:single-source-of-truth.adoc [*single source of truth*] for each type of data.
+agreed xref:single-source-of-truth.adoc[*single source of truth*] for each type of data.
 
-Supporting practices include xref:idempotent.adoc [*idempotent operations*], which make retries safe during convergence,
+Supporting practices include xref:idempotent.adoc[*idempotent operations*], which make retries safe during convergence,
 and xref:chaos-engineering.adoc[*chaos engineering*], which tests how the system behaves when replicas are unreachable.
 
 == See also

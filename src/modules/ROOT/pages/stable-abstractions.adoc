@@ -1,0 +1,23 @@
+= Stable abstractions
+
+The *stable abstractions principles (SAP)* is a *package design principle* that demands that the *abstractness* of
+components be proportional to their *instability*.
+
+The closely-related *stable dependencies principle (SDP)* explains the notion of stability in this context.
+
+The objective is for package components that represent abstract concepts and to require little or no modification,
+because more concrete components will depend on them. Similarly, components that should not be changed, or that
+could not be easily changed, should be abstract enough that they can be easily extended into new concrete components
+instead.
+
+The underlying principle is that concrete things are naturally more volatile than abstract things, and the structure of
+a system should reflect that.
+
+In combination with the stable dependencies principle, stable abstractions is a refinement of the
+*dependency inversion* principle (DIP). Specific concepts naturally depend on more abstract ones because they are
+composed or derived from more general-purpose building blocks. And dependent concepts are naturally
+more specific because they are defined by more information than their dependencies.
+
+== See also
+
+* xref:abstractness.adoc[*Abstractness*]
