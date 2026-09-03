@@ -143,11 +143,13 @@ subscribing consumers. It is the broker's responsibility to ensure that all cons
 subscribed to. If necessary, the broker should xref:retry.adoc[*retry*] event pushes.
 
 [NOTE]
-====== Even-driven systems can also be *synchronous*. In this case, consumers directly subscribe to producers, rather
+====
+Even-driven systems can also be *synchronous*. In this case, consumers directly subscribe to producers, rather
 than indirectly via a central broker. Producers notify their consumers of new events directly, and immediately after the
 events occur. This is an implementation of the xref:observer-pattern.adoc[*observer pattern*], rather than the
 publish-subscribe pattern. However, it is more conventional to talk about event-driven architecture as an asynchronous
-communication pattern, implemented using publish-subscribe. ======
+communication pattern, implemented using publish-subscribe.
+====
 
 == Producers and consumers
 
@@ -213,8 +215,10 @@ cause-and-effect. These tools can also help to audit event systems, for example 
 particular versions of particular event types, so as to manage the deprecation of old events.
 
 [TIP]
-====== As with all logging, you should be careful not to log sensitive information that is transported via events. For
-this reason, a best practice is to log the _schema_ of events rather than their actual data. ======
+====
+As with all logging, you should be careful not to log sensitive information that is transported via events. For
+this reason, a best practice is to log the _schema_ of events rather than their actual data.
+====
 
 The other main challenge associated with implementing event-driven architecture is concerned with achieving
 xref:consistency.adoc[*data consistency*]. In any system using asynchronous communication between its components, there
