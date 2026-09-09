@@ -4,7 +4,7 @@ This style guide defines the conventions specific to writing and formatting gard
 `src/modules/ROOT/pages/`).
 
 This document covers only what's specific to the digital garden. General prose style is governed by
-[TS-26: Technical writing style guide](https://kieranpotts.com/standards/026), and general AsciiDoc syntax by
+[TS-26: Technical Writing Style Guide](https://kieranpotts.com/standards/026), and general AsciiDoc syntax by
 [TS-28: AsciiDoc](https://kieranpotts.com/standards/028).
 
 [`template/example-entry.adoc`](../template/example-entry.adoc) is a complete, compliant worked example, only with
@@ -59,6 +59,14 @@ of this style guide.
   own cross-references are excluded.
 
 - Each `== References` entry MUST follow TS-26's style rules for referencing.
+
+## Images and diagrams
+
+- A hand-drawn (non-text-based) diagram MUST be drafted in draw.io, exported as SVG, and hand-edited to the
+  `light-dark()`/font-inheritance/`opts=inline` conventions documented in the website repo.
+
+- Every `image::` macro referencing one of these SVGs MUST include the `opts=inline` attribute, or the diagram will
+  ignore the reader's dark mode preference.
 
 ## TODOs
 
