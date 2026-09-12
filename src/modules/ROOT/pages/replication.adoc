@@ -18,19 +18,19 @@ xref:service-oriented-architecture.adoc[*service-oriented*] or xref:microservice
 In a xref:monolith.adoc[*monolithic*] architecture, data is typically stored in a single database instance, and joins
 are typically used to query relational data across multiple tables.
 
-image::monolith-with-cross-table-joins.svg[]
+image::monolith-with-cross-table-joins.svg[opts=inline]
 
 But in a xref:distributed-system.adoc[*distributed software*], those joins turn into network calls. This increases
 xref:latency.adoc[*latency*], decreasing xref:performance.adoc[*performance*] and having implications for the
 xref:fault-tolerance.adoc[*resilience*] of the system.
 
-image::microservices-with-cross-service-calls.svg[]
+image::microservices-with-cross-service-calls.svg[opts=inline]
 
 Data replication is one possible solution to these problems. Simply, data is replicated to wherever it is needed, so
 that discrete services are less reliant upon each other. Services therefore work faster by needing to use only local
 data.
 
-image::microservices-with-data-replication.svg[]
+image::microservices-with-data-replication.svg[opts=inline]
 
 Besides the xref:performance.adoc[*performance*] benefits of reducing network calls, data replication also improves the
 xref:fault-tolerance.adoc[*fault tolerance*] and xref:availability.adoc[*availability*] of

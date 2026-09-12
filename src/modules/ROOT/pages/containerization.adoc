@@ -18,7 +18,7 @@ isolated operating environments for applications. The defining distinction is th
 their host operating system, whereas virtual machines each have their own virtualized kernel, which is provided and
 managed by the hypervisor (not by the underlying OS, if there is one).
 
-image::virtualization-vs-containerization.drawio.svg[]
+image::virtualization-vs-containerization.svg[opts=inline]
 
 Virtual machines depend on a xref:hypervisor.adoc[*hypervisor*], which is either *[firmware]* (running directly on the
 chip) or application software (running on a regular operating system). A hypervisor is responsible for sharing the CPU
@@ -31,7 +31,7 @@ isolation between them is achieved with a different set of technologies.
 Isolation is achieved in containers using features of the host OS's kernel. An OS kernel is the part of an OS that is
 responsible for interacting with the hardware – CPU, memory, storage, etc.
 
-image::operating-system-layers.drawio.svg[]
+image::operating-system-layers.svg[opts=inline]
 
 What makes container technology possible is mostly attributed to control groups (cgroups) and namespaces. These are
 features of the Linux kernel. Windows also provides similar functionality via its jobs object.
@@ -72,7 +72,7 @@ By comparison, when you run an application in a VM, the VM will include the appl
 While a container engine virtualizes only the applications layer of the OS, a VM virtualizes the complete operating
 system – both the applications layer and the kernel of the OS.
 
-image::vm-versus-container-virtualization.drawio.svg[]
+image::vm-versus-container-virtualization.svg[opts=inline]
 
 This design provides highly isolated and highly secure application runtime environments, but it is also resource heavy
 and slower to start up and shut down. VMs can be wasteful of resources: typically you must allocate a certain amount of
