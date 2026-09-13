@@ -14,6 +14,154 @@ govern how those components are composed. A xref:layered-architecture.adoc[*laye
 xref:client-server-architecture.adoc[*client-server architecture*], and a xref:microservices.adoc[*microservices*]
 system are all descriptions of structure.
 
+// Concerns like coding conventions and hardware sizing are out-of-scope for software architecture. Nevertheless,
+// software architecture cannot happen independently of these concerns. For example, software must be designed in
+// the context of the hardware and infrastructure.
+
+// The two most important goals of software architecture are:
+
+// * Achieve quality requirements in a comprehensible way.
+// * Enable a basic understanding of structures and concepts for the development team and other stakeholders.
+
+// Architectural trade-offs are driven by desired product qualities. To put it another way, quality requirements help
+// significantly with architecture decisions. The architect collaborates with the stakeholders
+// to determine where the requirements and constraints will change often (eg. business processes, technologies), and
+// designs the architecture such that changes can occur without requiring extensive restructuring of the software
+// architecture.
+
+// Architecture goals are derived from the quality requirements of the product.
+
+// There is much cross-over between software architecture and *requirements engineering*. One of the most important
+// responsibilities of the software architect is to support the business people who specify explicit and concrete quality
+// requirements, and to check requirements for technological feasibility.
+
+// This means there is a lot of overlap between *business goals* and architectural concerns.
+
+// The following prerequisites have to be fulfilled before a software architecture can be developed.
+
+// * The most important qualities of the system are known.
+// * Organization constraints are known.
+
+// The requirements specification, the programming language, and hardware and infrastructure are not required to begin
+// the design of a software architecture.
+
+// Many factors can influence a software architecture, including organizational, political, and technical.
+
+// == Definitions of software architecture
+
+// Formal standards have tried to pin the definition down further than the two-meanings summary above. The IEEE 1471
+// standard defined software architecture as *the fundamental organization of a system embodied in its components, their
+// relationships to each other and to the environment, and the principles guiding its design and evolution*. The successor
+// standard, ISO/IEC/IEEE 42010:2011, generalized this beyond software to any system: *fundamental concepts or properties
+// of a system in its environment embodied in its elements, relationships, and in the principles of its design and
+// evolution*.
+
+// Both definitions turn on the same four ideas.
+
+// * *Components* (or elements) are the structural building blocks of a system — subsystems, modules, classes, functions —
+//   usually realized in a programming language, though other artifacts can play the role too.
+// * *Relationships* are the interfaces, dependencies, and associations through which components interact, enabling
+//   xref:separation-of-concerns.adoc[*separation of concerns*].
+// * *Environment* is everything a system exchanges data, control flow, or events with, without itself containing.
+// * *Principles* are the rules and conventions — often called concepts or solution patterns — that hold across a system
+//   or large parts of it, and that give it xref:conceptual-integrity.adoc[*conceptual integrity*].
+
+// The Software Engineering Institute maintains a running collection of further definitions, itself a symptom of how
+// unsettled the term remains. And although "software architecture" usually names the structure of one IT system, the same
+// term is also used for architecture as an engineering discipline in its own right — the body of methods, notations, and
+// practice, rather than any single system's structure.
+
+// == Tasks and responsibilities of software architects
+
+// Software architects are responsible for meeting a system's requirements and shaping its architecture design,
+// aligning that responsibility with the overall project responsibility held by project management or other roles,
+// depending on the process model in use. Their core tasks are to:
+
+// * clarify and scrutinize requirements and constraints, agreeing any necessary refinements with the relevant
+//   stakeholders;
+// * decide how to decompose the system into building blocks, and determine the dependencies and interfaces between
+//   them;
+// * decide on cross-cutting concerns such as persistence, communication, and the user interface;
+// * communicate and document the architecture through views, architectural patterns, and cross-cutting and technical
+//   concerns;
+// * accompany the system's realization and implementation, folding stakeholder feedback back into the architecture and
+//   checking that the source code stays consistent with it;
+// * analyze and evaluate the architecture, especially the risks it carries against meeting the requirements; and
+// * identify, highlight, and justify the consequences of architectural decisions to other stakeholders.
+
+// Underlying all of these is the need to recognize where iteration is necessary, and to seek out the feedback that makes
+// each iteration count.
+
+// An architect adapts how they communicate to whichever stakeholders they are addressing: product management and
+// product owners, project managers, requirements engineers (business or requirements analysts, requirements managers,
+// system analysts, business owners, subject-matter experts), developers, quality assurance and testers, IT operators
+// and administrators, hardware developers and system architects on embedded or hardware-related systems, and
+// enterprise architects and architecture-board members. Recognizing each stakeholder's concerns, and how those concerns
+// bear on the architecture or on the development process itself, is part of the job, as is spotting the conflicts that
+// surface between short-term goals — business and project pressure — and long-term ones — architecture and
+// maintainability. Resolving such conflicts means bringing the affected stakeholders into the conversation, often
+// through structured techniques such as stakeholder interviews, which also surface requirements that are missing or
+// that conflict with each other.
+
+// Both requirements and constraints shape the architecture and the process of arriving at it, and an architect's own
+// decisions can in turn create new requirements or force existing ones to change. The constraints worth tracking fall
+// into a few recurring categories.
+
+// * *Product-related requirements* – functional requirements and quality requirements.
+// * *Technological constraints* – existing or planned hardware and software infrastructure, constraints on data
+//   structures and interfaces, reference architectures, libraries and frameworks, and the programming languages
+//   available.
+// * *Organizational constraints* – the structure of the development teams and the customer's organization
+//   (particularly xref:conways-law.adoc[*Conway's law*]), company and team culture, partnerships and cooperation
+//   agreements, standards and process models, and the budget, time, staff, and skills available.
+// * *Regulatory constraints* – local and international law, contract and liability issues, data protection and
+//   privacy, and compliance obligations.
+// * *Trends* – market trends, technology trends such as cloud, microservices, containers, and generative AI, and
+//   methodology trends such as Agile.
+
+// Making the assumptions behind a design explicit is as important as tracking these constraints formally: unstated
+// assumptions are a common source of misunderstanding between stakeholders who each assumed something different.
+
+// Beyond gathering and reconciling these inputs, an architect is expected to design and document architectures against
+// known functional and quality requirements — for the ordinary run of systems that are neither safety- nor
+// business-critical — and to make the structural decisions this requires: how the system decomposes into building
+// blocks, what dependencies exist between them, and which trade-offs and interdependencies between architecture
+// decisions need to be recognized and justified. This includes thinking in terms of xref:black-box-view.adoc[*black-box*]
+// and xref:white-box.adoc[*white-box*] views of a component, applying xref:stepwise-refinement.adoc[*stepwise
+// refinement*] to work from a coarse structure down to detail, and designing the xref:architecture-view.adoc[*architecture
+// views*] — particularly the building-block, runtime, and deployment views — that communicate the result. It also means
+// explaining the consequences of a decision on the source code that implements it, separating and justifying the
+// technical and domain-related elements of the architecture, and identifying the risks each decision carries.
+
+// == Goals and benefits of software architecture
+
+// These tasks serve a small set of concrete goals: software architecture supports the design, implementation,
+// maintenance, and operation of a system; it achieves the system's functional requirements, and non-functional ones such
+// as reliability, maintainability, changeability, security, and energy efficiency; it keeps the system's structures and
+// concepts understood by everyone with a stake in it; it reduces complexity systematically rather than leaving that to
+// chance; and it yields concrete, architecturally relevant guidelines for implementation and operation to follow.
+
+// == Architectural domains
+
+// Software architecture, as covered by this entry, is the architecture of a single software system. Architects also need
+// to be conversant with several neighbouring domains that use the word "architecture" for structure at a different scope
+// or in a different medium.
+
+// * xref:enterprise-architecture.adoc[*Enterprise IT architecture*] – the structure of an entire application landscape,
+//   rather than one system within it.
+// * xref:business-architecture.adoc[*Business and process architecture*] – the structure of an organization's business
+//   processes.
+// * *Information architecture* – the cross-system structure and use of information and data.
+// * *Infrastructure or technology architecture* – the structure of the technical infrastructure: hardware, networks, and
+//   the like.
+// * xref:processor-architecture.adoc[*Hardware or processor architecture*] – relevant to embedded and other
+//   hardware-related systems.
+// * *System architecture* – a term with various meanings depending on how "system" itself is defined.
+
+// The boundaries between these domains and software architecture blur in large, tightly integrated organizations, but
+// the core distinction holds: software architecture is scoped to one system, while these domains are scoped wider, or to
+// a different substrate entirely.
+
 == Software architecture versus software design
 
 The terms "software architecture" and "xref:software-design.adoc[*software design*]" are used interchangeably, and they
@@ -72,9 +220,13 @@ Software architecture is the primary medium through which technical and non-tech
 communicate with one another. Different audiences need different *architectural views*. *Developers* need module
 structure, *operators* need deployment topology, and *sponsors* need to see how the design meets business goals.
 
-The practice of xref:architectural-knowledge-management.adoc[*recording architectural*] decisions, views, and rationale,
-in artifacts such as xref:c4-model.adoc[*C4 models*] and *architecture decision records*, greatly aids communication
-within technical teams and between technical teams and business stakeholders.
+The practice of xref:architectural-knowledge-management.adoc[*recording architectural*] decisions, views, and
+xref:design-rationale.adoc[*rationale*], in artifacts such as xref:c4-model.adoc[*C4 models*] and *architecture
+decision records*, greatly aids communication within technical teams and between technical teams and business
+stakeholders. A rationale, per ISO/IEC/IEEE 42010, records the explanation, justification, or reasoning behind a
+decision that has already been made: the basis for the decision, the alternatives and trade-offs considered, the
+decision's potential consequences, and citations to further sources of information. It is what turns a record of
+_what_ was decided into an account of _why_ — which is what a future maintainer actually needs.
 
 == The elements of an architecture
 
@@ -92,11 +244,10 @@ Most architectural descriptions are built from a small set of recurring elements
   event-driven.
 
 * *Properties* are the qualities the structure is intended to deliver, eg. low xref:coupling.adoc[*coupling*], high
-  xref:cohesion.adoc[*cohesion*], and xref:conceptual-integrity.adoc[*conceptual integrity*].
+  xref:cohesion.adoc[*cohesion*], and conceptual integrity.
 
-The design of these elements is guided by xref:design-principle.adoc[*design principles*] such as
-xref:separation-of-concerns.adoc[*separation of concerns*], xref:abstraction.adoc[*abstraction*], and
-xref:encapsulation.adoc[*encapsulation*].
+The design of these elements is guided by xref:design-principle.adoc[*design principles*] such as separation of
+concerns, xref:abstraction.adoc[*abstraction*], and xref:encapsulation.adoc[*encapsulation*].
 
 Besides the code, configuration, and data schema of the software system, other artifacts are the output of the software
 architecture process. Artifacts that capture architectural trade-offs, assumptions, decisions, and rationales are
@@ -110,8 +261,8 @@ xref:non-functional-requirements.adoc[*non-functional requirements*], which dete
 xref:quality-attribute.adoc[*quality attributes*] such as its xref:availability.adoc[*availability*],
 xref:performance.adoc[*performance*], xref:scalability.adoc[*scalability*], and xref:security.adoc[*security*].
 
-Other constraints on software architecture include the structure of the organization that builds it — see
-xref:conways-law.adoc[*Conway's law*] — plus the existence of legacy systems and the technical debt they carry.
+Other constraints on software architecture include the structure of the organization that builds it — see Conway's
+law — plus the existence of legacy systems and the technical debt they carry.
 Available technology and the skills and experience of the delivery teams also determine what architectures can be
 developed, maintained, operated, and sustained.
 
@@ -120,12 +271,28 @@ stability of the requirements. xref:big-design-up-front.adoc[*Big design up-fron
 expensive and requirements are stable. xref:evolvability.adoc[*Evolutionary architecture*] — which means to build the
 capacity for change into the software design itself — suits business *domains* where there are high levels of
 uncertainty. In reality, most systems blend the two approaches. An initial architecture is designed to satisfy the
-non-functional requirements, and is subsequently *iterated* on through a process of
-xref:stepwise-refinement.adoc[*stepwise refinement*] as more is learnt about the software's domain and the requirements
-on it.
+non-functional requirements, and is subsequently *iterated* on through a process of stepwise refinement as more is
+learnt about the software's domain and the requirements on it.
 
 Evolutionary design is best avoided at the highest abstractions of a system, in which the broad *architectural styles*
 and *communication patterns* of the system are established, due to the xref:project-paradox.adoc[*project paradox*].
+
+// == Approaches to software architecture
+
+// There are many approaches that lead to a software architecture, and most real projects blend more than one rather
+// than following a single method throughout.
+
+// * *View-based architecture development* – working outward from the architectural views to be produced.
+// * xref:top-down-design.adoc[*Top-down*] and xref:bottom-up-design.adoc[*bottom-up design*] – starting from the
+//   system's overall structure and refining downward, or starting from existing or low-level building blocks and
+//   composing upward.
+// * xref:domain-driven-design.adoc[*Domain-driven design*] – organizing the architecture around the business domain's
+//   own model and language.
+// * xref:global-analysis.adoc[*Global analysis*] – Christine Hofmeister's systematic method for arriving at a system's
+//   desired quality attributes.
+// * *Model-based design* – deriving the architecture from formal models of the system.
+
+// Other approaches include user interface-driven design.
 
 == Trade-offs
 
@@ -145,8 +312,4 @@ versus NoSQL, and others.
 
 == See also
 
-* xref:bottom-up-design.adoc[*Bottom-up design*]
-* xref:enterprise-architecture.adoc[*Enterprise architecture*]
 * xref:system-design.adoc[*System design*]
-* xref:top-down-design.adoc[*Top-down design*]
-
