@@ -1,1 +1,11 @@
 = Broker
+
+The *broker* is an architecture pattern for structuring a xref:distributed-system.adoc[*distributed system*] out of
+decoupled components that interact through, usually remote, service invocations rather than calling one another
+directly. A broker component sits between callers and providers, coordinating the communication between them. It
+forwards requests to the right provider, and transmits the results or exceptions that come back, so that neither side
+needs to know the other's location or how to reach it.
+
+This is the same coordinating role played by a xref:message-broker.adoc[*message broker*] in asynchronous,
+message-based systems, and by the registry and stub components in a xref:remote-procedure-call.adoc[*remote procedure call (RPC)*]
+system, both of which are broker-pattern instances specialized to their own style of invocation.
