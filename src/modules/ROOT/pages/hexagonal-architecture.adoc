@@ -18,13 +18,13 @@
 // TODO: https://jmgarridopaz.github.io/content/hapills.html#tc2
 // TODO: https://medium.com/booking-com-development/hexagonal-architecture-a-practical-guide-5bc6d5a6a056
 
-{link-cockburn-article}[Hexagonal architecture] is a software *[architectural design pattern]* devised by Alistair
+{link-cockburn-article}[Hexagonal architecture] is a software *architectural design pattern* devised by Alistair
 Cockburn in 2005.
 
 Conceptually, hexagonal architecture is similar to Jeffrey Palermo's xref:onion-architecture.adoc[*onion architecture*]
 (2008) and Robert C Martin's xref:clean-architecture.adoc[*clean architecture*] (2012). All these architectural concepts
 share the same fundamental objective: the xref:separation-of-concerns.adoc[*separation of concerns*], achieved by
-slicing systems into discrete *[layers]* and applying the *[dependency inversion principle]* at the boundaries between
+slicing systems into discrete *layers* and applying the *dependency inversion principle* at the boundaries between
 the layers.
 
 Hexagonal architecture is defined as a system that uses the xref:ports-and-adapters.adoc[*ports and adapters*] pattern
@@ -39,7 +39,7 @@ The choice of a hexagonal shape to represent this architectural concept is arbit
 multiple inputs on the "driving" side of an application and multiple outputs on its "driven" side. In the context of
 xref:distributed-system.adoc[*distributed software*] or xref:modular-monolith.adoc[*modular monoliths*], multiple
 services or components may interface with each other through connections made via their ports (using adapters), so the
-whole system – from a *[conceptual]* view – forms a honeycomb pattern.
+whole system – from a *conceptual* view – forms a honeycomb pattern.
 
 image::honeycomb-pattern.svg[opts=inline]
 
@@ -56,7 +56,7 @@ batch scripts, and to be developed and tested in isolation from its eventual
 run-time devices and databases.
 ____
 
-One of the main advantages of hexagonal architecture is *[testability]*. Because all dependencies are hidden behind
+One of the main advantages of hexagonal architecture is *testability*. Because all dependencies are hidden behind
 abstractions by design, it makes it easy to mock external systems, including GUIs and other input interfaces. All you
 need to do is create special mock adapters that fit the same ports as the real adapters.
 
@@ -66,10 +66,10 @@ Likewise, it is relatively easy to change dependencies. For example, you can mig
 changing the database adapter.
 
 For the same reason, applications become less tightly coupled to any particular infrastructure or host environment.
-Thus, applications are more *[portable].*
+Thus, applications are more *portable].*
 
 For the ports-and-adapters pattern to effectively deliver these promised benefits, it is important that business logic
-does not leak into the ports-and-adapters layer. This is the same constraint as for *[n-tier architecture]*, in which
+does not leak into the ports-and-adapters layer. This is the same constraint as for *n-tier architecture*, in which
 business logic should not leak into either the uppermost UI/presentation layer or the bottommost persistence layer.
 
 The main trade-off is that hexagonal architecture adds a lot of xref:complexity.adoc[*accidental complexity*]. There is

@@ -1,9 +1,9 @@
 = Feature flag
 
-*Feature flags*, also known as *feature switches* and *feature toggles*, are a software development and *[deployment]*
-*[methodology]* that involves toggling features on or off at runtime.
+*Feature flags*, also known as *feature switches* and *feature toggles*, are a software development and *deployment*
+*methodology* that involves toggling features on or off at runtime.
 
-The main objective of feature flags is to separate the process of software *[release]* from *[deployment]*. Without a
+The main objective of feature flags is to separate the process of software *release* from *deployment*. Without a
 feature flag system being integrated into a software system, new builds and deployments of that software will have all
 new and changed functionality released to users immediately at the time of deployment. With feature flags, features can
 be released to users independently of code deployments to production or other environments.
@@ -11,16 +11,16 @@ be released to users independently of code deployments to production or other en
 Once the release of functionality is decoupled from the deployment of the code and configuration that enables the
 functionality, more sophisticated software release workflows become possible. Decoupling the two also reduces reliance
 on xref:code-freeze.adoc[*code freezes*], since unfinished code can be deployed safely behind a toggle rather than held
-back from a release branch. For example, *[phased rollouts]* can be supported, in which new features are initially
-enabled for a small subset of users (*[canary testing]*) and then gradually rolled out to all users as confidence in the
+back from a release branch. For example, *phased rollouts* can be supported, in which new features are initially
+enabled for a small subset of users (*canary testing*) and then gradually rolled out to all users as confidence in the
 stability of the features increases. This technique reduces the risk of introducing bugs or performance issues into
 production environments.
 
-Feature flags are an essential component of the technical *[architecture]* of a software system where advanced
-*[agile development methodologies]* and xref:devops.adoc[*DevOps*] practices are desirable. Feature flags support
+Feature flags are an essential component of the technical *architecture* of a software system where advanced
+*agile development methodologies* and xref:devops.adoc[*DevOps*] practices are desirable. Feature flags support
 xref:trunk-based-development.adoc[*trunk-based development*], xref:continuous-delivery.adoc[*continuous delivery*] and
-xref:continuous-deployment.adoc[*continuous deployment*] (which depend on trunk-based development), *[canary releases]*
-and *[phased rollouts]*, and xref:ab-testing.adoc[*A/B testing*].
+xref:continuous-deployment.adoc[*continuous deployment*] (which depend on trunk-based development), *canary releases*
+and *phased rollouts*, and xref:ab-testing.adoc[*A/B testing*].
 
 Feature flag systems are commonly implemented as user-based systems, in which there is a mapping of users to features.
 This affords the maximum flexibility, allowing feature flags to be used in a wide variety of ways, including phased
@@ -77,7 +77,7 @@ class MyFeature {
 }
 ----
 
-Nevertheless, feature flags may piggyback on authorization systems as a solution for *[phased roll-outs]*. For example,
+Nevertheless, feature flags may piggyback on authorization systems as a solution for *phased roll-outs*. For example,
 new features may be initially released to a small subset of internal users with the "admin" role, then to "support"
 staff, before being enabled to all other users with the "customer" role.
 

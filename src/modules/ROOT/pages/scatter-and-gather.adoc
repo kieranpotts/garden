@@ -41,7 +41,7 @@ of the slowest worker rather than the sum of all of them. The cost is coordinati
 every outstanding sub-request, merge results that may arrive out of order, and decide what to do when workers fail or
 time out.
 
-*Tail xref:latency.adoc[latency]* is the dominant risk. Because the gather phase cannot complete until every
+*Tail xref:latency.adoc[latency* is the dominant risk. Because the gather phase cannot complete until every
 sub-response is in, a single slow worker stalls the whole request, and the effect compounds as the fan-out width grows.
 Common mitigations are xref:load-balancing.adoc[*load balancing*] to keep workers evenly utilized, a
 xref:result-cache.adoc[*result cache*] to skip the scatter entirely for repeated inputs, and hedged or deadline-based

@@ -17,7 +17,7 @@ components coordinate their actions by passing messages between themselves over 
 
 Examples of distributed software include applications like Hadoop (for xref:big-data.adoc[*big data*] processing),
 Kubernetes (for xref:container-orchestration.adoc[*container orchestration*]), and Cassandra (a
-xref:distributed-database.adoc[*distributed database*]). Most *[web applications]* are also distributed programs. At the
+xref:distributed-database.adoc[*distributed database*]). Most *web applications* are also distributed programs. At the
 very least, web applications partition their processing between a
 xref:client-server-architecture.adoc[*client and server*]. The server-side application may be further partitioned into a
 xref:service-oriented-architecture.adoc[*service-oriented architecture*] such as
@@ -50,14 +50,14 @@ communication: network failures, xref:latency.adoc[*latency*], and data consiste
 Whether or not you manage those extra machines yourself, you are responsible for planning around the failures that can
 occur in interactions with them.
 
-But distribution of processing and data has significant *[trade-offs]* in xref:system-design.adoc[*system design*].
+But distribution of processing and data has significant *trade-offs* in xref:system-design.adoc[*system design*].
 
 Although individual units within a distributed system may be simpler and more more xref:resilience.adoc[*resilient*] due
-to increased xref:isolation.adoc[*isolation*], overall a distributed system will always have more *[points of failure]*
+to increased xref:isolation.adoc[*isolation*], overall a distributed system will always have more *points of failure*
 and a higher degree of xref:complexity.adoc[*accidental complexity*] than single-node systems with comparable
-functionality. Distributed software is inherently *[brittle]* because you're introducing internal network calls, which
+functionality. Distributed software is inherently *brittle* because you're introducing internal network calls, which
 are subject to xref:fault-tolerance.adoc[*network failures*] and greater operational constraints like
-xref:latency.adoc[*latency*] and *[bandwidth]*.
+xref:latency.adoc[*latency*] and *bandwidth*.
 
 Reasoning about xref:concurrency.adoc[*concurrency*], managing xref:consistency.adoc[*data consistency*], and designing
 xref:monitoring.adoc[*monitoring*] solutions, are other concerns that are particularly challenging in distributed
@@ -69,7 +69,7 @@ _Distributed programming is hard._ The main challenges in designing distributed 
   xref:quality-attribute.adoc[*quality attribute*] of distributed systems, and it needs to be treated as a first-class
   concern in the xref:system-design.adoc[*system design*]. Distributed software is subject to a wide range of potential
   failure modes, including network failures, delayed messages, and node crashes. The principle of
-  *[designing for failure]* means designing each service in a way that it can tolerate failures in dependent services. For
+  *designing for failure* means designing each service in a way that it can tolerate failures in dependent services. For
   example, if an email service goes offline, emails should be queued for delivery and sent later when the email service
   comes back online. xref:asynchronous-communication.adoc[*Asynchronous communication patterns*] improve the fault
   tolerance of distributed systems by reducing *temporal coupling* (where the availability of one service is dependent on
@@ -79,7 +79,7 @@ _Distributed programming is hard._ The main challenges in designing distributed 
   xref:disaster-recovery.adoc[*Disaster recovery*] planning is also important. It is the process of designing services to
   recover quickly, in an automated way, from failures.
 
-* *Latency and bandwidth*: xref:latency.adoc[*Latency*] and *[bandwidth]* are two key performance metrics in distributed
+* *Latency and bandwidth*: xref:latency.adoc[*Latency*] and *bandwidth* are two key performance metrics in distributed
   systems. Latency is the time it takes for a message to travel from one node to another, while bandwidth is the amount of
   data that can be transmitted over a network in a given time period. In distributed systems, latency and bandwidth are
   affected by network congestion, distance between nodes, and the number of hops a message must take to reach its
@@ -90,7 +90,7 @@ _Distributed programming is hard._ The main challenges in designing distributed 
   design concerns. xref:cap-theorem.adoc[*CAP theorem*] is relevant in distributed systems that that
   xref:replication.adoc[*replicate*] data between nodes.
 
-* *Observability*: xref:monitoring.adoc[*Monitoring*], xref:logging.adoc[*logging*], and *[debugging]* all become much
+* *Observability*: xref:monitoring.adoc[*Monitoring*], xref:logging.adoc[*logging*], and *debugging* all become much
   more complex in distributed systems. xref:observability.adoc[*Observability*] and especially
   xref:tracing.adoc[*distributed tracing*] tools are specifically designed to address these challenges.
 
@@ -122,25 +122,25 @@ independent services incrementally.
 // TODO: https://web.archive.org/web/20070811082651/http://java.sys-con.com/read/38665.htm
 
 Distributed software design requires a particular set of xref:design-principle.adoc[*design principles*] and
-*[systems thinking]*.
+*systems thinking*.
 
 The eight fallacies of distributed computing are a set of assertions that describe false assumptions that are often made
 by computer programmers who are new to distributed computing. These fallacies {link-nighthacks}[were observed] by
 {link-deutsch-wiki}[Peter Deutsch] _et al_ at Sun Microsystems, and published online in 1994. The list extended four
 fallacies previously identified by Bill Joy and Dave Lyon. James Gosling, another Sun Fellow and the inventor of
-*[Java]*, added the eighth fallacy in 1997.
+*Java*, added the eighth fallacy in 1997.
 
 The eight fallacies are:
 
 1. *The network is reliable*: The effect of making this assumption is that distributed programs are written with little
-   *[error handling]* for network errors. Network errors can occur for a variety of reasons, including power failure,
-   hardware failures, network congestion (including from *[denial-of-service]* attacks), and software errors in the
+   *error handling* for network errors. Network errors can occur for a variety of reasons, including power failure,
+   hardware failures, network congestion (including from *denial-of-service* attacks), and software errors in the
    downstream services. A network error is any category of error that prevents a component from communicating with another
    component running on another node. If applications are not designed to handle network errors, they may not be able to
    recover from those errors, with the result being the application "hanging" or crashing, losing data, or entering an
-   inconsistent or incorrect state. Indirect *[asynchronous]*
+   inconsistent or incorrect state. Indirect *asynchronous*
    xref:inter-process-communication.adoc[*inter-process communication*], hardware and software
-   xref:redundancy.adoc[*redundancy*], and logic such as *[timeouts]* and xref:retry.adoc[*retries*], can mitigate the
+   xref:redundancy.adoc[*redundancy*], and logic such as *timeouts* and xref:retry.adoc[*retries*], can mitigate the
    effects of network errors.
 
 2. *Latency is zero*: Latency is typically pretty good in LANs, but it deteriorates quickly when you move to WANs or public
@@ -151,14 +151,14 @@ The eight fallacies are:
    contribute to this false assumption. If the design of a distributed program allows for unbounded network traffic, the
    application is at risk of performing badly in production environments.
 
-3. *Bandwidth is infinite*: Ignoring bandwidth limitations can lead to network congestion (*[bottlenecks]*). Parkinson's
+3. *Bandwidth is infinite*: Ignoring bandwidth limitations can lead to network congestion (*bottlenecks*). Parkinson's
    Law states that "work expands so as to fill the time available for its completion". A similar pattern is seen with
    consumption of available bandwidth in computer networks. Network bandwidth has improved thousands-of-fold over the
    decades, but the effect has been that we have used up much of that bandwidth with larger payloads. Rich web application
    interfaces, audio and video streaming, and VoIP are examples of modern applications that consume large amounts of
    bandwidth. As with network latency, in production environments there may be constraints on bandwidth that are beyond our
    control. Therefore, we should use bandwidth wisely, designing our payloads to maximize network transfer efficiency, and
-   use *[compression]* and xref:caching.adoc[*caching*] to reduce the amount of data that needs to be transferred over the
+   use *compression* and xref:caching.adoc[*caching*] to reduce the amount of data that needs to be transferred over the
    network.
 
 4. *The network is secure*: Assuming that internal networks are secure can open up vulnerabilities. A related assumption is
@@ -184,7 +184,7 @@ The eight fallacies are:
    corresponding changes to the configuration of object-relational mapping code. And system administrators may change disk
    quotas or set more limited privileges for users, which may inadvertently impact some operations of the application
    logic. Multiple strategies are needed to mitigate all these risks. xref:monitoring.adoc[*Monitoring*] and
-   xref:alerting.adoc[*alerting*] are essential. *[Staging]* environments can be used to test changes before they are
+   xref:alerting.adoc[*alerting*] are essential. *Staging* environments can be used to test changes before they are
    deployed to production. And xref:canary-deployment.adoc[*canary releases*] can be used to test new versions of software
    in production, with a small subset of users, before rolling out the changes to all users. All these things help, but
    there is no silver bullet here.
@@ -192,7 +192,7 @@ The eight fallacies are:
 7. *Transport cost is zero*: The "hidden" costs of building and maintaining a network or subnet are not trivial. There are
    costs associated with buying and configuring routers, securing the network, leasing bandwidth for internet connections,
    and operating and maintaining the network. Even moving transport from the application level to the transport level is
-   not free, as there are costs associated with *[marshaling]* (serializing information into bits, to get data onto the
+   not free, as there are costs associated with *marshaling* (serializing information into bits, to get data onto the
    wire), which consumes compute resources and adds latency. Transport costs should be factored into system designs for any
    high-volume distributed system.
 
