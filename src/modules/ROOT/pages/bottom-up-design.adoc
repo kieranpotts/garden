@@ -2,28 +2,42 @@
 
 Bottom-up design is an approach to xref:system-design.adoc[*system design*] that emphasizes building systems from small,
 primitive components, gradually integrating lots of small parts to compose the complete solution. It is sometimes used
-as a synonym for *[evolutionary design]*, which is a similar concept.
+as a synonym for *evolutionary design*, which is a similar concept.
 
 Bottom-up design contrasts with xref:top-down-design.adoc[*top-down design*], which instead emphasizes up-front planning
-and design through xref:decomposition.adoc[*decomposition*] of the problem space into lots of subsystems which can each
+and design through xref:decomposition.adoc[*decomposition*] of the problem space into lots of subsystems, which can each
 be developed relatively independently.
 
-Bottom-up design is often desirable in situations where there are limited resources (such as time or people) or where
-the requirements are unclear or unstable. If developers are unfamiliar with the domain or problem space, they can at
-least start to build components that they know they definitely will need, before they know how the components will fit
-into the overall design.
-
-The emphasis of bottom-up design is on reusing generic components to compose custom solutions with minimal bespoke code.
-The base components are incrementally linked together to form larger subsystems, which are in turn connected to form the
-complete system.
+The emphasis of bottom-up design is on *reusing* generic components to compose custom solutions with minimal bespoke code.
+The base components are specified and built first, then incrementally linked together to form larger subsystems, which
+are in turn connected to form complete systems.
 
 In the bottom-up approach, xref:architectural-pattern.adoc[*architectural patterns*] – and potentially even the
-*[architectural style]* – are emergent properties of the system. They take shape organically as the system is built.
+*architectural style* – are *emergent* properties of the system. They take shape organically as the system is built.
+In this process, you start with concrete components, and compose them into something more abstract, rather than
+starting with *high-level designs* and *decomposing* them into smaller concrete pieces.
 
-The main benefit of bottom-up design is *[reusability]* of existing code. The main downside of bottom-up design is that
-it can be overly organic, leading to a tangle of elements and subsystems with no overall structure and limited
-consistency. Development of large-scale systems especially requires some degree of top-down design to maintain
-xref:conceptual-integrity.adoc[*conceptual integrity*]. In practice, most modern software design practices combine
-elements of both top-down and bottom-up design. In xref:data-modeling.adoc[*data modeling*], the bottom-up or
-view-integration approach is typical of reverse-engineering efforts that start from existing forms, screens, and
-reports.
+The main benefit of bottom-up design is early _technical_ feedback. The riskiest low-level problems – performance,
+feasibility, integration with hardware or third-party services – are tackled first, so they are proven or disproven
+before much else depends on them. Each component is complete before anything uses it, so it can be
+xref:unit-testing.adoc[*unit tested*] in isolation straight away, with no need for stubs standing in for lower layers
+that don't exist yet. The components also tend to be generic, which improves their xref:reusability.adoc[*reusability*]
+in other systems.
+
+That feedback is about whether the parts work, not whether the whole system meets its users' needs. End-to-end
+integration comes last, so problems of fitness-for-purpose surface late. Top-down techniques such as the
+xref:walking-skeleton.adoc[*walking skeleton*] have the opposite profile.
+
+Bottom-up design suits situations where the requirements are unclear or unstable, where the domain is unfamiliar, or
+where the system rests on technically risky foundations. Developers who don't yet understand the problem space can still
+make real progress on the generic building blocks – persistence, messaging, parsers, integrations with external
+services – that almost any solution will need, learning about the domain as they go, before they know how the pieces
+will fit into the overall design.
+
+In xref:data-modeling.adoc[*data modeling*], the bottom-up or view-integration approach is typical of reverse-engineering
+efforts that start from existing forms, screens, and reports.
+
+The main downside of bottom-up design is that it can be overly organic, leading to a tangle of elements and subsystems
+with no overall structure and limited consistency. Development of large-scale systems especially requires some degree of
+top-down design to maintain xref:conceptual-integrity.adoc[*conceptual integrity*]. In practice, most modern software
+design practices combine elements of both top-down and bottom-up design.
