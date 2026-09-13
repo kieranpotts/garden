@@ -1,1 +1,18 @@
 = Aggregate
+
+An *aggregate* is a *design pattern* in which a cluster of associated xref:entity.adoc[*entities*] and
+xref:value-object.adoc[*value objects*] are encapsulated behind an *aggregate root*, which is the only member of the
+aggregate that the outside world is allowed to hold a reference to or address directly. Every read or modification
+of data inside the aggregate must go through the root.
+
+The pattern is from xref:domain-driven-design.adoc[*domain-driven design*].
+
+Treating the whole cluster as one unit, with every data change mediated by the root object, lets the aggregate enforce
+its own *invariants* — the business rules that must hold true across its members. This is what makes an aggregate a
+boundary of consistency and integrity, and typically of transactions. A single database transaction is expected to
+create or modify one aggregate at a time, with changes that span multiple aggregates coordinated separately, eg. via
+eventual consistency.
+
+Choosing aggregate boundaries well is one of the harder parts of domain-driven design. An aggregate drawn too large
+makes every write contend for the same lock and drags unrelated data into every transaction, while one drawn too
+small pushes invariants that should be enforced atomically out into application code instead.
