@@ -1,1 +1,20 @@
-= Asymmetric Cryptography
+= Asymmetric cryptography
+
+*Asymmetric cryptography*, also called *public-key cryptography*, is a branch of xref:cryptography.adoc[*cryptography*]
+in which the key used to encrypt data is different from the key used to decrypt it.
+
+Each party holds a key pair, a *public key*, which can be published and used by anyone, and a *private key*, which is
+kept secret. Data encrypted with a party's public key can only be decrypted with the matching private key, so anyone
+can send that party information that only they can read, without the two ever having agreed a shared secret in advance.
+
+This is distinct from xref:symmetric-cryptography.adoc[*symmetric cryptography*], where a single key does both jobs.
+
+The scheme also works in reverse. Data "locked" with a private key can be verified by anyone holding the matching
+public key. This is the basis of *digital signatures*. Because a signature could only have been produced by the holder
+of the private key, it lets a recipient confirm both who sent a message and that it has not been altered since. This
+underpins xref:public-key-infrastructure.adoc[*public key infrastructure (PKI)*], the system of certificates and
+certificate authorities that binds public keys to verified identities.
+
+Asymmetric algorithms, such as RSA and elliptic-curve cryptography, are considerably slower than symmetric ones for
+bulk data, so in practice they are most often used to establish trust and to exchange a symmetric key, which then
+handles the actual encryption of the data.
