@@ -22,10 +22,13 @@ A pipe-and-filter system has two kinds of component.
 
 * *Filters* are the processing stages. Each filter has a well-defined input and output, transforms the data it receives,
   and holds no state between items beyond what its transformation requires. A filter does not know what produced its input
-  or what consumes its output.
+  or what consumes its output. A filter at the head of a pipeline may instead originate data, generating output with no
+  pipe feeding it.
 
-* *Pipes* are the connectors. They carry data from one filter's output to the next filter's input, and may buffer it. By
-  taking responsibility for transport and buffering out of the filters, pipes keep the filters simple and interchangeable.
+* *Pipes* are the connectors. They carry data from one filter's output to the next filter's input, and may buffer it,
+  but they never modify the values passing through them or reorder them – whatever transformation happens, happens in
+  the filters. By taking responsibility for transport and buffering out of the filters, pipes keep the filters simple
+  and interchangeable.
 
 Because filters are independent and uniform in shape, the same filter can be reused in many pipelines, and a pipeline
 can be restructured with stages added, removed, or reordered without rewriting the filters themselves. Filters that have
