@@ -21,6 +21,10 @@ Taking DRY to the extreme can lead to *over-engineering*, introducing inappropri
 obscure intent. This tension is sometimes captured in the heuristic that duplication should be tolerated until a pattern
 is well understood, avoiding premature abstraction.
 
+Strict adherence to DRY is not unambiguously good even outside that extreme. Two components that each keep their own copy
+of some logic can be changed independently of one another, whereas unifying them behind a shared abstraction couples
+their evolution together – a change intended for one caller now has to be reasoned about for every other caller too.
+
 In testing, deliberate repetition is often preferred for the sake of readability and isolation, and is considered an
 acceptable exception to the principle.
 
