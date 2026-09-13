@@ -31,8 +31,9 @@ For legacy systems whose design has been lost to time and staff turnover,
 xref:reverse-engineering.adoc[*reverse engineering*] is the preceding step — recovering the structure that subsequent
 refactorings then improve.
 
-Behavior preservation is what distinguishes refactoring from rewriting. The guarantee is not made by care alone but by a
-safety net of automated tests. A comprehensive xref:regression-testing.adoc[*regression test*] suite catches unintended
+Behavior preservation is what distinguishes refactoring from rewriting, and from xref:redesign.adoc[*redesign*], with
+which it is often confused. Redesign changes a unit's external behavior to serve a new or different purpose; refactoring
+never does. The guarantee is not made by care alone but by a safety net of automated tests. A comprehensive xref:regression-testing.adoc[*regression test*] suite catches unintended
 changes the moment a transformation steps out of line. This is why refactoring sits at the center of
 xref:test-driven-development.adoc[*test-driven development (TDD)*]. The red-green-refactor cycle treats refactoring as
 the third phase, where the code made correct by the tests is then cleaned up with the tests still green.
