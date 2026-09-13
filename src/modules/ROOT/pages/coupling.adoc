@@ -55,6 +55,20 @@ Each of these can be expressed as one or more connascence types. Stamp coupling,
 connascence of position or connascence of type, depending on whether the dependent module relies on the order of the
 structure's fields or merely its shape.
 
+== Types of coupling
+
+Coupling can also be classified along two independent axes, orthogonal to the classical categories above.
+
+*Static coupling* is visible in the source code itself – a compile-time dependency such as an import or a type
+reference. *Dynamic coupling* only shows up at runtime, when one module reaches another through a mechanism the
+source doesn't reveal, such as reflection, a service lookup, or a message bus. Static coupling is easy to detect with
+static analysis tools; dynamic coupling can hide dependencies those tools miss entirely.
+
+The direction of a dependency also matters. *Afferent coupling* (incoming) counts the modules that depend on a given
+module; *efferent coupling* (outgoing) counts the modules that a given module depends on. A module with high afferent
+coupling is depended upon widely and so is risky to change; a module with high efferent coupling depends on much else
+and so is itself fragile to changes elsewhere.
+
 == Reducing coupling
 
 Lowering coupling is the practice of xref:decoupling.adoc[*decoupling*]. Concrete moves include narrowing interfaces,
