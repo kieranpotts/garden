@@ -54,6 +54,29 @@ whether a side effect, an ordering, or a performance characteristic, is a
 xref:leaky-abstraction.adoc[*leaky abstraction*] in the making, and the implementer is free to withdraw it without
 warning.
 
+A well-designed interface has a few desirable characteristics. It should be easy to learn, easy to use for the common
+case, and easy to extend for cases its author did not foresee, while being hard to misuse in ways that break the
+contract. It should also be functionally complete from the perspective of the clients that depend on it: everything a
+client legitimately needs is exposed, and nothing it does not need is. Internal interfaces, used only within a
+component's own team or codebase, and external interfaces, published for consumers outside that boundary, warrant
+different levels of rigor. An external interface needs stronger backwards-compatibility guarantees and clearer
+documentation, because its authors cannot see or coordinate with every caller.
+
+== Interface characteristics
+
+An interface can be characterized along several independent dimensions. Its transport channel might be a network
+protocol such as TCP/IP, or something as tightly coupled as shared memory. It can be internal, visible only within a
+component's own boundary, or external, published for outside consumers; local, within the same process, or remote,
+crossing a network; synchronous, blocking the caller until it returns, or asynchronous, returning control before the
+operation completes; binary, readable only by machines, or textual, also readable by humans; and stateless, treating
+each call independently, or stateful, depending on context accumulated across calls. Its topology may be
+point-to-point, connecting exactly two participants, or multipoint, broadcasting or multicasting to several. And its
+interaction style may be a function call, such as a remote procedure call, or a message exchange, conducted as a
+xref:batch-processing.adoc[*batch*], a request/response round trip, or a stream.
+
+Implementation approaches for remote service interfaces fall along a related axis: procedure-oriented styles such as
+xref:graphql.adoc[*GraphQL*] or SOAP-based web services, and resource-oriented styles such as xref:rest.adoc[*REST*].
+
 == References
 
 * Meyer, Bertrand (1997).
