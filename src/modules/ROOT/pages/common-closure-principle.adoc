@@ -1,0 +1,24 @@
+= Common closure principle
+
+The *common closure principle (CCP)* is a xref:package-principles.adoc[*package design principle*] that restates the
+*single responsibility principle (SRP)* for larger components (packages). The principle states that, ideally, all the
+components of a package should all have the exact same reasons to change. Or, to put it another way, a change request
+that affects one component of a package should affect all of the other components of the same package, but it should
+not affect anything outside the package.
+
+Thereby, each expected change request should affect a minimal number of components. To explain it another way, each
+component should be closed to a maximum number of expected change requests.
+
+The term "expected" here signifies a few important implications.
+
+1. The inherent concepts/responsibilities of a system run deeper than a surface-level description of its behavior.
+
+2. The deeper concepts/responsibilities of a system are not entirely objective, but can be modeled in different ways.
+
+3. Determining the concepts/responsibilities of a system is not just passive describing but also active strategizing.
+
+This principle leads to highly *cohesive* components. It also implies *loosely coupled* components, because related
+concepts that do change together end up *enclosed* together in the same wrapper. When each single concept is expressed
+by a single component, there are no unnecessary couplings between components.
+
+This is one of Robert C Martin's six xref:package-principles.adoc[*package principles*].

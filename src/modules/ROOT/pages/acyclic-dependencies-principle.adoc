@@ -1,0 +1,15 @@
+= Acyclic dependencies principle
+
+The *acyclic dependencies principle (ADP)* is a xref:package-principles.adoc[*package design principle*] that demands
+there be no cycles in the dependency graph of a system. This is a necessity of proper *hierarchical decomposition*
+(aka *functional decomposition*).
+
+Avoiding dependence cycles is essential for *low coupling* and high *maintainability*. In a system with cyclic
+dependencies, all components in the cycle effectively depend on each other (even if indirectly), which makes the
+overall system hard to understand, and hard to change or replace any part in isolation.
+
+This is one of Robert C Martin's six xref:package-principles.adoc[*package principles*].
+
+Although Martin expressed this principle in terms of large components (packages), the fundamental rules goes back at
+least to the classic 1972 paper _On the Criteria To Be Used in Decomposing Systems into Modules_ by David Parnas, which
+concludes that hierarchical structure along with "clean" decomposition are desirable properties of any system.
