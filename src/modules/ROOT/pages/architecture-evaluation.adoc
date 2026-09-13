@@ -1,1 +1,18 @@
 = Architecture evaluation
+
+Architecture evaluation is the quantitative or qualitative assessment of a software or system architecture, carried
+out to determine whether it's likely to achieve its target xref:quality-attribute.adoc[*quality attributes*] before
+the cost of building or changing the system is committed. It's a specialization of general xref:evaluation.adoc[*evaluation*],
+applied specifically to architectural decisions.
+
+Because most quality attributes can't be measured directly on a design that doesn't exist yet, evaluation methods
+lean on structured scenario analysis instead. Reviewers walk the architecture against a set of realistic scenarios —
+what happens if this dependency fails, what happens under a spike in load — and reason about the trade-offs and risks
+each one exposes.
+
+The xref:architecture-tradeoff-analysis-method.adoc[*Architecture Tradeoff Analysis Method*] (ATAM) is the best known
+formalization of this approach.
+
+Once a system exists, some of the same target qualities can be checked continuously with automated
+xref:fitness-function.adoc[*fitness functions*], but evaluation performed before or during design remains the
+primary way of catching an architectural weakness while it's still cheap to change.
