@@ -1,1 +1,11 @@
 = Certificate authority
+
+A *certificate authority (CA)* is a trusted entity that issues digital certificates to a subject — typically the owner
+of a domain, an organization, or an individual — within a xref:public-key-infrastructure.adoc[*public key infrastructure*].
+Because the CA has verified the subject's identity before signing its certificate, any trust placed in the CA extends
+automatically to every certificate it issues.
+
+The most widely encountered example is the TLS PKI used to secure web traffic. Every web browser ships with a predefined
+list of trusted root certificates from major CAs. A CA in this scheme verifies that whoever requests a certificate for
+a given domain actually controls that domain, then digitally signs the certificate so that a visiting browser can verify
+it without contacting the CA directly.
