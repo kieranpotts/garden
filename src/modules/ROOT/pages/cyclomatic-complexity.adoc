@@ -1,1 +1,19 @@
-= Cyclomatic Complexity
+= Cyclomatic complexity
+
+Cyclomatic complexity is a quantitative measure of a program's structural xref:complexity.adoc[*complexity*]. It is a
+measure of the number of linearly independent paths through a program's (or component's) source code.
+
+A linear sequence of statements with no branching has a cyclomatic complexity of 1, and each conditional (an `if` or a
+`while`, for example) adds one further path. So the metric roughly tracks the count of conditional statements in the
+code, plus one.
+
+The metric, introduced by Thomas McCabe in 1976, is widely used as a proxy for how hard a function or module is to
+understand and test, since each independent path is a case that has to be reasoned about and, ideally, covered by a
+test. Many software engineers hold that higher cyclomatic complexity correlates with a higher defect rate, and teams
+often set a threshold above which a function is flagged for refactoring.
+
+== References
+
+* McCabe, TJ (1976).
+  _A Complexity Measure_.
+  IEEE Transactions on Software Engineering, SE-2(4).
