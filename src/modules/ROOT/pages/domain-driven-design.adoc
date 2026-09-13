@@ -26,7 +26,6 @@ toc::[]
 :link-ddd-starter-process:    https://github.com/ddd-crew/ddd-starter-modelling-process
 :link-context-mapping:        https://github.com/ddd-crew/context-mapping
 
-// {link-wikipedia-ddd}
 // TODO: https://learn.microsoft.com/en-us/archive/msdn-magazine/2009/february/best-practice-an-introduction-to-domain-driven-design
 // TODO: https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf
 // TODO: See "Domain-Driven Design Quickly" book - https://ress.infoq.com/minibooks/domain-driven-design-quickly/en/pdf/DomainDrivenDesignQuicklyOnline.pdf
@@ -58,7 +57,7 @@ a high street bank, while the blueprint for an e-commerce application should res
 bricks-and-mortar shop. Likewise, bespoke xref:enterprise-application-software.adoc[*enterprise application software*]
 should model the very businesses that own it.
 
-DDD rejects the process of reusing generic architectural patterns like *[model-view-controller]* and forcing entirely
+DDD rejects the process of reusing generic architectural patterns like *model-view-controller* and forcing entirely
 different applications to fit the same ready-made floor plans. Instead, a domain-driven design approach to software
 involves creating a unique architecture for each application, one that is tailored to the specific business domain it
 serves by constructing the system around representations of objects and events that exist in the real world.
@@ -117,7 +116,7 @@ it themselves.
 .Continuous integration
 ****
 Eric Evans promotes xref:continuous-integration.adoc[*continuous integration*]
-as a *[practice]* that enforces an iterative and incremental design process.
+as a *practice* that enforces an iterative and incremental design process.
 Without continuous integration, Evans argues, there is a strong tendency for
 models to fragment, especially when multiple teams are working on different
 parts of the domain.
@@ -125,7 +124,7 @@ parts of the domain.
 
 The emphasis on continuous conversation and close collaboration between technical and non-technical stakeholders brings
 other advantages. Often the process of automating business processes through software development can yield new insights
-into the business itself. The process of continuous integration brings a continuous *[feedback loop]* of fresh insights.
+into the business itself. The process of continuous integration brings a continuous *feedback loop* of fresh insights.
 And domain modeling also serves the purpose of pooling knowledge within an organization, such that knowledge of certain
 aspects of a business and its IT systems are not restricted to particular tribes within the organization. Instead,
 knowledge is dissipated throughout the organization.
@@ -142,7 +141,7 @@ possible that a model that is truthful to its domain could have serious problems
 unacceptable xref:performance.adoc[*performance*]. For this reason, domain modeling and
 xref:system-design.adoc[*system design*] should run concurrently.
 
-Throughout the *[construction phase]*, the software developers should make frequent references to the model. The
+Throughout the *construction phase*, the software developers should make frequent references to the model. The
 software system should map the model in a very literal way, going as far as using the same language to name things like
 classes and methods.
 
@@ -334,7 +333,7 @@ inherited from a system's business domain. Tools such as the {link-contextmapper
 to document the models of bounded contexts and to map the relationships between them.
 
 Usage of bounded contexts and context maps is particularly beneficial for moderating
-xref:complexity.adoc[*accidental complexity*] that would otherwise arise through *[evolutionary design]* over time. For
+xref:complexity.adoc[*accidental complexity*] that would otherwise arise through *evolutionary design* over time. For
 example, imagine that an insurance business acquires a competitor, and begins the process of integrating their disparate
 IT systems. Although the domain is the same (insurance), the two companies will likely have modeled their domain
 entirely differently. They will each have developed different business rules, terminology, and actors. Therefore, rather
@@ -354,18 +353,18 @@ in code. A variety of object-oriented design patterns are used for this purpose.
 design is called the tactical design.
 
 Whereas the strategic design is very much a business _discovery_ process, the tactical design is more of a technical
-_design_ process. Another way of thinking about it is that the strategic design produces a *[conceptual architecture]*
-for the solution, while the tactical design fleshes this out into a more detailed *[logical architecture]*.
+_design_ process. Another way of thinking about it is that the strategic design produces a *conceptual architecture*
+for the solution, while the tactical design fleshes this out into a more detailed *logical architecture*.
 
-DDD provides a set of object-oriented design patterns that can be used to create a set of *[domain objects]* within each
+DDD provides a set of object-oriented design patterns that can be used to create a set of *domain objects* within each
 bounded context. xref:object-oriented-programming.adoc[*Object-oriented programming*] is particularly well suited to
-*[model-driven design]*, much more so than *[procedural]* and other
+*model-driven design*, much more so than *procedural* and other
 xref:programming-paradigm.adoc[*programming paradigms*] that do not tend to provide sufficient
-*[programming constructs]* to reflect complex models.
+*programming constructs* to reflect complex models.
 
 The domain objects will typically be used to represent the *key parts* of the strategic design. The two main design
-patterns recommended for creating domain objects are *[entities]* and *[value objects]*. Other tactical patterns include
-*[aggregates]*, *[repositories]*, and *[services]*.
+patterns recommended for creating domain objects are *entities* and *value objects*. Other tactical patterns include
+*aggregates*, *repositories*, and *services*.
 
 Domain objects are scoped to bounded contexts. Thus, if a bounded context is composed or more than one subdomain, the
 subdomains within that context will all share the same set of entities, values, and other domain objects.
@@ -383,15 +382,15 @@ recurring design patterns that exist in different conceptual layers of an applic
 
 DDD design patterns include:
 
-* *[Aggregates]*
-* *[Commands]*
-* *[Domain events]*
-* *[Entities]*
+* *Aggregates*
+* *Commands*
+* *Domain events*
+* *Entities*
 * xref:factory.adoc[*Factories*]
-* *[Modules]*
-* *[Repositories]*
-* *[Services]*
-* *[Value objects]*
+* *Modules*
+* *Repositories*
+* *Services*
+* *Value objects*
 
 ==== Commands
 
@@ -403,7 +402,7 @@ application operations.
 
 ==== Domain objects
 
-In domain-driven software, the domain is modeled using *[domain objects]* and *[domain events]*. The domain objects are
+In domain-driven software, the domain is modeled using *domain objects* and *domain events*. The domain objects are
 implemented using a variety of object-oriented design patterns, notably entities and value objects, and aggregates of
 both.
 
@@ -473,7 +472,7 @@ of view, the `Customer` entity is a single unit of code, and all the other objec
 
 Like entities, aggregates have unique IDs.
 
-Finally, *[collections]* may be used to group together multiple instances of the same domain object types, and
+Finally, *collections* may be used to group together multiple instances of the same domain object types, and
 xref:factory.adoc[*factories*] may be used to encapsulate the initialization logic for any domain objects or domain
 collections.
 
@@ -554,7 +553,7 @@ dependency of the command that implements the use case.
 While factories are responsible for creating new domain objects, repositories are responsible for fetching and
 persisting existing domain objects.
 
-A *[repository]* is an abstraction of a persistent container or storage layer – usually a database system and any
+A *repository* is an abstraction of a persistent container or storage layer – usually a database system and any
 attached caching systems. The repository pattern acts as a mediator between the domain and the data mapping layer,
 providing an abstraction that allows handling the collection of entities as if it were a collection in memory. It
 enables operations such as searching, inserting, and deleting entities without exposing details of the persistence
@@ -578,12 +577,12 @@ simplifying the overall system design where there is a lot of complexity in the 
 === Layered architecture
 
 Systems built around domain-driven design principles have a xref:layered-architecture.adoc[*layered architecture*]
-consisting of four main *[conceptual layers]*:
+consisting of four main *conceptual layers*:
 
 image::ddd-layers.png[The domain driven design layers are: interface, application, domain, and infrastructure]
 
 The idea is that within each layer are components that change for the same reasons. Thus, components within the
-interface layer should change only when there is a *[change request]* for how clients – users or other programs –
+interface layer should change only when there is a *change request* for how clients – users or other programs –
 interact with the application, while components within the infrastructure layer should change only when there is a
 change in some external system on which the application depends.
 
@@ -613,7 +612,7 @@ the application layer defines all of the xref:use-case.adoc[*use cases*] for the
 
 The use cases will act on the domain objects and domain services in the domain layer below. The application layer should
 not do any processing directly, and it should not hold any state. Rather, the application layer is merely a thin
-*[mediator]* between the interface and domain layers. It is responsible only for delegating the processing of input to
+*mediator* between the interface and domain layers. It is responsible only for delegating the processing of input to
 the appropriate domain objects or domain services, and for returning the output of those objects and services to the
 interface layer.
 
@@ -662,7 +661,7 @@ sending a user an email message may have dependencies on both a `UserEntity` dom
 
 The domain layer should be isolated further by not having any direct dependencies on the infrastructure layer below it.
 This can be achieved by implementing xref:inversion-of-control.adoc[*inversion of control*] patterns at the boundary
-between the domain and infrastructure layers. xref:interface.adoc[*Interfaces*] and *[adapters]* are commonly used for
+between the domain and infrastructure layers. xref:interface.adoc[*Interfaces*] and *adapters* are commonly used for
 this purpose. The interfaces belong to the layer above (the domain layer), and the adapters to the layer below (the
 infrastructure layer). The interfaces define the dependencies required of the domain objects, domain events, and domain
 services. The adapters implement those interfaces. (And the responsibility for mapping interfaces to adapters may be
