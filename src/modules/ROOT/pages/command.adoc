@@ -1,1 +1,13 @@
 = Command
+
+The *command* pattern is a xref:design-pattern.adoc[*design pattern*] in which a request or action is encapsulated as an
+object, rather than expressed as a direct method call. That object bundles everything needed to invoke the action, so
+the caller need not know how, or even when, the action will actually be carried out.
+
+It is xref:encapsulation.adoc[*encapsulation*] applied to a unit of behavior rather than a unit of data.
+
+Separating the decision to invoke an action from its execution enables patterns like queuing commands for later or
+asynchronous execution, logging or serializing them for replay, and supporting undo by keeping a history of executed
+commands that can be reversed in turn.
+
+It is one of the original *Gang of Four* behavioral patterns.
