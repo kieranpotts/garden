@@ -1,1 +1,18 @@
 = Bridge
+
+:link-sjsu-bridge: https://www.cs.sjsu.edu/~pearce/modules/patterns/platform/bridge/index.htm
+
+The *bridge* is a structural xref:design-pattern.adoc[*design pattern*] in which an xref:abstraction.adoc[*abstraction*]
+is decoupled from its implementation, so that the two can vary independently. Rather than an abstraction inheriting
+directly from a concrete implementation, it holds a reference to a separate implementation object behind its own
+interface, letting either side be extended or swapped without touching the other.
+
+The pattern is most valuable where both the abstraction and the implementation are expected to have multiple variants.
+For example, a set of shapes that must each render on several graphics APIs. Without a bridge, that combination tends
+to be handled by inheritance, producing a class for every abstraction–implementation pairing. With a bridge, the two
+hierarchies grow independently and are combined at runtime instead.
+
+== References
+
+* {link-sjsu-bridge}[_Bridge Pattern_].
+  San José State University.
