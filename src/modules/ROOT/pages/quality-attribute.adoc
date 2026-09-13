@@ -3,7 +3,10 @@
 Quality attributes are the measurable properties of a software system that describe _how well_ it behaves, as distinct
 from what it does. They manifest as the xref:cross-cutting-concern.adoc[*cross-cutting concerns*] that affect the
 overall operation of a system, and which are the primary focus of
-xref:software-architecture.adoc[*software architecture*].
+xref:software-architecture.adoc[*software architecture*]. A quality attribute is also called an *architectural quality
+goal* or *architectural quality requirement*, because achieving it is understood to be the architecture's job rather
+than any one component's, and because the goal tends to hold for the system's whole lifetime, in contrast to a
+project's own goals, which are scoped to a release or a budget.
 
 Quality attributes are specified as xref:non-functional-requirements.adoc[*non-functional requirements*]. They include
 the following.
@@ -21,21 +24,34 @@ the following.
 * xref:efficiency.adoc[*Efficiency*]
 * xref:evolvability.adoc[*Evolvability*]
 * xref:fault-tolerance.adoc[*Fault tolerance*]
+* *Fragility*
+* *Immobility*
 * xref:latency.adoc[*Latency*]
 * xref:observability.adoc[*Observability*]
 * xref:partition-tolerance.adoc[*Partition tolerance*]
 * xref:performance.adoc[*Performance*]
 * xref:privacy.adoc[*Privacy*]
+* *Rigidity*
 * xref:redundancy.adoc[*Redundancy*]
 * xref:scalability.adoc[*Scalability*]
 * xref:security.adoc[*Security*]
 * xref:visibility.adoc[*Visibility*]
+* *Viscosity*
 
 Many quality attributes carry names ending in _-ility_, which is why the collection is sometimes called the *ilities*.
+The composite of a system's quality attributes is its xref:software-quality.adoc[*software quality*].
 
-A useful grouping separates attributes observable while a system is running (performance, availability, security,
-usability) from those observable only as the system changes over time (modifiability, testability, portability,
-evolvability).
+A useful grouping separates *runtime* attributes, observable while a system is running (performance, availability,
+security, usability), from *non-runtime* attributes, observable only as the system changes over time (modifiability,
+testability, portability, evolvability). A third group, *business quality attributes*, sits outside the system itself –
+cost, schedule, marketability, and fit with the organization – but still shapes which of the other two groups an
+architecture is allowed to spend effort on.
+
+ISO/IEC 25010 codifies a taxonomy of these attributes, organized into eight top-level characteristics – functional
+suitability, performance efficiency, compatibility, usability, reliability, security, maintainability, and portability
+– each broken down further into sub-characteristics such as time behaviour under performance efficiency or modularity
+under maintainability. It superseded the earlier ISO/IEC 9126 standard, which covered similar ground under a different
+structure.
 
 == Trade-offs between attributes
 
@@ -59,6 +75,23 @@ choosing among them is the trade-off. Standards such as the ISO/IEC 25010 SQuaRE
 might target, giving the conversation a shared vocabulary.
 
 Classic trade-offs in system design include:
+
+* *Configurability* versus *reliability*. \ A highly configurable system lets operators tune its behavior to their
+  situation, but every option is a combination that must be tested and supported, and a bad combination is a new way
+  for the system to fail. A less configurable system has fewer combinations to reason about and is easier to make
+  reliable.
+
+* *Memory* versus xref:efficiency.adoc[*performance efficiency*]. \ Trading memory for speed – caching, memoization,
+  precomputed indexes – is one of the oldest moves in the book, but it is still a trade-off. The memory spent could
+  otherwise serve more concurrent users or larger datasets on the same hardware.
+
+* *Security* versus *usability*. \ Stronger security controls – multi-factor authentication, short session lifetimes,
+  restrictive permissions – add friction to the tasks a legitimate user is trying to do. Weakening them for a smoother
+  experience widens the surface available to an attacker.
+
+* *Runtime flexibility* versus *maintainability*. \ A system that lets behavior be reconfigured or scripted at runtime
+  is more adaptable to unanticipated needs, but that flexibility is itself code and state that has to be understood,
+  tested, and kept consistent, which weighs against the simplicity a maintainer benefits from.
 
 * *Monolithic* versus *distributed* architecture. \ Monolithic systems are simpler to develop and deploy, but they can be
   harder to maintain and are limited to *vertical scalability*. xref:distributed-system.adoc[*Distributed software*] is
@@ -140,6 +173,10 @@ Once specified, quality attributes can be guarded by xref:fitness-function.adoc[
 that fail when the system drifts away from the attribute's target value. The broader discipline of
 xref:quality-assurance.adoc[*quality assurance*] provides the processes and evidence that a system in fact meets its
 specified attributes.
+
+Where a fitness function measures, qualitative xref:evaluation.adoc[*evaluation*] assesses – bringing judgment to bear
+on whether an architecture is likely to meet its quality goals, by examining the risks, trade-offs, and sensitivity
+points in a design rather than calculating a metric against it.
 
 == See also
 
