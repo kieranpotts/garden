@@ -1,1 +1,11 @@
 = Attack tree
+
+An *attack tree* is a formal, tree-structured way of describing the different approaches an attacker might take to
+reach a given goal, used in xref:threat-modeling.adoc[*threat modeling*]. The attacker's ultimate goal sits at the root
+of the tree, and each child node is a distinct approach to achieving its parent, decomposed further into the
+sub-approaches or preconditions that approach depends on, down to leaf nodes representing concrete actions.
+
+Each node can carry additional attributes that make the tree analytically useful rather than merely descriptive. For
+example, the estimated cost or skill an approach requires, whether it is currently feasible at all, or whether a
+*countermeasure* already blocks it. Aggregating these attributes up the tree from the leaves lets an analyst compare
+attack paths and prioritize which ones represent the most realistic xref:risk.adoc[*risk*] to the system.
