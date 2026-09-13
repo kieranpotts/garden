@@ -1,1 +1,17 @@
 = Aggregation
+
+*Aggregation* is a "has-a" relationship between objects in xref:object-oriented-programming.adoc[*object-oriented programming*],
+in which one object holds references to others without owning their lifecycle.
+
+It's a weaker form of xref:composition.adoc[*composition*]. Both describe one object being built from others, but
+aggregation doesn't imply that the contained objects belong exclusively to the containing one.
+
+The distinguishing test is lifecycle dependency. In composition, the contained parts are destroyed along with the
+whole that owns them. For example, an order's line items don't outlive the order. In aggregation, destroying the
+containing object leaves the contained objects intact, because they exist independently and may be shared with, or
+referenced by, other objects at the same time. For example, disbanding a university department doesn't destroy its
+tutors.
+
+Aggregation and composition are both specializations of xref:association.adoc[*association*], the more general
+xref:uml.adoc[*UML*] term for a structural relationship between classes. What differs between the three is only the
+strength of ownership implied.
