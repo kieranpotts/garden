@@ -3,10 +3,10 @@
 :link-wikipedia:   https://en.wikipedia.org/wiki/Multitier_architecture
 :link-wikiwikiweb: https://wiki.c2.com/?FourLayerArchitecture
 
-// {link-wikipedia}
-
 A _layered architecture_ describes any software system in which discrete concerns are *logically separated* along lines
-of responsibility, such that objects with similar roles form imaginary horizontal layers.
+of responsibility, such that objects with similar roles form imaginary horizontal layers. A *layer* is a grouping of
+building blocks or components that together offer a cohesive set of services to other layers, related to one another
+by an ordered "allowed to use" relation.
 
 The layered architecture is typically applied to single-node applications, ie. the layered architecture is applied to
 the _logical design_. For example, individual xref:microservices.adoc[*microservices*] within distributed software may
@@ -52,6 +52,8 @@ Whatever the degree and placement of subdivision, a layered or tiered architectu
 between components that have different responsibilities, such that components form natural layers. Components in one
 layer "know" only a minimal amount about components in other layers.
 
+The main architectural quality that is achieved through a layered architecture is *flexibility* to modify the system.
+
 == See also
 
 * xref:clean-architecture.adoc[*Clean architecture*]
@@ -64,5 +66,8 @@ layer "know" only a minimal amount about components in other layers.
 * xref:vertical-slice-architecture.adoc[*Vertical-slice architecture*]
 
 == References
+
+* Wikipedia.
+  {link-wikipedia}[_Multitier architecture_].
 
 * {link-wikiwikiweb}[WikiWikiWeb: FourLayerArchitecture]
