@@ -1,1 +1,11 @@
 = Proxy
+
+A *proxy* is a xref:design-pattern.adoc[*design pattern*] in which a *wrapper* object stands in for a real object, and is
+called by the client instead of that real object. Because the proxy implements the same interface as the object it
+stands in for, using it looks identical, from the client's point of view, to using the real object directly.
+
+A proxy can simply forward every call through to the real object unchanged, but its usefulness comes from what it can
+add along the way, such as xref:caching.adoc[*caching*] a result when the real object is expensive to call, checking
+preconditions before letting a call through, deferring creation of the real object until it's actually needed, or
+restricting access to it altogether. In every case, the client remains unaware that it isn't talking to the real
+object.
