@@ -1,1 +1,15 @@
 = Value object
+
+A *value object* is a building block of xref:domain-driven-design.adoc[*domain-driven design*] that represents a value in
+the xref:domain.adoc[*domain*] — such as a date, a price, or an address — defined entirely by its attributes rather
+than by any identity of its own. Two value objects with identical attributes are considered equal and interchangeable,
+in contrast to an xref:entity.adoc[*entity*], whose identity persists even as its attributes change.
+
+Value objects are treated as *immutable*. Once constructed, their attributes never change. Where an entity is
+modified in place, a value object is instead replaced wholesale by a new instance carrying the new value. Immutability
+also lets a value object validate its own invariants once, at construction, since there is no later mutation that
+could put it back into an invalid state.
+
+A value object may be composed of other value objects, but never of an entity. An entity's state is typically
+described using value objects, and not the reverse. An entity's attributes, such as a customer's name and address, are
+natural candidates to model as value objects even where the entity itself needs a stable identity.
