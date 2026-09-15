@@ -1,1 +1,15 @@
 = Gateway
+
+A *gateway* is a xref:design-pattern.adoc[*design*] or xref:architectural-pattern.adoc[*architectural pattern*].
+It is an element that encapsulates access to another system or resource, usually an external one, behind a single point
+of contact. Callers depend on the gateway's interface rather than on the details of whatever it fronts.
+
+The pattern is closely related to the xref:wrapper.adoc[*wrapper*] and xref:adapter-pattern.adoc[*adapter*]
+patterns. All three place an intermediary between a caller and something it depends on, and the terms are often
+used loosely and somewhat interchangeably in practice. A gateway is typically distinguished by its focus on
+_access_ — routing, protocol translation, or authentication for calls in and out of a system — rather than on
+reconciling incompatible interfaces or simplifying a complex one.
+
+Gateways are common at system boundaries, such as an *API gateway* fronting a set of internal services, or a
+*payment gateway* abstracting away the proprietary APIs of multiple third-party payment service providers. Gateways
+are also commonly put in front of *legacy subsystems* to ease their integration with modernized services.
