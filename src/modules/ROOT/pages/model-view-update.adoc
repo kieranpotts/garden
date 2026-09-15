@@ -1,1 +1,17 @@
 = Model-view-update (MVU)
+
+*Model-view-update* (MVU) is an xref:architectural-pattern.adoc[*architectural pattern*] for
+xref:user-interface.adoc[*user interfaces*] built around immutability and unidirectional data flow. It has three
+parts: the *model* represents the application's state as an immutable data structure; the *view* is a
+side-effect-free function that renders the model to the UI; and the *update* function handles events by producing a
+new model instance from the old one, rather than mutating state in-place.
+
+Because every state change flows through a single update function that always returns a new model, an MVU
+application's history of states is easy to trace, replay, and reason about. There's no hidden mutation happening
+inside a view or a controller. This makes the pattern a natural fit for *functional programming* languages and for UI
+frameworks built around a single, predictable render loop.
+
+MVU is a sibling of xref:model-view-controller.adoc[*model-view-controller*] (MVC) and
+xref:model-view-viewmodel.adoc[*model-view-viewmodel*] (MVVM). Where MVC and MVVM both allow the view or an
+intermediary object to hold mutable state, MVU pushes all state into one immutable model and all state transitions
+into one pure function, trading some flexibility for a stricter, more predictable data flow.
