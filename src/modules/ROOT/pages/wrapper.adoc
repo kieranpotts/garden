@@ -1,1 +1,22 @@
 = Wrapper
+
+A *wrapper* is any component that sits in front of another component or *building block* to abstract away its concrete
+interface or implementation, without changing what that component actually does. Callers depend on the wrapper
+instead of on the thing it wraps.
+
+"Wrapper" is an umbrella term rather than a single design pattern, and several more specific patterns fall under it.
+
+* The *decorator* pattern, which attaches additional responsibilities to an object dynamically.
+
+* The xref:adapter-pattern.adoc[*adapter pattern*], which reconciles two mismatched interfaces.
+
+* The xref:facade.adoc[*facade*], which simplifies a complex subsystem behind a narrower interface.
+
+* The xref:gateway.adoc[*gateway*], which encapsulates access to an external system.
+
+Different sources draw the boundaries between these terms slightly differently, and in practice the small differences
+rarely matter.
+
+What does matter is that wrapping a component has clear, consistent semantics within a single system. Whichever of
+these patterns a team adopts for a given case, the important thing is that "wrapping" means the same thing everywhere
+it's used, so that a reader can tell at a glance what a wrapper is and isn't allowed to do.
