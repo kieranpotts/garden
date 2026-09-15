@@ -1,1 +1,24 @@
 = Testability
+
+*Testability* is the degree of effectiveness and efficiency with which *test criteria* can be established for a system,
+product, or component, and with which tests can then be performed to determine whether those criteria have been met.
+It is a xref:quality-attribute.adoc[*quality attribute*] and, per ISO/IEC 25010, a sub-characteristic of
+xref:maintainability.adoc[*maintainability*]. A system that's hard to test is, by the same token, hard to change with
+confidence.
+
+A system's testability is shaped largely by its design rather than by its tests. High xref:cohesion.adoc[*cohesion*]
+and low xref:coupling.adoc[*coupling*] let a component be exercised in isolation, without dragging in the rest of the
+system as fixtures or mocks. xref:dependency-injection.adoc[*Dependency injection*] and programming to an
+xref:interface.adoc[*interface*] make it possible to substitute real collaborators with *test doubles*, and observable,
+deterministic behavior — pure functions, explicit inputs and outputs, no hidden global state — makes test criteria
+easier to state in the first place.
+
+Testability is what makes disciplines such as xref:test-driven-development.adoc[*test-driven development*] and
+xref:unit-testing.adoc[*unit testing*] practical at scale. Where a codebase resists testing, the usual remedy is
+xref:refactoring.adoc[*refactoring*] toward smaller, more loosely coupled units rather than writing ever more elaborate
+test setup around the existing structure.
+
+== References
+
+* ISO/IEC (2023).
+  _ISO/IEC 25010:2023 — Systems and software Quality Requirements and Evaluation (SQuaRE) — Quality model_.
