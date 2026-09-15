@@ -1,1 +1,17 @@
 = Reusability
+
+*Reusability* is a xref:quality-attribute.adoc[*quality attribute*] that describes the degree to which an asset – a
+component, module, service, or other artifact – can be used in more than one system, or used to build other assets,
+without being changed for its new context. As per ISO/IEC 25010, reusability is a sub-characteristic of
+xref:maintainability.adoc[*maintainability*], alongside xref:modularity.adoc[*modularity*], *analysability*,
+xref:modifiability.adoc[*modifiability*], and xref:testability.adoc[*testability*].
+
+Reusability is a property of an asset's design, distinct from xref:code-reuse.adoc[*code reuse*], which is the
+practice of actually using an existing asset rather than writing a new one. An asset can be highly reusable and never
+be reused, and conversely a poorly designed asset can still be reused, at the cost of the coupling and leaky
+abstractions that come from forcing a fit where none naturally exists.
+
+The main design lever for reusability is xref:cohesion.adoc[*cohesion*]. An asset that groups only closely related
+responsibilities behind a narrow, well-defined xref:interface.adoc[*interface*], with minimal xref:coupling.adoc[*coupling*]
+to its surrounding context, is far easier to lift out and drop into a different system than one whose responsibilities
+and dependencies are tangled up with its original context.
