@@ -1,1 +1,15 @@
 = Function signature
+
+A function signature, also called a *type signature* or *method signature*, is the part of a function's
+declaration that defines how it can be called, as distinct from what the function does internally. It's the
+contract a caller relies on, independent of the implementation behind it.
+
+A signature typically includes the function's parameters and their types, the type of its return value, and,
+in languages that declare this explicitly, the exceptions or errors it may raise — see
+xref:exception-handling.adoc[*exception handling*].
+
+Compatibility between components is fundamentally a question of whether their signatures line up. Two functions with
+the same signature are interchangeable from a caller's point of view, even if their internal behavior differs. An
+xref:adapter-pattern.adoc[*adapter*] may be needed where the signatures of components being integrated do not line up.
+
+An xref:interface.adoc[*interface*] is, in effect, a a signature with no attached implementation.
