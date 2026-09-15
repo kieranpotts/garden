@@ -1,1 +1,15 @@
-= Web of Trust
+= Web of trust
+
+A *web of trust* is a decentralized model for establishing trust in digital identities, in which users vouch for one
+another directly instead of relying on a central xref:certificate-authority.adoc[*certificate authority*]. It exists
+because a single CA is both a *single point of failure* and an attractive target for an attacker. Compromise it, and
+every identity it vouched for becomes suspect.
+
+Trust is delegated to individual users. Each person decides which other people's proof of identity they trust,
+typically by verifying the fingerprint of that person's public key through some independent channel. That trust is
+then expressed by signing the other person's key with a xref:signature.adoc[*digital signature*], which they can
+publish alongside it. A third party who already trusts the signer can extend some trust to the signed key without
+ever verifying its owner directly, and trust propagates outward this way as more people sign one another's keys.
+
+*PGP*, used for email encryption, is a well-known example of a xref:public-key-infrastructure.adoc[*public key infrastructure*]
+built on a web of trust rather than on a hierarchy of certificate authorities.
