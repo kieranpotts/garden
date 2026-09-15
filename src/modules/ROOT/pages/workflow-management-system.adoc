@@ -1,1 +1,15 @@
 = Workflow management system (WFMS)
+
+A *workflow management system (WFMS)* is software that provides the infrastructure for defining, running, and
+monitoring a workflow. A workflow is a sequence of tasks arranged to carry out a *business process*, with rules governing
+the order tasks run in, who or what performs each one, and how data passes between them.
+
+A WFMS typically separates the definition of a workflow from its execution. The workflow itself is modeled – often
+using a notation such as xref:bpmn.adoc[*BPMN*] – as a sequence of activities, decisions, and events, independently of
+the code that carries each activity out. The system's engine then reads that definition at runtime, routing work
+between human participants and automated tasks, tracking the state of each running instance, and exposing that state
+for monitoring.
+
+By keeping the process definition separate from the underlying application code, a WFMS lets a business process be
+changed – reordering steps, adding an approval, rerouting an exception – without touching the systems that perform
+the individual tasks.
