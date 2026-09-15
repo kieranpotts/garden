@@ -1,1 +1,25 @@
 = Transport Layer Security (TLS)
+
+:link-rfc7568: https://www.rfc-editor.org/rfc/rfc7568
+
+*Transport Layer Security (TLS)* is a *cryptographic* protocol that secures communication between two parties over a
+network, protecting the properties of the xref:cia-triad.adoc[*CIA triad*] — confidentiality, integrity, and
+availability — for data in transit. It is the protocol underneath HTTPS, and is used wherever a client and server need
+their traffic protected from eavesdropping or tampering, not only on the web.
+
+A TLS connection begins with a *handshake*, in which the two sides agree a cipher suite, the server proves its identity
+using a certificate issued by a xref:certificate-authority.adoc[*certificate authority*], and the parties establish a
+shared symmetric key for the session — combining xref:asymmetric-cryptography.adoc[*asymmetric cryptography*] for the
+handshake with faster xref:symmetric-cryptography.adoc[*symmetric cryptography*] for the bulk of the traffic that
+follows. This is the same key-exchange pattern used by xref:envelope-encryption.adoc[*envelope encryption*], applied to
+a live connection rather than to stored data.
+
+TLS succeeded its predecessor, SSL (Secure Sockets Layer). SSL 3.0 is formally deprecated, per {link-rfc7568}[RFC 7568],
+and modern deployments should run TLS 1.2 or, preferably, TLS 1.3, which drops older, weaker cipher suites and
+shortens the handshake.
+
+== References
+
+* IETF (2015).
+  {link-rfc7568}[_RFC 7568 — Deprecating Secure Sockets Layer Version 3.0_].
+
