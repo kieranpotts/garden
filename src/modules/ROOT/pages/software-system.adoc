@@ -1,1 +1,23 @@
 = Software systems
+
+A *software system* is a xref:system.adoc[*system*] whose elements are chiefly software, built and operated to serve
+some purpose for its users and stakeholders. It's the broad umbrella under which most of software engineering's
+concerns — design, architecture, testing, deployment — apply. A single running application, a distributed platform of
+many services, and an embedded controller are all software systems, differing mainly in shape and constraints rather
+than in kind.
+
+Software systems are commonly grouped into a few typical categories, distinguished by how and when they process work.
+
+* *Batch systems* process accumulated input in scheduled runs rather than immediately — see
+  xref:batch-processing.adoc[*batch processing*].
+
+* *Interactive online systems* respond to individual requests as they arrive, typically from a human user or another
+  system, within a short and often bounded time.
+
+* *Embedded real-time systems* run as part of a larger piece of hardware, on an xref:embedded-system.adoc[*embedded system*],
+  and must react to events within strict timing deadlines, where a late response is treated as a failure of the system.
+
+These categories are not mutually exclusive labels for whole systems so much as different processing modes a system
+can combine. A platform might serve interactive requests in real time while also running nightly batch jobs. But
+naming them helps set expectations early about a system's xref:non-functional-requirements.adoc[*non-functional requirements*],
+particularly around latency, throughput, and failure tolerance.
