@@ -1,1 +1,12 @@
 = Parameter passing
+
+*Parameter passing* is the mechanism by which values are transferred from a caller into a function or procedure's
+parameters when it's invoked, as declared in the function's xref:function-signature.adoc[*signature*]. The mechanism
+determines what the function sees, and whether changes it makes to a parameter are visible to the caller once it
+returns.
+
+The two most common strategies are *call-by-value*, where the function receives a copy of the argument's value and
+any changes it makes are local to the function, and *call-by-reference*, where the function receives a reference to
+the caller's original variable, so changes it makes are visible to the caller after the call returns. Many languages
+blur this distinction for compound values, passing a copy of a reference — sometimes called *call-by-sharing* — so
+that mutating the referenced object is visible to the caller, but reassigning the parameter itself is not.
