@@ -22,7 +22,9 @@ Multiple machines making decisions about shared state need a way to agree, even 
 be reached. Consensus algorithms solve this by having nodes vote on a single outcome, which is what underpins
 distributed locking and phased commit protocols such as two-phase and three-phase commit. Eventual consistency takes a
 different approach: instead of insisting nodes agree immediately, it accepts that they may diverge briefly and
-guarantees they converge once messages stop arriving. A heartbeat is the simplest coordination primitive of all, a
+guarantees they converge once messages stop arriving. CRDTs take that a step further, structuring data so that
+replicas merge back together deterministically with no coordination at all. A heartbeat is the simplest coordination
+primitive of all, a
 periodic signal that tells the rest of the cluster a node is still alive, so that its failure can be detected and
 handled.
 
@@ -57,6 +59,7 @@ can no longer trust.
 * xref:clustering.adoc[*Clustering*]
 * xref:consensus-algorithm.adoc[*Consensus algorithms*]
 * xref:consistent-hashing.adoc[*Consistent hashing*]
+* xref:crdt.adoc[*Conflict-free replicated data types (CRDTs)*]
 * xref:dead-letter-queue.adoc[*Dead letter queue*]
 * xref:deadlock.adoc[*Deadlock*]
 * xref:distributed-caching.adoc[*Distributed caching*]

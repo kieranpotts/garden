@@ -1,0 +1,75 @@
+= Conflict-free replicated data types (CRDTs)
+
+:link-crdt-tech:  https://crdt.tech/
+:link-shapiro:    https://inria.hal.science/inria-00555588/document
+
+A *conflict-free replicated data type (CRDT)* is a data structure that can be updated independently on multiple
+xref:replication.adoc[*replicas*] and merged back together with no coordination and no possibility of a merge conflict.
+
+CRDTs let a system accept writes on any replica, including one that is completely offline, and guarantee that
+reconciliation on reconnection needs no manual conflict resolution and no central coordinator. This makes them the
+mechanism of choice for xref:local-first-software.adoc[*local-first software*], where each user's device is a replica
+that must merge cleanly with every other device, and with the server once connectivity returns. Real-time collaboration
+application software such as Figma commonly use CRDTs under-the-hook. CRDT libraries, that support the development of
+such applications, include Yjs and Automerge.
+
+CRDTs also underpin xref:replication.adoc[*multi-leader replication*] in distributed databases, where more than one node
+can accept writes concurrently, and where the database needs a deterministic way to reconcile conflicting updates to the
+same record without falling back to *last-writer-wins*, which silently discards data, or blocking on a
+xref:consensus-algorithm.adoc[*consensus algorithm*], which sacrifices availability.
+
+CRDTs work like this.
+
+Every replica applies updates in whatever order they arrive, and a mathematically defined merge function guarantees that
+all replicas converge to the same state once they have all seen the same set of updates. This property is called
+*strong eventual consistency*, which is a stronger guarantee than the xref:eventual-consistency.adoc[*eventual consistency*]
+that most replicated systems offer, because convergence is *deterministic* rather than merely eventual.
+
+CRDTs achieve this by restricting the data type to operations that are commutative, associative, and idempotent.
+Applying the same set of updates in any order, any number of times, produces the same result.
+
+A simple example is a *grow-only set*, where the only operation is adding an element. Merging two replicas' sets is just
+a matter of calculating the union of the two sets. Union is commutative and idempotent regardless of how many times or
+in what order each element was added.
+
+Richer CRDTs support removal, counters that can be incremented and decremented, and ordered sequences such as text, each
+built from primitives that preserve the same convergence guarantee.
+
+== State-based and operation-based CRDTs
+
+There are two families, differing in what a replica sends to its peers.
+
+* *State-based CRDTs (CvRDTs)* ship a replica's entire local state to other replicas, which merge it into their own
+  using a merge function that must be commutative, associative, and idempotent over the whole state. This is simple to
+  implement and tolerant of dropped or duplicated messages, since re-sending the same state changes nothing. But it can
+  be expensive to transmit as the state grows.
+
+* *Operation-based CRDTs (CmRDTs)* ship only the individual operation — eg. "add element X" rather than the whole set —
+  which is far cheaper over the network, at the cost of requiring the underlying transport to deliver every operation
+  exactly once and in causal order, since a lost or duplicated operation can break convergence.
+
+== Trade-offs
+
+CRDTs trade storage and complexity for coordination-free convergence. Many CRDT designs carry *metadata overhead* —
+tombstones marking deleted elements, or per-element identifiers — that can grow the data far beyond its logical size if
+never compacted.
+
+State-based CRDTs can also be costly to merge at scale, since the whole state is compared each time.
+
+And because merges are automatic, a CRDT can only apply where "union" or "keep both" is an acceptable resolution of a
+conflict. It does not help where a domain rule needs a human, or an application-specific policy, to arbitrate which of
+two concurrent updates is actually correct.
+
+== See also
+
+* xref:eventual-consistency.adoc[*Eventual consistency*]
+* xref:distributed-system-mechanism.adoc[*Distributed systems mechanisms*]
+
+== References
+
+* {link-crdt-tech}[_crdt.tech_].
+  A curated index of CRDT research and implementations.
+
+* Shapiro _et al_ (2011).
+  {link-shapiro}[_Conflict-free replicated data types_].
+  INRIA Research Report.
