@@ -1,1 +1,15 @@
 = Facade
+
+A *facade* is a xref:design-pattern.adoc[*structural design pattern*] that provides a simplified
+xref:interface.adoc[*interface*] to a complex or complicated subsystem, without any modification to that subsystem.
+Client code depends on the facade's narrow interface instead of on the full complexity of the parts behind it.
+
+The facade pattern is closely related to the xref:adapter-pattern.adoc[*adapter pattern*] and the
+xref:wrapper.adoc[*wrapper*]. All three patterns place something in front of an existing component, rather than changing
+it. But they serve different purposes. An adapter exists to reconcile two interfaces that don't otherwise match. By
+comparison, a facade doesn't need an existing target interface to satisfy, because it invents its own, simpler one,
+purely to hide complexity from the caller.
+
+Facades are common at integration boundaries. Examples include an application-level facade over a sprawling third-party
+library, or a single class that hides several collaborating objects behind one method call for callers who have no need
+to know that internal structure exists.
