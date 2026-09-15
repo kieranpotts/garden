@@ -1,1 +1,15 @@
 = Relationship
+
+A *relationship* is the generic term for some kind of connection or dependency between elements of an architecture.
+It's a broad umbrella. A call, a notification, an ownership, a containment, a creation, or an
+xref:inheritance.adoc[*inheritance*] between two elements are all relationships.
+
+The most common relationship in software architecture is the *uses relationship*. This is a dependency between two
+*building blocks* where, if A uses B, the correct execution of A depends on the presence of a correctly-working
+implementation of B. This is the relationship a xref:dependency.adoc[*dependency*] describes, and it underlies more
+specific relationship types such as xref:association.adoc[*association*], xref:aggregation.adoc[*aggregation*], and
+xref:composition.adoc[*composition*] in object-oriented design.
+
+The strength and direction of a system's relationships are a large part of what determines its xref:coupling.adoc[*coupling*].
+Relationships that run in many directions, or that reach deep into another element's internals rather than through its
+public interface, produce a more tightly coupled, harder-to-change system.
