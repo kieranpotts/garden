@@ -1,1 +1,21 @@
 = Resource utilization
+
+*Resource utilization* is a xref:quality-attribute.adoc[*quality attribute*] that describes the degree to which the
+amounts and types of resources consumed by a system, when performing its functions, meet stated requirements.
+Resources in this sense means things like CPU cycles, memory, storage, and network bandwidth – the raw capacity a
+system draws on to do its work.
+
+As per ISO/IEC 25010, resource utilization is a sub-characteristic of xref:performance-efficiency.adoc[*performance efficiency*],
+alongside xref:time-behavior.adoc[*time behavior*] and xref:capacity.adoc[*capacity*].
+
+Where time behavior asks how fast a system responds, and capacity asks how much load it can carry, resource
+utilization asks how economically it spends what it is given to do either. A system can meet its latency and capacity
+targets and still utilize resources poorly – over-provisioned memory, redundant computation, unnecessarily chatty
+network calls – and that waste has a direct cost, whether measured in cloud infrastructure bills, battery life, or the
+number of instances a fleet needs to run.
+
+Improving resource utilization typically means finding where a system spends more of a resource than the work in
+front of it requires, then removing that spend without regressing the other performance-efficiency
+sub-characteristics. Common tactics include xref:caching.adoc[*caching*] to avoid recomputation, right-sizing
+infrastructure to match observed demand, and xref:profiling.adoc[*profiling*] to locate the hot paths responsible for
+disproportionate CPU or memory usage.
