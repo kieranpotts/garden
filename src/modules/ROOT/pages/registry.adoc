@@ -1,1 +1,18 @@
 = Registry
+
+A *registry* is a well-known object that other objects can use to find common objects and services, rather than each
+having to be given a reference to them directly. It's a cataloged, discoverable name-to-object lookup. Something asks
+the registry for "the current transaction context" or "the payment gateway client", and gets back a shared instance
+without needing to know how that instance was constructed or where it lives.
+
+A registry is often implemented as a xref:singleton.adoc[*singleton*], since the whole point is usually that there's
+exactly one of it, reachable from anywhere in the process. It's also a well-known
+xref:design-pattern.adoc[*design pattern*] in its own right.
+
+It carries the same trade-off as global state more generally. Convenient access from anywhere comes at the cost of hidden
+xref:dependency.adoc[*dependencies*] that xref:dependency-injection.adoc[*dependency injection*] would otherwise make
+explicit.
+
+At the level of a distributed system rather than a single process, the equivalent concept is
+xref:service-discovery.adoc[*service discovery*], where services register themselves so that others can find them
+across the network, rather than within a single address space.
