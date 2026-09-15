@@ -1,1 +1,18 @@
 = Model-view-controller (MVC)
+
+*Model-view-controller* (MVC) is an xref:architectural-pattern.adoc[*architectural pattern*], commonly used to
+implement xref:user-interface.adoc[*user interfaces*], that divides a system into three interconnected parts to
+separate responsibilities. The *model* manages the data and logic of the system, the "truth" that gets shown or
+displayed, and does not depend on any of its views. The *view* is any output representation of the model's
+information. A single model can have multiple views. The *controller* accepts input, typically from the user, and
+converts it into commands for the model or the view.
+
+The strict one-way dependency, that a model knows nothing of its views or controllers, is what makes MVC useful beyond
+a single GUI screen. The same model can be rendered by several independent views at once, and a controller can be swapped
+without touching the model at all. But, in practice, this clean separation doesn't always hold. A view and its controller
+are often paired so closely that many implementations merge them into one component.
+
+MVC is one of several sibling patterns for structuring interactive UIs, alongside
+xref:model-view-viewmodel.adoc[*model-view-viewmodel*] (MVVM) and xref:model-view-update.adoc[*model-view-update*]
+(MVU). Where MVC routes user input through an explicit controller, MVVM binds the view to a view model, and MVU
+replaces both with a pure update function that produces a new model from each event.
