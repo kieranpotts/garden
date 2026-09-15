@@ -1,1 +1,15 @@
 = Symmetric cryptography
+
+*Symmetric cryptography* is a branch of xref:cryptography.adoc[*cryptography*] in which the same key is used for both
+xref:encryption.adoc[*encryption*] and decryption of data. Because the two operations share one secret, the sender
+and receiver must first agree on that key through some channel they both trust, before any protected communication
+can take place.
+
+That shared-key requirement is symmetric cryptography's main practical weakness. The key itself has to be
+distributed and kept secret from everyone but the intended parties, which becomes harder as the number of
+communicating parties grows.
+
+This is the problem that xref:asymmetric-cryptography.adoc[*asymmetric cryptography*] was designed to solve, by
+splitting the single shared key into a public and a private half. In practice the two approaches are often combined.
+Asymmetric cryptography establishes a shared key safely, and symmetric cryptography — generally much faster — does the
+bulk of the encryption work afterward.
