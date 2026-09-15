@@ -1,1 +1,16 @@
 = Sensitivity point
+
+A *sensitivity point* is an element of an architecture or system that influences more than one
+xref:quality-attribute.adoc[*quality attribute*] at once. If a single component is responsible for both a system's
+runtime performance and its robustness, for instance, that component is a sensitivity point for both attributes. A
+change to the component moves both qualities, whether or not that was the intent.
+
+Put crudely, mess up a sensitivity point, and you will usually have more than one problem.
+
+Sensitivity points matter because they concentrate risk. Change one, and the effects ripple across every quality
+attribute it influences, which is why they are treated as the places in a design most worth scrutinizing during a
+qualitative architecture xref:evaluation.adoc[*evaluation*] such as the
+xref:architecture-tradeoff-analysis-method.adoc[*Architecture Tradeoff Analysis Method (ATAM)*].
+
+A sensitivity point where the affected attributes pull in opposite directions – improving one degrades another – is
+more specifically a *trade-off point*.
