@@ -1,1 +1,14 @@
 = Perfect forward secrecy
+
+*Perfect forward secrecy* is a property of a xref:cryptography.adoc[*cryptographic*] key exchange protocol whereby the
+compromise of a long-term private key can't be used to derive the short-term session keys used in past
+communications. Each session negotiates its own ephemeral keys independently of the long-term keys used to
+authenticate the parties, so those session keys leave nothing behind that an attacker could later reconstruct, even
+with the long-term key in hand.
+
+The property matters most against a *record-now-decrypt-later* attack. An adversary who captures encrypted traffic
+today and later obtains a server's private key — through a breach, a legal order, or a future advance in
+cryptanalysis — still can't decrypt the sessions recorded earlier.
+
+xref:transport-layer-security.adoc[*TLS*] can be configured to provide perfect forward secrecy using ephemeral
+*Diffie-Hellman* key exchange. It's also a design goal of protocols such as *OTR* (Off-the-Record Messaging).
