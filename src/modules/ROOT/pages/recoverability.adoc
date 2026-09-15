@@ -1,1 +1,15 @@
 = Recoverability
+
+*Recoverability* is the degree to which, in the event of an interruption or a failure, a system or product can recover
+the data directly affected and re-establish its desired state. ISO/IEC 25010 classes it as a sub-characteristic of
+xref:reliability.adoc[*reliability*], alongside maturity, availability, and fault tolerance.
+
+A recoverable system detects that it has failed, or that data has been lost or corrupted, and restores itself — or is
+restored — to a known-good state within an acceptable time, whether through a replay of transactions, a restore from
+backup, or a resynchronization from a redundant copy. This is distinct from xref:fault-tolerance.adoc[*fault tolerance*],
+which is about continuing to operate despite a fault. Recoverability is about what happens once a fault has already
+caused a failure.
+
+Recoverability is usually verified through xref:recovery-testing.adoc[*recovery testing*], and is closely related to,
+though narrower than, xref:disaster-recovery.adoc[*disaster recovery*], which covers the policies and procedures for
+restoring an entire system's operations after a major disruptive event.
