@@ -1,1 +1,17 @@
-= Exception handling 
+= Exception handling
+
+*Exception handling* is the mechanism by which a program responds to an *exception*, which is any event, usually an
+error, that disrupts the normal flow of a program's instructions. Rather than letting such an event *crash the program*
+or corrupt its state silently, an exception handler intercepts it and decides how to respond, for example by retrying
+the operation, falling back to a default, surfacing an error to the caller, or halting.
+
+Most languages support exception handling through some form of `try`/`catch` construct, which separates the code that
+might fail from the code that decides what to do if it does. This keeps error-handling logic out of the main control
+flow, but it can also make failure paths harder to see at-a-glance than an explicit return value would, since an
+exception can be thrown from deep inside a call stack and caught far away from where it originated.
+
+How aggressively a system should catch and recover from exceptions, versus letting them propagate and halt, is a
+design choice rather than a universal rule. A xref:fail-fast.adoc[*fail-fast*] component surfaces an exception
+immediately rather than attempting to continue, while a xref:fault-tolerance.adoc[*fault-tolerant*] system catches
+exceptions and recovers from them, often by xref:retry.adoc[*retrying*] the failed operation or applying
+xref:graceful-degradation.adoc[*graceful degradation*].
