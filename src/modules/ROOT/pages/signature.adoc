@@ -1,1 +1,14 @@
 = Signature
+
+The term *signature* refers to two unrelated concepts in software, distinguished only by context.
+
+In programming, a signature is a synonym for a xref:function-signature.adoc[*function signature*] — the part of a
+function or method's declaration that defines how it can be called, without saying anything about what it does
+internally.
+
+In security, a *digital signature* is a cryptographic mechanism for proving that a piece of data was created by a
+specific party and has not been altered since. It's typically produced with xref:asymmetric-cryptography.adoc[*asymmetric cryptography*].
+The signer computes a hash of the data and encrypts it with their private key, and anyone holding the
+corresponding public key can verify the signature against the data. This gives a recipient xref:authenticity.adoc[*authenticity*]
+and xref:non-repudiation.adoc[*non-repudiation*] — the signer cannot later deny having produced it — alongside evidence
+that the data itself is intact.
