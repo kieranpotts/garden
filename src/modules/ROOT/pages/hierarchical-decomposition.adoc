@@ -1,1 +1,16 @@
 = Hierarchical (acyclic) decomposition
+
+*Hierarchical decomposition* is the observation that, in a well-structured system, xref:dependency.adoc[*dependencies*]
+tend to run in one direction, from concrete, unstable modules toward more abstract, stable ones. Decomposing a system
+this way produces a dependency graph shaped like a hierarchy or a directed acyclic graph, rather than one riddled with
+cycles.
+
+Concrete modules — the ones that implement specific mechanisms, such as a particular database driver or a UI
+component — change often, as requirements and technologies shift. Abstract modules — interfaces and core domain
+concepts — change rarely, because they express ideas that outlive any one implementation. When dependencies flow from
+the volatile toward the stable, a change to a concrete detail stays local, while the stable core is never forced to
+change just because a detail beneath it did.
+
+This is the same logic underpinning the xref:stable-abstractions.adoc[*stable abstractions principle*] and
+xref:dependency-inversion.adoc[*dependency inversion*], both of which prescribe structuring dependencies so that
+abstractness increases, and volatility decreases, moving up the hierarchy.
