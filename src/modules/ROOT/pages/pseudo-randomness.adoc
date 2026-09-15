@@ -1,1 +1,16 @@
-= Pseudo-Randomness
+= Pseudo-randomness
+
+*Pseudo-randomness* is the property of a sequence of values that appears random but is in fact generated
+deterministically from a fixed starting point, called a *seed*. A *pseudo-random number generator (PRNG)*, given the
+same seed twice, will always produce exactly the same sequence of values, even though each individual value looks
+unpredictable.
+
+Gathering randomness with genuinely high xref:entropy.adoc[*entropy*] is resource intensive, and most applications
+don't need it. Outside of xref:cryptography.adoc[*cryptography*], the appearance of randomness is enough, and the
+performance cost of true randomness isn't justified. A PRNG addresses this by trading a small amount of true
+randomness, spent once on the seed, for an arbitrarily long stream of values that are cheap to compute and
+statistically well distributed, even though they are entirely predictable to anyone who knows the seed.
+
+That predictability is exactly why pseudo-randomness is unsuitable for security-sensitive uses, such as generating
+cryptographic keys or session tokens, unless the generator is specifically designed to resist an attacker recovering
+its seed or internal state from its output – a *cryptographically secure pseudo-random number generator (CSPRNG)*.
