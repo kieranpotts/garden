@@ -77,7 +77,8 @@ and a read contacts *R* replicas and returns the newest response. If `W + R > N`
 one replica, giving strong consistency for that operation. If `W + R <= N`, the system is eventually consistent but can
 tolerate more failures and serve requests at lower latency. xref:active-active.adoc[*Active-active*] and multi-leader
 replication patterns, which let any node accept writes, are eventually consistent by default and rely on techniques such
-as *last-writer-wins*, *version vectors*, and *conflict-free replicated data types (CRDTs)* to reach convergence.
+as *last-writer-wins*, *version vectors*, and xref:crdt.adoc[*conflict-free replicated data types (CRDTs)*] to reach
+convergence.
 
 Stronger convergence can be achieved with xref:consensus-algorithm.adoc[*consensus algorithms*] such as Raft and Paxos,
 which make replicas agree on a single ordered log. That moves the system toward strong consistency at the cost of the
