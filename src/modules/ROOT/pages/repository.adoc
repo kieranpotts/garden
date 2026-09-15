@@ -1,1 +1,16 @@
 = Repository
+
+A *repository* is a place where things are collected and organized so they can be found and used consistently, rather
+than each caller having to know where its contents actually live. The term names two distinct concepts in software
+engineering, related only by that shared idea of a well-organized collection point.
+
+In xref:documentation.adoc[*architecture documentation*], a repository is the place where source artifacts — diagrams,
+model files, prose fragments — are stored before an automatic build process collects them into one consistent
+document. In xref:domain-driven-design.adoc[*domain-driven design*], a repository is a *building block* that hides the
+technical details of the infrastructure layer from the domain layer. It returns and persists xref:entity.adoc[*entities*]
+and xref:aggregate.adoc[*aggregates*] as if they were held in an in-memory collection, while the actual database access
+sits behind that interface.
+
+The DDD sense is the more commonly cited one today, and functions as a specialized
+xref:design-pattern.adoc[*design pattern*] for decoupling domain logic from persistence. Domain code depends only on
+the repository's interface, so the underlying storage technology can change without the domain model noticing.
