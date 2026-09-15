@@ -1,1 +1,16 @@
 = Modifiability
+
+*Modifiability* is the degree to which a product or system can be effectively and efficiently modified without
+introducing defects or degrading its existing quality. ISO/IEC 25010 classifies it as a sub-characteristic of
+xref:maintainability.adoc[*maintainability*], alongside xref:modularity.adoc[*modularity*],
+xref:reusability.adoc[*reusability*], xref:analysability.adoc[*analysability*], and xref:testability.adoc[*testability*].
+
+Where analysability asks how easily the impact of a change can be assessed, modifiability asks how cheaply the change
+can actually be made once it is understood. A system with low xref:coupling.adoc[*coupling*] and high
+xref:cohesion.adoc[*cohesion*] tends to score well here, since a change to one part is less likely to ripple into
+others. A codebase choked with xref:technical-debt.adoc[*technical debt*] scores poorly, since even a small change
+risks unintended side effects.
+
+Modifiability is closely related to, but distinct from, xref:extensibility.adoc[*extensibility*]. Extensibility is
+specifically about adding new capability with minimal change to existing structure, whereas modifiability is the
+broader property of changing a system at all – including correcting or removing behavior – without breaking it.
