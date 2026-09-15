@@ -1,1 +1,20 @@
 = Temporal coupling
+
+*Temporal coupling* is a form of xref:coupling.adoc[*coupling*] in which correct behavior depends on the relative timing
+or ordering of operations, rather than on any structural dependency between the parts involved. Two elements can be
+temporally coupled even with no shared data or explicit reference between them, simply because one must happen before,
+during, or after the other for the system to behave correctly.
+
+At the level of a class or API, temporal coupling is an implicit relationship between two or more members that requires
+a caller to invoke one before the other. For example, a `connect()` method that must run before `send()` is safe to
+call. This as a *design smell* because the ordering requirement is invisible in the members' signatures. Nnothing in the
+xref:type-systems.adoc[*type system*] stops a caller from getting the sequence wrong.
+
+The same idea appears at the level of xref:distributed-system.adoc[*distributed systems*], where temporal coupling
+means that communicating processes must both be available at the same time for an exchange to succeed. This is the
+defining cost of xref:synchronous-communication.adoc[*synchronous*] xref:request-response.adoc[*request-response*]
+communication. The caller cannot make progress until the callee replies, so a slow or unavailable callee stalls the
+caller too.
+
+Asynchronous alternatives, and patterns such as a xref:message-queue.adoc[*message queue*] sitting between
+the two sides, exist specifically to remove this dependency on both parties being up at once.
