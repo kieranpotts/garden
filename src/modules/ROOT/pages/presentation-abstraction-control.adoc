@@ -1,1 +1,18 @@
 = Presentation-abstraction-control (PAC)
+
+*Presentation-abstraction-control (PAC)* is an xref:architectural-pattern.adoc[*architectural pattern*] for structuring
+interactive software systems as a hierarchy of cooperating agents. Each agent is itself divided into three parts: a
+*presentation* component, which is the agent's xref:user-interface.adoc[*user interface*]; an *abstraction* component,
+which handles the agent's domain logic and data; and a *control* component, which mediates between the two and
+coordinates the agent with its parent and child agents in the hierarchy.
+
+PAC is often compared to xref:model-view-controller.adoc[*model-view-controller (MVC)*], the more widely known pattern
+it resembles at the level of a single agent. The key difference is PAC's hierarchical structure. Rather than one
+presentation-abstraction-control triad covering a whole application, a PAC system is composed of many such triads
+arranged as a tree, each agent responsible for one part of the interface and free to coordinate with its neighbors
+only through its own control component. This makes PAC better suited than MVC to systems built from several
+semi-independent, composable interactive parts.
+
+== See also
+
+* xref:model-view-controller.adoc[*Model-view-controller*]
