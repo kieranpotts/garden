@@ -1,1 +1,24 @@
 = Split brain
+
+*Split brain* is a *failure mode* in xref:distributed-system.adoc[*distributed systems*] in which a *network partition*
+splits a cluster into isolated groups, and more than one node ends up believing it is the sole primary or leader.
+Each side keeps serving writes independently, unaware of the other, so the cluster's data diverges into two
+histories that cannot later be reconciled without loss.
+
+The condition is usually triggered by a broken network link or a failed xref:heartbeat.adoc[*heartbeat*] that makes a
+healthy node look dead to its peers, prompting a new leader election while the "dead" node is still very much alive and
+serving traffic.
+
+A related variant is the *recovered zombie*. A former primary that was already replaced comes back online after a restart
+and, not knowing it was demoted, keeps acting as if it were still in charge.
+
+Left unresolved, split brain is a direct threat to xref:consistency.adoc[*data consistency*] and can be treated as a
+special, more damaging case of a xref:single-point-of-failure.adoc[*single point of failure*] problem, since the failure
+isn't a clean outage but two halves of the system disagreeing about the truth.
+
+The standard defenses all work by denying authority to a minority partition. *Quorum* rules require a strict majority of
+nodes to agree before any state change or leader election is accepted, so at most one side of a partition can ever reach
+that majority. xref:consensus-algorithm.adoc[*Consensus algorithms*] such as Raft and Paxos build this quorum
+requirement into cluster coordination directly. *Fencing*, including the blunt technique known as *STONITH* ("shoot the
+other node in the head"), goes further and forcibly isolates or powers down a node suspected of acting as a rogue leader,
+rather than relying on it to step down cooperatively.
