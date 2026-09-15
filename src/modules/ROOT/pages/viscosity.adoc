@@ -1,1 +1,29 @@
 = Viscosity
+
+*Viscosity* is a measure of how much resistance a codebase, system, or team meets when someone tries to make a change.
+It's a metaphor borrowed from physics. A low-viscosity fluid such as water flows easily, while a high-viscosity fluid
+such as honey resists motion. In a high-viscosity codebase, even a small, well-understood change is slow and painful
+to ship, because the design itself gets in the way.
+
+Several things compound into that drag.
+
+* Excess xref:coupling.adoc[*coupling*] and outdated patterns that make a small change ripple further than it should.
+
+* Process friction, such as slow reviews, manual release steps, or unclear ownership.
+
+* Accumulated xref:technical-debt.adoc[*technical debt*], taken on to ship quickly, which makes the next change slower still.
+
+* Poor xref:developer-experience.adoc[*developer experience*] – weak tooling, missing documentation, inconsistent
+  environments – that adds drag before a line of code is even written.
+
+Robert C Martin named viscosity as one of the symptoms of xref:software-rot.adoc[*software rot*], alongside
+xref:rigidity.adoc[*rigidity*] (where a change forces many others), xref:fragility.adoc[*fragility*] (where a change
+breaks unrelated parts), and xref:immobility.adoc[*immobility*] (where a module can't be reused because it drags in
+too many dependencies). Where those three describe specific failure modes, viscosity describes the felt experience of
+the design as a whole. It becomes easier to hack around it than to follow the prevailing design.
+
+== References
+
+* Martin, Robert C. (2000).
+  _Design Principles and Design Patterns_.
+  objectmentor.com.
