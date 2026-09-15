@@ -1,1 +1,16 @@
 = Reliability
+
+*Reliability* is the degree to which a system, product, or component performs its specified functions under specified
+conditions for a specified period of time. It is one of the xref:quality-attribute.adoc[*quality attributes*] defined
+by ISO/IEC 25010, and one of the qualities most directly associated with user trust. An unreliable system may have
+every feature a user needs, yet still fail to satisfy them if it can't be counted on to work reliably.
+
+ISO/IEC 25010 composes reliability from four sub-characteristics: xref:maturity.adoc[*maturity*] (performing
+reliably under normal operation), xref:availability.adoc[*availability*] (being operational and accessible when
+needed), xref:fault-tolerance.adoc[*fault tolerance*] (continuing to operate despite faults), and
+xref:recoverability.adoc[*recoverability*] (re-establishing the desired state after an interruption or failure).
+
+Reliability engineering typically works across all four. Redundancy and graceful degradation raise fault tolerance and
+availability, while good backup, replay, and resynchronization mechanisms raise recoverability. Because these
+sub-characteristics interact, improving one in isolation — for example, adding retries without also handling the
+partial failures they can mask — can leave overall reliability little improved, or even worse.
