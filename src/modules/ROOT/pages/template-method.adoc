@@ -1,1 +1,21 @@
 = Template method
+
+The *template method* pattern is a behavioral xref:design-pattern.adoc[*design pattern*] that defines the skeleton of
+an algorithm in a base class method, deferring some of that algorithm's individual steps to subclasses. The base
+class fixes the overall sequence of steps and cannot be changed by subclasses. Only the specific behavior of the
+deferred steps can be redefined, typically by overriding methods the base class declares as abstract or with a
+default implementation.
+
+This inverts the usual direction of control between base and subclass. Rather than a subclass calling into shared
+base-class logic, the base class calls out to the subclass at fixed points, an arrangement sometimes called the
+*Hollywood principle* — "don't call us, we'll call you." It's a class-level application of the same idea behind
+xref:inversion-of-control.adoc[*inversion of control*], where the caller of a piece of behavior does not own the
+decision of when or whether that behavior runs.
+
+The pattern trades flexibility for structure. Because the algorithm's shape lives in one place, changes to the
+overall sequence only need to be made once, and subclasses cannot accidentally alter steps they were not meant to
+touch.
+
+The cost is a tighter coupling to xref:inheritance.adoc[*inheritance*] than a more compositional alternative, such as
+the xref:strategy-pattern.adoc[*strategy pattern*], which achieves similar interchangeability of individual steps 
+through object composition rather than subclassing.
