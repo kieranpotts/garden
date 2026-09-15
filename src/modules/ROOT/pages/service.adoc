@@ -1,1 +1,23 @@
 = Service
+
+A *service* is a technical, autonomous unit that bundles related functionality, typically scoped to a single topic or
+capability, and exposes it to other xref:building-block.adoc[*building blocks*] through a well-defined
+xref:interface.adoc[*interface*].
+
+A well-designed service abstracts its internal implementation to such a degree that a consumer need not know or understand
+how the service works internally in order to use it.
+
+Web services, network services, operating system services, and telecommunications services are all familiar examples of
+externally accessible services.
+
+Within xref:domain-driven-design.adoc[*domain-driven design*], *service* takes on a more specific meaning. It refers to
+a stateless building block used to implement business logic or processes that don't naturally belong to any single
+xref:entity.adoc[*entity*], xref:aggregate.adoc[*aggregate*], or xref:value-object.adoc[*value object*], or which act
+across several of them at once. Because a *domain service* holds no state of its own, its operations take *domain objects*
+as parameters and return domain objects as results, rather than accumulating any internal data between calls.
+
+The general and DDD senses of *service* both describe the same underlying idea – a unit of behavior, hidden behind an
+interface, that other parts of a system can call without depending on its internals – at different scales. That same
+idea, applied to whole systems composed from many independently deployable services, is what
+xref:service-oriented-architecture.adoc[*service-oriented architecture*] and its finer-grained descendant,
+xref:microservices.adoc[*microservices*], are built around.
