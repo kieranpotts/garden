@@ -80,8 +80,8 @@ More than one node accepts writes, and each leader replicates its own changes to
 globally.
 
 Because two leaders can accept conflicting writes to the same record, multi-leader setups need an explicit
-conflict-resolution policy, such as *last write wins*, *version vectors*, or *CRDTs* (conflict-free replicated
-data types).
+conflict-resolution policy, such as *last write wins*, *version vectors*, or xref:crdt.adoc[*CRDTs*] (conflict-free
+replicated data types).
 
 This buys high availability across regions and lets writes commit with local latency, at the cost of harder conflict
 resolution, increased cross-node replication latency, and a data state that's harder to reason about.
