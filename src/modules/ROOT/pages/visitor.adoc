@@ -1,1 +1,21 @@
 = Visitor
+
+The *visitor* pattern is a xref:design-pattern.adoc[*behavioral design pattern*] that lets you define a new operation
+over the elements of an object structure without changing the classes of those elements.
+
+Rather than adding a new method to every element class each time a new operation is needed, the operation is pulled out
+into a separate *visitor* object that is passed around the structure to "visit" each element in turn.
+
+Each element class exposes a single `accept(visitor)` method that calls back into the visitor, passing itself as the
+argument. The visitor then exposes an overloaded `visit` method for each concrete element type, so the call resolves
+to the right operation for that type without the element needing to know what the operation does.
+
+This two-step call-and-callback is known as *double dispatch*, and it's what lets the correct operation run for the
+correct element type without a chain of type checks.
+
+The trade-off runs in the opposite direction to most object-oriented designs. Adding a new operation is easy, since it
+only means writing a new visitor, but adding a new kind of element is hard, since every existing visitor must be
+updated to handle it.
+
+The pattern suits object structures whose set of element types is stable but which need many different operations
+performed over them, such as walking an abstract syntax tree.
