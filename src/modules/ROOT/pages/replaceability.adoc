@@ -1,1 +1,15 @@
 = Replaceability
+
+*Replaceability* is the degree to which a product can replace another specified software product, for the same purpose,
+in the same environment. ISO/IEC 25010 classes it as a sub-characteristic of xref:portability.adoc[*portability*],
+alongside xref:adaptability.adoc[*adaptability*] and xref:installability.adoc[*installability*].
+
+A highly replaceable component is one a team can swap out — for a competing product, a newer version, or an
+in-house alternative — without disrupting the surrounding system. It honors the same interface, reads and writes
+compatible data, and needs little or no reconfiguration of what depends on it. This is easiest to achieve when a
+dependency is accessed through a stable abstraction rather than directly, so that the concrete implementation behind
+it can change without callers noticing.
+
+Replaceability matters most at integration boundaries: databases, message brokers, third-party APIs, and other
+external dependencies a system doesn't control. Designing for replaceability at these boundaries is a hedge against
+*vendor lock-in*, and against a dependency being deprecated, discontinued, or outgrown.
