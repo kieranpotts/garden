@@ -1,1 +1,15 @@
 = Entity
+
+An *entity* is a core object of a business xref:domain.adoc[*domain*] defined by a stable, unchanging identity rather
+than by its current attributes. Two entities with identical state are still distinct if their identities differ, and
+the same entity remains "the same" even as its state changes over its lifecycle. A customer is still the same
+customer after they change their address.
+
+An entity is a *building block* of xref:domain-driven-design.adoc[*domain-driven design*], where it is contrasted with
+the xref:value-object.adoc[*value object*], which has no identity of its own and is defined entirely by its attributes.
+An entity's state is typically described using one or more value objects, and entities are almost always persisted,
+since their identity needs to be recoverable across the life of the system, rather than only for the duration of a single
+operation.
+
+An xref:aggregate.adoc[*aggregate*] groups one or more entities and value objects behind a single root entity, treating
+the group as one unit for the purpose of changes and consistency.
