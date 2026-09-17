@@ -62,8 +62,9 @@ include:
 * *Read-through*: The cache sits between the application and the source-of-truth. All reads go through the cache. On a
   cache miss, the cache itself fetches data from the source-of-truth, backfills, and returns the result to the
   application. The application does not interact with the database directly. This offers low read latency but risks data
-  inconsistency. Best suited for read-heavy workloads, such as newsfeeds or product catalogs. + +
-image:masters/read-through-cache.png[]
+  inconsistency. Best suited for read-heavy workloads, such as newsfeeds or product catalogs.
++
+image::read-through-cache.svg[opts=inline]
 
 * *Write-through*: The application writes data to the cache, and the cache synchronously writes through to the
   source-of-truth. This ensures strong consistency between the cache and the database, but introduces higher write
@@ -88,8 +89,9 @@ image:masters/read-through-cache.png[]
   application manages both the cache and the database directly. On a read, the application first checks the cache. On a
   miss, it reads from the database and writes the result to the cache. This allows for more nuanced control, as different
   caching strategies may be implemented for different data types. The trade-off is increased accidental complexity in the
-  application code. Best suited for read-heavy workloads, such as configuration data or user profiles. + +
-image:masters/cache-aside.png[]
+  application code. Best suited for read-heavy workloads, such as configuration data or user profiles.
++
+image::cache-aside.svg[opts=inline]
 
 These strategies can be combined. For example, read-through can be paired with write-around for write-heavy systems
 where written data is not immediately read, or with write-back for systems that need both fast reads and fast writes.

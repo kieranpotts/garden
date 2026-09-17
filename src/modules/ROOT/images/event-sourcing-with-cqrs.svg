@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="793px" height="585px" viewBox="-0.5 -0.5 793 585">
+    <title>Event sourcing with CQRS, where a command service writes events to event storage, an event bus carries them to subscribers that project materialized views, and a query service reads those views</title>
+    <g>
+        <rect x="1" y="111" width="80" height="400" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="41" y="311" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" font-weight="bold" fill="currentColor">Client</text>
+        <rect x="171" y="111" width="470" height="150" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2 4"/>
+        <rect x="171" y="371" width="620" height="150" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2 4"/>
+        <rect x="211" y="126" width="150" height="120" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="286" y="146" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" font-weight="bold" fill="currentColor">Command Service</text>
+        <rect x="221" y="166" width="130" height="66" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="286" y="199" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">
+            <tspan x="286" dy="-16">Validation</tspan>
+            <tspan x="286" dy="16">Domain Logic</tspan>
+            <tspan x="286" dy="16">Domain Models</tspan>
+        </text>
+        <path d="M 441 133 A 75 12 0 0 1 591 133 L 591 239 A 75 12 0 0 1 441 239 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 441 133 A 75 12 0 0 0 591 133" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="516" y="158" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" font-weight="bold" fill="currentColor">Event Storage</text>
+        <rect x="456" y="186" width="120" height="36" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="516" y="204" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">Snapshots</text>
+        <path d="M 81 186 L 202 186" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 211 186 L 201 191 L 201 181 Z" fill="currentColor" stroke="none"/>
+        <text x="126" y="174" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">Send</text>
+        <path d="M 361 186 L 432 186" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 441 186 L 431 191 L 431 181 Z" fill="currentColor" stroke="none"/>
+        <text x="401" y="174" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">Write</text>
+        <path d="M 591 186 L 711 186 L 711 282" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 711 291 L 706 281 L 716 281 Z" fill="currentColor" stroke="none"/>
+        <text x="651" y="174" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">Integration</text>
+        <path d="M 651 291 L 771 291 A 10 25 0 0 1 771 341 L 651 341 A 10 25 0 0 1 651 291 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 771 291 A 10 25 0 0 0 771 341" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="711" y="316" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" font-weight="bold" fill="currentColor">Event Bus</text>
+        <rect x="211" y="381" width="150" height="130" fill="none" stroke="currentColor" stroke-width="2"/>
+        <rect x="226" y="391" width="120" height="30" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="286" y="406" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">Cache</text>
+        <text x="286" y="446" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" font-weight="bold" fill="currentColor">Query Service</text>
+        <rect x="226" y="471" width="120" height="30" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="286" y="486" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">Read Models</text>
+        <path d="M 431 398 A 70 12 0 0 1 571 398 L 571 494 A 70 12 0 0 1 431 494 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 431 398 A 70 12 0 0 0 571 398" fill="none" stroke="currentColor" stroke-width="2"/>
+        <text x="501" y="451" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" font-weight="bold" fill="currentColor">
+            <tspan x="501" dy="-8">Materialized</tspan>
+            <tspan x="501" dy="16">Views</tspan>
+        </text>
+        <rect x="681" y="421" width="100" height="36" fill="var(--base-page, #ffffff)" stroke="currentColor" stroke-width="2"/>
+        <rect x="671" y="431" width="100" height="36" fill="var(--base-page, #ffffff)" stroke="currentColor" stroke-width="2"/>
+        <rect x="661" y="441" width="100" height="36" fill="var(--base-page, #ffffff)" stroke="currentColor" stroke-width="2"/>
+        <text x="711" y="459" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">Subscriber</text>
+        <path d="M 711 343 L 711 410" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 711 419 L 706 409 L 716 409 Z" fill="currentColor" stroke="none"/>
+        <path d="M 81 446 L 202 446" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 211 446 L 201 451 L 201 441 Z" fill="currentColor" stroke="none"/>
+        <text x="126" y="434" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">Get Data</text>
+        <path d="M 361 446 L 422 446" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 431 446 L 421 451 L 421 441 Z" fill="currentColor" stroke="none"/>
+        <text x="396" y="434" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">Read</text>
+        <path d="M 661 459 L 580 459" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 571 459 L 581 454 L 581 464 Z" fill="currentColor" stroke="none"/>
+        <text x="616" y="447" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">Projections</text>
+        <text x="371" y="16" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" font-weight="bold" fill="currentColor">Write Side</text>
+        <path d="M 371 30 L 371 100" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 371 109 L 366 99 L 376 99 Z" fill="currentColor" stroke="none"/>
+        <text x="600" y="16" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">
+            <tspan x="600" dy="-8">Events can be replayed to reconstruct</tspan>
+            <tspan x="600" dy="16">materialized views or read models.</tspan>
+        </text>
+        <path d="M 516 42 L 516 110" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 516 119 L 511 109 L 521 109 Z" fill="currentColor" stroke="none"/>
+        <text x="460" y="308" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">
+            <tspan x="460" dy="-8">Snapshots provide a point-in-time view</tspan>
+            <tspan x="460" dy="16">of an aggregate's state.</tspan>
+        </text>
+        <path d="M 516 288 L 516 262" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 516 253 L 521 263 L 511 263 Z" fill="currentColor" stroke="none"/>
+        <text x="371" y="566" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" font-weight="bold" fill="currentColor">Read Side</text>
+        <path d="M 371 552 L 371 532" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 371 523 L 376 533 L 366 533 Z" fill="currentColor" stroke="none"/>
+        <text x="711" y="566" text-anchor="middle" dominant-baseline="central" font-size="14" font-family="inherit" fill="currentColor">
+            <tspan x="711" dy="-8">We have to assume</tspan>
+            <tspan x="711" dy="16">eventual consistency.</tspan>
+        </text>
+        <path d="M 711 548 L 711 532" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M 711 523 L 716 533 L 706 533 Z" fill="currentColor" stroke="none"/>
+    </g>
+</svg>

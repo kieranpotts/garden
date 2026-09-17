@@ -40,8 +40,6 @@ Domain-driven design (DDD) was popularized by Eric Evans in his 2003 book of the
 referred to as "the blue book". The concepts behind DDD predate the book, but Evans brought them together into a
 coherent architectural pattern and design process.
 
-image::domain-driven-design-book-cover.webp[]
-
 Evans observed that good software tends to closely model the human processes that it automates or the real-world
 problems that it solves. It follows that the first job of a software developer should not be to write computer code, but
 to understand the xref:domain.adoc[*domain*] of the software. Domain-driven design enforces this by putting a
@@ -579,7 +577,7 @@ simplifying the overall system design where there is a lot of complexity in the 
 Systems built around domain-driven design principles have a xref:layered-architecture.adoc[*layered architecture*]
 consisting of four main *conceptual layers*:
 
-image::ddd-layers.png[The domain driven design layers are: interface, application, domain, and infrastructure]
+image::ddd-layers.svg[opts=inline]
 
 The idea is that within each layer are components that change for the same reasons. Thus, components within the
 interface layer should change only when there is a *change request* for how clients – users or other programs –
@@ -648,7 +646,7 @@ For example, it is not unusual for applications to require some amount of generi
 environment-specific configuration, and access to general-purpose utility functions. These sorts of concerns may be
 encapsulated in their own layers, and may be used by all other layers.
 
-image::ddd-extra-layers.png[]
+image::ddd-extra-layers.svg[opts=inline]
 
 ==== Boundaries between layers
 
