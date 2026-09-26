@@ -1,11 +1,26 @@
 = Authentication
 
-*Authentication* is the process of verifying the identity of a user, device, or system. It answers the question "who are
-you?" by checking that a claimed identity is genuine. 
+// Authentication across system boundaries is about proving identity when a request crosses from one trust domain to another: user to app, app to API, service to service, or organization to organization. Here's the core of what interviewers usually look for.
 
-Authentication is distinct from xref:authorization.adoc[*authorization*], which decides what an authenticated principal 
-is allowed to do. The two are separate concerns, but so often implemented together that they are collectively known as
-*identity and access management (IAM)*.
+// Authentication vs. authorization. Authentication (authn) establishes who you are, and authorization (authz) decides what you can do. Interviewers often probe whether you keep these separate, since many protocols blur them.
+
+// OAuth 2.0 and OpenID Connect. OAuth 2.0 is a delegated authorization framework that issues access tokens. OIDC adds an authentication layer on top, issuing an ID token that says who the user is. Know the main flows: Authorization Code with PKCE for web, mobile, and single-page apps (the implicit flow is now discouraged), and Client Credentials for machine-to-machine calls with no user involved.
+
+// Tokens. JWTs are self-contained, signed tokens that services can validate locally without calling the issuer, which scales well but makes revocation hard. The usual mitigations are short expiry plus refresh tokens, or opaque tokens checked via introspection when you need instant revocation. Know the validation checklist: verify the signature against the issuer's published keys (JWKS), check iss, aud, and exp, and never accept alg: none or let the token choose its own algorithm.
+
+// Service-to-service authentication. Mutual TLS (mTLS) has both sides present certificates, so each proves its identity. Service meshes like Istio or Linkerd automate this, and SPIFFE/SPIRE provides standard workload identities. Cloud platforms offer workload identity (IAM roles, managed identities) so services avoid long-lived secrets entirely.
+
+// Propagating user identity. When service A calls service B on a user's behalf, don't just forward the user's original token everywhere, since it widens the blast radius if leaked. Better options are token exchange (RFC 8693) or on-behalf-of flows, which mint a new token scoped to the downstream service with the right audience. A common pattern is an API gateway that validates external tokens at the edge and passes a trusted internal identity inward.
+
+// Federation and SSO. Federation lets one organization trust another's identity provider. SAML is common in older enterprise setups, and OIDC in newer ones. Single sign-on relies on this so users log in once across many systems.
+
+// Zero trust. The modern stance is "never trust the network": every request is authenticated and authorized, even inside the perimeter, rather than trusting anything behind the firewall.
+
+// Operational concerns. Store secrets in a manager (Vault, AWS Secrets Manager) rather than in code or config, rotate keys and certificates regularly, and keep clock skew in mind since token expiry depends on it. Also mention the classic pitfalls: the confused deputy problem, tokens leaking into logs, and missing audience checks that let a token for one service be replayed against another.
+
+*Authentication* is the process of verifying the identity of a user, device, or system. It answers the question "who are you?" by checking that a claimed identity is genuine.
+
+Authentication is distinct from xref:authorization.adoc[*authorization*], which decides what an authenticated principal is allowed to do. The two are separate *concerns*, but so often implemented together that they are collectively known as *identity and access management (IAM)*.
 
 == Authentication factors
 
@@ -13,73 +28,47 @@ An *authentication factor* is a piece of evidence used to confirm an identity. T
 
 * *Knowledge.* Something the principal _knows_, eg. a password, PIN, or the answer to a secret question.
 
-* *Possession.* Something the principal _owns_, eg. a hardware security key, a smart card, or a one-time code 
-  from an authenticator app.
+* *Possession.* Something the principal _owns_, eg. a hardware security key, a smart card, or a one-time code from an authenticator app.
 
 * *Inherence.* Something that is _inherent_ to the principal, eg. a fingerprint, a face scan, or another biometric trait.
 
-*Multi-factor authentication (MFA)*, also known as *two-factor authentication (2FA)*, requires evidence from two or more 
-of these categories. The premise is that an attacker who compromises one factor – a leaked password, say – still cannot 
-authenticate without the second. 
+*Multi-factor authentication (MFA)*, also known as *two-factor authentication (2FA)*, requires evidence from two or more of these categories. The premise is that an attacker who compromises one factor – a leaked password, say – still cannot authenticate without at least a second factor.
 
 == Common mechanisms
 
 Authentication systems vary widely in how they collect and validate evidence.
 
-*Passwords* remain the dominant knowledge factor. Because users reuse and choose weak passwords, password-based systems
-almost always pair with secondary controls, including xref:rate-limiting.adoc[*rate limiting*] to throttle brute-force 
-guessing, xref:salt.adoc[*salts*] and slow hash functions to protect stored credentials, and MFA to compensate for the 
-inherent weakness of memorized secrets.
+*Passwords* remain the dominant knowledge factor. But, because users reuse and choose weak passwords, password-based systems are often paired with secondary controls, including xref:rate-limiting.adoc[*rate limiting*] to throttle brute-force guessing, xref:salt.adoc[*salts*] and slow hash functions to protect stored credentials, and MFA to compensate for the inherent weakness of memorized secrets.
 
-*Tokens* replace a long-lived credential with a short-lived proof of identity issued after an initial login.
-xref:jwt.adoc[*JSON Web Tokens*] carry signed claims about the user and are verified by the server without a session
-lookup, which makes them popular in distributed and xref:api-gateway.adoc[*API gateway*]-mediated architectures.
+*Tokens* replace a long-lived credential with a short-lived proof of identity issued after an initial login. xref:jwt.adoc[*JSON Web Tokens*] carry signed claims about the user and are verified by the server without a session lookup, which makes them popular in distributed and xref:api-gateway.adoc[*API gateway*]-mediated architectures.
 
-*Certificates* rely on public-key cryptography. The principal proves possession of a private key whose corresponding
-public key is vouched for by a trusted certificate authority. Mutual TLS (mTLS) authenticates both ends of a connection
-this way, and is common in service-to-service communication.
+*Certificates* rely on public-key cryptography. The principal proves possession of a private key whose corresponding public key is vouched for by a trusted certificate authority. Mutual TLS (mTLS) authenticates both ends of a connection this way, and is common in service-to-service communication.
 
-*Federated protocols* delegate authentication to an external identity provider. OAuth 2.0 and OpenID Connect let a
-relying party accept an identity attested by a trusted authority, enabling *single sign-on (SSO)* – one login that works
-across many services.
+*Federated protocols* delegate authentication to an external identity provider. OAuth 2.0 and OpenID Connect let a relying party accept an identity attested by a trusted authority, enabling *single sign-on (SSO)* – one login that works across many services.
 
 == Sessions versus tokens
 
-After a principal is authenticated, the server must remember that fact for the duration of the interaction. Two dominant
-models exist.
+After a principal is authenticated, the server must remember that fact for the duration of the interaction. Two dominant models exist.
 
-*Session-based.* The server stores authenticated state and issues the client an opaque session identifier, typically
-carried in a cookie. Each subsequent request triggers a server-side lookup to verify the session is valid and not
-expired.
+*Session-based.* The server stores authenticated state and issues the client an opaque session identifier, typically carried in a cookie. Each subsequent request triggers a server-side lookup to verify the session is valid and not expired.
 
-*Token-based.* The server issues a self-contained, signed token (eg. a JWT) that the client presents on every request.
-The server validates the token's signature rather than looking up state.
+*Token-based.* The server issues a self-contained, signed token (eg. a JWT) that the client presents on every request. The server validates the token's signature rather than looking up state.
 
-The trade-off is state versus revocation. Sessions are easy to revoke but require shared state in distributed
-deployments. Tokens scale horizontally but are hard to revoke before they expire, so they are usually short-lived and
-paired with longer-lived, revocable refresh tokens.
+The trade-off is state versus revocation. Sessions are easy to revoke but require shared state in distributed deployments. Tokens scale horizontally but are hard to revoke before they expire, so they are usually short-lived and paired with longer-lived, revocable refresh tokens.
 
-Where a token is stored on the client matters. In web applications, `localStorage` and `sessionStorage` are readable by 
-any script on the page and so are vulnerable to *xref:cross-site-scripting.adoc[cross-site scripting (XSS)*]. HttpOnly 
-cookies are not accessible to scripts and are safer against theft, but they require protection against cross-site 
-request forgery (CSRF).
+Where a token is stored on the client matters. In web applications, `localStorage` and `sessionStorage` are readable by any script on the page and so are vulnerable to *xref:cross-site-scripting.adoc[cross-site scripting (XSS)*]. HttpOnly cookies are not accessible to scripts and are safer against theft, but they require protection against cross-site request forgery (CSRF).
 
 == Common attacks and defenses
 
-* *Credential stuffing and brute force.* Automated attempts to validate large sets of stolen credentials. Mitigated with
-  rate limiting, account lockout thresholds, and MFA.
+* *Credential stuffing and brute force.* Automated attempts to validate large sets of stolen credentials. Mitigated with rate limiting, account lockout thresholds, and MFA.
 
-* *Phishing.* Deception that tricks a user into entering credentials on a fake site. Mitigated with phishing-resistant
-  factors such as hardware keys and FIDO2, and with targeted user training.
+* *Phishing.* Deception that tricks a user into entering credentials on a fake site. Mitigated with phishing-resistant factors such as hardware keys and FIDO2, and with targeted user training.
 
-* *Session hijacking.* Theft of a valid session identifier or token. Mitigated with HTTPS, short token lifetimes, and
-  secure cookie attributes.
+* *Session hijacking.* Theft of a valid session identifier or token. Mitigated with HTTPS, short token lifetimes, and secure cookie attributes.
 
-* *Replay.* Re-transmission of a captured token or request. Mitigated with xref:nonce.adoc[*nonces*], timestamps, and
-  short-lived tokens.
+* *Replay.* Re-transmission of a captured token or request. Mitigated with xref:nonce.adoc[*nonces*], timestamps, and short-lived tokens.
 
-A xref:secure-by-design.adoc[*secure by design*] approach treats these threats as design constraints from the outset,
-rather than patches applied after deployment.
+A xref:secure-by-design.adoc[*secure by design*] approach treats these threats as design constraints from the outset, rather than patches applied after deployment.
 
 == See also
 
