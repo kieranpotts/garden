@@ -31,6 +31,10 @@ of this style guide.
 - An entry MAY be as short as a single paragraph, provided that's sufficient to explain the concept and
   cross-reference it to neighboring topics; a page MUST NOT be padded just to feel "finished."
 
+## Line wrapping
+
+- Entries MUST be written with one line per paragraph, list item, and table cell, however long the line runs. Do not hard-wrap prose at a column. The editor soft-wraps at the viewport width, and there is no line-length limit. This follows [TS-28: AsciiDoc](https://kieranpotts.com/standards/028), and it means a wrap point can never land inside an `xref:`, link, bold, italic, or code span.
+
 ## Bold text
 
 - Beyond the general emphasis rules in TS-26, a technical term that doesn't yet have a dedicated topic page, but could

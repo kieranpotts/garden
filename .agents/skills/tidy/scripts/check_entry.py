@@ -7,9 +7,6 @@ Mechanical style checks for one garden entry.
 
 - A soft line-wrap landing inside an xref/link/bold/italic/code span.
 
-- A prose line over the style guide's line-wrap ceiling (120 chars),
-  when the overrun isn't explained by one unbreakable inline span.
-
 - A bare external https?://...[...] link not using the {link-name}[...]
   attribute form.
 
@@ -26,8 +23,6 @@ Exit status is 0 if no findings, 1 if any findings were reported.
 import re
 import sys
 import pathlib
-
-LINE_WRAP_CEILING = 120
 
 FENCE_DELIMS = {"----", "....", "****", "====", "++++"}
 QUOTE_DELIM = "____"
@@ -144,37 +139,6 @@ def check_split_inline_spans(lines):
     return findings
 
 
-def check_line_length(lines):
-    """Flag a prose line over the ceiling, unless the overrun is explained by
-    one atomic span that alone would exceed the ceiling on its own line —
-    that's the accepted case per the style guide's line-wrap rule."""
-    findings = []
-    in_fence = None
-    for i, line in enumerate(lines, start=1):
-        stripped = line.strip()
-        if stripped in FENCE_DELIMS or stripped == QUOTE_DELIM:
-            in_fence = None if in_fence == stripped else stripped
-            continue
-        if in_fence is not None:
-            continue
-        if stripped.startswith(("=", "//", "|", "image:", ":")):
-            continue
-        if len(line) <= LINE_WRAP_CEILING:
-            continue
-        # Does one atomic span, plus its glued punctuation, already exceed
-        # the ceiling on its own? If so this line is expected to run long.
-        widest = max((len(m.group(0)) for m in ATOMIC.finditer(line)), default=0)
-        if widest >= LINE_WRAP_CEILING - 20:
-            continue
-        findings.append(
-            (i, "line-too-long",
-             f"line is {len(line)} chars (ceiling {LINE_WRAP_CEILING}), "
-             f"and no single inline span explains the overrun — "
-             f"likely needs a rewrap, not just a wide link/bold/italic term.")
-        )
-    return findings
-
-
 def check_bare_external_links(lines):
     findings = []
     in_fence = None
@@ -202,7 +166,6 @@ def check_file(path):
     findings = []
     findings += check_outer_bold_xref(text, lines)
     findings += check_split_inline_spans(lines)
-    findings += check_line_length(lines)
     findings += check_bare_external_links(lines)
     findings.sort(key=lambda f: f[0])
     return findings

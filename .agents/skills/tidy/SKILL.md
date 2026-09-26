@@ -62,14 +62,13 @@ user with an error message.
     python3 .agents/skills/tidy/scripts/check_entry.py src/modules/ROOT/pages/<entry>.adoc
     ```
 
-    This is a read-only checker for four specific, easy-to-miss-by-eye
+    This is a read-only checker for three specific, easy-to-miss-by-eye
     mistakes: the outer-bold `*xref:...[...]*` form, a soft line-wrap that
-    lands inside an xref/link/bold/italic/code span, a plain prose line that
-    runs past the line-wrap ceiling, and a bare external link not using the
-    `{link-name}[...]` attribute form. Treat its findings as candidates for
+    lands inside an xref/link/bold/italic/code span, and a bare external link
+    not using the `{link-name}[...]` attribute form. Treat its findings as candidates for
     the mechanical-fix pass below — confirm each one against the entry before
     fixing, the same as any other check in this skill. A clean run doesn't
-    mean the entry is fully tidy; it only clears those four checks. Everything
+    mean the entry is fully tidy; it only clears those three checks. Everything
     else in this skill is still a manual read.
 
 3.  Check the entry against the guide, section by section.
@@ -104,10 +103,10 @@ user with an error message.
       and referenced inline as `{link-name}[link text]`. No bare
       `https://...[...]` in the body (except if in a `// TODO` comment).
 
-    - Line wraps — soft-wrapped around 100 characters, running longer
-      (typically not past 120) only where an xref, link, bold, italic, or
-      code span can't otherwise be broken. A line-wrap MUST NOT land inside
-      one of those spans.
+    - Line wraps — one line per paragraph, list item, and table cell,
+      however long, with no line-length limit (TS-28). The editor soft-wraps
+      for display. A line-break MUST NOT land inside an xref, link, bold,
+      italic, or code span.
 
     - Admonitions — used sparingly, and only for a genuinely secondary
       aside.
@@ -149,10 +148,9 @@ user with an error message.
 
     - A soft line-wrap that splits an xref/link/bold/italic/code span across
       two lines gets un-split: join the span back onto one line. Don't
-      reflow the rest of the paragraph while doing this — moving surrounding
-      words to hit a target width is a bigger, riskier edit than this skill
-      makes in one pass; leave that to a dedicated rewrap if the user asks
-      for it.
+      reflow the rest of the paragraph while doing this — that is a bigger,
+      riskier edit than this skill makes in one pass; leave it to a
+      dedicated rewrap if the user asks for it.
 
 5.  Report, rather than apply, the judgment calls.
 
@@ -168,10 +166,9 @@ user with an error message.
     - Whether a capitalized heading is a formal proper noun or just a
       descriptive phrase that reads like one.
 
-    - A prose line past the line-wrap ceiling that isn't explained by one
-      unbreakable span — this usually means the paragraph needs a proper
-      rewrap, which is a judgment call about where to break, not a
-      single-line mechanical fix.
+    - A paragraph hard-wrapped across several source lines. Report it, but
+      don't reflow it: TS-28 says content MUST NOT be reflowed as a side
+      effect of an unrelated change.
 
 6.  Report what was checked, what was fixed, and what is flagged, grouped by
     style-guide section.
@@ -185,7 +182,7 @@ user with an error message.
 - `check_entry.py` is read-only and advisory. It never edits a file, and a
   finding is a candidate, not an automatic fix — apply the same judgment to
   its output as to anything else this skill catches by eye. It only covers
-  four narrow, easy-to-miss mechanical checks; a clean run is not a
+  three narrow, easy-to-miss mechanical checks; a clean run is not a
   substitute for the section-by-section read.
 
 - The style guide MUST be the only source of style authority. Do not enforce a
