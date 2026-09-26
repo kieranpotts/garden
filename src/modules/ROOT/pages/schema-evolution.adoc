@@ -1,0 +1,15 @@
+= Schema evolution
+
+*Schema evolution* is about changing data formats and structures while keeping compatibility between versions of producers and consumers, typically by making additive changes with defaults, never reusing field identifiers, and using staged rollouts like *expand-and-contract*.
+
+*Compatibility types.* This is the most important concept. *Backward compatible* means new code can read old data, *forward compatible* means old code can read new data, and *full compatibility* means both.
+
+*Safe versus breaking changes.* Adding an optional field, or one with a default, is generally safe. Removing a required field, renaming a field, or changing a type (say, int to string) usually breaks something. The standard safe approach to a rename is add-new, dual-write, migrate readers, then deprecate the old field.
+
+*Serialization formats.* Avro resolves differences by comparing the writer's and reader's schemas, and relies on defaults. Protobuf and Thrift use numbered field tags, so you must never reuse a tag number, and unknown fields are skipped. JSON has no enforced schema, which makes it flexible but fragile, so JSON Schema is often layered on top.
+
+*Schema registries.* Tools like Confluent Schema Registry store schema versions and enforce compatibility rules before producers can publish, which matters in Kafka-style streaming.
+
+*Databases.* In relational systems, evolution means *migrations*, using tools like Flyway, Liquibase, or Alembic. The *expand-and-contract* pattern, also called *parallel change*, is the common solution for *zero-downtime deploys* of data migrations. First, add the new column, then backfill and switch reads, then drop the old column. Also note that some DDL operations lock large tables. In data lakes, formats like Iceberg and Delta Lake support column adds and renames, and Iceberg tracks columns by ID rather than by name.
+
+*Deployment order.* In distributed systems, old and new versions run at the same time during a rollout. So you usually deploy readers before writers for new fields, and stop writing a field before you remove readers' dependence on it.
