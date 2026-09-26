@@ -55,7 +55,9 @@ The canonical service-mesh security mechanism is *mutual TLS (mTLS)*, in which e
 verifies a certificate on both sides of a connection. This gives xref:encryption.adoc[*encrypted*],
 xref:authentication.adoc[*authenticated*] service-to-service channels without application code handling keys or
 certificates. The control plane issues and rotates the short-lived certificates, so the trust model is enforced
-uniformly across the fleet rather than per service.
+uniformly across the fleet rather than per service. Meshes commonly identify workloads using *SPIFFE* identities, issued
+by *SPIRE* or the mesh's own certificate authority, so that a service's identity is bound to the workload rather than
+to its network address.
 
 == Trade-offs
 
