@@ -1,17 +1,16 @@
 = Batch processing
 
-:link-algomaster-batch-vs-stream: https://blog.algomaster.io/p/batch-processing-vs-stream-processing
+Batch processing is a *data processing model* in which data is collected into bounded groups, called *batches*, and each
+batch is processed as a single unit rather than record by record as it arrives.
 
-Batch processing is a data processing model in which data is collected into bounded groups, called *batches*, and each
-batch is processed as a single unit rather than record by record as it arrives. A batch run is finite: it has a defined
-beginning and end, and its results become available only once the entire batch has been processed. This contrasts with
-xref:stream-processing-system.adoc[*stream processing*], where data is handled continuously as it flows in, and with
-interactive or transactional processing, where each request is served as it is received.
+A batch run is finite. It has a defined beginning and end, and its results become available only once the entire batch
+has been processed. This contrasts with xref:stream-processing-system.adoc[*stream processing*], where data is handled
+continuously as it flows in, and with *interactive* or *transactional processing*, where each request is served as it
+is received.
 
-Batch processing is one of the oldest computing models. Early mainframes accepted work as *batch jobs* — decks of
-punched cards submitted to an operator and run in sequence — long before interactive
-xref:time-share-computing.adoc[*time-sharing*] existed. The same idea persists in modern form: a scheduled job wakes up,
-drains a queue or a dataset, transforms it, and writes the result somewhere for later use.
+Batch processing is one of the oldest computing models. Early mainframes accepted work as *batch jobs* in the form of
+decks of *punched cards* submitted to an operator and run in sequence, before interactive
+xref:time-share-computing.adoc[*time-sharing*] existed.
 
 == Characteristics
 
@@ -66,11 +65,3 @@ schedule, the system collects records for a short, fixed interval — seconds ra
 batch in turn. Apache Spark Structured Streaming popularized this style. It trades some latency for simpler failure
 handling and higher throughput than a pure streaming pipeline, and it is one expression of the *natural batching* idea
 discussed under xref:mechanical-sympathy.adoc[*mechanical sympathy*].
-
-''''
-
-== References
-
-* Singh, A P (2024).
-  {link-algomaster-batch-vs-stream}[_Batch vs stream processing – what's the difference?_].
-  AlgoMaster.
