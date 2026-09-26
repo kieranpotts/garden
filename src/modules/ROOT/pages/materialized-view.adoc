@@ -3,37 +3,37 @@
 :link-aws-materialized-view: https://aws.amazon.com/what-is/materialized-view/
 :link-postgresql-docs:       https://www.postgresql.org/docs/current/rules-materializedviews.html
 
-A materialized view is a database object that stores the precomputed result of a query as a physical table, so that
-subsequent reads can be served from the stored result instead of re-running the query against the
-xref:relational-database.adoc[*relational database*] base tables. It is a form of xref:caching.adoc[*caching*] applied
-to query results, and a structured form of xref:denormalization.adoc[*denormalization*] in which the database engine
-itself manages the redundant copy.
+A *materialized view* is a database object that stores the precomputed result of a query as a physical table. The query
+behind a materialized view typically involves joins, aggregations, or both — the kinds of queries that are expensive to
+repeat on every read.
 
-The query behind a materialized view typically involves joins, aggregations, or both. That is the kind of work that is
-expensive to repeat on every read. Storing the result turns each read into a lookup against a single, often-indexed
-table, which is the goal of xref:database-query-optimization.adoc[*query optimization*] for read-heavy workloads.
+Materialized views are a xref:database-query-optimization.adoc[*query optimization*] technique. It is a structured form
+of xref:denormalization.adoc[*denormalization*], in which the database engine itself manages redundant copies. It can
+also be seem as a form of xref:caching.adoc[*caching*] applied to query results.
 
 == Materialized views versus views
 
 A regular *view* is a named query. It stores no data of its own. Each time it is read, the database re-runs the
-underlying query against the base tables, so the result is always current but always pays the full compute cost.
+underlying query against the base tables, so the result is always current, but you still pay the full compute cost.
 
-A materialized view stores the result. Reads are cheap, but the stored data is a snapshot that drifts behind the base
-tables until the view is refreshed. The choice between them is a trade of freshness for read
-xref:performance.adoc[*performance*], and it depends on how stale the application can tolerate.
+A materialized view goes further by storing the result. The stored data is a snapshot that drifts from the base tables
+until the view is refreshed. The choice between them is a straight trade-offs between *freshness* and
+xref:performance.adoc[*performance*].
 
 == Refresh strategies
 
-Because the stored result is a snapshot, it must be refreshed to reflect changes in the base tables. The refresh
-strategy is the main operational lever over a materialized view.
+Because the stored result is a snapshot, it must be refreshed to reflect changes in the base tables. There are several
+possible refresh strategies.
 
-* *Full refresh.* The view is recomputed from scratch and overwritten. Simple and correct, but expensive for large views
-  and disruptive if it locks the table during rebuild.
+* *Full refresh.* The view is recomputed from scratch and overwritten. Simple and correct, but it's expensive for large
+  views, and disruptive if it locks the table during rebuild.
+
 * *Incremental refresh.* Only the rows affected by changes since the last refresh are recomputed and applied. Far cheaper
-  than a full refresh on large, slowly-changing views, but the engine must be able to compute the delta, which limits the
-  trick to views whose definitions allow it.
+  than a full refresh on large, slowly-changing views, but the engine must be able to compute the delta.
+
 * *On-demand refresh.* The view is refreshed when an operator or application triggers it, eg. on a schedule or after a
   batch load. This gives precise control over when staleness is resolved, at the cost of careful scheduling.
+
 * *Continuous refresh.* The view is updated as the base tables change, driven by
   xref:change-data-capture.adoc[*change data capture*] or a streaming pipeline. This minimizes staleness but adds the
   operational cost of the pipeline.
