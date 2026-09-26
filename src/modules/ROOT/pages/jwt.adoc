@@ -81,11 +81,14 @@ tampered with – any modification to the header or payload will invalidate it.
   library in use rejects tokens with no algorithm.
 * *Set short expiration times*: Short-lived access tokens (e.g. 15 minutes) limit the window of exposure if a token is
   stolen.
+* *Verify against the issuer's published keys*: Fetch the public keys from the issuer's *JSON Web Key Set (JWKS)*
+  endpoint rather than hard-coding them, which also lets the issuer rotate keys. Never let the token itself choose the
+  algorithm used to verify it, since that is what makes `alg: none` and algorithm-confusion attacks possible.
 * *Validate standard claims*: Always check `exp` (expiration), `iss` (issuer), and `aud` (audience) to confirm the token
   is legitimate and intended for your service.
 * *Token revocation*: JWTs are stateless – once issued, they cannot easily be revoked before expiry. Common mitigations
   include using short-lived access tokens paired with longer-lived refresh tokens (which can be revoked server-side), or
-  maintaining a token denylist keyed on the `jti` (JWT ID) claim, which acts as a per-token xref:nonce.adoc[*nonce*].
+  using opaque tokens checked via introspection when instant revocation is needed, or maintaining a token denylist keyed on the `jti` (JWT ID) claim, which acts as a per-token xref:nonce.adoc[*nonce*].
 * *Client storage*: `localStorage` and `sessionStorage` are vulnerable to cross-site scripting (XSS) attacks. HttpOnly
   cookies are safer from XSS but require CSRF protection. A common best practice is to keep access tokens in memory and
   store refresh tokens in HttpOnly cookies.
