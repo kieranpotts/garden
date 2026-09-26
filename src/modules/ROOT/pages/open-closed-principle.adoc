@@ -1,67 +1,36 @@
 = Open-closed principle
 
-The open-closed principle (OCP) states that software entities – classes, modules, functions, and so on – should be open
-for extension but closed for modification. Once an entity is in production and other code depends on it, new behavior
-should be added by writing new code alongside it, not by editing the entity itself.
+The open-closed principle (OCP) states that software entities – classes, modules, functions, and so on – should be open for extension but closed for modification. Once an entity is in production and other code depends on it, new behavior should be added by writing new code alongside it, not by editing the entity itself.
 
-The open-closed principle is the O in xref:solid.adoc[*SOLID*], the family of xref:design-principle.adoc[*design principles*]
-for xref:object-oriented-programming.adoc[*object-oriented programming*] popularized by Robert C. Martin.
+The open-closed principle is the O in xref:solid.adoc[*SOLID*], the family of xref:design-principle.adoc[*design principles*] for xref:object-oriented-programming.adoc[*object-oriented programming*] popularized by Robert C. Martin.
 
-The principle was first stated by Bertrand Meyer in 1988, who framed it in terms of xref:inheritance.adoc[*inheritance*].
-A base class is closed to modification because its clients depend on its fixed interface, yet open to extension through
-subclasses that add or override behavior. Martin restated it in 1996 around xref:abstraction.adoc[*abstraction*] and
-xref:polymorphism.adoc[*polymorphism*], rather than inheritance alone. In Martin's form, an entity is closed because its
-xref:interface.adoc[*interface*] and behavior are fixed once published, and open because new implementations of that
-interface can be added without touching the callers that depend on it.
+The principle was first stated by Bertrand Meyer in 1988, who framed it in terms of xref:inheritance.adoc[*inheritance*]. A base class is closed to modification because its clients depend on its fixed interface, yet open to extension through subclasses that add or override behavior. Martin restated it in 1996 around xref:abstraction.adoc[*abstraction*] and xref:polymorphism.adoc[*polymorphism*], rather than inheritance alone. In Martin's form, an entity is closed because its xref:interface.adoc[*interface*] and behavior are fixed once published, and open because new implementations of that interface can be added without touching the callers that depend on it.
 
-The open-closed principle is satisfied by depending on abstractions rather than concretes. The techniques are the same
-ones that make a system xref:extensibility.adoc[*extensible*].
+The open-closed principle is satisfied by depending on abstractions rather than concretes. The techniques are the same ones that make a system xref:extensibility.adoc[*extensible*].
 
-- Code to an xref:interface.adoc[*interface*], not to a concrete class, so new implementations can be added behind the
-  interface.
+- Code to an xref:interface.adoc[*interface*], not to a concrete class, so new implementations can be added behind the interface.
 
-- Use xref:polymorphism.adoc[*polymorphism*] to dispatch to those implementations at runtime, with callers oblivious to
-  which concrete type they receive.
+- Use xref:polymorphism.adoc[*polymorphism*] to dispatch to those implementations at runtime, with callers oblivious to which concrete type they receive.
 
-- Prefer xref:composition.adoc[*composition*] of small, interchangeable parts over deep xref:inheritance.adoc[*inheritance*]
-  hierarchies, which tend to pressure base classes into modification every time a new subclass needs to override or
-  exempt some shared behavior.
+- Prefer xref:composition.adoc[*composition*] of small, interchangeable parts over deep xref:inheritance.adoc[*inheritance*] hierarchies, which tend to pressure base classes into modification every time a new subclass needs to override or exempt some shared behavior.
 
-- Apply xref:dependency-inversion.adoc[*dependency inversion*], so that the abstraction a client depends on is owned by
-  the client.
+- Apply xref:dependency-inversion.adoc[*dependency inversion*], so that the abstraction a client depends on is owned by the client.
 
-- Introduce extension points – plugin slots, event hooks, middleware chains – where new behavior can be attached without
-  editing the core.
+- Introduce extension points – plugin slots, event hooks, middleware chains – where new behavior can be attached without editing the core.
 
-Several xref:design-pattern.adoc[*design patterns*] are direct applications of the open-closed principle. The
-xref:strategy-pattern.adoc[*strategy pattern*] lets a new algorithm be added as a new strategy class without changing
-the context that invokes it. The xref:observer-pattern.adoc[*observer pattern*] lets a subject gain new observers
-without being modified to know about them. The xref:adapter-pattern.adoc[*adapter pattern*] wraps an existing type
-behind a new interface so callers can adopt a new dependency without altering their own code.
+Several xref:design-pattern.adoc[*design patterns*] are direct applications of the open-closed principle. The xref:strategy-pattern.adoc[*strategy pattern*] lets a new algorithm be added as a new strategy class without changing the context that invokes it. The xref:observer-pattern.adoc[*observer pattern*] lets a subject gain new observers without being modified to know about them. The xref:adapter-pattern.adoc[*adapter pattern*] wraps an existing type behind a new interface so callers can adopt a new dependency without altering their own code.
 
 == Trade-offs and pitfalls
 
-The principle is a heuristic, not a law, and it is easy to over-apply. Adding an abstraction for every collaboration,
-ahead of any second implementation, produces empty interfaces that multiply without earning their keep. The right moment
-to invert a dependency is when it is genuinely volatile or when xref:unit-testing.adoc[*unit testing*] needs a seam.
+The principle is a heuristic, not a law, and it is easy to over-apply. Adding an abstraction for every collaboration, ahead of any second implementation, produces empty interfaces that multiply without earning their keep. The right moment to invert a dependency is when it is genuinely volatile or when xref:unit-testing.adoc[*unit testing*] needs a seam.
 
-xref:yagni.adoc[*YAGNI*] is the counterweight principle. An abstraction that never sees a second implementation
-is speculative generality paid for in xref:complexity.adoc[*complexity*].
+xref:yagni.adoc[*YAGNI*] is the counterweight principle. An abstraction that never sees a second implementation is speculative generality paid for in xref:complexity.adoc[*complexity*].
 
-The abstraction also has to be honest. If the interface leaks the concerns of a particular implementation – a method
-shaped to fit one database vendor, an error type that exposes a transport detail – then a new implementation cannot slot
-in without first changing the interface, and the principle is defeated by
-xref:leaky-abstraction.adoc[*leaky abstractions*] rather than by a missing abstraction.
+The abstraction also has to be honest. If the interface leaks the concerns of a particular implementation – a method shaped to fit one database vendor, an error type that exposes a transport detail – then a new implementation cannot slot in without first changing the interface, and the principle is defeated by xref:leaky-abstraction.adoc[*leaky abstractions*] rather than by a missing abstraction.
 
-OCP is the structural complement to xref:backwards-compatibility.adoc[*backwards compatibility*]. Both aim at the same
-goal at different scales. OCP keeps a module open for extension within a codebase, while backwards compatibility keeps
-an interface open for extension across releases to external consumers. A system that follows OCP internally tends to
-publish backwards-compatible changes externally, since new behavior is added rather than retrofitted onto existing
-contracts.
+OCP is the structural complement to xref:backwards-compatibility.adoc[*backwards compatibility*]. Both aim at the same goal at different scales. OCP keeps a module open for extension within a codebase, while backwards compatibility keeps an interface open for extension across releases to external consumers. A system that follows OCP internally tends to publish backwards-compatible changes externally, since new behavior is added rather than retrofitted onto existing contracts.
 
-This also helps to protect a system against xref:software-rot.adoc[*software rot*]. Change that arrives as new code
-rather than edits to old code accumulates less xref:technical-debt.adoc[*technical debt*] against the parts that already
-work.
+This also helps to protect a system against xref:software-rot.adoc[*software rot*]. Change that arrives as new code rather than edits to old code accumulates less xref:technical-debt.adoc[*technical debt*] against the parts that already work.
 
 == See also
 
@@ -74,14 +43,8 @@ work.
 
 == References
 
-* Meyer, Bertrand (1988).
-  _Object-Oriented Software Construction_.
-  Prentice Hall.
+* Meyer, Bertrand (1988). _Object-Oriented Software Construction_. Prentice Hall.
 
-* Martin, Robert C. (1996).
-  _The Open-Closed Principle_.
-  C++ Report.
+* Martin, Robert C. (1996). _The Open-Closed Principle_. C++ Report.
 
-* Martin, Robert C. (2002).
-  _Agile Software Development, Principles, Patterns, and Practices_.
-  Pearson.
+* Martin, Robert C. (2002). _Agile Software Development, Principles, Patterns, and Practices_. Pearson.

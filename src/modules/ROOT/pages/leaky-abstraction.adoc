@@ -2,29 +2,15 @@
 
 :link-spolsky: https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/
 
-In his 2002 {link-spolsky}[blog post], _The Law of Leaky Abstractions_, Joel Spolsky writes that all non-trivial
-xref:abstraction.adoc[*abstractions*] are leaky, to some degree. He argued that the underlying system's behavior
-eventually forces its way back to the surface, and leaks typically emerge in error scenarios.
+In his 2002 {link-spolsky}[blog post], _The Law of Leaky Abstractions_, Joel Spolsky writes that all non-trivial xref:abstraction.adoc[*abstractions*] are leaky, to some degree. He argued that the underlying system's behavior eventually forces its way back to the surface, and leaks typically emerge in error scenarios.
 
-Spolsky's canonical example is *TCP*, which promises reliable, in-order delivery while being built on the unreliable
-*IP protocol*. TCP hides packet loss and reordering by retransmitting and resequencing, and most of the time that is
-enough. But when a network cable is cut or a link is saturated, the unreliability of the underlying IP protocol
-leaks through. Callers still need to known that the network underneath is unreliable in order to be able to
-handle to network latency — TCP does not, and cannot, hide these details that are specific to the implementation of
-its dependencies.
+Spolsky's canonical example is *TCP*, which promises reliable, in-order delivery while being built on the unreliable *IP protocol*. TCP hides packet loss and reordering by retransmitting and resequencing, and most of the time that is enough. But when a network cable is cut or a link is saturated, the unreliability of the underlying IP protocol leaks through. Callers still need to known that the network underneath is unreliable in order to be able to handle to network latency — TCP does not, and cannot, hide these details that are specific to the implementation of its dependencies.
 
-Similarly, *SQL* abstracts away the procedural steps of a database query, but does not protect callers from
-performance bottlenecks in the underlying database management system.
+Similarly, *SQL* abstracts away the procedural steps of a database query, but does not protect callers from performance bottlenecks in the underlying database management system.
 
-Spolsky frames leakage as an unfortunate but inevitable fact of engineering life. When an error condition emerges,
-it will often be necessary to learn about the layers under the abstraction in order to debug the issue. For
-example, in a xref:layered-architecture.adoc[*layered architecture*], a fault that surfaces in the *user interface*
-layer may have its origins three layers down. Tracing the source of the issue demands of the programmer fluency
-in all layers in between Similarly, a high-level *application development framework* does not insulate a programmer
-from the low-level concerns of TCP timeouts, char pointers, and query plans.
+Spolsky frames leakage as an unfortunate but inevitable fact of engineering life. When an error condition emerges, it will often be necessary to learn about the layers under the abstraction in order to debug the issue. For example, in a xref:layered-architecture.adoc[*layered architecture*], a fault that surfaces in the *user interface* layer may have its origins three layers down. Tracing the source of the issue demands of the programmer fluency in all layers in between Similarly, a high-level *application development framework* does not insulate a programmer from the low-level concerns of TCP timeouts, char pointers, and query plans.
 
-It follows that programmers need to understand the internal mechanics of components at least one level below the
-abstraction layer that typically work in.
+It follows that programmers need to understand the internal mechanics of components at least one level below the abstraction layer that typically work in.
 
 == See also
 

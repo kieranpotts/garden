@@ -6,20 +6,13 @@ The main characteristics of CDC are:
 
 * It captures row-level database changes, not business logic.
 
-* It's most commonly implemented by reading the database's transaction log, eg https://debezium.io/[Debezium] reads the
-  MySQL binlog or the PostgreSQL write-ahead log, typically publishing changes to xref:kafka.adoc[*Kafka*] via Kafka
-  Connect. Less common alternatives are **trigger-based CDC**, which uses database triggers to write changes to a shadow
-  table, and **query-based CDC**, which polls tables for rows with a newer timestamp or version column. Log-based CDC is
-  generally preferred, because it adds no load to the write path and, unlike polling, it captures hard deletes.
+* It's most commonly implemented by reading the database's transaction log, eg https://debezium.io/[Debezium] reads the MySQL binlog or the PostgreSQL write-ahead log, typically publishing changes to xref:kafka.adoc[*Kafka*] via Kafka Connect. Less common alternatives are **trigger-based CDC**, which uses database triggers to write changes to a shadow table, and **query-based CDC**, which polls tables for rows with a newer timestamp or version column. Log-based CDC is generally preferred, because it adds no load to the write path and, unlike polling, it captures hard deletes.
 
-* It mainly emits INSERT, UPDATE, and DELETE events, usually carrying the row's state before and after the change.
-  Tools such as Debezium also emit snapshot reads, truncates, and schema-change events.
+* It mainly emits INSERT, UPDATE, and DELETE events, usually carrying the row's state before and after the change. Tools such as Debezium also emit snapshot reads, truncates, and schema-change events.
 
-* Its classic purpose is xref:replication.adoc[*replication*], keeping subsystems synchronized, but it's also used to
-  update search indexes, invalidate caches, and stream data into warehouses.
+* Its classic purpose is xref:replication.adoc[*replication*], keeping subsystems synchronized, but it's also used to update search indexes, invalidate caches, and stream data into warehouses.
 
-For example, imagine you have a service that stores user data in a database. An SQL instruction issued to this database
-might look like this:
+For example, imagine you have a service that stores user data in a database. An SQL instruction issued to this database might look like this:
 
 ----
 UPDATE users
@@ -45,24 +38,12 @@ Once that SQL instruction is executed, the CDC is shipped:
 }
 ----
 
-The CDC defines the operation and the state before and after it occurred. The CDC data structure can be adapted for each
-use case.
+The CDC defines the operation and the state before and after it occurred. The CDC data structure can be adapted for each use case.
 
-CDCs are particularly helpful for data replication, auditing, and system integration, as a streaming alternative to
-batch xref:etl.adoc[*ETL*].
+CDCs are particularly helpful for data replication, auditing, and system integration, as a streaming alternative to batch xref:etl.adoc[*ETL*].
 
-The main downside is that the CDC pattern introduces tight coupling to the internal database schema. If the schema
-changes, consumers need to be updated. For this reason, raw CDC should be avoided as a public integration layer (eg
-inter-service communication in microservices). Use it only for internal data synchronization or read model updates,
-such as populating the read side of a xref:cqrs.adoc[*CQRS*] architecture or refreshing
-xref:materialized-view.adoc[*materialized views*].
+The main downside is that the CDC pattern introduces tight coupling to the internal database schema. If the schema changes, consumers need to be updated. For this reason, raw CDC should be avoided as a public integration layer (eg inter-service communication in microservices). Use it only for internal data synchronization or read model updates, such as populating the read side of a xref:cqrs.adoc[*CQRS*] architecture or refreshing xref:materialized-view.adoc[*materialized views*].
 
-The exception is the **transactional outbox pattern**. A service writes business events to a dedicated outbox table in
-the same transaction as its state changes, and CDC relays the rows from that table to a message broker. The CDC
-mechanism still sees only row changes, but the rows it carries are deliberately designed, stable business events rather
-than the internal schema.
+The exception is the **transactional outbox pattern**. A service writes business events to a dedicated outbox table in the same transaction as its state changes, and CDC relays the rows from that table to a message broker. The CDC mechanism still sees only row changes, but the rows it carries are deliberately designed, stable business events rather than the internal schema.
 
-See also xref:domain-driven-design.adoc[*Domain-driven design*] and xref:event-sourcing.adoc[*event sourcing*]. CDC is
-similar in concept to the domain events that event sourcing is built on, but is more focused on _technical_ events
-rather than business-oriented events. Domain events are more abstract, and are therefore more appropriate for public
-APIs, including those between microservices within a private network.
+See also xref:domain-driven-design.adoc[*Domain-driven design*] and xref:event-sourcing.adoc[*event sourcing*]. CDC is similar in concept to the domain events that event sourcing is built on, but is more focused on _technical_ events rather than business-oriented events. Domain events are more abstract, and are therefore more appropriate for public APIs, including those between microservices within a private network.

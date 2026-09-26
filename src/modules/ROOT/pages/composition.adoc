@@ -1,53 +1,26 @@
 = Composition
 
-Composition is a xref:design-pattern.adoc[*design pattern*] and a xref:design-principle.adoc[*design principle*].
-It is primarily associated with *functional programming* but it is also applicable to
-xref:object-oriented-programming.adoc[*object-oriented*] and other programming paradigms.
+Composition is a xref:design-pattern.adoc[*design pattern*] and a xref:design-principle.adoc[*design principle*]. It is primarily associated with *functional programming* but it is also applicable to xref:object-oriented-programming.adoc[*object-oriented*] and other programming paradigms.
 
-Composition combines simple elements — functions, data types, and other *building blocks* — to build more complex,
-more powerful, more responsible elements.
+Composition combines simple elements — functions, data types, and other *building blocks* — to build more complex, more powerful, more responsible elements.
 
-To achieve this, an element holds *references* to other elements that supply part of its behavior. The parent element
-forwards calls to its *collaborators* — a mechanism known as *delegation* — to perform the tasks it cannot (or chooses
-not to) do itself. Collaborators may be *injected* or *constructed* privately, but *hard-wired* dependencies are not
-considered to be true composition. The pattern describes collaborators that can be swapped dynamically at runtime and
-tested in isolation, making for xref:coupling.adoc[*low coupling*]. When the parent element is destroyed, the contained
-elements are not necessarily destroyed with it.
+To achieve this, an element holds *references* to other elements that supply part of its behavior. The parent element forwards calls to its *collaborators* — a mechanism known as *delegation* — to perform the tasks it cannot (or chooses not to) do itself. Collaborators may be *injected* or *constructed* privately, but *hard-wired* dependencies are not considered to be true composition. The pattern describes collaborators that can be swapped dynamically at runtime and tested in isolation, making for xref:coupling.adoc[*low coupling*]. When the parent element is destroyed, the contained elements are not necessarily destroyed with it.
 
 == Composition over inheritance
 
-In object-oriented code, composition is an alternative pattern to xref:inheritance.adoc[*inheritance*] for implementing
-derived behavior. Rather than behavior being derived from a parent class via an "is a" relationship, a composed object
-"has a" collaborator (or several).
+In object-oriented code, composition is an alternative pattern to xref:inheritance.adoc[*inheritance*] for implementing derived behavior. Rather than behavior being derived from a parent class via an "is a" relationship, a composed object "has a" collaborator (or several).
 
-Composition is the strongest form of xref:association.adoc[*association*] in object-oriented design, more so than in
-inheritance.
+Composition is the strongest form of xref:association.adoc[*association*] in object-oriented design, more so than in inheritance.
 
-The *Gang of Four* famously recommended *composition over inheritance*. The reasoning is that inheritance is a powerful
-but rigid pattern. Because a subclass is bound to its parent's implementation at compile time, it cannot change its
-parent at runtime. This breaks the xref:liskov-substitution-principle.adoc[*Liskov substitution principle*] when
-inheritance is used to support *code reuse*. By contrast, with composition it is possible to swap an object's
-collaborators at runtime.
+The *Gang of Four* famously recommended *composition over inheritance*. The reasoning is that inheritance is a powerful but rigid pattern. Because a subclass is bound to its parent's implementation at compile time, it cannot change its parent at runtime. This breaks the xref:liskov-substitution-principle.adoc[*Liskov substitution principle*] when inheritance is used to support *code reuse*. By contrast, with composition it is possible to swap an object's collaborators at runtime.
 
-However, composition and inheritance are not mutually exclusive, and mature designs use a mix of both patterns. The
-general advise is to keep inheritance shallow and reserved for subtyping, and to reach for composition whenever the goal
-is reuse without an "is a" relationship. The two can be combined, with inheritance used to define common types who's
-behavior is varied by assembling collaborators, held by reference, at runtime.
+However, composition and inheritance are not mutually exclusive, and mature designs use a mix of both patterns. The general advise is to keep inheritance shallow and reserved for subtyping, and to reach for composition whenever the goal is reuse without an "is a" relationship. The two can be combined, with inheritance used to define common types who's behavior is varied by assembling collaborators, held by reference, at runtime.
 
-This mix maintains a narrow type hierarchy while leaving behavior open to change by *injecting alternative dependencies*
-— compatible with the xref:open-closed-principle.adoc[*open-closed principle*]. This requires the use of
-xref:interface.adoc[*interfaces*], so objects delegate to their collaborators through interfaces rather than their
-concrete types.
+This mix maintains a narrow type hierarchy while leaving behavior open to change by *injecting alternative dependencies* — compatible with the xref:open-closed-principle.adoc[*open-closed principle*]. This requires the use of xref:interface.adoc[*interfaces*], so objects delegate to their collaborators through interfaces rather than their concrete types.
 
-The trade-off is *indirection*. A composed object delegates through one extra layer, which can make the control flow
-harder to follow than a direct inheritance chain. Behavior that could have existed in one component is now split across
-many.
+The trade-off is *indirection*. A composed object delegates through one extra layer, which can make the control flow harder to follow than a direct inheritance chain. Behavior that could have existed in one component is now split across many.
 
-Other design patterns such as *strategy*, *decorator*, and *adapter* all compose objects to vary behavior, rather than
-defining a class hierarchy. The same principle scales beyond individual objects. In game development, the
-xref:entity-component-system.adoc[*entity component system*] pattern treats every object in a scene as an entity
-assembled from components. Enemies, weapons, and projectiles share no common ancestor. Each is whatever its current
-sub-components make it. Their behavior is changed during play by adding and removing sub-components.
+Other design patterns such as *strategy*, *decorator*, and *adapter* all compose objects to vary behavior, rather than defining a class hierarchy. The same principle scales beyond individual objects. In game development, the xref:entity-component-system.adoc[*entity component system*] pattern treats every object in a scene as an entity assembled from components. Enemies, weapons, and projectiles share no common ancestor. Each is whatever its current sub-components make it. Their behavior is changed during play by adding and removing sub-components.
 
 == See also
 
@@ -56,6 +29,4 @@ sub-components make it. Their behavior is changed during play by adding and remo
 
 == References
 
-* Gamma et al. (1994).
-  _Design Patterns: Elements of Reusable Object-Oriented Software_.
-  Addison-Wesley.
+* Gamma et al. (1994). _Design Patterns: Elements of Reusable Object-Oriented Software_. Addison-Wesley.

@@ -1,8 +1,6 @@
 = SOLID principles
 
-SOLID is an acronym for five xref:design-principle.adoc[*design principles*] of
-xref:object-oriented-programming.adoc[*object-oriented programming*]. The five
-principles are:
+SOLID is an acronym for five xref:design-principle.adoc[*design principles*] of xref:object-oriented-programming.adoc[*object-oriented programming*]. The five principles are:
 
 * the xref:single-responsibility-principle.adoc[*single responsibility principle*];
 * the xref:open-closed-principle.adoc[*open-closed principle*];
@@ -10,40 +8,24 @@ principles are:
 * the xref:interface-segregation-principle.adoc[*interface segregation principle*];
 * and the xref:dependency-inversion.adoc[*dependency inversion*].
 
-Robert C. Martin introduced the SOLID acronym in his 2000 essay _Design Principles and Design Patterns_, gathering
-principles he had been writing about through the 1990s into a single mnemonic. Two of the five principles predate
-the essay: the Liskov substitution principle was stated by Barbara Liskov in 1987, and the open-closed principle by
-Bertrand Meyer in 1988. The other three emerged from Martin's own series of _C++ Report_ columns in 1996.
+Robert C. Martin introduced the SOLID acronym in his 2000 essay _Design Principles and Design Patterns_, gathering principles he had been writing about through the 1990s into a single mnemonic. Two of the five principles predate the essay: the Liskov substitution principle was stated by Barbara Liskov in 1987, and the open-closed principle by Bertrand Meyer in 1988. The other three emerged from Martin's own series of _C++ Report_ columns in 1996.
 
-Martin framed the principles as remedies for the symptoms of poor design he called
-xref:software-rot.adoc[*software rot*]:
+Martin framed the principles as remedies for the symptoms of poor design he called xref:software-rot.adoc[*software rot*]:
 
 * *rigidity*, where every change forces many others;
 * *fragility*, where a change breaks unrelated parts;
 * *immobility*, where a module cannot be reused because it drags in too many dependencies;
 * and *viscosity*, where it is easier to hack around the design than to follow it.
 
-The five principles form a set of design preferences – for high xref:cohesion.adoc[*cohesion*], low
-xref:coupling.adoc[*coupling*], and dependence on xref:abstraction.adoc[*abstractions*] rather than concretes – that,
-taken together, push a codebase away from those symptoms.
+The five principles form a set of design preferences – for high xref:cohesion.adoc[*cohesion*], low xref:coupling.adoc[*coupling*], and dependence on xref:abstraction.adoc[*abstractions*] rather than concretes – that, taken together, push a codebase away from those symptoms.
 
-The five principles are interdependent but build on one another. The single responsibility principle forms the
-foundation. A module with one reason to change is easier to extend without modifying, which is the goal of the
-open-closed principle. The open-closed principle is in turn easiest to satisfy when subtypes are genuine behavioral
-substitutes (the Liskov substitution principle), when interfaces are narrow enough that every implementer can honor
-the full contract (the interface segregation principle), and when callers depend on abstractions owned by the caller
-rather than on concrete implementations (dependency inversion).
+The five principles are interdependent but build on one another. The single responsibility principle forms the foundation. A module with one reason to change is easier to extend without modifying, which is the goal of the open-closed principle. The open-closed principle is in turn easiest to satisfy when subtypes are genuine behavioral substitutes (the Liskov substitution principle), when interfaces are narrow enough that every implementer can honor the full contract (the interface segregation principle), and when callers depend on abstractions owned by the caller rather than on concrete implementations (dependency inversion).
 
-The principles operate at the scale of a single class or module and its immediate collaborators. They are not
-*architectural principles*.
+The principles operate at the scale of a single class or module and its immediate collaborators. They are not *architectural principles*.
 
-SOLID overlaps with xref:grasp.adoc[*GRASP*], Craig Larman's set of responsibility-assignment patterns, which express
-similar preferences for low coupling and high cohesion but frame them as questions about which class should own a
-responsibility. SOLID is also a specific application of xref:separation-of-concerns.adoc[*separation of concerns*] at
-the class and module level.
+SOLID overlaps with xref:grasp.adoc[*GRASP*], Craig Larman's set of responsibility-assignment patterns, which express similar preferences for low coupling and high cohesion but frame them as questions about which class should own a responsibility. SOLID is also a specific application of xref:separation-of-concerns.adoc[*separation of concerns*] at the class and module level.
 
-The xref:law-of-demeter.adoc[*Law of Demeter*] is another complementary heuristic. It constrains how an object talks to
-its collaborators, where the SOLID letters constrain the shape of the modules that collaborate.
+The xref:law-of-demeter.adoc[*Law of Demeter*] is another complementary heuristic. It constrains how an object talks to its collaborators, where the SOLID letters constrain the shape of the modules that collaborate.
 
 == See also
 
@@ -53,18 +35,10 @@ its collaborators, where the SOLID letters constrain the shape of the modules th
 
 == References
 
-* Martin, Robert C. (2000).
-  _Design Principles and Design Patterns_.
-  objectmentor.com.
+* Martin, Robert C. (2000). _Design Principles and Design Patterns_. objectmentor.com.
 
-* Martin, Robert C. (2002).
-  _Agile Software Development, Principles, Patterns, and Practices_.
-  Pearson.
+* Martin, Robert C. (2002). _Agile Software Development, Principles, Patterns, and Practices_. Pearson.
 
-* Liskov, Barbara (1987).
-  _Data Abstraction and Hierarchy in Object-Oriented Programming_.
-  OOPSLA.
+* Liskov, Barbara (1987). _Data Abstraction and Hierarchy in Object-Oriented Programming_. OOPSLA.
 
-* Meyer, Bertrand (1988).
-  _Object-Oriented Software Construction_.
-  Prentice Hall.
+* Meyer, Bertrand (1988). _Object-Oriented Software Construction_. Prentice Hall.
