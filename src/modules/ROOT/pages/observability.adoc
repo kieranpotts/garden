@@ -1,9 +1,5 @@
 = Observability
 
-// TODO: https://www.architecture-weekly.com/p/making-your-system-observability
-
-// TODO: https://www.architecture-weekly.com/p/when-logs-and-metrics-arent-enough
-
 :link-pragmatic-engineer-datadog: https://newsletter.pragmaticengineer.com/p/datadogs-65myear-customer-mystery
 :link-elastic:                    https://www.elastic.co/
 :link-honeycomb:                  https://www.honeycomb.io/
@@ -50,12 +46,21 @@ Observability strategies may emphasize one or more of these pillars, depending o
 Metrics are ideal for recording event occurrences, item counts, action durations, or reporting the status of resources
 like CPU and memory. Logs are more suited to capturing detailed narratives of events, especially for errors and
 warnings. Traces offer a window into the journey of individual request-response cycles, and are particularly beneficial
-to track changing state through xref:asynchronous-communication.adoc[*asynchronous messaging*] systems.
+to track changing state through xref:asynchronous-communication.adoc[*asynchronous messaging*] systems. Many teams now add
+xref:profiling.adoc[*continuous profiling*] as a fourth signal, attributing resource costs to specific code paths in
+production.
+
+Logs are most useful when they are *structured*, eg. JSON with consistent fields, rather than
+free text.
 
 In a well-understood system, it may be sufficient to prioritize high quality metrics over detailed (and expensive) logs
 and complete traces. But the more complex the system, the more difficult it is to anticipate all the information you
 will need, and so to define the required metrics up-front. Visibility of such systems therefore leans more heavily on
 logs and traces, and less on monitoring and metrics.
+
+The pillars are most powerful when they are linked. For example, putting the trace ID in every log line lets you jump from
+a slow trace to the log lines that explain it. *Context propagation* is what carries those IDs across service
+boundaries, typically using the W3C *Trace Context* HTTP headers.
 
 Tracing addresses the difficulties of monitoring and debugging distributed software. It helps us understand cause and
 effect in complex distributed systems: what effect does a component publishing an event have on the rest of the system,
@@ -83,11 +88,36 @@ and processing. In large-scale systems, you may not be able to afford capturing 
 could end up with a {link-pragmatic-engineer-datadog}[US$65m bill]. You need to balance the cost of collecting and
 analyzing telemetry against the value it provides.
 
+Trace sampling is the usual way to control volume, and comes in two forms. *Head-based sampling* decides whether to keep
+a trace at the start of the request, which is cheap but blind to the outcome. *Tail-based sampling* decides after the
+trace completes, so it can keep every error and slow request, at the cost of buffering spans until then. High-cardinality
+values such as user IDs and request IDs belong in logs and traces, not in metric labels, where they explode storage
+costs. See xref:cardinality.adoc[*cardinality*].
+
 The best approach, usually, is to start with a basic set of metrics, logs, and traces, and then iterate as you learn
 more about your system. This iterative approach helps you refine your strategy over time and collect the most valuable
 data for understanding and optimizing your system.
 
+== Deciding what to measure
+
+A few frameworks help to choose a starting set of signals.
+
+* *RED method.* Rate, Errors, and Duration. Suits request-driven services.
+
+* *USE method.* Utilization, Saturation, and Errors. Suits resources such as CPUs and disks.
+
+* *Four golden signals.* Google's set of latency, traffic, errors, and saturation.
+
+Measurements such as these become the indicators behind
+xref:service-level-agreement.adoc[*service level objectives*], and are best alerted on by error budget burn rate. See xref:alerting.adoc[*alerting*].
+
 == Observability tools
+
+* *OpenTelemetry*: The vendor-neutral standard for instrumenting and exporting all signals.
+* *Prometheus* and *Grafana*: Common open source choices for metrics and dashboards.
+* *Loki*: Log aggregation, which pairs with Grafana.
+* *Jaeger* and *Tempo*: Distributed tracing backends.
+* *Datadog* and *New Relic*: Commercial observability platforms.
 
 * {link-elastic}[Elastic]: The vendor behind the xref:elastic-stack.adoc[*Elastic stack*], a suite of tools for search,
   analytics, and observability.
