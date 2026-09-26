@@ -1,0 +1,49 @@
+= Code smell
+
+:link-fowler-code-smell: https://martinfowler.com/bliki/CodeSmell.html
+:link-c2-code-smell:     https://wiki.c2.com/?CodeSmell
+
+A code smell is a surface feature of source code that suggests a deeper problem in its design.
+
+A code smell is a xref:heuristic.adoc[*heuristic*], not a rule. A smell is only a visible symptoms of a _possible_ underlying problem, which may or may not exist. A smell tells a developer to look into something, but not what they will find there. There may be nothing.
+
+What makes a smell useful is that it is quick to spot. A developer does not need to understand the whole system to notice a code smell, well-known examples of which include the following.
+
+* *Duplicated code*, the same structure repeated in several places, against the xref:dry.adoc[*DRY*] principle.
+
+* *Long method* and *large class*, units that have taken on more than one job, against the xref:single-responsibility-principle.adoc[*single responsibility principle*] and weakening xref:cohesion.adoc[*cohesion*].
+
+* *Long parameter list* and *data clumps*, groups of values that keep traveling together through a deep call stack, a common sign of xref:stamp-coupling.adoc[*stamp coupling*] or of a missing type.
+
+* *Primitive obsession*, a rich domain concept modeled with a bare string or integer, a form of xref:connascence.adoc[*connascence*] of meaning.
+
+* *Divergent change* and *shotgun surgery*, the two faces of badly distributed responsibility. One module changes for many unrelated reasons, or one change touches many modules.
+
+* *Feature envy*, a method more interested in another class's data than in its own.
+
+* *Speculative generality*, hooks and abstractions added for needs that have not arrived.
+
+* *Comments* that explains or apologizes for code that could instead be written to be cleaner in itself — the xref:clean-code.adoc[*clean code*] principle.
+
+The idea has since been stretched beyond individual functions and classes. *Design smells* and *architecture smells* apply the same diagnostic stance to modules, components, and the dependencies between them. A component that is both heavily depended on and heavily dependent, which the xref:stable-dependencies.adoc[*stable dependencies principle*] warns against, is one example. An ordering requirement hidden from a class's interface, a form of xref:temporal-coupling.adoc[*temporal coupling*], is another.
+
+A code smell is not the same thing as an xref:anti-pattern.adoc[*anti-pattern*], though the two are often mentioned together. An anti-pattern is a recognizable, recurring _solution_ that looks reasonable but often turns out badly. A smell is a _symptom_, a local observation that may or may not point at a real underlying problem. Thus, a *God object* is an anti-pattern that shows up as a large class smell.
+
+Some smells can be detected mechanically. xref:static-analysis.adoc[*Static analysis*] tools and linters flag long methods, deep nesting, high xref:cyclomatic-complexity.adoc[*cyclomatic complexity*], and copy-pasted blocks. Others, such as feature envy or divergent change, require more judgment.
+
+Left unaddressed, smells accumulate into xref:technical-debt.adoc[*technical debt*]. The xref:boy-scout-rule.adoc[*boy scout rule*] is the habit of clearing them a few at a time, as they are found.
+
+== References
+
+* Martin Fowler (1999).
+  _Refactoring: Improving the Design of Existing Code_.
+  Addison-Wesley.
+  Chapter 3, "Bad Smells in Code", with Kent Beck.
+
+* Martin Fowler (2006).
+  {link-fowler-code-smell}[_CodeSmell_].
+  martinfowler.com.
+
+* Ward Cunningham et al.
+  {link-c2-code-smell}[_Code smell_].
+  C2 wiki.
