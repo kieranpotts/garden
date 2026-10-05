@@ -1,0 +1,25 @@
+= Immutable infrastructure
+
+*Immutable infrastructure* is the practice of never modifying a server, virtual machine, or container once it has been deployed. To change anything – a configuration setting, a software upgrade, a security patch – a new instance is built from a fresh image that includes the change, the new instance replaces the old one, and the old one is discarded.
+
+The opposite is *mutable infrastructure*, where long-lived servers are patched and reconfigured in place.
+
+The practice addresses *configuration drift*. Servers that are changed over time by many hands and scripts diverge from one another and from their documented state, until nobody can say exactly what is running on any one of them, and no two can be relied on to behave identically.
+
+== Benefits
+
+* Deployments and rollbacks are simple and predictable, since a release is a replacement of instances and a xref:rollback.adoc[*rollback*] is simply a matter of redeploying the previous image. It underlies strategies such as xref:blue-green-deployment.adoc[*blue-green*] and xref:canary-deployment.adoc[*canary*] deployments.
+
+* Environments are reproducible, because the image is the single source of truth, built through an automated pipeline.
+
+* Security is easier to reason about, since an unexpected change to a running instance is by definition an anomaly, and a compromised instance can be replaced rather than cleaned.
+
+* It is a natural fit with xref:infrastructure-as-code.adoc[*infrastructure as code*] and xref:containerization.adoc[*containers*], and it follows the build, release, run separation of the xref:12-factor-app.adoc[*12-factor app*].
+
+== Costs
+
+The practice requires automation and discipline. Every change, however small, goes through the image build and deployment pipeline, so that pipeline must be fast and reliable.
+
+State cannot live on the instances, so data must be kept in external stores and services should be xref:stateless.adoc[*stateless*].
+
+Debugging by logging in to a server and making changes is discouraged, which means good xref:logging.adoc[*logging*] and xref:observability.adoc[*observability*] are needed to understand what a running instance is doing.
