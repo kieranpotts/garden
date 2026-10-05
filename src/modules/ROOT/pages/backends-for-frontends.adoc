@@ -1,0 +1,31 @@
+= Backends for frontends
+
+Backends for frontends (BFF) is an xref:architectural-pattern.adoc[*architectural pattern*] in which each user-facing application, or each distinct user experience, gets its own dedicated server-side back end, rather than all clients sharing one general-purpose API. The BFF sits between a single front end and the downstream xref:microservices.adoc[*services*] it depends on, and exists only to serve that front end's needs. The pattern was named by Sam Newman, drawing on work at REA and SoundCloud.
+
+== Motivation
+
+A single shared API back-end serving web, mobile, and third-party clients tends to become a bottleneck. Each client has different needs. A mobile app wants small payloads and few round-trips over a constrained network, while a desktop web UI can display more data at once. A general-purpose API is pulled in different directions by every client, and ends up either bloated or a poor fit for all of them.
+
+It is also an organizational chokepoint. When every front-end team needs changes in the same back-end, those changes queue behind one another and must be coordinated. The back-end becomes a shared dependency that couples otherwise independent teams, which is the xref:conways-law.adoc[*Conway's law*] problem that xref:micro-frontend.adoc[*micro front-ends*] address on the client side.
+
+== How it works
+
+Each BFF aggregates calls to the downstream services, runs them in parallel or in sequence as needed, tolerates partial failures, and shapes the response to suit its one client. The BFF is owned by the same team that builds the front-end it serves, so the UI and its server-side component can evolve together, without waiting on the teams that own the core services.
+
+The guiding rule is "one experience, one BFF." Strict implementations create a BFF per platform, such as iOS, Android, and web. A looser variant shares one BFF between similar experiences, such as the iOS and Android apps, which works only while those experiences stay alike and are managed by the same team.
+
+A BFF should contain only presentation-oriented logic, such as aggregation, translation, and payload shaping. Business rules belong in the downstream services, otherwise the BFFs become a new place for domain logic to be duplicated.
+
+== Relationship to other patterns
+
+An xref:api-gateway.adoc[*API gateway*] is a single, shared entry point for all clients, and it can also aggregate responses. A BFF inverts that. It is one of many entry points, each specific to a client. In practice the two are combined, with a gateway or xref:edge-proxy.adoc[*edge proxy*] at the perimeter handling cross-cutting concerns such as xref:authentication.adoc[*authentication*] and xref:rate-limiting.adoc[*rate limiting*], and BFFs behind it handling client-specific aggregation.
+
+xref:graphql.adoc[*GraphQL*] attacks the same problem by letting each client select the fields it needs from a single schema. It can serve as the implementation of a BFF, or as an alternative to having several of them.
+
+== Trade-offs
+
+* *Duplication.* Several BFFs may repeat the same aggregation and service-calling logic. Shared libraries reduce the duplication but reintroduce xref:coupling.adoc[*coupling*]. Pushing the common logic down into the core services is usually cleaner.
+
+* *Operational overhead.* Every BFF is another service to build, deploy, and run. The cost falls as the organization's microservices maturity rises.
+
+* *Diminishing value.* The pattern pays off with several distinct front ends and meaningful server-side aggregation. A single web application with little aggregation gains little from it.
