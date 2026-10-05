@@ -1,0 +1,21 @@
+= Database per service
+
+*Database per service* is a data management pattern in which each service in a xref:distributed-system.adoc[*distributed system*] owns its own private data store, and no other service accesses that store directly. Other services can reach the data only through the owning service's API or by consuming the events it publishes. It is the usual approach to data in xref:microservices.adoc[*microservices*].
+
+The alternative is a *shared database*, in which many services read and write the same tables. A shared database is simple to start with and keeps transactions straightforward, but it creates tight xref:coupling.adoc[*coupling*] between services. A change to a table schema can break every service that uses it, so services cannot be changed and deployed independently. The database also becomes a shared bottleneck and a xref:single-point-of-failure.adoc[*single point of failure*], and it can only be scaled as a whole.
+
+The pattern is a logical rule more than a physical one. Services may share one database server, provided each has its own schema or tables with access enforced, though separate servers give stronger isolation.
+
+== Benefits
+
+* Services are loosely coupled, because the schema is an internal implementation detail that can change without coordinating with other teams.
+
+* Each service can be scaled independently, and can use whichever kind of database best suits its workload, such as a xref:relational-database.adoc[*relational*] database for one service and a xref:nosql-database.adoc[*NoSQL*] database for another.
+
+* A failure or overload in one service's store does not directly affect the others, which supports xref:fault-tolerance.adoc[*fault tolerance*].
+
+== Challenges
+
+Splitting data across services gives up the single database's guarantees. A business operation that spans several services can no longer use one ACID xref:transaction.adoc[*transaction*], and must instead use a xref:distributed-transaction.adoc[*distributed transaction*] or, more commonly, a xref:saga.adoc[*saga*] of local transactions with compensating actions.
+
+Data that several services need must be replicated, typically via events, which makes the system xref:eventual-consistency.adoc[*eventually consistent*]. Queries that join data across services can no longer be done in the database, and need API composition or a read model such as that built with xref:cqrs.adoc[*CQRS*].
