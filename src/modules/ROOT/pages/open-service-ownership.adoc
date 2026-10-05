@@ -1,0 +1,28 @@
+= Open service ownership
+
+*Open service ownership* is a model in which anyone may change a xref:service.adoc[*service*]'s code base, rather than only the members of a single owning team. It suits services that don't map cleanly to one team's boundaries. An email service used by both a finance team and a customer-facing team is a typical example.
+
+Alternatives for such services include a dedicated **shared services team**, **temporary service ownership**, and a **roving custodian**. Open ownership takes the opposite approach to all of them. Source control is opened to a wide group across teams, and whoever needs a change makes it, instead of queueing a request with an owner. This also avoids the service becoming an xref:orphaned-service.adoc[*orphaned service*], since responsibility is deliberately shared.
+
+== Preconditions
+
+Open ownership only works when contributing is easy and safe.
+
+* *Self-service delivery.* Contributors need a way to release their own changes. With a mature xref:continuous-delivery.adoc[*continuous delivery*] pipeline, changes can ship with confidence, without orchestrating releases with other teams.
+
+* *Loose coupling.* If the service is tightly bound to other services, or a separate team handles production deployment, each change needs coordination, and the overhead can outweigh the benefit.
+
+* *A polished contribution path.* Documentation must be clear and include examples, and the build, test, and deployment process must be reliable.
+
+== Limitations
+
+Open ownership is a poor fit for a service that one team is changing heavily, because more contributors raise the chance of them getting in each other's way. Temporary service ownership is usually better in that situation.
+
+The central weakness is the lack of a clear custodian to set direction. Nobody decides which changes are acceptable, or enforces consistent idioms, so a code base can end up mixing programming styles and design patterns, and losing its *conceptual integrity*.
+
+A **roving custodian** is a variation that addresses this. Gatekeepers who don't belong to a dedicated team decide which changes are accepted.
+
+== See also
+
+* xref:cross-functional-team.adoc[*Cross-functional team*]
+* xref:microservices.adoc[*Microservices*]
