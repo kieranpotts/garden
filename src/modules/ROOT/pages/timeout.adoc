@@ -1,0 +1,19 @@
+= Timeout
+
+A *timeout* is a limit on how long a caller will wait for an operation to complete before giving up and treating it as failed. Timeouts apply to network connections, remote calls, database queries, lock acquisition, and any other operation whose duration depends on something outside the caller's control.
+
+Without a timeout, a caller that depends on a slow or unresponsive dependency waits indefinitely. Each waiting request holds on to a thread, connection, or other resource, and as requests accumulate the caller exhausts its own capacity and becomes unresponsive too. This is how a single slow dependency turns into a cascading failure across a xref:distributed-system.adoc[*distributed system*].
+
+A timeout converts an unbounded wait into a bounded, handleable error, in keeping with the xref:fail-fast.adoc[*fail-fast*] principle.
+
+== Choosing a timeout value
+
+A timeout that is too long fails to protect the caller. One that is too short produces false failures, and when combined with xref:retry.adoc[*retries*] it can amplify load on a dependency that is already struggling. Useful values are usually derived from measured xref:latency.adoc[*latency*], for example a little above the dependency's 99th percentile response time, and from the caller's own xref:service-level-agreement.adoc[*service level*] commitments.
+
+Distinct timeouts are commonly set for distinct phases of a call. A _connection timeout_ bounds the time to establish a connection, and a _read timeout_ bounds the time spent waiting for a response once connected. In a chain of calls, a _deadline_ passed down from the original caller lets every downstream service know how much time is left, so that none of them keep working on a request whose caller has already given up.
+
+A timeout tells the caller only that it stopped waiting, not whether the operation succeeded. The operation may still complete on the other side. Any retry after a timeout must therefore be safe to repeat – see xref:idempotent.adoc[*idempotent*] operations.
+
+== Role in resilience
+
+Timeouts are the foundation on which other xref:resilience.adoc[*resilience*] patterns are built. A xref:circuit-breaker.adoc[*circuit breaker*] typically counts timeouts as failures when deciding whether to trip. A xref:bulkhead.adoc[*bulkhead*] limits how many resources a slow dependency can tie up, and timeouts release those resources promptly. After a timeout, the caller can retry, or fall back to a degraded response as described in xref:graceful-degradation.adoc[*graceful degradation*].
