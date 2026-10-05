@@ -1,0 +1,35 @@
+= Branch by abstraction
+
+Branch by abstraction is a technique for making a large change to a system, such as replacing a library, a subsystem, or a service integration, while the code stays releasable throughout. Two implementations of the same functionality coexist in the same running process, behind a single xref:abstraction.adoc[*abstraction*]. The change is made in small steps, on the mainline, without a long-lived source control branch. The "branch" is in the code, not in the repository.
+
+The technique is a staple of xref:trunk-based-development.adoc[*trunk-based development*]. A long-lived side branch defers xref:continuous-integration.adoc[*integration*] until the work is finished, which makes for a painful xref:big-bang.adoc[*big-bang*] merge. Branch by abstraction keeps every intermediate state integrated, tested, and deployable.
+
+== How it works
+
+The usual sequence has five steps.
+
+1. Create an abstraction over the functionality to be replaced. This is typically an xref:interface.adoc[*interface*] that captures what the callers need from the existing implementation.
+
+2. Change the existing clients to call the abstraction instead of the old implementation directly. This is a pure xref:refactoring.adoc[*refactoring*], and it can be done a few callers at a time.
+
+3. Build the new implementation behind the same abstraction. It may be incomplete and unused for a long time, because nothing routes to it yet.
+
+4. Switch callers over to the new implementation, either all at once or gradually, using a xref:feature-flag.adoc[*feature flag*] to choose which implementation is live. If it misbehaves, flip the flag back.
+
+5. Once the old implementation is no longer used, delete it. Then remove the abstraction too, if it no longer earns its keep, along with the flag.
+
+The last step matters. Left behind, the old implementation, the flag, and a single-implementation abstraction are all xref:technical-debt.adoc[*technical debt*].
+
+== Trade-offs
+
+The technique keeps the system working at every commit and makes the cutover reversible, but it has costs. The abstraction must be designed to fit both implementations, and a poorly chosen one can turn into a xref:leaky-abstraction.adoc[*leaky abstraction*] that bends the new implementation to the old one's shape.
+
+For a while there is more code than before, and the team has to resist leaving the migration half-finished.
+
+It also requires a seam. Where the functionality is tangled through the codebase with no clean place to introduce the abstraction, the first refactoring step can be the hardest part of the whole change.
+
+== Relationship to the strangler fig pattern
+
+Branch by abstraction works inside a single process, at the level of code, to swap one implementation for another. The xref:strangler-fig-pattern.adoc[*strangler fig pattern*] works at the level of the system's boundary, intercepting requests and routing them to old or new systems.
+
+The two are complementary. When the functionality to be strangled is buried inside a xref:monolith.adoc[*monolith*], branch by abstraction is a way to prepare the ground, by creating a seam inside the monolith where the calls to a new service can later be substituted for the old in-process implementation.
