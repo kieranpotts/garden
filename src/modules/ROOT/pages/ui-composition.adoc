@@ -1,0 +1,15 @@
+= UI composition
+
+UI composition is the practice of building a xref:user-interface.adoc[*user interface*] from multiple separate parts that can be managed and deployed independently. What appears to the user as a single, seamless interface is in fact assembled from several xref:component.adoc[*components*].
+
+The components can be served from different backing systems, such as separate xref:microservices.adoc[*microservices*], and owned by different teams. Because each component can change independently of the others, teams can work in parallel and release when they are ready, rather than coordinating around a single shared front-end release. It is a form of xref:decomposition.adoc[*decomposition*] applied to the presentation layer, and it keeps the interface from becoming a xref:monolith.adoc[*monolith*] that couples otherwise independent teams.
+
+The principle is independent of technology. The parts can be assembled in several places.
+
+* *In the browser.* A page shell loads and mounts parts at run time, for example as Web Components, script bundles, or iframes. The xref:micro-frontend.adoc[*micro front-end*] pattern is the best-known approach.
+
+* *On the server.* Fragments supplied by different services are stitched into a page before it reaches the browser, using server-side templating, server-side or edge-side includes, or a xref:gateway.adoc[*gateway*] that aggregates responses. The browser receives a complete page, which helps performance and search indexing, but the assembling server becomes a shared integration point.
+
+* *Between pages.* Each team owns whole pages or sections of a traditional multi-page website, and plain links and shared navigation join them together. It is the simplest approach and gives strong team autonomy, but the seams between teams are visible to the user as full page loads.
+
+Each option trades integration effort against team autonomy. Whichever is chosen, cross-cutting concerns such as navigation, styling, and authentication need shared conventions to keep the result coherent.
