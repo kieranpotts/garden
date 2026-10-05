@@ -35,7 +35,7 @@ The three together express a finer-grained model than a single health endpoint c
 Health checks are not useful on their own; their value is in who consumes the result.
 
 * Load balancers poll backend health and stop routing traffic to nodes that fail, providing automatic xref:failover.adoc[*failover*] in an xref:active-active.adoc[*active-active*] topology.
-* Orchestrators use probe results to restart, reschedule, or drain containers, the self-healing half of their reconciliation loop.
+* Orchestrators use probe results to restart, reschedule, or drain containers, the xref:self-healing-system.adoc[*self-healing*] half of their reconciliation loop.
 * Monitoring and xref:alerting.adoc[*alerting*] systems record health-check transitions and raise alerts. A failing health check is a classic *symptom* rather than a cause, and so more actionable than an underlying CPU or memory reading.
 
 == Health checks and heartbeats

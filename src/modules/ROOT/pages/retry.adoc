@@ -2,7 +2,7 @@
 
 A retry mechanism is a way to handle transient failures in xref:distributed-system.adoc[*distributed software*]. When requests to services fail, the retry mechanism will automatically retry the request until it either succeeds or a retry threshold is reached.
 
-Retry mechanisms are useful in situations where you expect transient failures to occur. Transient failures are failures that occur sporadically and are not indicative of a permanent problem with the system – for example, network timeouts, `503 Service Unavailable`, or `429 Too Many Requests` responses. Permanent failures, such as `400 Bad Request` or `404 Not Found`, will never succeed on retry and should not be retried. Retry mechanisms should be used in conjunction with other error handling mechanisms, such as xref:logging.adoc[*logging*] and xref:monitoring.adoc[*monitoring*].
+Retry mechanisms are useful in situations where you expect transient failures to occur. Transient failures are failures that occur sporadically and are not indicative of a permanent problem with the system – for example, network xref:timeout.adoc[*timeouts*], `503 Service Unavailable`, or `429 Too Many Requests` responses. Permanent failures, such as `400 Bad Request` or `404 Not Found`, will never succeed on retry and should not be retried. Retry mechanisms should be used in conjunction with other error handling mechanisms, such as xref:logging.adoc[*logging*] and xref:monitoring.adoc[*monitoring*].
 
 There are two main ways to implement a retry mechanism:
 

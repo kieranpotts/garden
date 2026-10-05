@@ -50,7 +50,7 @@ Regular alert reviews – weekly or after each incident – catch drift before i
 
 Well-designed alerts connect detection to response. Each alert should carry enough context for the responder to start investigating without first reproducing the problem: the affected service, the triggering condition, and a link to a xref:runbook.adoc[*runbook*]. Severity levels, such as the SEV1 to SEV4 scheme common in incident management, communicate urgency and drive escalation paths.
 
-In systems that track *service level objectives (SLOs)*, alerting is tied to error budgets rather than fixed thresholds. Multi-window, multi-burn-rate alerting pairs a long window with a short one – eg. one hour and five minutes – and a high burn rate with a lower one. A page fires only when the error budget is consumed quickly across both windows, filtering transient spikes while still catching sustained regressions fast. Slower burns, detected over longer windows at lower burn rates, generate tickets instead of pages. This keeps pages tied to user impact rather than to arbitrary thresholds.
+In systems that track *service level objectives (SLOs)*, alerting is tied to xref:error-budget.adoc[*error budgets*] rather than fixed thresholds. Multi-window, multi-burn-rate alerting pairs a long window with a short one – eg. one hour and five minutes – and a high burn rate with a lower one. A page fires only when the error budget is consumed quickly across both windows, filtering transient spikes while still catching sustained regressions fast. Slower burns, detected over longer windows at lower burn rates, generate tickets instead of pages. This keeps pages tied to user impact rather than to arbitrary thresholds.
 
 ''''
 
