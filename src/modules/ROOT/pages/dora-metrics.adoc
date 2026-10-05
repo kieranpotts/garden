@@ -1,0 +1,31 @@
+= DORA metrics
+
+The *DORA metrics* are a small set of measures of software delivery performance, developed by the *DevOps Research and Assessment (DORA)* research programme, now part of Google Cloud. Years of survey research, published in the annual _State of DevOps_ reports and in the book _Accelerate_, found that these measures predict organizational performance, and that they are not in tension with one another. Teams that deliver fast also tend to deliver reliably.
+
+The measures cover two dimensions, throughput and stability.
+
+* *Deployment frequency* (throughput) is how often the team releases to production.
+
+* *Lead time for changes* (throughput) is how long it takes a code change to get from commit to running in production.
+
+* *Change failure rate* (stability) is the proportion of deployments that cause a failure in production and need remediation, such as a rollback or a hotfix.
+
+* *Time to restore service* (stability) is how long it takes to recover when a production failure occurs. It was earlier called _mean time to recover_ (MTTR), and was later renamed _failed deployment recovery time_ to refer specifically to failures caused by a deployment.
+
+A fifth measure, *reliability*, was later added to capture operational performance against targets such as an xref:service-level-objective.adoc[*SLO*].
+
+Teams are ranked into performance bands, from low to elite, according to where they sit on these measures. Elite performers deploy on demand and recover from failures in under an hour.
+
+== Using the metrics
+
+The metrics are intended to describe the delivery capability of a team or a service, and to track its improvement over time. They are not intended to rank or compare individuals or teams, or to serve as targets. Once a measure becomes a target it can be gamed – for example by splitting changes artificially to raise deployment frequency – which is an instance of xref:goodharts-law.adoc[*Goodhart's law*].
+
+The metrics are best treated as a diagnostic for finding bottlenecks in a delivery process, such as a slow xref:deployment-pipeline.adoc[*deployment pipeline*] or an unreliable test suite.
+
+The metrics are closely tied to practices such as xref:continuous-delivery.adoc[*continuous delivery*] and xref:ci-cd.adoc[*CI/CD*]. Small, frequent releases lower both the lead time and the risk of each change, and the ability to restore service quickly relies on xref:observability.adoc[*observability*] and automated xref:rollback.adoc[*rollback*].
+
+The metrics are also a staple of xref:value-stream-management.adoc[*value stream management*] and xref:devops.adoc[*DevOps*] measurement.
+
+== References
+
+* Forsgren, N, Humble, J, and Kim, G (2018). _Accelerate: The Science of Lean Software and DevOps_. IT Revolution Press.
