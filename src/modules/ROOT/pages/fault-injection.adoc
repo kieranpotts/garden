@@ -1,0 +1,11 @@
+= Fault injection
+
+*Fault injection* is the technique of deliberately introducing faults into a system, such as errors, delays, crashes, or corrupted data, in order to observe how it behaves and to verify that its error handling and recovery mechanisms work. It tests the paths that normal operation rarely or never exercises.
+
+Faults can be injected at many levels. Common kinds include terminating processes or virtual machines, adding network latency, dropping or corrupting packets, partitioning the network between nodes, returning error responses from a dependency, exhausting CPU, memory, or disk, and skewing system clocks.
+
+Faults can be injected into a running system by tooling that sits in the infrastructure or in a xref:service-mesh.adoc[*service mesh*], or built into the code under test, for example by replacing a dependency with a test double that fails on demand. In hardware and low-level software testing, faults are even injected by flipping bits in memory or registers.
+
+Fault injection is the mechanism at the heart of xref:chaos-engineering.adoc[*chaos engineering*], which wraps it in a disciplined experimental method involving a hypothesis about steady-state behavior, a limited blast radius, and observation of the results. Fault injection alone is simply the act of causing the failure, and can equally be used in ordinary automated tests, for example to confirm that a xref:circuit-breaker.adoc[*circuit breaker*] opens or that a xref:timeout.adoc[*timeout*] and xref:retry.adoc[*retry*] behave as designed.
+
+It complements xref:stress-testing.adoc[*stress testing*], which probes behavior under heavy load rather than under failure, and it is one of the main ways to validate xref:fault-tolerance.adoc[*fault tolerance*] and xref:resilience.adoc[*resilience*] claims. As with chaos experiments, it depends on good xref:observability.adoc[*observability*] to see what the injected fault actually did.
