@@ -1,0 +1,13 @@
+= Error budget
+
+An *error budget* is the amount of unreliability a service is allowed to have over a period before it breaches its xref:service-level-objective.adoc[*service level objective*]. It is calculated as 100% minus the SLO. A service with a 99.9% availability SLO over 30 days has a budget of 0.1%, which is about 43 minutes of downtime, or one failed request in every thousand.
+
+The idea reframes *reliability* as a resource to be spent, not a goal to be maximized. Failures are inevitable, and so is the risk that comes with change. Deployments, experiments, and migrations all carry some chance of causing errors. The budget makes that risk explicit, and gives product and engineering teams a shared, objective basis for deciding how much of it to take.
+
+== Using the budget
+
+While budget remains, a team can ship features and take risks at a fast pace. When the budget is exhausted, the agreed response is to slow down, to freeze non-essential releases and redirect effort to reliability work until the service is back within its objective. This turns the usual argument between teams that want velocity and teams that want stability into a rule that both have agreed to in advance. A service that consistently ends its period with most of its budget unspent is probably too reliable, which means it is over-invested in reliability or too cautious about releasing changes.
+
+Budget consumption is tracked as a *burn rate*, the speed at which the budget is being used relative to the rate that would exactly exhaust it by the end of the period. xref:alerting.adoc[*Alerting*] on high burn rates over multiple time windows pages people only when the SLO is genuinely at risk. Planned activities such as xref:chaos-engineering.adoc[*chaos experiments*] and risky xref:deployment-strategy.adoc[*deployments*] are deliberately spent from the budget.
+
+The error budget is sometimes described as the gap between an SLO and an SLA. That is a different quantity, the safety margin between an internal target and a contractual one. The budget is measured against the SLO.

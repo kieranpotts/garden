@@ -1,0 +1,21 @@
+= Service level objective (SLO)
+
+A *service level objective (SLO)* is a target value, or range of values, for a measurable aspect of a service's reliability, such as "99.9% of requests succeed over a rolling 30 days" or "95% of requests complete in under 300 milliseconds." It states, in numbers, how reliable a service needs to be, and it is the yardstick that teams use to decide whether a service is reliable enough.
+
+An SLO is defined in terms of one or more *service level indicators (SLIs)*, which are the measurements themselves. An SLI is usually expressed as the proportion of "good" events out of all valid events, for example successful responses out of all requests, or requests served within a latency threshold out of all requests.
+
+Good SLIs are chosen to reflect what users experience, measured at the service boundary, rather than internal resource metrics such as CPU use. Typical categories are availability, latency, throughput, error rate, and correctness or freshness for data-processing systems. The raw measurements come from xref:metrics.adoc[*metrics*] and xref:telemetry.adoc[*telemetry*].
+
+An SLO is an internal engineering target. It is distinct from a xref:service-level-agreement.adoc[*service level agreement*], which is an external contractual promise with consequences for missing it. An SLO is normally set stricter than any SLA derived from it, leaving a safety margin.
+
+== Setting a target
+
+Choosing the number is a trade-off between user expectations and cost. Each additional "nine" of availability costs disproportionately more engineering effort and slows the pace of change, and users often cannot perceive the difference, since their own devices and networks are less reliable than the service.
+
+The target should therefore be the lowest level that keeps users satisfied, not the highest that can be achieved. A target of 100% is almost never right, and the practical ceiling is set by the reliability of the service's dependencies. Targets are usually revisited as usage and expectations change.
+
+== What SLOs are used for
+
+The gap between 100% and the SLO is the xref:error-budget.adoc[*error budget*], which turns the SLO into a decision-making tool. SLOs also drive xref:alerting.adoc[*alerting*], by paging people when the budget is being consumed too quickly rather than on every blip in a raw metric.
+
+Because an SLO depends on measurement, it is a primary use of xref:observability.adoc[*observability*] and a core practice of xref:site-reliability-engineering.adoc[*site reliability engineering*].
