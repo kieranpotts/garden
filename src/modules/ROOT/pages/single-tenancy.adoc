@@ -1,0 +1,11 @@
+= Single tenancy
+
+Single tenancy is a deployment model in which each customer, or *tenant*, gets its own copy of the software, and no running component is shared between customers. The isolation may be drawn at different levels. A separate instance of an application service, a separate virtual machine or container, or dedicated hardware. It is the simplest tenancy model to reason about, but the most expensive to operate. It is the opposite end of the spectrum from xref:multi-tenancy.adoc[*multi-tenancy*], where one deployment serves many tenants.
+
+The main benefit is strong xref:isolation.adoc[*isolation*]. A bug in tenant scoping, a compromised node, or a runaway workload can only affect the one customer whose stack the issue lives in. The blast radius of most failures is a single tenant. Customers with strict xref:privacy.adoc[*privacy*] or xref:compliance.adoc[*compliance*] requirements, such as those that demand their data never share a database or host with anyone else's, can be served without special cases in the application's design.
+
+The costs are higher resource consumption, because every tenant carries the overhead of a full stack even when idle, and higher operational effort, because every tenant's stack must be provisioned, monitored, patched, and upgraded. Resilience can also be lower than in a shared deployment, where load is spread over more machines. Fine-grained xref:microservices.adoc[*microservices*] amplify the overhead, since each tenant needs an instance of every service, so single-tenant systems often favor a coarser-grained xref:monolith.adoc[*monolith*] to keep the per-tenant footprint down. Automation that treats every tenant's stack as one fleet, upgraded in lockstep, keeps the operational burden manageable.
+
+== When to use it
+
+Single tenancy is a common fit when an existing product that was never designed for sharing is moved to a xref:software-as-a-service.adoc[*SaaS*] delivery model, because retrofitting multi-tenancy is difficult. It is also the pragmatic choice where customers' security concerns about shared infrastructure outweigh the extra cost. Where only some parts of a system need this level of isolation, xref:hybrid-tenancy.adoc[*hybrid tenancy*] applies it selectively.

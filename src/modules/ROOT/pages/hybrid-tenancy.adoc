@@ -1,0 +1,11 @@
+= Hybrid tenancy
+
+Hybrid tenancy mixes xref:single-tenancy.adoc[*single-tenant*] and xref:multi-tenancy.adoc[*multi-tenant*] deployment within one system. Each component uses whichever tenancy model suits the data and workload it handles, so the system as a whole gets some of the isolation of the former and some of the economy of the latter.
+
+For example, a medical system might run the service that holds sensitive patient lab results as a dedicated instance per customer, while a shared service handles less sensitive enrollment data for all customers at once. The split is usually drawn along data-sensitivity or compliance lines, with the strongest xref:isolation.adoc[*isolation*] reserved for the places where a leak would do most harm.
+
+Because a single customer request can touch both kinds of component, something must direct it to the right instance. A xref:api-gateway.adoc[*gateway*] or xref:reverse-proxy.adoc[*reverse proxy*] typically does this, identifying the customer from the request URI, a header, or an authentication token, and forwarding to that customer's instance of a single-tenant service, or to the shared instance of a multi-tenant one. The same layer can launch per-customer instances on demand and retire idle ones, which recovers some of the cost lost to dedicated deployments.
+
+== Trade-offs
+
+Hybrid tenancy adds routing logic at every service boundary and means the system has two operational models to run, instead of one. It does not remove the risks of sharing. The multi-tenant components still need tenant scoping on every request, and the APIs between the two kinds of component must be designed so that a request carrying one customer's identity can never be used to reach another's data. See xref:authorization.adoc[*authorization*].

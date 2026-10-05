@@ -1,10 +1,10 @@
-= Multi-tenant
+= Multi-tenancy
 
 :link-microsoft-learn: https://learn.microsoft.com/en-us/azure/architecture/guide/multitenant/overview
 
 A multi-tenant system is one in which a single deployment of software serves multiple distinct customers, or *tenants*, from shared infrastructure. A tenant is a group of users who share a common view of the system and a common data space, typically an organization, company, or business unit. Tenants are distinct from users. A single tenant usually contains many users, and those users expect their data and configuration to be isolated from every other tenant's.
 
-Multi-tenancy is the architectural property that makes xref:software-as-a-service.adoc[*Software-as-a-service (SaaS)*] economically viable. By sharing one deployment across many tenants, the provider spreads infrastructure and operational costs that would otherwise be paid per customer. The alternative, a dedicated deployment per tenant, is sometimes called single-tenant or *silo* tenancy. It is simpler to reason about but loses the cost and operational advantages of sharing.
+Multi-tenancy is the architectural property that makes xref:software-as-a-service.adoc[*Software-as-a-service (SaaS)*] economically viable. By sharing one deployment across many tenants, the provider spreads infrastructure and operational costs that would otherwise be paid per customer. The alternative, a dedicated deployment per tenant, is xref:single-tenancy.adoc[*single tenancy*], sometimes called *silo* tenancy. It is simpler to reason about but loses the cost and operational advantages of sharing. Mixing the two within one system is xref:hybrid-tenancy.adoc[*hybrid tenancy*].
 
 == Tenancy isolation models
 
@@ -26,13 +26,23 @@ The central design tension in multi-tenancy is between the efficiency of sharing
 
 Stronger isolation models shrink the blast radius by reducing what is shared. xref:cell-based-architecture.adoc[*Cell-based architecture*] takes this to its logical extreme by partitioning the entire stack — compute, storage, and network — into cells, often along tenant boundaries, so that a failure in one cell cannot reach another. Weaker models accept a larger blast radius in exchange for lower cost and simpler operations.
 
+== Choosing a model
+
+Multi-tenancy is the natural choice for a new SaaS product designed for sharing from the start, particularly in a competitive market where efficiency drives margin. Pooling tenants also lets the provider scale up to larger machines rather than run many small ones. It suits customers who accept shared infrastructure, and it is a poor fit for those with strict data-isolation requirements.
+
+It is hard to retrofit. An application written on the assumption of one customer per deployment typically has tenant-blind data access, global configuration, and caches that need rework before sharing is safe, which is why products migrating to SaaS often start as single-tenant. Where isolation requirements are uneven across a system's components or customers, hybrid tenancy is usually a better answer than choosing one model for everything.
+
+== Risks of sharing
+
+The cost saving comes with concentrated risk. A single breach, or a single missed tenant predicate, can expose every customer's data, rather than just one customer's. Multi-tenant systems are also exposed to confused-identity attacks, where a request authenticated as one tenant is tricked into acting on another's resources, so tenant identity must be established at the edge and carried unambiguously through every internal call, rather than re-derived from user-supplied input.
+
 == Access control
 
-Sharing infrastructure also raises the stakes on access control. Every request must be scoped to the requesting tenant, and every query must carry a tenant predicate that the database cannot accidentally drop. See xref:authorization.adoc[*authorization*]. In xref:role-based-access-control.adoc[*role-based access control*] deployments, the tenant identifier scopes every role lookup, so a role name in one tenant is a distinct assignment from the same name in another. An *insecure direct object reference* flaw that, in a single-tenant system, only exposes one customer's data to its own users becomes a cross-tenant data leak in a multi-tenant system – a xref:privacy.adoc[*privacy*] failure, not just a security one.
+Sharing infrastructure also raises the stakes on access control. Every request must be scoped to the requesting tenant, and every query must carry a tenant predicate that the database cannot accidentally drop. See xref:authorization.adoc[*authorization*]. In xref:role-based-access-control.adoc[*role-based access control*] deployments, the tenant identifier scopes every role lookup, so a role name in one tenant is a distinct assignment from the same name in another. An *insecure direct object reference* flaw that, in a single-tenant system, only exposes one customer's data to its own users, becomes a cross-tenant data leak in a multi-tenant system – a xref:privacy.adoc[*privacy*] failure, not just a security one.
 
 == Enabling technologies
 
-Multi-tenancy at scale is enabled by xref:virtualization.adoc[*virtualization*], xref:containerization.adoc[*containerization*], and xref:container-orchestration.adoc[*container orchestration*], which make it cheap to provision and operate many isolated runtime environments on shared hardware. Multi-tenant applications are commonly built as xref:microservices.adoc[*microservices*] or other xref:service-oriented-architecture.adoc[*service-oriented*] styles so that individual components can be scaled and isolated independently of the others.
+Multi-tenancy at scale is enabled by xref:virtualization.adoc[*virtualization*], xref:containerization.adoc[*containerization*], and xref:container-orchestration.adoc[*container orchestration*], which make it cheap to provision and operate many isolated runtime environments on shared hardware. Multi-tenant applications are commonly built as xref:microservices.adoc[*microservices*] or other xref:service-oriented-architecture.adoc[*service-oriented*] styles, so that individual components can be scaled and isolated independently of the others.
 
 == See also
 

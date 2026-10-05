@@ -18,7 +18,7 @@ Cell-based architecture combines two ideas that are often kept separate: xref:re
 
 A cell fuses the two. Each cell holds a partition of the data and the full redundant stack needed to serve it, so failure isolation and data partitioning reinforce each other. The result is a system that scales xref:horizontal-scaling.adoc[*horizontally*] by adding cells, gains xref:fault-tolerance.adoc[*fault tolerance*] from the redundancy between them, and keeps xref:availability.adoc[*availability*] high by routing around any cell that goes bad.
 
-The pattern is especially common in large-scale xref:multi-tenant.adoc[*multi-tenant*] SaaS, where partitioning by tenant makes both the routing rule and the failure boundary natural. Each tenant lives in one cell, so an incident affecting one tenant's data or workload is contained to that tenant's cell. Cloudflare and several large cloud providers have publicly described their platforms in cell-based terms.
+The pattern is especially common in large-scale xref:multi-tenancy.adoc[*multi-tenant*] SaaS, where partitioning by tenant makes both the routing rule and the failure boundary natural. Each tenant lives in one cell, so an incident affecting one tenant's data or workload is contained to that tenant's cell. Cloudflare and several large cloud providers have publicly described their platforms in cell-based terms.
 
 == Trade-offs
 
