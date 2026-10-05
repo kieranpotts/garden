@@ -1,0 +1,33 @@
+= Orphaned service
+
+An *orphaned service* is a xref:service.adoc[*service*] that is still running, and still depended upon, but which no team clearly owns. Nobody has the responsibility, or the authority, to change it, so the first time someone needs to make a change they can't find out who to ask.
+
+Services are normally owned by a single team that is allowed to change them. A service can also be owned by everyone, as in *open service ownership*, where anybody may propose a change. An orphaned service is the third case. It is owned by nobody.
+
+== Causes
+
+Ownership rarely lapses through a conscious decision. It usually erodes through one of the following.
+
+* *Team disbandment.* The team that built the service is broken up, or is reassigned elsewhere, without handing the service over.
+
+* *Organizational change.* A team's responsibilities shift, so that it no longer works on the area of the system the service belongs to.
+
+* *Stability.* A service that works well needs few changes. Years can pass with no one touching it, during which the people who knew it move on, and the question of who owns it is never asked until it matters.
+
+* *Project-based delivery.* Organizations that carry out work as projects assemble teams for a short time and disband them once the goal is met. Whatever they built is left behind with no one to look after it. By contrast, organizations that take a product-oriented approach assign teams to an area of the business over the long term, so ownership follows the domain. A team looking after customer intelligence owns every system that serves it.
+
+== Consequences
+
+An orphaned service can't be changed safely, because there's nobody to review the change or to answer for it. Security patches and dependency upgrades go unapplied, incidents have no one to respond to them, and the knowledge of how the service works fades, which is a form of xref:bus-factor.adoc[*bus factor*] risk.
+
+== Remedies
+
+When a change to an orphaned service is needed, there are two broad options.
+
+* *Temporary service ownership.* For a short-term change, a team agrees to take on the service for the duration of the work, then hands it back or retires it.
+
+* *Establish a durable ownership model.* Use the occasion to assign the service to a long-lived team, so that every service has a named owner. Aligning services to xref:cross-functional-team.adoc[*cross-functional teams*] on the "you build it, you run it" principle of xref:devops.adoc[*DevOps*] makes orphaning less likely in the first place.
+
+== See also
+
+* xref:microservices.adoc[*Microservices*]
