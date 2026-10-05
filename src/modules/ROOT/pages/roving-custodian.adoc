@@ -1,0 +1,17 @@
+= Roving custodian
+
+A *roving custodian* is a gatekeeper who vets changes to a service they don't formally own. A service managed this way has a set of custodians, drawn from teams across the organization rather than from one dedicated team. Anyone who wants to change the service finds a custodian, or submits a pull request in an internal open source style, and a custodian decides whether the change is acceptable.
+
+The model borrows from open source, where outside contributors submit pull requests that a core group of maintainers reviews and merges. It's a way of keeping a service maintained, so that it doesn't decay into an xref:orphaned-service.adoc[*orphaned service*], without assigning it to a team. It's most useful where services are small and short-lived, as in a xref:microservices.adoc[*microservices*] architecture, or where the team that built a service was disbanded when its project ended.
+
+Compared with xref:open-service-ownership.adoc[*open service ownership*], it adds a quality gate. Custodians can keep changes consistent and the service maintainable, at the cost of maintaining a list of custodians and the tooling to enforce it. Compared with xref:temporary-service-ownership.adoc[*temporary service ownership*], it gives the service a continuing point of oversight instead of handing it to whichever team happens to need a change.
+
+== Costs
+
+The custodians belong to other teams, so the organization must accept that looking after these services is part of their job. They need time to review pull requests, to work with contributors, and to meet when required.
+
+Tooling is needed in two places.
+
+* *Vetting changes.* A code review system lets a custodian approve or reject each change.
+
+* *Recording ownership.* The organization must record who the custodians are. An `AUTHORS` or `CODEOWNERS` file, in the root directory of source code repositories, may be used for this purpose. Code review systems may be configured to require approval from an author/codeowner, before a change can be merged.
