@@ -1,0 +1,17 @@
+= Self-healing system
+
+A *self-healing system* detects its own faults and recovers from them automatically, without waiting for a human to intervene. The aim is to shorten the time between a failure and its repair, and to keep that repair from depending on whoever happens to be on call. It is one way of achieving xref:fault-tolerance.adoc[*fault tolerance*] and xref:resilience.adoc[*resilience*].
+
+Self-healing is built from a loop of detection, diagnosis, and remediation. Detection relies on xref:system-health-check.adoc[*health checks*], xref:heartbeat.adoc[*heartbeats*], and xref:monitoring.adoc[*monitoring*] that notice a component has failed or is degraded. Remediation is typically one of a small set of mechanical responses: restarting a failed process or container, replacing a failed instance, rescheduling workloads away from a failed node, shifting traffic to healthy replicas by xref:failover.adoc[*failover*], rolling back a bad release, or adding capacity through xref:auto-scaling.adoc[*auto-scaling*]. At the application level, xref:retry.adoc[*retries*], xref:circuit-breaker.adoc[*circuit breakers*], and xref:graceful-degradation.adoc[*graceful degradation*] let software recover from transient faults in the same spirit.
+
+xref:container-orchestration.adoc[*Container orchestrators*] are the best-known example. They continuously compare the declared desired state of a system with its observed state, and act to close any difference, which is a control loop. The same design underlies the xref:crash-only.adoc[*crash-only*] approach, where recovery is always by restart, so that the recovery path is the normal one and is well exercised.
+
+== Limits
+
+Automation can only heal failures it was designed to expect. It handles well-understood, repeatable faults, and escalates the rest to people, usually through xref:alerting.adoc[*alerts*] and xref:runbook.adoc[*runbooks*].
+
+Poorly designed remediation can make an incident worse, for example by restarting a service in a loop, or by scaling up and overloading a shared dependency.
+
+Healing can also hide a recurring fault, so repeated automatic recoveries should themselves be surfaced and investigated.
+
+Like other recovery mechanisms, self-healing is only trustworthy once it has been exercised with xref:fault-injection.adoc[*fault injection*] or xref:chaos-engineering.adoc[*chaos experiments*].
