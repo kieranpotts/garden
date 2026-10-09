@@ -66,6 +66,62 @@ It is useful to think of open-weight models as falling into a spectrum of size t
 To estimate whether your own hardware can run a given model — accounting for quantization level (Q4–F16), context length, and expected token throughput (TPS) — try the {link-vram-calculator}[Local AI VRAM Calculator & GPU Planner]. It maps a hardware setup and use case to model recommendations, with the caveat that the figures are planning estimates, not performance guarantees.
 ====
 
+=== System RAM for loading a model
+
+VRAM is not the only constraint. Even when all GPU memory is dedicated to inference and the quantized model fits in it, the machine needs enough system RAM to load the model in the first place. These are approximate figures for models quantized to about 4 bits (eg Q4_K_M):
+
+[cols="1,1,3"]
+|===
+|Model size (parameters) |Approx. weight size |Typical system RAM needed for loading
+
+|7–8B
+|~5 GB
+|*12–16 GB*. Enough for the checkpoint, staging buffers, and a modest context window.
+
+|13–14B
+|~9 GB
+|*24 GB*. Covers the larger weight file and extra KV cache space for typical prompts.
+
+|30–32B
+|~20 GB
+|*48 GB*. Needed to load the model and keep the KV cache for normal context lengths.
+
+|70–72B
+|~42 GB
+|*64 GB+*. The model plus context storage, especially with context windows beyond 4K tokens.
+
+|120B (eg `gpt-oss-120b`)
+|~63 GB
+|*64 GB* minimum. Any extra RAM helps with larger contexts or concurrent applications.
+|===
+
+[NOTE]
+====
+The weight sizes are close to real file sizes. The RAM figures are conservative planning estimates, not measured minimums. Runtimes such as llama.cpp memory-map the model file, so with the model fully offloaded to the GPU, actual system RAM use is often well below the size of the weights.
+====
+
+System RAM matters even when VRAM does the inference because:
+
+* The model file is read from disk and passes through system memory on its way to the GPU.
+
+* The runtime may create intermediate staging buffers during the transfer, for example to convert the weight layout, which add to the memory needed at load time.
+
+* The KV cache (the attention state kept for each token of context) can spill into system RAM when VRAM runs short, and it grows with context length.
+
+* The operating system and other processes need headroom, or they will trigger out-of-memory crashes.
+
+As a rule of thumb:
+
+* *Small models (up to 8B)*: 16 GB of RAM is comfortable.
+
+* *Mid-size models (around 14B)*: 24–32 GB.
+
+* *Large models (30–70B)*: 48 GB is the safe minimum, or 64 GB for 70B and up.
+
+* *Very large models (100B+)*: 64 GB or more, and preferably 128 GB for long contexts or running multiple models.
+
+With much less RAM than this, loading can fail with out-of-memory errors, or slow to a crawl through swapping, even if the GPU has enough VRAM for the quantized model. Adding RAM is the most straightforward way to widen the range of models you can run locally.
+
 Custom hardware like the {link-dgx-spark}[Nvidia DGX Spark] give you the ability to run _and train_ large language models on your own hardware.
 
 == Open-weight model families
