@@ -16,6 +16,11 @@
 :link-deepseek:        https://www.deepseek.com/
 :link-minimax:         https://www.minimax.io/
 :link-hardware-guide:  https://www.local-llm.net/learn/hardware-requirements/
+:link-zeta:            https://huggingface.co/zed-industries/zeta-2.1
+:link-sweep-next-edit: https://huggingface.co/sweepai
+:link-instinct:        https://huggingface.co/continuedev/instinct
+:link-mercury-edit:    https://inceptionlabs.ai/blog/introducing-mercury-edit-2
+:link-copilot-nes:     https://githubnext.com/projects/copilot-next-edit-suggestions/
 
 *Open-weight* models are xref:large-language-model.adoc[*large language models*] (or other machine learning models) whose trained weights are published for anyone to download and run. This is distinct from *open-source*, which also requires the training data and the code used to produce the model to be public.
 
@@ -253,6 +258,19 @@ Not all of them support *tool calling* (also called function calling) – the ab
 +
 *Tool calling*: Not supported. Meta defined no native tool-calling format for this release. The later, general-purpose Llama 3.x Instruct models are the better choice if tool calling is required from the Llama family.
 
+== Open-weight edit prediction models
+
+*Edit prediction* (also called *next-edit suggestion*) is a narrower task than code completion. Rather than inserting text at the cursor, the model predicts the developer's next change anywhere in a region around the cursor, from the surrounding code and the recent edit history. The change can be a deletion or a rewrite as well as an insertion. The editor offers it inline, to be accepted with a keystroke.
+
+The models are small, because a suggestion is only useful if it arrives within a few hundred milliseconds. Each one is trained on its own prompt format, so the editor must know the format of the model it is driving. None of them supports tool calling, or is suited to chat or agentic use.
+
+* *{link-zeta}[Zeta 2.1]*: Zed Industries' 8B model, released in May 2026 and fine-tuned from ByteDance's Seed-Coder-8B-Base. It is the default edit prediction model in the xref:integrated-development-environment.adoc[*Zed*] editor. Its "multi-region" prompt format has the model output only the span it wants to change, which cuts output to about 90 tokens per prediction on average, a third of what Zeta 2 emitted. Takes about 5 GB at 4-bit quantization. Community GGUF builds can be served by llama.cpp or Ollama, and the original weights by vLLM. Apache 2.0 license.
+
+* *{link-sweep-next-edit}[Sweep Next-Edit]*: A family of models from Sweep, fine-tuned from Qwen2.5-Coder and built for the company's JetBrains plugin. The 0.5B and 1.5B models, released in January 2026, are distributed as GGUF files and are small enough to run on a laptop. Sweep claims that the 1.5B model responds in under 500 ms and beats models more than four times its size on next-edit benchmarks. A larger 7B second version followed in May 2026. Zed supports the Sweep prompt format, so these models can also be used there. Apache 2.0 license.
+
+* *{link-instinct}[Instinct]*: Continue's model, released in 2025 and fine-tuned from Qwen2.5-Coder-7B on a dataset of real-world code edits. It powers the next-edit feature of the Continue extension for VS Code and JetBrains. Available through Ollama as a 4-bit quantization. Apache 2.0 license.
+
+The main proprietary alternatives are Inception's {link-mercury-edit}[Mercury Edit 2], a diffusion model that generates its output tokens in parallel, not one at a time, and GitHub's {link-copilot-nes}[Copilot Next Edit Suggestions]. Both are available only as hosted services. Completion models such as Codestral, above, can stand in for a dedicated edit prediction model, but they can only insert text at the cursor.
 
 == See also
 
