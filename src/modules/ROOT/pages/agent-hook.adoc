@@ -1,0 +1,7 @@
+= Agent hook
+
+An *agent hook* is a program that an xref:agent-harness.adoc[*agent harness*] runs automatically at a defined point in the xref:agent-loop.adoc[*agent loop*]. Typical trigger points are before a tool call, after a file is written, when a session starts, and when it ends. The harness acts on the hook's exit status, so the outcome does not depend on the model's cooperation.
+
+Hooks turn a wish into a guarantee. A hook that runs before an action and can block it is an enforced guide. For example, it can refuse any shell command that touches a protected path. A hook that runs after an action is an enforced deterministic sensor, such as a linter or formatter that runs after every file edit and feeds failures back to the agent.
+
+An instruction in a rule file asking the model to always run the tests may be forgotten. A hook that runs them is not. Hooks are written as ordinary scripts and configured in the harness, so they run with the user's privileges and deserve the same review as any other code.
