@@ -138,6 +138,8 @@ A token is a chunk of text, typically a word, part of a word, or a punctuation c
 
 Tokens are the unit of measurement for both input (the prompt) and output (the response). LLM pricing is typically quoted per million tokens (eg. $1.50/1M input, $3.25/1M output). A model's context window (see below) and other capabilities are also measured in tokens. The distinction between input and output tokens matters for billing, since output is typically billed at several times the input rate — see below.
 
+A model never sees words, sentences, or images as people do, only the tokens that text and images are encoded into. Meaning, to a model, is a matter of which tokens tend to follow which, learned across an enormous corpus. This is why a model can be fluent in the shape of a language while missing a fact any human would catch, and why the limits of what it does well track the statistics of its training data rather than any human sense of what is easy or hard. It also means that no two models are alike. Each is trained on a different corpus and tuned by different hands, so each arrives with its own idiosyncratic profile of strengths, weaknesses, and habits. Two capable models given the same task can produce noticeably different work, and a model that is strong at one kind of problem may be unremarkable at another.
+
 == Embeddings
 
 Before a model can process tokens, the tokens must first be converted into a numerical form. An *embedding* is this numerical representation of a token. An embedding is a vector — a list of floating-point numbers — where each value captures some aspect of the token's meaning.
@@ -288,6 +290,8 @@ The same input can produce different output. Because the model samples from a pr
 
 Provider-side serving adds further variation: request batching and floating-point differences mean even a fixed temperature is not perfectly reproducible. Expect a spread of responses across runs; most cluster together, but the tails are real. Retrying is a legitimate response to a bad result, and a string of poor runs is not evidence that "the model got worse" — it may just be an unlucky sample. Don't over-narrativize a few bad runs into a trend.
 
+Non-determinism is also why a model cannot be trusted to check its own work. A tool whose output varies from run to run, and which can be confidently wrong, shares its flaw with any second opinion from another model. Correctness has to be established by something that does not share that flaw: a human, or a deterministic check whose verdict is the same every time. Wrapping a model in an agent harness makes its outcomes more predictable, but predictability there is engineered around the model, not a property of it. The guards raise the floor without removing the need to verify.
+
 == Effort
 
 *Effort* is a dial for how much reasoning a model does before it answers. Set per request, it controls the length of the chain-of-thought the model works through before writing the visible response. Higher effort costs more, because the reasoning is emitted as output tokens that are billed even when hidden from the user, and it runs slower.
@@ -308,6 +312,10 @@ Hallucinations come in two flavors, and the distinction matters because the fixe
 
 Misdiagnosing a faithfulness problem as a factuality problem leads you to paste in more documentation, growing the context and making the drift worse. Before reaching for a fix, check whether the correct information was already in the context — if it was, the problem is faithfulness, not factuality.
 
+A subtler variant is *mis-remembering*. A fact, constraint, or value given correctly earlier in the context can come back subtly altered, and stated with the same confidence as everything else. Unlike a blank, which at least gets noticed, a corrupted detail passes unflagged. It becomes more likely the longer a session runs and the fuller the context gets, so a vital detail should be checked against its source rather than trusted to the model's recall, however sure the model sounds.
+
+A model will also fabricate an account of _how it arrived at an answer_, just as readily as it fabricates the answer. Asked to explain its reasoning, it produces a fluent, plausible rationale, but that rationale is generated after the fact by the same next-token prediction as everything else. It is not read off any record of what happened. Unlike traditional software, a model keeps no stack trace and no inspectable record of its deliberation. Its reasoning tokens improve results (see Effort, below) but are not a truthful log of a decision procedure. A model's self-explanation is another plausible generation to be verified, not privileged insight into its own workings.
+
 Hallucinations are an inherent limitation of how LLMs work, not a bug that can be fully fixed. The practical mitigations are:
 
 * Setting lower temperatures to sample only the highest-probability next tokens.
@@ -320,6 +328,8 @@ Hallucinations are an inherent limitation of how LLMs work, not a bug that can b
 
 The diagnostic for sycophancy is to ask whether the model would have said the same thing without your steer. If not, the agreement is sycophancy. The fix is to hide preferences and phrase prompts neutrally, so the model has nothing to flatter. The term should not be stretched to cover any wrong answer that happens to please you — without that diagnostic, it has no value.
 
+The same suggestibility extends to emotional register. A model that sounds hurt, enthusiastic, apologetic, or reassured has no inner state answering to those words. The tone is generated from the context like any other token, and it mostly mirrors the tone the user brought: warmth tends to be met with warmth, and hostility with defensiveness. Flattery, urgency, guilt, or insistence will visibly shift a model's output, because each is simply more context steering the next token, not a mind being persuaded. So a model's tone is not evidence of a state behind it, and being firm, kind, or stern with it does not change what it is. See the xref:eliza-effect.adoc[*ELIZA effect*], the human tendency to read a mind into fluent output.
+
 == Computational irreducibility
 
 Some tasks like multi-digit arithmetic, tracing the execution of a novel algorithm, or simulating a complex system step-by-step, cannot be shortcut using LLMs due to their inherent limitations.
@@ -329,6 +339,8 @@ LLMs are trained to recognize and extrapolate statistical patterns, not to carry
 {link-wolfram-chatgpt}[Stephen Wolfram calls this property] *computational irreducibility*.
 
 This is one reason xref:agent.adoc[*agentic systems*] pair LLMs with external tools such as calculators, code interpreters, and REPLs. The idea is to offload irreducible computation to a traditional system which can actually execute the computation, rather than asking the model to predict the answer token by token.
+
+A game as simple as noughts-and-crosses (tic-tac-toe) shows the gap. A model can play a passable game, but it will also, unpredictably, play an illegal move or miss a forced win that ten lines of deterministic code would never miss. It is matching patterns of plausible moves rather than searching the game tree, and no amount of fluency substitutes for exact bookkeeping. The point is not that a model cannot do such work, but that it cannot be _relied on_ to do it, which for rule-bound tasks amounts to the same thing. Where a task is exact and repeatable, a script is the better tool.
 
 == Retrieval-augmented generation (RAG)
 
@@ -422,6 +434,7 @@ Although it is possible to interact with a model directly, for most use cases yo
 * xref:ai-coding-assistant.adoc[*AI coding assistant*]
 * xref:artificial-intelligence.adoc[*Artificial intelligence (AI)*]
 * xref:open-weight-model.adoc[*Open-weight model*]
+* xref:turing-test.adoc[*Turing test*]
 
 == References
 
