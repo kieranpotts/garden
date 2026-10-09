@@ -1,0 +1,9 @@
+= Runaway loop
+
+A *runaway loop* is a failure mode in which an xref:agent.adoc[*agent*] repeats the same action without making progress, burning tokens and time until it exhausts its context window. A typical cause is an action that fails the same way each time, such as a test that cannot pass or a command that errors, with the agent retrying a variation of the same fix indefinitely.
+
+Each iteration adds its output to the context, so a runaway loop also degrades the agent. The window fills with repeated failures, and xref:large-language-model.adoc#_context_rot[*context rot*] makes the agent less able to notice that it is stuck.
+
+The defense is to bound the xref:agent-loop.adoc[*agent loop*] with a *stop condition* that does not depend on the model's judgment. The stop condition could be a maximum number of steps, a token or cost budget, or a timeout. A harness can also detect repetition and interrupt. For *away-from-keyboard* runs these limits are essential, since there's no *human-in-the-loop* to intervene.
+
+A runaway loop is a failure to stop. The related xref:nodding-loop.adoc[*nodding loop*] is a failure to notice errors.

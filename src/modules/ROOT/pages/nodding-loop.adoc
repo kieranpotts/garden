@@ -1,0 +1,11 @@
+= Nodding loop
+
+A *nodding loop* is a failure mode in xref:loop-engineering.adoc[*loop engineering*] in which an unattended *agent loop* has an agent evaluator that approves flawed work by inspection rather than execution, so small errors accumulate unseen across iterations. The agent evaluator nods along, the next iteration building on an uncaught mistake.
+
+It arises when verification is done by an agent reading output and judging that it looks right, instead of a check that executes the work and verifies the output deterministically. Reading code and finding it plausible is not the same as running it and finding that it passes.
+
+An agent evaluator is also biased toward approving output that resembles what it would have produced itself.
+
+The remedy is to ground each iteration in checks that run, such as tests, type checkers, and linters — deterministic sensors (see xref:agent-harness.adoc[*agent harness*]).
+
+A nodding loop is the quiet counterpart to the xref:runaway-loop.adoc[*runaway loop*]. A runaway loop is easy to spot because it burns resources without producing anything. A nodding loop produces output, but that output is potentially dangerous.
