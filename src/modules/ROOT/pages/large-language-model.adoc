@@ -156,6 +156,22 @@ Small changes in weights, eg. through fine-tuning, can dramatically alter a mode
 
 *Mixture-of-experts (MoE)* is a model architecture in which, rather than activating the entire network for every token, each token is routed through only a small subset of specialized "expert" subnetworks. This lets a model carry a very large total parameter count while activating only a fraction of it per token — high capacity at a lower inference cost.
 
+== Active parameters
+
+*Active parameters* are the subset of a model's total parameters that are actually used during a specific computation. *Total parameters* are all the learned values in the model, whether or not they are used at that moment. In a dense model, every parameter takes part in every computation, so the two numbers are the same. The distinction only opens up in mixture-of-experts models, where only a fraction of the total is active for any one token.
+
+Total and active parameters drive different costs:
+
+* *Compute and speed* scale with active parameters. A model with few active parameters generates tokens about as fast as a dense model of that smaller size.
+
+* *Memory* scales with total parameters. Any expert might be selected for the next token, so all of the weights must be loaded, even though most sit idle at any moment. This sets the VRAM needed to run the model locally (see xref:open-weight-model.adoc[*open-weight models*]).
+
+* *Capacity* is usually associated with total parameters. A larger pool can hold more knowledge, which is how a sparse model can outperform a dense model with the same active count.
+
+So a sparse model trades memory for speed: it needs the hardware to hold a large model, but runs with the compute cost of a much smaller one.
+
+Model names often state both numbers, eg "30B total, 3B active," or in the shorthand `30B-A3B`. When only one figure is quoted, check whether it is the total or the active count, as the two can differ by an order of magnitude. The active count also includes the parameters every token passes through, such as the attention layers and any shared experts, not only the selected experts.
+
 == Quantization
 
 *Quantization* is a technique for reducing the numerical precision of a model's weights, for example representing values with 4-bit integers instead of 16-bit or 32-bit floats. This reduces memory footprint and speeds up inference (see below), at the cost of a small reduction in output quality.
