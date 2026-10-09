@@ -17,59 +17,61 @@
 :link-minimax:         https://www.minimax.io/
 :link-hardware-guide:  https://www.local-llm.net/learn/hardware-requirements/
 
-*Open-weight* models are xref:large-language-model.adoc[*large language models*] (or other machine learning models) whose trained weights are published for anyone to download and run. This is distinct from *open-source*, which would also require the training data and code used to produce the model to be public.
+*Open-weight* models are xref:large-language-model.adoc[*large language models*] (or other machine learning models) whose trained weights are published for anyone to download and run. This is distinct from *open-source*, which also requires the training data and the code used to produce the model to be public.
 
 == Open weight vs. open source
 
-Most "open" AI models are only open-weight. The weights are downloadable, but the training corpus, the data-cleaning recipes, and the exact training code are kept private. That is enough for many use cases — you can run, fine-tune, and self-host the model — but it is not enough to reproduce it from scratch, audit what it was trained on, or verify that a given output is free of inherited copyright or bias issues.
+Most "open" AI models are only open-weight. The weights are downloadable, but the training corpus, the data-cleaning recipes, and the exact training code are kept private. That is enough for many use cases – you can run, fine-tune, and self-host the model – but it is not enough to reproduce it from scratch, or to audit what it was trained on.
 
-A smaller but growing category is *truly open-source* models, which release the weights _and_ the training data and methodology. The standout example is Nvidia's {link-nemotron-3}[*Nemotron 3*] family, announced alongside a partnership with Palantir in July 2026. Nvidia published not just the model weights but the training recipes and roughly ten trillion tokens of the underlying training data. That level of openness makes it possible to inspect, reproduce, and modify the full pipeline, not just the final artifact.
+A smaller but growing category is truly open-source models, which release the weights _and_ the training data and methodology. The standout example is Nvidia's {link-nemotron-3}[Nemotron 3] family, first released in December 2025. Nvidia publishes not just the model weights but also training recipes and, for many of the models, the underlying training data – more than ten trillion tokens of it across the Nemotron dataset collection. That level of openness makes it possible to inspect, reproduce, and modify the full pipeline, not just the final artifact.
 
-The distinction matters for several reasons:
+The distinction matters for two reasons:
 
-* *Reproducibility and auditability.* Open-source models let researchers and regulators inspect what went into the model. Open-weight models do not.
+* *Reproducibility and auditability*: Open-source models let researchers and regulators inspect what went into the model. Open-weight models do not.
 
-* *Data sovereignty and IP risk.* Running an open-weight or open-source model on your own hardware keeps proprietary prompts and data inside your infrastructure. More fully open models also make it easier to avoid the training-data copyright questions that have led to large settlements against closed labs.
+* *Intellectual property risk*: Without the training data, there is no way to verify that a model's output is free of inherited copyright or bias problems. Fully open models make it easier to avoid the training-data copyright questions that have led to large settlements against closed labs.
 
-* *Cost.* When performance is roughly equivalent, self-hosting an open model is often an order of magnitude cheaper per token than using a closed frontier API.
+Licensing terms also vary between open-weight models. Some permit unrestricted commercial use (eg Apache 2.0, MIT). Others carry custom licenses that restrict commercial use, redistribution, or use above a certain scale (eg Meta's Llama community license).
 
-Licensing terms vary between open-weight models. Some permit unrestricted commercial use (eg. Apache 2.0, MIT). Others carry custom licenses that restrict commercial use, redistribution, or use above a certain scale (eg. Meta's Llama community license).
+== Running models locally
 
-{link-huggingface}[Hugging Face] is the primary hub for discovering and downloading open-weight models, hosting over two million models contributed by individuals, research labs, and major organizations. The other major resource in this space is {link-ollama-search}[Ollama's model database], which is a more curated library of models that are proven to be stable with the Ollama model manager (see xref:model-access-layer.adoc[*model access layer*]).
+{link-huggingface}[Hugging Face] is the primary hub for discovering and downloading open-weight models, hosting over two million models contributed by individuals, research labs, and major organizations. The other major resource is {link-ollama-search}[Ollama's model library], a more curated collection of models that are proven to be stable with the Ollama model manager (see xref:model-access-layer.adoc[*model access layer*]).
 
-There are pros and cons to running open-weight models on your own hardware:
+Running an open-weight model on your own hardware has several advantages over a hosted, closed model:
 
-* Free (just the cost of the hardware and electricity).
-* Highly customizable.
-* Secure and private.
-* Zero network latency.
-* Work offline (no internet connection required).
-* High availability. Can be run 24/7/365.
-* Six to 12 months behind the frontier models in capability.
-* Require a lot of RAM and GPU VRAM to run large models.
+* *Cost*: There are no per-token fees, only the cost of the hardware and electricity. When performance is roughly equivalent, self-hosting an open model is often an order of magnitude cheaper per token than using a closed frontier API.
+
+* *Privacy and data sovereignty*: Proprietary prompts and data stay inside your own infrastructure.
+
+* *Customization*: The model can be fine-tuned, quantized, and configured freely.
+
+* *Availability*: There is no network latency, no rate limit, and no dependence on a provider's uptime. The model also works offline.
+
+There are two main disadvantages:
+
+* *Capability*: Open-weight models are typically 6–12 months behind the frontier models.
+
+* *Hardware*: Large models need a lot of RAM and GPU VRAM, as described next.
 
 == Hardware requirements
 
-It is useful to think of open-weight models as falling into a spectrum of size tiers, with each tier having different minimal hardware requirements:
+It is useful to think of open-weight models as falling into a spectrum of size tiers, measured in billions of parameters (B), with each tier having different minimum hardware requirements:
 
-* *Ultra-light (1–3B)*: Run on almost any machine with 8 GB+ RAM. Capable of basic chat and simple tasks.
+* *Ultra-light (1–3B)*: Run on almost any machine with 8 GB or more of RAM. Capable of basic chat and simple tasks.
 
-* *Small (3–8B)*: A good balance of quality and speed. Need ~8–16 GB RAM. The recommended starting point for most local setups.
+* *Small (3–8B)*: A good balance of quality and speed. Need about 8–16 GB of RAM. The recommended starting point for most local setups.
 
-* *Medium (8–13B)*: Well-rounded general-purpose models. Run well on 16–24 GB RAM with a mid-range GPU.
+* *Medium (8–14B)*: Well-rounded general-purpose models. Run well on 16–24 GB of RAM with a mid-range GPU.
 
-* *Large (30–70B)*: High capability. Require at least 32 GB RAM and a dedicated GPU with 24+ GB VRAM.
+* *Large (14–70B)*: High capability. Require 32–64 GB of RAM and a dedicated GPU with 16–48 GB of VRAM, depending on the size of the model.
 
-* *Very large (70B+)*: Near-frontier capability. Require high-end workstations with multi-GPU setups and at least 64 GB each of RAM and VRAM.
+* *Very large (over 70B)*: Near-frontier capability. Require high-end workstations with multi-GPU setups and at least 64 GB each of RAM and VRAM.
 
-[TIP]
-====
-To estimate whether your own hardware can run a given model — accounting for quantization level (Q4–F16), context length, and expected token throughput (TPS) — try the {link-vram-calculator}[Local AI VRAM Calculator & GPU Planner]. It maps a hardware setup and use case to model recommendations, with the caveat that the figures are planning estimates, not performance guarantees.
-====
+The sections below explain where these figures come from.
 
 === Memory for the weights
 
-Memory capacity is the hard limit. The model's weights must fit in memory (VRAM, or system RAM for CPU inference) before anything else matters, and a model that does not fit will not load. The size of the weights depends on the parameter count and the level of xref:large-language-model.adoc#_quantization[*quantization*]. Approximate sizes for the weights alone:
+Memory capacity is the hard limit. The model's weights must fit in memory (VRAM, or system RAM for CPU inference) before anything else matters, and a model that does not fit will not load. The size of the weights depends on the parameter count and the level of xref:large-language-model.adoc#_quantization[*quantization*]. For a xref:large-language-model.adoc#_mixture_of_experts[*mixture-of-experts (MoE)*] model, it is the total parameter count that matters here, not the xref:large-language-model.adoc#_active_parameters[*active*] count. Approximate sizes for the weights alone:
 
 [cols="1,1,1,1,1"]
 |===
@@ -106,41 +108,15 @@ Memory capacity is the hard limit. The model's weights must fit in memory (VRAM,
 |250 GB
 |===
 
-The weights are not the whole footprint. As a rule of thumb, add 2–4 GB to the weight size for a comfortable total, and a further 4–8 GB for contexts of 16K tokens or more. The extra goes mostly on the KV cache, which takes roughly 0.5–2 GB at a 4K context and 2–8 GB at 32K. Leave another 2–4 GB for the operating system.
-
-=== Speed and memory bandwidth
-
-Capacity decides whether a model runs. *Memory bandwidth* decides how fast. Generating each token means reading through the model's active weights, so token generation speed scales with how quickly memory can be read. GPUs have roughly 5–20 times the memory bandwidth of system RAM, which is the main reason they are so much faster than CPUs for inference. Raw compute matters most for prompt processing and the time to the first token.
-
-Some approximate figures, for a 7B model at Q4:
-
-* *CPU only*: about 8–20 tokens per second, depending on the CPU and RAM speed. This is viable for small models and light use, as 10–15 tokens per second is already faster than reading speed. Faster RAM helps directly: DDR5 gives roughly 30–50% faster CPU inference than DDR4.
-
-* *Mid-range GPU* (eg an RTX 3060 with 12 GB): about 40–55 tokens per second.
-
-* *High-end GPU* (eg an RTX 4090 with 24 GB): about 90–120 tokens per second.
-
-Storage affects only how long a model takes to load, not how fast it generates. An NVMe SSD loads a model in about 2–10 seconds, against 30 seconds to two minutes or more from a hard disk. Model files range from about 2 GB to over 50 GB each, so a collection that includes 30–70B models needs 200–500 GB.
-
-=== Choosing hardware
-
-Existing hardware is enough to start. A machine with 16 GB of RAM can run 7–8B models on the CPU, as can a GPU with 6 GB or more of VRAM. Beyond that, there are three main routes:
-
-* *A single Nvidia GPU.* This gives the most speed for models that fit in its VRAM, and the best software support, including CUDA-only tools and fine-tuning. Consumer cards top out at 24 GB, which runs models up to about 30B at Q4. A used RTX 3090 (24 GB) is often recommended as the best value.
-
-* *Apple Silicon.* The CPU and GPU share one pool of *unified memory*, so a Mac with 64 GB or more can run models far too large for any single consumer GPU, quietly and at a fraction of the power draw (30–80 W under load, against 400–600 W for a desktop with a high-end GPU). The trade-offs are lower speed for models that would fit on a GPU, and weaker support for fine-tuning and CUDA-based tooling.
-
-* *Multiple GPUs.* VRAM is pooled by splitting the model's layers across cards, which works with mixed GPUs but runs at only about 50–70% of single-GPU efficiency. Two 24 GB cards give 48 GB, enough for a 70B model at Q4. Power draw and noise rise accordingly.
-
-When upgrading an existing machine, the priorities in order of impact are: add a discrete GPU (typically 3–8 times faster than CPU only), then more VRAM, then more system RAM, then faster RAM, then an NVMe SSD.
+The weights are not the whole footprint. As a rule of thumb, add 2–4 GB to the weight size for a comfortable total, and a further 4–8 GB for contexts of 16K tokens or more. The extra goes mostly on the *KV cache* (the attention state kept for each token of context), which takes roughly 0.5–2 GB at a 4K context and 2–8 GB at 32K. Leave another 2–4 GB for the operating system.
 
 === System RAM for loading a model
 
-VRAM is not the only constraint. Even when all GPU memory is dedicated to inference and the quantized model fits in it, the machine needs enough system RAM to load the model in the first place. These are approximate figures for models quantized to about 4 bits (eg Q4_K_M):
+VRAM is not the only constraint. Even when all GPU memory is dedicated to inference and the quantized model fits in it, the machine needs enough system RAM to load the model in the first place. These are approximate figures for models quantized to about 4 bits (eg `Q4_K_M`):
 
 [cols="1,1,3"]
 |===
-|Model size (parameters) |Approx. weight size |Typical system RAM needed for loading
+|Model size |Approx. weight size |Typical system RAM needed for loading
 
 |7–8B
 |~5 GB
@@ -148,7 +124,7 @@ VRAM is not the only constraint. Even when all GPU memory is dedicated to infere
 
 |13–14B
 |~9 GB
-|*24 GB*. Covers the larger weight file and extra KV cache space for typical prompts.
+|*24–32 GB*. Covers the larger weight file and extra KV cache space for typical prompts.
 
 |30–32B
 |~20 GB
@@ -156,11 +132,11 @@ VRAM is not the only constraint. Even when all GPU memory is dedicated to infere
 
 |70–72B
 |~42 GB
-|*64 GB+*. The model plus context storage, especially with context windows beyond 4K tokens.
+|*64 GB or more*. The model plus context storage, especially with context windows beyond 4K tokens.
 
 |120B (eg `gpt-oss-120b`)
 |~63 GB
-|*64 GB* minimum. Any extra RAM helps with larger contexts or concurrent applications.
+|*64 GB* at the very least, and preferably 128 GB for long contexts or for running other applications or models alongside.
 |===
 
 [NOTE]
@@ -174,72 +150,109 @@ System RAM matters even when VRAM does the inference because:
 
 * The runtime may create intermediate staging buffers during the transfer, for example to convert the weight layout, which add to the memory needed at load time.
 
-* The KV cache (the attention state kept for each token of context) can spill into system RAM when VRAM runs short, and it grows with context length.
+* The KV cache can spill into system RAM when VRAM runs short, and it grows with context length.
 
 * The operating system and other processes need headroom, or they will trigger out-of-memory crashes.
 
-As a rule of thumb:
+With much less RAM than this, loading can fail with out-of-memory errors, or slow to a crawl through swapping, even if the GPU has enough VRAM for the quantized model.
 
-* *Small models (up to 8B)*: 16 GB of RAM is comfortable.
+=== Speed and memory bandwidth
 
-* *Mid-size models (around 14B)*: 24–32 GB.
+Capacity decides whether a model runs. *Memory bandwidth* decides how fast. Generating each token means reading through the model's active weights, so token generation speed scales with how quickly memory can be read. GPUs have roughly 5–20 times the memory bandwidth of system RAM, which is the main reason they are so much faster than CPUs for inference. Raw compute matters most for prompt processing and the time to the first token.
 
-* *Large models (30–70B)*: 48 GB is the safe minimum, or 64 GB for 70B and up.
+Some approximate figures, for a 7B model at Q4:
 
-* *Very large models (100B+)*: 64 GB or more, and preferably 128 GB for long contexts or running multiple models.
+* *CPU only*: About 8–20 tokens per second, depending on the CPU and RAM speed. This is viable for small models and light use, as 10–15 tokens per second is already faster than reading speed. Faster RAM helps directly. DDR5 gives roughly 30–50% faster CPU inference than DDR4.
 
-With much less RAM than this, loading can fail with out-of-memory errors, or slow to a crawl through swapping, even if the GPU has enough VRAM for the quantized model. Adding RAM is the most straightforward way to widen the range of models you can run locally.
+* *Mid-range GPU* (eg an RTX 3060 with 12 GB): About 40–55 tokens per second.
 
-Custom hardware like the {link-dgx-spark}[Nvidia DGX Spark] give you the ability to run _and train_ large language models on your own hardware.
+* *High-end GPU* (eg an RTX 4090 with 24 GB): About 90–120 tokens per second.
+
+Storage affects only how long a model takes to load, not how fast it generates. An NVMe SSD loads a model in about 2–10 seconds, against 30 seconds to two minutes or more from a hard disk. Model files range from about 2 GB to over 50 GB each, so a collection that includes 30–70B models needs 200–500 GB.
+
+=== Choosing hardware
+
+Existing hardware is enough to start. A machine with 16 GB of RAM can run 7–8B models on the CPU, as can a GPU with 6 GB or more of VRAM. Beyond that, there are four main routes:
+
+* *A single Nvidia GPU*: This gives the most speed for models that fit in its VRAM, and the best software support, including CUDA-only tools and fine-tuning. Most consumer cards top out at 24 GB, which runs models up to about 30B at Q4. The RTX 5090 has 32 GB. A used RTX 3090 (24 GB) is often recommended as the best value.
+
+* *Apple Silicon*: The CPU and GPU share one pool of *unified memory*, so a Mac with 64 GB or more can run models far too large for any single consumer GPU, quietly and at a fraction of the power draw (30–80 W under load, against 400–600 W for a desktop with a high-end GPU). The trade-offs are lower speed for models that would fit on a GPU, and weaker support for fine-tuning and CUDA-based tooling.
+
+* *Multiple GPUs*: VRAM is pooled by splitting the model's layers across cards, which works with mixed GPUs but runs at only about 50–70% of single-GPU efficiency. Two 24 GB cards give 48 GB, just enough for a 70B model at Q4. Power draw and noise rise accordingly.
+
+* *Purpose-built AI workstations*: Machines such as the {link-dgx-spark}[Nvidia DGX Spark] are designed to run, and also to fine-tune, large language models on the desktop.
+
+When upgrading an existing machine, the priorities in order of impact are to add a discrete GPU (typically 3–8 times faster than CPU only), then more VRAM, then more system RAM, then faster RAM, then an NVMe SSD. Adding system RAM is the most straightforward way to widen the range of models that will load at all.
+
+[TIP]
+====
+To estimate whether your own hardware can run a given model – accounting for quantization level (Q4 to FP16), context length, and expected throughput in tokens per second – try the {link-vram-calculator}[Local AI VRAM Calculator & GPU Planner]. It maps a hardware setup and use case to model recommendations, with the caveat that the figures are planning estimates, not performance guarantees.
+====
 
 == Open-weight model families
 
-As of 2026, some notable open-weight model families include (several use a xref:large-language-model.adoc#_mixture_of_experts[*mixture-of-experts (MoE)*] architecture):
+As of 2026, the notable open-weight model families include the following. Several of them use an MoE architecture.
 
-* {link-llama}[*Llama*] models from Meta. The Llama family did much to kick-start the open-weight era, and its widespread adoption has made the underlying architecture a de facto reference point that many other open models build on. The Scout variant is known for its massive 10-million token context window. Released under Meta's community license, which permits commercial use but imposes some restrictions (including for very large deployments).
+* {link-llama}[Llama] models from Meta. The Llama family did much to kick-start the open-weight era, and its widespread adoption has made the underlying architecture a de facto reference point that many other open models build on. The Llama 4 Scout variant is known for its massive 10M-token context window. Released under Meta's community license, which permits commercial use but imposes some restrictions, including on very large deployments.
 
-* {link-gemma}[*Gemma*] models from Google. These are Google's open-weight counterparts to its proprietary, frontier Gemini models. Gemma models are optimized to run on consumer hardware.
+* {link-gemma}[Gemma] models from Google. These are Google's open-weight counterparts to its proprietary, frontier Gemini models. Gemma models are optimized to run on consumer hardware.
 
-* {link-qwen}[*Qwen*] models from Alibaba Cloud are available in a wide range of sizes, so there'll always be one variant that you can run on your hardware.
+* {link-qwen}[Qwen] models from Alibaba Cloud. These are available in a wide range of sizes, so there is usually a variant that will run on whatever hardware you have.
 
-* {link-mistral}[*Mistral*] models from Mistral AI, a French company that produces both open-weight models and proprietary models accessible via web service APIs. Their Mixtral models helped popularize the mixture-of-experts (MoE) architecture in open models.
+* {link-mistral}[Mistral] models from Mistral AI, a French company that produces both open-weight models and proprietary models accessible via web service APIs. Its Mixtral models helped popularize the MoE architecture in open models.
 
-* {link-phi}[*Phi*] models from Microsoft. A family of small language models (SLMs) that punch well above their size on reasoning and maths, achieved largely by training on high-quality, "textbook-quality" filtered and synthetic data rather than sheer scale. Optimized for on-device and edge use, and released under the permissive MIT license. Recent releases include Phi-4 (14B) and the compact Phi-4-mini, with multimodal variants.
+* {link-phi}[Phi] models from Microsoft. A family of *small language models (SLMs)* that punch well above their size on reasoning and maths, achieved largely by training on filtered and synthetic "textbook-quality" data rather than sheer scale. Optimized for on-device and edge use, and released under the permissive MIT license. Recent releases include Phi-4 (14B) and the compact Phi-4-mini, with multimodal variants.
 
-* {link-gpt-oss}[*gpt-oss*] models from OpenAI. `gpt-oss-120b` and `gpt-oss-20b`, released under the permissive Apache 2.0 license in August 2025, were OpenAI's first open-weight models since GPT-2.
+* {link-gpt-oss}[gpt-oss] models from OpenAI. `gpt-oss-120b` and `gpt-oss-20b`, released under the permissive Apache 2.0 license in August 2025, were OpenAI's first open-weight language models since GPT-2.
 
-* {link-kimi}[*Kimi*] models from Moonshot AI. Kimi K2.5 (released January 2026) is an open-weight mixture-of-experts model with 1T total parameters (32B xref:large-language-model.adoc#_active_parameters[*activated*] per token) and a 256K-token context window. It matches frontier models on several benchmarks and is multimodal across text, code, image, and video (understanding only, no generation). Kimi 2.5 leads in mathematical reasoning and is optimized for "agent swarming".
+* {link-kimi}[Kimi] models from Moonshot AI. Kimi K2.5, released in January 2026, is an MoE model with 1T total parameters (32B active per token) and a 256K-token context window. It matches frontier models on several benchmarks, accepts text, image, and video input (understanding only, no generation), and is optimized for "agent swarms".
 
-* {link-glm}[*GLM*] models from Z.ai (formerly Zhipu AI). The GLM-4.5 and GLM-4.6 releases are strong open-weight MoE models, well-regarded for their "interleaved thinking" and demonstrated capabilities in both agentic and vibe coding workflows.
+* {link-glm}[GLM] models from Z.ai (formerly Zhipu AI). The GLM-4.5 and GLM-4.6 releases are strong MoE models, well-regarded for their "interleaved thinking" and for their capabilities in agentic coding workflows.
 
-* {link-deepseek}[*DeepSeek*] models from DeepSeek AI. This AI lab made waves in early 2025 when DeepSeek-R1 demonstrated near-frontier reasoning performance at a fraction of the training compute cost that had previously been assumed was necessary to develop frontier models. Its "engram" memory system has been proven to maintain high coding performance across 1M+ token contexts.
+* {link-deepseek}[DeepSeek] models from the AI lab of the same name. DeepSeek made waves in early 2025 when DeepSeek-R1 demonstrated near-frontier reasoning performance at a fraction of the training compute that had previously been assumed necessary to develop frontier models.
 
-* {link-minimax}[*MiniMax*] models from MiniMax AI, which also develops closed-weight models. MiniMax M2.5 is well-regarded, posting near-frontier agentic and coding scores (~80% on SWE-Bench Verified) at an exceptionally low cost.
+* {link-minimax}[MiniMax] models from MiniMax, which also develops proprietary models. MiniMax M2.5 is well-regarded, posting near-frontier agentic and coding scores (about 80% on SWE-Bench Verified) at an exceptionally low cost.
 
-Nvidia continues to expand its open-weight offerings, most recently with the {link-nemotron-3}[*Nemotron 3*] family (Nano, Super, and Ultra variants).
+* {link-nemotron-3}[Nemotron] models from Nvidia. The Nemotron 3 family comes in Nano, Super, and Ultra variants, and is unusual in being open-source rather than merely open-weight, as described above.
 
 == Open-weight coding models
 
-The following open-weight models are highly regarded for programming tasks. Small models (≤ 8B) run comfortably on a laptop or CPU-only setup. Larger models require a GPU with ≥ 16–24 GB VRAM.
+The following open-weight models are highly regarded for programming tasks. At 4-bit quantization, most of them need a GPU with 16–24 GB of VRAM. DeepSeek-Coder-V2, at 236B total parameters, needs server-class hardware.
 
-Not all of them support *tool calling* (also called function calling) — the ability to emit structured calls to external tools/functions as part of a response. This is a prerequisite for agentic coding workflows, where the model must be able to invoke tools such as file edits, shell commands, or search. Models without native tool-calling support can still be used for plain code generation, completion, or chat, but are not suitable as the driver of an agent loop without a third-party fine-tune or adapter bolted on.
+Not all of them support *tool calling* (also called function calling) – the ability to emit structured calls to external tools as part of a response. This is a prerequisite for agentic coding workflows, where the model must be able to invoke tools such as file edits, shell commands, or search. Models without native tool-calling support can still be used for plain code generation, completion, or chat, but they are not suitable as the driver of an xref:agent-loop.adoc[*agent loop*] without a third-party fine-tune or adapter.
 
-* *Qwen3.8-27B*: Alibaba's flagship model in the 27B class, released August \2026. A dense, natively multimodal model (text, image, and video input) built for agentic, long-horizon coding tasks, with flexible thinking control and a 262K native context window (extensible to 1M via YaRN). Available on all Ollama-supported platforms. Apache 2.0 license. + *Tool calling: supported natively.* Uses a `<tool_call>` XML format; Qwen-Agent is the recommended harness for making full use of its agentic tool-calling ability.
+* *Qwen3.8-27B*: Alibaba's flagship model in the 27B class, released in August 2026. A dense, natively multimodal model (text, image, and video input) built for agentic, long-horizon coding tasks, with flexible thinking control and a 262K native context window (extensible to 1M via YaRN). Apache 2.0 license.
++
+*Tool calling*: Supported natively. Uses a `<tool_call>` XML format. Qwen-Agent is the recommended xref:agent-harness.adoc[*harness*] for making full use of its agentic tool-calling ability.
 
-* *Nvidia Nemotron 3.5 Lightning*: A hybrid Mixture-of-Experts model (30B total, 3B active) from Nvidia, released August 2026, purpose-built for the execution layer of always-on agents — reading files, calling tools, sorting results, and retrying failures. Designed to run on local hardware (RTX PCs, RTX PRO workstations, DGX Spark/Station) rather than the datacenter, keeping agent context on-device. 1M token context. Uses speculative decoding (multi-token prediction, DFlash/DSpark) for up to 4x the throughput of comparable open models. Open weights and open training data. Apache 2.0 license. + *Tool calling: supported natively.* Trained specifically for tool calling, instruction following, and multi-turn agentic work, for use in harnesses such as Claude Code, Hermes Agent, and OpenClaw.
+* *Nemotron 3.5 Lightning*: A hybrid MoE model (30B total, 3B active) from Nvidia, released in August 2026 and purpose-built for the execution layer of always-on agents – reading files, calling tools, sorting results, and retrying failures. Designed to run on local hardware (RTX PCs, RTX PRO workstations, DGX Spark) rather than in the datacenter, keeping agent context on-device. 1M-token context window. Speculative-decoding variants give up to four times the throughput of comparable open models, by Nvidia's own figures. Open weights and open training data, under the OpenMDW 1.1 license, which permits commercial use.
++
+*Tool calling*: Supported natively. Trained specifically for tool calling, instruction following, and multi-turn agentic work across the popular agent harnesses.
 
-* *Muse Glimmer*: A 30B multimodal model from Meta Superintelligence Labs, released August 2026 — Meta's first model under that new lab and a notable departure from the Llama family's community license. Built for agent workloads that run locally, with 128K+ context and controllable reasoning strength (low/medium/high/xhigh — use high or xhigh for complex coding and agentic tasks). Available via Ollama's MLX engine on Apple Silicon, with broader platform support following. Apache 2.0 license. + *Tool calling: supported natively.* Reliable schema-based tool invocation across extended, multi-turn workflows, including diagnosing and retrying failed or unexpected tool results.
+* *Muse Glimmer*: A 30B multimodal model (text and image input) from Meta Superintelligence Labs, released in August 2026. It is the lab's first open-weight model, and a notable departure from the Llama family's community license. Built for agent workloads that run locally, with a context window of about 128K tokens and controllable reasoning strength (low, medium, high, or xhigh, with the upper two recommended for complex coding and agentic tasks). Apache 2.0 license.
++
+*Tool calling*: Supported natively. Reliable schema-based tool invocation across extended, multi-turn workflows, including diagnosing and retrying failed or unexpected tool results.
 
-* *Qwen2.5-Coder 32B Instruct*: Alibaba's dedicated coding model that consistently tops open-weight coding benchmarks. Strong across Python, JavaScript, Go, and SQL. Supports a 32K context window. Apache 2.0 license. +
-  *Tool calling: supported natively.* Trained for multi-turn tool/function calling using a Hermes-style `<tool_call>` format, recognized out of the box by inference servers such as vLLM.
+* *Qwen2.5-Coder 32B Instruct*: Alibaba's dedicated coding model from late 2024, which topped open-weight coding benchmarks on release. Strong across Python, JavaScript, Go, and SQL. Supports a 128K context window. Apache 2.0 license.
++
+*Tool calling*: Supported natively. Trained for multi-turn tool calling using a Hermes-style `<tool_call>` format, recognized out of the box by inference servers such as vLLM.
 
-* *DeepSeek-Coder-V2 Instruct*: A Mixture-of-Experts model (236B total, 21B active) with very strong multi-language coding performance and a 128K context window. One of the most capable open-weight options for complex, multi-file tasks. MIT license. + *Tool calling: not supported.* The official instruct release has no native function-calling format. Community fine-tunes exist that bolt it on, but it's not built in.
+* *DeepSeek-Coder-V2 Instruct*: An MoE model (236B total, 21B active) with very strong multi-language coding performance and a 128K context window. One of the most capable open-weight options for complex, multi-file tasks. DeepSeek Model License, which permits commercial use.
++
+*Tool calling*: Not supported. The official instruct release has no native function-calling format. Community fine-tunes exist that add one.
 
-* *Codestral 22B*: Mistral AI's dedicated code model, optimized for low-latency code completion and fill-in-the-middle (FIM) tasks. Well suited to IDE integration. Supports 32K context. Mistral AI Non-Production License (commercial use requires a separate agreement). + *Tool calling: not supported.* A deliberate design choice by Mistral — Codestral targets completion/FIM, not agentic use. Other Mistral chat models (eg. Mistral Large) do support tool calling.
+* *Codestral 22B*: Mistral AI's dedicated code model, optimized for low-latency code completion and *fill-in-the-middle (FIM)* tasks. Well suited to IDE integration. Supports a 32K context window. Mistral AI Non-Production License (commercial use requires a separate agreement).
++
+*Tool calling*: Not supported. A deliberate design choice by Mistral – Codestral targets completion and FIM, not agentic use. Other Mistral chat models (eg Mistral Large) do support tool calling.
 
-* *StarCoder2 15B*: The successor to StarCoder, trained on The Stack v2. Strong on Python, JavaScript, and C/C++, and well suited to code search and autocompletion tasks. Apache 2.0 license. + *Tool calling: not supported.* The base model is only lightly instruction-tuned and has no function-calling format.
+* *StarCoder2 15B*: The successor to StarCoder, trained on The Stack v2. Strong on Python, JavaScript, and C/C++, and well suited to code search and autocompletion tasks. BigCode OpenRAIL-M license, which permits commercial use subject to use restrictions.
++
+*Tool calling*: Not supported. This is a code-completion model. It is not instruction-tuned and has no function-calling format.
 
-* *Code Llama 70B Instruct*: Meta's instruction-tuned coding variant of Llama 2, with a 16K context window and strong performance on multi-language tasks and large-scale refactoring. Meta's non-commercial license restricts use to research. + *Tool calling: not supported.* No native tool-calling format from Meta for this release. Later, non-coding Llama 3.x Instruct models are the better choice if tool calling is required from the Llama family.
+* *Code Llama 70B Instruct*: Meta's instruction-tuned coding variant of Llama 2, with strong performance on multi-language tasks and large-scale refactoring. Released under the Llama 2 community license, which permits commercial use.
++
+*Tool calling*: Not supported. Meta defined no native tool-calling format for this release. The later, general-purpose Llama 3.x Instruct models are the better choice if tool calling is required from the Llama family.
+
 
 == See also
 
@@ -248,4 +261,3 @@ Not all of them support *tool calling* (also called function calling) — the ab
 == References
 
 * Local LLM Team (2026). {link-hardware-guide}[_Local AI Hardware Guide: GPU, CPU, RAM, and Storage Requirements_]. local-llm.net.
-
