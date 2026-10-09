@@ -15,6 +15,7 @@
 :link-glm:             https://huggingface.co/zai-org
 :link-deepseek:        https://www.deepseek.com/
 :link-minimax:         https://www.minimax.io/
+:link-hardware-guide:  https://www.local-llm.net/learn/hardware-requirements/
 
 *Open-weight* models are xref:large-language-model.adoc[*large language models*] (or other machine learning models) whose trained weights are published for anyone to download and run. This is distinct from *open-source*, which would also require the training data and code used to produce the model to be public.
 
@@ -65,6 +66,73 @@ It is useful to think of open-weight models as falling into a spectrum of size t
 ====
 To estimate whether your own hardware can run a given model — accounting for quantization level (Q4–F16), context length, and expected token throughput (TPS) — try the {link-vram-calculator}[Local AI VRAM Calculator & GPU Planner]. It maps a hardware setup and use case to model recommendations, with the caveat that the figures are planning estimates, not performance guarantees.
 ====
+
+=== Memory for the weights
+
+Memory capacity is the hard limit. The model's weights must fit in memory (VRAM, or system RAM for CPU inference) before anything else matters, and a model that does not fit will not load. The size of the weights depends on the parameter count and the level of xref:large-language-model.adoc#_quantization[*quantization*]. Approximate sizes for the weights alone:
+
+[cols="1,1,1,1,1"]
+|===
+|Model size |FP16 |Q8 |Q5 |Q4
+
+|7B
+|14 GB
+|7.7 GB
+|5.3 GB
+|4.4 GB
+
+|13B
+|26 GB
+|14 GB
+|9.5 GB
+|7.9 GB
+
+|30–34B
+|60–68 GB
+|33–37 GB
+|23–25 GB
+|19–21 GB
+
+|70B
+|140 GB
+|77 GB
+|53 GB
+|44 GB
+
+|405B
+|810 GB
+|440 GB
+|300 GB
+|250 GB
+|===
+
+The weights are not the whole footprint. As a rule of thumb, add 2–4 GB to the weight size for a comfortable total, and a further 4–8 GB for contexts of 16K tokens or more. The extra goes mostly on the KV cache, which takes roughly 0.5–2 GB at a 4K context and 2–8 GB at 32K. Leave another 2–4 GB for the operating system.
+
+=== Speed and memory bandwidth
+
+Capacity decides whether a model runs. *Memory bandwidth* decides how fast. Generating each token means reading through the model's active weights, so token generation speed scales with how quickly memory can be read. GPUs have roughly 5–20 times the memory bandwidth of system RAM, which is the main reason they are so much faster than CPUs for inference. Raw compute matters most for prompt processing and the time to the first token.
+
+Some approximate figures, for a 7B model at Q4:
+
+* *CPU only*: about 8–20 tokens per second, depending on the CPU and RAM speed. This is viable for small models and light use, as 10–15 tokens per second is already faster than reading speed. Faster RAM helps directly: DDR5 gives roughly 30–50% faster CPU inference than DDR4.
+
+* *Mid-range GPU* (eg an RTX 3060 with 12 GB): about 40–55 tokens per second.
+
+* *High-end GPU* (eg an RTX 4090 with 24 GB): about 90–120 tokens per second.
+
+Storage affects only how long a model takes to load, not how fast it generates. An NVMe SSD loads a model in about 2–10 seconds, against 30 seconds to two minutes or more from a hard disk. Model files range from about 2 GB to over 50 GB each, so a collection that includes 30–70B models needs 200–500 GB.
+
+=== Choosing hardware
+
+Existing hardware is enough to start. A machine with 16 GB of RAM can run 7–8B models on the CPU, as can a GPU with 6 GB or more of VRAM. Beyond that, there are three main routes:
+
+* *A single Nvidia GPU.* This gives the most speed for models that fit in its VRAM, and the best software support, including CUDA-only tools and fine-tuning. Consumer cards top out at 24 GB, which runs models up to about 30B at Q4. A used RTX 3090 (24 GB) is often recommended as the best value.
+
+* *Apple Silicon.* The CPU and GPU share one pool of *unified memory*, so a Mac with 64 GB or more can run models far too large for any single consumer GPU, quietly and at a fraction of the power draw (30–80 W under load, against 400–600 W for a desktop with a high-end GPU). The trade-offs are lower speed for models that would fit on a GPU, and weaker support for fine-tuning and CUDA-based tooling.
+
+* *Multiple GPUs.* VRAM is pooled by splitting the model's layers across cards, which works with mixed GPUs but runs at only about 50–70% of single-GPU efficiency. Two 24 GB cards give 48 GB, enough for a 70B model at Q4. Power draw and noise rise accordingly.
+
+When upgrading an existing machine, the priorities in order of impact are: add a discrete GPU (typically 3–8 times faster than CPU only), then more VRAM, then more system RAM, then faster RAM, then an NVMe SSD.
 
 === System RAM for loading a model
 
@@ -176,4 +244,8 @@ Not all of them support *tool calling* (also called function calling) — the ab
 == See also
 
 * xref:artificial-intelligence.adoc[*Artificial intelligence (AI)*]
+
+== References
+
+* Local LLM Team (2026). {link-hardware-guide}[_Local AI Hardware Guide: GPU, CPU, RAM, and Storage Requirements_]. local-llm.net.
 
