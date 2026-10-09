@@ -1,0 +1,14 @@
+= AI eval
+
+An *eval*, short for evaluation, is a structured test that measures how well a model, agent, skill, prompt, or workflow performs on a defined set of tasks. It is the AI equivalent of unit and regression tests. An eval answers whether a change to any part of an AI setup improved outcomes or quietly made them worse.
+
+An eval consists of a set of tasks with inputs, a way to run the system-under-test against them, and a grader that scores each result. Graders are either deterministic, such as running a test suite or matching an output against an expected value, or model-based, where a second model judges the output against a rubric. Deterministic graders are cheaper and repeatable. Model-based graders can assess qualities that code cannot, but their verdicts are themselves probabilistic.
+
+Because model output varies from run to run, a single pass or fail says little. Evals are usually run repeatedly, and the results are read as rates rather than individual outcomes. Public benchmarks compare models against each other on shared tasks, whereas the evals that matter most for a team are its own, built from its own tasks and failures.
+
+Without evals, changes to prompts, rule files, and models are judged by feel. See xref:agentic-engineering.adoc[*agentic engineering*] for why evals, along with tests, are the dividing line between disciplined AI-assisted development and xref:vibe-coding.adoc[*vibe coding*].
+
+== See also
+
+* xref:evaluation.adoc[*Evaluation*]
+* xref:large-language-model.adoc[*Large language model (LLM)*]
