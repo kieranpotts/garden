@@ -1,0 +1,9 @@
+= Next-token prediction
+
+*Next-token prediction* is what a xref:large-language-model.adoc[*large language model*] actually does at xref:inference.adoc[*inference*]. Given the current context, the model produces a probability distribution over its vocabulary for the next token. One token is sampled and appended to the sequence, and the loop repeats until a stop condition is reached. Every output – a sentence, a tool call, a thousand-line file – is built one token at a time this way.
+
+There is no truth-check before a token is emitted, only likelihood. This is the root of xref:hallucination.adoc[*hallucination*]. The model produces fluent output whether or not the underlying fact is real, because it is predicting the most plausible continuation, not verifying anything.
+
+Tool calls are not a separate mechanism. They are simply structured strings the xref:agent-harness.adoc[*harness*] parses from the output stream. The model emits text that happens to parse as a tool invocation, the harness intercepts it, runs the tool, and feeds the result back as context for the next request. This cycle is the xref:agent-loop.adoc[*agent loop*].
+
+The same holds for a model's visible reasoning. The chain of thought written by a xref:reasoning-model.adoc[*reasoning model*] is produced by next-token prediction like everything else.
