@@ -12,6 +12,8 @@ Several techniques manage this pressure. *PagedAttention*, used by inference eng
 
 Some architectures avoid duplicating the cache across models. For example, a small *drafter* model used for speculative decoding can share the main model's KV cache rather than building its own, because both models are operating on the same context. This saves both memory and the work of reprocessing the context a second time.
 
+Inference providers expose the same idea commercially as xref:prompt-caching.adoc[*prompt caching*], reusing the cached state of a repeated prompt prefix across requests at a discount.
+
 ''''
 
 == See also

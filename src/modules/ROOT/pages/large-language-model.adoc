@@ -200,7 +200,7 @@ Black-box distillation of a competitor's proprietary model is contentious. It ge
 
 *Inference* is what an LLM does to generate output — running data through the model's fixed weights to produce each next token.
 
-Inference is distinct from training, fine-tuning, and quantization, which create a model in the first place. Inference is how a model, once made, works. The term comes from logic and statistics, where "inference" means drawing a conclusion from available information.
+Each call to a model is an *inference call*, the fundamental unit of work and, on metered services, the unit of billing. Inference is distinct from training, fine-tuning, and quantization, which create a model in the first place. Inference is how a model, once made, works. The term comes from logic and statistics, where "inference" means drawing a conclusion from available information.
 
 When you type a prompt and get a response back, the whole behind-the-scenes process — loading the model, tokenizing your input, generating each output token — is inference.
 
@@ -294,7 +294,7 @@ Non-determinism is also why a model cannot be trusted to check its own work. A t
 
 == Effort
 
-*Effort* is a dial for how much reasoning a model does before it answers. Set per request, it controls the length of the chain-of-thought the model works through before writing the visible response. Higher effort costs more, because the reasoning is emitted as output tokens that are billed even when hidden from the user, and it runs slower.
+*Effort* is a dial for how much reasoning a model does before it answers. It applies to a xref:reasoning-model.adoc[*reasoning model*]. Set per request, it controls the length of the chain-of-thought the model works through before writing the visible response. Higher effort costs more, because the reasoning is emitted as output tokens that are billed even when hidden from the user, and it runs slower.
 
 A typical ladder runs from low (mechanical edits), through medium (the default), to high (tricky bugs or design work) and max (the hardest problems). The right setting matches the effort to the task, not to the session: a one-line fix does not need max effort, and a subtle design problem deserves more than low.
 

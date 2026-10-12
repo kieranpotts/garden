@@ -12,7 +12,7 @@ MCP is particularly relevant for xref:agent.adoc[*agentic*] use cases, where a m
 
 MCP borrows from the *Language Server Protocol (LSP)* – the same standard that lets code editors talk to language tooling – and exchanges messages over JSON-RPC 2.0.
 
-Because MCP servers can feed untrusted content and tool definitions into a model, the protocol also introduces security risks. Vulnerabilities include prompt injection, tool poisoning (malicious instructions hidden in tool descriptions), data exfiltration through combined tools, and lookalike tools that shadow trusted ones.
+Because MCP servers can feed untrusted content and tool definitions into a model, the protocol also introduces security risks. Vulnerabilities include xref:prompt-injection.adoc[*prompt injection*], tool poisoning (malicious instructions hidden in tool descriptions), xref:data-exfiltration.adoc[*data exfiltration*] through combined tools (see the xref:lethal-trifecta.adoc[*lethal trifecta*]), and lookalike tools that shadow trusted ones.
 
 MCP solves an integration problem: write the integration once as a server, and any MCP-compatible harness can use it. But the cost is paid in context. Every tool a server advertises arrives as a definition (name, description, parameter schema), and the model can only call tools it knows about. The naive approach loads every definition up front. Install a few generous servers and a session starts with thousands of tokens of tool schemas before you've typed anything, spending attention budget on tools the task will never use.
 

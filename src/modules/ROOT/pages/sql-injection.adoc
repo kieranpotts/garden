@@ -34,7 +34,7 @@ Exploitation is conventionally classified by how the attacker observes the resul
 
 * *In-band.* The response that carries the data is the same channel the application uses for normal output. *UNION-based* injection appends a `UNION SELECT` to fold rows from other tables into the legitimate result set, and *error-based* injection provokes the database into emitting the sought data inside an error message.
 * *Inferential (blind).* The query returns no data the attacker can read directly, but its behavior changes observably. *Boolean-based* injection asks a yes/no question – `AND 1=1` versus `AND 1=2` – and reads the answer from whether the page renders content. *Time-based* injection asks the question by timing a `SLEEP` or equivalent, inferring the answer from the response latency.
-* *Out-of-band.* Where in-band and inferential channels are unavailable, the attacker triggers a side-channel such as a DNS lookup or HTTP request from the database server to a host they control, exfiltrating data through the request itself.
+* *Out-of-band.* Where in-band and inferential channels are unavailable, the attacker triggers a side-channel such as a DNS lookup or HTTP request from the database server to a host they control, xref:data-exfiltration.adoc[*exfiltrating*] data through the request itself.
 
 The categories describe the exploitation path, not the vulnerability. The underlying defect is the same in every case: code and data share one stream.
 

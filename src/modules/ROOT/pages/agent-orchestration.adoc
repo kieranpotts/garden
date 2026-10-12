@@ -20,6 +20,8 @@ xref:loop-engineering.adoc[*Loop engineering*] is a narrower subset of this spac
 
 Orchestration is also distinct from two neighboring concerns. Agent _development frameworks_ (such as LlamaIndex or Semantic Kernel) provide the building blocks to write a single agent. xref:agent-harness.adoc[*Harness engineering*] provides the runtime controls around one agent. Orchestration is the coordination layer above both: how multiple agents divide work, communicate, and converge on a result.
 
+An *orchestrator* is whoever or whatever sequences the steps of an agentic workflow. It triggers agent loops, wires the output of one agent invocation into the input of the next, and injects verification gates between steps. An orchestrator may be a human invoking each agent manually, but in autonomous operation it is either a script or another agent that coordinates several sub-agents, as in a xref:multi-agent-system.adoc[*multi-agent system*]. Orchestrators operate above the layer of the harness.
+
 The line between a development framework and an orchestration platform is not always sharp — several tools below do both.
 
 == LangChain and LangGraph

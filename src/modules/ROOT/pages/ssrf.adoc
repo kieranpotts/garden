@@ -16,7 +16,7 @@ The canonical shape is a feature that fetches user-supplied URLs: image upload-b
 
 What makes SSRF serious is that the server's vantage point reaches resources an external attacker cannot.
 
-* *Cloud instance metadata services.* Every major xref:cloud-service-providers.adoc[*cloud service provider*] exposes a link-local metadata endpoint on the host, `169.254.169.254` on AWS and Azure and `metadata.google.internal` on GCP, that returns temporary credentials, instance tags, and user-data scripts to any process on the instance. An SSRF that reaches it can exfiltrate short-lived IAM credentials and pivot into the cloud account. This single target is responsible for most catastrophic SSRF incidents.
+* *Cloud instance metadata services.* Every major xref:cloud-service-providers.adoc[*cloud service provider*] exposes a link-local metadata endpoint on the host, `169.254.169.254` on AWS and Azure and `metadata.google.internal` on GCP, that returns temporary credentials, instance tags, and user-data scripts to any process on the instance. An SSRF that reaches it can xref:data-exfiltration.adoc[*exfiltrate*] short-lived IAM credentials and pivot into the cloud account. This single target is responsible for most catastrophic SSRF incidents.
 
 * *Internal admin and management interfaces.* Services that listen on `127.0.0.1` or a private subnet, trusting that the network will keep them unreachable, are exposed to an SSRF that originates from inside. Databases, caching servers, metrics endpoints, container runtimes, and orchestration control planes all fall in this group.
 

@@ -25,6 +25,8 @@ The loop is a chain of xref:large-language-model.adoc[*model provider*] requests
 
 == Tool calls and tool results
 
+A *tool* is a function that the harness exposes to the model and invokes on the model's request, such as a file edit, a shell command, a web request, or an HTTP API call. Tools are how models touch real systems beyond their context window.
+
 A *tool call* is the model's output naming a tool and its arguments — structured text the xref:agent-harness.adoc[*harness*] parses and executes. It is produced by xref:large-language-model.adoc[*next-token prediction*], so like any model output it can be wrong: a malformed call, a hallucinated argument, a tool that does not exist. The harness validates and dispatches what it can.
 
 A *tool result* is what the harness sends back after running the tool — the agent's only view of the environment. A result stays in the context for the rest of the session and is re-sent with every subsequent request in the chain. Tool results are usually the bulk of a coding session's context: file contents, test output, search hits, shell stdout. See xref:agent-handoff.adoc[*agent handoff*] for how durable results are carried beyond a session.
@@ -33,7 +35,7 @@ In practice, three concerns dominate the difficulty of running an agent loop wel
 
 * *Context management.* The loop accumulates a lot of tokens as tool results pile up turn over turn — see also xref:context-engineering.adoc[*context engineering*].
 
-* *Knowing when to stop.* Judging that the task is actually done, rather than looping past completion or giving up early.
+* *Knowing when to stop.* Judging that the task is actually done, rather than looping past completion or giving up early. An agent that repeats the same action without progress is in a xref:runaway-loop.adoc[*runaway loop*].
 
 * *Error handling.* Recovering gracefully from failed tool calls and dead ends instead of compounding them into further bad actions.
 

@@ -93,7 +93,7 @@ A well-built outer harness combines two kinds of control. *Guides* are feedforwa
 
 Feedback-only gives an agent that repeats the same mistakes. Feedforward-only gives an agent that encodes rules but never finds out whether they worked. The two reinforce each other: when an issue recurs, improve the guides to make it less likely and the sensors to catch it sooner.
 
-Each control is either *computational* (deterministic and fast, run on the CPU — tests, linters, type checkers, structural analysis) or *inferential* (semantic, run on a GPU or NPU — AI code review, LLM-as-judge; slower and more non-deterministic, but able to add semantic judgement). The verification layering in xref:loop-engineering.adoc[*loop engineering*] maps onto this: automated checks are computational sensors, automated review is an inferential sensor.
+Each control is either *computational* (deterministic and fast, run on the CPU — tests, linters, type checkers, structural analysis) or *inferential* (semantic, run on a GPU or NPU — AI code review, LLM-as-judge; slower and more non-deterministic, but able to add semantic judgement). A computational sensor is also called a *deterministic sensor*: a script or tool that gives the same verdict on the same input every time. An *inferential sensor* is a second agent tasked with judging the output of the first. It brings a fresh perspective, but its judgment is itself probabilistic. Both are kinds of xref:guardrail.adoc[*guardrail*], and a harness enforces them through xref:agent-hook.adoc[*hooks*]. The verification layering in xref:loop-engineering.adoc[*loop engineering*] maps onto this: automated checks are computational sensors, automated review is an inferential sensor.
 
 == Regulation categories
 
