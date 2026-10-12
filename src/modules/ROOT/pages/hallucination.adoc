@@ -1,0 +1,21 @@
+= Hallucination
+
+A *hallucination* is output from a xref:large-language-model.adoc[*large language model*] that is fluent and confident but factually incorrect. A model may fabricate citations, invent plausible-sounding names, or state incorrect information as though it were certain.
+
+Hallucinations follow from how models generate text. xref:next-token-prediction.adoc[*Next-token prediction*] picks the most statistically plausible continuation. It does not reason from facts. It produces fluent output whether or not the underlying fact is real – there is no internal "I don't know" signal, only likelihood.
+
+Hallucinations come in two flavors, and the distinction matters because the fixes are different.
+
+* *Factuality* hallucinations invent facts about the world – a wrong API signature, a fake citation. The cause is a gap in the model's parametric knowledge, either too rare in the training data or past the model's knowledge cutoff. The fix is to load the correct documentation, type definitions, or retrieved facts into the xref:context-window.adoc[*context window*].
+
+* *Faithfulness* hallucinations drift from context the model already has – ignoring loaded instructions, contradicting a file it read, or abandoning its own earlier reasoning. The cause is attention degradation in a long session — see xref:context-rot.adoc[*context rot*]. The fix is to clear or xref:context-compaction.adoc[*compact*] the context, not to paste in more.
+
+A subtler variant is *mis-remembering*. A fact, constraint, or value given correctly earlier in the context can come back subtly altered, and stated with the same confidence as everything else. Unlike a blank, which at least gets noticed, a corrupted detail passes unflagged. It becomes more likely the longer a session runs and the fuller the context gets, so a vital detail should be checked against its source rather than trusted to the model's recall, however sure the model sounds.
+
+A model will also fabricate an account of _how it arrived at an answer_, just as readily as it fabricates the answer. Asked to explain its reasoning, it produces a fluent, plausible rationale, but that rationale is generated after the fact by the same next-token prediction as everything else. It is not read off any record of what happened. Unlike traditional software, a model keeps no stack trace and no record of its deliberation. The reasoning tokens of a xref:reasoning-model.adoc[*reasoning model*] improve results but are not a truthful log of a decision procedure. A model's self-explanation is another plausible generation to be verified, not privileged insight into its own workings.
+
+Hallucinations are an inherent limitation of how LLMs work, not a bug that can be fully fixed. The practical mitigations are the following.
+
+* Setting lower temperatures to sample only the highest-probability next tokens.
+* Grounding model outputs in retrieved facts, as in xref:retrieval-augmented-generation.adoc[*retrieval-augmented generation (RAG)*].
+* Verifying outputs independently.
