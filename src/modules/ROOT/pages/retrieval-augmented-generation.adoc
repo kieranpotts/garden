@@ -1,0 +1,17 @@
+= Retrieval-augmented generation (RAG)
+
+:link-perplexity: https://www.perplexity.ai/
+
+*Retrieval-augmented generation (RAG)* is a technique that combines a xref:large-language-model.adoc[*large language model*] with an external knowledge source, which is retrieved at xref:inference.adoc[*inference*] time and loaded into the model's xref:context-window.adoc[*context window*].
+
+RAG addresses two core limitations of LLMs. The first is that a model's knowledge is frozen at the point of training. By default, models cannot access new information or browse the web. The second is that LLMs are prone to xref:hallucination.adoc[*hallucination*] – generating fluent, confident-sounding responses that are factually incorrect – particularly when asked about topics outside their training data or at the edges of their knowledge.
+
+In a RAG system, a user's query is used to search a knowledge base – a xref:vector-database.adoc[*vector database*], a search index, or live web results. The most relevant results are fetched and injected into the model's context alongside the original query. The model then generates a response grounded in that retrieved context, rather than relying solely on what it learned during training.
+
+RAG is widely used to build knowledge-aware applications – internal document Q&A systems, customer support bots, and AI search engines. {link-perplexity}[Perplexity] is a prominent consumer example. It uses live web search to answer questions with cited sources in real time. See xref:ai-assistant.adoc[*AI assistants*] for other examples.
+
+Agent development frameworks such as LangChain and LlamaIndex can be used to build RAG capabilities into xref:agent.adoc[*agents*], providing the retrieval, chunking, and orchestration plumbing so developers do not have to wire it together from scratch.
+
+== See also
+
+* xref:just-in-time-retrieval.adoc[*Just-in-time retrieval*]
