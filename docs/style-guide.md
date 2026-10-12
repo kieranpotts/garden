@@ -51,6 +51,17 @@ of this style guide.
 - Cross-reference link text MUST follow the natural reading of the sentence and the normal sentence-case rules
   (capitalized only where it opens a sentence), and need not match the target page's title exactly.
 
+- A cross-reference MUST target a whole page, never a section nested within a page. An `xref:` MUST NOT carry a
+  fragment, eg `xref:large-language-model.adoc#_quantization[*quantization*]`.
+
+- Cross-reference link text MUST name the target page's own topic, or a synonym for it. It MUST NOT name a sub-topic
+  that the target page covers only in one of its sections, eg `xref:large-language-model.adoc[*quantization*]`. That's
+  a section-level link in disguise.
+
+- A concept that's covered only as a section of another page MUST be left unlinked and set in bold as a sow candidate
+  (see "Bold text"), until it's extracted to a topic page of its own with the `divide` or `sow` skill. The
+  cross-reference then targets that page.
+
 ## See also and references sections
 
 - An entry MAY end with a `== See also` section, a `== References` section, or both, in that order.

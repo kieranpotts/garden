@@ -90,6 +90,13 @@ user with an error message.
   dozens of tenuous ones. Where a relationship needs a paragraph to justify, it
   is too thin to link.
 
+- Every `xref:` you add MUST target a whole page, never a section nested within
+  a page. It MUST NOT carry a `#fragment`, and its link text MUST NOT name a
+  sub-topic that the target page covers only in one of its sections, eg.
+  `xref:large-language-model.adoc[*quantization*]`. Entwining links whole
+  entries to whole entries. Where the related concept is only a section of
+  another entry, report it as a candidate worth planting.
+
 - You MUST NOT link to a hub entry that already aggregates the target.
   Hub entries such as `software-architecture.adoc` and
   `computer-science.adoc` aggregate many topics by design. Entwining is

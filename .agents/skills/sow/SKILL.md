@@ -122,6 +122,13 @@ user with an error message.
   elsewhere, `xref:` to it instead of re-explaining it. The value of the garden
   is in the connections between atomic notes, not in self-contained essays.
 
+- Every `xref:` you add MUST target a whole page, never a section nested within
+  a page. It MUST NOT carry a `#fragment`, and its link text MUST NOT name a
+  sub-topic that the target page covers only in one of its sections, eg.
+  `xref:large-language-model.adoc[*quantization*]`. Where the concept you want
+  to link has no page of its own, leave it unlinked and set it in bold as a
+  candidate for a later `sow` or `divide`.
+
 - One file MUST cover one concept. If research surfaces a second distinct
   concept, that is a separate entry, cross-linked — not a second section here.
   Sow it separately only if it too meets the atomicity criterion above.
@@ -143,6 +150,13 @@ user with an error message.
   anyway, with no outbound `xref:`, and say so in the report. A genuinely
   novel topic in a young section of the garden is not a reason to refuse.
   Note it as a candidate for a later linking pass.
+
+- The topic is currently covered as a section of an existing entry, and other
+  entries link to that entry using the topic as their link text or a
+  `#fragment`. Those are section-level links, which the style guide forbids.
+  Sow the entry, reduce the section to a short summary that links to it, and
+  repoint each of those links at the new entry. This is the one case where
+  existing entries change beyond gaining an inbound `xref:`.
 
 - The topic collides with an entry under a different name. Treat a synonym
   as an existing entry, not as a gap. Stop, name the entry you found, and

@@ -76,7 +76,9 @@ user with an error message.
 
 4.  Repoint every reference. Grep the whole garden for `xref:<target-file>.adoc`
     and replace each with `xref:<covering-file>.adoc`, adjusting the link text
-    so it still reads sensibly in context. Where an entry ends up linking the
+    so it still reads sensibly in context. A repointed link MUST target the
+    whole covering entry, with no `#fragment`, and its link text MUST name the
+    covering entry's topic or a synonym for it. Where an entry ends up linking the
     covering entry twice, collapse the duplicate.
 
 5.  Update the index and nav. Remove the target's listing from

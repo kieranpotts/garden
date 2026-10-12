@@ -2,8 +2,9 @@
 name: tend
 description: >-
   Check one target entry's structural health — unresolvable cross-references,
-  fake bracketed pseudo-links, and a missing index or nav listing — then fix
-  what is mechanical and report the rest. Use this skill when the user says
+  cross-references to sections nested within other pages, fake bracketed
+  pseudo-links, and a missing index or nav listing — then fix what is
+  mechanical and report the rest. Use this skill when the user says
   something like "tend event-sourcing.adoc", "check this entry for broken
   links", or asks to tend a particular page. Do not use it to write or reword
   an entry's prose, or to review its maturity emoji.
@@ -14,7 +15,8 @@ license: CC0-1.0
 # Tend
 
 Inspect a single garden entry for withering content — broken cross-references,
-fake pseudo-links, and a missing index or nav listing — then apply the
+section-level cross-references, fake pseudo-links, and a missing index or nav
+listing — then apply the
 unambiguous fixes and report everything else. Tending repairs structure. It
 never grows content.
 
@@ -34,6 +36,11 @@ user with an error message.
 - Every `xref:` target in the target entry MUST have been checked against the
   actual file inventory, and each unresolvable one reported.
 
+- Every `xref:` in the target entry MUST have been checked for a `#fragment`,
+  and for link text that names a section of the target page rather than the
+  page's own topic. Each such section-level link MUST have been repointed at
+  a dedicated entry where one exists, and reported where none does.
+
 - Every bracketed pseudo-link in the target entry MUST have been checked for
   a matching entry, and converted to a real `xref:` wherever one exists.
 
@@ -51,7 +58,7 @@ user with an error message.
 ## Instructions
 
 1.  Inventory the garden. List every `.adoc` file under
-    `src/modules/ROOT/pages/`. This is the ground truth for steps 2 and 3, and
+    `src/modules/ROOT/pages/`. This is the ground truth for steps 2 to 4, and
     it confirms the target entry itself exists.
 
 2.  Find unresolvable cross-references. Grep the target entry for `xref:`
@@ -59,7 +66,25 @@ user with an error message.
     in the inventory. A target that does not is a dead link, left behind by a
     rename, a removal, or an entry that was never planted.
 
-3.  Find fake pseudo-links. The target entry may carry bracketed text that
+3.  Find section-level cross-references. An `xref:` MUST target a whole page,
+    never a section nested within one. There are two forms to look for.
+
+    - An `xref:` carrying a fragment, pattern `xref:[a-z0-9-]+\.adoc#`, eg.
+      `xref:large-language-model.adoc#_quantization[*quantization*]`.
+
+    - An `xref:` whose link text names a sub-topic that the linked page covers
+      only in one of its sections, eg.
+      `xref:large-language-model.adoc[*quantization*]`. Compare each link's
+      text against the linked page's `=` title. Where the two are not the same
+      concept or synonyms, open the linked page and check whether the link
+      text matches one of its section headings instead.
+
+    Where the inventory holds an entry dedicated to the concept, the fix is to
+    repoint the link at that entry. Where it does not, the concept is a
+    candidate for its own entry. Report it, naming the section it lives in,
+    and leave the link alone.
+
+4.  Find fake pseudo-links. The target entry may carry bracketed text that
     looks like a cross-reference but is not AsciiDoc `xref:` syntax, eg.
     `*[modular design]*` where `*xref:modular-design.adoc[Modular design]*`
     was meant. Search for bracketed text not preceded by `xref:` or a URL
@@ -67,21 +92,23 @@ user with an error message.
     does not, the bracketed term is a deliberate marker for a topic not yet
     planted — report it as such and leave it alone.
 
-4.  Check the entry's listings. Confirm the target entry appears in both
+5.  Check the entry's listings. Confirm the target entry appears in both
     `src/modules/ROOT/pages/index.adoc` and `src/modules/ROOT/nav.adoc`. An
     entry missing from the index has no discoverable path from the front page.
     An entry missing from the nav renders with no ancestry and no breadcrumb
     trail. Report each absence with the section you would file it under —
     placement is a taxonomy judgment, so propose it rather than applying it.
 
-5.  Apply the unambiguous fixes. Repoint a broken `xref:` only where the
+6.  Apply the unambiguous fixes. Repoint a broken `xref:` only where the
     intended target is beyond doubt, such as an exact rename or an obvious
-    typo. Convert a pseudo-link only where a matching entry genuinely exists.
-    Leave everything else for the user.
+    typo. Repoint a section-level `xref:` only where an entry dedicated to
+    the concept genuinely exists, dropping any fragment. Convert a pseudo-link
+    only where a matching entry genuinely exists. Leave everything else for
+    the user.
 
-6.  Report what was found, what was fixed, and what needs a decision,
-    grouped as broken cross-references, fake pseudo-links, and listing
-    problems.
+7.  Report what was found, what was fixed, and what needs a decision,
+    grouped as broken cross-references, section-level cross-references, fake
+    pseudo-links, and listing problems.
 
 ## Rules
 
@@ -89,6 +116,11 @@ user with an error message.
   obvious correct target is reported, never guessed at. Silently repointing a
   link at the wrong entry is harder to notice, and harder to undo, than
   leaving it dead.
+
+- You MUST NOT resolve a section-level link by stripping its fragment alone.
+  `xref:foo.adoc#_bar[*bar*]` cut down to `xref:foo.adoc[*bar*]` is the same
+  defect in a form that is harder to grep for. Either the link is repointed
+  at an entry dedicated to the concept, or it is reported.
 
 - You MUST NOT write or reword an entry's prose. Where a repair would mean
   composing new content, such as an index description or an entry that does

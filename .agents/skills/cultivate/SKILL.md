@@ -78,8 +78,10 @@ user with an error message.
       stray bold, an `xref:` not wrapped in `*...*`. Recommend tidy where
       mechanical violations are present.
 
-    - **tend** — broken `xref:` targets, fake bracketed pseudo-links, or a
-      missing `index.adoc` or `nav.adoc` listing. Recommend tend where a
+    - **tend** — broken `xref:` targets, an `xref:` to a section nested within
+      another page (a `#fragment`, or link text naming one of the linked
+      page's sections), fake bracketed pseudo-links, or a missing `index.adoc`
+      or `nav.adoc` listing. Recommend tend where a
       structural defect is present.
 
     - **classify** — a maturity emoji that no longer matches the content: a

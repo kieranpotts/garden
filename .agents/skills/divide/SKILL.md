@@ -50,6 +50,10 @@ user with an error message.
 - The target and each new entry MUST be cross-linked, and every `xref:` you
   add MUST name a file that exists under `src/modules/ROOT/pages/`.
 
+- No `xref:` anywhere under `src/modules/ROOT/pages/` MAY still point at the
+  target entry, by `#fragment` or by link text, for a concept that now has its
+  own entry.
+
 - No new entry MAY duplicate a topic the garden already covers, checked
   against the file inventory before creation.
 
@@ -91,18 +95,24 @@ user with an error message.
     its core concept, and add an `xref:` to each new entry where the
     relationship reads naturally.
 
-7.  Cross-link the new entries to one another, where they relate to each
+7.  Repoint the section-level links. Grep the whole garden for
+    `xref:<target-file>.adoc`, with and without a `#fragment`, and find each
+    link whose fragment or link text names a concept you extracted, eg.
+    `xref:large-language-model.adoc[*quantization*]`. Repoint each one at the
+    new entry for that concept, dropping the fragment.
+
+8.  Cross-link the new entries to one another, where they relate to each
     other and not only to the original.
 
-8.  Update the index and nav. Add each new entry to
+9.  Update the index and nav. Add each new entry to
     `src/modules/ROOT/pages/index.adoc` in its correct alphabetical
     sub-section, marked 🌱 — it is a new entry, whatever the age of the
     material in it — and to `src/modules/ROOT/nav.adoc` at the matching
     alphabetical position. Without the nav listing an entry has no ancestry
     and renders with no breadcrumb trail.
 
-9.  Report the files created, what moved from the original into each, and
-    every cross-link added.
+10. Report the files created, what moved from the original into each,
+    every cross-link added, and every link repointed.
 
 ## Rules
 
@@ -121,6 +131,13 @@ user with an error message.
   an entry usually refers back to it implicitly, with phrases like "as mentioned
   above". Turn those into explicit `xref:` links or remove them, so the new
   entry is self-contained.
+
+- Every `xref:` you add MUST target a whole page, never a section nested within
+  a page. It MUST NOT carry a `#fragment`, and its link text MUST NOT name a
+  sub-topic that the target page covers only in one of its sections, eg.
+  `xref:large-language-model.adoc[*quantization*]`. A link that names an
+  extracted concept targets that concept's new entry, not the section it used
+  to occupy in the original.
 
 - A newly created entry MUST be marked 🌱 Seedling in the index, and you
   MUST NOT change the maturity emoji of the entry you divide. Maturity is an

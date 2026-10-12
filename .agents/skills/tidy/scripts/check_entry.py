@@ -5,6 +5,9 @@ Mechanical style checks for one garden entry.
 
 - Out-bold xref form, *xref:foo.adoc[Text]* (should be xref:foo.adoc[*Text*]).
 
+- An xref carrying a #fragment, xref:foo.adoc#_bar[...], which links to a
+  section nested within a page (an xref must target a whole page).
+
 - A soft line-wrap landing inside an xref/link/bold/italic/code span.
 
 - A bare external https?://...[...] link not using the {link-name}[...]
@@ -50,6 +53,9 @@ ATOMIC = re.compile(
 # The old, wrong "outer bold" xref form: *xref:target[Text]*
 OUTER_BOLD_XREF = re.compile(r"\*xref:([a-z0-9-]+\.adoc(?:#\S+?)?)\[([^\]]*)\]\*")
 
+# An xref to a section nested within a page: xref:target#fragment[Text]
+FRAGMENT_XREF = re.compile(r"xref:[a-z0-9-]+\.adoc#[^\[\s]*\[[^\]]*\]")
+
 # A bare external link not yet using the {link-name}[...] attribute form.
 BARE_EXTERNAL_LINK = re.compile(r"(?<!\{)https?://[^\[\s]+\[")
 
@@ -79,6 +85,20 @@ def check_outer_bold_xref(text, lines):
              f"`{m.group(0)}` uses the outer *xref:...[...]* form — "
              f"should be `xref:{m.group(1)}[*{m.group(2)}*]`.")
         )
+    return findings
+
+
+def check_fragment_xref(lines):
+    findings = []
+    for i, line, in_fence in iter_blocks(lines):
+        if in_fence:
+            continue
+        for m in FRAGMENT_XREF.finditer(line):
+            findings.append(
+                (i, "fragment-xref",
+                 f"`{m.group(0)}` links to a section nested within a page — "
+                 f"an xref must target a whole page.")
+            )
     return findings
 
 
@@ -165,6 +185,7 @@ def check_file(path):
     lines = text.split("\n")
     findings = []
     findings += check_outer_bold_xref(text, lines)
+    findings += check_fragment_xref(lines)
     findings += check_split_inline_spans(lines)
     findings += check_bare_external_links(lines)
     findings.sort(key=lambda f: f[0])

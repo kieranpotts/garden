@@ -62,13 +62,14 @@ user with an error message.
     python3 .agents/skills/tidy/scripts/check_entry.py src/modules/ROOT/pages/<entry>.adoc
     ```
 
-    This is a read-only checker for three specific, easy-to-miss-by-eye
-    mistakes: the outer-bold `*xref:...[...]*` form, a soft line-wrap that
-    lands inside an xref/link/bold/italic/code span, and a bare external link
-    not using the `{link-name}[...]` attribute form. Treat its findings as candidates for
+    This is a read-only checker for four specific, easy-to-miss-by-eye
+    mistakes: the outer-bold `*xref:...[...]*` form, an `xref:` carrying a
+    `#fragment`, a soft line-wrap that lands inside an xref/link/bold/italic/code
+    span, and a bare external link not using the `{link-name}[...]` attribute
+    form. Treat its findings as candidates for
     the mechanical-fix pass below — confirm each one against the entry before
     fixing, the same as any other check in this skill. A clean run doesn't
-    mean the entry is fully tidy; it only clears those three checks. Everything
+    mean the entry is fully tidy; it only clears those four checks. Everything
     else in this skill is still a manual read.
 
 3.  Check the entry against the guide, section by section.
@@ -96,7 +97,9 @@ user with an error message.
 
     - Cross-references — every `xref:` uses the inner-bold form,
       `xref:foo.adoc[*Text*]`, never the outer-bold form,
-      `*xref:foo.adoc[Text]*`.
+      `*xref:foo.adoc[Text]*`. Every `xref:` targets a whole page, never a
+      section nested within one: no `#fragment`, and no link text naming a
+      sub-topic that the linked page covers only in one of its sections.
 
     - External links — every external `https?://` link in the body is
       defined as a `:link-name:` document attribute right after the title,
@@ -163,6 +166,10 @@ user with an error message.
     - Whether a bolded term is a not-yet-planted topic marker, a first-use
       definition, or simply stray bold.
 
+    - An `xref:` to a section nested within another page, whether by
+      `#fragment` or by link text. The fix changes where the link points, so
+      it belongs to a structural pass with the `tend` skill.
+
     - Whether a capitalized heading is a formal proper noun or just a
       descriptive phrase that reads like one.
 
@@ -182,7 +189,7 @@ user with an error message.
 - `check_entry.py` is read-only and advisory. It never edits a file, and a
   finding is a candidate, not an automatic fix — apply the same judgment to
   its output as to anything else this skill catches by eye. It only covers
-  three narrow, easy-to-miss mechanical checks; a clean run is not a
+  four narrow, easy-to-miss mechanical checks; a clean run is not a
   substitute for the section-by-section read.
 
 - The style guide MUST be the only source of style authority. Do not enforce a
@@ -190,8 +197,8 @@ user with an error message.
   guide is missing a rule, say so in the report rather than applying an
   unwritten one.
 
-- You MUST NOT repair structural defects. Broken cross-references, fake
-  pseudo-links, orphans, and maturity emoji belong to a structural pass. Mention
+- You MUST NOT repair structural defects. Broken cross-references,
+  section-level cross-references, fake pseudo-links, orphans, and maturity emoji belong to a structural pass. Mention
   any you notice, and leave them.
 
 - You MUST NOT change content. Tidying neither expands a thin entry nor breaks

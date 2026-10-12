@@ -80,8 +80,11 @@ user with an error message.
 4.  Repoint every reference. Grep the whole garden for
     `xref:<dead-head-file>.adoc` and replace each with
     `xref:<target-file>.adoc`, adjusting the link text so it still reads
-    sensibly in context. Where an entry ends up linking the target more than
-    once, collapse the duplicates.
+    sensibly in context. A repointed link MUST target the whole entry, with no
+    `#fragment` pointing at the section the dead-head's content now occupies,
+    and its link text MUST name the target's topic, not the dead-head's.
+    Reword the sentence around the link where that is what it takes. Where an
+    entry ends up linking the target more than once, collapse the duplicates.
 
 5.  Update the index and nav. Remove the dead-head's listing from
     `src/modules/ROOT/pages/index.adoc` and `src/modules/ROOT/nav.adoc`. Where
@@ -132,6 +135,12 @@ user with an error message.
   approves the work.
 
 ## Edge cases
+
+- Other entries link to the dead-head as a concept in its own right, and the
+  repointed links would only make sense with the dead-head's name as their link
+  text. That is a sign the dead-head is a distinct, linkable concept, which
+  should keep its own entry. Stop and report it. A graft MUST NOT turn page
+  links into section-level links.
 
 - Grafting would leave the target covering more than one concept. Stop before
   building the merge. Entries that read better together are one concept.
