@@ -1,0 +1,13 @@
+= Prompt caching
+
+*Prompt caching* is a feature of xref:inference-provider.adoc[*inference providers*] that reuses a stable prompt prefix across inference calls at a steep discount. The provider keeps the processed state of the prefix, built on the model's xref:key-value-cache.adoc[*key-value cache*], so that a later request starting with the same tokens need not process them again. *Cached input tokens* are billed far more cheaply than uncached input, often by roughly an order of magnitude, and responses start faster.
+
+The cache matches on an exact prefix. The first token that differs ends the match, and everything after it is processed at full price. Prompts should therefore be ordered with the stable content first, such as the system prompt, tool definitions, and rule files, and the volatile content last, such as the latest user message. Editing something near the start of the context, or reordering tool definitions, invalidates the cache for everything after it.
+
+Cached entries expire after a short period of inactivity, which varies by provider. An agent that pauses for long enough pays full price on its next call.
+
+Caching matters most for the xref:agent-loop.adoc[*agent loop*], where each request re-sends the whole context and so repeats a large, growing prefix. It is a major reason why long agent sessions are affordable at all.
+
+== See also
+
+* xref:context-engineering.adoc[*Context engineering*]

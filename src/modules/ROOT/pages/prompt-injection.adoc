@@ -1,0 +1,13 @@
+= Prompt injection
+
+*Prompt injection* is an attack in which adversarial instructions are embedded in data that an xref:agent.adoc[*agent*] processes, such as files, web pages, or tool results, in an attempt to override the user's intended instructions. The name was coined by Simon Willison in 2022, by analogy with xref:sql-injection.adoc[*SQL injection*].
+
+The analogy points at the cause. A model receives instructions and data in the same channel, as one stream of tokens in its context, and has no reliable way to tell the two apart. Text in a fetched web page that says "ignore your previous instructions and do this instead" is, to the model, just more context. Unlike SQL injection there is no equivalent of parameterized queries that fully separates the two, so the attack cannot be eliminated, only contained.
+
+An injection can be direct, where the attacker is the user, or indirect, where the instructions arrive through content the agent reads on the user's behalf. Indirect injection is the more dangerous form, because the user never sees the payload. Sources include web pages, issue trackers, emails, documents, and the tool descriptions and results of xref:model-context-protocol.adoc[*MCP*] servers.
+
+The severity of an injection depends on what the agent can do once subverted. Defenses therefore concentrate on limiting capabilities, not on detecting malicious text. See xref:lethal-trifecta.adoc[*the lethal trifecta*], xref:sandbox.adoc[*sandboxing*], and xref:guardrail.adoc[*guardrails*].
+
+== References
+
+* Willison, Simon (2022). https://simonwillison.net/2022/Sep/12/prompt-injection/[_Prompt injection attacks against GPT-3_].
