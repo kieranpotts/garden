@@ -1,0 +1,9 @@
+= Reasoning effort
+
+*Effort* is a dial for how much reasoning a model does before it answers. It applies to a xref:reasoning-model.adoc[*reasoning model*]. Set per request, it controls the length of the chain-of-thought the model works through before writing the visible response.
+
+Higher effort costs more and runs slower, because the reasoning is emitted as output tokens that are billed even when hidden from the user.
+
+A typical ladder runs from low (mechanical edits), through medium (the default), to high (tricky bugs or design work) and max (the hardest problems). The right setting matches the effort to the task, not to the session. A one-line fix does not need max effort, and a subtle design problem deserves more than low.
+
+More reasoning improves results, but the reasoning tokens are not a truthful log of how the model reached its answer. See xref:hallucination.adoc[*hallucination*].
