@@ -1,0 +1,11 @@
+= Inference
+
+*Inference* is what a xref:large-language-model.adoc[*large language model*] does to generate output – running data through the model's fixed xref:model-weights.adoc[*weights*] to produce each next token. The term comes from logic and statistics, where "inference" means drawing a conclusion from available information.
+
+Each call to a model is an *inference call*, the fundamental unit of work and, on metered services, the unit of billing. When you type a prompt and get a response back, the whole behind-the-scenes process is inference – loading the model, tokenizing the input, and generating each output token by xref:next-token-prediction.adoc[*next-token prediction*].
+
+Inference is distinct from training, fine-tuning, and xref:quantization.adoc[*quantization*], which create a model in the first place. Inference is how a model, once made, works.
+
+Compared to training, inference is relatively cheap, and depending on model size can run on a single workstation GPU. Available VRAM is the primary constraint on both the size of model you can run and its throughput, measured in *tokens per second*.
+
+The software that executes inference calls is a xref:model-runtime.adoc[*model runtime*]. An organization that operates runtimes as a hosted service is an xref:inference-provider.adoc[*inference provider*].
