@@ -14,7 +14,7 @@ It also has a compute cost of its own, since generating the summary is itself an
 
 Well-designed systems therefore compact selectively, preserving verbatim what is cheap and load-bearing, such as the system prompt and recent turns, while summarizing the older, bulkier middle of the conversation. Compaction can be prompted to preserve particular information – "keep the schema decisions" – whereas clearing simply drops everything and starts fresh.
 
-*Autocompact* is compaction triggered automatically when the context window approaches full, typically around 80% of capacity. It is lossy at a moment you did not choose. It fires mid-task, and the summary decides for itself what to keep. The usual symptom is that the agent carries on but has quietly forgotten a constraint it was holding earlier. The defense is to compact manually at a natural boundary, so the summary is written when the work is in a coherent state, or to write decisions to a plan document or handoff artifact on disk, where no summary can lose them.
+*Autocompact* is compaction triggered automatically when the context window approaches full, typically around 80% of capacity. It is lossy at a moment you did not choose. It fires mid-task, and the summary decides for itself what to keep. The usual symptom is that the agent carries on without a constraint it was holding earlier, because the summary dropped it. The defense is to compact manually at a natural boundary, so the summary is written when the work is in a coherent state, or to write decisions to a plan document or handoff artifact on disk, where no summary can lose them.
 
 == See also
 

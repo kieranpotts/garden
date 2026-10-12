@@ -1,0 +1,17 @@
+= Context window
+
+The *context window* is the maximum number of tokens — the *context* — that a xref:large-language-model.adoc[*large language model*] can process in a single interaction. It is the combined total of the system prompt, conversation history, and the current input and output.
+
+Text outside the context window is not visible to the model. The window is the only surface through which the model perceives anything. If something is in the token sequence the model can use it, and if it is not, the model does not know it exists.
+
+Context window size is one of the most impactful characteristics of models on the user experience. A larger context window allows a model to consider more of a document, a longer conversation history, or a larger codebase at once.
+
+Modern frontier models support context windows of 128K tokens or more. Some now extend to 1M tokens and beyond.
+
+The window is finite. everything – system prompt, conversation history, tool results – competes for the same budget. Long sessions force xref:context-compaction.adoc[*compaction*] or clearing. xref:context-engineering.adoc[*Context engineering*] treats the window as a budget to be spent deliberately, rather than a container to be filled, and manages the compaction lifecycle.
+
+The xref:key-value-cache.adoc[*key-value cache (KV cache)*] stores the attention states of previously processed tokens so they don't have to be recomputed for every new token. This trades memory for compute, and it is what makes long, interactive generation practical.
+
+The context window is working state, not memory. It does not persist across sessions, and a fresh session starts with an empty window. What persists across sessions is xref:agent-memory.adoc[*agent memory*] – files, handoff artifacts, and other records written to disk – not the window itself.
+
+See also xref:context-rot.adoc[*context rot*], which is concerned with how model performance and accuracy deteriorates as context windows become fuller.
