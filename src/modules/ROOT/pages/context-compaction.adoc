@@ -1,0 +1,21 @@
+= Context compaction
+
+*Compaction* is the process of condensing a long conversation history with a xref:large-language-model.adoc[*large-language model*] into a shorter summary once it approaches the limits of a model's xref:context-window.adoc[*context window*], so that a session can continue beyond what the window would otherwise allow.
+
+Rather than dropping the oldest messages outright, the xref:large-language-model.adoc[*model*] (or a separate summarization step) distills the prior exchanges into a compact representation of what matters – decisions made, facts established, work-in-progress – which then replaces the raw history.
+
+The trade-off is fidelity for capacity. Compaction frees up space and keeps latency and cost bounded as a conversation grows, but it is inherently lossy. Detail that seemed unimportant at summarization time is discarded and cannot be recovered, and errors introduced into the summary propagate silently through everything that follows in the conversation thread.
+
+The raw transcript is a primary source and the summary a secondary one.
+
+Compacting too aggressively risks losing context the model still needs. Compacting too rarely wastes tokens, lets xref:context-rot.adoc[*context rot*] set in, and eventually hits the hard context limit.
+
+It also has a compute cost of its own, since generating the summary is itself an xref:inference.adoc[*inference*] pass.
+
+Well-designed systems therefore compact selectively, preserving verbatim what is cheap and load-bearing, such as the system prompt and recent turns, while summarizing the older, bulkier middle of the conversation. Compaction can be prompted to preserve particular information – "keep the schema decisions" – whereas clearing simply drops everything and starts fresh.
+
+*Autocompact* is compaction triggered automatically when the context window approaches full, typically around 80% of capacity. It is lossy at a moment you did not choose. It fires mid-task, and the summary decides for itself what to keep. The usual symptom is that the agent carries on but has quietly forgotten a constraint it was holding earlier. The defense is to compact manually at a natural boundary, so the summary is written when the work is in a coherent state, or to write decisions to a plan document or handoff artifact on disk, where no summary can lose them.
+
+== See also
+
+See also xref:agent-handoff.adoc[*agent handoff*], which is concerned with the same trade-offs.
