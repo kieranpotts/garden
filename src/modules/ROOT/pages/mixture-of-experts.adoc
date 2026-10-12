@@ -1,0 +1,7 @@
+= Mixture of experts (MoE)
+
+*Mixture of experts (MoE)* is a xref:large-language-model.adoc[*large language model*] architecture in which each token is routed through only a small subset of specialized "expert" subnetworks, rather than through the entire network. In a *dense* model, by contrast, every parameter takes part in every computation.
+
+This lets a model carry a very large total parameter count while activating only a fraction of it per token – high capacity at a lower xref:inference.adoc[*inference*] cost. The parameters used for any one token are the model's xref:active-parameters.adoc[*active parameters*].
+
+The saving is in compute, not memory. Any expert might be selected for the next token, so all of the model's xref:model-weights.adoc[*weights*] must stay loaded. This matters when sizing hardware to run an xref:open-weight-model.adoc[*open-weight model*] locally.
