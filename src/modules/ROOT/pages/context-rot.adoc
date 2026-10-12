@@ -1,0 +1,19 @@
+= Context rot
+
+*Context rot* is the decline in a xref:large-language-model.adoc[*large language model's*] ability to accurately recall and use information from its context as the number of tokens in its xref:context-window.adoc[*context window*] increases.
+
+In the xref:transformer.adoc[*transformer architecture*], every token can attend to every other token across the entire context, producing n² pairwise relationships for n tokens. As the context window fills, a model's ability to manage these pairwise relationships gets stretched thin.
+
+Each of these pairings is an *attention relationship*. When predicting a token, the model factors in every other token – some heavily, others barely – and meaningful pairs influence each other more. With n tokens there are roughly n² relationships, computed across many attention heads (typically 50–100), each building its own version. Only a few relationships matter for any given task, but the pool they sit in grows quadratically. At 1,000 tokens the pairing you care about is one in a million, and at 100,000 it is one in 10 billion.
+
+Context rot is not a hard cut-off. A model's performance does not suddenly drop off when the context reaches some threshold. We observe a performance gradient instead. Models remain capable with large contexts, but show reduced precision for information retrieval and long-range reasoning, compared to their performance on shorter contexts.
+
+The underlying cause is *attention budget*. Each token has finite influence to distribute across the rest of the context, and that budget does not grow as the context grows. Think of signal and noise. Your instruction is a fixed-volume signal, and everything else in the window is competing sound. As the context grows the room gets louder and the signal-to-noise ratio drops. The symptom reads as disobedience. An early constraint slips, and re-pasting it helps only briefly, because re-pasting adds another competitor rather than strengthening the signal.
+
+This is *attention degradation*. The same model with the same parameters has more mouths to feed, so each token's budget spreads across more competitors. It presents as the model getting worse mid-session – re-asking things it was told, ignoring a file it read earlier, drifting from its instructions – with no error or threshold, just a gradual decline. By the time it is obvious, the session has been in decline for a while. Drift of this kind causes more xref:hallucination.adoc[*hallucinations*].
+
+The remedy is to remove context, not add it. Clearing and reloading only what the current task needs, xref:context-compaction.adoc[*compacting*] at a natural boundary, or xref:agent-handoff.adoc[*handing off*] to a fresh session all recover instruction-following. Compaction is not a complete cure, because a lossy summary can itself drop or distort valuable instructions the model needs.
+
+This emergent behavior is analogous to working memory capacity in humans. We too can lose focus and get confused once we reach a certain point of information overload. Like people, some models exhibit more gentle context rot than others, but this behavior is observed across all models.
+
+xref:context-engineering.adoc[*Context engineering*] is fundamentally about the problem of optimizing the signal-to-noise ratio of a model's context.
