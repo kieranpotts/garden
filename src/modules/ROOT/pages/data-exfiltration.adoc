@@ -1,0 +1,39 @@
+= Data exfiltration
+
+:link-mitre-exfiltration: https://attack.mitre.org/tactics/TA0010/
+:link-nist-sp-800-53:     https://doi.org/10.6028/NIST.SP.800-53r5
+
+*Data exfiltration* is the unauthorized transfer of information out of a system. It is a breach of xref:confidentiality.adoc[*confidentiality*] carried out deliberately, which distinguishes it from a *data leak*, where material is exposed by accident, such as through a misconfigured storage bucket. The party doing it may be an external attacker who has gained a foothold, malware running on a compromised host, or an insider misusing access they legitimately hold.
+
+The material taken is whatever has value outside the system, such as credentials, personal data, source code, financial records, and trade secrets. Credentials are a special case, because they are taken as a means to reach further data, rather than as the prize itself.
+
+Exfiltration is rarely the first step of an attack. It follows initial access, privilege escalation, and discovery, and it is usually preceded by collection and staging, where the attacker gathers the target data in one place and compresses or encrypts it. MITRE ATT&CK lists exfiltration as a tactic of its own, separate from collection and from command and control. It is also the basis of *double extortion* in ransomware attacks, where data is stolen before it is encrypted, so that the victim can be threatened with publication even if they can restore from backups.
+
+== Channels
+
+Exfiltration needs an outbound path. An attacker who controls a compromised host can send data back over the channel they already use to control it, or over a protocol that is permitted out of the network but not closely inspected. *DNS tunneling* is the classic case, encoding data in the subdomain labels of xref:dns.adoc[*DNS*] queries for a domain the attacker runs. More often now, data is uploaded to a legitimate web service, such as a cloud storage service or a code repository. The traffic is xref:transport-layer-security.adoc[*TLS*]-encrypted and goes to a destination the organization probably already uses, so it is hard to tell apart from normal traffic.
+
+Not every path crosses the network. Insiders may copy data to removable media, which is the usual route out of an air-gapped network. And a vulnerability can turn an application's own responses into the channel, as when xref:sql-injection.adoc[*SQL injection*] returns rows the attacker should not see, or xref:ssrf.adoc[*server-side request forgery*] relays internal cloud credentials.
+
+An AI xref:agent.adoc[*agent*] opens a channel that needs no compromised host. Exfiltration is the usual goal of a successful xref:prompt-injection.adoc[*prompt injection*], where the injected instructions have the agent read something sensitive from its context or environment and then send it out. Tool calls that make web requests or send messages are direct channels. Less obvious ones include a URL that the agent is persuaded to fetch with secrets encoded in the query string, and a Markdown image whose address carries the data and is fetched automatically when the response is displayed.
+
+== Defenses
+
+Cutting off the outbound path is the most reliable defense, because it holds even after every other control has failed. In a network this is *egress filtering*, where a xref:firewall.adoc[*firewall*] denies outbound connections by default and permitted traffic goes through a xref:proxy-server.adoc[*forward proxy*] that allows only named destinations. For an agent it is enforced by restricting network access with a xref:sandbox.adoc[*sandbox*].
+
+Other measures limit what can be taken. Applying the *principle of least privilege* through xref:authorization.adoc[*authorization*] bounds how much any one compromised account, host, or agent can read, and xref:encryption.adoc[*encryption*] at rest makes stolen files worthless if the keys are held somewhere the attacker cannot reach.
+
+Detection is the weaker half. *Data loss prevention (DLP)* tools scan outbound content for patterns that match sensitive data, and xref:monitoring.adoc[*monitoring*] can reveal unusual volumes or destinations. But a slow, encrypted transfer to a popular cloud service looks much like ordinary use, and many thefts are discovered only when the data appears elsewhere.
+
+== See also
+
+* xref:penetration-testing.adoc[*Penetration testing*]
+* xref:privacy.adoc[*Privacy*]
+* xref:security.adoc[*Security*]
+* xref:threat-modeling.adoc[*Threat modeling*]
+
+== References
+
+* Joint Task Force (2020). {link-nist-sp-800-53}[_Security and Privacy Controls for Information Systems and Organizations_]. NIST Special Publication 800-53, Revision 5. National Institute of Standards and Technology.
+
+* MITRE. {link-mitre-exfiltration}[_Exfiltration, Tactic TA0010_]. MITRE ATT&CK.
