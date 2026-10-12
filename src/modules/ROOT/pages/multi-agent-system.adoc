@@ -1,0 +1,18 @@
+= Multi-agent system
+
+:link-claude-squad:  https://github.com/smtg-ai/claude-squad
+:link-nimbalyst:     https://nimbalyst.com/
+:link-mux:           https://github.com/coder/mux
+
+A *multi-agent system* is one in which several xref:agent.adoc[*agents*] work together on a goal, rather than a single agent working alone. Typically one agent plays the role of *supervisor agent*, or orchestrating agent. It breaks the goal into tasks, spawns *sub-agents* to complete them, and combines their results. The supervisor plays the part that, in a non-agentic workflow, a script or a human would play. See xref:agent-orchestration.adoc[*agent orchestration*].
+
+Sub-agents are usually given their own sessions and context windows, which keeps noisy work out of the supervisor's context and lets independent tasks run concurrently. (See xref:agent-memory.adoc[*agent memory → subagents*] for the mechanics.) Where the sub-agents edit files, tools such as Git worktrees keep each agent's work isolated from the others on the same filesystem. {link-claude-squad}[Claude Squad], {link-nimbalyst}[Nimbalyst], and {link-mux}[mux] are examples of tools that manage agents this way.
+
+Splitting work across agents costs coordination. Every handoff between agents is a place where context is lost, and a supervisor has to verify results it did not produce. The pattern pays off where tasks are genuinely independent or where context isolation is the point, and less so where one agent could simply do the work in sequence.
+
+Some xref:agent-harness.adoc[*agent harnesses*] have sub-agent capabilities of their own. The boundary between harness and orchestrator is therefore one of responsibility rather than packaging. Agents built by different teams or vendors can coordinate across systems using a protocol such as xref:agent2agent.adoc[*Agent2Agent*].
+
+== See also
+
+* xref:agent-handoff.adoc[*Agent handoff*]
+* xref:parallelism.adoc[*Parallelism*]
