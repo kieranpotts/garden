@@ -1,0 +1,11 @@
+= Model weights
+
+A model's *weights* are its learned *parameters* – the billions of numbers that encode everything a xref:large-language-model.adoc[*large language model*] absorbed during training, and that determine how it transforms input into output. Weights are learned from the training data, not programmed by hand. It is the combination of a vast training corpus and billions of such weights that lets a model emulate human communication so closely.
+
+A model with 100 billion parameters has roughly that many weights, stored on disk and loaded into memory to run. Training adjusts the weights, and xref:inference.adoc[*inference*] runs data through them without changing them.
+
+Small changes in weights, such as those made by fine-tuning, can dramatically alter a model's behavior.
+
+The size of the weights sets the memory needed to run a model. xref:quantization.adoc[*Quantization*] shrinks them by storing each value at a lower precision. In a xref:mixture-of-experts.adoc[*mixture-of-experts*] model only a fraction of the weights, the xref:active-parameters.adoc[*active parameters*], are used for any one token, but all of them must still be loaded.
+
+A model whose weights are published for anyone to download and run is an xref:open-weight-model.adoc[*open-weight model*]. The software that loads the weights and executes them is a xref:model-runtime.adoc[*model runtime*].
