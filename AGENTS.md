@@ -49,13 +49,18 @@ SHOULD NOT, OPTIONAL, and MAY are to be interpreted as described in
 ## Tools
 
 No build, lint, or test commands. Validity is structural. Every `xref:` target
-must resolve to a real file, and every page must be listed in both `index.adoc`
-and `nav.adoc`.
+must resolve to a real file, with no `#fragment`, and every page must be listed
+in both `index.adoc` and `nav.adoc`.
 
 ## Rules
 
 - Each `.adoc` file MUST cover exactly one topic. Use `xref:` to link rather
   than re-explaining a concept that already has its own page.
+
+- An `xref:` MUST target a whole page, never a section nested within a page.
+  It MUST NOT carry a `#fragment`, and its link text MUST NOT name a sub-topic
+  that the target page covers only in one of its sections. A concept worth
+  linking to gets its own page.
 
 - Every page under `src/modules/ROOT/pages/` MUST be listed in both
   `index.adoc` (with its maturity emoji) and `nav.adoc` (the Antora navigation
