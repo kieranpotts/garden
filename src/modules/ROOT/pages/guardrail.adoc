@@ -1,0 +1,12 @@
+= Guardrail
+
+A *guardrail* is a constraint that bounds the behavior of an xref:agent.adoc[*agent*] to reduce the risk of unintended or harmful actions. Because a xref:large-language-model.adoc[*large language model*] cannot be guaranteed to behave safely on its own, guardrails are built into the xref:agent-harness.adoc[*harness*] and the environment around it.
+
+Guardrails divide into two kinds. A *guide* is a feed-forward control that steers an agent before it acts. A behavioral instruction in a rule file is a guide, as is an enforced permission constraint. A *sensor* is a feedback control that checks an agent's output after it acts, such as a test run, a type check, or a review gate.
+
+The two kinds differ in how reliable they are. An instruction in the context is a request that the model may ignore, especially deep into a long session. A control enforced by the harness, such as a permission denial, a sandbox boundary, or an xref:agent-hook.adoc[*agent hook*] that blocks a command, holds regardless of what the model decides.
+
+== See also
+
+* xref:sandbox.adoc[*Sandbox*]
+* xref:agent-skills.adoc[*Agent skills*]
