@@ -1,10 +1,12 @@
 = Inference provider
 
-An *inference provider* is an organization that operates xref:model-runtime.adoc[*model runtimes*] as a hosted service. It supplies the compute a runtime needs to serve a model – infrastructure-as-a-service for xref:large-language-model.adoc[*inference*] – sparing the caller from provisioning GPUs or managing the serving stack. Callers send a prompt to an API endpoint and are typically billed per token.
+An *inference provider* is an organization that operates xref:model-runtime.adoc[*model runtimes*] as a hosted service. It supplies the compute a runtime needs to serve a model – infrastructure-as-a-service for xref:inference.adoc[*inference*] – sparing the caller from provisioning GPUs or managing the serving stack. Callers send a prompt to an API endpoint and are typically billed per token.
 
 An inference provider is distinct from a *model vendor*, which is the organization that trains and licenses a model. Often they are the same company, as with Anthropic's and OpenAI's closed models, which only those companies serve. Other inference providers, such as OpenRouter and Ollama Cloud, serve models trained by third-party vendors, usually xref:open-weight-model.adoc[*open-weight models*].
 
 The distinction matters when choosing where a model runs. The same open-weight model can be offered by several providers at different prices, speeds, and quantization levels, and each provider has its own terms on data retention and privacy. Running the model yourself on your own hardware removes the provider from the picture, at the cost of operating the runtime.
+
+From the point of view of an xref:agent-harness.adoc[*agent harness*], whatever serves the model is its *model provider*. That is usually an inference provider, but it can equally be a model runtime running locally, such as Ollama, LM Studio, or llama.cpp. The harness asks the provider for each response. The provider is therefore the source of rate limits, degraded capacity, and outages, and its status page is the first place to look when something is wrong. Local providers trade capability and breadth of model selection for control and the absence of a per-token bill.
 
 == See also
 

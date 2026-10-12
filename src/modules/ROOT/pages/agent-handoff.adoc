@@ -2,7 +2,7 @@
 
 An *agent handoff* is the transfer of context from one xref:agent.adoc[*agent*] session to another. The sending session ends. The receiving session starts with a fresh, empty context window. Because the underlying xref:large-language-model.adoc[*large language model*] is xref:stateless.adoc[*stateless*], nothing from the old session is visible to the new one — no conversation history, no tool results, no scratchpad. Whatever must survive the boundary has to be carried across explicitly.
 
-The carry mechanism varies. The simplest is a written *handoff artifact* — a document left in the environment for the next session to read. A more compact path is an in-memory summary produced by xref:large-language-model.adoc[*compaction*], distilled from the old session's history and seeded into the new one. Either way the receiving session starts from zero.
+The carry mechanism varies. The simplest is a written *handoff artifact* — a document left in the environment for the next session to read. A more compact path is an in-memory summary produced by xref:context-compaction.adoc[*compaction*], distilled from the old session's history and seeded into the new one. Either way the receiving session starts from zero.
 
 A handoff is distinct from *clearing*. Clearing ends the current session and starts fresh with nothing carried across. A handoff carries. Both leave the old session behind; only a handoff sends anything on ahead.
 
@@ -25,7 +25,7 @@ The visible failure of a bad handoff is *relitigation*. The new session, lacking
 
 Clearing does not erase the transcript. Most xref:agent-harness.adoc[*harnesses*] keep history on disk. What is gone is the agent's working state — the live context window the model was reasoning over. A new session starts from nothing.
 
-Clearing is a blunter tool than xref:large-language-model.adoc[*compaction*]. Compaction summarizes the old context into a fresh one, carrying the essence forward. Clearing carries nothing, including the junk. Use compaction when the history still has value worth distilling; use clearing when the history is mostly noise.
+Clearing is a blunter tool than compaction. Compaction summarizes the old context into a fresh one, carrying the essence forward. Clearing carries nothing, including the junk. Use compaction when the history still has value worth distilling; use clearing when the history is mostly noise.
 
 == Handoff artifacts
 

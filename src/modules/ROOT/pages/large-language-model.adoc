@@ -5,7 +5,6 @@
 :link-attention-paper:   https://research.google/pubs/attention-is-all-you-need/
 :link-musk-distillation: https://www.semafor.com/article/05/01/2026/elon-musk-admits-xai-distilled-openai-models
 :link-wolfram-chatgpt:   https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/
-:link-perplexity:        https://www.perplexity.ai/
 :link-openai-evals:      https://github.com/openai/evals
 :link-cuda:              https://developer.nvidia.com/cuda-toolkit
 :link-rocm:              https://www.amd.com/en/products/software/rocm.html
@@ -148,37 +147,15 @@ Tokens with similar meanings produce vectors that are close together in this mul
 
 == Weights
 
-Weights are a model's learned *parameters* — the billions of numbers that encode everything it learned during training, and that determine how the model transforms inputs into output. Critically, these weights are _learned_ from the training data, not explicitly programmed by hand. It is the combination of a vast training corpus and billions of such weights that lets a model emulate human communication so closely.
-
-An LLM with 100 billion parameters has roughly that many weights, stored in memory or on disk.
-
-Small changes in weights, eg. through fine-tuning, can dramatically alter a model's behavior.
+xref:model-weights.adoc[*Weights*] are a model's learned *parameters* — the billions of numbers that encode everything it learned during training, and that determine how the model transforms inputs into output. They are learned from the training data, not explicitly programmed by hand.
 
 == Mixture of experts
 
-*Mixture-of-experts (MoE)* is a model architecture in which, rather than activating the entire network for every token, each token is routed through only a small subset of specialized "expert" subnetworks. This lets a model carry a very large total parameter count while activating only a fraction of it per token — high capacity at a lower inference cost.
-
-== Active parameters
-
-*Active parameters* are the subset of a model's total parameters that are actually used during a specific computation. *Total parameters* are all the learned values in the model, whether or not they are used at that moment. In a dense model, every parameter takes part in every computation, so the two numbers are the same. The distinction only opens up in mixture-of-experts models, where only a fraction of the total is active for any one token.
-
-Total and active parameters drive different costs:
-
-* *Compute and speed* scale with active parameters. A model with few active parameters generates tokens about as fast as a dense model of that smaller size.
-
-* *Memory* scales with total parameters. Any expert might be selected for the next token, so all of the weights must be loaded, even though most sit idle at any moment. This sets the VRAM needed to run the model locally (see xref:open-weight-model.adoc[*open-weight models*]).
-
-* *Capacity* is usually associated with total parameters. A larger pool can hold more knowledge, which is how a sparse model can outperform a dense model with the same active count.
-
-So a sparse model trades memory for speed: it needs the hardware to hold a large model, but runs with the compute cost of a much smaller one.
-
-Model names often state both numbers, eg "30B total, 3B active," or in the shorthand `30B-A3B`. When only one figure is quoted, check whether it is the total or the active count, as the two can differ by an order of magnitude. The active count also includes the parameters every token passes through, such as the attention layers and any shared experts, not only the selected experts.
+xref:mixture-of-experts.adoc[*Mixture-of-experts (MoE)*] is a model architecture in which each token is routed through only a small subset of specialized "expert" subnetworks, rather than through the entire network. The parameters used for any one token are the model's xref:active-parameters.adoc[*active parameters*], which set its compute cost, while its total parameter count sets the memory it needs.
 
 == Quantization
 
-*Quantization* is a technique for reducing the numerical precision of a model's weights, for example representing values with 4-bit integers instead of 16-bit or 32-bit floats. This reduces memory footprint and speeds up inference (see below), at the cost of a small reduction in output quality.
-
-Quantization is what makes it practical to run large models on consumer hardware with limited VRAM.
+xref:quantization.adoc[*Quantization*] reduces the numerical precision of a model's weights, shrinking its memory footprint and speeding up inference (see below) at the cost of a small reduction in output quality. It is what makes it practical to run large models on consumer hardware with limited VRAM.
 
 == Distillation
 
@@ -198,75 +175,25 @@ Black-box distillation of a competitor's proprietary model is contentious. It ge
 
 == Inference
 
-*Inference* is what an LLM does to generate output — running data through the model's fixed weights to produce each next token.
-
-Each call to a model is an *inference call*, the fundamental unit of work and, on metered services, the unit of billing. Inference is distinct from training, fine-tuning, and quantization, which create a model in the first place. Inference is how a model, once made, works. The term comes from logic and statistics, where "inference" means drawing a conclusion from available information.
-
-When you type a prompt and get a response back, the whole behind-the-scenes process — loading the model, tokenizing your input, generating each output token — is inference.
-
-Compared to training, inference is relatively cheap, and depending on model size can run on a single workstation GPU. Available VRAM is the primary constraint on both the size of model you can run and its throughput, measured in *tokens per second*.
+xref:inference.adoc[*Inference*] is what an LLM does to generate output — running data through the model's fixed weights to produce each next token. Each call to a model is an *inference call*. Inference is distinct from training, which creates a model in the first place, and is cheap by comparison.
 
 == Next-token prediction
 
-At inference, what the model actually does is *next-token prediction*: given the current context, sample one next token, append it to the sequence, and run again. Every output — a sentence, a tool call, a thousand-line file — is built one token at a time this way. The model produces a probability distribution over its vocabulary for the next token, one token is sampled and appended, and the loop repeats until a stop condition is reached.
-
-There is no truth-check before a token is emitted, only likelihood. This is the root of hallucination (see below): the model produces fluent output whether or not the underlying fact is real, because it is predicting the most plausible continuation, not verifying anything.
-
-Tool calls are not a separate mechanism. They are simply structured strings the xref:agent-harness.adoc[*harness*] parses from the output stream. The model emits text that happens to parse as a tool invocation, the harness intercepts it, runs the tool, and feeds the result back as context for the next request.
+At inference, what the model actually does is xref:next-token-prediction.adoc[*next-token prediction*]: given the current context, sample one next token, append it to the sequence, and run again. Every output — a sentence, a tool call, a thousand-line file — is built one token at a time this way. There is no truth-check before a token is emitted, only likelihood.
 
 == Context window
 
-The *context window* is the maximum number of tokens (the *context*) an LLM can process in a single interaction. It is the combined total of the system prompt, conversation history, and the current input and output.
+The xref:context-window.adoc[*context window*] is the maximum number of tokens (the *context*) an LLM can process in a single interaction. It is the combined total of the system prompt, conversation history, and the current input and output. Text outside the context window is not visible to the model.
 
-Text outside the context window is not visible to the model. The window is the only surface through which the model perceives anything: if something is in the token sequence the model can use it, and if it is not, the model does not know it exists.
-
-Context window size is one of the most impactful characteristics of models on the user experience. A larger context window allows a model to consider more of a document, a longer conversation history, or a larger codebase at once.
-
-Modern frontier models support context windows of 128K tokens or more. Some now extend to 1M tokens and beyond.
-
-The window is finite, which means it fills up. Long sessions force compaction (see below) or clearing, because everything — system prompt, conversation history, tool results — competes for the same budget. xref:context-engineering.adoc[*Context engineering*] treats the window as a budget to be spent deliberately rather than a container to be filled.
-
-The xref:key-value-cache.adoc[*key-value cache (KV cache)*] stores the attention states of previously processed tokens so they don't have to be recomputed for every new token. This trades memory for compute and is what makes long, interactive generation practical. See xref:key-value-cache.adoc[*key-value cache (KV cache)*] for details.
-
-The context window is working state, not memory. It does not persist across sessions: a fresh session starts with an empty window. What persists across sessions is xref:agent-memory.adoc[*agent memory*] — files, handoff artifacts, and other records written to disk — not the window itself.
+The window is finite, which means it fills up. xref:context-engineering.adoc[*Context engineering*] treats the window as a budget to be spent deliberately rather than a container to be filled.
 
 == Compaction
 
-*Compaction* is the process of condensing a long conversation history into a shorter summary once it approaches the limits of the context window, so that a session can continue beyond what the context window would otherwise allow.
-
-Rather than dropping the oldest messages outright, the model (or a separate summarization step) distills the prior exchanges into a compact representation of what matters — decisions made, facts established, work-in-progress — which then replaces the raw history.
-
-The trade-off is fidelity for capacity. Compaction frees up space and keeps latency and cost bounded as a conversation grows, but it is inherently lossy. Detail that seemed unimportant at summarization time is discarded and cannot be recovered, and errors introduced into the summary propagate silently through everything that follows. The raw transcript is a primary source and the summary a secondary one — xref:agent-handoff.adoc[*agent handoff*] treats the same distinction more generally.
-
-Compacting too aggressively risks losing context the model still needs. Compacting too rarely wastes tokens and eventually hits the hard context limit.
-
-It also has a compute cost of its own, since generating the summary is itself an inference pass.
-
-Well-designed systems therefore compact selectively — preserving verbatim what is cheap and load-bearing (such as the system prompt and recent turns) while summarizing the older, bulkier middle of the conversation. Compaction can be prompted to preserve particular information — "keep the schema decisions" — whereas clearing simply drops everything and starts fresh.
-
-=== Autocompact
-
-*Autocompact* is compaction triggered automatically when the context window approaches full, typically around 80% of capacity. It is lossy at a moment you did not choose: it fires mid-task, and the summary decides for itself what to keep. The usual symptom is that the agent carries on but has quietly forgotten a constraint it was holding earlier.
-
-The defence is to compact manually at a natural boundary, so the summary is written when the work is in a coherent state, or to write decisions to a plan document or handoff artifact on disk, where no summary can lose them.
+xref:context-compaction.adoc[*Compaction*] is the process of condensing a long conversation history into a shorter summary once it approaches the limits of the context window, so that a session can continue beyond what the window would otherwise allow. It trades fidelity for capacity, and is inherently lossy.
 
 == Context rot
 
-In the transformer architecture, every token can attend to every other token across the entire context, producing n² pairwise relationships for n tokens. As the context window fills, a model's ability to manage these pairwise relationships gets stretched thin. Thus, as the number of tokens in the context window increases, the model's ability to accurately recall information from that context decreases — a concept known as *context rot*.
-
-Each of these pairwise pairings is an *attention relationship*. When predicting a token, the model factors in every other token — some heavily, others barely — and meaningful pairs (a pronoun and its antecedent, a call site and its function definition) influence each other more. With n tokens there are roughly n² relationships, computed across many attention heads (typically 50–100), each building its own version. Only a few relationships matter for any given task, but the pool they sit in grows quadratically: at 1,000 tokens the pairing you care about is one in a million, and at 100,000 it is one in 10 billion.
-
-Context rot is not a hard cut-off. A model's performance does not suddenly drop off when context size exceeds the model's context window. We observe a performance gradient rather than a hard cut-off. Models remain capable with large contexts, but show reduced precision for information retrieval and long-range reasoning compared to their performance on shorter contexts.
-
-The underlying cause is *attention budget*. Each token has finite influence to distribute across the rest of the context, and that budget does not grow as the context grows. Think of signal and noise: your instruction is a fixed-volume signal, and everything else in the window is competing sound. As the context grows the room gets louder and the signal-to-noise ratio drops. The symptom reads as disobedience — an early constraint slips, and re-pasting it helps only briefly, because re-pasting adds another competitor rather than strengthening the signal. This is *attention degradation*: the same model with the same parameters has more mouths to feed, so each token's budget spreads across more competitors. It presents as the model getting worse mid-session — re-asking things it was told, ignoring a file it read earlier, drifting from its instructions — with no error or threshold, just a gradual decline. By the time it is obvious, the session has been in decline for a while.
-
-This phenomenon is accentuated by optimization techniques like compaction.
-
-The remedy is to remove context, not add it. Clearing and reloading only what the current task needs, compacting at a natural boundary, or handing off to a fresh session all recover instruction-following. Treat declining instruction-following as a signal about context length, not about the model.
-
-This emergent behavior is analogous to working memory capacity in humans. We too can lose focus and get confused once we reach a certain point of information overload. Like people, some models exhibit more gentle context rot than others, but this behavior is observed across all models.
-
-*Context engineering* is fundamentally about the problem of optimizing the signal-to-noise ratio of a model's context.
+As the number of tokens in the context window increases, the model's ability to accurately recall information from that context decreases — a concept known as xref:context-rot.adoc[*context rot*]. It is a gradual decline rather than a hard cut-off, caused by attention degrading as it is spread across more tokens. The remedy is to remove context, not add it.
 
 == Smart zone and dumb zone
 
@@ -294,33 +221,13 @@ Non-determinism is also why a model cannot be trusted to check its own work. A t
 
 == Effort
 
-*Effort* is a dial for how much reasoning a model does before it answers. It applies to a xref:reasoning-model.adoc[*reasoning model*]. Set per request, it controls the length of the chain-of-thought the model works through before writing the visible response. Higher effort costs more, because the reasoning is emitted as output tokens that are billed even when hidden from the user, and it runs slower.
-
-A typical ladder runs from low (mechanical edits), through medium (the default), to high (tricky bugs or design work) and max (the hardest problems). The right setting matches the effort to the task, not to the session: a one-line fix does not need max effort, and a subtle design problem deserves more than low.
+xref:reasoning-effort.adoc[*Effort*] is a dial for how much reasoning a xref:reasoning-model.adoc[*reasoning model*] does before it answers. Higher effort costs more, because the reasoning is emitted as output tokens that are billed even when hidden from the user, and it runs slower.
 
 == Hallucinations
 
-LLMs generate text by predicting the most statistically plausible next token, not by reasoning from facts. As a result, they can produce outputs that are fluent and confident but factually incorrect — a phenomenon known as *hallucination*.
+LLMs generate text by predicting the most statistically plausible next token, not by reasoning from facts. As a result, they can produce outputs that are fluent and confident but factually incorrect — a phenomenon known as xref:hallucination.adoc[*hallucination*].
 
-A model may fabricate citations, invent plausible-sounding names, or state incorrect information as though it were certain. These are all examples of hallucinations. Next-token prediction produces fluent output whether or not the underlying fact is real — there is no internal "I don't know" signal, only likelihood.
-
-Hallucinations come in two flavors, and the distinction matters because the fixes are different:
-
-* *Factuality* hallucinations invent facts about the world — a wrong API signature, a fake citation. The cause is a gap in parametric knowledge past the knowledge cutoff, and the fix is to load contextual knowledge (the correct documentation, type definitions, or retrieved facts) into the window.
-
-* *Faithfulness* hallucinations drift from context the model already has — ignoring loaded instructions, contradicting a file it read, or abandoning its own earlier reasoning. The cause is attention degradation in a long session (see Context rot, above), and the fix is to clear or compact the context, not to paste in more.
-
-Misdiagnosing a faithfulness problem as a factuality problem leads you to paste in more documentation, growing the context and making the drift worse. Before reaching for a fix, check whether the correct information was already in the context — if it was, the problem is faithfulness, not factuality.
-
-A subtler variant is *mis-remembering*. A fact, constraint, or value given correctly earlier in the context can come back subtly altered, and stated with the same confidence as everything else. Unlike a blank, which at least gets noticed, a corrupted detail passes unflagged. It becomes more likely the longer a session runs and the fuller the context gets, so a vital detail should be checked against its source rather than trusted to the model's recall, however sure the model sounds.
-
-A model will also fabricate an account of _how it arrived at an answer_, just as readily as it fabricates the answer. Asked to explain its reasoning, it produces a fluent, plausible rationale, but that rationale is generated after the fact by the same next-token prediction as everything else. It is not read off any record of what happened. Unlike traditional software, a model keeps no stack trace and no inspectable record of its deliberation. Its reasoning tokens improve results (see Effort, below) but are not a truthful log of a decision procedure. A model's self-explanation is another plausible generation to be verified, not privileged insight into its own workings.
-
-Hallucinations are an inherent limitation of how LLMs work, not a bug that can be fully fixed. The practical mitigations are:
-
-* Setting lower temperatures to sample only the highest-probability next tokens.
-* Grounding model outputs in retrieved facts (RAG — see below).
-* Verifying outputs independently.
+Hallucinations come in two flavors. *Factuality* hallucinations invent facts about the world, and *faithfulness* hallucinations drift from context the model already has. They are an inherent limitation of how LLMs work, not a bug that can be fully fixed.
 
 == Sycophancy
 
@@ -344,15 +251,7 @@ A game as simple as noughts-and-crosses (tic-tac-toe) shows the gap. A model can
 
 == Retrieval-augmented generation (RAG)
 
-A core limitation of LLMs is that their knowledge is frozen at the point of training. By default, models cannot access new information or browse the web. In addition, LLMs are prone to hallucination — generating fluent, confident-sounding responses that are factually incorrect — particularly when asked about topics outside their training data or at the edges of their knowledge.
-
-*Retrieval-augmented generation (RAG)* is a technique that addresses these issues. It combines an LLM with an external knowledge source, which is retrieved at inference time and loaded into the context window.
-
-In a RAG system, a user's query is used to search a knowledge base — a xref:vector-database.adoc[*vector database*], a search index, or live web results. The most relevant results are fetched and injected into the model's context alongside the original query. The model then generates a response grounded in that retrieved context, rather than relying solely on what it learned during training.
-
-RAG is widely used to build knowledge-aware applications — internal document Q&A systems, customer support bots, and AI search engines. {link-perplexity}[Perplexity] is a prominent consumer example. It uses live web search to answer questions with cited sources in real time. See xref:ai-assistant.adoc[*AI assistants*] for other examples.
-
-Agent development frameworks such as LangChain and LlamaIndex can be used to build RAG capabilities into agents, providing the retrieval, chunking, and orchestration plumbing so developers do not have to wire it together from scratch. See xref:agent.adoc[*agents*].
+xref:retrieval-augmented-generation.adoc[*Retrieval-augmented generation (RAG)*] is a technique that combines an LLM with an external knowledge source, which is retrieved at inference time and loaded into the context window. The model then generates a response grounded in that retrieved context, rather than relying solely on what it learned during training. This works around the knowledge cutoff and reduces hallucination.
 
 == Evals
 
@@ -386,7 +285,7 @@ The two most widely used inference engines for open-weight models are:
 
 * {link-llama-cpp}[llama.cpp]: A C/C++ library optimized for running quantized models on consumer hardware, including CPU-only machines, Apple Silicon, and devices with limited VRAM. This is the engine that powers Ollama and LM Studio (see below). The design prioritizes broad hardware compatibility over maximizing throughput.
 
-* {link-vllm}[vLLM]: A Python-based inference engine designed for high-throughput via one or more GPUs. The key differentiating feature is that vLLM supports multi-GPU tensor parallelism, which means workloads are more evenly distributed across multiple GPUs. This efficiency shows up in better throughput metrics. The key innovation is "PagedAttention", which manages the KV cache very efficiently, which is what enabled the higher request concurrency.
+* {link-vllm}[vLLM]: A Python-based inference engine designed for high-throughput via one or more GPUs. The key differentiating feature is that vLLM supports multi-GPU tensor parallelism, which means workloads are more evenly distributed across multiple GPUs. This efficiency shows up in better throughput metrics. The key innovation is "PagedAttention", which manages the xref:key-value-cache.adoc[*key-value cache (KV cache)*] very efficiently, which is what enabled the higher request concurrency.
 
 llama.cpp and vLLM have different use cases. llama.cpp is optimized for single-GPU setups on consumer hardware, for a single user running models locally. vLLM is optimized for serving multiple users concurrently.
 
@@ -394,9 +293,7 @@ Llama.cpp can be made to use multiple GPUs, but it does not support tensor paral
 
 == Model provider
 
-A *model provider* is whatever serves a model for inference. It is usually a remote service — Anthropic, OpenAI, or Google — but it can also be a local runtime such as Ollama, LM Studio, or llama.cpp. The xref:agent-harness.adoc[*harness*] asks a provider for each response, and the provider owns the hardware and the model's parameters.
-
-The provider is the source of rate limits, degraded capacity, and outages, so the provider's status page is the first place to look when something is wrong. The provider also sets pricing and decides which models are available, and the provider need not be the model's maker: Amazon Bedrock, Google Vertex, and OpenRouter all serve models made by others. Local providers trade capability and breadth of model selection for control and the absence of a per-token bill.
+A *model provider* is whatever serves a model for inference. It is usually a remote xref:inference-provider.adoc[*inference provider*] — Anthropic, OpenAI, or Google — but it can also be a local xref:model-runtime.adoc[*model runtime*] such as Ollama, LM Studio, or llama.cpp. The xref:agent-harness.adoc[*harness*] asks a provider for each response, and the provider owns the hardware and the model's parameters.
 
 == Model provider request
 

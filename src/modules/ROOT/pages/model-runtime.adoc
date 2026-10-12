@@ -1,8 +1,8 @@
 = Model runtime
 
-A *model runtime*, also called an inference engine, is the software that loads a model's xref:large-language-model.adoc[*weights*] into memory and executes xref:large-language-model.adoc[*inference*] calls against them. It is the layer between the raw model file and anything that wants to use the model.
+A *model runtime*, also called an inference engine, is the software that loads a model's xref:model-weights.adoc[*weights*] into memory and executes xref:inference.adoc[*inference*] calls against them. It is the layer between the raw model file and anything that wants to use the model.
 
-A runtime does the heavy lifting of serving. It schedules compute on GPUs or TPUs, batches concurrent requests so the hardware stays busy, and applies serving-time optimizations such as xref:large-language-model.adoc[*quantization*] and the xref:key-value-cache.adoc[*key-value cache*]. Examples include vLLM, llama.cpp, and TensorRT-LLM.
+A runtime does the heavy lifting of serving. It schedules compute on GPUs or TPUs, batches concurrent requests so the hardware stays busy, and applies serving-time optimizations such as xref:quantization.adoc[*quantization*] and the xref:key-value-cache.adoc[*key-value cache*]. Examples include vLLM, llama.cpp, and TensorRT-LLM.
 
 A runtime executes a model, but it does not act on the world. It takes tokens in and emits tokens out. Giving the model tools, managing its context, and enforcing permissions is the job of the xref:agent-harness.adoc[*agent harness*] that wraps the runtime.
 
