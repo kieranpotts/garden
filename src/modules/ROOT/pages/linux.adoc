@@ -5,6 +5,9 @@
 :link-ubuntu:            https://ubuntu.com/
 :link-linux-mint:        https://www.linuxmint.com/
 :link-fedora:            https://fedoraproject.org/
+:link-slackware:         https://www.slackware.com/
+:link-gentoo:            https://www.gentoo.org/
+:link-arch:              https://archlinux.org/
 :link-tails:             https://tails.net/
 :link-kali:              https://www.kali.org/
 
@@ -70,9 +73,21 @@ TODO (mainstream distros):
 
 A *distribution* (or *distro*) is a complete, installable operating system assembled around the Linux kernel. Beyond the kernel itself, a distribution typically bundles the GNU core utilities and C library, an init system, a package manager together with its repositories, a curated set of prebuilt software packages, and often a default desktop environment and an installer. The kernel is the same project everywhere; what distinguishes distributions is the choices made around it – the package format, the init system, the release cadence, the curated software set, and the intended audience.
 
-Distributions are commonly grouped into families that share an upstream and a package lineage. The Debian family (Debian, Ubuntu, Linux Mint, and many others) shares the `apt`/`dpkg` packaging stack. The Fedora/Red Hat family (Fedora, RHEL, CentOS Stream, Rocky Linux, AlmaLinux) shares `rpm`-based packaging and the `dnf`/`yum` tooling. The Arch family (Arch, Manjaro, EndeavourOS) shares `pacman` and a xref:rolling-release.adoc[*rolling release*], bleeding-edge philosophy. A handful of distributions are independent, built from scratch rather than derived from another, Alpine and Void among them.
+Distributions are commonly grouped into families that share an upstream and a package lineage. The Debian family (Debian, Ubuntu, Linux Mint, and many others) shares the `apt`/`dpkg` packaging stack. The Fedora/Red Hat family (Fedora, RHEL, CentOS Stream, Rocky Linux, AlmaLinux) shares `rpm`-based packaging and the `dnf`/`yum` tooling. The Arch family (Arch, Manjaro, EndeavourOS) shares `pacman` and a xref:rolling-release.adoc[*rolling release*], bleeding-edge philosophy. A handful of distributions are independent, built from scratch rather than derived from another. The five that underpin most of the rest – Debian, Slackware, Fedora, Gentoo, and Arch – are described below.
 
 Release model is another axis that cuts across families. Some distributions ship numbered point releases on a fixed cadence, such as Ubuntu's biannual releases; others follow a xref:rolling-release.adoc[*rolling release*] with no discrete versions at all. The trade-offs between the two are covered under rolling release.
+
+=== Foundational distributions
+
+Most distributions are derivatives of another distribution. Five were built from scratch and have each become the base for a large family of descendants, so understanding them explains much of the wider landscape:
+
+* {link-debian}[*Debian*] (1993). A community-governed distribution with the `dpkg`/`apt` packaging stack. It is the base for Ubuntu, Linux Mint, Kali, Tails, and many more.
+* {link-slackware}[*Slackware*] (1993). The oldest distribution still actively maintained. It deliberately stays close to upstream and Unix tradition, with simple BSD-style init scripts and no automatic dependency resolution. Its derivatives are fewer than those of the others, such as Salix, but it influenced early SUSE.
+* {link-fedora}[*Fedora*] (Red Hat) (2003, continuing the Red Hat Linux line from 1995). The community upstream of Red Hat Enterprise Linux, with `rpm`-based packaging. Its descendants include CentOS Stream, Rocky Linux, AlmaLinux, and Oracle Linux.
+* {link-gentoo}[*Gentoo*] (2000). A source-based distribution whose Portage system compiles packages locally with user-selected build options. It is the base for Funtoo and ChromeOS.
+* {link-arch}[*Arch*] (2002). An ultra-minimalist xref:rolling-release.adoc[*rolling release*] distribution with the `pacman` package manager. It is the base for Manjaro, EndeavourOS, Omarchy, and others. Commonly used for *ricing* personal Linux distros.
+
+Alpine, Void, and NixOS are also independent, but they have spawned few derivatives of note.
 
 === Consumer-oriented distributions
 
@@ -126,7 +141,7 @@ NixOS takes a markedly different approach to package management. The entire syst
 
 == Linux desktop environments
 
-A *desktop environment* (DE) is the graphical layer that sits above the kernel and userspace to provide the familiar windows, icons, menus, and pointer desktop experience. It bundles a window manager, a file manager, settings panels, and a set of default applications. Most distributions ship a default DE but allow others to be installed, so the same distribution can be run under different DEs. The major DEs in the Linux ecosystem include:
+A *desktop environment* (DE) is the graphical layer that sits above the kernel and userspace to provide the familiar windows, icons, menus, and pointer desktop experience. It bundles a window manager, a file manager, settings panels, and a set of default applications. Most distributions ship a default DE but allow others to be installed, so the same distribution can be run under different DEs. Enthusiasts who swap the DE for a hand-assembled setup and style it extensively practice xref:ricing.adoc[*ricing*]. The major DEs in the Linux ecosystem include:
 
 * *GNOME.* The default on Fedora, Ubuntu, and others; a modern, opinionated shell with a focus on keyboard-driven workflow and minimal chrome.
 * *KDE Plasma.* The default on Kubuntu, openSUSE, and others; highly configurable and traditional in layout.
