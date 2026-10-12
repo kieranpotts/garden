@@ -1,0 +1,17 @@
+= Lethal trifecta
+
+The *lethal trifecta* is the dangerous co-occurrence of three capabilities in an xref:agent.adoc[*agent*]: access to private data, exposure to untrusted content, and the ability to communicate externally. The term was coined by Simon Willison in 2025.
+
+Any one or two of the three are comparatively safe. But an agent with all three can be fed instructions through the untrusted content, by xref:prompt-injection.adoc[*prompt injection*], that tell it to read the private data and send it to an attacker. This is how xref:data-exfiltration.adoc[*data exfiltration*] happens through AI tools.
+
+An agent reading a public web page while holding access to your source code and an outbound HTTP tool has the full lethal trifecta.
+
+Each capability is often added for good reasons, and tools from different sources can combine into a trifecta that none of them presents alone. Connecting several xref:model-context-protocol.adoc[*MCP*] servers is a common way to assemble one by accident.
+
+The practical defense is to break the trifecta by removing one leg for any given agent or session. Withhold private data from agents that browse the web, cut off outbound network access from agents that handle sensitive material, or keep untrusted content away from agents that hold credentials.
+
+A xref:sandbox.adoc[*sandbox*] helps enforce the boundary.
+
+== References
+
+* Willison, Simon (2025). https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/[_The lethal trifecta for AI agents_].
