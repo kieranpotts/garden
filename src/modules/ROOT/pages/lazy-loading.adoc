@@ -20,7 +20,7 @@ A lazily loaded resource is fronted by a placeholder that exposes the same inter
 Lazy loading appears across the stack, always expressing the same idea: defer the load until it is warranted.
 
 * *Web front-ends.* Images, iframes, and below-the-fold media can be marked for lazy loading so the browser fetches them only as they scroll into view. Single-page applications use *code splitting* to load JavaScript bundles on demand, shrinking the initial payload and improving time-to-interactive.
-* *Data access.* Object-relational mappers often load related entities lazily, fetching a child collection only when the application navigates to it. The well-known pitfall is the *N+1 query problem*, where iterating a list and touching a lazy association fires one query per item. The usual remedy is to switch to *eager loading* for that access path.
+* *Data access.* Object-relational mappers often load related entities lazily, fetching a child collection only when the application navigates to it. The well-known pitfall is the xref:n-plus-one-query-problem.adoc[*N+1 query problem*], where iterating a list and touching a lazy association fires one query per item. The usual remedy is to switch to *eager loading* for that access path.
 * *xref:caching.adoc[Caching].* The cache-aside strategy is also known as lazy loading: on a cache miss the application loads the value from the source-of-truth and backfills the cache, so the cache is populated on demand rather than up front.
 
 == Trade-offs

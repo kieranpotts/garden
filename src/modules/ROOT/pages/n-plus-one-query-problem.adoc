@@ -1,0 +1,29 @@
+= N+1 query problem
+
+The N+1 query problem is a performance defect in which an application issues one query to fetch a list of N parent records, and then N further queries, one per parent, to fetch each parent's related child records. Instead of two queries, or one join, the application makes N+1 round trips to the xref:database.adoc[*database*].
+
+The defect is easy to introduce and hard to see. The code reads as a simple loop over a collection, and each individual query is fast, so the problem only shows up as latency that grows linearly with the size of the result set. Fetching 100 users and then each user's posts costs 101 queries. Each query pays its own network xref:latency.adoc[*latency*], parsing, and planning overhead, which is why the total dwarfs the cost of fetching the same rows in bulk.
+
+== Cause
+
+The usual cause is xref:lazy-loading.adoc[*lazy loading*] in an *object-relational mapper (ORM)*, such as Hibernate, Django ORM, or ActiveRecord. The ORM returns the parent records with their associations left as unloaded placeholders. The first time application code touches an association inside a loop, the ORM fires a query to load it. The data access is hidden behind an innocent-looking property access, so the cost is not apparent at the call site.
+
+The same shape appears outside ORMs, eg. in xref:graphql.adoc[*GraphQL*] resolvers, where a resolver for a child field runs once per parent object, or in code that calls a xref:http-api.adoc[*HTTP API*] once per item in a list.
+
+== Remedies
+
+All remedies replace per-row queries with a bounded number of set-based queries.
+
+* *Eager loading with a join.* Fetch the parents and children together in a single query with a `JOIN`. Most ORMs expose this as a query option, eg. `.includes()` or `.eager_load()` in Rails, or `select_related()` in Django.
+* *Eager loading with a batch query.* Fetch the parents, then fetch all the related children in one second query using an `IN` clause over the parent identifiers, and stitch the results together in memory. Django's `prefetch_related()` and Rails's `.preload()` work this way. This avoids the row duplication that a join produces for one-to-many associations.
+* *Batching.* A *DataLoader* collects the individual lookups made during one pass of execution and issues them as a single batched query. This is the standard remedy for GraphQL resolvers.
+
+Eager loading is not free. Loading associations that are never used wastes memory and bandwidth, which is the trade-off that lazy loading exists to avoid. The choice should follow the xref:access-pattern.adoc[*access pattern*] of each code path.
+
+== Detection
+
+Because the defect is silent, it is best caught mechanically. Query counts can be asserted in tests, logged per request, or surfaced by an ORM's query logger or by xref:application-performance-management.adoc[*application performance monitoring*]. A request whose query count scales with the size of its result is the signature of N+1.
+
+== See also
+
+* xref:database-query-optimization.adoc[*Database query optimization*]
