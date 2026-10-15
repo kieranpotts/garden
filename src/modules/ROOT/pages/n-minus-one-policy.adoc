@@ -1,14 +1,16 @@
 = N-1 version policy
 
-An N-1 version policy is an organizational rule to run software that is one version behind the vendor's latest generally available (GA) release, where N is the current release. An organization with such a policy runs version 11 while version 12 is the latest.
+An N-1 version policy is an organizational rule to run software that is one version behind the vendor's latest *generally available (GA)* release, where N is the current release. An organization with such a policy runs version 11 while version 12 is the latest.
 
-The purpose is risk reduction. A brand-new release is the least proven version of a product. Early adopters tend to uncover the initial bugs, regressions, and stability issues, and the vendor typically fixes them in subsequent patch releases. Staying one version back lets other organizations absorb that xref:risk.adoc[*risk*] first, and means production is upgraded only once the new release has a track record. The trade-off is that new features, performance improvements, and fixes arrive later, and the policy has to be balanced against the vendor's support window. If the vendor retires N-2 on a short schedule, an organization that trails by a full version may find itself pressed to upgrade immediately.
+The purpose is risk reduction. A brand new release is the least proven version of a product. Early adopters tend to uncover the initial bugs, regressions, and stability issues, and the vendor typically fixes them in subsequent patch releases. Staying one version back lets other organizations absorb the initial xref:risk.adoc[*risk*] associated with major new releases.
 
-Variants relax or tighten the lag, eg. N-2 for conservative environments, or N-1 only for major versions with minor and security patches applied promptly. The policy is most often applied to operating systems, browsers, endpoint agents, and infrastructure software, where a faulty release has a wide blast radius.
+The trade-off is that new features, performance improvements, and fixes arrive later. In addition, the policy has to be balanced against the vendor's support policy. A customer staying one version behind will have a narrower window in which to upgrade.
+
+Variants relax or tighten the lag, eg. N-2 for conservative environment.
 
 The policy applies to xref:release-model.adoc[*point releases*] with discrete numbered versions. It has no meaning for a xref:rolling-release.adoc[*rolling release*], where there is only ever one current version.
 
-The notation is easily confused with xref:n-plus-one-redundancy.adoc[*N+1 redundancy*], which is about provisioning one spare component beyond what the workload requires and has nothing to do with software versions.
+The policy is most often applied to operating systems, browsers, endpoint agents, and infrastructure software, where a faulty release has a wide blast radius.
 
 == See also
 
