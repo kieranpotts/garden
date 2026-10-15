@@ -1,0 +1,23 @@
+= N+1 redundancy
+
+N+1 redundancy is a sizing rule for xref:redundancy.adoc[*redundancy*] in which a system is provisioned with N components, the number needed to carry the workload at full capacity, plus one spare. If any single component fails, the remaining N still carry the full load.
+
+For example, a web application that needs three servers to handle peak traffic is deployed on four. If one server fails, the other three continue to serve at 100% of required capacity.
+
+The appeal of N+1 is its cost. The spare is shared across the whole group, so the overhead shrinks as N grows: one spare in four is a 25% overhead, one in twenty is 5%. The cost of that economy is that it tolerates only a single failure at a time. A second failure before the first is repaired leaves the system short of capacity, and the shared spare does not protect against faults that affect every component at once. Those are *common-mode failures*, and they call for stronger schemes.
+
+== Alternatives
+
+* *N+M.* Keep M spares for N working components, so that M concurrent failures are tolerated. It is used where repair times are long, or where failures are likely to cluster.
+* *2N.* Duplicate every component or path, so that a complete, independent mirror of the system stands ready. It tolerates the loss of an entire side, at double the cost.
+* *2N+1.* A 2N system with an additional spare, so that the system keeps full redundancy even after one side's component has failed.
+
+== Where it applies
+
+N+1 is most common in data center infrastructure, eg. power supplies, cooling units, and network links, and in fleets of identical stateless servers behind a xref:load-balancing.adoc[*load balancer*]. In an xref:active-active.adoc[*active-active*] cluster, the spare is not an idle standby but headroom on every node, so each node must run below full utilization. This ties N+1 to xref:capacity.adoc[*capacity*] planning. A fleet run at full utilization has no spare in practice, because the survivors saturate as soon as they absorb the share of a failed peer.
+
+== See also
+
+* xref:n-minus-one-policy.adoc[*N-1 version policy*], a similarly named but unrelated rule about software versions.
+* xref:availability.adoc[*Availability*]
+* xref:failover.adoc[*Failover*]

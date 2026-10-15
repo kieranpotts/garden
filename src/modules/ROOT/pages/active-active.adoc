@@ -4,7 +4,7 @@ Active-active is a deployment topology in which multiple instances of a service,
 
 In an active-active setup, every node is hot. Requests are spread across the nodes by xref:load-balancing.adoc[*load balancing*], so xref:capacity.adoc[*capacity*] scales with the number of replicas, a form of xref:horizontal-scaling.adoc[*horizontal scaling*]. When a node fails, the remaining nodes simply absorb its share of traffic. There is no promotion step and no interruption, which makes active-active attractive for systems that require high xref:availability.adoc[*availability*] and xref:fault-tolerance.adoc[*fault tolerance*].
 
-The absence of a failover step is not free, though. Because the surviving nodes must carry the failed node's load as well as their own, the cluster has to be provisioned with headroom: at least the capacity of one node, the so-called N+1 margin. Run the cluster at full utilization and the loss of a node pushes the rest past their limits, trading instant failover for saturation and xref:latency.adoc[*latency*] spikes. Active-active therefore trades idle standby nodes for idle capacity on every node.
+The absence of a failover step is not free, though. Because the surviving nodes must carry the failed node's load as well as their own, the cluster has to be provisioned with headroom: at least the capacity of one node, the so-called xref:n-plus-one-redundancy.adoc[*N+1*] margin. Run the cluster at full utilization and the loss of a node pushes the rest past their limits, trading instant failover for saturation and xref:latency.adoc[*latency*] spikes. Active-active therefore trades idle standby nodes for idle capacity on every node.
 
 Active-active is commonly applied at two layers.
 
