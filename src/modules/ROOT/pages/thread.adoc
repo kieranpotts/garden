@@ -1,0 +1,19 @@
+= Thread
+
+A *thread* is the smallest unit of execution that an operating system can schedule. It is a single sequence of instructions, with its own program counter, registers, and stack, running inside a xref:process.adoc[*process*]. All the threads of a process share that process's address space and resources, such as its heap and open files.
+
+Sharing memory makes threads cheap to create and makes communication between them fast. One thread can simply write a value that another reads. But it also removes the isolation that processes provide. A thread that corrupts shared memory, or crashes the process, takes every sibling thread with it. And concurrent access to shared mutable data has to be coordinated with xref:synchronization.adoc[*synchronization*] to keep programs xref:thread-safety.adoc[*thread-safe*].
+
+Each thread carries only a small amount of private state: its stack, its register set, and any thread-local storage. A context switch between threads of the same process is therefore cheaper than one between processes, since the address space does not change.
+
+The scheduler places runnable threads, from any process, onto available xref:cpu-core.adoc[*CPU cores*]. When a thread blocks on I/O or a lock, the scheduler can run another ready thread in its place. Interleaving threads on a core is how xref:concurrency.adoc[*concurrency*] is implemented. Running threads on several cores at once is xref:parallelism.adoc[*parallelism*].
+
+Threads come in several kinds. *Kernel threads* are scheduled by the operating system directly, as with POSIX threads. *User-space threads*, also called *green threads* or *fibers*, are scheduled by a language runtime, which multiplexes many of them onto fewer kernel threads.
+
+Programs that use many threads at once are said to be xref:multithreading.adoc[*multithreaded*].
+
+== See also
+
+* xref:asynchronous-programming.adoc[*Asynchronous programming*]
+* xref:deadlock.adoc[*Deadlock*]
+* xref:locking.adoc[*Locking*]

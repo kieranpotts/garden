@@ -1,6 +1,6 @@
 = Thread safety
 
-*Thread safety* is the property of a class, method, or data structure that guarantees it behaves correctly when accessed concurrently by multiple threads. A thread-safe component upholds its specified semantics — its invariants, its return values, its effects on shared state — no matter how the runtime interleaves the calls those threads make. A component that is not thread-safe may work flawlessly in a single-threaded test and still corrupt data or return wrong answers once execution overlaps.
+*Thread safety* is the property of a class, method, or data structure that guarantees it behaves correctly when accessed concurrently by multiple xref:thread.adoc[*threads*]. A thread-safe component upholds its specified semantics — its invariants, its return values, its effects on shared state — no matter how the runtime interleaves the calls those threads make. A component that is not thread-safe may work flawlessly in a single-threaded test and still corrupt data or return wrong answers once execution overlaps.
 
 Thread safety is a concern only where there is *shared mutable state*. It is a property of xref:concurrency.adoc[*concurrent*] and xref:parallelism.adoc[*parallel*] programs, and it is the goal that xref:synchronization.adoc[*synchronization*] exists to achieve. Where there is no sharing, or where the shared state never changes, the problem largely disappears.
 

@@ -1,0 +1,27 @@
+= Multithreading
+
+*Multithreading* is the practice of structuring a program so that several xref:thread.adoc[*threads*] execute within a single xref:process.adoc[*process*], sharing its memory. The alternative is a *single-threaded* program, which does one thing at a time on one thread. The choice between the two is a trade-off between capability and complexity.
+
+== Benefits
+
+* *Parallelism.* On a multi-core machine, threads run on separate xref:cpu-core.adoc[*CPU cores*] at once, improving throughput and latency for CPU-bound work. See xref:parallelism.adoc[*Parallelism*].
+
+* *Responsiveness.* Slow work such as I/O or heavy computation can run on background threads, so the main thread, which may be handling a user interface or accepting connections, is not frozen.
+
+* *Utilization.* While one thread waits on I/O, the scheduler can run another, keeping the CPU busy. See xref:concurrency.adoc[*Concurrency*].
+
+* *Natural modeling.* Independent activities, such as client connections, pipeline stages, or producers and consumers, map directly onto threads.
+
+== Costs
+
+* *Complexity.* Threads share mutable state, so programs must be made xref:thread-safety.adoc[*thread-safe*], with the attendant risks of race conditions, xref:deadlock.adoc[*deadlock*], and priority inversion. See xref:synchronization.adoc[*Synchronization*].
+
+* *Overhead.* Every thread costs a stack and scheduler bookkeeping, and context switches consume CPU time. Large numbers of threads can be slower than fewer.
+
+* *Hard to debug.* Timing-dependent faults may appear only under particular loads and vanish when observed, so they are difficult to reproduce and test.
+
+* *Contention.* Threads that fight over a shared lock or cache line serialize, which can erase the gain from adding cores.
+
+== Single-threaded designs
+
+The alternative is xref:single-threading.adoc[*single-threading*]. This design is simpler. It has a deterministic execution order and no shared-memory hazards. But is can use only one core and there's a greater risk of blocking. However, an xref:event-loop.adoc[*event loop*] system recovers much of the lost concurrency without adding threads.

@@ -28,7 +28,7 @@ The release of Node.js in 2009 took JavaScript outside the browser for the first
 
 == Event loop
 
-JavaScript's concurrency model is built around the event loop. Despite being single-threaded, JavaScript handles non-blocking I/O through an asynchronous programming model. Callbacks, Promises, and `async`/`await` all allow work to be deferred and resumed without blocking the call stack. The event loop continuously processes a task queue, executing deferred callbacks when the call stack is empty.
+JavaScript's concurrency model is built around the xref:event-loop.adoc[*event loop*]. Despite being single-threaded, JavaScript handles non-blocking I/O through an asynchronous programming model. Callbacks, Promises, and `async`/`await` all allow work to be deferred and resumed without blocking the call stack. The event loop continuously processes a task queue, executing deferred callbacks when the call stack is empty.
 
 This model is well suited to I/O-bound workloads such as network requests and file system access, but poorly suited to CPU-bound tasks, which block the event loop and degrade responsiveness.
 

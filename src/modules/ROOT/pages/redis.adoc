@@ -21,7 +21,7 @@ The trade-offs of in-memory storage are capacity and xref:durability.adoc[*durab
 
 === 2. Single-threaded event loop
 
-Redis processes commands on a single thread using an event loop (based on `epoll`/`kqueue`). This eliminates the overhead of mutex locks, context switching, and race conditions that plague multi-threaded architectures. Because only one command executes at a time, every operation is inherently atomic – no locking is needed.
+Redis processes commands on a single thread using an xref:event-loop.adoc[*event loop*] (based on `epoll`/`kqueue`). This eliminates the overhead of mutex locks, context switching, and race conditions that plague multi-threaded architectures. Because only one command executes at a time, every operation is inherently atomic – no locking is needed.
 
 This is safe because Redis's bottleneck is almost never CPU: it is network I/O. A single core is typically sufficient to saturate a network interface. For CPU-bound workloads, Redis Cluster can spread data across multiple independent nodes, each running its own event loop.
 

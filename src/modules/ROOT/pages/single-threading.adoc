@@ -1,0 +1,16 @@
+= Single-threading
+
+*Single-threading* is the practice of running a program's work on exactly one xref:thread.adoc[*thread*], so that only one thing executes at a time. It is the alternative to xref:multithreading.adoc[*multithreading*].
+
+A single-threaded program has no data races, because no two threads touch shared state, so it needs no locks and has none of the hazards covered by xref:thread-safety.adoc[*thread safety*]. Its execution order is deterministic, which makes it easier to debug and test. It avoids the cost of creating threads and switching between them, and its resource use is predictable, which suits constrained devices such as microcontrollers.
+
+The limits are that it can use only one xref:cpu-core.adoc[*CPU core*], so its performance is capped by the speed of that core, and that any long-running operation blocks everything else. A single-threaded user interface that reads a file or does heavy computation on its only thread freezes until it finishes.
+
+However, single-threaded programs can avoid the blocking problem by using non-blocking I/O with an xref:event-loop.adoc[*event loop*], as Node.js and Redis do, or by using xref:asynchronous-programming.adoc[*asynchronous programming*]. These designs deliver high xref:concurrency.adoc[*concurrency*] without shared-memory hazards — but they still use one core, and a single slow handler can still stall the whole loop.
+
+Scaling a single-threaded program across cores usually means running several xref:process.adoc[*processes*], each with its own thread, which then communicate by xref:inter-process-communication.adoc[*inter-process communication*].
+
+== See also
+
+* xref:javascript.adoc[*JavaScript*]
+* xref:redis.adoc[*Redis*]

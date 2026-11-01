@@ -1,0 +1,17 @@
+= Process
+
+A *process* is an instance of a running program, as managed by an operating system. It is the OS's unit of resource ownership and isolation. Each process has its own virtual address space, open file descriptors, environment, and security context, and contains one or more xref:thread.adoc[*threads*] of execution.
+
+Because each process has a private address space, one process cannot read or write another's memory, and a crash in one does not take down the others. This isolation is what makes processes the basis of sandboxing and security boundaries between applications. The price is that processes can exchange data only through explicit xref:inter-process-communication.adoc[*inter-process communication*] mechanisms such as pipes, sockets, and shared memory.
+
+The operating system's *scheduler* decides which runnable threads get time on which xref:cpu-core.adoc[*CPU cores*]. A process is not itself scheduled — its threads are. A process with a single thread is the simplest case. A process with many threads is the basis of xref:multithreading.adoc[*multithreading*].
+
+Processes are heavier than threads. Creating one means setting up a new address space and duplicating or initializing its resources (on Unix, typically with `fork` and `exec`), and a context switch between processes is more expensive because the memory-management unit's address translations must be swapped, which also invalidates cached translations.
+
+Typical uses of multiple processes include running separate applications, isolating untrusted or failure-prone work (browsers run each tab in its own process), and achieving xref:parallelism.adoc[*parallelism*] in runtimes that cannot run threads in parallel, such as CPython with its global interpreter lock.
+
+== See also
+
+* xref:concurrency.adoc[*Concurrency*]
+* xref:isolation.adoc[*Isolation*]
+* xref:sandbox.adoc[*Sandbox*]

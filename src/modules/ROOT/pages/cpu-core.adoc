@@ -1,0 +1,12 @@
+= CPU core
+
+A *CPU core* is an independent processing unit inside a processor chip. Each core has its own registers and execution units, and usually its own first-level caches, and can fetch and execute a stream of instructions on its own. A chip with several cores is a *multi-core processor*, typically with 2 to 64 cores.
+
+A core runs one xref:thread.adoc[*thread*] at a time. With *simultaneous multithreading* (SMT), such as Intel's Hyper-Threading, a single physical core presents itself to the operating system as two logical cores, interleaving instructions from two threads to fill execution units that would otherwise sit idle while one thread stalls on a memory access. The two logical cores share the physical core's resources, so SMT yields a throughput gain — but it is well short of doubling performance.
+
+The operating system's *scheduler* decides which runnable threads, from any xref:process.adoc[*process*], are placed on which cores. The number of cores sets the ceiling on true xref:parallelism.adoc[*parallelism*]. More cores can run more threads simultaneously, but only if the software supplies enough runnable threads to keep them busy, and only to the extent the work can be divided. With fewer cores than runnable threads, the scheduler time-slices them, which is xref:concurrency.adoc[*concurrency*].
+
+== See also
+
+* xref:hardware.adoc[*Hardware*]
+* xref:mechanical-sympathy.adoc[*Mechanical sympathy*]

@@ -1,0 +1,23 @@
+= Event loop
+
+An *event loop* is a programming construct that achieves xref:concurrency.adoc[*concurrency*] on a single xref:thread.adoc[*thread*]. The thread runs a loop that waits for events, such as a network socket becoming readable, a timer firing, or a user clicking a button, and dispatches each event to a handler. The handler runs to completion, then control returns to the loop to pick up the next event.
+
+The key is that handlers never wait. Instead of blocking a thread until a slow operation such as a network read finishes, the program asks the operating system to perform the operation in the background and to signal the loop when it is done. The OS provides readiness-notification interfaces for this, such as `epoll` on Linux, `kqueue` on BSD and macOS, and I/O completion ports on Windows. While the operation is pending, the loop is free to handle other events. A single thread can therefore juggle thousands of in-flight operations, which is why event loops are the basis of servers and runtimes like Nginx, Redis, and Node.js, and of GUI toolkits and browsers.
+
+Each iteration of the loop typically polls for ready events, runs their callbacks, and processes any timers or queued continuations. Callbacks, promises, and `async`/`await` are different ways to express the continuation to run when an operation completes. See xref:asynchronous-programming.adoc[*asynchronous programming*].
+
+The scheduling is *cooperative*. Unlike threads, which the OS can preempt at any moment, a handler holds the loop until it returns. This has two consequences.
+
+* *No data races between handlers.* Only one handler runs at a time, so shared state needs no locks, which avoids much of the complexity of xref:multithreading.adoc[*multithreading*] and the hazards covered under xref:thread-safety.adoc[*thread safety*].
+
+* *Blocking stalls everything.* A handler that does CPU-heavy work, or makes a blocking call, freezes the loop. No other events are served, and latency spikes for every client. Long computations must be broken into small steps, or handed to worker threads or xref:process.adoc[*processes*].
+
+An event loop is good at I/O-bound workloads, where tasks spend most of their time waiting. It does not give xref:parallelism.adoc[*parallelism*], because it runs on one xref:cpu-core.adoc[*CPU core*]. To use several cores, servers typically run one event loop per core, either as separate processes or as one loop per thread, as Nginx and Node.js clusters do.
+
+== See also
+
+* xref:javascript.adoc[*JavaScript*]
+* xref:node.adoc[*Node*]
+* xref:reactive-programming.adoc[*Reactive programming*]
+* xref:redis.adoc[*Redis*]
+* xref:task-queue.adoc[*Task queue*]
