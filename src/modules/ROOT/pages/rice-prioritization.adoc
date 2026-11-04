@@ -1,0 +1,39 @@
+= RICE prioritization
+
+:link-intercom: https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/
+
+*RICE* is a scoring model for ranking candidate features, projects, or ideas, so that a team can decide what to build first. Each feature candidate is scored on four factors – **R**each, **I**mpact, **C**onfidence, and **E**ffort – and the scores are combined into a single number that can be compared across candidates. It was popularized by the product team at Intercom, who described it in a {link-intercom}[2016 blog post].
+
+The formula is:
+
+----
+RICE score = (Reach × Impact × Confidence) / Effort
+----
+
+* *Reach.* How many people the work will affect in a given period, such as customers per quarter or transactions per month. It is a real number from product data, not a guess at relative size.
+
+* *Impact.* How much the work will move the needle for each person reached, towards a goal such as conversion or retention. Because impact is hard to measure in advance, it is estimated on a fuzzy scale: 3 for massive impact, 2 for high, 1 for medium, 0.5 for low, and 0.25 for minimal.
+
+* *Confidence.* How sure the team is about its reach and impact estimates, as a percentage: 100% for high confidence, 80% for medium, and 50% for low. Anything below that is a signal to do more xref:discovery.adoc[*discovery*] before committing.
+
+* *Effort.* The total work required from all disciplines – product, design, and engineering – typically measured in man-months.
+
+The benefit of the model is that it forces a team to state its assumptions and to weigh value against cost in a consistent way. Effort is the denominator, so a costly project must deliver proportionally more value to rank highly. The ranking thus penalizes speculative ideas and rewards those backed by evidence, offering a guard against the xref:feature-factory.adoc[*feature factory*] habit of building whatever is requested.
+
+== Limitations
+
+* *False precision.* The output is a number to several decimal places, yet its inputs are estimates. Small differences between scores mean little, and the model is best used to separate clearly strong candidates from clearly weak ones, rather than more granular prioritization.
+
+* *Easy to game.* Reach and confidence scores can be nudged to justify a conclusion already reached through bias.
+
+* *Blind to some kinds of work.* Reach and impact favor work that touches many users. But there are categories of valuable work that have payoffs that are hard to quantify, such as paying down xref:technical-debt.adoc[*technical debt*], fixing a security xref:risk.adoc[*risk*], or meeting a compliance deadline. It also ignores dependencies between items, and strategic bets.
+
+== Alternatives
+
+RICE is one of several prioritization techniques for a product *backlog*. *ICE* scoring is a simpler variant that drops the reach score. *MoSCoW* sorts requirements into must-have, should-have, could-have, and won't-have categories, without scoring them. *Weighted shortest job first (WSJF)* from the *Scaled Agile Framework* ranks by cost-of-delay divided by job size.
+
+The output of any of these is usually a ranked list of xref:user-story.adoc[*user stories*] for a team using xref:scrum.adoc[*Scrum*] or xref:kanban.adoc[*Kanban*] to pull from.
+
+== References
+
+* McBride, Sean (2016). {link-intercom}[_RICE: Simple prioritization for product managers_]. Intercom Blog.
