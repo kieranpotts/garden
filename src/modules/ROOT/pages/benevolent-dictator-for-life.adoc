@@ -1,0 +1,25 @@
+= Benevolent dictator for life (BDFL)
+
+:link-pep-13:    https://peps.python.org/pep-0013/
+
+A *benevolent dictator for life (BDFL)* is the founder or lead of an *open-source* project who holds final authority over its direction and resolves disputes by decree, when consensus cannot be reached.
+
+The title is tongue-in-cheek and describes a xref:governance.adoc[*governance*] model in which decision rights are concentrated in a single person rather than shared among a committee or voted on by members. The "benevolent" part is a claim about trust. The community tolerates the dictator because they are seen to act in the project's interest rather than their own.
+
+The model is distinct from governance by consensus, where decisions are put to a vote or require broad agreement.
+
+The term is generally traced to the Python community in the mid-1990s, where it was applied to Guido van Rossum, the creator of the language. The model was already common in open-source projects by then, and has been associated with other long-running projects since, including the Linux kernel under Linus Torvalds, Perl under Larry Wall, and Ruby under Yukihiro "Matz" Matsumoto.
+
+In practice most BDFLs do not decide everything. They delegate day-to-day decisions to trusted maintainers, and reserve their authority for contested or architecturally significant questions. The xref:linux.adoc[*Linux*] kernel's "lieutenants" system is the classic example, with changes flowing up through a chain of subsystem maintainers who each answer to the person above them.
+
+The main benefit of the model is xref:conceptual-integrity.adoc[*conceptual integrity*]. A single authority with a coherent vision can say no to features that would pull a design in conflicting directions, and can make a call quickly instead of waiting for a committee to settle. The same argument underpins the xref:surgical-team.adoc[*surgical team*], and Brooks's case in _The Mythical Man-Month_ that a design is best held in one mind.
+
+Decisions are also cheaper. There is no voting procedure to run, and no coalition to build.
+
+The model is also self-limiting in open source, because the code is open. If the community loses confidence in the dictator, the ultimate check is a **fork**. A dissatisfied faction copies the project and takes it in its own direction. The threat of a fork keeps a BDFL accountable, even though nobody can vote them out.
+
+But the model has a number of weaknesses. A project's direction, and often its deepest knowledge, rests with one person — a form of the xref:bus-factor.adoc[*bus factor*] problem. All contested decisions queue up behind one person, who is often an unpaid volunteer. Fatigue and abuse from the community are common reasons BDFLs step down.
+
+"For life" is rarely literal, and a project that never planned for the dictator's departure may be left without a legitimate way to make decisions. Python faced this in July 2018, when van Rossum stepped down after a bruising dispute over assignment expressions (PEP 572). The project replaced him with a five-person elected steering council, defined in {link-pep-13}[PEP 13].
+
+Some projects soften the model. A BDFL may delegate to a standing group of core developers, as in the "BDFL-delegate" role that Python used to hand individual proposals to a trusted reviewer. Others use a BDFL for the early years and later move to an elected council, a foundation, or a rotating maintainer role.
