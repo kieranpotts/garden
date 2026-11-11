@@ -1,0 +1,83 @@
+= Domain storytelling
+
+:link-domainstorytelling:    https://domainstorytelling.org/
+:link-hofer-schwentner-2022: https://domainstorytelling.org/book
+:link-egon:                  https://egon.io/
+
+Domain storytelling is a collaborative xref:modeling.adoc[*modeling*] technique in which xref:domain-expert.adoc[*domain experts*] tell stories about how they get their work done, while a moderator records each story live as a simple pictographic diagram. It's a *workshop* format for exploring a business xref:domain.adoc[*domain*]. It is commonly used alongside xref:domain-driven-design.adoc[*domain-driven design*] during a project's xref:discovery.adoc[*discovery*] phase.
+
+The technique is set out by Stefan Hofer and Henning Schwentner in their book _Domain Storytelling_ (2022). It grew out of the "cooperation pictures" used to model work processes at the University of Hamburg, and was refined over many years of practice at the German consultancy WPS – Workplace Solutions.
+
+The premise is that people find it far easier to describe their work by telling a concrete story about it, than by answering abstract questions about requirements. Watching the story take shape as a diagram, the storyteller can correct misunderstandings on the spot, and everyone in the room – domain experts, product people, and software developers – leaves with the same picture of how the work actually happens.
+
+== The pictographic language
+
+A domain story is drawn using a small visual vocabulary.
+
+* *Actors* are the people, groups of people, and software systems that play a part in the story. Each is drawn once, as an icon with a role name.
+
+* *Work objects* are the things actors work with: documents, physical items, digital records, or information about them.
+
+* *Activities* are arrows labeled with a verb, connecting actors and work objects.
+
+* *Sequence numbers* sit at the start of each activity arrow, recording the order in which things happen.
+
+* *Annotations* are free-text notes that record variations, definitions of terms, and assumptions.
+
+* *Groups* are outlines drawn around part of a story, to mark out repeated or optional activities, organizational boundaries, or candidate *subdomains*.
+
+Each numbered activity reads as a simple sentence of the form subject – predicate – object, and every sentence starts with the actor who initiates the activity. A story about selling car insurance might begin:
+
+1. Customer requests quote from insurance agent.
+2. Insurance agent enters customer details into the policy system.
+3. Policy system calculates premium.
+4. Insurance agent offers quote to customer.
+
+Because the diagram can be read back as numbered sentences, the moderator retells the story aloud as it grows, and the storyteller confirms or corrects it one sentence at a time.
+
+A domain story describes one concrete case, usually the most common path through a process, with real-looking roles and work objects. The pictographic language deliberately has no notation for branches, loops, or conditions. A significant variation is told as a separate story, and a minor one is left as an annotation. This keeps each diagram small enough to read at-a-glance. This sets domain stories part from heavier process notations such as xref:bpmn.adoc[*BPMN*].
+
+== Scope
+
+Before telling a story, the participants agree its scope along three factors.
+
+* *Granularity.* A coarse-grained story spans a whole value chain, perhaps across several departments, while a fine-grained story zooms in on the detail of a single task.
+
+* *Point in time.* An as-is story describes how work is done today, while a to-be story describes how it should be done in future, eg once new software is introduced.
+
+* *Domain purity.* A pure story leaves software systems out entirely, to focus on the business process itself, while a digitalized story includes them as actors.
+
+A typical progression is to start with coarse-grained, pure, as-is stories to understand the domain, then move to fine-grained, digitalized, to-be stories as the team starts to design software.
+
+== Uses
+
+Domain stories serve several purposes across a project.
+
+* *Learning the domain language.* The labels on actors, work objects, and activities are the domain experts' own words, which makes the stories a natural source for a xref:ubiquitous-language.adoc[*ubiquitous language*].
+
+* *Finding boundaries.* Groups drawn around clusters of activities in coarse-grained stories, at points where the language or the people involved change, suggest where xref:bounded-context.adoc[*bounded contexts*] might lie.
+
+* *Deriving requirements.* Fine-grained, to-be stories can be broken down into xref:user-story.adoc[*user stories*] for an agile backlog, while keeping the wider business process in view.
+
+* *Shaping the domain model.* The actors, work objects, and activities in a story point to the entities and operations of a xref:domain-model.adoc[*domain model*].
+
+Domain storytelling is often paired with xref:event-storming.adoc[*event storming*]. The two cover similar ground from different angles. Event storming puts domain events on a timeline, in a large, loosely moderated group, and suits the open-ended exploration of a whole domain. Domain storytelling puts the focus on who does what with which work objects, in a smaller group led by a moderator and one storyteller at a time, and suits understanding a specific process in depth.
+
+== Tooling
+
+Domain stories can be drawn on a whiteboard with sticky notes, but they're more often recorded in a dedicated tool so the moderator can keep pace with the storyteller. The authors' {link-egon}[Egon.io] is a free, open-source, browser-based editor built specifically for the pictographic language.
+
+== See also
+
+* xref:modeling-notations-and-methods.adoc[*Modeling notations and methods*]
+* xref:story-driven-modeling.adoc[*Story-driven modeling*]
+* xref:use-case.adoc[*Use case*]
+
+== References
+
+* Hofer, S, and Schwentner, H (2022).
+  {link-hofer-schwentner-2022}[_Domain Storytelling: A Collaborative, Visual, and Agile Way to Build Domain-Driven Software_].
+  Addison-Wesley.
+
+* {link-domainstorytelling}[_Domain Storytelling_].
+  WPS – Workplace Solutions.
