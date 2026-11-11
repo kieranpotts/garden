@@ -37,7 +37,7 @@ The first two are dominated by the network; the last two by the systems at eithe
 
 == Measuring latency
 
-Because latency is variable, a single sample says little. Latency is described with a distribution, and the shape of that distribution matters as much as its center. Production systems are therefore measured with *percentiles*: the p50 (median), p90, p99, and p99.9 latencies, meaning the latency that 50%, 90%, 99%, and 99.9% of requests come in under.
+Because latency is variable, a single sample says little. Latency is described with a distribution, and the shape of that distribution matters as much as its center. Production systems are therefore measured with xref:percentile.adoc[*percentiles*]: the p50 (median), p90, p99, and p99.9 latencies, meaning the latency that 50%, 90%, 99%, and 99.9% of requests come in under.
 
 The mean is a poor summary of latency because the distribution is almost always right-skewed. A few very slow requests pull the average well above the experience of most users, while hiding the long tail that those same users hit often enough to notice. Percentiles make the tail visible. A service with a p50 of 50 ms and a p99 of 2 s is not "a 50 ms service with occasional outliers" – for one in a hundred requests it is a 2 s service, and that is the experience worth designing around.
 

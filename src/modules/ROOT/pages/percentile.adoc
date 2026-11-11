@@ -1,0 +1,9 @@
+= Percentile
+
+A *percentile* is the value below which a given percentage of observations in a dataset fall. The 95th percentile — written *p95* — of a set of response times is the value that 95% of them come in under. Equivalently, only 1 in 20 observations (5%) is slower. The 50th percentile (p50) is the median, or the "typical" observation.
+
+Percentiles are the standard way to summarize and set targets for skewed measurements, and are most commonly used for response times. Response time distributions tend to be right-skewed, with a long tail of slow outliers. It makes for a misleading mean figure. Suppose 90 requests take 50ms, and 10 take 2s. The mean is about 245ms, which looks healthy — but one user in ten waits two whole seconds. A p95 or p99 figure exposes that tail, because it describes what nearly everyone experiences, including those at the slow end.
+
+A target such as "p95 under 300ms" means that 95% of requests must complete in under 300 milliseconds. Targets are often stated as a set that describes the whole spread, eg. "p50 under 100ms, p95 under 300ms, p99 under 1s". Each step up in percentile is stricter and costlier to satisfy, since the extreme tail is where queuing, garbage collection pauses, retries, and slow dependencies show up. The effect is amplified in systems with high fan-out, due to xref:latency.adoc[*tail latency*].
+
+Percentiles are widely used for indicators in xref:service-level-objective.adoc[*service level objectives*] and xref:service-level-agreement.adoc[*service level agreements*], for the thresholds of symptom-based xref:alerting.adoc[*alerting*], and for the pass/fail criteria of xref:performance-testing.adoc[*performance testing*]. They are collected as xref:metrics.adoc[*metrics*], and used to choose sensible values for a xref:timeout.adoc[*timeout*] — eg. a little above the dependency's p99.

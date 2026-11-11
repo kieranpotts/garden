@@ -8,7 +8,7 @@ A timeout converts an unbounded wait into a bounded, handleable error, in keepin
 
 == Choosing a timeout value
 
-A timeout that is too long fails to protect the caller. One that is too short produces false failures, and when combined with xref:retry.adoc[*retries*] it can amplify load on a dependency that is already struggling. Useful values are usually derived from measured xref:latency.adoc[*latency*], for example a little above the dependency's 99th percentile response time, and from the caller's own xref:service-level-agreement.adoc[*service level*] commitments.
+A timeout that is too long fails to protect the caller. One that is too short produces false failures, and when combined with xref:retry.adoc[*retries*] it can amplify load on a dependency that is already struggling. Useful values are usually derived from measured xref:latency.adoc[*latency*], for example a little above the dependency's 99th xref:percentile.adoc[*percentile*] response time, and from the caller's own xref:service-level-agreement.adoc[*service level*] commitments.
 
 Distinct timeouts are commonly set for distinct phases of a call. A _connection timeout_ bounds the time to establish a connection, and a _read timeout_ bounds the time spent waiting for a response once connected. In a chain of calls, a _deadline_ passed down from the original caller lets every downstream service know how much time is left, so that none of them keep working on a request whose caller has already given up.
 
