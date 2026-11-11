@@ -1,0 +1,14 @@
+= Recovery point objective (RPO)
+
+The recovery point objective (RPO) is the maximum tolerable amount of data loss in an outage, measured backwards from the moment of failure. It is expressed as a unit of time, whether seconds, minutes, hours, or days. An RPO of 15 minutes means that, after recovery, the system may be missing up to the last 15 minutes of writes, but no more.
+
+RPO answers the question: how much data can we afford to lose?
+
+The RPO determines how often data must be backed up or xref:replication.adoc[*replicated*]. A nightly backup implies an RPO of up to 24 hours. Continuous synchronous replication to a standby can bring the RPO to zero, at the cost of write latency and infrastructure. Each system or data set gets its own RPO, by weighing the business cost of lost data against the cost of the xref:redundancy.adoc[*redundancy*] needed to achieve it. Tighter objectives cost more.
+
+The RPO is a target, not a measurement. It is only credible if it is verified, which is the job of xref:recovery-testing.adoc[*recovery testing*]. It is the counterpart of the xref:recovery-time-objective.adoc[*recovery time objective*], which bounds how long recovery may take. The two are independent. A database replicated continuously may have a tight RPO but take hours to rebuild. Together they are the headline measures of xref:disaster-recovery.adoc[*disaster recovery*] planning, and are often committed contractually in a xref:service-level-agreement.adoc[*service level agreement*].
+
+== See also
+
+* xref:durability.adoc[*Durability*]
+* xref:recoverability.adoc[*Recoverability*]

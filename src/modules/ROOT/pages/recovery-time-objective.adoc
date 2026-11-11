@@ -1,0 +1,18 @@
+= Recovery time objective (RTO)
+
+The recovery time objective (RTO) is the maximum tolerable xref:downtime.adoc[*downtime*] in an outage. It is the time between the failure and the restoration of service. It is expressed as a unit of time, whether seconds, minutes, hours, or days. An RTO of one hour means the service must be back within an hour of going down.
+
+It answers the question: how long can we afford to be down?
+
+The RTO sets how much standby capacity and automated recover a system needs. Restoring from backups onto newly provisioned infrastructure suggests an RTO of hours or days, while a warm or hot standby with automated xref:failover.adoc[*failover*] can bring it down to seconds or minutes.
+
+RTO is decided by weighing the business cost of downtime against the cost of the xref:redundancy.adoc[*redundancy*] needed to achieve it. Tighter objectives cost more.
+
+The RTO is a target, not a measurement. It is only credible if it is verified, which is the job of xref:recovery-testing.adoc[*recovery testing*]. It differs from the availability targets in a xref:service-level-objective.adoc[*service level objective*], which describe expected uptime over a period, not the speed of recovery from a single incident. It is the counterpart of the xref:recovery-point-objective.adoc[*recovery point objective*], which bounds how much data may be lost. The two are independent. A stateless service may restart in seconds, while its data takes hours to restore. Together they are the headline measures of xref:disaster-recovery.adoc[*disaster recovery*] planning, and are often committed contractually in a xref:service-level-agreement.adoc[*service level agreement*].
+
+Related measures are the **maximum tolerable downtime (MTD)**, the point at which an outage threatens the viability of the business, which the RTO must fall inside; and the **mean time to recovery (MTTR)**, the observed average recovery time.
+
+== See also
+
+* xref:availability.adoc[*Availability*]
+* xref:recoverability.adoc[*Recoverability*]
