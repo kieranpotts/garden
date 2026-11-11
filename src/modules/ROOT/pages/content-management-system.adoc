@@ -1,0 +1,43 @@
+= Content management system (CMS)
+
+:link-storyblok-glossary: https://www.storyblok.com/mp/dxp-cxp-cms
+:link-cmswire-wcm-mq:     https://www.cmswire.com/digital-experience/why-did-gartner-kill-the-web-content-management-magic-quadrant/
+
+A content management system (CMS) is software for creating, organizing, and publishing digital content – web pages, articles, product copy, images, and other media – through an editorial interface, so that the people who write the content need not touch the code that renders it. It xref:separation-of-concerns.adoc[*separates the concerns*] of content and presentation. Editors manage the words and media, developers manage the templates and the delivery layer. The CMS sits between them.
+
+Most CMSs share the same core parts. A *content repository*, usually a relational xref:database.adoc[*database*], stores the content. A *content model* defines the content types and the structured fields that each content type carries, eg. an article with a headline, a summary, a body, and an author. An authoring interface lets editors create and revise entries, with revision history, role-based permissions, and an editorial approval flow from draft through review to publication — known as a xref:workflow-management-system.adoc[*workflow engine*]. A delivery layer turns stored content into pages or API responses. Most products are built for xref:extensibility.adoc[*extensibility*], adding features through a plugin or module ecosystem.
+
+The term covers several product families. A *web content management (WCM)* system publishes websites. *Enterprise content management (ECM)* manages an organization's internal documents and records, with an emphasis on retention and compliance. A *component content management system (CCMS)* manages technical documentation at the granularity of reusable topics, rather than whole pages.
+
+CMS architectures also differ in how tightly authoring is bound to delivery.
+
+* *Coupled.* The traditional CMS – WordPress, Drupal, Joomla – is a xref:monolith.adoc[*monolith*] in which one application stores the content, hosts the editing interface, and renders the public pages from server-side templates.
+
+* *Decoupled.* Authoring and delivery are separate systems. The CMS publishes content to a delivery tier, often as pre-rendered static files, which serves the public. The editing application can then sit behind a firewall, away from public traffic.
+
+* *Headless.* The CMS keeps only the repository and the editing interface, and exposes content through an xref:http-api.adoc[*HTTP API*], with no presentation layer of its own. Any number of front ends – websites, mobile apps, in-store screens, voice assistants – fetch the same structured content and render it their own way. This is xref:api-first-design.adoc[*API-first design*] applied to content. A headless CMS is commonly paired with a static site build, served from a xref:content-delivery-network.adoc[*content delivery network*].
+
+Headless architectures make it easier to reuse content across channels, and front-end engineering has greater flexibility. But in-context editing and faithful previews are harder to provide, and more work shifts onto developers overall. Many vendors now offer *hybrid headless* products that expose an API but keep a visual page builder, too.
+
+A related alternative drops the database entirely. In a *Git-based CMS*, content lives as Markdown or AsciiDoc files under xref:version-control.adoc[*version control*], and a static site generator builds the site. This *docs-as-code* approach suits technical teams who already work with developer tooling.
+
+A CMS may be self-hosted, as most open-source products are, or bought as xref:software-as-a-service.adoc[*software-as-a-service*], which is the norm for headless products.
+
+== Experience platforms
+
+As websites became one marketing channel among many, the larger CMS vendors broadened their products from managing content to managing the whole customer experience. They bundled personalization, xref:ab-testing.adoc[*A/B testing*], analytics, customer data, search, and commerce around the content repository. The resulting product category goes by several names, of which the most established is the *digital experience platform (DXP)*.
+
+*CXP* is a looser, vendor-driven variation on the same theme, expanded variously as *customer experience platform* and *content experience platform*. Some vendors use it as a synonym for DXP. Others use it to mean a narrower, content-centered platform that omits the commerce and portal features of a full DXP.
+
+Experience platforms come in two broad shapes. A *suite DXP* – Adobe Experience Manager and Sitecore are long-standing examples – is a single vendor's integrated product. Its trade-offs resemble those of an xref:enterprise-resource-planning.adoc[*ERP*] suite: tight integration and one shared data model, at the price of a large up-front investment, a long implementation, and dependence on one vendor's roadmap. A *composable DXP* assembles independent services – a headless CMS, a search service, a personalization engine, a commerce engine – connected through their APIs. Its proponents promote it under the *MACH* banner (microservices, API-first, cloud-native SaaS, headless). The composable approach swaps vendor lock-in for an integration burden, and the customer becomes responsible for making the parts behave as one cohesive product.
+
+== See also
+
+* xref:enterprise-application-software.adoc[*Enterprise application software (EAS)*]
+* xref:feature-flag.adoc[*Feature flag*]
+
+== References
+
+* Storyblok. {link-storyblok-glossary}[_DXP vs CXP vs CMS: a glossary of digital experiences_]. Storyblok.
+
+* CMSWire (2020). {link-cmswire-wcm-mq}[_Why did Gartner kill the Web Content Management Magic Quadrant?_]. CMSWire.
