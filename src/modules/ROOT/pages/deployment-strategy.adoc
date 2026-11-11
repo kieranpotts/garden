@@ -24,7 +24,7 @@ A xref:canary-deployment.adoc[*canary deployment*] initially routes only a small
 
 === Feature toggles
 
-xref:feature-flag.adoc[*Feature toggles*] (also known as feature flags) decouple code deployment from feature release entirely. New code is deployed to production but kept hidden behind a conditional flag. Features can then be switched on for individual users, user segments, or everyone, independently of any new deployment. This enables xref:ab-testing.adoc[*A/B testing*], phased rollouts, and rapid rollback of specific features without redeployment. The trade-off is increased code complexity and the risk of accumulating stale toggle logic if flags are not cleaned up promptly.
+xref:feature-flag.adoc[*Feature toggles*] (also known as feature flags) decouple code deployment from feature release entirely. New code is deployed to production but kept hidden behind a conditional flag, which also allows a xref:dark-launch.adoc[*dark launch*] in which the code runs on production traffic without users seeing its results. Features can then be switched on for individual users, user segments, or everyone, independently of any new deployment. This enables xref:ab-testing.adoc[*A/B testing*], phased rollouts, and rapid rollback of specific features without redeployment. The trade-off is increased code complexity and the risk of accumulating stale toggle logic if flags are not cleaned up promptly.
 
 == Choosing a strategy
 

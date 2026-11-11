@@ -1,0 +1,47 @@
+= Dark launch
+
+A dark launch is a release technique in which new functionality is deployed to production and exercised by real production traffic, but is kept invisible to end users. The feature is "dark" because its results are never shown to the people whose requests triggered it.
+
+The purpose is to validate a change under real conditions – real data volumes, real usage patterns, real infrastructure – before committing to a user-facing release. Staging environments and synthetic tests rarely reproduce these production conditions fully.
+
+Facebook popularized the term, using dark launches to test the load that new features would place on its back-end systems before any user could see them.
+
+== How it works
+
+Typically the dark code path runs alongside the existing one. The existing path serves the response, while the new path processes the same input in the background, but its output is discarded. However, the output from the dark path is logged and subsequently compared against the existing result.
+
+Common variations on dark launches include the following.
+
+* *Shadow traffic* (or traffic mirroring), in which a copy of live requests is sent to the new version of a service, and the responses are ignored.
+
+* *Dual reads and dual writes*, used when migrating to a new data store, in which the new store receives the same operations as the old one, but it is not yet the **source-of-truth**.
+
+* *Comparison testing*, in which results from old and new implementations are compared automatically, and mismatches are recorded for investigation.
+
+* *Hidden features*, in which a new capability is fully deployed but access is withheld from everyone outside a defined group, such as employees, until it is ready.
+
+Dark launches are usually controlled with a xref:feature-flag.adoc[*feature flag*], which determines whether the dark path runs at all, and for what proportion of requests. This allows the extra load to be ramped up gradually, and switched off instantly if the new path degrades the system.
+
+The dark path should be isolated from the user-facing request, for example by running it asynchronously, so that its failures or latency cannot affect users.
+
+== Relationship to other techniques
+
+A dark launch is typically the step before a xref:canary-deployment.adoc[*canary deployment*]. A canary exposes the new behavior to a small subset of real users. A dark launch exposes none of the users to the new feature. Like a canary release, a dark launch can surface performance problems, errors, and incorrect output, but unlike a canary release it does so without any user impact.
+
+After a clean dark launch, the feature can be released progressively, first to a small subset (canary) and then to all users (phased rollout).
+
+Dark launches are also distinct from xref:ab-testing.adoc[*A/B testing*], which measures user response to variants that users can see. A dark launch measures system behavior, not user behavior.
+
+== Trade-offs
+
+The main benefit is risk reduction. Defects, scaling limits, and data discrepancies are discovered before users are exposed to them, and with no need to roll back a user-visible release.
+
+The costs are additional infrastructure load, since the system does the work twice, and the engineering effort of building the comparison and isolation machinery. Dark launches must also be designed with care for side effects. For example, developers must be careful about shadow requests that send emails, charge a payment card, or mutate shared state. A dark path must be free of external side effects, or those effects must be stubbed.
+
+Data privacy obligations also apply to mirrored production traffic. Strong xref:observability.adoc[*observability*] is essential, because the value of a dark launch lies entirely in what can be learned from the hidden path.
+
+== See also
+
+* xref:blue-green-deployment.adoc[*Blue-green deployment*]
+* xref:deployment-strategy.adoc[*Deployment strategies*]
+* xref:rollback.adoc[*Rollback*]
