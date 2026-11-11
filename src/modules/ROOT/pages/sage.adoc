@@ -1,0 +1,50 @@
+= SAGE
+
+:link-bell-field-trip:   https://tcm.computerhistory.org/Timeline/FirstFieldTrip82.pdf
+:link-lincoln-sage:      https://www.ll.mit.edu/about/history/sage-semi-automatic-ground-environment-air-defense-system
+:link-schwartz-jovial:   https://dl.acm.org/doi/10.1145/960118.808385
+:link-ulmann-interview:  https://www.telepolis.de/article/AN-FSQ-7-3366834.html
+
+SAGE (Semi-Automatic Ground Environment) was a Cold War air-defense network built by the United States during the 1950s to detect, track, and coordinate responses to Soviet bomber attacks. It linked long-range radar stations across the US and Canada with interceptor aircraft and missile defenses via a single system communicating over telephone lines, modems, and teleprinters. Radar data from many sites was sent to a central computer, forming one overall picture of North American airspace, so that operators could identify and respond to threats far faster than with the manual methods that preceded it.
+
+SAGE grew out of MIT's Project Whirlwind, a real-time computer first built as a flight simulator. MIT Lincoln Laboratory was formed in 1951 to develop the system, and proved the concept with the Cape Cod System, a prototype built around Whirlwind that was running by 1953. IBM manufactured the production computers, and System Development Corporation, spun out of the RAND Corporation, wrote much of the software.
+
+SAGE is significant in computing history for being one of the first large-scale **real-time systems**. The computers processed radar data continuously as it arrived, rather than in xref:batch-processing.adoc[*batch jobs*]. It was an early, continent-wide example of a networked, xref:distributed-system.adoc[*distributed system*]. It also advanced **human-computer interaction**, with operators working at CRT displays and used "light guns", an ancestor of the light pen, to select targets directly on the screen.
+
+It required computers of unprecedented scale at the time. Each site ran a duplexed pair of IBM-built AN/FSQ-7 computers, one active and one on standby. An installation weighed about 250 tons, used 49,000 vacuum tubes, and filled an entire floor of its building. It was one of the largest computers ever built.
+
+The original SAGE software was written in **assembly language** for the AN/FSQ-7, as nearly all programming was at the time. It ran to around half a million lines, and more than 800 programmers worked on it. They used the Lincoln Utility System, a suite of tools developed at MIT Lincoln Laboratory that included the **Communication Pool** (COMPOOL), a central definition of the data shared between the system's many programs.
+
+The high-level language **JOVIAL**, developed later, owed much to SAGE. System Development Corporation began developing it in early 1959 for SACCS, the Strategic Air Command's control system that followed SAGE. Its designers, several of them SAGE veterans, carried over the Communication Pool, SAGE's notion of data "items", and its convention that only a central control program performed input and output. SAGE was subsequently extended using JOVIAL.
+
+SAGE was one of the first software projects of very large size, and its development shaped early thinking about the software development process. The development of SAGE is recorded in Herbert Benington's paper _Production of Large Computer Programs_, presented at an Office of Naval Research symposium in 1956 and republished, with a new foreword, in 1983. It describes the project's staged process, which came to be associated with the xref:waterfall-model.adoc[*waterfall model*]. In practice, the project depended on prototyping and feedback between phases, and is cited as an early example of xref:iterative-and-incremental-development.adoc[*iterative and incremental development*].
+
+SAGE begun production operation in 1958 and the whole network was deployed by 1963. By then, however, the main strategic threat was shifting from manned bombers to ballistic missiles, which reduced much of the system's original value. Nonetheless, SAGE remained in service until 1983.
+
+== See also
+
+* xref:safety-critical-system.adoc[*Safety-critical systems*]
+
+== References
+
+* Astrahan, M, and Jacobs, J (1983). _History of the design of the SAGE computer: the AN/FSQ-7_. _Annals of the History of Computing_, 5(4), 340–349.
+
+* Bell, G (1982). {link-bell-field-trip}[_The Computer Museum members' first field trip to Northbay AN/FSQ7 SAGE site and to the Canadian National Museum of Science and Technology_]. The Computer Museum.
+
+* Benington, H (1983). _Production of large computer programs_. _Annals of the History of Computing_, 5(4), 350–361.
+
+* Everett, R, Zraket, C, and Benington, H (1983). _SAGE: a data-processing system for air defense_. _Annals of the History of Computing_, 5(4), 330–339.
+
+* Höltgen, S (2014). {link-ulmann-interview}[_AN/FSQ-7: Der Computer, der den Kalten Krieg bestimmte_]. Telepolis. Interview with Bernd Ulmann, in German.
+
+* Jacobs, J (1983). _SAGE overview_. _Annals of the History of Computing_, 5(4), 323–329.
+
+* MIT Lincoln Laboratory. {link-lincoln-sage}[_SAGE: Semi-Automatic Ground Environment air defense system_].
+
+* Redmond, K, and Smith, T (1980). _Project Whirlwind: The History of a Pioneer Computer_. Digital Press.
+
+* Redmond, K, and Smith, T (2000). _From Whirlwind to MITRE: The R&D Story of the SAGE Air Defense Computer_. MIT Press.
+
+* Schwartz, J (1978). {link-schwartz-jovial}[_The development of JOVIAL_]. _ACM SIGPLAN Notices_, 13(8), 203–214.
+
+* Ulmann, B (2014). _AN/FSQ-7: The Computer that Shaped the Cold War_. De Gruyter Oldenbourg.
