@@ -10,6 +10,34 @@ Many harnesses ship their own memory system — Claude Code's `/memory`, for ins
 
 Always-loaded content carries the same trade-offs everywhere. Memories accumulate, so load a one-line index and leave the bodies behind *context pointers*. And memories are *secondary sources*, so they drift: a fact recorded in March is loaded with equal confidence in June, long after the code it described has moved on. A memory system needs pruning the same way `AGENTS.md` does.
 
+=== Memory types
+
+A common taxonomy, borrowed from cognitive science, splits agent memory into four types.
+
+* *Working memory* is the active state the agent is reasoning over right now. It's the running conversation and scratchpad that the model sees at inference time. It is the xref:context-window.adoc[*context window*] itself, and so it is the one type that needs no persistence.
+
+* *Semantic memory* is the durable facts the agent accumulates about users, entities, and the world, including user preferences, canonical definitions, reference data.
+
+* *Episodic memory* is specific past experiences the agent can recall, such as what happened in a prior session or how a similar task resolved last time. xref:agent-transcript.adoc[*Agent transcripts*] are the raw material here.
+
+* *Procedural memory* is the behavioral rules and learned procedures that shape how the agent acts: which tools to prefer, how to handle a class of request, what not to do. `AGENTS.md` is procedural memory written by hand.
+
+The four types are better read as four access patterns over the same underlying state, than as four discrete systems. That matters for design. Bolting on a xref:vector-database.adoc[vector store] for semantic recall, a chat-history table for episodes, and ad hoc extraction logic for the rest yields several stores with separate lifecycles. A *unified memory core* keeps one store and varies how it is read.
+
+=== Governance
+
+Agent memory stores data about people and their work, so it raises the normal data governance concerns.
+
+* *Ownership and isolation.* Whose memory is it — a user's, a team's, the organization's? Memories from one user or customer must not leak into another's sessions, which is a xref:multi-tenancy.adoc[*multi-tenancy*] problem.
+
+* *Access control.* Who and what may read or write a given memory? See xref:role-based-access-control.adoc[*role-based access control*].
+
+* *Auditability.* An agent's decisions are only defensible if you can inspect what it had learned and when. Agentic memory must be traceable to its source.
+
+* *Forgetting.* Memories — including transcripts, embeddings, and backups — must be deletable on request, and by policy after a retention period. See xref:data-retention.adoc[*data retention*] and xref:privacy.adoc[*privacy*].
+
+Memory is also an attack surface. Whatever an agent writes into memory is reloaded into later sessions, so a poisoned memory persists beyond the xref:prompt-injection.adoc[*prompt injection*] that planted it.
+
 == AGENTS.md
 
 `AGENTS.md` is a file in the environment that the harness loads into the context window at session start — the project's standing brief. It is a cross-harness convention; Claude Code's variant is `CLAUDE.md`.
@@ -41,6 +69,7 @@ The point is to keep noisy work out of the parent's context. Broad search or lon
 == See also
 
 * xref:context-engineering.adoc[*Context engineering*]
+* xref:retrieval-augmented-generation.adoc[*Retrieval-augmented generation (RAG)*]
 * xref:large-language-model.adoc[*Large language model (LLM)*]
 * xref:loop-engineering.adoc[*Loop engineering*]
 * xref:artificial-intelligence.adoc[*Artificial intelligence (AI)*]
