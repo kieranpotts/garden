@@ -9,72 +9,74 @@
 
 == Definitions
 
-The term "agent" predates large language models. In computer science, a software agent is a program that acts on behalf of a user or another program with some degree of autonomy to decide for itself what to do.
+The term "agent" predates large language models. In computer science, a software agent is a program that acts on behalf of a user or another program, with some freedom to decide for itself what to do.
 
-What distinguishes an agent from an ordinary program — or from a single LLM inference call — is a cluster of properties.
+What sets an agent apart from an ordinary program, or from a single call to an LLM, is a cluster of properties.
 
-* *Autonomy.* An agent reacts without constant human intervention, deciding its own next step.
+* *Autonomy.* An agent acts without constant human intervention, choosing its own next step.
 * *Reactivity.* An agent perceives its environment and responds to it.
 * *Proactivity.* An agent pursues goals on its own initiative, not only in response to a user prompt.
-* *Persistence.* And agent runs in a xref:agent-loop.adoc[*loop*] toward a goal, rather than a one-off execution.
+* *Persistence.* An agent keeps working toward a goal over many steps, rather than running once and stopping.
 
-It helps to distinguish three closely related concepts.
+Three closely related concepts are worth telling apart.
 
-* *Model.* The underlying LLM, a reasoning engine (the "brain") that transforms input tokens into output tokens. It has no persistent state, no tools, and no memory. A model is executed by a *model runtime* (or model engine) in a process known as *inference*.
+* *Model.* The underlying LLM. It is a reasoning engine (the "brain") that turns input tokens into output tokens. On its own, a model has no tools and no memory. A model is run by a *model runtime* (or model engine), and each run is called *inference*.
 
-* *Agent.* A model instance running within an active context, equipped with tools, a system prompt, and a conversation history. The agent is the model in operation via a harness.
+* *Harness.* The software that wraps a model and turns it into an agent. It gives the model tools (file access, shell commands, web search, and so on), decides what goes into the model's context, enforces guardrails, saves sessions, and runs the loop described below.
 
-* *Harness.* The infrastructure layer that creates and manages agents. It provides the tools the agent can use (file system access, shell execution, web search, etc.), manages the context window, enforces guardrails, handles memory persistence, and orchestrates multi-step task execution.
+* *Agent.* The model at work inside a harness, with a system prompt, a set of tools, and a conversation history.
 
 ----
 agent = model + harness
 ----
 
-The harness shapes what an agent can do. At its simplest, an agent is an LLM running in a loop with tools. Given a goal and the context so far, the model decides whether to answer or to call a tool — eg. query a database, call an API, or execute some code. The harness captures the result of the tool call, adds it to the context, and the model infers again with the updated context. This is repeated until the model judges it has met the goal. This is known as the xref:agent-loop.adoc[*agent loop*].
+The xref:agent-harness.adoc[*harness*] shapes what an agent can do. Two agents powered by the same model but run in different harnesses will behave very differently, because the harness, not the model, decides which tools the agent has and what it is allowed to do.
 
-Two agents powered by the same model but run inside different harnesses will behave very differently, because the harness — not the model — defines the agent's available tools and constraints.
+=== Sessions, turns, and steps
 
-A *session* is one bounded run of interaction with an agent. A session starts empty and incrementally fills the model's *context window* through user messages, tool calls and their results, and the model's own outputs. xref:context-compaction.adoc[*Compaction*] may be used to keep sessions within the model's context window.
+Working with an agent breaks down into three units, each nested inside the one above it.
 
-Model's are xref:stateless.adoc[*stateless*]. They persist no memory between inference invocations. Everything an agent appears to remember is actually session history re-sent with each new user prompt and tool call response. Harnesses persist sessions to the filesystem as xref:agent-transcript.adoc[*agent transcripts*]. This is what allows past sessions to be resumed and reviewed later.
+----
+session    one continuous conversation with an agent
+└── turn   one user message, plus all the work the agent does in reply
+    └── step   one request to the model, plus the tool call it asks for, if any
+----
 
-A *turn* is one user message or tool call response, plus everything the agent does in response, up until it the model yields back to the user or makes another tool. A turn contains one or more xref:inference-provider.adoc[*model provider*] requests. A session consists of one or more turns.
+A *session* is one continuous conversation with an agent. It starts with an empty context and fills up as it goes. User messages, the model's replies, tool calls, and tool results all pile up in the model's xref:context-window.adoc[*context window*]. When the window gets close to full, the harness can xref:context-compaction.adoc[*compact*] the session, replacing older history with a shorter summary so the conversation can carry on.
 
-A turn can be a one-sentence answer or twenty minutes of inference. The choice of turn length is the model's.
+A session is made up of *turns*. A turn starts when the user sends a message and ends when the agent replies and hands control back to the user. Everything the agent does in between belongs to that one turn.
 
-The gaps between turns are where humans and tools can steer agents. xref:agent-loop.adoc[*Loop engineering*] can be used to control the agent loop in deterministic workflows.
+Inside each turn, the agent works through the xref:agent-loop.adoc[*agent loop*]. The harness sends the context to the model, and the model responds in one of two ways: it asks for a tool to be run, such as reading a file, querying a database, or running some code, or it answers the user. If it asks for a tool, the harness runs the tool, adds the result to the context, and sends everything back to the model, which decides again. Each pass round the loop is one *step*, made of one request to the xref:inference-provider.adoc[*inference provider*] and the tool call that comes out of it. The loop stops, and the turn ends, when the model answers without asking for a tool, usually because it judges the job done.
 
-*Human-in-the-loop* is a working pattern where one or more humans pair with an agent during a session, steering the agent at the end of each turn. Human-in-the-loop catches problems while they are cheap. Ambiguous, irreversible, or hard-to-review tasks — a schema migration, a tricky design, anything touching production — suit humans staying in the loop.
+So a turn can be a single step that produces a one-sentence answer, or hundreds of steps and twenty minutes of work. The model mostly decides how long a turn runs, though the harness can cap it with a step limit or a budget, and the user can interrupt.
 
-This contrasts with xref:away-from-keyboard.adoc[*AFK*], where the agent runs unattended and humans judge the result afterwards.  Well-specified, low-risk, easy-to-verify tasks suit AFK.
+Terminology varies between tools. Some frameworks call each step a "turn", so a setting such as "max turns" may count requests to the model, not messages from the user.
 
-== Design concept
+The harness re-sends everything on every step because models are xref:stateless.adoc[*stateless*]. A model remembers nothing from one request to the next. Everything an agent appears to remember is the session history, sent again in full with each request. The harness also saves each session to disk as an xref:agent-transcript.adoc[*agent transcript*], which is what allows a past session to be resumed or reviewed later.
 
-The *design concept* is the shared understanding of what is being built, held between user and agent but separate from any asset. Fred Brooks' term (from _The Design of Design_): the conversation, the handoff artifacts, and the code are all assets that try to capture the design concept, but none of them is it. The concept names the gap behind "the agent wrote exactly what I asked for and it's still wrong" — the design concept was not finished in your own head, and the agent filled the silences with its own assumptions.
+=== Steering an agent
 
-You can tell the concept is shared when the other party starts answering questions you have not asked, the way you would. Until then the work is conversation, and *grilling* is the deliberate version of that conversation. See xref:agent-handoff.adoc[*agent handoff*].
+Within a turn, the agent loop runs on its own. The gaps between turns are where a person, or an automated process, can step in, check what the agent did, correct its course, and send the next message.
 
-== Grilling
+*Human-in-the-loop* is a way of working where a person stays with the agent throughout a session, reviewing each turn and steering the next one. It catches problems while they are still cheap to fix. Tasks that are ambiguous, irreversible, or hard to review, such as a schema migration, a tricky design, or anything touching production, suit keeping a human in the loop.
 
-*Grilling* is a technique for developing a design concept with an agent. The agent interviews the user Socratically, one decision at a time, proposing a recommended answer each time. It slows the rush to a finished plan; no xref:agent-handoff.adoc[*handoff artifact*] is produced until the concept stabilises.
+*Grilling* is one human-in-the-loop technique, used to develop a design with an agent. Rather than guess at the gaps in a plan, the agent questions the human about it, point by point, until the two share an understanding. The human's answers become the agent's input.
 
-Grilling exists because agents fill gaps silently. Asked to write a spec from a two-line prompt, the agent picks defaults and writes them in, indistinguishable from your own choices. Grilling inverts this: instead of guessing, the agent asks. It is a human-in-the-loop technique — your answers are the input. When a question cannot be answered in conversation, switch to xref:prototyping.adoc[*prototyping*].
+The opposite is working xref:away-from-keyboard.adoc[*AFK*], where the agent runs unattended, possibly across many turns or sessions, and humans judge the result afterwards. Well-specified, low-risk, easy-to-check tasks suit AFK. Designing systems in which agents run this way, with code rather than a person filling the gaps between turns, is xref:loop-engineering.adoc[*loop engineering*].
 
 == Conductor and orchestrator
 
 As AI takes over more implementation, developers move fluidly between two modes. In *conductor* mode the developer works in real time with an AI pair-programmer – in the IDE, watching code appear, guiding the AI with prompts and corrections, maintaining fine-grained control. The AI is a powerful instrument and the developer is actively directing every movement. This suits complex logic, tricky debugging, and unfamiliar codebases where the developer needs to understand each change as it is made. The risk is that personally directing every keystroke caps the throughput gain.
 
-In *orchestrator* mode the developer operates at a higher level of abstraction – defining goals, assigning them to agents, and reviewing results rather than watching code appear line by line. Agents may work in the background, in parallel, on different parts of a codebase. The developer checks in periodically, reviews output, and gives course corrections. This suits well-defined tasks like bug fixes, features against established patterns, codebase migrations, and test generation, and is the natural mode for xref:away-from-keyboard.adoc[*AFK*] work and xref:agent-orchestration.adoc[*multi-agent delegation*].
+In *orchestrator* mode the developer operates at a higher level of abstraction – defining goals, assigning them to agents, and reviewing results rather than watching code appear line by line. Agents may work in the background, in parallel, on different parts of a codebase. The developer checks in periodically, reviews output, and gives course corrections. This suits well-defined tasks like bug fixes, features against established patterns, codebase migrations, and test generation, and is the natural mode for AFK work and xref:agent-orchestration.adoc[*multi-agent delegation*].
 
 The orchestrator demands a different skill set than the conductor: specification (defining tasks precisely enough for unambiguous execution), decomposition (breaking large tasks into appropriately sized units), evaluation (quickly assessing whether output meets the bar), and system design (the constraints, tests, and feedback loops that keep agents productive). The shift is from implementation skill to judgment – directing agents well matters more than writing the most code.
 
-The conductor and orchestrator are two ends of a spectrum, and most real work mixes both. Where the orchestrating role is played by an agent that spawns others, the result is a xref:multi-agent-system.adoc[*multi-agent system*]. The choice connects to xref:agentic-engineering.adoc[*agentic engineering*], xref:loop-engineering.adoc[*loop engineering*], and the human-in-the-loop pattern above.
+The conductor and orchestrator are two ends of a spectrum, and most real work mixes both. Where the orchestrating role is played by an agent that spawns others, the result is a xref:multi-agent-system.adoc[*multi-agent system*]. The choice connects to xref:agentic-engineering.adoc[*agentic engineering*], loop engineering, and the human-in-the-loop pattern above.
 
 == Agents versus workflows
 
-At its simplest, an agent is an LLM running in a loop with tools. Given a goal and the context so far, the model decides whether to answer or to call a tool — eg. a search, a database query, an API call, a code execution. It reads the result, adds it to the context, and decides again, repeating until it judges the goal met. This is known as the xref:agent-loop.adoc[*agent loop*].
-
-What separates this from a fixed *workflow* is who controls the flow. In a workflow, deterministic code decides each step. The LLM is a component inside a path that is fixed at design time.
+At its simplest, an agent is an LLM running in a loop with tools, as described above. What separates this from a fixed *workflow* is who controls the flow. In a workflow, deterministic code decides each step. The LLM is a component inside a path that is fixed at design time.
 
 By comparison, in an agent, the model decides the path at runtime — which tool to call next, how many times, and when to stop.
 
@@ -86,7 +88,7 @@ A good default is to design an agentic system to have the least autonomy that so
 
 == Agent development frameworks
 
-Designing and operating an agent harness is a discipline in its own right — known as xref:agent-harness.adoc[*harness engineering*].
+Designing and operating an agent harness is a discipline in its own right — known as *harness engineering*.
 
 An *agent framework* or *SDK* is a library for building custom agents, providing the infrastructure for building and orchestrating them. It's important to distinguish between two types:
 
@@ -102,7 +104,7 @@ The frameworks, SDKs, and platforms that I've collected, grouped by purpose, are
 
 == Anatomy of an agent
 
-Building an agent means assembling six pieces. Frameworks and xref:agent-harness.adoc[*harnesses*] package them in different ways, but all six are present in any working agent, whether supplied or neglected.
+Building an agent means assembling six pieces. Frameworks and harnesses package them in different ways, but all six are present in any working agent, whether supplied or neglected.
 
 * *Model.* The reasoning engine. Its capability sets the ceiling on how well the agent can plan, choose tools, and recover from errors, while its price and latency set the cost of every iteration of the loop. Agents often mix models, using a stronger one to plan and a cheaper one for routine steps.
 
@@ -110,24 +112,22 @@ Building an agent means assembling six pieces. Frameworks and xref:agent-harness
 
 * *Instructions.* The system prompt and the policies that sit alongside it: the agent's role, the goal, the constraints, and what to do when stuck. See xref:prompt.adoc[*prompt*].
 
-* *Memory and state.* The conversation so far, which is the agent's working memory and is bounded by the xref:context-window.adoc[*context window*], plus any longer-term store that outlives a session. See xref:agent-memory.adoc[*agent memory*].
+* *Memory and state.* The conversation so far, which is the agent's working memory and is bounded by the context window, plus any longer-term store that outlives a session. See xref:agent-memory.adoc[*agent memory*].
 
-* *Orchestration.* The loop itself, with the logic around it: xref:retry.adoc[*retries*] for transient failures, validation of tool calls, xref:guardrail.adoc[*guardrails*] on what the agent may do, and stopping conditions such as a step limit or budget cap that prevent a xref:runaway-loop.adoc[*runaway loop*]. Where several agents cooperate, this extends to xref:agent-orchestration.adoc[*agent orchestration*].
+* *Orchestration.* The loop itself, with the logic around it: xref:retry.adoc[*retries*] for transient failures, validation of tool calls, xref:guardrail.adoc[*guardrails*] on what the agent may do, and stopping conditions such as a step limit or budget cap that prevent a xref:runaway-loop.adoc[*runaway loop*]. Where several agents cooperate, this extends to agent orchestration.
 
 * *Observability and evals.* The means of seeing what the agent did and judging whether it did it well: xref:tracing.adoc[*tracing*] and xref:ai-eval.adoc[*evals*].
 
-Of the six, the model is the only one an agent developer usually does not build. The rest are the harness. See xref:agent-harness.adoc[*agent harness*] for how they fit together in practice.
+Of the six, the model is the only one an agent developer usually does not build. The rest make up the harness.
 
 
 == See also
 
 * xref:ai-coding-assistant.adoc[*AI coding assistants*]
-* xref:agent-memory.adoc[*Agent memory*]
 * xref:agent-skills.adoc[*Agent skills*]
 * xref:agent2agent.adoc[*Agent2Agent (A2A)*]
 * xref:artificial-intelligence.adoc[*Artificial intelligence (AI)*]
 * xref:developer-experience.adoc[*Developer experience (DX)*]
-* xref:model-context-protocol.adoc[*Model Context Protocol*]
 * xref:recursive-self-improvement.adoc[*Recursive self-improvement (RSI)*]
 
 == References
