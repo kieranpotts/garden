@@ -54,25 +54,28 @@ Terminology varies between tools. Some frameworks call each step a "turn", so a 
 
 The harness re-sends everything on every step because models are xref:stateless.adoc[*stateless*]. A model remembers nothing from one request to the next. Everything an agent appears to remember is the session history, sent again in full with each request. The harness also saves each session to disk as an xref:agent-transcript.adoc[*agent transcript*], which is what allows a past session to be resumed or reviewed later.
 
-=== Steering an agent
+== Steering agents
 
-Within a turn, the agent loop runs on its own. The gaps between turns are where a person, or an automated process, can step in, check what the agent did, correct its course, and send the next message.
+Within a turn, the agent loop runs on its own. The gaps between turns are where a person, or an automated process, can step in, check what the agent did, correct its course, and send the next message. How closely a developer steers sits on a spectrum, and most real work moves back and forth along it.
 
 *Human-in-the-loop* is a way of working where a person stays with the agent throughout a session, reviewing each turn and steering the next one. It catches problems while they are still cheap to fix. Tasks that are ambiguous, irreversible, or hard to review, such as a schema migration, a tricky design, or anything touching production, suit keeping a human in the loop.
 
+Working this way, the developer acts as a *conductor*. They work in real time with the agent as a pair-programmer, in the IDE, watching code appear, guiding it with prompts and corrections, and keeping fine-grained control. This suits complex logic, tricky debugging, and unfamiliar codebases, where the developer needs to understand each change as it is made. The cost is throughput, since a developer who directs every step caps how much the agent can get done.
+
 *Grilling* is one human-in-the-loop technique, used to develop a design with an agent. Rather than guess at the gaps in a plan, the agent questions the human about it, point by point, until the two share an understanding. The human's answers become the agent's input.
 
-The opposite is working xref:away-from-keyboard.adoc[*AFK*], where the agent runs unattended, possibly across many turns or sessions, and humans judge the result afterwards. Well-specified, low-risk, easy-to-check tasks suit AFK. Designing systems in which agents run this way, with code rather than a person filling the gaps between turns, is xref:loop-engineering.adoc[*loop engineering*].
+At the other end of the spectrum is working xref:away-from-keyboard.adoc[*AFK*], where the agent runs unattended, possibly across many turns or sessions, and humans judge the result afterwards. Well-specified, low-risk, easy-to-check tasks suit AFK, such as bug fixes, features that follow established patterns, codebase migrations, and test generation.
 
-== Conductor and orchestrator
+Working this way, the developer acts as an *orchestrator*. They work at a higher level of abstraction, defining goals, assigning them to agents, and reviewing results rather than watching code appear line by line. Agents may work in the background, in parallel, on different parts of a codebase, while the developer checks in periodically and corrects course. This is the natural mode for xref:agent-orchestration.adoc[*multi-agent delegation*]. Where the orchestrating role is itself played by an agent that spawns others, the result is a xref:multi-agent-system.adoc[*multi-agent system*]. Designing systems in which agents run unattended, with code rather than a person filling the gaps between turns, is xref:loop-engineering.adoc[*loop engineering*].
 
-As AI takes over more implementation, developers move fluidly between two modes. In *conductor* mode the developer works in real time with an AI pair-programmer – in the IDE, watching code appear, guiding the AI with prompts and corrections, maintaining fine-grained control. The AI is a powerful instrument and the developer is actively directing every movement. This suits complex logic, tricky debugging, and unfamiliar codebases where the developer needs to understand each change as it is made. The risk is that personally directing every keystroke caps the throughput gain.
+Orchestrating demands different skills from conducting.
 
-In *orchestrator* mode the developer operates at a higher level of abstraction – defining goals, assigning them to agents, and reviewing results rather than watching code appear line by line. Agents may work in the background, in parallel, on different parts of a codebase. The developer checks in periodically, reviews output, and gives course corrections. This suits well-defined tasks like bug fixes, features against established patterns, codebase migrations, and test generation, and is the natural mode for AFK work and xref:agent-orchestration.adoc[*multi-agent delegation*].
+* *Specification.* Defining tasks precisely enough for unambiguous execution.
+* *Decomposition.* Breaking large tasks into appropriately sized units.
+* *Evaluation.* Quickly judging whether output meets the bar.
+* *System design.* Building the constraints, tests, and feedback loops that keep agents productive.
 
-The orchestrator demands a different skill set than the conductor: specification (defining tasks precisely enough for unambiguous execution), decomposition (breaking large tasks into appropriately sized units), evaluation (quickly assessing whether output meets the bar), and system design (the constraints, tests, and feedback loops that keep agents productive). The shift is from implementation skill to judgment – directing agents well matters more than writing the most code.
-
-The conductor and orchestrator are two ends of a spectrum, and most real work mixes both. Where the orchestrating role is played by an agent that spawns others, the result is a xref:multi-agent-system.adoc[*multi-agent system*]. The choice connects to xref:agentic-engineering.adoc[*agentic engineering*], loop engineering, and the human-in-the-loop pattern above.
+The shift is from implementation skill to judgment. Directing agents well matters more than writing the most code, which is the concern of xref:agentic-engineering.adoc[*agentic engineering*].
 
 == Agents versus workflows
 
@@ -86,23 +89,7 @@ A good default is to design an agentic system to have the least autonomy that so
 
 (See also xref:workflow-management-system.adoc[*workflow management systems*].)
 
-== Agent development frameworks
-
-Designing and operating an agent harness is a discipline in its own right — known as *harness engineering*.
-
-An *agent framework* or *SDK* is a library for building custom agents, providing the infrastructure for building and orchestrating them. It's important to distinguish between two types:
-
-* *Development frameworks*: Code libraries and SDKs used to write agent code. These are tools for building agents.
-
-* *Agent harnesses*: Runtime environments and orchestration systems that execute agents, manage their lifecycle, control permissions, provide observability, and coordinate multi-agent workflows. Some of these blur the line by offering both development and runtime capabilities.
-
-Many frameworks require a harness to run agents in production, while some frameworks include built-in harness capabilities. The distinction helps clarify whether you're looking for a tool to _write_ agent code or an environment to _run_ agents.
-
-Frameworks differ mainly in how much control they give you over the flow. Some supply components and prebuilt agent constructors for a quick start. Others model an agent as an explicit graph of nodes with persisted state, which gives control over branching, human-in-the-loop approval, and long-running runs. Vendor SDKs ship the vendor's own agent loop with built-in tools. Almost all lean on typed schemas to validate model output, which is also how tool calling works, since LLM output is unreliable text. When validation fails, the error can be fed back to the model so that it corrects itself.
-
-The frameworks, SDKs, and platforms that I've collected, grouped by purpose, are in my bookmarks: see xref:bookmarks::applications/ai/agent-frameworks/index.adoc[*AI agent frameworks and SDKs*]. They include general-purpose frameworks, multi-agent frameworks and orchestration platforms, data and RAG frameworks (see xref:retrieval-augmented-generation.adoc[*retrieval-augmented generation*]), vendor SDKs, and self-hosted harnesses. Agent products are listed under xref:bookmarks::applications/ai/agents/index.adoc[*AI agents*], and agent benchmarks such as Terminal-Bench under xref:bookmarks::applications/ai/benchmarks/index.adoc[*benchmarks and leaderboards*].
-
-== Anatomy of an agent
+== Building agents
 
 Building an agent means assembling six pieces. Frameworks and harnesses package them in different ways, but all six are present in any working agent, whether supplied or neglected.
 
@@ -118,8 +105,21 @@ Building an agent means assembling six pieces. Frameworks and harnesses package 
 
 * *Observability and evals.* The means of seeing what the agent did and judging whether it did it well: xref:tracing.adoc[*tracing*] and xref:ai-eval.adoc[*evals*].
 
-Of the six, the model is the only one an agent developer usually does not build. The rest make up the harness.
+Of the six, the model is the only one an agent developer usually does not build. The rest make up the harness. Designing and operating a harness is a discipline in its own right, known as *harness engineering*.
 
+Few developers build a harness from scratch. Two kinds of tooling supply the pieces.
+
+* *Development frameworks.* Code libraries and SDKs used to write agent code. These are tools for building agents.
+
+* *Agent harnesses.* Runtime environments and orchestration systems that execute agents, manage their lifecycle, control permissions, provide observability, and coordinate multi-agent workflows.
+
+The line between the two blurs. Many frameworks need a harness to run agents in production, while some include harness capabilities of their own, and some harnesses offer development tools too. The distinction helps clarify whether you're looking for a tool to _write_ agent code or an environment to _run_ agents.
+
+Frameworks differ mainly in how much control they give you over the flow. Some supply components and prebuilt agent constructors for a quick start. Others model an agent as an explicit graph of nodes with persisted state, which gives control over branching, human-in-the-loop approval, and long-running runs. Vendor SDKs ship the vendor's own agent loop with built-in tools. Almost all lean on typed schemas to validate model output, which is also how tool calling works, since LLM output is unreliable text. When validation fails, the error can be fed back to the model so that it corrects itself.
+
+A few well-known tools show which problem each kind solves. LangChain supplies components and prebuilt agents for a quick start, while LangGraph, from the same team, models an agent as a stateful graph. LlamaIndex specializes in connecting agents to data for retrieval, and CrewAI coordinates teams of agents. The OpenAI Agents SDK, the Claude Agent SDK, and Google's Agent Development Kit are vendor SDKs. Pydantic in Python and Zod in TypeScript define the typed schemas that validate model output and tool arguments, and Pydantic AI builds an agent framework on top of Pydantic. Langfuse and LangSmith trace agent runs for observability.
+
+The frameworks, SDKs, and platforms that I've collected, grouped by purpose, are in my bookmarks: see xref:bookmarks::applications/ai/agent-frameworks/index.adoc[*AI agent frameworks and SDKs*]. They include general-purpose frameworks, multi-agent frameworks and orchestration platforms, data and RAG frameworks (see xref:retrieval-augmented-generation.adoc[*retrieval-augmented generation*]), vendor SDKs, and self-hosted harnesses. Agent products are listed under xref:bookmarks::applications/ai/agents/index.adoc[*AI agents*], and agent benchmarks such as Terminal-Bench under xref:bookmarks::applications/ai/benchmarks/index.adoc[*benchmarks and leaderboards*].
 
 == See also
 
