@@ -11,44 +11,46 @@
 
 The term "agent" predates large language models. In computer science, a software agent is a program that acts on behalf of a user or another program, with some freedom to decide for itself what to do.
 
-What sets an agent apart from an ordinary program, or from a single call to an LLM, is a cluster of properties.
+What sets an agent apart from an ordinary program, or from a single inference call to an LLM, is a cluster of properties.
 
 * *Autonomy.* An agent acts without constant human intervention, choosing its own next step.
 * *Reactivity.* An agent perceives its environment and responds to it.
 * *Proactivity.* An agent pursues goals on its own initiative, not only in response to a user prompt.
 * *Persistence.* An agent keeps working toward a goal over many steps, rather than running once and stopping.
 
-Three closely related concepts are worth telling apart.
-
-* *Model.* The underlying LLM. It is a reasoning engine (the "brain") that turns input tokens into output tokens. On its own, a model has no tools and no memory. A model is run by a *model runtime* (or model engine), and each run is called *inference*.
-
-* *Harness.* The software that wraps a model and turns it into an agent. It gives the model tools (file access, shell commands, web search, and so on), decides what goes into the model's context, enforces guardrails, saves sessions, and runs the loop described below.
-
-* *Agent.* The model at work inside a harness, with a system prompt, a set of tools, and a conversation history.
+An agent is composed of a large language model and a harness.
 
 ----
 agent = model + harness
 ----
 
-The xref:agent-harness.adoc[*harness*] shapes what an agent can do. Two agents powered by the same model but run in different harnesses will behave very differently, because the harness, not the model, decides which tools the agent has and what it is allowed to do.
+The *model* is the underlying LLM. It is a reasoning engine — the "brain" — that turns input tokens into output tokens. On its own, a model has no tools and no memory. A model is run by a *model runtime* (or model engine), and each run is called *inference*.
+
+The *harness* is traditional software that wraps a model and turns it into an agent. It gives the model tools (file access, shell commands, web search, and so on), decides what goes into the model's context, enforces guardrails, saves sessions, and runs the loop described below.
+
+The *agent* is a model at work inside a harness. It has a system prompt, a set of tools, and a conversation history — all managed by the harness.
+
+While different models have different knowledge and capabilities, it is the xref:agent-harness.adoc[*harness*] that shapes what an agent can do. Two agents powered by the same model but run in different harnesses will behave very differently — because the harness, not the model, decides which tools the agent has and what it is allowed to do.
 
 === Sessions, turns, and steps
 
-Working with an agent breaks down into three units, each nested inside the one above it.
+The operation of an agent breaks down into three unit.
 
 ----
-session    one continuous conversation with an agent
-└── turn   one user message, plus all the work the agent does in reply
-    └── step   one request to the model, plus the tool call it asks for, if any
+session        One continuous conversation with an agent.
+└── turn       One user message, plus all the work the agent does in reply.
+    └── step   One request to the model, plus the tool call it asks for, if any.
 ----
 
 A *session* is one continuous conversation with an agent. It starts with an empty context and fills up as it goes. User messages, the model's replies, tool calls, and tool results all pile up in the model's xref:context-window.adoc[*context window*]. When the window gets close to full, the harness can xref:context-compaction.adoc[*compact*] the session, replacing older history with a shorter summary so the conversation can carry on.
 
-A session is made up of *turns*. A turn starts when the user sends a message and ends when the agent replies and hands control back to the user. Everything the agent does in between belongs to that one turn.
+A session is made up of *turns*. A turn starts when the user sends a message and ends when the agent replies and hands control back to the user. Everything the agent does in between — including tool calls — belongs to that one turn.
 
-Inside each turn, the agent works through the xref:agent-loop.adoc[*agent loop*]. The harness sends the context to the model, and the model responds in one of two ways: it asks for a tool to be run, such as reading a file, querying a database, or running some code, or it answers the user. If it asks for a tool, the harness runs the tool, adds the result to the context, and sends everything back to the model, which decides again. Each pass round the loop is one *step*, made of one request to the xref:inference-provider.adoc[*inference provider*] and the tool call that comes out of it. The loop stops, and the turn ends, when the model answers without asking for a tool, usually because it judges the job done.
+Inside each turn, the agent works in a loop, known as the xref:agent-loop.adoc[*agent loop*]. The harness sends the context to the model, and the model responds in one of two ways. It either asks for a tool to be run, such as reading a file, querying a database, or running some code; or it answers the user. If it asks for a tool, the harness runs the tool, adds the result to the context, and sends everything back to the model, which decides again.
 
-So a turn can be a single step that produces a one-sentence answer, or hundreds of steps and twenty minutes of work. The model mostly decides how long a turn runs, though the harness can cap it with a step limit or a budget, and the user can interrupt.
+Each pass round the loop is one *step*, made of one request to the xref:inference-provider.adoc[*inference provider*] and the tool call that comes out of it. The loop stops, and the turn ends, when the model answers without asking for a tool — usually because it judges the job done.
+
+A turn can be a single step that produces a one-sentence answer, or hundreds of steps and twenty minutes of work. The model mostly decides how long a turn runs, though the harness can cap it with a step limit or a budget, and the user can interrupt.
 
 Terminology varies between tools. Some frameworks call each step a "turn", so a setting such as "max turns" may count requests to the model, not messages from the user.
 
@@ -56,15 +58,15 @@ The harness re-sends everything on every step because models are xref:stateless.
 
 == Steering agents
 
-Within a turn, the agent loop runs on its own. The gaps between turns are where a person, or an automated process, can step in, check what the agent did, correct its course, and send the next message. How closely a developer steers sits on a spectrum, and most real work moves back and forth along it.
+Within a turn, the agent loop runs on its own. The gaps between turns are where a person, or an automated process, can step in, check what the agent did, correct its course, and send the next message.
 
 *Human-in-the-loop* is a way of working where a person stays with the agent throughout a session, reviewing each turn and steering the next one. It catches problems while they are still cheap to fix. Tasks that are ambiguous, irreversible, or hard to review, such as a schema migration, a tricky design, or anything touching production, suit keeping a human in the loop.
 
-Working this way, the developer acts as a *conductor*. They work in real time with the agent as a pair-programmer, in the IDE, watching code appear, guiding it with prompts and corrections, and keeping fine-grained control. This suits complex logic, tricky debugging, and unfamiliar codebases, where the developer needs to understand each change as it is made. The cost is throughput, since a developer who directs every step caps how much the agent can get done.
+Working this way, the developer acts as a *conductor*. They work in real time with the agent as a pair programmer, often in their IDE, watching code appear, guiding it with prompts and corrections, and keeping fine-grained control. This suits complex logic, tricky debugging, and unfamiliar codebases, where the developer needs to understand each change as it is made. The cost is throughput, since a developer who directs every step is the bottleneck on how much work the agent can get done.
 
-*Grilling* is one human-in-the-loop technique, used to develop a design with an agent. Rather than guess at the gaps in a plan, the agent questions the human about it, point by point, until the two share an understanding. The human's answers become the agent's input.
+*Grilling* is a human-in-the-loop technique, commonly used to develop a design with an agent. Rather than guess at the gaps in a design or plan, the agent questions the human about it, point by point, until the two share an understanding. The human's answers become the agent's input.
 
-At the other end of the spectrum is working xref:away-from-keyboard.adoc[*AFK*], where the agent runs unattended, possibly across many turns or sessions, and humans judge the result afterwards. Well-specified, low-risk, easy-to-check tasks suit AFK, such as bug fixes, features that follow established patterns, codebase migrations, and test generation.
+At the other end of the spectrum is working xref:away-from-keyboard.adoc[*away-from-keyboard (AFK)*], where the agent runs unattended, possibly across many turns or even sessions, and humans judge the final output afterwards. Well-specified, low-risk, easy-to-check tasks suit AFK, such as bug fixes, features that follow established patterns, codebase migrations, and test generation.
 
 Working this way, the developer acts as an *orchestrator*. They work at a higher level of abstraction, defining goals, assigning them to agents, and reviewing results rather than watching code appear line by line. Agents may work in the background, in parallel, on different parts of a codebase, while the developer checks in periodically and corrects course. This is the natural mode for xref:agent-orchestration.adoc[*multi-agent delegation*]. Where the orchestrating role is itself played by an agent that spawns others, the result is a xref:multi-agent-system.adoc[*multi-agent system*]. Designing systems in which agents run unattended, with code rather than a person filling the gaps between turns, is xref:loop-engineering.adoc[*loop engineering*].
 
@@ -75,7 +77,7 @@ Orchestrating demands different skills from conducting.
 * *Evaluation.* Quickly judging whether output meets the bar.
 * *System design.* Building the constraints, tests, and feedback loops that keep agents productive.
 
-The shift is from implementation skill to judgment. Directing agents well matters more than writing the most code, which is the concern of xref:agentic-engineering.adoc[*agentic engineering*].
+See also xref:agentic-engineering.adoc[*agentic engineering*].
 
 == Agents versus workflows
 
@@ -87,11 +89,11 @@ The two are ends of a spectrum, and most production systems sit somewhere along 
 
 A good default is to design an agentic system to have the least autonomy that solves the problem. For example, start with a single model call, then to move to a longer workflow when the steps are known, and reach for an agent only where the model genuinely needs to decide the steps. A common hybrid embeds an agent as one step inside an otherwise fixed workflow.
 
-(See also xref:workflow-management-system.adoc[*workflow management systems*].)
+See also xref:workflow-management-system.adoc[*workflow management systems*].
 
 == Building agents
 
-Building an agent means assembling six pieces. Frameworks and harnesses package them in different ways, but all six are present in any working agent, whether supplied or neglected.
+Building an agent means assembling six pieces. Frameworks and harnesses package them in different ways, but all six are present in any working agent.
 
 * *Model.* The reasoning engine. Its capability sets the ceiling on how well the agent can plan, choose tools, and recover from errors, while its price and latency set the cost of every iteration of the loop. Agents often mix models, using a stronger one to plan and a cheaper one for routine steps.
 
@@ -103,23 +105,27 @@ Building an agent means assembling six pieces. Frameworks and harnesses package 
 
 * *Orchestration.* The loop itself, with the logic around it: xref:retry.adoc[*retries*] for transient failures, validation of tool calls, xref:guardrail.adoc[*guardrails*] on what the agent may do, and stopping conditions such as a step limit or budget cap that prevent a xref:runaway-loop.adoc[*runaway loop*]. Where several agents cooperate, this extends to agent orchestration.
 
-* *Observability and evals.* The means of seeing what the agent did and judging whether it did it well: xref:tracing.adoc[*tracing*] and xref:ai-eval.adoc[*evals*].
+* *Observability and evals.* The means of seeing what the agent did and judging whether it did it well. See xref:tracing.adoc[*tracing*] and xref:ai-eval.adoc[*evals*].
 
-Of the six, the model is the only one an agent developer usually does not build. The rest make up the harness. Designing and operating a harness is a discipline in its own right, known as *harness engineering*.
+The last five components make up the agent harness. Designing and operating a harness is a discipline in its own right, known as *harness engineering*.
 
 Few developers build a harness from scratch. Two kinds of tooling supply the pieces.
 
-* *Development frameworks.* Code libraries and SDKs used to write agent code. These are tools for building agents.
+* *Agent development frameworks.* Code libraries and SDKs for building agents.
 
-* *Agent harnesses.* Runtime environments and orchestration systems that execute agents, manage their lifecycle, control permissions, provide observability, and coordinate multi-agent workflows.
+* Ready-made *agent harnesses.* Runtime environments and orchestration systems that execute agents, manage their lifecycle, control permissions, provide observability, and coordinate multi-agent workflows.
 
-The line between the two blurs. Many frameworks need a harness to run agents in production, while some include harness capabilities of their own, and some harnesses offer development tools too. The distinction helps clarify whether you're looking for a tool to _write_ agent code or an environment to _run_ agents.
+The line between the two blurs. Many frameworks need a harness to run agents in production, while some include harness capabilities of their own, and some harnesses offer development tools too. The distinction helps clarify whether you're looking for a tool to _write_ agents or an environment to _run_ agents.
 
 Frameworks differ mainly in how much control they give you over the flow. Some supply components and prebuilt agent constructors for a quick start. Others model an agent as an explicit graph of nodes with persisted state, which gives control over branching, human-in-the-loop approval, and long-running runs. Vendor SDKs ship the vendor's own agent loop with built-in tools. Almost all lean on typed schemas to validate model output, which is also how tool calling works, since LLM output is unreliable text. When validation fails, the error can be fed back to the model so that it corrects itself.
 
-A few well-known tools show which problem each kind solves. LangChain supplies components and prebuilt agents for a quick start, while LangGraph, from the same team, models an agent as a stateful graph. LlamaIndex specializes in connecting agents to data for retrieval, and CrewAI coordinates teams of agents. The OpenAI Agents SDK, the Claude Agent SDK, and Google's Agent Development Kit are vendor SDKs. Pydantic in Python and Zod in TypeScript define the typed schemas that validate model output and tool arguments, and Pydantic AI builds an agent framework on top of Pydantic. Langfuse and LangSmith trace agent runs for observability.
+A few well-known tools show which problem each kind of tools solves. LangChain supplies components and prebuilt agents for a quick start, while LangGraph models an agent as a stateful graph. LlamaIndex specializes in connecting agents to data for retrieval, and CrewAI coordinates teams of agents. The OpenAI Agents SDK, the Claude Agent SDK, and Google's Agent Development Kit are vendor SDKs. Pydantic in Python and Zod in TypeScript define the typed schemas that validate model output and tool arguments, and Pydantic AI builds an agent framework on top of Pydantic. Langfuse and LangSmith trace agent runs for observability.
 
-The frameworks, SDKs, and platforms that I've collected, grouped by purpose, are in my bookmarks: see xref:bookmarks::applications/ai/agent-frameworks/index.adoc[*AI agent frameworks and SDKs*]. They include general-purpose frameworks, multi-agent frameworks and orchestration platforms, data and RAG frameworks (see xref:retrieval-augmented-generation.adoc[*retrieval-augmented generation*]), vendor SDKs, and self-hosted harnesses. Agent products are listed under xref:bookmarks::applications/ai/agents/index.adoc[*AI agents*], and agent benchmarks such as Terminal-Bench under xref:bookmarks::applications/ai/benchmarks/index.adoc[*benchmarks and leaderboards*].
+See also the following bookmarks:
+
+* xref:bookmarks::applications/ai/agent-frameworks/index.adoc[*AI agent frameworks and SDKs*]
+* xref:bookmarks::applications/ai/agents/index.adoc[*AI agents*]
+* xref:bookmarks::applications/ai/benchmarks/index.adoc[*AI benchmarks and leaderboards*]
 
 == See also
 
