@@ -1,23 +1,5 @@
 = Agent
 
-:link-langchain:                  https://github.com/langchain-ai/langchain
-:link-pydantic-ai:                https://ai.pydantic.dev/
-:link-pocketflow:                 https://github.com/The-Pocket/PocketFlow
-:link-semantic-kernel:            https://github.com/microsoft/semantic-kernel
-:link-autogen:                    https://github.com/microsoft/autogen
-:link-llamaindex:                 https://github.com/run-llama/llama_index
-:link-haystack:                   https://haystack.deepset.ai/
-:link-docling:                    https://github.com/docling-project/docling
-:link-claude-agent-sdk:           https://docs.claude.com/en/api/agent-sdk/overview
-:link-openai-agents-sdk:          https://developers.openai.com/api/docs/guides/agents-sdk
-:link-google-adk:                 https://google.github.io/adk-docs/
-:link-microsoft-agent-fw:         https://github.com/microsoft/agent-framework
-:link-n8n:                        https://n8n.io/
-:link-n8n-starter-kit:            https://docs.n8n.io/hosting/starter-kits/ai-starter-kit/
-:link-openclaw:                   https://openclaw.ai/
-:link-hermes-agent:               https://hermes-agent.nousresearch.com/
-:link-pi-dev:                     https://pi.dev/
-:link-terminal-bench:             https://www.tbench.ai/
 :link-anthropic-effective-agents: https://www.anthropic.com/engineering/building-effective-agents
 :link-openai-agents-guide:        https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf
 :link-kaggle-agents:              https://www.kaggle.com/whitepaper-agents
@@ -29,43 +11,42 @@
 
 The term "agent" predates large language models. In computer science, a software agent is a program that acts on behalf of a user or another program with some degree of autonomy to decide for itself what to do.
 
-What distinguishes an agent from an ordinary program — or from a single LLM call — is a cluster of properties, including: autonomy (it reacts without constant human intervention, deciding its own next step); reactivity (it perceives its environment and responds to it); proactivity (it pursues goals on its own initiative, not only in response to a user prompt); and persistence (it runs in a xref:agent-loop.adoc[*loop*] toward a goal, rather than a one-off execution).
+What distinguishes an agent from an ordinary program — or from a single LLM inference call — is a cluster of properties.
 
-It helps to distinguish three closely related concepts:
+* *Autonomy.* An agent reacts without constant human intervention, deciding its own next step.
+* *Reactivity.* An agent perceives its environment and responds to it.
+* *Proactivity.* An agent pursues goals on its own initiative, not only in response to a user prompt.
+* *Persistence.* And agent runs in a xref:agent-loop.adoc[*loop*] toward a goal, rather than a one-off execution.
 
-* *Model*: The underlying LLM, a reasoning engine (the "brain") that transforms input tokens into output tokens. It has no persistent state, no tools, and no memory. It exists only during inference, while a model runtime (or model engine) is executing a model's weights.
+It helps to distinguish three closely related concepts.
 
-* *Agent*: A model instance running within an active context, equipped with tools, a system prompt, and a conversation history. The agent is the model in operation via a harness.
+* *Model.* The underlying LLM, a reasoning engine (the "brain") that transforms input tokens into output tokens. It has no persistent state, no tools, and no memory. A model is executed by a *model runtime* (or model engine) in a process known as *inference*.
 
-* *Harness*: The infrastructure layer that creates and manages agents. It provides the tools the agent can use (file system access, shell execution, web search, etc.), manages the context window, enforces guardrails, handles memory persistence, and orchestrates multi-step task execution.
+* *Agent.* A model instance running within an active context, equipped with tools, a system prompt, and a conversation history. The agent is the model in operation via a harness.
+
+* *Harness.* The infrastructure layer that creates and manages agents. It provides the tools the agent can use (file system access, shell execution, web search, etc.), manages the context window, enforces guardrails, handles memory persistence, and orchestrates multi-step task execution.
 
 ----
 agent = model + harness
 ----
 
-The harness shapes what an agent can do. Two agents powered by the same model but run inside different harnesses will behave very differently, because the harness — not the model — defines the agent's action space and constraints.
+The harness shapes what an agent can do. At its simplest, an agent is an LLM running in a loop with tools. Given a goal and the context so far, the model decides whether to answer or to call a tool — eg. query a database, call an API, or execute some code. The harness captures the result of the tool call, adds it to the context, and the model infers again with the updated context. This is repeated until the model judges it has met the goal. This is known as the xref:agent-loop.adoc[*agent loop*].
 
-Designing and operating an agent harness is a discipline in its own right — known as xref:agent-harness.adoc[*harness engineering*].
+Two agents powered by the same model but run inside different harnesses will behave very differently, because the harness — not the model — defines the agent's available tools and constraints.
 
-== The anthropomorphized unit
+A *session* is one bounded run of interaction with an agent. A session starts empty and incrementally fills the model's *context window* through user messages, tool calls and their results, and the model's own outputs. xref:context-compaction.adoc[*Compaction*] may be used to keep sessions within the model's context window.
 
-An agent is the unit you are speaking to — the xref:large-language-model.adoc[*model*] in motion, configured for a purpose. "Agent" does not name a mechanical part. The model is a file of parameters; the xref:agent-harness.adoc[*harness*] is software. "Agent" is the anthropomorphized unit you delegate to, the thing you address when you give a goal.
+Model's are xref:stateless.adoc[*stateless*]. They persist no memory between inference invocations. Everything an agent appears to remember is actually session history re-sent with each new user prompt and tool call response. Harnesses persist sessions to the filesystem as xref:agent-transcript.adoc[*agent transcripts*]. This is what allows past sessions to be resumed and reviewed later.
 
-The idea predates this wave of AI. Software agents — programs you delegate a goal to — have been a concept as long as AI has. "The AI" and "the bot" are too vague to be useful; "agent" names the unit precisely.
+A *turn* is one user message or tool call response, plus everything the agent does in response, up until it the model yields back to the user or makes another tool. A turn contains one or more xref:inference-provider.adoc[*model provider*] requests. A session consists of one or more turns.
 
-== Session
+A turn can be a one-sentence answer or twenty minutes of inference. The choice of turn length is the model's.
 
-A *session* is one bounded run of interaction. It starts empty and accumulates messages, tool results, and files read, and it ends when cleared, closed, or xref:context-compaction.adoc[*compacted*]. The session is what fills the context window. Message history is the agent's working memory — the model is xref:stateless.adoc[*stateless*], and everything it appears to remember is in the history re-sent with each request. Memory ends with the session; a new session starts from nothing. What survives is the filesystem. Keeping one task per session keeps the context relevant. Harnesses typically persist each session as an xref:agent-transcript.adoc[*agent transcript*], so that it can be resumed or reviewed later. See xref:context-engineering.adoc[*context engineering*] and xref:agent-handoff.adoc[*agent handoff*].
+The gaps between turns are where humans and tools can steer agents. xref:agent-loop.adoc[*Loop engineering*] can be used to control the agent loop in deterministic workflows.
 
-== Turn
+*Human-in-the-loop* is a working pattern where one or more humans pair with an agent during a session, steering the agent at the end of each turn. Human-in-the-loop catches problems while they are cheap. Ambiguous, irreversible, or hard-to-review tasks — a schema migration, a tricky design, anything touching production — suit humans staying in the loop.
 
-A *turn* is one user message plus everything the agent does in response, up until it yields back. A turn contains one or more xref:inference-provider.adoc[*model provider*] requests — many, if tools are called. The turn's length is the agent's decision, not yours: a turn can be a one-sentence answer or twenty minutes of work. Long turns enable xref:away-from-keyboard.adoc[*AFK*] work, and they are where things go wrong unsupervised. The turn is the natural unit for steering — the gaps between turns are where you redirect. See xref:agent-loop.adoc[*agent loop*].
-
-== Human-in-the-loop
-
-*Human-in-the-loop* is a working pattern where one or more humans pair with the agent during a session — reviewing, redirecting, collaborating in real time. The contrast is xref:away-from-keyboard.adoc[*AFK*], where the agent runs unattended and you judge the result afterwards. Human-in-the-loop catches problems while they are cheap.
-
-Well-specified, low-risk, easy-to-verify tasks suit AFK. Ambiguous, irreversible, or hard-to-review tasks — a schema migration, a tricky design, anything touching production — suit staying in the loop. The judgement call is how expensive a wrong turn would be, and how late you would catch it. Some work is in-the-loop by nature: *grilling* and xref:prototyping.adoc[*prototyping*]. Staying in the loop costs your attention, and part of getting better is moving more work safely out of the loop. See xref:loop-engineering.adoc[*loop engineering*] and xref:agent-handoff.adoc[*agent handoff*].
+This contrasts with xref:away-from-keyboard.adoc[*AFK*], where the agent runs unattended and humans judge the result afterwards.  Well-specified, low-risk, easy-to-verify tasks suit AFK.
 
 == Design concept
 
@@ -89,70 +70,58 @@ The orchestrator demands a different skill set than the conductor: specification
 
 The conductor and orchestrator are two ends of a spectrum, and most real work mixes both. Where the orchestrating role is played by an agent that spawns others, the result is a xref:multi-agent-system.adoc[*multi-agent system*]. The choice connects to xref:agentic-engineering.adoc[*agentic engineering*], xref:loop-engineering.adoc[*loop engineering*], and the human-in-the-loop pattern above.
 
+== Agents versus workflows
+
+At its simplest, an agent is an LLM running in a loop with tools. Given a goal and the context so far, the model decides whether to answer or to call a tool — eg. a search, a database query, an API call, a code execution. It reads the result, adds it to the context, and decides again, repeating until it judges the goal met. This is known as the xref:agent-loop.adoc[*agent loop*].
+
+What separates this from a fixed *workflow* is who controls the flow. In a workflow, deterministic code decides each step. The LLM is a component inside a path that is fixed at design time.
+
+By comparison, in an agent, the model decides the path at runtime — which tool to call next, how many times, and when to stop.
+
+The two are ends of a spectrum, and most production systems sit somewhere along it. The trade-off is predictability against flexibility. A workflow is cheaper, faster, easier to test, and fails in ways you can anticipate. It suits tasks whose steps are known in advance. An agent copes with open-ended tasks where the steps cannot be enumerated beforehand, at the cost of higher latency and spend, variable run lengths, and failures that are harder to predict.
+
+A good default is to design an agentic system to have the least autonomy that solves the problem. For example, start with a single model call, then to move to a longer workflow when the steps are known, and reach for an agent only where the model genuinely needs to decide the steps. A common hybrid embeds an agent as one step inside an otherwise fixed workflow.
+
+(See also xref:workflow-management-system.adoc[*workflow management systems*].)
+
 == Agent development frameworks
 
-An *agent framework* or *SDK* is a library for building custom agents. Examples include LangGraph and the Claude Agent SDK. Frameworks and SDKs provide the infrastructure for building and orchestrating agents. It's important to distinguish between two types:
+Designing and operating an agent harness is a discipline in its own right — known as xref:agent-harness.adoc[*harness engineering*].
 
-* *Development frameworks*: Code libraries and SDKs used to write agent code. Examples: LangChain, LlamaIndex, Semantic Kernel. These are tools for building agents.
+An *agent framework* or *SDK* is a library for building custom agents, providing the infrastructure for building and orchestrating them. It's important to distinguish between two types:
 
-* *Agent harnesses*: Runtime environments and orchestration systems that execute agents, manage their lifecycle, control permissions, provide observability, and coordinate multi-agent workflows. Some of these blur the line by offering both development and runtime capabilities. Examples: Microsoft Agent Framework, n8n, OpenClaw.
+* *Development frameworks*: Code libraries and SDKs used to write agent code. These are tools for building agents.
+
+* *Agent harnesses*: Runtime environments and orchestration systems that execute agents, manage their lifecycle, control permissions, provide observability, and coordinate multi-agent workflows. Some of these blur the line by offering both development and runtime capabilities.
 
 Many frameworks require a harness to run agents in production, while some frameworks include built-in harness capabilities. The distinction helps clarify whether you're looking for a tool to _write_ agent code or an environment to _run_ agents.
 
-General-purpose agent development frameworks include:
+Frameworks differ mainly in how much control they give you over the flow. Some supply components and prebuilt agent constructors for a quick start. Others model an agent as an explicit graph of nodes with persisted state, which gives control over branching, human-in-the-loop approval, and long-running runs. Vendor SDKs ship the vendor's own agent loop with built-in tools. Almost all lean on typed schemas to validate model output, which is also how tool calling works, since LLM output is unreliable text. When validation fails, the error can be fed back to the model so that it corrects itself.
 
-* {link-langchain}[LangChain]: Code library for building agents and LLM-powered applications. Emphasizes model interoperability, rapid prototyping, and an extensive ecosystem of integrations. Available in Python and JavaScript/TypeScript. Its LangGraph component handles xref:agent-orchestration.adoc[*multi-agent orchestration*].
+The frameworks, SDKs, and platforms that I've collected, grouped by purpose, are in my bookmarks: see xref:bookmarks::applications/ai/agent-frameworks/index.adoc[*AI agent frameworks and SDKs*]. They include general-purpose frameworks, multi-agent frameworks and orchestration platforms, data and RAG frameworks (see xref:retrieval-augmented-generation.adoc[*retrieval-augmented generation*]), vendor SDKs, and self-hosted harnesses. Agent products are listed under xref:bookmarks::applications/ai/agents/index.adoc[*AI agents*], and agent benchmarks such as Terminal-Bench under xref:bookmarks::applications/ai/benchmarks/index.adoc[*benchmarks and leaderboards*].
 
-* {link-pydantic-ai}[Pydantic AI]: Typed agent framework from the team behind Pydantic. Uses Pydantic models to enforce safe, predictable, structured outputs from LLMs. Python.
+== Anatomy of an agent
 
-* {link-pocketflow}[PocketFlow]: Deliberately minimalist agent framework whose core is around 100 lines of code. Models agentic applications as a graph of nodes, with no heavy dependencies.
+Building an agent means assembling six pieces. Frameworks and xref:agent-harness.adoc[*harnesses*] package them in different ways, but all six are present in any working agent, whether supplied or neglected.
 
-* {link-semantic-kernel}[Microsoft Semantic Kernel]: Code library for building and orchestrating AI agents and multi-agent systems. Emphasizes plugin architecture and enterprise features. Available in Python, .NET, and Java.
+* *Model.* The reasoning engine. Its capability sets the ceiling on how well the agent can plan, choose tools, and recover from errors, while its price and latency set the cost of every iteration of the loop. Agents often mix models, using a stronger one to plan and a cheaper one for routine steps.
 
-* {link-autogen}[AutoGen]: Code library for multi-agent conversation, built around `UserProxyAgent` and `AssistantAgent` components that collaborate and refine solutions together. Unlike the other frameworks in this list, AutoGen also runs the multi-agent conversation loop itself, so it blurs the line toward being a harness rather than a pure development framework.
+* *Tools.* Functions the model can call, each described to the model by a name, a natural-language description, and a typed parameter schema, commonly expressed as xref:json-schema.adoc[*JSON Schema*]. The xref:model-context-protocol.adoc[*Model Context Protocol*] standardizes how tools are exposed to agents.
 
-Data and RAG frameworks include:
+* *Instructions.* The system prompt and the policies that sit alongside it: the agent's role, the goal, the constraints, and what to do when stuck. See xref:prompt.adoc[*prompt*].
 
-* {link-llamaindex}[LlamaIndex]: Code library specialized in data ingestion, organization, and retrieval-augmented generation (RAG). Bridges enterprise data and LLM capabilities with 300+ integration packages.
+* *Memory and state.* The conversation so far, which is the agent's working memory and is bounded by the xref:context-window.adoc[*context window*], plus any longer-term store that outlives a session. See xref:agent-memory.adoc[*agent memory*].
 
-* {link-haystack}[Haystack]: Open-source framework for building search, RAG, and agent pipelines from modular, swappable components. Python.
+* *Orchestration.* The loop itself, with the logic around it: xref:retry.adoc[*retries*] for transient failures, validation of tool calls, xref:guardrail.adoc[*guardrails*] on what the agent may do, and stopping conditions such as a step limit or budget cap that prevent a xref:runaway-loop.adoc[*runaway loop*]. Where several agents cooperate, this extends to xref:agent-orchestration.adoc[*agent orchestration*].
 
-* {link-docling}[Docling]: Document-ingestion library that parses PDF, DOCX, HTML, and other formats into structured output for RAG pipelines. A building block rather than an agent framework in its own right.
+* *Observability and evals.* The means of seeing what the agent did and judging whether it did it well: xref:tracing.adoc[*tracing*] and xref:ai-eval.adoc[*evals*].
 
-There are also vendor-specific SDKs and harnesses:
+Of the six, the model is the only one an agent developer usually does not build. The rest are the harness. See xref:agent-harness.adoc[*agent harness*] for how they fit together in practice.
 
-* {link-claude-agent-sdk}[Claude Agent SDK]: Code library from Anthropic for building agents with Claude, providing the harness primitives (context management, tools, permissions, subagents) that power Claude Code itself.
-
-* {link-openai-agents-sdk}[OpenAI Agents SDK]: Code library from OpenAI for building agents with their models.
-
-* {link-google-adk}[Google Agent Development Kit (ADK)]: Code library from Google for agent development.
-
-* {link-microsoft-agent-fw}[Microsoft Agent Framework]: Production-grade harness for running multi-agent workflows. Includes workflow orchestration, observability, YAML-based agent definitions, and cloud deployment options. Available in Python and C#/.NET.
-
-Low-code platforms and foundations:
-
-* {link-n8n}[n8n]: Low-code automation harness with {link-n8n-starter-kit}[AI starter kit] for bootstrapping and running agent workflows.
-
-* {link-openclaw}[OpenClaw]: Open-source, self-hosted agent harness with 15+ messaging channel integrations and support for 40+ LLM providers.
-
-* {link-hermes-agent}[Hermes Agent]: OpenClaw-like agent harness, regarded for its speed and self-improving capabilities.
-
-* {link-pi-dev}[Pi]: Code library providing minimal core components for building custom agents. Requires extensions like `pi-schedule-prompt` and `@pi-agents/loop` to implement autonomous tasks through recurring prompts, cron-style jobs, and dynamic pacing. Can also be used as a basic terminal-based coding assistant out-of-the-box.
-
-See also xref:ai-coding-assistant.adoc[*AI coding assistants*], many of which have agentic properties, too.
-
-== Agent orchestration platforms
-
-Above individual agents sits the orchestration layer, which coordinates teams/swarms of agents working together toward shared goals — managing scheduling, delegation, budgets, and governance across a whole system of autonomous workers. Platforms in this space include Claude Cowork, AG2, CrewAI, LangGraph, MetaGPT, and SuperAGI. See xref:agent-orchestration.adoc[*agent orchestration*].
-
-== Benchmarks
-
-* {link-terminal-bench}[Terminal Bench] benchmarks AI agent front-ends (user interfaces) for terminal environments, backed by various models.
-
-''''
 
 == See also
 
+* xref:ai-coding-assistant.adoc[*AI coding assistants*]
 * xref:agent-memory.adoc[*Agent memory*]
 * xref:agent-skills.adoc[*Agent skills*]
 * xref:agent2agent.adoc[*Agent2Agent (A2A)*]
