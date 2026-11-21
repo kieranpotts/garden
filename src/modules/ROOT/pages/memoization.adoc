@@ -1,5 +1,7 @@
 = Memoization
 
+// 📝 DRAFT
+
 Memoization is a xref:design-pattern.adoc[*design pattern*] in which the result of a function's execution is cached, keyed by the function's inputs, so that subsequent calls with the same inputs return the cached result without recomputing it. The function body runs only on a cache miss; on a hit, the stored value is returned directly.
 
 For memoization to be safe, the cached function must be *deterministic*. Its output must depend solely on its inputs, with no reliance on mutable external state, randomness, the current time, or other *side effects*. In other words, the function must be *referentially transparent* – any call to it could be replaced with its return value without changing the program's behaviour. A function that reads a database row, generates a random number, or depends on a global counter is not memoizable, because two calls with the same arguments may legitimately produce different results.

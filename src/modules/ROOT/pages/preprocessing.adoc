@@ -1,5 +1,7 @@
 = Preprocessing
 
+// 📝 DRAFT
+
 Preprocessing is a family of techniques that improve the xref:performance.adoc[*performance*] and xref:scalability.adoc[*scalability*] of a system by doing work ahead of time, so that reads can be served cheaply when they arrive. The unifying idea is to shift expensive computation off the read path and onto the write path, a background job, or a quiet period before the data is needed. The cost is paid once, at the moment the data is prepared, and the benefit is paid back on every read.
 
 Preprocessing is a broad umbrella, and several more specific techniques in this garden are instances of it. xref:denormalization.adoc[*Denormalization*] and xref:materialized-view.adoc[*materialized views*] precompute joins and aggregations so a read need not re-run them. xref:database-index.adoc[*Database indexes*] precompute search structures so a lookup need not scan the table. xref:caching.adoc[*Caching*], when warmed ahead of demand, is preprocessing too: the cache is populated before the first request rather than on a cache miss. Building a xref:cqrs.adoc[*CQRS*] read model is preprocessing by another name, keeping a query-shaped projection up to date so reads never touch the write model.

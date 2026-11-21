@@ -1,5 +1,7 @@
 = Command query separation
 
+// 📝 DRAFT
+
 Command query separation is a *design principle* stating that each method should be either a *command* that performs an action and mutates state, or a *query* that returns data to the caller, but never both. The principle was coined by Bertrand Meyer as part of *design by contract* methodology applied to the Eiffel programming language.
 
 When the principle is applied, programmers can reason about code with much more confidence. Query methods do not mutate state, so they can be called freely, in any order, and from any context without surprising side effects. Commands, by contrast, require more care because they change observable state.

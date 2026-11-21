@@ -1,5 +1,7 @@
 = Foreign key
 
+// 📝 DRAFT
+
 A foreign key is a column or a group of columns in a xref:relational-database.adoc[*relational database*] table that provides a link between data in two tables. The foreign key in one table points to the *primary key* — or any column or group of columns covered by a `UNIQUE` constraint — in another table. A foreign key may also reference its own table, forming a *self-referential* relationship, eg. an employee row whose `manager_id` column points back to the primary key of the same employees table.
 
 A foreign key is a *constraint* that enforces xref:referential-integrity.adoc[*referential integrity*], ie. it ensures that the relationship between two tables remains consistent, a core requirement of xref:data-integrity.adoc[*data integrity*]. The constraint is declared in the xref:sql.adoc[*SQL*] schema as part of xref:data-modeling.adoc[*data modeling*], and once in place the database itself rejects any insert, update, or delete that would leave a dangling reference.

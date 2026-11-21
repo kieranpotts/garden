@@ -1,5 +1,7 @@
 = Eventual consistency
 
+// 📝 DRAFT
+
 :link-vogels: https://www.allthingsdistributed.com/2008/12/eventually_consistent.html
 
 Eventual consistency is a xref:consistency.adoc[*consistency*] model for xref:replication.adoc[*replicated*] data in xref:distributed-system.adoc[*distributed software*]. Its guarantee is deliberately weak: once a new update stops arriving for a given data item, all reads across all replicas will eventually return the last written value. The system makes no promise about *when* that convergence happens, only that it happens in the absence of new writes and ongoing failures.

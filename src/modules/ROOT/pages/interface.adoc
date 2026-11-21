@@ -1,5 +1,7 @@
 = Interface
 
+// 📝 DRAFT
+
 An interface is the surface through which a software component exposes its capabilities to the rest of a system. It is the boundary a caller depends on, separating the *what*, the operations a component offers and the obligations they carry, from the *how*, the implementation that fulfills them. An interface is the public side of an xref:abstraction.adoc[*abstraction*], and the implementation behind it is free to change as long as the interface still holds.
 
 An interface is more than a list of operation signatures. It also carries a *contract*: the preconditions each operation expects, the postconditions and return values it guarantees, and the invariants the component maintains across calls. A caller that respects the preconditions is entitled to rely on the postconditions. This behavioral promise is what lets a caller reason about a component without reading its implementation. When the contract is left implicit, callers come to depend on incidental behavior the implementer never meant to promise, and a change that should have been safe breaks them.

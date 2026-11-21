@@ -1,5 +1,7 @@
 = Active-active
 
+// 📝 DRAFT
+
 Active-active is a deployment topology in which multiple instances of a service, or multiple replicas of data, run simultaneously and all serve live traffic. It is a xref:redundancy.adoc[*redundancy*] strategy and the counterpart to active-passive, where one instance handles traffic while one or more standby replicas remain idle until they are needed for xref:failover.adoc[*failover*].
 
 In an active-active setup, every node is hot. Requests are spread across the nodes by xref:load-balancing.adoc[*load balancing*], so xref:capacity.adoc[*capacity*] scales with the number of replicas, a form of xref:horizontal-scaling.adoc[*horizontal scaling*]. When a node fails, the remaining nodes simply absorb its share of traffic. There is no promotion step and no interruption, which makes active-active attractive for systems that require high xref:availability.adoc[*availability*] and xref:fault-tolerance.adoc[*fault tolerance*].

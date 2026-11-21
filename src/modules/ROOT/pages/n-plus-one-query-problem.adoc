@@ -1,5 +1,7 @@
 = N+1 query problem
 
+// 📝 DRAFT
+
 The N+1 query problem is a performance defect in which an application issues one query to fetch a list of N parent records, and then N further queries, one per parent, to fetch each parent's related child records. Instead of two queries, or one join, the application makes N+1 round trips to the xref:database.adoc[*database*].
 
 In application code, the defect usually takes the form of a simple loop over a collection, with a single database fetch taking place in each iteration of the loop. Fetching 100 users (one query) and then each user's posts (one query per user) requires 101 individual database reads. The defect is even easier to introduce, and harder to spot, when an *object-relational mapper (ORM)* uses xref:lazy-loading.adoc[*lazy loading*] to return the parent record with their associations left as unloaded placeholders. The inner queries are hidden behind an innocent-looking property access. xref:graphql.adoc[*GraphQL*] resolvers have the same issue.

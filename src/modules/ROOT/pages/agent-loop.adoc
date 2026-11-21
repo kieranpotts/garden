@@ -1,5 +1,7 @@
 = Agent loop
 
+// 📝 DRAFT
+
 :link-coding-agent-loop-spec: https://github.com/strongdm/attractor/blob/main/coding-agent-loop-spec.md
 :link-claude-code-agent-loop: https://code.claude.com/docs/en/agent-sdk/agent-loop
 
@@ -15,13 +17,15 @@ The agent loop is the core pattern behind an xref:agent.adoc[*AI agent*]. It's t
 
 * *Repeat.* The model looks at the new information and decides the next action, until it judges the task done, or it hits a limit such as a max-steps or budget cap.
 
-A full cycle is known as a **turn**, sometimes a **round**.
+Each pass round the cycle is one *step*: one request to the model, plus the tool call that comes out of it. Steps repeat until the model answers without asking for a tool. That ends the *turn*, which is all the work the agent does between receiving a user message and handing control back to the user. A turn can be one step or hundreds. A *session* is a run of turns that share one growing context.
 
-The key difference from a plain chatbot is that the loop lets the model iterate: try something, see what happened, adjust. That is what makes things like coding agents work — write code, run tests, see failures, fix, run again. A single request-response turn cannot do this. The loop is what turns a model into something that can pursue a goal rather than merely respond to one.
+Terminology varies between tools. Some frameworks call each step a "turn" or a "round", so a setting such as "max turns" may count requests to the model, not messages from the user.
+
+The key difference from a plain chatbot is that the loop lets the model iterate: try something, see what happened, adjust. That is what makes things like coding agents work — write code, run tests, see failures, fix, run again. A single request and response cannot do this. The loop is what turns a model into something that can pursue a goal rather than merely respond to one.
 
 == The request chain
 
-The loop is a chain of xref:inference-provider.adoc[*model provider*] requests, each one re-sending the whole context. One turn is many requests: every tool result triggers another request, and every request carries everything — the system prompt, the full history, all tool results so far — because the xref:large-language-model.adoc[*model*] is xref:stateless.adoc[*stateless*] and sees only what is in the current request. This is why context grows turn over turn and why xref:context-engineering.adoc[*context engineering*] matters: every token in the window is paid for and attended to on every request in the chain.
+The loop is a chain of requests to the xref:inference-provider.adoc[*inference provider*], each one re-sending the whole context. One turn is many requests: every tool result triggers another request, and every request carries everything — the system prompt, the full history, all tool results so far — because the xref:large-language-model.adoc[*model*] is xref:stateless.adoc[*stateless*] and sees only what is in the current request. This is why context grows with every step and why xref:context-engineering.adoc[*context engineering*] matters: every token in the window is paid for and attended to on every request in the chain.
 
 == Tool calls and tool results
 
@@ -33,13 +37,13 @@ A *tool result* is what the harness sends back after running the tool — the ag
 
 In practice, three concerns dominate the difficulty of running an agent loop well:
 
-* *Context management.* The loop accumulates a lot of tokens as tool results pile up turn over turn — see also xref:context-engineering.adoc[*context engineering*].
+* *Context management.* The loop accumulates a lot of tokens as tool results pile up step after step.
 
 * *Knowing when to stop.* Judging that the task is actually done, rather than looping past completion or giving up early. An agent that repeats the same action without progress is in a xref:runaway-loop.adoc[*runaway loop*].
 
 * *Error handling.* Recovering gracefully from failed tool calls and dead ends instead of compounding them into further bad actions.
 
-The infrastructure that wraps the loop — providing tools, managing the context window, enforcing guardrails — is the xref:agent-harness.adoc[*harness*]. In other words, agent harnesses are responsible for running agent loops.
+The infrastructure that wraps the loop — providing tools, managing the context window, enforcing guardrails — is the harness. In other words, agent harnesses are responsible for running agent loops.
 
 {link-coding-agent-loop-spec}[Coding Agent Loop Specification] is an attempt to provide a language-agnostic specification for building a coding agent harness.
 

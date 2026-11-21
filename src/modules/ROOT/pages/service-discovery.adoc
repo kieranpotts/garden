@@ -1,5 +1,7 @@
 = Service discovery (aka. dynamic routing)
 
+// 📝 DRAFT
+
 Service discovery is a mechanism that allows services in xref:distributed-system.adoc[*distributed software*] to find and communicate with each other dynamically. It hides the complex details of where services are located, so they can interact without knowing each other's exact network spots.
 
 A service consumer needs the provider instance's network location, its IP address and port, to invoke it. In a traditional application these locations are relatively static and can be read from a configuration file. In a cloud-based xref:microservices.adoc[*microservice*] system they change constantly. Instances are added and removed by autoscaling, replaced after failures, and moved around by upgrades. Hard-coding locations or maintaining them by hand breaks down, so the lookup has to be dynamic.

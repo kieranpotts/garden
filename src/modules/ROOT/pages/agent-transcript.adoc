@@ -1,5 +1,7 @@
 = Agent transcript
 
+// 📝 DRAFT
+
 An *agent transcript* is the record of an agent session that an xref:agent-harness.adoc[*agent harness*] may keep for *auditability*. It holds the full sequence of user inputs, model outputs, and tool calls and their results, in order. Most harnesses assign each session an identifier and persist its transcript to disk, which is what allows a session to be resumed later.
 
 A transcript is distinct from the model's context. The context is mutable during a session. The harness may trim, clear, or *compact* it to stay within the context window, so what the model sees at any moment is usually a subset of what happened. The transcript is the complete, unedited history, and it is the primary source against which a compacted summary can be checked.
@@ -8,5 +10,5 @@ Transcripts are useful for reviewing what an agent actually did, debugging why i
 
 == See also
 
-* xref:agent.adoc[*Agent session*]
+* xref:agent.adoc[*Agent*]
 * xref:agent-memory.adoc[*Agent memory*]

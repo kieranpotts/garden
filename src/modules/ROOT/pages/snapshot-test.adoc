@@ -1,5 +1,7 @@
 = Snapshot test
 
+// 📝 DRAFT
+
 A snapshot test captures a serialized representation of a system's output – a *snapshot* – and stores it as a baseline. On every subsequent run the test regenerates the output and compares it byte-for-byte against the stored baseline. Any difference fails the test, signaling that the system's observable behavior has changed. When the change is intentional the developer updates the snapshot; when it is not, the test has caught a regression.
 
 Snapshot tests are a form of xref:regression-testing.adoc[*regression testing*] that trades explicit assertions for a captured baseline. A conventional test states the expected outcome up front, eg. `expect(result).toBe(42)`. A snapshot test states only "the output should match this stored artifact", so the baseline itself encodes the expectation. This makes snapshot tests cheap to write for outputs that are large, nested, or tedious to enumerate by hand – serialized data structures, rendered user interfaces, generated code, error messages, and similar.

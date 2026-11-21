@@ -1,5 +1,7 @@
 = Next-token prediction
 
+// 📝 DRAFT
+
 *Next-token prediction* is what a xref:large-language-model.adoc[*large language model*] actually does at xref:inference.adoc[*inference*]. Given the current context, the model produces a probability distribution over its vocabulary for the next token. One token is sampled and appended to the sequence, and the loop repeats until a stop condition is reached. Every output – a sentence, a tool call, a thousand-line file – is built one token at a time this way.
 
 There is no truth-check before a token is emitted, only likelihood. This is the root of xref:hallucination.adoc[*hallucination*]. The model produces fluent output whether or not the underlying fact is real, because it is predicting the most plausible continuation, not verifying anything.

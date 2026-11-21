@@ -1,5 +1,7 @@
 = Rollback
 
+// 📝 DRAFT
+
 A rollback is the act of reverting a system to a previous, known-good state after a change has failed or produced an unwanted result. Rather than attempting to repair the faulty state in place, the system discards the effects of the change and resumes from the point it occupied before the change was applied. Rollback is therefore a xref:fault-tolerance.adoc[*fault tolerance*] mechanism. It restores service by retreating to a safe state rather than by diagnosing and fixing the fault forward.
 
 The concept appears in two main settings. In database management, rollback is one half of the xref:transaction.adoc[*transaction*] guarantee: if any operation in a transaction fails, the database undoes every change the transaction made so far, preserving the "all-or-nothing" property described by the xref:acid-principles.adoc[*ACID principles*]. In software deployment, rollback means restoring a previous release of a running service when a new release misbehaves, so that users are returned to a working version while the fault is investigated.

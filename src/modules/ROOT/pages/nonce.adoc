@@ -1,5 +1,7 @@
 = Nonce
 
+// 📝 DRAFT
+
 A *nonce* is a value that is meant to be used only once within a given context. The word is a contraction of "number used once", though a nonce need not be numeric. It is commonly a random string or a counter. Nonces are a building block of xref:cryptography.adoc[*cryptography*] and xref:authentication.adoc[*authentication*] protocols, wherever a system needs to prove that a message is fresh rather than a copy of an earlier one.
 
 The defining property of a nonce is uniqueness within its scope. A server that receives a request carrying a nonce it has already seen can reject the request as a xref:replay-attack.adoc[*replay attack*], because a legitimate client would never reuse the same value. To make this work, the server records each nonce it accepts and discards it once the corresponding exchange is complete, or binds the nonce to a short time window so that old values expire.

@@ -1,5 +1,7 @@
 = Agent handoff
 
+// 📝 DRAFT
+
 An *agent handoff* is the transfer of context from one xref:agent.adoc[*agent*] session to another. The sending session ends. The receiving session starts with a fresh, empty context window. Because the underlying xref:large-language-model.adoc[*large language model*] is xref:stateless.adoc[*stateless*], nothing from the old session is visible to the new one — no conversation history, no tool results, no scratchpad. Whatever must survive the boundary has to be carried across explicitly.
 
 The carry mechanism varies. The simplest is a written *handoff artifact* — a document left in the environment for the next session to read. A more compact path is an in-memory summary produced by xref:context-compaction.adoc[*compaction*], distilled from the old session's history and seeded into the new one. Either way the receiving session starts from zero.

@@ -1,5 +1,7 @@
 = Denormalization
 
+// 📝 DRAFT
+
 Denormalization is the deliberate introduction of redundancy into a database schema that has already been xref:normalization.adoc[*normalized*]. Where normalization removes duplicated data so that each fact lives in exactly one place, denormalization puts selected copies back so that reads can be served with fewer joins, less I/O, and simpler queries. It is a trade of write simplicity and storage economy for read speed, applied after the schema has first been cleaned up by normalization rather than instead of it.
 
 The two processes are not opposites to be chosen between. A mature xref:data-modeling.adoc[*data modeling*] workflow normalizes first to remove accidental redundancy, then denormalizes deliberately where access patterns justify it. Denormalizing a schema that was never normalized is usually just leaving mess in place. xref:nosql-database.adoc[*NoSQL databases*] take denormalization as their default storage shape, embedding related data together rather than joining at read time, because their data models are shaped to known access patterns rather than to a normalized ideal.

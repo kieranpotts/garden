@@ -1,5 +1,7 @@
 = Thread
 
+// 📝 DRAFT
+
 A *thread* is the smallest unit of execution that an operating system can schedule. It is a single sequence of instructions, with its own program counter, registers, and stack, running inside a xref:process.adoc[*process*]. All the threads of a process share that process's address space and resources, such as its heap and open files.
 
 Sharing memory makes threads cheap to create and makes communication between them fast. One thread can simply write a value that another reads. But it also removes the isolation that processes provide. A thread that corrupts shared memory, or crashes the process, takes every sibling thread with it. And concurrent access to shared mutable data has to be coordinated with xref:synchronization.adoc[*synchronization*] to keep programs xref:thread-safety.adoc[*thread-safe*].

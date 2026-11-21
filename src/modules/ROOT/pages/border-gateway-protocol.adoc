@@ -1,5 +1,7 @@
 = Border Gateway Protocol (BGP)
 
+// 📝 DRAFT
+
 The *Border Gateway Protocol (BGP)* is the routing protocol that holds the internet together. It is how the roughly 70,000 networks that make up the internet – the *autonomous systems* – learn how to reach each other. Every time a packet crosses from one network operator to another, the path it takes was shaped by BGP.
 
 BGP is a *path-vector* protocol. It does not simply find the shortest path the way an interior gateway protocol such as OSPF does. Instead, each BGP advertisement carries the full sequence of autonomous systems a route has already traversed. A router that receives an advertisement in which its own AS already appears knows there is a loop, and discards it. This makes loop detection simple and scalable across a network of tens of thousands of participants.

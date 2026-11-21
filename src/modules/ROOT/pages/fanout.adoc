@@ -1,5 +1,7 @@
 = Fanout
 
+// 📝 DRAFT
+
 Fanout is the act of propagating a single logical change to every derived store that depends on it. A write to one source of truth often has to reach several downstream representations: a xref:caching.adoc[*cache*], a xref:materialized-view.adoc[*materialized view*], a xref:denormalization.adoc[*denormalized*] copy, a search index, or the read side of a xref:cqrs.adoc[*CQRS*] system. How and when that propagation happens is the fanout question, and it has two canonical answers.
 
 The same word is used in messaging for the xref:publish-subscribe-pattern.adoc[*publish-subscribe*] pattern, which delivers one message to every subscribed consumer. This entry covers the data-systems sense: the trade-off between eager and lazy propagation of writes to derived stores.

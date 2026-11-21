@@ -1,5 +1,7 @@
 = Interface segregation principle
 
+// 📝 DRAFT
+
 The interface segregation principle (ISP) states that clients should not be forced to depend on methods they do not use. The remedy it prescribes is to split fat xref:interface.adoc[*interfaces*] into several smaller, client-specific ones, so that each consumer depends only on the operations it actually calls.
 
 A *fat interface* bundles together methods that serve unrelated clients. Any class implementing that interface must provide every method, even the ones its particular role does not need, which often means stubbing them out or raising "not supported" errors. That bloats implementations and couples every consumer to the full surface area of the interface, even the parts it never touches. The result is accidental xref:coupling.adoc[*coupling*]. A change to a method that one client uses forces a recompile or redeploy of every other client, simply because they share the same interface type.

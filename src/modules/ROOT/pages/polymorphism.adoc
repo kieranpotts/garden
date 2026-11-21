@@ -1,5 +1,7 @@
 = Polymorphism
 
+// 📝 DRAFT
+
 Polymorphism, from the Greek for "many forms", is the property that lets a single piece of code operate over objects of more than one type. In xref:object-oriented-programming.adoc[*object-oriented programming*] it is the mechanism by which objects of different types can be treated as the same type, because they share a common xref:interface.adoc[*interface*]. A caller names the operations it needs through that interface, and any object that satisfies them can be supplied in their place. Which concrete operation runs is decided by the type of the object received, not by a branch the caller writes.
 
 That decoupling is the source of polymorphism's value. Code written against an xref:abstraction.adoc[*abstraction*] rather than a concrete class can be given a new implementation without editing the callers, which is the property the xref:open-closed-principle.adoc[*open-closed principle*] aims for and that xref:extensibility.adoc[*extensibility*] depends on. It is also what makes xref:composition.adoc[*composition*] work as an alternative to xref:inheritance.adoc[*inheritance*]. An object reaches a collaborator through an interface, so the collaborator's concrete type can vary, or be swapped for a test double, without the holder knowing. xref:dependency-inversion.adoc[*Dependency inversion*] and xref:dependency-injection.adoc[*dependency injection*] both rely on the same seam to hand a caller an implementation it never names directly.

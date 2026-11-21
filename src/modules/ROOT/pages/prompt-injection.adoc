@@ -1,5 +1,7 @@
 = Prompt injection
 
+// 📝 DRAFT
+
 *Prompt injection* is an attack in which adversarial instructions are embedded in data that an xref:agent.adoc[*agent*] processes, such as files, web pages, or tool results, in an attempt to override the user's intended instructions. The name was coined by Simon Willison in 2022, by analogy with xref:sql-injection.adoc[*SQL injection*].
 
 The analogy points at the cause. A model receives instructions and data in the same channel, as one stream of tokens in its context, and has no reliable way to tell the two apart. Text in a fetched web page that says "ignore your previous instructions and do this instead" is, to the model, just more context. Unlike SQL injection there is no equivalent of parameterized queries that fully separates the two, so the attack cannot be eliminated, only contained.

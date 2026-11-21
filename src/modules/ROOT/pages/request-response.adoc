@@ -1,5 +1,7 @@
 = Request-response communication pattern
 
+// 📝 DRAFT
+
 In request-response communication, a client sends a request directly to a server, and the server sends a response back to the client. Each exchange is a single xref:rtt.adoc[*round trip*]: one request in, one response out. The client initiates every exchange, so request-response is a xref:pull-architecture.adoc[*pull architecture*] — the server only speaks when spoken to.
 
 Request-response is the canonical xref:synchronous-communication.adoc[*synchronous communication*] pattern. The client issues a request and then waits for the response before proceeding, which couples the two sides in time: the client cannot make progress until the server has replied. This temporal coupling is the defining cost of synchronous request-response, and the reason xref:asynchronous-communication.adoc[*asynchronous*] alternatives are preferred for work that does not need an immediate answer.

@@ -1,5 +1,7 @@
 = Branch by abstraction
 
+// 📝 DRAFT
+
 Branch by abstraction is a technique for making a large change to a system, such as replacing a library, a subsystem, or a service integration, while the code stays releasable throughout. Two implementations of the same functionality coexist in the same running process, behind a single xref:abstraction.adoc[*abstraction*]. The change is made in small steps, on the mainline, without a long-lived source control branch. The "branch" is in the code, not in the repository.
 
 The technique is a staple of xref:trunk-based-development.adoc[*trunk-based development*]. A long-lived side branch defers xref:continuous-integration.adoc[*integration*] until the work is finished, which makes for a painful xref:big-bang.adoc[*big-bang*] merge. Branch by abstraction keeps every intermediate state integrated, tested, and deployable.

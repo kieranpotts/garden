@@ -1,5 +1,7 @@
 = Transactions
 
+// 📝 DRAFT
+
 A database transaction is a sequence of database operations that is treated as a single, indivisible unit of work. Either every operation in the sequence is applied, or none of them is. The outcome is therefore all-or-nothing: a transaction that completes successfully is *committed*, and its changes become permanent; a transaction that fails, or is cancelled, is *aborted* and its changes are discarded by an xref:rollback.adoc[*rollback*]. The guarantee that a transaction upholds is xref:data-integrity.adoc[*data integrity*] — the database is never left in a state that reflects only part of the transaction.
 
 The classic lifecycle is explicit. A transaction begins with a `BEGIN` statement (in SQL), runs one or more operations — reads, inserts, updates, deletes — and ends with either `COMMIT` to confirm the work or `ROLLBACK` to undo it. Many application frameworks wrap this sequence so that the program issues a sequence of statements and the framework infers the begin and commit boundaries. Once a transaction commits, its effects survive subsequent crashes; once it rolls back, the database is restored to the state it was in before the transaction began.

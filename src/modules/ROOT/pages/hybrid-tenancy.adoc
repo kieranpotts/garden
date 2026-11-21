@@ -1,5 +1,7 @@
 = Hybrid tenancy
 
+// 📝 DRAFT
+
 Hybrid tenancy mixes xref:single-tenancy.adoc[*single-tenant*] and xref:multi-tenancy.adoc[*multi-tenant*] deployment within one system. Each component uses whichever tenancy model suits the data and workload it handles, so the system as a whole gets some of the isolation of the former and some of the economy of the latter.
 
 For example, a medical system might run the service that holds sensitive patient lab results as a dedicated instance per customer, while a shared service handles less sensitive enrollment data for all customers at once. The split is usually drawn along data-sensitivity or compliance lines, with the strongest xref:isolation.adoc[*isolation*] reserved for the places where a leak would do most harm.

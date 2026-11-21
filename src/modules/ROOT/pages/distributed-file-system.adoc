@@ -1,5 +1,7 @@
 = Distributed file system
 
+// 📝 DRAFT
+
 A distributed file system is a xref:distributed-system.adoc[*distributed software*] that presents files and directories across multiple networked nodes as though they lived on a single local disk. Client programs read, write, and navigate the same hierarchical namespace regardless of which physical machine holds any given file. The defining goal is to combine the familiar interface of xref:file-storage.adoc[*file storage*] with the xref:horizontal-scaling.adoc[*horizontal scalability*] and xref:fault-tolerance.adoc[*fault tolerance*] of a cluster.
 
 A distributed file system is one form of distributed storage, alongside xref:distributed-database.adoc[*distributed databases*] and xref:object-storage.adoc[*object storage*]. The distinction is the interface. A database imposes a data model and query language. Object storage exposes a flat namespace of blobs over an HTTP API. A distributed file system keeps the file-and-directory tree, and usually aims for xref:posix.adoc[*POSIX*]-compatible semantics so that ordinary applications can use it without modification.

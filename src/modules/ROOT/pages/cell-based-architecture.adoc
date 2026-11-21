@@ -1,5 +1,7 @@
 = Cell-based architecture
 
+// 📝 DRAFT
+
 Cell-based architecture is a xref:architectural-pattern.adoc[*design pattern*] for xref:distributed-system.adoc[*distributed software*] in which the system is built from autonomous, self-contained units called *cells*. Each cell is a vertically-sliced deployment that carries every component it needs to serve its share of traffic: compute, storage, and its own data. Cells are redundant replicas of the same service, and traffic is partitioned across them rather than shared between them.
 
 The defining constraint is that a cell has no hard dependencies on any other cell. There is no shared database, no shared in-memory cache, and no call that one cell must make to another to serve a request. A failure inside one cell is therefore contained inside that cell, and the other cells keep serving. The pattern exists to limit the *blast radius* of any one failure to a single cell.

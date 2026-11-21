@@ -1,5 +1,7 @@
 = Stamp coupling
 
+// 📝 DRAFT
+
 Stamp coupling is a type of xref:coupling.adoc[*coupling*] in software design where a module is dependent on a data structure or a composite data type, making the module dependent on a specific structure of data rather than just the data itself. The term comes from the structured design literature of Myers and the Stevens–Myers–Constantine paper, which also labels it *data-structure coupling*. It sits between data coupling, the weakest acceptable form in which modules share only the scalar values they actually use, and the stronger control and common coupling, in which one module dictates another's logic or both reach into a shared global area.
 
 The defining feature is that the dependent module receives a whole composite structure, such as a record, struct, or object, but uses only some of its fields. It is coupled not to the data it needs but to the shape of the larger structure that happens to carry it. Any change to that structure, even to fields the module never reads, can force a recompile, a retest, or a matching edit at the call site. The module also gains access to data it has no reason to see, which is a small breach of xref:encapsulation.adoc[*encapsulation*] and a quiet encouragement to start using that data later and so tighten the coupling further.

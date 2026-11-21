@@ -1,5 +1,7 @@
 = Block storage
 
+// 📝 DRAFT
+
 Block storage is a technology that stores data by dividing it into fixed-size chunks called blocks. Each block is an independent unit of storage with a unique identifier, but carries no high-level metadata – no filename, no owner, no timestamps. A complete piece of data (such as a database record or a virtual disk image) may be spread across many non-sequential blocks on different physical devices. The application or operating system maintains a lookup table to track which blocks make up which piece of data, and reassembles them on retrieval.
 
 Unlike xref:file-storage.adoc[*file storage*] (which adds a file-system layer on top of raw storage) or xref:object-storage.adoc[*object storage*] (which uses HTTP/REST APIs), block storage presents raw volumes directly to the host. This removes processing overhead and is the reason block storage delivers ultra-low latency and high I/O throughput – characteristics essential for latency-sensitive applications like relational databases.

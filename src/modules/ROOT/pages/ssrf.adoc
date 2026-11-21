@@ -1,5 +1,7 @@
 = Server-side request forgery (SSRF)
 
+// 📝 DRAFT
+
 :link-owasp-ssrf-cheatsheet: https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html
 
 *Server-side request forgery (SSRF)* is a web security vulnerability in which an attacker coerces a vulnerable server into making xref:http.adoc[*HTTP*] requests to destinations the attacker chooses. The server, trusted by the network it sits on, becomes an unwitting proxy. Requests it issues travel from inside the perimeter, where xref:firewall.adoc[*firewalls*] and network ACLs assume they are benign. The attacker never touches the internal targets directly; the server reaches them on the attacker's behalf.

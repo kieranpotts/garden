@@ -1,5 +1,7 @@
 = Database per service
 
+// 📝 DRAFT
+
 *Database per service* is a data management pattern in which each service in a xref:distributed-system.adoc[*distributed system*] owns its own private data store, and no other service accesses that store directly. Other services can reach the data only through the owning service's API or by consuming the events it publishes. It is the usual approach to data in xref:microservices.adoc[*microservices*].
 
 The alternative is a *shared database*, in which many services read and write the same tables. A shared database is simple to start with and keeps transactions straightforward, but it creates tight xref:coupling.adoc[*coupling*] between services. A change to a table schema can break every service that uses it, so services cannot be changed and deployed independently. The database also becomes a shared bottleneck and a xref:single-point-of-failure.adoc[*single point of failure*], and it can only be scaled as a whole.

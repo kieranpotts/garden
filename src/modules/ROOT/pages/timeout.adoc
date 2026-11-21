@@ -1,5 +1,7 @@
 = Timeout
 
+// 📝 DRAFT
+
 A *timeout* is a limit on how long a caller will wait for an operation to complete before giving up and treating it as failed. Timeouts apply to network connections, remote calls, database queries, lock acquisition, and any other operation whose duration depends on something outside the caller's control.
 
 Without a timeout, a caller that depends on a slow or unresponsive dependency waits indefinitely. Each waiting request holds on to a thread, connection, or other resource, and as requests accumulate the caller exhausts its own capacity and becomes unresponsive too. This is how a single slow dependency turns into a cascading failure across a xref:distributed-system.adoc[*distributed system*].

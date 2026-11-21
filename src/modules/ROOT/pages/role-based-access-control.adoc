@@ -1,5 +1,7 @@
 = Role-based access control (RBAC)
 
+// 📝 DRAFT
+
 *Role-based access control (RBAC)* is an xref:authorization.adoc[*authorization*] model in which permissions are grouped into named *roles* and principals are granted roles rather than individual permissions. A principal exercises a permission only through a role they hold, so the authorization decision reduces to "does any of this principal's roles include the requested permission on this resource?" RBAC presupposes that xref:authentication.adoc[*authentication*] has already established who the principal is; it concerns itself only with what that principal may do.
 
 RBAC is the dominant access control model in business software because it mirrors how organizations already think about jobs. A `billing-analyst` role bundles the permissions an analyst needs, and onboarding a new analyst becomes a single role assignment rather than dozens of individual grants. The same property makes revocation cheap. Removing a role withdraws every permission it carries in one step.

@@ -1,5 +1,7 @@
 = System testing (aka end-to-end or e2e testing)
 
+// 📝 DRAFT
+
 System testing is the level of xref:testing.adoc[*testing*] at which the complete, integrated application is exercised as a whole through its external interfaces. Every component that will ship in production is stood up together – the user interface, application services, databases, message brokers, and any external integrations – and the system is driven from the outside, just as a real user or client would drive it. The application under test is treated as an opaque xref:black-box-testing.adoc[*black box*]: the test supplies inputs at the boundary, observes the outputs, and judges correctness against the system's xref:system-requirements-specification.adoc[*specification*], without reference to the internals.
 
 The objective is to confirm that the assembled system meets its requirements – both functional and non-functional – and that the pieces behave correctly once they are wired together. It targets the class of defects that no lower level can reach: mismatches at the seams between independently built components, configuration that is correct in isolation but wrong in combination, and emergent behavior that only appears when the full system runs under realistic conditions.

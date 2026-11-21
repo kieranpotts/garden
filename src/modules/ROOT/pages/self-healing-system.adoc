@@ -1,5 +1,7 @@
 = Self-healing system
 
+// 📝 DRAFT
+
 A *self-healing system* detects its own faults and recovers from them automatically, without waiting for a human to intervene. The aim is to shorten the time between a failure and its repair, and to keep that repair from depending on whoever happens to be on call. It is one way of achieving xref:fault-tolerance.adoc[*fault tolerance*] and xref:resilience.adoc[*resilience*].
 
 Self-healing is built from a loop of detection, diagnosis, and remediation. Detection relies on xref:system-health-check.adoc[*health checks*], xref:heartbeat.adoc[*heartbeats*], and xref:monitoring.adoc[*monitoring*] that notice a component has failed or is degraded. Remediation is typically one of a small set of mechanical responses: restarting a failed process or container, replacing a failed instance, rescheduling workloads away from a failed node, shifting traffic to healthy replicas by xref:failover.adoc[*failover*], rolling back a bad release, or adding capacity through xref:auto-scaling.adoc[*auto-scaling*]. At the application level, xref:retry.adoc[*retries*], xref:circuit-breaker.adoc[*circuit breakers*], and xref:graceful-degradation.adoc[*graceful degradation*] let software recover from transient faults in the same spirit.

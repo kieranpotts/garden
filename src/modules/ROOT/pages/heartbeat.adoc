@@ -1,5 +1,7 @@
 = Heartbeat
 
+// 📝 DRAFT
+
 In xref:distributed-system.adoc[*distributed systems*], a heartbeat is a *periodic message* sent between nodes to signal that the sender is alive and functioning. Each heartbeat carries little payload beyond a timestamp or sequence number, and is repeated at a fixed interval, typically seconds to minutes, depending on how quickly failures must be detected.
 
 The receiver treats the steady arrival of heartbeats as proof of liveness. If heartbeats stop arriving within a *timeout* window, usually a small multiple of the interval chosen to absorb normal xref:latency.adoc[*latency*] and jitter, the receiver declares the sender suspected or failed. The interval and timeout are a single trade-off. Too tight and a slow network produces false positives that mark healthy nodes dead. Too loose and detection lags, delaying recovery.

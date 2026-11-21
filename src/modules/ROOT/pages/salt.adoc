@@ -1,5 +1,7 @@
 = Salt
 
+// 📝 DRAFT
+
 A *salt* is a random value, unique per record, that is combined with an input before it is passed to a xref:hashing.adoc[*hash function*]. Its purpose is to ensure that two identical inputs do not produce the same digest. The salt is not secret. It is stored alongside the hash it modifies, in cleartext, and its security value comes entirely from its uniqueness, not from being hidden.
 
 The canonical use is password storage. When a system stores xref:authentication.adoc[*authentication*] credentials, it never stores the password itself. It stores a hash of the password, plus the salt that was mixed in. On login, the system re-reads the stored salt, re-computes the hash from the submitted password and that salt, and compares the result to the stored digest. The salt is part of the verification input, not a key to be protected.

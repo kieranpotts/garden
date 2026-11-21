@@ -1,5 +1,7 @@
 = Push architecture
 
+// 📝 DRAFT
+
 Push architecture is a communication model in which the producer of data initiates each transfer, sending data to the consumer as it becomes available. The consumer sits passive between deliveries, waiting to receive. It is the opposite of xref:pull-architecture.adoc[*pull architecture*], where the consumer initiates each transfer by requesting it from the producer.
 
 The defining property is that the producer decides when to send and how much. The consumer's role is to register interest and then handle whatever arrives. A stock ticker that streams price updates, a payment provider that calls a merchant's xref:webhook.adoc[*webhook*] when a charge succeeds, and a chat server that broadcasts messages over xref:websockets.adoc[*WebSockets*] are all push producers. In each case the consumer did not ask for this particular delivery at this particular moment; the producer pushed it out.

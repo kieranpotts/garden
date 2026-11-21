@@ -1,5 +1,7 @@
 = Context rot
 
+// 📝 DRAFT
+
 *Context rot* is the decline in a xref:large-language-model.adoc[*large language model's*] ability to accurately recall and use information from its context as the number of tokens in its xref:context-window.adoc[*context window*] increases.
 
 In the xref:transformer.adoc[*transformer architecture*], every token can attend to every other token across the entire context. Each of these pairings is an *attention relationship*. When predicting a token, the model factors in every other token – some heavily, others barely – and meaningful pairs influence each other more. With n tokens there are roughly n² relationships, computed across many attention heads (typically 50–100), each building its own version. Only a few relationships matter for any given task, but the pool they sit in grows quadratically. At 1,000 tokens the pairing you care about is one in a million, and at 100,000 it is one in 10 billion.

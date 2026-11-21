@@ -1,5 +1,7 @@
 = Tracing
 
+// 📝 DRAFT
+
 // TODO: https://www.dynatrace.com/news/blog/what-is-distributed-tracing/
 
 Tracing is the third pillar of xref:observability.adoc[*observability*].
@@ -7,6 +9,8 @@ Tracing is the third pillar of xref:observability.adoc[*observability*].
 A *trace* is like a breadcrumb that follows a single request and its response as it travels through a system.
 
 In xref:distributed-system.adoc[*distributed software*], a trace connects the dots between services, tracking the full path of a request as it hops between services to complete an operation. To achieve this, unique request identifiers must be generated for each request to the system, and these identifiers must be propagated through the system as the request passes across service boundaries. The request IDs are captured in the trace logs and used to aggregate trace data from disparate services.
+
+The same idea applies to xref:agent.adoc[*AI agents*], where a trace records each model call, tool call, and tool result in a run, so that an unexpected outcome can be replayed step by step.
 
 A single trace ID typically tracks the end-to-end flow of a complete *request-response cycle*. But it doesn't have to be this way. A trace represents a *discrete unit of work*, or a business process, which may or may not correlate to a single, complete request-response cycle.
 

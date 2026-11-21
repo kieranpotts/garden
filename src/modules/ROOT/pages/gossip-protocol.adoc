@@ -1,5 +1,7 @@
 = Gossip protocol
 
+// 📝 DRAFT
+
 A gossip protocol is a decentralized communication protocol used in xref:distributed-system.adoc[*distributed software*] to spread information across all nodes. It is inspired by the way people share news by word of mouth: each node that learns a piece of information periodically shares it with a small random subset of peers, who do the same, until the information has reached every node. The protocol is also called an *epidemic protocol* because this is how an epidemic spreads through a population.
 
 Because each exchange involves only a node and a handful of random peers, gossip scales to very large clusters and tolerates node crashes and network partitions that would defeat a centralized coordinator. The price is xref:eventual-consistency.adoc[*eventual consistency*]: the system converges, but it does not promise when.

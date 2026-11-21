@@ -1,5 +1,7 @@
 = Single tenancy
 
+// 📝 DRAFT
+
 Single tenancy is a deployment model in which each customer, or *tenant*, gets its own copy of the software, and no running component is shared between customers. The isolation may be drawn at different levels. A separate instance of an application service, a separate virtual machine or container, or dedicated hardware. It is the simplest tenancy model to reason about, but the most expensive to operate. It is the opposite end of the spectrum from xref:multi-tenancy.adoc[*multi-tenancy*], where one deployment serves many tenants.
 
 The main benefit is strong xref:isolation.adoc[*isolation*]. A bug in tenant scoping, a compromised node, or a runaway workload can only affect the one customer whose stack the issue lives in. The blast radius of most failures is a single tenant. Customers with strict xref:privacy.adoc[*privacy*] or xref:compliance.adoc[*compliance*] requirements, such as those that demand their data never share a database or host with anyone else's, can be served without special cases in the application's design.

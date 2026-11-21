@@ -1,5 +1,7 @@
 = Cross-site scripting (XSS)
 
+// 📝 DRAFT
+
 *Cross-site scripting (XSS)* is a web security vulnerability in which an attacker injects malicious executable markup – usually xref:javascript.adoc[*JavaScript*] – into a web page that is then rendered in another user's browser. The injected script executes within the *security context of the vulnerable site*, not the attacker's, so it can read and act on data the browser would only expose to a legitimate origin: cookies, session tokens, DOM contents, and responses from same-origin API endpoints.
 
 XSS is an *injection* flaw, in the same family as xref:sql-injection.adoc[*SQL injection*]: both exploit code that concatenates untrusted data into an interpreter without adequate separation. The difference is the target interpreter – the browser's HTML/JS parser rather than the database engine. XSS has appeared on every edition of the xref:owasp.adoc[*OWASP*] Top Ten and remains one of the most prevalent web vulnerabilities in production applications.

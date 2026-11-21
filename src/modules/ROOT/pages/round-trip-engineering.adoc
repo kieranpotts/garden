@@ -1,5 +1,7 @@
 = Round-trip engineering
 
+// 📝 DRAFT
+
 *Round-trip engineering* is the ability to make changes to either a model or the code generated from it, with each change propagating automatically to the other so that both artifacts stay consistent. It is the tightest possible integration of xref:model-driven-development.adoc[*model-driven development*] and xref:reverse-engineering.adoc[*reverse engineering*]. Forward engineering generates code from a model, and round-trip engineering additionally reconstructs the model from changes made directly to the code, in both directions, indefinitely.
 
 In practice, the idea works well for toy examples but struggles once a system reaches any real complexity. Forward generation, from a high-level model down to low-level code, is comparatively tractable, because it only requires expanding a design decision into its implementation. The reverse direction is much harder. Recovering the higher-level architectural intent behind a piece of source code usually depends on design decisions that were never recorded anywhere machine-readable, and this cannot realistically be automated in the general case.

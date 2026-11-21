@@ -1,0 +1,50 @@
+= Human-in-the-loop (HITL)
+
+// 📝 DRAFT
+
+:link-the-new-sdlc: https://drive.google.com/file/d/1IR7CddF_2FyQo_PdfBNTaEA50EGiVt2r/view
+
+*Human-in-the-loop (HITL)* describes an automated system in which a person takes part in each cycle of its operation, reviewing, approving, or correcting its work before it carries on. The person is a component of the loop, not a bystander to it.
+
+The term predates AI agents. In control systems and simulation, a human-in-the-loop system is one with a human operator inside its feedback loop, as in a flight simulator. In xref:machine-learning.adoc[*machine learning*], it describes pipelines in which people label training data, or review the predictions a model is least sure of so that it can learn from them. Discussions of autonomous systems, particularly weapons, distinguish three positions. A human _in_ the loop must approve each action. A human _on_ the loop supervises, and can intervene or veto. A human _out of_ the loop takes no part once the system starts.
+
+== Human-in-the-loop agents
+
+With xref:agent.adoc[*AI agents*], human-in-the-loop is a way of working in which a person stays with the agent throughout a session, reviewing each turn and steering the next one. Within a turn the xref:agent-loop.adoc[*agent loop*] runs on its own, so the gaps between turns are where the person checks what the agent did, corrects its course, and sends the next message. The xref:agent-harness.adoc[*agent harness*] can also pause in the middle of a turn, asking the person to approve a tool call before it runs. The harness's permission mode decides which calls need approval.
+
+Keeping a human in the loop catches problems while they are still cheap to fix. It suits tasks that are ambiguous, irreversible, or hard to review, such as a schema migration, a tricky design, or anything touching production.
+
+It has two costs. The first is throughput, since a person who reviews every step is the bottleneck on how much work the agent can get done. The second is *approval fatigue*. A person shown too many approval prompts starts to rubber-stamp requests without reading them, keeping the friction of oversight while losing its benefit. Approval gates work best when they are reserved for the actions that matter.
+
+Orchestration tooling builds the pause in. xref:agent-orchestration.adoc[*Agent orchestration*] frameworks such as LangGraph checkpoint a run's state so that it can wait for human approval and resume. The xref:agent2agent.adoc[*Agent2Agent (A2A)*] protocol treats a task waiting on human input as a first-class state. Durable xref:execution-orchestrator.adoc[*execution orchestrators*] such as Temporal can hold a workflow open for days while it waits on a person.
+
+== Grilling
+
+*Grilling* is a human-in-the-loop technique, commonly used to develop a design or a plan with an agent before work starts. Rather than guess at the gaps in a design, the agent questions the person about it, point by point, until the two share an understanding. The person's answers become the agent's input.
+
+Grilling is also how unattended work is prepared. Resolving ambiguity in a grilling session up front leaves the agent fewer gaps to fill on its own when it later runs xref:away-from-keyboard.adoc[*away-from-keyboard (AFK)*].
+
+== Conductors and orchestrators
+
+Osmani, Saboo, and Kartakis describe two roles that a developer can play when working with agents.
+
+Working human-in-the-loop, the developer acts as a *conductor*. They work with the agent in real time as a xref:pair-programming.adoc[*pair programmer*], often in their IDE, watching code appear, guiding it with prompts and corrections, and keeping fine-grained control. This suits complex logic, tricky debugging, and unfamiliar codebases, where the developer needs to understand each change as it is made.
+
+Working AFK, the developer acts as an *orchestrator*. They work at a higher level of abstraction, defining goals, assigning them to agents, and reviewing results rather than watching code appear line by line. Agents may run in the background, in parallel, on different parts of a codebase, while the developer checks in periodically and corrects course. Orchestrating demands different skills from conducting:
+
+* *Specification*: Defining tasks precisely enough for unambiguous execution.
+* *Decomposition*: Breaking large tasks into appropriately sized units.
+* *Evaluation*: Quickly judging whether output meets the bar.
+* *System design*: Building the constraints, tests, and feedback loops that keep agents productive.
+
+Most real work moves between the two. A human-in-the-loop session grills out a design, AFK runs implement it, and a person reviews the results. Designing systems in which code rather than a person fills the gaps between turns is xref:loop-engineering.adoc[*loop engineering*], which typically moves the human from in the loop to on the loop, supervising and intervening only by exception.
+
+== See also
+
+* xref:agentic-engineering.adoc[*Agentic engineering*]
+* xref:ai-coding-assistant.adoc[*AI coding assistants*]
+* xref:runaway-loop.adoc[*Runaway loop*]
+
+== References
+
+* Osmani, Saboo, and Kartakis (2026). {link-the-new-sdlc}[_The New SDLC With Vibe Coding_].

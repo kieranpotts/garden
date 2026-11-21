@@ -1,12 +1,30 @@
 = AI eval
 
+// 📝 DRAFT
+
 An *eval*, short for evaluation, is a structured test that measures how well a model, agent, skill, prompt, or workflow performs on a defined set of tasks. It is the AI equivalent of unit and regression tests. An eval answers whether a change to any part of an AI setup improved outcomes or quietly made them worse.
 
 An eval consists of a set of tasks with inputs, a way to run the system-under-test against them, and a grader that scores each result. Graders are either deterministic, such as running a test suite or matching an output against an expected value, or model-based, where a second model judges the output against a rubric. Deterministic graders are cheaper and repeatable. Model-based graders can assess qualities that code cannot, but their verdicts are themselves probabilistic.
 
 Because model output varies from run to run, a single pass or fail says little. Evals are usually run repeatedly, and the results are read as rates rather than individual outcomes. Public benchmarks compare models against each other on shared tasks, whereas the evals that matter most for a team are its own, built from its own tasks and failures.
 
+Evals are especially important for xref:agent.adoc[*agents*], whose multi-step runs vary more than single model calls, and whose failures may only show up several steps in.
+
 Without evals, changes to prompts, rule files, and models are judged by feel. See xref:agentic-engineering.adoc[*agentic engineering*] for why evals, along with tests, are the dividing line between disciplined AI-assisted development and xref:vibe-coding.adoc[*vibe coding*].
+
+== Agent evals
+
+An agent eval scores more than the final answer. It also scores the *trajectory*, the sequence of steps the agent took to get there: which tools it called, with what arguments, how it recovered from errors, and whether it finished the task at all. Two runs can reach the same correct answer, one by a direct route and the other after a dozen wasted calls, a misread tool result, and a lucky guess, and a score on the answer alone cannot tell them apart. Scoring the trajectory also localizes a failure, showing which step went wrong rather than only that the run did. It builds on xref:tracing.adoc[*tracing*], which records the trajectory in the first place.
+
+Trajectory scoring is added on top of ordinary output evals, not instead of them. The metrics usually combine three kinds of grader: code checks, such as whether the expected tool was called or the tests pass; LLM-as-judge rubrics, for qualities that code cannot assess; and human review, which calibrates the other two.
+
+== The upkeep problem
+
+Evals are costly to keep up to date. In a survey of agent builders run by Y Combinator, a super-majority said that evals often under-deliver because keeping them current becomes impossible. Real usage shifts as users, prompts, tools, and models change, so a static offline suite goes stale, and passes cases that no longer resemble production while missing the new ways the agent fails.
+
+This is why current tooling pushes two practices. The first is a loop in which production traces become datasets: failing or unusual runs observed in production are captured and added to the eval set, so that the suite tracks real behavior. The second is *online evals*, which score live production traffic as it happens rather than only running a fixed suite before release. Offline evals remain the gate for catching regressions before a change ships, while online evals catch the drift that they cannot.
+
+Libraries and platforms for running evals are collected in my bookmarks: see xref:bookmarks::applications/ai/evals/index.adoc[*AI evals tools*].
 
 == See also
 

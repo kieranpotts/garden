@@ -1,5 +1,7 @@
 = Event loop
 
+// 📝 DRAFT
+
 An *event loop* is a programming construct that achieves xref:concurrency.adoc[*concurrency*] on a single xref:thread.adoc[*thread*]. The thread runs a loop that waits for events, such as a network socket becoming readable, a timer firing, or a user clicking a button, and dispatches each event to a handler. The handler runs to completion, then control returns to the loop to pick up the next event.
 
 The key is that handlers never wait. Instead of blocking a thread until a slow operation such as a network read finishes, the program asks the operating system to perform the operation in the background and to signal the loop when it is done. The OS provides readiness-notification interfaces for this, such as `epoll` on Linux, `kqueue` on BSD and macOS, and I/O completion ports on Windows. While the operation is pending, the loop is free to handle other events. A single thread can therefore juggle thousands of in-flight operations, which is why event loops are the basis of servers and runtimes like Nginx, Redis, and Node.js, and of GUI toolkits and browsers.

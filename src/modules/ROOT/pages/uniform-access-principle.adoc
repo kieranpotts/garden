@@ -1,5 +1,7 @@
 = Uniform access principle
 
+// 📝 DRAFT
+
 The uniform access principle is a xref:design-principle.adoc[*design principle*] formulated by Bertrand Meyer and set out in _Object-Oriented Software Construction_. It states that all services offered by a module should be available through a uniform notation, which does not betray whether they are implemented through storage or through computation. In its simplest form it asks for no syntactic difference between reading an attribute, a precomputed property, or a parameterless method on an object.
 
 The principle addresses a maintenance problem that recurs in large software projects. A class that exposes a value as a plain attribute may later need to compute that value on demand, eg. by deriving it from other state or fetching it from a cache. In most languages the syntax for accessing an attribute differs from the syntax for calling a method, `obj.size` versus `obj.size()`. Switching a stored field to a computed method therefore forces every caller to change call sites, in the module itself and in every client that depends on it. The reverse change, from method to attribute, is comparatively harmless because the method can be retained as a trivial accessor. The uniform access principle removes the asymmetry by giving both forms one notation.

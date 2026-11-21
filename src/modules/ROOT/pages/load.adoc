@@ -1,5 +1,7 @@
 = Load
 
+// 📝 DRAFT
+
 Load is the volume of demand placed on a system at a given moment — the concurrent requests, active sessions, or units of work that callers are asking the system to handle. It is an input to the system, not a property of it. Load is what the world does to the system; xref:capacity.adoc[*capacity*] is what the system can do in response.
 
 Load is often confused with its close neighbours. xref:throughput.adoc[*Throughput*] is the rate at which the system actually completes work — an output rather than an input. A system under heavy load may have low throughput if it is saturated or shedding work. xref:latency.adoc[*Latency*] is the time each individual request spends in the system, and it is what load most directly degrades. As load approaches capacity, queues lengthen and latency rises, often sharply. Capacity is the ceiling on load the system can sustain while still meeting its other quality targets, and the relationship between load and latency is not linear. This is why capacity is always stated alongside a target latency or service level, rather than as a bare number.

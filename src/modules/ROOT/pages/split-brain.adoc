@@ -1,5 +1,7 @@
 = Split brain
 
+// 📝 DRAFT
+
 *Split brain* is a *failure mode* in xref:distributed-system.adoc[*distributed systems*] in which a *network partition* splits a cluster into isolated groups, and more than one node ends up believing it is the sole primary or leader. Each side keeps serving writes independently, unaware of the other, so the cluster's data diverges into two histories that cannot later be reconciled without loss.
 
 The condition is usually triggered by a broken network link or a failed xref:heartbeat.adoc[*heartbeat*] that makes a healthy node look dead to its peers, prompting a new leader election while the "dead" node is still very much alive and serving traffic.

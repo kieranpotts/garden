@@ -1,5 +1,7 @@
 = Agent harness
 
+// 📝 DRAFT
+
 :link-harness-engineering:      https://martinfowler.com/articles/harness-engineering.html
 :link-harness-engineering-memo: https://martinfowler.com/articles/exploring-gen-ai/harness-engineering-memo.html
 :link-langchain-harness:        https://www.langchain.com/blog/the-anatomy-of-an-agent-harness
@@ -12,6 +14,8 @@ An *agent harness* is the execution environment and control framework that wraps
 ----
 agent = model + harness
 ----
+
+Of the six pieces an agent is built from (model, tools, instructions, memory and state, orchestration, observability and evals), the model is the only one a developer usually does not build. The other five are the harness.
 
 If the model is the decision-maker, the harness is the runtime infrastructure that lets it act – the scaffolding around the model that handles:
 
@@ -76,6 +80,12 @@ A *permission mode* is the permission-gating slice: which tool calls trigger a r
 You trade between safety and interruption. Too tight and you rubber-stamp approvals, the worst of both worlds. Too loose and the agent edits files you'd have wanted to see first.
 
 An *agent mode* is a preset that shapes how the agent operates at runtime. It bundles a permission mode with behavioral instructions injected into the system prompt. Examples include a default that prompts on risky calls, a plan mode that blocks edits and steers toward research, an accept-edits mode, and a bypass-permissions ("YOLO") mode. The bundling distinguishes a mode from a bare permission setting. The injected instructions remove the want: plan mode doesn't just block edits, it tells the agent it's planning, so it reads, asks, and proposes instead of straining against the gate. Change mode as trust changes over a task. Changing costs nothing.
+
+== Tracing and evals
+
+Agents fail in odd ways. They pick the wrong tool, pass plausible but wrong arguments, loop without progress, or finish early with a confident wrong answer. Because model output varies from run to run, these failures are intermittent and cannot be diagnosed from the final answer alone. The harness is where they become visible.
+
+xref:tracing.adoc[*Tracing*] records every model call, tool call, and result, so that a run can be replayed step by step. This is also how you audit why an agent made a specific decision, and where token cost, latency, and drift are tracked. xref:ai-eval.adoc[*Evals*] turn observed failures into repeatable tests, so that a change to the prompt, a tool, or the model can be judged on measured outcomes rather than by feel. Evals are the sensors of the steering loop below, applied to the harness itself.
 
 == Agent experience
 
