@@ -1,12 +1,12 @@
 = Laws and principles
 
-// 📝 DRAFT
-
 Software development has accumulated a folklore of laws, rules, principles, and philosophies. Some are informal observations, some are backed by data, and some are no more than adages, but they all compress hard-won lessons into a memorable abstraction.
 
-Some laws and principles describe forces that act on software regardless of process or technology. xref:conways-law.adoc[*Conway's*] and xref:metcalfes-law.adoc[*Metcalfe's*] laws are examples. Others are heuristics for individual or team behavior, such as the xref:boy-scout-rule.adoc[*boy scout rule*] and xref:bike-shedding.adoc[*bike shedding*]. A handful, like xref:goodharts-law.adoc[*Goodhart's law*], are cautionary tales about what happens when a measure is mistaken for the thing it measures.
+They vary widely in kind and in scale. Some describe forces that act on software regardless of process or technology, such as xref:conways-law.adoc[*Conway's law*] and xref:moores-law.adoc[*Moore's law*]. Others are theorems or empirical findings about systems, such as the xref:cap-theorem.adoc[*CAP theorem*] and xref:littles-law.adoc[*Little's law*]. Many are maxims for writing code and building systems, like xref:kiss-principle.adoc[*KISS*], xref:yagni.adoc[*YAGNI*], and the xref:robustness-principle.adoc[*robustness principle*], or for securing them, like the xref:principle-of-least-privilege.adoc[*principle of least privilege*].
 
-The following laws and principles are distinct from xref:design-principle.adoc[*design principles*], which guide the shape of a computer program itself. The best known example is probably the five xref:solid.adoc[*SOLID*] design principles. The laws and principles listed below tend to operate at the scale of teams, projects, and organizations, rather than statements, classes, and modules. But a few, such as the xref:law-of-demeter.adoc[*Law of Demeter*], sit close to that boundary.
+Others are heuristics for planning and teamwork, such as the xref:boy-scout-rule.adoc[*boy scout rule*] and xref:hofstadters-law.adoc[*Hofstadter's law*]. A handful, like xref:goodharts-law.adoc[*Goodhart's law*] and xref:cargo-culting.adoc[*cargo-culting*], are cautionary tales about common ways that work goes wrong.
+
+The following laws and principles are distinct from xref:design-principle.adoc[*design principles*], which prescribe how to structure a computer program. The best known examples are probably the five xref:solid.adoc[*SOLID*] principles. A law or principle listed below is more often a named, quotable observation or rule of thumb, which may inform design choices but also applies to process, teams, and organizations. But a few, such as xref:dry.adoc[*DRY*] and the xref:law-of-demeter.adoc[*Law of Demeter*], sit close to the boundary with design principles, because they bear directly on how code is shaped.
 
 == Index of laws and principles
 
@@ -16,8 +16,11 @@ The following laws and principles are distinct from xref:design-principle.adoc[*
 * xref:bitter-lesson.adoc[*The Bitter Lesson*]
 * xref:boy-scout-rule.adoc[*Boy scout rule*]
 * xref:brooks-law.adoc[*Brooks's law*]
+* xref:cap-theorem.adoc[*CAP theorem (or Brewer's theorem)*]
 * xref:cargo-culting.adoc[*Cargo-culting*]
+* xref:code-for-the-maintainer.adoc[*Code for the maintainer*]
 * xref:commit-early-commit-often.adoc[*Commit early, commit often*]
+* xref:conceptual-integrity.adoc[*Conceptual integrity*]
 * xref:conways-law.adoc[*Conway's law*]
 * xref:cunninghams-law.adoc[*Cunningham's law*]
 * xref:curlys-law.adoc[*Curly's law*]
@@ -26,6 +29,7 @@ The following laws and principles are distinct from xref:design-principle.adoc[*
 * xref:do-what-i-mean.adoc[*Do what I mean (DWIM)*]
 * xref:doerrs-law.adoc[*Doerr's law*]
 * xref:dry.adoc[*DRY*]
+* xref:fail-fast.adoc[*Fail-fast*]
 * xref:feature-creep.adoc[*Feature creep*]
 * xref:feature-factory.adoc[*Feature factory*]
 * xref:fitts-law.adoc[*Fitts's law*]
@@ -55,12 +59,15 @@ The following laws and principles are distinct from xref:design-principle.adoc[*
 * xref:norvigs-law.adoc[*Norvig's law*]
 * xref:not-invented-here.adoc[*Not invented here!*]
 * xref:optimize-for-deletion.adoc[*Optimize for deletion*]
+* xref:pacelc-theorem.adoc[*PACELC theorem*]
 * xref:pareto-principle.adoc[*Pareto principle*]
 * xref:parkinsons-law.adoc[*Parkinson's law*]
 * xref:peter-principle.adoc[*Peter principle*]
 * xref:premature-optimization.adoc[*Premature optimization*]
 * xref:principle-of-least-astonishment.adoc[*Principle of least astonishment*]
+* xref:principle-of-least-privilege.adoc[*Principle of least privilege*]
 * xref:project-paradox.adoc[*Project paradox*]
+* xref:release-early-release-often.adoc[*Release early, release often*]
 * xref:robustness-principle.adoc[*Postel's law*]
 * xref:rule-of-least-power.adoc[*Rule of least power*]
 * xref:scaling-laws.adoc[*Scaling laws*]
@@ -73,9 +80,24 @@ The following laws and principles are distinct from xref:design-principle.adoc[*
 * xref:software-rot.adoc[*Software rot*]
 * xref:teslers-law.adoc[*Tesler's law*]
 * xref:uniform-access-principle.adoc[*Uniform access principle*]
+* xref:unix-philosophy.adoc[*Unix philosophy*]
 * xref:walking-skeleton.adoc[*Walking skeleton*]
 * xref:wicked-problem.adoc[*Wicked problem*]
 * xref:wirths-law.adoc[*Wirth's law*]
 * xref:worse-is-better.adoc[*Worse is better*]
+* xref:yagni.adoc[*YAGNI*]
 * xref:yak-shaving.adoc[*Yak shaving*]
 * xref:zawinskis-law.adoc[*Zawinski's law*]
+
+== See also
+
+* xref:acid-principles.adoc[*ACID principles*]
+* xref:bus-factor.adoc[*Bus factor*]
+* xref:egoless-programming.adoc[*Egoless programming*]
+* xref:eliza-effect.adoc[*ELIZA effect*]
+* xref:first-principles-of-testing.adoc[*FIRST principles of testing*]
+* xref:humble-programmer.adoc[*The humble programmer*]
+* xref:lethal-trifecta.adoc[*Lethal trifecta*]
+* xref:orthogonality.adoc[*Orthogonality*]
+* xref:scope-creep.adoc[*Scope creep*]
+* xref:single-source-of-truth.adoc[*Single source of truth*]
