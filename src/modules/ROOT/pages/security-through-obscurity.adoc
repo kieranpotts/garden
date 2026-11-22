@@ -1,0 +1,23 @@
+= Security-through-obscurity
+
+*Security-through-obscurity* is the practice of relying on the secrecy of a system's design, implementation, or location as its main protection, rather than on security controls that still hold once an attacker understands how the system works.
+
+Examples include the following.
+
+* A proprietary encryption algorithm whose strength depends on nobody learning how it works, rather than it being inherently robust.
+
+* Minified or obfuscated code.
+
+* Hiding version numbers.
+
+* Keeping publicly-accessible services hidden, eg. behind an obscure URL.
+
+* Running a service on a non-standard port, eg. moving SSH off port 22.
+
+Security-through-obscurity is widely regarded as an *anti-pattern* in xref:security.adoc[*security*] practices. The principles of xref:secure-by-design.adoc[*secure-by-design*] reject obscurity as a primary defense — though it is not rejected as a supplementary layer, because obfuscation still has the effect of raising the costs of achieving a successful attack.
+
+See also xref:kerckhoffs-principle.adoc[*Kerckhoffs's principle*], which says that a security system should remain secure even if everything about it, other than its secret key, is public knowledge.
+
+== See also
+
+* xref:information-hiding.adoc[*Information hiding*]

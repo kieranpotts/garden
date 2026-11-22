@@ -55,7 +55,7 @@ The primary control is to keep code and data separate, so that input can never b
 Layered controls reduce residual risk and limit the blast radius when a vulnerability slips through.
 
 * xref:input-validation.adoc[*Input validation*] rejects malformed data early and shrinks the surface, but it is a secondary measure. Validation alone cannot anticipate every encoding and dialect trick an attacker may use, and blacklist filtering is routinely evaded.
-* *Least privilege* on the database account – read-only where the code only reads, no DDL or administrative commands, no filesystem or shell access – caps the damage a successful injection can do. This is a practical instance of xref:secure-by-design.adoc[*secure by design*].
+* *Least privilege* on the database account – read-only where the code only reads, no DDL or administrative commands, no filesystem or shell access – caps the damage a successful injection can do. This is a practical instance of xref:principle-of-least-privilege.adoc[*least privilege*].
 * xref:security-testing.adoc[*Security testing*], xref:penetration-testing.adoc[*penetration testing*], and xref:static-analysis.adoc[*static analysis*] catch the defect before deployment. SAST tools in particular flag string-built SQL as a matter of course, since the pattern is well understood.
 
 [WARNING]

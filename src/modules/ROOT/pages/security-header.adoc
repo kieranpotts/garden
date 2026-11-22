@@ -2,9 +2,9 @@
 
 // 📝 DRAFT
 
-*Security headers* are HTTP response headers that instruct the user agent – typically a web browser – to apply security controls when it renders or interacts with a response. They are a declarative, defense-in-depth layer of xref:security.adoc[*security*]: the server cannot dictate what the browser does once content is delivered, but it can constrain the capabilities the page is allowed to exercise. Security headers do not fix vulnerabilities. They limit the blast radius of an injection, downgrade, or cross-origin attack that slips past the application's own controls.
+*Security headers* are HTTP response headers that instruct the user agent – typically a web browser – to apply security controls when it renders or interacts with a response. They are a declarative layer of xref:defense-in-depth.adoc[*defense-in-depth*] in xref:security.adoc[*security*]: the server cannot dictate what the browser does once content is delivered, but it can constrain the capabilities the page is allowed to exercise. Security headers do not fix vulnerabilities. They limit the blast radius of an injection, downgrade, or cross-origin attack that slips past the application's own controls.
 
-Security headers ride on ordinary xref:http.adoc[*HTTP*] responses, so they inherit HTTP's trust model. Browsers only honor them on the origin they were delivered from, and several – notably `Strict-Transport-Security` – are ignored unless the response arrives over HTTPS. They are a complement to, not a replacement for, xref:secure-by-design.adoc[*secure by design*] practices such as contextual output encoding and xref:input-validation.adoc[*input validation*].
+Security headers ride on ordinary xref:http.adoc[*HTTP*] responses, so they inherit HTTP's trust model. Browsers only honor them on the origin they were delivered from, and several – notably `Strict-Transport-Security` – are ignored unless the response arrives over HTTPS. They are a complement to, not a replacement for, xref:secure-by-design.adoc[*secure-by-design*] practices such as contextual output encoding and xref:input-validation.adoc[*input validation*].
 
 == Common headers
 

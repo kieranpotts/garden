@@ -1,0 +1,38 @@
+= Defense-in-depth
+
+:link-nist-800-53:  https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final
+
+*Defense-in-depth* is a xref:security.adoc[*security*] strategy that protects a system with several independent, overlapping controls, so that the failure or bypass of any one control does not lead to a total compromise. It assumes that every individual control is imperfect, and that a determined attacker will eventually find a way past at least one security control.
+
+The idea is borrowed from military strategy, where a defender implements successive lines of defense across physical space. In software it is a core tenet of xref:secure-by-design.adoc[*secure-by-design*].
+
+A typical web application might combine the following security controls. The controls are arranged in layers, each guarding a different bit of the path between an attacker and an asset.
+
+* *Network.* xref:firewall.adoc[*Firewalls*], network segmentation, and xref:rate-limiting.adoc[*rate limiting*] at the edge restrict who can reach the system.
+
+* *Transport and data.* xref:encryption.adoc[*Encryption*] in transit and at rest means that intercepted or stolen data is of little use.
+
+* *Identity and access.* xref:authentication.adoc[*Authentication*], xref:multi-factor-authentication.adoc[*multi-factor authentication*], and xref:authorization.adoc[*authorization*] limit what any given principal can do, even when a credential is compromised.
+
+* *Application.* xref:input-validation.adoc[*Input validation*] and output encoding defend against injection attacks such as xref:sql-injection.adoc[*SQL injection*] and xref:cross-site-scripting.adoc[*cross-site scripting*]. xref:security-header.adoc[*Security headers*] add another layer at the client layer (in the web browser).
+
+* *Runtime.* xref:sandbox.adoc[*Sandboxes*] or other xref:isolation.adoc[*isolation*] mechanisms contain running processes. Least-privilege permissions limit what each process can reach outside its container.
+
+* *Detection and response.* xref:monitoring.adoc[*Monitoring*] and alerting detect intrusions.
+
+* *People and process.* Training, code review, and a xref:secure-development-lifecycle.adoc[*secure development lifecycle*] guard against the human errors that technical controls cannot catch.
+
+The core idea is that the layers of security controls are many and diverse. There are a mix of preventive controls (to try to stop attacks), detective controls (to detect attacks, both successful or attempted), and corrective controls (to restore services and data).
+
+Layers only add protection when they are genuinely independent. Controls in different layers should not, for example, depend on the same configuration stores, third-party libraries, or administrative accounts.
+
+The model is often illustrated with James Reason's "Swiss cheese" model, borrowed from safety engineering. Each layer is a slice of cheese whose holes are its weaknesses. A system is vulnerable when an attacker can line-up holes though every layer of defense.
+
+The same layering logic underlies xref:resilience.adoc[*resilience*] engineering generally, where xref:redundancy.adoc[*redundancy*] removes xref:single-point-of-failure.adoc[*single points of failure*]. The difference is that security layers must be robust against an adversary who actively probes for single points of failure.
+
+Trade-offs include increased complexity, higher operational costs, and reduced performance. A large stack of overlapping controls can be harder to reason about than a smaller set of well-chosen ones. Furthermore, a false sense of safety can arise from defense-in-depth. It does not substitute for quickly patching known vulnerabilities, following a *secure development lifecycle*, and otherwise continuously working to reducing the attack surface.
+
+== References
+
+* {link-nist-800-53}[_Security and privacy controls for information systems and organizations_].
+  NIST Special Publication.

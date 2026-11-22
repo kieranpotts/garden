@@ -52,7 +52,7 @@ SSRF is hard to close with input filtering alone, because the attacker controls 
 
 * *Resolve once, then connect to the resolved address.* Resolve the hostname, verify the resulting IP is in an allowed range, and open the connection to that IP rather than re-resolving. This defeats DNS rebinding, provided the client honours the pinned address.
 
-* *Block link-local and private ranges at the egress point.* Enforce egress filtering from the application's network segment so that even a fully subverted request to `169.254.169.254` or `10.0.0.0/8` cannot complete. This is xref:firewall.adoc[*firewall*] and security-group policy, applied as xref:secure-by-design.adoc[*secure by design*].
+* *Block link-local and private ranges at the egress point.* Enforce egress filtering from the application's network segment so that even a fully subverted request to `169.254.169.254` or `10.0.0.0/8` cannot complete. This is xref:firewall.adoc[*firewall*] and security-group policy, applied as xref:secure-by-design.adoc[*secure-by-design*].
 
 * *Harden the metadata service.* Require session-oriented, token-based retrieval, such as AWS IMDSv2, so a bare `GET` from an SSRF no longer returns credentials. On GCP, mandatory metadata headers enforce the same effect.
 

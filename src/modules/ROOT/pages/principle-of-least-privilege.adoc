@@ -1,0 +1,43 @@
+= Principle of least privilege
+
+The *principle of least privilege (PoLP)* is a xref:security.adoc[*security*] xref:design-principle.adoc[*design principle*] that says every xref:principal.adoc[*principal*] – a user, a process, or a service – should be granted only the permissions it needs to do its job, and only for as long as it needs those permissions.
+
+The principle was formulated by Jerome Saltzer and Michael Schroeder in 1975. It is a core tenet of xref:secure-by-design.adoc[*secure-by-design*].
+
+The rationale is *containment*. Every permission that a principal holds is something an attacker or malicious insider gains if they successfully compromise that principal. Permissions can also be accidentally misused by program bugs.
+
+Narrowly-scoped permissions shrink the blast radius of security breaches and programming mistakes. They also make it easier to reason about what a component can do.
+
+Trade-offs include increased development costs and system complexity. Permissions need to be maintained so they do not drift from changing system requirements. The common failure mode is *privilege creep*, whereby access accumulates over time and is never revoked, culminating in "god" roles granted for convenience.
+
+== Dimensions of privilege
+
+Privilege can be limited along several axes.
+
+* *Scope.* Grant access to specific resources, not whole classes of them — eg. specific buckets, not all object storage.
+
+* *Action.* Grant only the operations required. Read-only where the code only reads. No administrative rights for a routine application account.
+
+* *Duration.* Prefer short-lived, just-in-time credentials over standing access. Privileges should be elevated only when needed, and dropped immediately afterwards.
+
+* *Context.* Constrain by conditions such as network location, time, or device, where the access model supports it.
+
+== Applying the principle
+
+The principle of least privilege is applied through the mechanisms that define and enforce permissions.
+
+* xref:authorization.adoc[*Authorization*] models decide what each principal may do. xref:role-based-access-control.adoc[*Role-based access control*] is the most common way to express narrow, task-specific permissions in business software, while xref:access-control-list.adoc[*access control lists*] do the same for resources.
+
+* xref:sandbox.adoc[*Sandbox*] or other xref:isolation.adoc[*isolation*] mechanisms restrict what a running process can reach, regardless of what the user who launched it could do. This is a layered xref:defense-in-depth.adoc[*defense-in-depth*] runtime control.
+
+* Database accounts used by applications are given only the statements they need, which caps the damage that can be caused by a successful xref:sql-injection.adoc[*SQL injection*].
+
+== See also
+
+* xref:data-exfiltration.adoc[*Data exfiltration*]
+* xref:ring-zero-escalation.adoc[*Ring-zero escalation*]
+* xref:rule-of-least-power.adoc[*Rule of least power*]
+
+== References
+
+* Saltzer, JH and Schroeder, MD (1975). _The Protection of Information in Computer Systems_. Proceedings of the IEEE.
