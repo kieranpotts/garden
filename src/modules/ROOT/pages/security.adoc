@@ -1,41 +1,67 @@
 = Security
 
-*Security* is the discipline of protecting systems, information, and people from unauthorized access, damage, or disruption. In software engineering it is usually treated as a xref:non-functional-requirements.adoc[*non-functional requirement*] and a xref:quality-attribute.adoc[*quality attribute*]: a condition the system must satisfy, rather than a feature it provides.
+:link-rmias: https://dl.acm.org/doi/10.1109/ARES.2013.72
 
-The conventional framing is the CIA triad — *confidentiality*, *integrity*, and xref:availability.adoc[*availability*]. Confidentiality limits who can read data, integrity ensures data and behavior are not altered improperly, and availability ensures the system remains reachable when needed. Most security controls map onto one or more of these axes, and debates about priorities are often debates about which leg of the triad matters most for a given system.
+*Security* in software engineering is the discipline of protecting systems and data from unauthorized access, damage, or disruption. It is usually treated as a xref:non-functional-requirements.adoc[*non-functional requirement*] and a xref:quality-attribute.adoc[*quality attribute*] — a condition the system must satisfy, rather than a feature it provides.
 
-The triad is a starting point, not the full picture. The Reference Model of Information Assurance and Security (RMIAS) extends it with xref:accountability.adoc[*accountability*], auditability, xref:authenticity.adoc[*authenticity*], and xref:non-repudiation.adoc[*non-repudiation*] — attributes that matter once a system must not only resist attack but also prove, after the fact, who did what and that they cannot credibly deny it. ISO/IEC 25010 frames security in similar terms, as a quality attribute composed of confidentiality, integrity, non-repudiation, accountability, and authenticity: the degree to which a system protects data so that xref:principal.adoc[*principals*] get only the access their authorization level allows.
+The conventional framing is the *CIA triad* — *confidentiality*, *integrity*, and xref:availability.adoc[*availability*]. Confidentiality limits who can read data. Integrity ensures data and behavior are not altered improperly. Availability ensures the system remains reachable when needed. Most security controls map onto one or more of these axes, and debates about priorities are often debates about which leg of the triad matters most for a given system.
 
-Security is broader than any single mechanism. Technical controls such as xref:authentication.adoc[*authentication*], xref:authorization.adoc[*authorization*], xref:encryption.adoc[*encryption*], and xref:firewall.adoc[*firewalls*] are the most visible layer. But security also encompasses procedural and operational controls — access policy, patching, audit, and incident response — and the xref:compliance.adoc[*compliance*] regimes that make those obligations enforceable. xref:cryptography.adoc[*Cryptography*] is the mathematical foundation for much of it, but it is narrower than security as a whole. A system can use strong cryptography and still be insecure if its access controls or operational practices are weak.
+The {link-rmias}[Reference Model of Information Assurance and Security (RMIAS)] extends the CIA triad with additional properties: xref:accountability.adoc[*accountability*], *auditability*, xref:authenticity.adoc[*authenticity*], and xref:non-repudiation.adoc[*non-repudiation*]. ISO/IEC 25010 frames security in similar terms, as a quality attribute composed of *confidentiality*, *integrity*, *non-repudiation*, *accountability*, and *authenticity*.
 
-Security is often conflated with xref:privacy.adoc[*privacy*]. The two are distinct. Security protects data from unauthorized access; privacy governs what data is collected, how it is used, and on what basis. Good security is necessary for privacy but not sufficient: a system can be secure and still be invasive.
+Technical controls such as xref:authentication.adoc[*authentication*], xref:authorization.adoc[*authorization*], xref:encryption.adoc[*encryption*], and xref:firewall.adoc[*firewalls*] are the most visible forms of security controls. xref:cryptography.adoc[*Cryptography*] is the mathematical foundation for many security control. Effectiveness of security controls is verified through xref:security-testing.adoc[*security testing*] and xref:penetration-testing.adoc[*penetration testing*].
 
-Because systems will be attacked, modern practice favors xref:secure-by-design.adoc[*secure-by-design*] — building security in from the outset rather than retrofitting it after deployment. Effectiveness is verified through xref:security-testing.adoc[*security testing*] and xref:penetration-testing.adoc[*penetration testing*], and priorities are informed by community catalogs such as the xref:owasp.adoc[*OWASP*] Top 10, which enumerate the risks that account for most real-world breaches.
+Besides technical control security encompasses procedural and operational controls — eg. access policy, patching, audit, and incident response — and the xref:compliance.adoc[*compliance*] regimes that make those obligations enforceable.
+
+Security is often conflated with xref:privacy.adoc[*privacy*]. The two are distinct. Security protects data from unauthorized access. Privacy governs what data is collected, how it is used, and on what basis. Good security is necessary for privacy, but is not sufficient on its own. A system can be secure and still be invasive in how it uses *personally identifiable information*.
+
+Modern security practice favors xref:secure-by-design.adoc[*secure-by-design*], in which security is built in to systems frm outset, rather than retrofitting at the end of construction. Priorities are informed by community catalogs such as the xref:owasp.adoc[*OWASP Top 10*], which account for most real-world breaches and enumerate the risks associated with each type.
 
 == See also
 
 * xref:access-control-list.adoc[*Access control list (ACL)*]
+* xref:asymmetric-cryptography.adoc[*Asymmetric cryptography*]
+* xref:attack-tree.adoc[*Attack tree*]
+* xref:certificate-authority.adoc[*Certificate authority*]
+* xref:checksum.adoc[*Checksum*]
+* xref:cia-triad.adoc[*CIA triad*]
+* xref:confidentiality.adoc[*Confidentiality*]
 * xref:cross-site-scripting.adoc[*Cross-site scripting (XSS)*]
 * xref:data-exfiltration.adoc[*Data exfiltration*]
+* xref:data-integrity.adoc[*Data integrity*]
 * xref:defense-in-depth.adoc[*Defense-in-depth*]
 * xref:envelope-encryption.adoc[*Envelope encryption*]
+* xref:hashing.adoc[*Hashing*]
 * xref:input-validation.adoc[*Input validation*]
+* xref:integrity.adoc[*Integrity*]
 * xref:jwt.adoc[*JSON Web Token (JWT)*]
 * xref:kerckhoffs-principle.adoc[*Kerckhoffs's principle*]
+* xref:lethal-trifecta.adoc[*Lethal trifecta*]
+* xref:multi-factor-authentication.adoc[*Multi-factor authentication (MFA)*]
 * xref:nonce.adoc[*Nonce*]
+* xref:perfect-forward-secrecy.adoc[*Perfect forward secrecy*]
 * xref:principal.adoc[*Principal*]
 * xref:principle-of-least-privilege.adoc[*Principle of least privilege*]
+* xref:prompt-injection.adoc[*Prompt injection*]
+* xref:pseudo-randomness.adoc[*Pseudo-randomness*]
+* xref:public-key-infrastructure.adoc[*Public key infrastructure (PKI)*]
 * xref:rainbow-table.adoc[*Rainbow table*]
 * xref:rate-limiting.adoc[*Rate limiting*]
 * xref:replay-attack.adoc[*Replay attack*]
 * xref:ring-zero-escalation.adoc[*Ring zero escalation*]
 * xref:role-based-access-control.adoc[*Role-based access control (RBAC)*]
 * xref:salt.adoc[*Salt*]
+* xref:sandbox.adoc[*Sandbox*]
+* xref:secure-development-lifecycle.adoc[*Secure development lifecycle*]
 * xref:secure-by-design.adoc[*Secure-by-design*]
-* xref:security-through-obscurity.adoc[*Security-through-obscurity*]
 * xref:security-header.adoc[*Security headers*]
+* xref:security-through-obscurity.adoc[*Security-through-obscurity*]
 * xref:ssrf.adoc[*Server-side request forgery (SSRF)*]
+* xref:signature.adoc[*Signature*]
 * xref:software-architecture.adoc[*Software architecture*]
 * xref:spoofing.adoc[*Spoofing*]
 * xref:sql-injection.adoc[*SQL injection*]
+* xref:symmetric-cryptography.adoc[*Symmetric cryptography*]
+* xref:threat-modeling.adoc[*Threat modeling*]
+* xref:transport-layer-security.adoc[*Transport Layer Security (TLS)*]
 * xref:vulnerability-database.adoc[*Vulnerability databases*]
+* xref:web-of-trust.adoc[*Web of trust*]
