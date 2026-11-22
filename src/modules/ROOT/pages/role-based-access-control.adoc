@@ -1,6 +1,6 @@
 = Role-based access control (RBAC)
 
-*Role-based access control (RBAC)* is an xref:authorization.adoc[*authorization*] model in which permissions are grouped into named *roles*, and *principals* are granted roles rather than individual permissions. A principal exercises a permission only through a role they hold.
+*Role-based access control (RBAC)* is an xref:authorization.adoc[*authorization*] model in which permissions are grouped into named *roles*, and xref:principal.adoc[*principals*] are granted roles rather than individual permissions. A principal exercises a permission only through a role they hold.
 
 RBAC presupposes that xref:authentication.adoc[*authentication*] has already established who the principal is. It concerns itself only with what that principal is permitted to do.
 
@@ -10,10 +10,6 @@ RBAC is the most common way to operationalize the xref:principle-of-least-privil
 
 Compared with an xref:access-control-list.adoc[*access control list*] (ACL), which attaches permissions directly to each resource for each principal, RBAC's indirection through roles is usually cheaper to administer at scale. A single role definition change propagates to every holder at once, instead of requiring an edit to every affected resource's list. The same indirection makes *deputy arrangements* straightforward. A principal can act with a role's permissions on someone else's behalf, without being granted that person's identity outright.
 
-Stateless architectures often carry role assignments in the credential itself. A xref:jwt.adoc[*JSON Web Token*] can include a `role` or `roles` claim that the receiving service evaluates without a lookup. This pushes the user-role assignment into the token's lifetime, so revoking a role before the token expires requires a denylist or short token lifetimes paired with revocable refresh tokens.
-
-In xref:multi-tenancy.adoc[*multi-tenant*] systems, roles are usually scoped per tenant. The `admin` role in tenant A is a distinct assignment from `admin` in tenant B, even when the names match, and the tenant identifier becomes a non-negotiable part of every role lookup. Without that scoping, a role name collision across tenants becomes a cross-tenant privilege escalation.
-
 == Core model
 
 The NIST RBAC standard, INCITS 359-2004, fixes the vocabulary. Three many-to-many relationships form the spine of the model.
@@ -22,15 +18,15 @@ The NIST RBAC standard, INCITS 359-2004, fixes the vocabulary. Three many-to-man
 
 * *Permission-role assignment.* Permissions, each an action-resource pair, are assigned to roles.
 
-* *Role activation.* A user authenticates, then activates one or more of their assigned roles within a *session*. Only the permissions of the active roles are in effect at any moment.
+* *Role activation.* A user authenticates, then activates one or more of their assigned roles within a *session*. Only the permissions of the active roles are in effect at any moment. This lets a user hold a powerful role but leave it inactive until needed, shrinking their standing privileges.
 
 The indirection through roles is the whole point. Permissions attach to roles, roles attach to users, and so the two can change independently. Redefining a role's permissions affects every holder at once. And reassigning a user's roles never touches the role's permission definitions.
 
-Roles can also inherit from one another. A `senior-analyst` role that subsumes everything in `analyst` plus a few extra permissions lets an organization express seniority without re-listing the inherited permissions.
+The standard extends this core with *role hierarchies*, in which roles inherit from one another. A `senior-analyst` role that subsumes everything in `analyst` plus a few extra permissions lets an organization express seniority without re-listing the inherited permissions. Hierarchies are typically a partial order – a role may inherit from several parents – but most deployments keep them shallow to stay intelligible.
 
 == Constraints
 
-Constraints are rules that govern role assignment and activation. This is a layering on top of the core model.
+Constraints are rules, layered on top of the core model, that govern role assignment and activation.
 
 * *Separation of duties.* Two roles are declared mutually exclusive, so no single user can hold both. The classic example is separating the person who approves a purchase from the one who executes it.
 
@@ -42,13 +38,17 @@ Constraints turn RBAC from a permission organizer into a control structure that 
 
 == Trade-offs and risks
 
+* *Token-carried roles.* Stateless architectures often carry role assignments in the credential itself. A xref:jwt.adoc[*JSON Web Token*] can include a `role` or `roles` claim that the receiving service evaluates without a lookup. The cost is that the user-role assignment then lasts as long as the token, so revoking a role before the token expires requires a denylist, or short token lifetimes paired with revocable refresh tokens.
+
+* *Cross-tenant role collisions.* In xref:multi-tenancy.adoc[*multi-tenant*] systems, roles are usually scoped per tenant. The `admin` role in tenant A is a distinct assignment from `admin` in tenant B, even when the names match, and the tenant identifier becomes a non-negotiable part of every role lookup. Without that scoping, a role name collision across tenants becomes a cross-tenant privilege escalation.
+
 * *Role explosion.* Over time, organizations accumulate one-off roles for every transient need, until the catalogue holds hundreds of near-duplicate roles nobody fully understands. Regular role reviews and a bias toward composition over new roles keep the catalogue tractable.
 
 * *God roles.* A single role that accumulates every permission "for convenience" defeats least privilege and becomes the prize an attacker chases. Cap powerful roles with separation of duties and cardinality limits.
 
 * *Stale assignments.* Roles granted for a project are never removed when the project ends. Periodic access reviews and time-bound role assignments limit drift.
 
-* *Broken access control.* Failures in role enforcement – checking authentication but not role membership, or assuming a missing link means denial – have sat at or near the top of the xref:owasp.adoc[*OWASP*] Top 10 for years.
+* *Broken access control.* Failures in role enforcement – checking authentication but not role membership, or assuming that the absence of a deny rule means access is allowed – have sat at or near the top of the xref:owasp.adoc[*OWASP*] Top 10 for years.
 
 == See also
 
