@@ -62,6 +62,20 @@ Used by systems such as Cassandra and DynamoDB, leaderless replication has clien
 
 Leaderless systems trade away a designated leader for very high availability, at the cost of eventual consistency, unless the quorum sizes are tuned carefully, and consistency guarantees that are generally harder to reason about than a single-leader system's.
 
+== Synchronous and asynchronous replication
+
+Orthogonal to the topology is *when* a write is acknowledged. With *synchronous* replication the leader waits until the followers confirm they have the write before telling the client it succeeded. No acknowledged write can be lost if the leader fails, and reads from those followers are current, which is what allows xref:strong-consistency.adoc[*strong consistency*]. But every write is as slow as the slowest synchronous follower, and an unavailable follower can stall writes entirely.
+
+With *asynchronous* replication the leader acknowledges as soon as it has written locally and ships the change to followers afterward. Writes are fast and survive follower outages, but a leader that fails before shipping its latest writes loses them when a follower is promoted, and followers serve stale data in the meantime.
+
+Most production systems choose a middle path, *semi-synchronous* replication, in which one follower is kept synchronous and the rest are asynchronous. This guarantees that at least two nodes hold every acknowledged write, without making the whole cluster wait. If the synchronous follower fails or slows, another is promoted into its role.
+
+== Replication lag and read replicas
+
+Under asynchronous replication, the delay between a write on the leader and its appearance on a follower is *replication lag*. Normally it is small, but it grows under heavy write load, network trouble, or a follower busy with a long-running query. Lag is the practical face of xref:eventual-consistency.adoc[*eventual consistency*], and it causes recognizable anomalies. A user may write and then fail to see their own change on a stale follower, may see data go backward in time between two reads served by different followers, or may see an effect without its cause. The session guarantees described under eventual consistency, and xref:causal-consistency.adoc[*causal consistency*], exist to rule these out.
+
+A follower used to serve queries is called a *read replica*. Read replicas scale read throughput and can be placed near users to cut latency, and they can absorb analytical or reporting queries without disturbing the leader. Applications that use them have to accept the lag, usually by routing reads that must be current, such as those immediately after the user's own write, to the leader, and everything else to the replicas. Applications should also monitor lag, since it is an early indicator of replica trouble.
+
 == Trade-offs
 
 Trade-offs are made in terms of data consistency, and the increased system xref:complexity.adoc[*complexity*] required to manage the data replication and synchronization processes. Storage costs also increase, since every replica is another full copy of the data, and the bandwidth needed to keep copies in step grows with the write rate.

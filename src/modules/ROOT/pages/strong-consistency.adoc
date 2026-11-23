@@ -1,0 +1,44 @@
+= Strong consistency
+
+:link-ddia-book: https://www.dataintensive.net/
+:link-herlihy-wing: https://cs.brown.edu/people/mph/HerlihyW90/p463-herlihy.pdf
+
+Strong consistency is the guarantee that every read sees the effect of the most recent completed write, so that a replicated system behaves as if there were only one copy of the data. It is the strictest end of the xref:consistency.adoc[*consistency*] spectrum, and the opposite of xref:eventual-consistency.adoc[*eventual consistency*], which lets replicas disagree for a while.
+
+== Linearizability
+
+The formal model usually meant by "strong consistency" is *linearizability*, defined by {link-herlihy-wing}[Herlihy and Wing in 1990]. It means that every operation appears to take effect atomically at a single instant between its invocation and its response, and all clients agree on the order of those instants. If a write completes before a read begins, the read must return that write or a later one. Once any client has seen a new value, no other client may ever again see an older value.
+
+Thus, linearizability is a *recency guarantee* about single objects. It is distinct from *serializability*, which is an xref:isolation.adoc[*isolation*] property of xref:transaction.adoc[*transactions*] spanning multiple objects and says nothing about real-time order. A database that offers both, often called *strict serializability*, gives the guarantees most people intuitively expect of a single-node xref:acid-principles.adoc[*ACID*] database.
+
+== How it is achieved
+
+Strong consistency requires that writes be coordinated before they are acknowledged. There are several parts to achieving this.
+
+* *Synchronous single-leader replication.* The leader acknowledges a write only after the followers have confirmed it. Reads go to the leader. This is simple, but every write waits for the slowest synchronous replica, and the leader remains a xref:single-point-of-failure.adoc[*single point of failure*] unless xref:failover.adoc[*failover*] is added.
+
+* *Consensus.* A xref:consensus-algorithm.adoc[*consensus algorithm*] such as Raft or Paxos makes replicas agree on a single ordered log of writes, tolerating the loss of a minority of nodes without losing agreement.
+
+* *Quorums, with care.* Reading from and writing to overlapping majorities of replicas is not on its own enough to guarantee linearizability. Concurrent writes, sloppy quorums, and clock-based conflict resolution can all still return stale or reordered results.
+
+== The cost
+
+Strong consistency is paid for in latency and availability. Every write needs at least one round trip between nodes, which is slow across regions. Speed is bound to the slowest participant.
+
+Strong consistency suits data where a stale or conflicting answer is a *correctness* failure, such as account balances, inventory, uniqueness constraints, leader election, and distributed locks. Data where staleness is merely inconvenient is usually better served by weaker models, such as xref:causal-consistency.adoc[*causal consistency*], which keep the system available through partitions.
+
+== See also
+
+* xref:distributed-transaction.adoc[*Distributed transactions*]
+* xref:replication.adoc[*Replication*]
+* xref:split-brain.adoc[*Split brain*]
+
+== References
+
+* Herlihy and Wing (1990).
+  {link-herlihy-wing}[_Linearizability: a correctness condition for concurrent objects_].
+  ACM Transactions on Programming Languages and Systems.
+
+* Kleppmann, Martin (2017).
+  {link-ddia-book}[_Designing Data-Intensive Applications_].
+  O'Reilly Media.

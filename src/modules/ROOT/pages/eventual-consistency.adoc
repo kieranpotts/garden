@@ -37,7 +37,7 @@ A bare eventual-consistency guarantee is awkward to program against, because a c
 * *Monotonic writes.* Writes from one session are applied in the order the client issued them.
 * *Writes-follow-reads.* A write is ordered after the writes that the client previously read.
 
-These do not make the system strongly consistent. They bound the surprise a single client can observe, which is often enough to make eventual consistency usable.
+These do not make the system strongly consistent. They bound the surprise a single client can observe, which is often enough to make eventual consistency usable. Extending the same ordering guarantees across all clients, not just within one session, gives xref:causal-consistency.adoc[*causal consistency*].
 
 == Tuning and conflict resolution
 

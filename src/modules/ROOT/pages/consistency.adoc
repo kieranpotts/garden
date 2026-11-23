@@ -21,11 +21,25 @@ As soon as you xref:replication.adoc[*replicate*] data across multiple nodes –
 
 A key idea is xref:eventual-consistency.adoc[*eventual consistency*], also known as *optimistic replication*. The aim is for data across the whole system to eventually be consistent, but it is not guaranteed to be consistent at any particular point in time – it is a *weak guarantee* that data is up-to-date, not a promise that it is up-to-date immediately.
 
-For most systems, eventual consistency is good enough. The time that replicated data may be out of sync is often measured in milliseconds – the time is takes for messages to be relayed across a local network. But it is much harder when you have to deal with things like financial transactions, where consistency is critical for correct business operations. You have to factor xref:latency.adoc[*latency*] (the time for network calls to be made) into your design, and think about potential issues like *race conditions*.
+For most systems, eventual consistency is good enough. The time that replicated data may be out of sync is often measured in milliseconds – the time it takes for messages to be relayed across a local network. But it is much harder when you have to deal with things like financial transactions, where consistency is critical for correct business operations. You have to factor xref:latency.adoc[*latency*] (the time for network calls to be made) into your design, and think about potential issues like *race conditions*.
 
 There are several possible strategies to achieving eventual consistency, but an underlying principle is for all components of a system to agree on what is the *source of truth* for each type of data. The source of truth is the authoritative source for the data, and all other copies are eventually consistent with this source. This design constraint eliminates the need to resolve potentially conflicts between different copies of the same data, something that is incredibly difficult to do, especially in distributed software where we can't rely on timestamps to represent the actual order of mutations.
 
 Supporting techniques include xref:chaos-engineering.adoc[*chaos engineering*] (testing how a system behaves under failure conditions) and using xref:idempotent.adoc[*idempotent operations*] (allowing requests to be repeated multiple times without changing the resulting state).
+
+== Consistency models
+
+A *consistency model* is a contract between a data store and its clients about which values a read may return. The models form a spectrum. Stronger ones are easier to program against but cost more in latency and availability, and weaker ones are cheaper and faster but push complexity onto the application.
+
+* xref:strong-consistency.adoc[*Strong consistency*] (linearizability) makes a replicated store behave as if it held a single copy. Every read sees the latest completed write, at the price of coordination on every write and reduced availability during network partitions.
+
+* xref:causal-consistency.adoc[*Causal consistency*] guarantees that causally related operations are seen in the same order everywhere, while unrelated operations may be seen in any order. It rules out the most confusing anomalies, such as a reply appearing without the message it answers, and can still be offered during a partition.
+
+* Client-centric guarantees, such as read-your-writes and monotonic reads, give a single client a coherent view of its own session without ordering anything between clients. They are described under xref:eventual-consistency.adoc[*eventual consistency*].
+
+* Eventual consistency promises only that replicas converge once updates stop. It is the cheapest and most available model, and the most demanding on the application.
+
+The choice is rarely made for a whole system. A single application commonly keeps account balances and inventory under strong consistency, while serving feeds, counters, and caches from weaker replicas. The xref:cap-theorem.adoc[*CAP theorem*] and the xref:pacelc-theorem.adoc[*PACELC theorem*] explain why the choice cannot be avoided once data is replicated.
 
 == Conflict resolution
 
@@ -49,7 +63,6 @@ Reconciliation can be scheduled at different intervals:
 == See also
 
 * xref:acid-principles.adoc[*ACID principles*]
-* xref:cap-theorem.adoc[*CAP theorem*]
 * xref:quality-attribute.adoc[*Quality attributes*]
 * xref:software-architecture.adoc[*Software architecture*]
 

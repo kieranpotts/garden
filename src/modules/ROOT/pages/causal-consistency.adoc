@@ -1,0 +1,52 @@
+= Causal consistency
+
+:link-cops: https://www.sigops.org/s/conferences/sosp/2011/current/2011-Cascais/28-lloyd-online.pdf
+:link-ddia-book: https://www.dataintensive.net/
+:link-lamport: https://dl.acm.org/doi/10.1145/359545.359563
+
+*Causal consistency* is a *consistency model* in which operations that are causally related are seen by every node in the same order, while operations that are unrelated may be seen in different orders by different nodes.
+
+It sits between xref:eventual-consistency.adoc[*eventual consistency*], which promises no ordering at all, and xref:strong-consistency.adoc[*strong consistency*], which orders everything.
+
+== Causality
+
+An operation `A` *causally precedes* `B`, written `A` → `B`, in three cases:
+
+* `A` and `B` happened in the same process, with `A` first.
+* `B` read a value that `A` wrote.
+* Or there is a chain of such steps linking them, which makes the relation transitive.
+
+This is also known as the *happens-before* relation. Two operations with no such chain between them are *concurrent*, and no order between them is implied.
+
+Causal ordering guarantees that, if you see an effect, you will also see its causes. A reply to a comment should not be visible without the comment it answers, for example. Without causal ordering, a replica that receives the reply first would show it to readers without the original comment.
+
+Concurrent operations, such as two unrelated users posting new comments at the same time, may be applied by replicas in any order.
+
+== Implementation
+
+Systems cannot rely on wall-clock timestamps to implement causal ordering, since clocks on different nodes drift and cannot establish the real order of events. They must instead use logical metadata. There are a few options. One option is dependency tracking, in which each write captures the identifiers of the preceding writes that it depends on.
+
+When concurrent writes to the same item are detected, the system must resolve the conflict. This may be done using a last-writer-wins policy, or by using a xref:crdt.adoc[*CRDT*].
+
+The main advantage of the causal consistency model is that nodes on either side of a network partition can keep accepting reads and writes, and reconcile afterwards. This puts this model on the "available" side of the xref:cap-theorem.adoc[*CAP theorem*] while ruling out many of the confusing anomalies of eventual consistency. It is an attractive consistency model for geo-replicated and xref:local-first-software.adoc[*local-first*] applications, and for collaborative editing and social feeds.
+
+The disadvantages are the metadata overhead (for tracking causality) and the fact that you cannot enforce constraints to achieve a global uniqueness or order.
+
+== See also
+
+* xref:consistency.adoc[*Consistency*]
+* xref:replication.adoc[*Replication*]
+
+== References
+
+* Lamport, L (1978).
+  {link-lamport}[_Time, clocks, and the ordering of events in a distributed system_].
+  Communications of the ACM.
+
+* Lloyd et al. (2011).
+  {link-cops}[_Don't settle for eventual: scalable causal consistency for wide-area storage with COPS_].
+  23rd ACM Symposium on Operating Systems Principles.
+
+* Kleppmann, M (2017).
+  {link-ddia-book}[_Designing Data-Intensive Applications_].
+  O'Reilly Media.
