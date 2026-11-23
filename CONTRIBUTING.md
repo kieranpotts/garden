@@ -8,18 +8,18 @@
 ## Adding or editing an entry
 
 This repo is an Antora content module (component `garden`). It has no build of
-its own. It's aggregated and built by the
-[`website`](https://github.com/kieranpotts/website) repo.
+its own. It's aggregated and built by the `kieranpotts/website` repo.
 
 See the [style guide](./docs/style-guide.md) for writing and formatting
 conventions.
 
 To add a new entry:
 
-1. Copy [`template/example-entry.adoc`](./template/example-entry.adoc) to a new file under
-   `src/modules/ROOT/pages/`, named after the topic in kebab-case, eg. `event-sourcing.adoc`. The template is a
-   complete, compliant worked example of the conventions below — use it as the starting point rather than an empty
-   file.
+1. Copy [`template/example-entry.adoc`](./template/example-entry.adoc) to a
+   new file under `src/modules/ROOT/pages/`, named after the topic in kebab-case,
+   eg. `event-sourcing.adoc`. The template is a complete, compliant worked
+   example of the conventions below — use it as the starting point rather than
+   an empty file.
 
 2. Keep each file atomic — focused on a single idea or concept. Cross-reference
    related topics with `xref:` rather than repeating content.
