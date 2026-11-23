@@ -1,0 +1,31 @@
+= Punycode
+
+*Punycode* is an encoding standard, defined in https://www.rfc-editor.org/rfc/rfc3492[RFC 3492], that converts Unicode strings – including accented letters, non-Latin scripts, and emojis – into the limited ASCII subset of letters, digits, and hyphens that the xref:dns.adoc[*Domain Name System*] allows in host names. It is the mechanism behind *internationalized domain names (IDNs)*, which let domains be registered and displayed in the user's own script.
+
+Punycode is a specific instance of a general bootstring algorithm. It keeps the string's basic ASCII characters as they are, then appends a compact, delimited encoding of the non-ASCII characters and the positions where they are inserted. The encoding is reversible, so the original Unicode string can always be recovered, and it is deliberately terse to fit within DNS's 63-character limit per label.
+
+An encoded label is marked with the prefix `xn--`, which tells software that what follows is Punycode rather than a literal ASCII name.
+
+[cols="1,1"]
+|===
+|Unicode |ASCII (as sent over DNS)
+
+|`bücher.example`
+|`xn--bcher-kva.example`
+
+|`münchen.de`
+|`xn--mnchen-3ya.de`
+
+|`日本語.jp`
+|`xn--wgv71a119e.jp`
+|===
+
+Each label of a domain name is encoded independently, so the dots and the top-level domain are handled separately. The conversion happens at the edge, in browsers, mail clients, and libraries, as part of the IDNA (Internationalized Domain Names in Applications) specifications. The DNS itself, and the protocols built on it, only ever see the ASCII form.
+
+== Security implications
+
+Because many Unicode characters look alike, Punycode enables *homograph attacks*, a form of xref:spoofing.adoc[*spoofing*] in which an attacker registers a domain such as `xn--pple-43d.com`, whose Cyrillic "а" renders indistinguishably from the Latin "a" in "apple.com". Browsers mitigate this by displaying the raw `xn--` form when a label mixes scripts or is otherwise suspicious.
+
+== See also
+
+* xref:security.adoc[*Security*]
