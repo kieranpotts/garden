@@ -1,0 +1,30 @@
+= Fat controller
+
+:link-buck-skinny-controller: https://weblog.jamisbuck.org/2006/10/18/skinny-controller-fat-model
+
+A *fat controller* is an xref:anti-pattern.adoc[*anti-pattern*] in which the controllers of an application — the UI-level components that receive requests and decide what to do with them — accumulate business logic, validation, and data access that belong elsewhere. It is also called *fat controller, skinny model*, to contrast to the long-standing advice to keep controllers thin by moving logic into the models.
+
+In a xref:model-view-controller.adoc[*model-view-controller*] design, a controller's job is narrow: accept input, translate it into a call on the model, and choose a response. A fat controller does far more. It validates and normalizes input, queries and updates the database directly, applies business rules, coordinates several steps in sequence, and formats the result. The model beneath it shrinks to little more than a bag of data — an xref:anemic-domain-model.adoc[*anemic domain model*].
+
+It is easy to fall into. The controller is where a feature's request first lands, so it is the most obvious place to add "just one more" rule or query. Frameworks that scaffold controllers and make database access convenient from anywhere encourage it.
+
+The costs follow from the loss of xref:separation-of-concerns.adoc[*separation of concerns*], and from low xref:cohesion.adoc[*cohesion*] and high xref:coupling.adoc[*coupling*].
+
+* *Poor reuse.* Logic that lives in a controller is reachable only through that controller's entry point. The same rule needed by a background job, a second API, or another controller gets copied, and those copies inevitably drift apart over time.
+
+* *Hard to test.* Exercising a rule means building a request and standing up the framework and database around it, so xref:unit-testing.adoc[*unit tests*] are slow or skipped, which harms xref:testability.adoc[*testability*].
+
+* *Low cohesion and high coupling.* A controller method ends up knowing about transport details, persistence, and domain rules at once, so a change to any of them touches it.
+
+* *Unmanaged growth.* Controllers swell to hundreds of lines. Left alone, this contributes to the slide towards a xref:big-ball-of-mud.adoc[*big ball of mud*].
+
+The usual remedy is to move each kind of logic to the layer that owns it, in line with a xref:layered-architecture.adoc[*layered architecture*]. Input checks move to xref:input-validation.adoc[*validation*] components. Orchestration of a single operation moves to an application or service layer, often modeled as a xref:use-case.adoc[*use case*]. Rules and invariants move into the xref:domain-model.adoc[*domain model*]. And persistence moves behind a xref:repository.adoc[*repository*].
+
+The opposite slogan, "skinny controller, fat model", was popularized in the Rails community by Jamis Buck in 2006. It is a sound correction, but pushed too far it relocates the problem rather than solving it. The model becomes a xref:god-object.adoc[*god object*] that mixes persistence with every rule of the application. The better target is not a fat model but a controller kept thin, with logic distributed across cohesive, single-purpose components.
+
+A fat controller is a specific case of the more general xref:smart-ui.adoc[*smart UI*] anti-pattern, in which logic lives in the presentation layer as a whole.
+
+== References
+
+* Buck, J (2006).
+  {link-buck-skinny-controller}[_Skinny Controller, Fat Model_].

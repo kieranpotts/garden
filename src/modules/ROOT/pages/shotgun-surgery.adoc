@@ -1,0 +1,11 @@
+= Shotgun surgery
+
+*Shotgun surgery* is a xref:code-smell.adoc[*code smell*] in which a single, logical change to the system forces many small edits across many different classes or modules. The name evokes the pattern of the change. The edits are scattered, like pellets from a shotgun, instead of landing in one place.
+
+A typical case is a business rule that is implemented in several places. Adding a new payment method, say, means editing the checkout screen, the order validator, the invoice generator, the reporting query, and the notification templates, because each of them has its own `switch` on the payment type. Miss one and the system can fall into an inconsistent state. Nothing in the code or its tests warns that an instance was missed.
+
+The cause is one concern that has been scattered over many modules, which is a failure of the xref:separation-of-concerns.adoc[*separation of concerns*]. The module boundaries do not match the lines along which the system actually changes. Often the root is duplicated knowledge, in violation of xref:dry.adoc[*DRY*], or knowledge of the same fact spread across modules that must change together, which is a form of xref:coupling.adoc[*coupling*] — see xref:connascence.adoc[*connascence*].
+
+Shotgun surgery makes changes slow, because the developer must first find every place to edit, and error-prone, because they cannot be sure that they have caught every one they need to change.
+
+Shotgun surgery is the mirror image of xref:divergent-change.adoc[*divergent change*]. In divergent change, one module is edited for many different reasons. In shotgun surgery, one reason requires edits to many modules. Both are symptoms of responsibilities that have been distributed badly, and fixing one can easily cause the other if a merge goes too far.

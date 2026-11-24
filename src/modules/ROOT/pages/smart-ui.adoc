@@ -1,0 +1,23 @@
+= Smart UI
+
+:link-evans-ddd: https://www.domainlanguage.com/ddd/
+
+The *smart UI* is an xref:anti-pattern.adoc[*anti-pattern*] in which an application's business logic lives in the presentation layer, or other entry-point layer, instead of in a layer of its own. Screens or handlers hold the rules, validate the data, and read and write the database directly.
+
+The name comes from Eric Evans, who gave it a chapter in {link-evans-ddd}[_Domain-Driven Design_]. In his telling, the smart UI is the natural result of a team that builds applications by wiring screens straight to a database, the style that visual form builders made easy. Each user action is implemented where it is triggered. Thus, business rules are scattered through event handlers in the user interface.
+
+The smart UI pattern has real attractions. It is quick to build, needs little architectural design skill, and delivers working software fast. It can suit small, simple, or short-lived applications. But the pattern does not scale well. Because the logic has no interface of its own, the xref:abstraction.adoc[*abstraction*] needed to manage growing xref:complexity.adoc[*complexity*] is missing, so each feature gets harder to add than the last. And an application built this way cannot be refactored gradually towards a domain model, because the logic is welded to the interface. It has to be rewritten.
+
+Smart UI is the general form of the xref:fat-controller.adoc[*fat controller*] pattern. The latter is the same failure in a server-side application, where the entry point is a controller rather than a screen or view. A system riddled with either is on the road to a xref:big-ball-of-mud.adoc[*big ball of mud*].
+
+== See also
+
+* xref:separation-of-concerns.adoc[*Separation of concerns*]
+* xref:layered-architecture.adoc[*layered architecture*]
+
+
+== References
+
+* Evans, E (2003).
+  {link-evans-ddd}[_Domain-Driven Design: Tackling Complexity in the Heart of Software_].
+  Addison-Wesley.

@@ -1,0 +1,23 @@
+= God object
+
+A *god object* is an xref:anti-pattern.adoc[*anti-pattern*] in which one class knows too much or does too much. It holds a large share of the system's data and logic, and the rest of the code becomes a ring of small classes that merely feed it data or call its methods. It is also known as a *god class* or, in the 1998 _AntiPatterns_ book, *the Blob*.
+
+The term is used loosely for two related shapes. A *data god* is a class that owns most of the state of the system, and other classes have to reach into it. A *behavioral god* is a class that centralizes control, making all the decisions while its collaborators are reduced to passive records. Both shapes arise from the same impulse, which is to add the next method to the class that already exists.
+
+It is the opposite of the xref:single-responsibility-principle.adoc[*single responsibility principle*] pattern, and it is the object-level failure of the xref:separation-of-concerns.adoc[*separation of concerns*]. The symptoms are predictable.
+
+* Low xref:cohesion.adoc[*cohesion*]. The class is very large, with many fields and methods, and the methods touch unrelated subsets of the fields.
+
+* Many other classes depend on it, so it is highly xref:coupling.adoc[*coupled*] to the rest of the system, and any change to it is risky.
+
+* It changes constantly, for many unrelated reasons, which is the xref:divergent-change.adoc[*divergent change*] smell. It is a frequent site of merge conflicts, because many features touch it.
+
+* It is hard to test, since constructing it requires wiring up everything it depends on.
+
+God objects usually grow by accretion and not by design, which makes them a marker of xref:software-rot.adoc[*software rot*]
+
+== References
+
+* Brown et al (1998).
+  _AntiPatterns: Refactoring Software, Architectures, and Projects in Crisis_.
+  John Wiley & Sons.

@@ -2,6 +2,10 @@
 
 // 📝 DRAFT
 
+:link-dijkstra-ewd447: https://www.cs.utexas.edu/~EWD/transcriptions/EWD04xx/EWD447.html
+:link-parnas: https://doi.org/10.1145/361598.361623
+:link-tarr: https://doi.org/10.1145/302405.302457
+
 Separation of concerns is a xref:design-principle.adoc[*design principle*] that asks a system to be organized so that each element addresses one distinct concern, and each concern is addressed by as few elements as possible.
 
 A *concern* is anything the system must do or account for: a feature, a policy, a responsibility, or a xref:quality-attribute.adoc[*quality attribute*] such as security or performance.
@@ -18,6 +22,32 @@ At the scale of a whole application, the principle is the organizing idea behind
 
 Not every concern can be assigned to a single module. A xref:cross-cutting-concern.adoc[*cross-cutting concern*] — logging, security, transaction management — cuts across many modules that each have a different primary responsibility. Separation of concerns still applies, but the technique changes. The concern is factored out into a *middleware* pipeline, an *aspect*, or an infrastructure layer rather than localized in one module. The principle is the same, only the shape of the boundary differs.
 
+== Dimensions of separation
+
+A system can be divided along more than one axis, and each axis separates a different kind of concern.
+
+* *By layer*: presentation, business logic, and persistence, as in a layered architecture.
+
+* *By feature or domain area*: billing, ordering, and shipping each own their own logic, as in a modular monolith or a bounded-context-per-service design.
+
+* *By technology*: structure, style, and behavior in a web page are kept in separate languages (HTML, CSS, JavaScript), so each can change without disturbing the others.
+
+* *By time or lifecycle*: configuration is separated from code, and build time from run time, because the concerns change on different schedules.
+
+* *By policy and mechanism*: what the system decides is separated from how it carries the decision out, so that either can be replaced.
+
+== Tangling and scattering
+
+When separation fails, it fails in one of two ways. Concerns are *tangled* when one module mixes several of them, so that the code for each is interleaved with the others. Concerns are *scattered* when one concern is spread across many modules, so that no single place implements it. The two usually come together, and both are signs of a boundary drawn in the wrong place.
+
+A classic tangle is logic that has drifted into the entry-point layer of an application, as in the xref:fat-controller.adoc[*fat controller*] and its more general form, the xref:smart-ui.adoc[*smart UI*]. Scattering shows up when a single change forces edits in many modules, which Martin Fowler's catalog of xref:code-smell.adoc[*code smells*] calls xref:shotgun-surgery.adoc[*shotgun surgery*], or when one module must be edited for unrelated reasons, which he calls xref:divergent-change.adoc[*divergent change*]. A codebase where tangling and scattering are everywhere is, in the limit, a xref:big-ball-of-mud.adoc[*big ball of mud*].
+
+== The tyranny of the dominant decomposition
+
+David Parnas argued in 1972 that a system should be divided according to the design decisions most likely to change, each hidden inside a module, and not according to the steps of its processing flow. That remains the most practical guide to where to draw a boundary.
+
+But any one decomposition favors a single dimension, and the concerns on the other dimensions are forced to cut across it. Tarr and colleagues named this the "tyranny of the dominant decomposition" in 1999. If code is divided by feature, then layer-like concerns such as logging or security are scattered across every feature, and the reverse is true if it is divided by layer. This is the problem that the cross-cutting concern techniques address, and which motivated aspect-oriented programming.
+
 == Trade-offs
 
 Pursued without judgment, separation of concerns becomes its own problem. Splitting a feature across many modules to keep each "pure" scatters a single thread of logic across the codebase, and the reader must follow that thread through a chain of indirections to understand what the feature does. This is the *locality of behavior* critique. Code that does one thing is easier to reason about when the doing of it lives in one place.
@@ -29,3 +59,13 @@ The aim, then, is not to maximize the number of modules but to draw boundaries t
 == See also
 
 * xref:software-architecture.adoc[*Software architecture*]
+
+== References
+
+* Dijkstra, E W (1974). {link-dijkstra-ewd447}[_On the role of scientific thought_] (EWD447).
+
+* Parnas, D L (1972). {link-parnas}[_On the criteria to be used in decomposing systems into modules_].
+  Communications of the ACM, 15(12).
+
+* Tarr, P, Ossher, H, Harrison, W, and Sutton, S M (1999). {link-tarr}[_N degrees of separation: multi-dimensional separation of concerns_].
+  Proceedings of the 21st International Conference on Software Engineering (ICSE).

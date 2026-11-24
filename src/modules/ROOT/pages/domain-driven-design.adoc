@@ -330,7 +330,7 @@ image::ddd-layers.svg[opts=inline]
 
 The idea is that within each layer are components that change for the same reasons. Thus, components within the interface layer should change only when there is a *change request* for how clients – users or other programs – interact with the application, while components within the infrastructure layer should change only when there is a change in some external system on which the application depends.
 
-The most important design principle here is to try to keep the domain logic isolated from all other other concerns of the other layers. The objective is to avoid business logic getting scattered throughout a codebase, eg. embedded into UI widgets and database scripts. This sort of xref:technical-debt.adoc[*technical debt*] makes a system hard to change and to test.
+The most important design principle here is to try to keep the domain logic isolated from all other other concerns of the other layers. The objective is to avoid business logic getting scattered throughout a codebase, eg. embedded into UI widgets and database scripts, the xref:smart-ui.adoc[*smart UI*] anti-pattern. This sort of xref:technical-debt.adoc[*technical debt*] makes a system hard to change and to test.
 
 ==== The interface layer
 
@@ -338,7 +338,7 @@ The outermost *interface*, *presentation*, or *UI* layer deals with input and ou
 
 This layer is responsible for interpreting user input commands and presenting the system's response to the client. This layer defines all the entry points to an application, and typically includes routing rules, view templates, UI controllers, and middleware.
 
-The interface layer should not have any knowledge of business rules, use cases, persistence technologies, etc. It should only receive client input (eg. URL parameters) and pass these to the relevant commands or event handlers in the application layer.
+The interface layer should not have any knowledge of business rules, use cases, persistence technologies, etc. It should only receive client input (eg. URL parameters) and pass these to the relevant commands or event handlers in the application layer. An interface layer that takes on business logic of its own is a xref:fat-controller.adoc[*fat controller*].
 
 ==== The application layer
 

@@ -1,0 +1,13 @@
+= Divergent change
+
+*Divergent change* is a xref:code-smell.adoc[*code smell*] in which one module, usually a class, has to be edited for several different and unrelated reasons. For example, the same class is edits when a developer needs to add a new database field, and when they need to add a new report format.
+
+The pattern was catalogued by Martin Fowler in his book _Refactoring_. The smell is a failure of the xref:separation-of-concerns.adoc[*separation of concerns*], seen from the point of view of change. It is also a symptom of low xref:cohesion.adoc[*cohesion*], and it is the same thing as a violation of the xref:single-responsibility-principle.adoc[*single responsibility principle*], which defines a responsibility as a reason to change.
+
+Taken to an extreme, a class with divergent change becomes a xref:god-object.adoc[*god object*].
+
+Such classes becomes hot spots that every feature touches, which means frequent merge conflicts and a high chance that a change for one concern breaks another. Tests for it have to cover every combination of the concerns the class mixes.
+
+The remedy is to split the class along the lines of the different reasons for change, so each class changes for one reason only. The usual xref:refactoring.adoc[*refactoring*] approach is to extract each group of related fields and methods into its own class, and have the original delegate to them if required. If the concerns share data, a common abstraction or a simple data type may be created to pass between the independent objects.
+
+Divergent change is the mirror image of xref:shotgun-surgery.adoc[*shotgun surgery*]. Divergent change is one module changing for many reasons, while shotgun surgery is one reason changing many modules. The cure for one, when overdone, tends to produce the other.

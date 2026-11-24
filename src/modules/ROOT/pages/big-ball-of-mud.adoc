@@ -13,6 +13,42 @@ A big ball of mud is an xref:anti-pattern.adoc[*anti-pattern*], but a distinctiv
 
 The pattern is related to but distinct from *spaghetti code*. Spaghetti code is a tangle of control flow, classically the product of undisciplined use of `goto`, which xref:structured-programming.adoc[*structured programming*] was devised to curb. A big ball of mud is the same lack of discipline applied to the whole system: not just control flow but modules, layers, and boundaries have collapsed into one undifferentiated mass.
 
+== Symptoms
+
+A big ball of mud is recognizable by how it behaves under change, more than by how it looks. Typical symptoms include:
+
+* Boundaries that exist on paper but not in the code. Any module may call or modify any other, and the dependency graph is cyclic.
+
+* Business rules duplicated in several places, and logic tangled with presentation and persistence, as in a xref:fat-controller.adoc[*fat controller*] or a xref:smart-ui.adoc[*smart UI*]. In effect, there is no xref:separation-of-concerns.adoc[*separation of concerns*].
+
+* Changes with unpredictable reach, so that every edit is risky and needs manual regression testing to find what broke.
+
+* Knowledge that lives only in the heads of a few long-serving developers, because the code cannot be understood from its structure.
+
+* A growing fear of the code, which discourages the cleanup that might have helped.
+
+== Causes
+
+Foote and Yoder identify the forces that produce it. Time and budget pressure favor quick fixes over design. Developers new to the code patch around what they do not understand. Requirements shift faster than the architecture can follow, and the people who understood the original design leave. Organizational structure matters too: under xref:conways-law.adoc[*Conway's law*], a muddled communication structure yields a muddled system.
+
+They also take care to say that mud is not always a mistake. Their paper describes several patterns that tend to lead to it, each of which is a rational choice in context:
+
+* *Throwaway code*: a quick prototype or proof of concept that was meant to be discarded but was kept, because it worked.
+
+* *Piecemeal growth*: a system that expands incrementally, in response to immediate needs, without anyone revisiting its overall shape. This is the same mechanism by which a well-designed system decays, as described by the xref:laws-of-software-evolution.adoc[*laws of software evolution*].
+
+* *Keep it working*: a reluctance to restructure a system that is in use, so repairs are made in the least invasive way.
+
+* *Sweep it under the rug*: hiding a mess behind a tidy interface, which at least contains it, without fixing it.
+
+The authors argue that some mud is the price of getting something working and in front of users, and that a team should be honest about when it is accepting it.
+
+== Remedies
+
+Since the stable state of most systems is mud, the question is how to escape it. Foote and Yoder's own answer is *reconstruction*, or rewriting the system from scratch, when the code is beyond saving. That is a drastic step, and often it recreates the same mess if the forces that produced the first one persist.
+
+The less risky approaches work incrementally. Steady xref:refactoring.adoc[*refactoring*] pays down xref:technical-debt.adoc[*technical debt*] in the areas being changed. The xref:strangler-fig-pattern.adoc[*strangler fig pattern*] replaces the system piece by piece behind a stable facade. Imposing boundaries inside a xref:monolith.adoc[*monolith*], by carving it into a xref:modular-monolith.adoc[*modular monolith*], restores structure without the costs of distribution. Moving a mud ball to xref:microservices.adoc[*microservices*] without first untangling it tends only to produce a distributed ball of mud.
+
 ''''
 
 == See also
