@@ -1,0 +1,35 @@
+= Data compression
+
+:link-ddia-book: https://www.dataintensive.net/
+
+Data compression is the encoding of data in fewer bits than its original representation, trading CPU time for storage space and transfer volume. In a storage system it cuts the cost of disk and memory, and because less data moves, it can also raise effective xref:throughput.adoc[*throughput*] and lower xref:latency.adoc[*latency*], provided that decompression is cheaper than the I/O it saves.
+
+Compression works by removing redundancy. Repeated values, predictable sequences, and skewed symbol frequencies can all be encoded more compactly. Data that is already high-entropy, such as encrypted or previously compressed content, has little redundancy left for compression to be effective.
+
+== Lossless and lossy compression
+
+Broadly there are two forms of compression.
+
+*Lossless* compression reconstructs the original data exactly. It is the only acceptable choice for databases, backups, and anything else where the bytes matter.
+
+*Lossy* compression discards information that is judged unimportant, accepting an approximation of the original in return for much higher ratios. It suits media such as images, audio, and video, and is sometimes applied to analytical data, eg. when old metrics are reduced to coarser summaries.
+
+== Trade-offs
+
+Compression costs CPU on write and, to a lesser degree, on read, so it shifts a bottleneck rather than removing it. A heavily compressed store that is CPU-bound can end up slower than an uncompressed one that is I/O-bound.
+
+Compression also complicates in-place updates, because a modified value may no longer fit in the space its compressed block occupied. It can make random access slower where a block must be decompressed to reach one record.
+
+Compression eliminates redundancy within a single piece of data. Eliminating redundancy across many pieces is a related but distinct technique, covered by xref:data-deduplication.adoc[*data deduplication*].
+
+== See also
+
+* xref:in-memory-database.adoc[*In-memory databases*]
+* xref:object-storage.adoc[*Object storage*]
+* xref:wide-column-store.adoc[*Wide-column stores*]
+
+== References
+
+* Kleppmann, Martin (2017).
+  {link-ddia-book}[_Designing Data-Intensive Applications_].
+  O'Reilly Media.

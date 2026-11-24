@@ -36,6 +36,18 @@ An index is only useful if a query can use it. A few rules of thumb:
 * *Composite index.* An index on multiple columns, useful for queries that filter on those columns together, eg. finding a user by first and last name.
 * *Covering index.* An index that includes every column a query needs, so the engine can answer the query from the index alone without touching the table.
 
+The types overlap. Whether an index is primary, secondary, or covering describes its relationship to the table and the query, not its structure. A secondary index entry holds either a pointer to the row's physical location or, in engines where the table is clustered on the primary key, the primary key value. Either way, a lookup through a non-covering secondary index costs a second step to fetch the row. A covering index avoids that step, and many engines let an index carry extra non-key *included columns* for this purpose. These are stored in the index's leaf entries so they can satisfy a query's `SELECT` list, but they are not sorted or searchable, so they add less maintenance cost than making them part of the key.
+
+== B-trees and LSM-trees
+
+Two storage-engine designs dominate how indexes are maintained on disk, and they make opposite trade-offs between reads and writes.
+
+A *B-tree* updates pages in place. A write finds the right page and modifies it, usually after appending to a write-ahead log for crash safety. Reads are predictable, since a lookup touches a small, fixed number of pages. Writes are more expensive, because a small change rewrites a whole page, and random writes cause random disk I/O. B-trees are the default in most relational databases.
+
+A *log-structured merge-tree (LSM-tree)* never updates in place. Writes go to an in-memory sorted buffer, which is flushed to disk as an immutable sorted file when full. A background process merges these files, a step called *compaction*, to keep their number down and discard overwritten and deleted entries. Writes are sequential and fast, and the immutable files xref:data-compression.adoc[*compress*] well. Reads may have to check several files, which is why LSM engines use a xref:bloom-filter.adoc[*Bloom filter*] per file to skip those that cannot contain a key. Compaction competes with foreground traffic for I/O, and rewriting data during compaction causes *write amplification*. LSM-trees are common in xref:wide-column-store.adoc[*wide-column stores*], xref:key-value-store.adoc[*key-value stores*], and other write-heavy systems.
+
+As a rule of thumb, B-trees favor read-heavy workloads with predictable latency, and LSM-trees favor write-heavy workloads and high ingest rates.
+
 == See also
 
 * xref:bloom-filter.adoc[*Bloom filter*]

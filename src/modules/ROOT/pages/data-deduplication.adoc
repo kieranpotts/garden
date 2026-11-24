@@ -1,0 +1,47 @@
+= Data deduplication
+
+:link-disk-bottleneck: https://www.usenix.org/legacy/event/fast08/tech/full_papers/zhu/zhu.pdf
+
+Data deduplication is the elimination of duplicate copies of data in a storage system, keeping one physical copy and replacing the others with references to it.
+
+Where xref:data-compression.adoc[*data compression*] removes redundancy within a piece of data, deduplication removes redundancy across pieces of data. Data deduplication has the highest payoff where data is highly repetitive, such as in backup and archive systems, the images of virtual machines, and container image layers. Data deduplication has low payoff for unique, compressed, or encrypted data.
+
+== How it works
+
+A deduplicating system splits incoming data into *chunks* and identifies each chunk by a cryptographic xref:hashing.adoc[*hash*] of its contents — its *fingerprint*. An index maps fingerprints to stored chunks. When a new chunk's fingerprint is already in the index, the system stores only a reference to the existing chunk. Otherwise it stores the chunk and adds its fingerprint.
+
+(A hash collision between different chunks would silently corrupt data, which is why strong cryptographic hashes are used for fingerprints.)
+
+A file or object becomes an ordered list of chunk references, and reading it involves reassembling the chunks.
+
+This is *content-addressable storage*, in which the address of data is derived from the data itself. The same principle underpins the object model of xref:version-control.adoc[*version control*] systems such as Git.
+
+Chunking strategy determines how much duplication is found.
+
+* *File-level* deduplication compares whole files. It is cheap but finds nothing when files differ by even one byte.
+
+* *Fixed-size chunking* splits data into equal blocks. It is fast, but inserting a single byte near the start shifts every later boundary, so all subsequent chunks are renewed.
+
+* *Content-defined chunking* places boundaries where a rolling hash of the data meets a condition, so boundaries move with the content, and an insertion disturbs only the neighboring chunks. It finds the most duplication at the cost of more computation.
+
+Deduplication may be run *inline*, before data is written, saving space and write bandwidth immediately, but adding latency to the write path. *Post-process* deduplication writes first and reclaims space later in the background, keeping writes fast but requiring temporary capacity for the non-deduplicated data. Deduplication may also run at the *source*, before data crosses the network, or at the *target*, where the storage system receives it.
+
+== Trade-offs
+
+The fingerprint index is the central cost. It must be consulted for every chunk, and at scale it grows too large for memory.
+
+Deduplication also concentrates risk, since one corrupted physical chunk damages every file that references it. That makes xref:replication.adoc[*replication*] or other xref:redundancy.adoc[*redundancy*] of the stored chunks more important.
+
+Finally, reads of deduplicated data can become scattered across the disk, as a file's chunks are spread among those of many other files. Deleting data requires tracking how many references each chunk has, so that a chunk is freed only when nothing points to it.
+
+== See also
+
+* xref:object-storage.adoc[*Object storage*]
+* xref:block-storage.adoc[*Block storage*]
+* xref:disaster-recovery.adoc[*Disaster recovery*]
+
+== References
+
+* Zhu, Li, and Patterson (2008).
+  {link-disk-bottleneck}[_Avoiding the disk bottleneck in the Data Domain deduplication file system_].
+  USENIX Conference on File and Storage Technologies.
