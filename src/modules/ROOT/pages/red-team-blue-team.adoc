@@ -1,0 +1,31 @@
+= Red team, blue team
+
+A *red team, blue team* exercise is an adversarial simulation in which one group, the *red team*, plays the attacker and tries to compromise a system or organization, while another group, the *blue team*, plays the defender and tries to prevent, detect, and respond to the attack. The aim is not for one team to win, but to learn how well the system's defenses work against a realistic opponent.
+
+The practice is borrowed from military war gaming, where a designated opposing force tests plans and defenses by thinking and acting like the enemy.
+
+The exercise tests the layers of a xref:defense-in-depth.adoc[*defense-in-depth*] strategy as a whole, rather than any single control. Red teams often chain several small weaknesses into a path that no individual control was designed to stop. Planning an attack draws on the same thinking as xref:threat-modeling.adoc[*threat modeling*].
+
+== The teams
+
+* *Red team.* Offensive specialists who emulate a real adversary. They are given an objective, such as reading a particular database or gaining control of a domain, and are free to pursue it by any agreed means, such as technical exploitation, **social engineering**, or physical intrusion. They are judged on whether the objective was ultimately reached, and on how long they went unnoticed.
+
+* *Blue team.* The defenders. These are the engineers and operators responsible for the system's security controls, xref:monitoring.adoc[*monitoring*], alerting, and incident response. They are judged on how quickly they detect the intrusion, how well they contain it, and how quickly and fully they recover. The blue team may not be told when such an exercise is running, so that their response is genuine.
+
+* *White team.* Referees who set the rules of engagement, keep the exercise within its agreed scope, and can call it off if it threatens production. They also observe both sides and record what happened.
+
+* *Purple team.* Not a separate group so much as a way of working. Red and blue share their techniques and findings in real time, so that each attack technique is immediately matched with a detection or a control. Purple teaming trades some realism for a faster improvement loop.
+
+== Comparison to penetration testing and chaos engineering
+
+A xref:penetration-testing.adoc[*penetration test*] is wide and shallow. It aims to find as many vulnerabilities as possible within a defined scope, and the defenders are usually aware of it.
+
+A red team exercise is narrow and deep. It follows one realistic attack path to a goal, measures the defenders' response as much as the system's weaknesses, and is often run without the blue team's knowledge.
+
+Red teaming shares the spirit of xref:chaos-engineering.adoc[*chaos engineering*]. Both deliberately inflict realistic harm to learn how a system and its operators cope, but chaos engineering injects random failures, whereas a red team is an intelligent adversary who adapts to what the defenders do.
+
+A mature security programme uses penetration tests to clear out known weaknesses first, then uses red teaming and chaos engineering to test whether what remains can be detected and stopped.
+
+== See also
+
+* xref:security-testing.adoc[*Security testing*]
