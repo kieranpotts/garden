@@ -1,0 +1,23 @@
+= Anemic domain model
+
+:link-fowler-anemic: https://martinfowler.com/bliki/AnemicDomainModel.html
+
+An *anemic domain model* is an xref:anti-pattern.adoc[*anti-pattern*] in which the objects of a xref:domain-model.adoc[*domain model*] hold data but almost no behavior. The classes are named after domain concepts such as `Order` or `Customer`, and have the expected fields, but they are little more than getters and setters. The business rules live elsewhere, in a layer of service classes that fetch the objects, manipulate their fields, and save them back.
+
+Martin Fowler {link-fowler-anemic}[named the pattern in 2003]. His wrote that the "fundamental horror of this anti-pattern is that it's so contrary to the basic idea of object-oriented design; which is to combine data and process together."
+
+The resulting *weak encapsulation* leads to the following consequences.
+
+* *Invariants are unprotected by domain rules.* Nothing stops non-domain services from putting the domain objects into invalid states, such as an order with a negative quantity. Business rules end up being duplicated across callers, and so drift apart.
+
+* *Domain knowledge is scattered across the codebase.* To learn what can happen to an order, for example, you gave to search through all the services that operate on orders, instead of just reading the `Order` class.
+
+This contrasts with a *rich domain model*, in which domain entities and value objects own the rules that govern their own state, and expose operations named in the xref:ubiquitous-language.adoc[*ubiquitous language*] of the domain, such as `order.cancel()`, rather than raw setters. Where rules must be shared between entities, dedicated domain services encapsulate them. This leaves the application's services layer thin, concerned only with orchestrating use cases and transactions. This is the approach advocated by xref:domain-driven-design.adoc[*domain-driven design*]
+
+The anemic model is a close relative of the xref:fat-controller.adoc[*fat controller*]. Logic that does not live in the model has to live somewhere, and when it is not in a service layer it ends up in the controllers, or even in the UI views — see xref:smart-ui.adoc[*smart UI*].
+
+== References
+
+* Fowler, M (2003).
+  {link-fowler-anemic}[_Anemic Domain Model_].
+  Bliki.
